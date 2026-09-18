@@ -5254,7 +5254,7 @@ function obligationTimeline(p){
 }
 function route(){ return (location.hash.replace('#','')||'home').split('?')[0]; }
 function nav(routeName){
-  const detailRoutes=['insights','reset','bills','essentials','lifestyle','savings','history','scenario','connections','future','qa'];
+  const detailRoutes=['insights','reset','bills','essentials','lifestyle','savings','history','scenario','connections','future','qa','performance'];
   const activeRoute=detailRoutes.includes(routeName)?'details':routeName==='setup'||routeName==='preferences'?'plan':routeName==='precheck'?'log':routeName;
   document.body.dataset.route=activeRoute;
   const index={home:0,log:1,details:2,plan:3}[activeRoute]??0;
@@ -6497,7 +6497,8 @@ async function renderDetails(){
           tool('setup','Plan','Edit weekly structure','Change pay, bills, categories, savings, and week rhythm.','Plan','#72d6aa',semanticIcon('plan')),
           tool('preferences','Presentation','Motion, density & contrast','Control how much information and movement the interface shows.','Display','#f0a7d3',semanticIcon('settings')),
           tool('future','Architecture','System Architecture','See how adaptive constellations, choreography, and connected data fit together.','Guide','#9fc8d1',semanticIcon('architecture')),
-          tool('qa','Quality','Device QA','Run mobile viewport, overflow, touch, storage, parser, and static-runtime checks on this device.','QA','#67e8f9',semanticIcon('settings'))
+          tool('qa','Quality','Device QA','Run mobile viewport, overflow, touch, storage, parser, and static-runtime checks on this device.','QA','#67e8f9',semanticIcon('settings')),
+          tool('performance','Runtime','Performance & Resilience','Inspect render timing, storage growth, adaptive tier, and derived-cache behavior.','Health','#72d6aa',semanticIcon('analysis'))
         ].join('')
       }
     ];
@@ -7014,6 +7015,45 @@ async function renderConnections(){
   }catch(e){root.innerHTML=errBox(e.message);}
 }
 
+function renderPerformance(){
+  shellMeta('Quality','Performance & Resilience','Inspect runtime cost, storage growth, caches, and fallback state','<a class="text-action" href="#details">Back</a>');nav('performance');
+  const draw=()=>{
+    const footprint=storageFootprint(),tier=runtimePerformanceTier(),nodes=document.getElementsByTagName('*').length;
+    const routeRows=Object.entries(runtimePerf.route).sort((a,b)=>b[1].last-a[1].last).slice(0,10);
+    const cacheTotal=runtimePerf.cacheHits+runtimePerf.cacheMisses,hitPct=cacheTotal?Math.round(runtimePerf.cacheHits/cacheTotal*100):0;
+    const storageMode=runtimeStorageHealth.available?'Persistent localStorage available':'Volatile fallback active / storage unavailable';
+    const cores=navigator.hardwareConcurrency||'unknown',memory=navigator.deviceMemory?String(navigator.deviceMemory)+' GB':'not exposed';
+    root.innerHTML=`<div class="studio-stack">
+      <section class="perf-hero"><span class="studio-kicker">Phase 12 runtime health</span><h2>Keep the experience fast as capability grows.</h2><p>These diagnostics are local to this browser session. They do not upload performance or financial data.</p><div class="perf-summary">
+        <div class="perf-stat"><small>Performance tier</small><strong>${tier}</strong></div>
+        <div class="perf-stat"><small>DOM nodes now</small><strong>${nodes}</strong></div>
+        <div class="perf-stat"><small>Storage footprint</small><strong>${(footprint.total/1024).toFixed(1)} KB</strong></div>
+        <div class="perf-stat"><small>Cache hit rate</small><strong>${hitPct}%</strong></div>
+      </div></section>
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Adaptive runtime</span><h2>Current device profile</h2><div class="section-caption">Lite mode reduces decorative rendering on constrained devices; it does not change calculations.</div></div></div><div class="perf-list">
+        <div class="perf-row"><div><strong>Rendering tier</strong><span>Chosen from Save Data, exposed memory/CPU hints, and very narrow width.</span></div><span class="perf-value">${tier}</span></div>
+        <div class="perf-row"><div><strong>Logical CPU cores</strong><span>Browser-reported hardware concurrency when available.</span></div><span class="perf-value">${cores}</span></div>
+        <div class="perf-row"><div><strong>Device memory hint</strong><span>Only shown if the browser exposes it.</span></div><span class="perf-value">${memory}</span></div>
+        <div class="perf-row"><div><strong>Confirmation particle cap</strong><span>Semantic financial confirmation effects are capped by runtime tier.</span></div><span class="perf-value">${maxEventParticles()}</span></div>
+        <div class="perf-row"><div><strong>Long tasks observed</strong><span>Available only where the browser exposes the Long Tasks API.</span></div><span class="perf-value">${runtimePerf.longTasks}</span></div>
+      </div></section>
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Storage resilience</span><h2>Local data footprint</h2><div class="section-caption">The 2 MB meter is an internal soft-warning threshold, not a browser quota claim.</div></div></div>
+        <div class="perf-row"><div><strong>${escapeHtml(storageMode)}</strong><span>${runtimeStorageHealth.lastError?escapeHtml(runtimeStorageHealth.lastError):'Core state keeps an in-memory fallback if persistence fails.'}</span><div class="perf-meter" style="--pct:${footprint.softPct}%"><i></i></div></div><span class="perf-value">${footprint.softPct}% soft threshold</span></div>
+        <div class="perf-list" style="margin-top:7px">${footprint.rows.slice(0,8).map(x=>`<div class="perf-row"><div><strong>${escapeHtml(x.key)}</strong><span>Serialized local payload</span></div><span class="perf-value">${(x.bytes/1024).toFixed(1)} KB</span></div>`).join('')||'<div class="empty">No This Week localStorage records found.</div>'}</div>
+      </section>
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Render timing</span><h2>Recent route work</h2><div class="section-caption">Session-only timing from this browser. Use it to find unusually heavy routes.</div></div><button class="btn btn-secondary" id="clearPerfCaches">Clear derived caches</button></div>
+        <div class="perf-list">${routeRows.length?routeRows.map(([name,m])=>`<div class="perf-row"><div><strong>${escapeHtml(routeAccessibleName(name))}</strong><span>${m.count} render${m.count===1?'':'s'} · average ${(m.total/m.count).toFixed(1)} ms · max ${m.max.toFixed(1)} ms</span></div><span class="perf-value">${m.last.toFixed(1)} ms last</span></div>`).join(''):'<div class="empty">Open a few routes to collect timing data.</div>'}</div>
+      </section>
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Write efficiency</span><h2>State persistence</h2></div></div><div class="perf-list">
+        <div class="perf-row"><div><strong>Persistent writes</strong><span>Successful localStorage writes made in this session.</span></div><span class="perf-value">${runtimePerf.storageWrites}</span></div>
+        <div class="perf-row"><div><strong>Redundant writes skipped</strong><span>Identical serialized core state was not written again.</span></div><span class="perf-value">${runtimePerf.storageWriteSkips}</span></div>
+      </div></section>
+      <div class="perf-note">Derived caches contain computed/presentation data only. Clearing them does not delete the plan, transactions, imported data, savings goals, or preferences.</div>
+    </div>`;
+    document.getElementById('clearPerfCaches')?.addEventListener('click',()=>{clearDerivedRuntimeCaches();toast('Derived caches cleared.');draw();});
+  };draw();
+}
+
 function renderDeviceQA(){
   shellMeta('Quality','Device QA','Run the Phase 11 smoke checks on the device in your hand','<a class="text-action" href="#details">Back</a>');nav('qa');
   const draw=()=>{
@@ -7274,7 +7314,7 @@ let historyTraversalPending=false;
 try{history.scrollRestoration='manual';}catch{}
 
 function routeAccessibleName(routeName){
-  return ({home:'Home',log:'Add Spending',details:'Details',insights:'Advanced Insights',bills:'Bill Protection Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex Studio',savings:'Savings Goal Studio',precheck:'Purchase Pre-check',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data Center',preferences:'Presentation and Accessibility',future:'System Architecture',qa:'Device QA',reset:'New Week',setup:'Plan'})[routeName]||'Home';
+  return ({home:'Home',log:'Add Spending',details:'Details',insights:'Advanced Insights',bills:'Bill Protection Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex Studio',savings:'Savings Goal Studio',precheck:'Purchase Pre-check',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data Center',preferences:'Presentation and Accessibility',future:'System Architecture',qa:'Device QA',performance:'Performance and Resilience',reset:'New Week',setup:'Plan'})[routeName]||'Home';
 }
 function announceRoute(routeName,focusMain=true){
   const announcer=document.getElementById('routeAnnouncer'),main=document.getElementById('app');
@@ -7282,10 +7322,11 @@ function announceRoute(routeName,focusMain=true){
   if(focusMain&&main)requestAnimationFrame(()=>{try{main.focus({preventScroll:true});}catch{main.focus();}});
 }
 async function render(){
+  const renderStarted=performance.now();
   closeAppSheet({restore:false});
   if(zenDisclosureVisibilityCleanup){zenDisclosureVisibilityCleanup();zenDisclosureVisibilityCleanup=null;}
   if(sceneMotionObserver){try{sceneMotionObserver.disconnect();}catch{}sceneMotionObserver=null;}
-  applyUiPrefs();bindSystemPreferenceListeners();bindMobileViewportController();
+  applyUiPrefs();applyRuntimePerformanceTier();bindSystemPreferenceListeners();bindMobileViewportController();bindLongTaskObserver();
   const r=route(),routeChanged=lastRenderedRoute!==null&&lastRenderedRoute!==r;
   const restoreScroll=historyTraversalPending?(routeScrollPositions.get(r)||0):0;
   if(r==='log')await renderLog();
@@ -7301,6 +7342,7 @@ async function render(){
   else if(r==='connections')await renderConnections();
   else if(r==='preferences')await renderPreferences();
   else if(r==='qa')await renderDeviceQA();
+  else if(r==='performance')await renderPerformance();
   else if(r==='future')await renderFutureLab();
   else if(r==='reset')await renderReset();
   else if(r==='setup')await renderSetup();
@@ -7312,6 +7354,7 @@ async function render(){
   announceRoute(r,routeChanged);
   lastRenderedRoute=r;
   historyTraversalPending=false;
+  recordRouteRender(r,renderStarted);
 }
 window.addEventListener('popstate',()=>{historyTraversalPending=true;});
 window.addEventListener('hashchange',()=>{
