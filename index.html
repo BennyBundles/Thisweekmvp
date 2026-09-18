@@ -7082,6 +7082,10 @@ function qaSummary(results){
   return {pass:results.filter(x=>x.status==='pass').length,warn:results.filter(x=>x.status==='warn').length,fail:results.filter(x=>x.status==='fail').length};
 }
 let lastRenderedRoute=null;
+const routeScrollPositions=new Map();
+let historyTraversalPending=false;
+try{history.scrollRestoration='manual';}catch{}
+
 function routeAccessibleName(routeName){
   return ({home:'Home',log:'Add Spending',details:'Details',insights:'Advanced Insights',bills:'Bill Protection Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex Studio',savings:'Savings Goal Studio',precheck:'Purchase Pre-check',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data Center',preferences:'Presentation and Accessibility',future:'System Architecture',qa:'Device QA',reset:'New Week',setup:'Plan'})[routeName]||'Home';
 }
@@ -7095,7 +7099,7 @@ async function render(){
   if(sceneMotionObserver){try{sceneMotionObserver.disconnect();}catch{}sceneMotionObserver=null;}
   applyUiPrefs();bindSystemPreferenceListeners();bindMobileViewportController();
   const r=route(),routeChanged=lastRenderedRoute!==null&&lastRenderedRoute!==r;
-  window.scrollTo({top:0,behavior:(effectiveUiPrefs().effectiveMotion==='reduced'||document.body.dataset.keyboard==='open')?'auto':'smooth'});
+  const restoreScroll=historyTraversalPending?(routeScrollPositions.get(r)||0):0;
   if(r==='log')await renderLog();
   else if(r==='details')await renderDetails();
   else if(r==='insights')await renderInsights();
@@ -7113,9 +7117,19 @@ async function render(){
   else if(r==='reset')await renderReset();
   else if(r==='setup')await renderSetup();
   else await renderHome();
-  requestAnimationFrame(()=>applyRouteEntryTransition(r));
+  requestAnimationFrame(()=>{
+    applyRouteEntryTransition(r);
+    window.scrollTo({top:restoreScroll,behavior:'auto'});
+  });
   announceRoute(r,routeChanged);
   lastRenderedRoute=r;
+  historyTraversalPending=false;
 }
-window.addEventListener('hashchange',render); render();
+window.addEventListener('popstate',()=>{historyTraversalPending=true;});
+window.addEventListener('hashchange',()=>{
+  if(lastRenderedRoute)routeScrollPositions.set(lastRenderedRoute,window.scrollY||0);
+  render();
+});
+window.addEventListener('pageshow',()=>{updateMobileViewportState();applyUiPrefs();});
+render();
 </script></body></html>
