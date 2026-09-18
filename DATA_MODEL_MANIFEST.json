@@ -1,0 +1,146 @@
+{
+  "schema": "thisweek.schema-manifest",
+  "schemaVersion": 1,
+  "coreSchemaVersion": 3,
+  "portableSchemaVersion": 1,
+  "modelVersion": "2026-09",
+  "currency": "USD",
+  "amountUnit": "cent",
+  "generatedFromPhase13Commit": "d1d87805acfb1083d45c19335db68ec99f231d62",
+  "entities": {
+    "users": {
+      "primaryKey": "id",
+      "foreignKeys": []
+    },
+    "payProfiles": {
+      "primaryKey": "id",
+      "foreignKeys": [
+        "userId -> users.id"
+      ]
+    },
+    "weekRules": {
+      "primaryKey": "id",
+      "foreignKeys": [
+        "userId -> users.id"
+      ]
+    },
+    "weeks": {
+      "primaryKey": "id",
+      "foreignKeys": [
+        "userId -> users.id"
+      ]
+    },
+    "categories": {
+      "primaryKey": "id",
+      "foreignKeys": [
+        "userId -> users.id"
+      ]
+    },
+    "weekCategoryBalances": {
+      "primaryKey": "id",
+      "foreignKeys": [
+        "weekId -> weeks.id",
+        "categoryId -> categories.id"
+      ]
+    },
+    "bills": {
+      "primaryKey": "id",
+      "foreignKeys": [
+        "userId -> users.id"
+      ]
+    },
+    "billContributions": {
+      "primaryKey": "id",
+      "foreignKeys": [
+        "weekId -> weeks.id",
+        "billId -> bills.id"
+      ]
+    },
+    "transactions": {
+      "primaryKey": "id",
+      "foreignKeys": [
+        "userId -> users.id",
+        "weekId -> weeks.id",
+        "categoryId -> categories.id"
+      ]
+    },
+    "savingsPolicies": {
+      "primaryKey": "id",
+      "foreignKeys": [
+        "userId -> users.id"
+      ]
+    },
+    "savingsGoals": {
+      "primaryKey": "id",
+      "foreignKeys": [
+        "userId -> users.id"
+      ]
+    },
+    "connectedAccounts": {
+      "primaryKey": "id",
+      "foreignKeys": []
+    },
+    "importSources": {
+      "primaryKey": "id",
+      "foreignKeys": []
+    },
+    "imports": {
+      "primaryKey": "id",
+      "foreignKeys": []
+    },
+    "importRecords": {
+      "primaryKey": "id",
+      "foreignKeys": [
+        "batchId -> imports.id"
+      ]
+    },
+    "reconciliations": {
+      "primaryKey": "id",
+      "foreignKeys": [
+        "importRecordId -> importRecords.id",
+        "categoryId -> categories.id"
+      ]
+    },
+    "preferences": {
+      "primaryKey": "id",
+      "foreignKeys": [
+        "userId -> users.id"
+      ]
+    }
+  },
+  "providerAdapterContract": {
+    "version": 1,
+    "requiredMethods": [
+      "listAccounts",
+      "fetchTransactions"
+    ],
+    "optionalMethods": [
+      "connect",
+      "refresh",
+      "disconnect"
+    ],
+    "capabilities": [
+      "transactions",
+      "pendingTransactions",
+      "balances",
+      "refresh",
+      "disconnect"
+    ],
+    "secretPolicy": "provider credentials and access tokens are server-only"
+  },
+  "backendSyncContract": {
+    "version": 1,
+    "currentClientMode": "snapshot_only",
+    "transport": "future_https_json",
+    "idempotency": "client-generated idempotency key required",
+    "futureRequirements": [
+      "server revision",
+      "record updatedAt/version",
+      "conflict detection",
+      "delete tombstones"
+    ],
+    "conflictPolicy": "never silently merge conflicting financial mutations",
+    "authentication": "future authenticated user-scoped server session",
+    "providerSecrets": "server_only"
+  }
+}
