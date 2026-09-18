@@ -6107,6 +6107,29 @@ function buildNormalizedDataModel(){
     id:x.id,userId,type:'lifestyle',name:x.name,active:x.active!==false,weeklyLimitCents:x.weeklyLimit||0,offsetCents:0
   }));
   const categories=[...living,...discretionary];
+  const categoryIds=new Set(categories.map(x=>x.id));
+  for(const week of state.weeks||[]){
+    for(const balance of week.balances||[]){
+      if(!balance?.categoryId||categoryIds.has(balance.categoryId))continue;
+      categories.push({
+        id:balance.categoryId,userId,
+        type:balance.categoryType==='LIVING'?'essential':'lifestyle',
+        name:'Archived category',active:false,weeklyLimitCents:0,offsetCents:0,
+        provenance:'historical_reference'
+      });
+      categoryIds.add(balance.categoryId);
+    }
+  }
+  for(const tx of state.transactions||[]){
+    if(!tx?.categoryId||categoryIds.has(tx.categoryId))continue;
+    categories.push({
+      id:tx.categoryId,userId,
+      type:tx.categoryType==='LIVING'?'essential':'lifestyle',
+      name:'Archived category',active:false,weeklyLimitCents:0,offsetCents:0,
+      provenance:'historical_reference'
+    });
+    categoryIds.add(tx.categoryId);
+  }
   const weeks=(state.weeks||[]).map(w=>({
     id:w.id,userId,startAt:w.start,endAt:w.end,status:w.status||'ON_TRACK',closed:!!w.closed,createdAt:w.createdAt||null,savingsPlannedCents:w.savingsAmount||0
   }));
@@ -6118,6 +6141,17 @@ function buildNormalizedDataModel(){
   const bills=(state.config?.bills||[]).map(b=>({
     id:b.id,userId,name:b.name,active:b.active!==false,amountCents:b.amount||0,frequency:b.frequency||null,dueDate:b.dueDate||null
   }));
+  const billIds=new Set(bills.map(x=>x.id));
+  for(const week of state.weeks||[]){
+    for(const allocation of week.billAllocations||[]){
+      if(!allocation?.billId||billIds.has(allocation.billId))continue;
+      bills.push({
+        id:allocation.billId,userId,name:'Archived bill',active:false,amountCents:0,frequency:null,dueDate:null,
+        provenance:'historical_reference'
+      });
+      billIds.add(allocation.billId);
+    }
+  }
   const billContributions=(state.weeks||[]).flatMap(w=>(w.billAllocations||[]).map(b=>({
     id:stableCompositeId('bill-week',w.id,b.billId),weekId:w.id,billId:b.billId,
     contributedCents:b.contributed||0,weeklyRequiredCents:b.weeklyRequired||0,requiredByTodayCents:b.requiredByToday||0,
@@ -6178,7 +6212,7 @@ function normalizedEntityCounts(model=buildNormalizedDataModel()){
   return Object.fromEntries(names.map(name=>[name,Array.isArray(model[name])?model[name].length:0]));
 }
 function buildPortableDataEnvelope(){
-  const model=buildNormalizedDataModel(),counts=normalizedEntityCounts(model);
+  const model=buildNormalizedDataModel(),counts=normalizedEntityCounts(model),integrity=normalizedIntegritySummary(model);
   return {
     exportSchema:'thisweek.portable',
     exportSchemaVersion:PORTABLE_DATA_SCHEMA_VERSION,
@@ -6188,18 +6222,86 @@ function buildPortableDataEnvelope(){
     source:{application:'This Week',runtime:'browser-local',currency:'USD',amountUnit:'cent'},
     providerAdapterContract:PROVIDER_ADAPTER_CONTRACT,
     entityManifest:NORMALIZED_ENTITY_MANIFEST,
+    integrity,
     counts,
     data:model
   };
 }
+function validateNormalizedDataModel(model){
+  const errors=[],warnings=[];
+  if(!model||typeof model!=='object')return {valid:false,errors:['Normalized model must be an object.'],warnings};
+  if(model.currency!=='USD')errors.push('Normalized model currency must be USD.');
+  if(model.amountUnit!=='cent')errors.push('Normalized model amount unit must be cent.');
+
+  const indexes={};
+  for(const [collection,meta] of Object.entries(NORMALIZED_ENTITY_MANIFEST)){
+    const rows=model[collection];
+    if(!Array.isArray(rows)){errors.push('Missing normalized collection: '+collection);continue;}
+    const ids=new Set();
+    for(const row of rows){
+      const id=row?.[meta.primaryKey];
+      if(id==null||id===''){errors.push(collection+' contains a record without '+meta.primaryKey+'.');continue;}
+      if(ids.has(String(id)))errors.push(collection+' contains duplicate id '+String(id)+'.');
+      ids.add(String(id));
+    }
+    indexes[collection]=ids;
+  }
+
+  for(const [collection,meta] of Object.entries(NORMALIZED_ENTITY_MANIFEST)){
+    const rows=Array.isArray(model[collection])?model[collection]:[];
+    for(const spec of meta.foreignKeys||[]){
+      const match=spec.match(/^([^ ]+) -> ([^.]+).([^ ]+)$/);
+      if(!match)continue;
+      const [,field,targetCollection]=match,targetIds=indexes[targetCollection]||new Set();
+      for(const row of rows){
+        const value=row?.[field];
+        if(value==null||value==='')continue;
+        if(!targetIds.has(String(value)))errors.push(collection+'.'+field+' references missing '+targetCollection+' id '+String(value)+'.');
+      }
+    }
+  }
+
+  const scanCents=(value,path='data')=>{
+    if(Array.isArray(value)){value.forEach((v,i)=>scanCents(v,path+'['+i+']'));return;}
+    if(!value||typeof value!=='object')return;
+    for(const [key,val] of Object.entries(value)){
+      const next=path+'.'+key;
+      if(key.endsWith('Cents')&&val!=null&&!Number.isInteger(val))errors.push(next+' must be an integer number of cents.');
+      else if(val&&typeof val==='object')scanCents(val,next);
+    }
+  };
+  scanCents(model);
+
+  for(const row of model.importRecords||[]){
+    if(!['outflow','inflow'].includes(row.direction))warnings.push('Import record '+row.id+' has an unfamiliar direction.');
+    if(!['pending','posted'].includes(row.postingStatus))warnings.push('Import record '+row.id+' has an unfamiliar posting status.');
+  }
+  for(const row of model.reconciliations||[]){
+    if(row.status!=='applied')warnings.push('Reconciliation '+row.id+' is not marked applied.');
+  }
+  const archivedCategories=(model.categories||[]).filter(x=>x.provenance==='historical_reference').length;
+  const archivedBills=(model.bills||[]).filter(x=>x.provenance==='historical_reference').length;
+  if(archivedCategories)warnings.push(archivedCategories+' archived category reference'+(archivedCategories===1?' was':'s were')+' preserved for historical relationships.');
+  if(archivedBills)warnings.push(archivedBills+' archived bill reference'+(archivedBills===1?' was':'s were')+' preserved for historical relationships.');
+  return {valid:errors.length===0,errors,warnings};
+}
+function normalizedIntegritySummary(model=buildNormalizedDataModel()){
+  const result=validateNormalizedDataModel(model);
+  return {valid:result.valid,errorCount:result.errors.length,warningCount:result.warnings.length,errors:result.errors.slice(0,20),warnings:result.warnings.slice(0,20)};
+}
+
 function validatePortableDataEnvelope(envelope){
-  const errors=[];
+  const errors=[],warnings=[];
   if(!envelope||typeof envelope!=='object')errors.push('Envelope must be an object.');
   if(envelope?.exportSchema!=='thisweek.portable')errors.push('Unexpected export schema.');
   if(envelope?.exportSchemaVersion!==PORTABLE_DATA_SCHEMA_VERSION)errors.push('Unsupported portable schema version.');
   const required=['users','weeks','categories','transactions','billContributions','savingsGoals','imports','reconciliations','preferences'];
   for(const name of required)if(!Array.isArray(envelope?.data?.[name]))errors.push('Missing entity collection: '+name);
-  return {valid:errors.length===0,errors};
+  if(envelope?.data&&typeof envelope.data==='object'){
+    const integrity=validateNormalizedDataModel(envelope.data);
+    errors.push(...integrity.errors);warnings.push(...integrity.warnings);
+  }
+  return {valid:errors.length===0,errors,warnings};
 }
 function serializePortableData(pretty=true){
   const envelope=buildPortableDataEnvelope(),check=validatePortableDataEnvelope(envelope);
@@ -6229,6 +6331,7 @@ function portableDataPreview(){
     coreSchemaVersion:envelope.coreSchemaVersion,
     modelVersion:envelope.modelVersion,
     counts:envelope.counts,
+    integrity:envelope.integrity,
     providerInterfaceVersion:CONNECTED_ACCOUNT_INTERFACE_VERSION,
     normalizedCollections:Object.keys(NORMALIZED_ENTITY_MANIFEST).length
   };
@@ -7296,7 +7399,7 @@ function renderDataModel(){
   shellMeta('Data','Data Model & Export','Inspect the normalized local model and create a portable JSON export','<a class="text-action" href="#details">Back</a>');nav('data-model');
   const userId=getStoredUserId();if(!userId){root.innerHTML='<div class="center"><div class="error">Build a plan first.</div><a class="btn btn-primary" href="#setup">Build Plan</a></div>';return;}
   try{
-    const envelope=buildPortableDataEnvelope(),counts=envelope.counts,check=validatePortableDataEnvelope(envelope),accounts=envelope.data.connectedAccounts||[];
+    const envelope=buildPortableDataEnvelope(),counts=envelope.counts,check=validatePortableDataEnvelope(envelope),integrity=envelope.integrity,accounts=envelope.data.connectedAccounts||[];
     const entityCards=[
       ['Users',counts.users,'Identity + timezone'],
       ['Weeks',counts.weeks,'Weekly planning cycles'],
@@ -7335,6 +7438,14 @@ function renderDataModel(){
         <div class="schema-row"><div><strong>${counts.importRecords} import record${counts.importRecords===1?'':'s'}</strong><span>${counts.reconciliations} explicitly reconciled · ${envelope.data.importSources.length} source${envelope.data.importSources.length===1?'':'s'} · external IDs and fingerprints retained where available.</span></div><span class="schema-badge">provenance</span></div>
       </section>
 
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Integrity checks</span><h2>Relationships validate before export</h2><div class="section-caption">The model checks collection IDs, foreign-key references, and integer-cent fields before serialization.</div></div></div>
+        <div class="backend-contract">
+          <div class="schema-row"><div><strong>Referential integrity</strong><span>${integrity.errorCount?integrity.errors.join(' | '):'No broken normalized relationships detected.'}</span></div><span class="schema-badge">${integrity.errorCount?integrity.errorCount+' error'+(integrity.errorCount===1?'':'s'):'valid'}</span></div>
+          <div class="schema-row"><div><strong>Historical identity preservation</strong><span>${integrity.warningCount?integrity.warnings.join(' | '):'No model warnings detected.'}</span></div><span class="schema-badge">${integrity.warningCount} warning${integrity.warningCount===1?'':'s'}</span></div>
+          <div class="schema-row"><div><strong>Serialization round trip</strong><span id="portableRoundTripCopy">Not run yet. This validates JSON serialization/deserialization without applying it to live state.</span></div><button class="data-mini-action" id="runPortableRoundTrip">Run test</button></div>
+        </div>
+      </section>
+
       <section class="section"><div class="section-head"><div><span class="section-kicker">Portable serialization</span><h2>Export a backend-ready snapshot</h2><div class="section-caption">The JSON contains local app data and normalized records. Treat the downloaded file as sensitive financial information.</div></div></div>
         <div class="export-actions"><button class="btn btn-primary" id="downloadPortableExport">Export JSON</button><button class="btn btn-secondary" id="previewPortableSchema">Preview schema summary</button></div>
         <pre class="schema-code" id="portableSchemaPreview" hidden></pre>
@@ -7346,6 +7457,18 @@ function renderDataModel(){
     document.getElementById('previewPortableSchema')?.addEventListener('click',()=>{
       const pre=document.getElementById('portableSchemaPreview');pre.hidden=!pre.hidden;
       if(!pre.hidden)pre.textContent=JSON.stringify(portableDataPreview(),null,2);
+    });
+    document.getElementById('runPortableRoundTrip')?.addEventListener('click',()=>{
+      const copy=document.getElementById('portableRoundTripCopy');
+      try{
+        const json=serializePortableData(false),parsed=deserializePortableData(json),roundTrip=validatePortableDataEnvelope(parsed);
+        if(!roundTrip.valid)throw new Error(roundTrip.errors.join(' '));
+        if(copy)copy.textContent='Passed · '+json.length.toLocaleString()+' serialized characters · '+parsed.counts.users+' user record · no live state changed.';
+        toast('Portable serialization round trip passed.');
+      }catch(e){
+        if(copy)copy.textContent='Failed · '+e.message;
+        toast('Portable serialization round trip failed.');
+      }
     });
   }catch(e){root.innerHTML=errBox(e.message);}
 }
