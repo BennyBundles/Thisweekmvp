@@ -4263,6 +4263,130 @@ body[data-density="compact"] .studio-copy{max-width:58ch}
   .decision-support-meta{grid-template-columns:1fr}
 }
 
+
+/* PHASE 9 — SCENARIOS + WEEKLY MEMORY + LEARNING LOOPS v21 */
+.memory-hero{
+  --memory-accent:#c4b5fd;
+  position:relative;overflow:hidden;padding:16px;border-radius:24px;
+  border:1px solid rgba(196,181,253,.10);
+  background:
+    radial-gradient(circle at 86% 12%,rgba(196,181,253,.08),transparent 30%),
+    linear-gradient(145deg,rgba(18,18,39,.96),rgba(6,16,29,.98));
+}
+.memory-hero h2{margin:5px 0 6px;font-size:1.14rem;letter-spacing:-.035em}
+.memory-hero p{margin:0;color:var(--text-soft);font-size:.68rem;line-height:1.45}
+.memory-overview{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:12px}
+.memory-stat{padding:9px;border-radius:14px;background:rgba(255,255,255,.018);border:1px solid rgba(177,206,221,.05)}
+.memory-stat small{display:block;font-size:.4rem;text-transform:uppercase;letter-spacing:.08em;color:#788f9a}
+.memory-stat strong{display:block;margin-top:3px;font-size:.67rem}
+.memory-trend{
+  margin-top:10px;padding:9px 10px;border-radius:14px;border:1px solid rgba(196,181,253,.07);
+  background:rgba(196,181,253,.025);color:#a99fc3;font-size:.55rem;line-height:1.42
+}
+
+.learning-loop{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.learning-card{
+  --learn-accent:#67e8f9;
+  min-height:118px;padding:11px;border-radius:18px;
+  border:1px solid color-mix(in srgb,var(--learn-accent) 11%,rgba(177,206,221,.05));
+  background:linear-gradient(145deg,color-mix(in srgb,var(--learn-accent) 4%,rgba(255,255,255,.016)),rgba(255,255,255,.01))
+}
+.learning-card small{display:block;font-size:.42rem;letter-spacing:.09em;text-transform:uppercase;color:#78919c}
+.learning-card strong{display:block;margin-top:5px;font-size:.69rem;line-height:1.25}
+.learning-card span{display:block;margin-top:5px;color:#859da7;font-size:.52rem;line-height:1.42}
+
+.memory-week-list{display:grid;gap:8px}
+.memory-week{
+  --memory-week-accent:#c4b5fd;
+  padding:12px;border-radius:19px;border:1px solid rgba(177,206,221,.065);
+  background:linear-gradient(145deg,rgba(196,181,253,.025),rgba(255,255,255,.012))
+}
+.memory-week.current{border-color:rgba(103,232,249,.11)}
+.memory-week-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.memory-week-head strong{display:block;font-size:.72rem}.memory-week-head span{display:block;margin-top:3px;font-size:.49rem;color:#7f99a4}
+.memory-status{padding:5px 7px;border-radius:999px;border:1px solid rgba(177,206,221,.06);background:rgba(255,255,255,.018);font-size:.43rem;color:#9db2bb;white-space:nowrap}
+.memory-fingerprint-v21{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin-top:9px}
+.memory-fp-lane{padding:7px;border-radius:11px;background:rgba(255,255,255,.015)}
+.memory-fp-lane small{display:block;font-size:.36rem;letter-spacing:.07em;text-transform:uppercase;color:#748b96}
+.memory-fp-lane strong{display:block;margin-top:3px;font-size:.54rem}
+.memory-fp-bar{height:5px;margin-top:5px;border-radius:999px;background:rgba(255,255,255,.035);overflow:hidden}
+.memory-fp-bar i{display:block;height:100%;width:var(--pct);border-radius:inherit;background:var(--bar,#c4b5fd)}
+.memory-week-meta{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.memory-week-chip{padding:5px 6px;border-radius:999px;border:1px solid rgba(177,206,221,.05);background:rgba(255,255,255,.012);font-size:.43rem;color:#849ba5}
+.memory-week-detail{margin-top:8px;border-top:1px solid rgba(177,206,221,.045);padding-top:7px}
+.memory-week-detail summary{cursor:pointer;list-style:none;font-size:.5rem;color:#93a8b1}.memory-week-detail summary::-webkit-details-marker{display:none}
+.memory-categories{display:grid;gap:5px;margin-top:7px}
+.memory-category{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:6px 7px;border-radius:10px;background:rgba(255,255,255,.012)}
+.memory-category strong{font-size:.52rem}.memory-category span{font-size:.44rem;color:#7f97a1}
+
+.scenario-lab{
+  --scenario-accent:#c4b5fd;
+  display:grid;gap:10px
+}
+.scenario-compare{
+  display:grid;grid-template-columns:minmax(0,1fr) 44px minmax(0,1fr);gap:8px;align-items:stretch
+}
+.scenario-side{
+  padding:13px;border-radius:21px;border:1px solid rgba(177,206,221,.06);background:rgba(255,255,255,.014)
+}
+.scenario-side.current{background:linear-gradient(145deg,rgba(103,232,249,.025),rgba(255,255,255,.012))}
+.scenario-side.preview{border-color:rgba(196,181,253,.11);background:linear-gradient(145deg,rgba(196,181,253,.045),rgba(255,255,255,.012))}
+.scenario-side small{display:block;font-size:.42rem;letter-spacing:.09em;text-transform:uppercase;color:#758f9a}
+.scenario-side strong{display:block;margin-top:4px;font-size:1.02rem;letter-spacing:-.035em}
+.scenario-side span{display:block;margin-top:4px;color:#849ba5;font-size:.5rem;line-height:1.35}
+.scenario-arrow{display:grid;place-items:center;color:#8c82a4;font-size:1.1rem}
+.scenario-delta{display:inline-flex!important;margin-top:7px!important;padding:5px 7px;border-radius:999px;background:rgba(255,255,255,.02);font-size:.45rem!important}
+.scenario-delta.positive{color:#a9d6c0}.scenario-delta.negative{color:#d7a5ae}
+
+.scenario-presets{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.scenario-presets::-webkit-scrollbar{display:none}
+.scenario-preset{
+  flex:0 0 auto;padding:7px 9px;border-radius:999px;border:1px solid rgba(196,181,253,.08);
+  background:rgba(196,181,253,.025);color:#aaa1c1;font:inherit;font-size:.49rem;cursor:pointer
+}
+.scenario-control-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.scenario-control{
+  padding:10px;border-radius:16px;border:1px solid rgba(177,206,221,.055);background:rgba(255,255,255,.012)
+}
+.scenario-control label{display:block;font-size:.46rem;color:#8da3ad;font-weight:800}
+.scenario-control span{display:block;margin-top:3px;font-size:.42rem;color:#6f8792;line-height:1.35}
+.scenario-control .amount-row{margin-top:7px}
+.scenario-impact-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.scenario-impact{
+  padding:9px;border-radius:14px;border:1px solid rgba(177,206,221,.05);background:rgba(255,255,255,.012)
+}
+.scenario-impact small{display:block;font-size:.39rem;letter-spacing:.07em;text-transform:uppercase;color:#748d98}
+.scenario-impact strong{display:block;margin-top:3px;font-size:.59rem}
+.scenario-ghost-flow{
+  position:relative;overflow:hidden;min-height:116px;border-radius:20px;border:1px solid rgba(196,181,253,.07);
+  background:linear-gradient(145deg,rgba(103,232,249,.018),rgba(196,181,253,.025))
+}
+.scenario-ghost-flow::before{
+  content:"";position:absolute;left:50%;top:50%;width:84px;height:84px;transform:translate(-50%,-50%);
+  border-radius:50%;border:1px solid rgba(196,181,253,.11);box-shadow:0 0 0 18px rgba(196,181,253,.015),0 0 30px rgba(196,181,253,.04)
+}
+.scenario-ghost-node{
+  position:absolute;padding:6px 8px;border-radius:11px;border:1px solid rgba(177,206,221,.055);
+  background:rgba(4,15,27,.68);font-size:.46rem;color:#8fa5af
+}
+.scenario-ghost-node strong{display:block;margin-top:2px;font-size:.56rem;color:#c8d7dc}
+.scenario-ghost-node.a{left:8px;top:9px}.scenario-ghost-node.b{right:8px;top:9px}.scenario-ghost-node.c{left:8px;bottom:9px}.scenario-ghost-node.d{right:8px;bottom:9px}
+.scenario-preview-only{
+  padding:9px 10px;border-radius:14px;border:1px solid rgba(246,215,132,.08);background:rgba(246,215,132,.025);color:#a99e79;font-size:.52rem;line-height:1.42
+}
+
+@media(max-width:430px){
+  .memory-overview{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .learning-loop{grid-template-columns:1fr}
+  .memory-fingerprint-v21{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .scenario-compare{grid-template-columns:1fr}.scenario-arrow{transform:rotate(90deg)}
+  .scenario-control-grid{grid-template-columns:1fr}
+  .scenario-impact-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:340px){
+  .scenario-impact-grid{grid-template-columns:1fr}
+}
+
 </style></head><body><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="zen-home">
@@ -5170,14 +5294,96 @@ function historySummaries(){
   const st=readState(); if(!st)return [];
   const living=Object.fromEntries((st.config.livingNeeds||[]).map(x=>[x.id,x.name]));
   const disc=Object.fromEntries((st.config.discretionary||[]).map(x=>[x.id,x.name]));
+  const billsById=Object.fromEntries((st.config.bills||[]).map(x=>[x.id,x.name]));
+  const txByWeek=(st.transactions||[]).reduce((m,t)=>{(m[t.weekId]||(m[t.weekId]=[])).push(t);return m;},{});
   return (st.weeks||[]).slice().sort((a,b)=>b.start.localeCompare(a.start)).map(w=>{
-    const ess=(w.balances||[]).filter(x=>x.categoryType==='LIVING');
-    const flex=(w.balances||[]).filter(x=>x.categoryType==='DISCRETIONARY');
+    const balances=w.balances||[],ess=balances.filter(x=>x.categoryType==='LIVING'),flex=balances.filter(x=>x.categoryType==='DISCRETIONARY'),bills=w.billAllocations||[];
     const sum=a=>a.reduce((n,x)=>n+Math.max(0,x.remaining||0),0);
+    const allocated=a=>a.reduce((n,x)=>n+Math.max(0,x.allocated||0),0);
     const spent=a=>a.reduce((n,x)=>n+Math.max(0,(x.allocated||0)-(x.remaining||0)),0);
-    const bills=(w.billAllocations||[]);
-    return {id:w.id,start:w.start,end:w.end,closed:!!w.closed,available:sum([...(w.balances||[])]),essLeft:sum(ess),flexLeft:sum(flex),spent:spent(w.balances||[]),protected:bills.reduce((n,x)=>n+Math.max(0,(x.requiredByToday||0)-(x.contributed||0)),0),savings:w.savingsAmount||0,alerts:bills.filter(x=>(x.contributed||0)<(x.requiredByToday||0)).length+(w.balances||[]).filter(x=>(x.remaining||0)<0).length};
+    const essAllocated=allocated(ess),flexAllocated=allocated(flex),essSpent=spent(ess),flexSpent=spent(flex),allAllocated=allocated(balances),allSpent=spent(balances);
+    const billGap=bills.reduce((n,x)=>n+Math.max(0,(x.requiredByToday||0)-(x.contributed||0)),0);
+    const billFunded=bills.reduce((n,x)=>n+Math.max(0,x.contributed||0),0);
+    const billTarget=bills.reduce((n,x)=>n+Math.max(0,x.weeklyRequired||0),0);
+    const billAlerts=bills.filter(x=>(x.contributed||0)<(x.requiredByToday||0)).length;
+    const overspentBalances=balances.filter(x=>(x.remaining||0)<0);
+    const cats=balances.map(x=>({
+      id:x.categoryId,type:x.categoryType,
+      name:x.categoryType==='LIVING'?(living[x.categoryId]||'Essential'):(disc[x.categoryId]||'Lifestyle'),
+      allocated:x.allocated||0,remaining:x.remaining||0,spent:Math.max(0,(x.allocated||0)-(x.remaining||0)),
+      usePct:(x.allocated||0)>0?Math.round(Math.max(0,(x.allocated-x.remaining))/x.allocated*100):0
+    })).sort((a,b)=>b.usePct-a.usePct);
+    return {
+      id:w.id,start:w.start,end:w.end,closed:!!w.closed,
+      available:sum(balances),essLeft:sum(ess),flexLeft:sum(flex),spent:allSpent,allocated:allAllocated,
+      essAllocated,flexAllocated,essSpent,flexSpent,
+      savings:w.savingsAmount||0,billGap,billFunded,billTarget,billAlerts,
+      overspent:overspentBalances.length,alerts:billAlerts+overspentBalances.length,
+      transactions:(txByWeek[w.id]||[]).length,categories:cats,
+      bills:bills.map(x=>({id:x.billId,name:billsById[x.billId]||'Bill',requiredByToday:x.requiredByToday||0,weeklyRequired:x.weeklyRequired||0,contributed:x.contributed||0}))
+    };
   });
+}
+function memoryTrend(weeks){
+  const closed=weeks.filter(w=>w.closed);
+  if(closed.length<2)return {label:'More completed weeks will make comparisons more useful.',delta:null};
+  const a=closed[0],b=closed[1],delta=a.available-b.available;
+  const alertDelta=a.alerts-b.alerts;
+  const parts=[];
+  if(delta===0)parts.push('Available-at-close was unchanged from the prior completed week');
+  else parts.push(`Available-at-close was ${formatCents(Math.abs(delta))} ${delta>0?'higher':'lower'} than the prior completed week`);
+  if(alertDelta===0)parts.push('attention-event count was unchanged');
+  else parts.push(`${Math.abs(alertDelta)} ${alertDelta>0?'more':'fewer'} attention event${Math.abs(alertDelta)===1?'':'s'} were recorded`);
+  return {label:parts.join('; ')+'.',delta,alertDelta};
+}
+function plannedSavingsStreak(weeks){
+  let n=0;for(const w of weeks.filter(x=>x.closed)){if((w.savings||0)>0)n++;else break;}return n;
+}
+function memoryLearningLoop(weeks){
+  const closed=weeks.filter(w=>w.closed),latest=closed[0]||weeks[0];
+  if(!latest)return {pattern:'No completed week is available yet.',positive:'Complete a week to establish the first comparison point.',adjustment:'No adjustment is suggested without a completed week.'};
+  const prior=closed[1]||null;
+  let pattern='This week is the current baseline for future comparisons.';
+  if(prior){
+    if(latest.alerts>prior.alerts)pattern='The latest completed week recorded more attention events than the previous completed week.';
+    else if(latest.alerts<prior.alerts)pattern='The latest completed week recorded fewer attention events than the previous completed week.';
+    else if(latest.spent>prior.spent)pattern='Recorded spending finished higher than the previous completed week while attention-event count stayed unchanged.';
+    else if(latest.spent<prior.spent)pattern='Recorded spending finished lower than the previous completed week while attention-event count stayed unchanged.';
+    else pattern='The latest two completed weeks finished with similar high-level planning signals.';
+  }
+  let positive='';
+  if(latest.billAlerts===0)positive='No bill-protection gap was recorded at the close of the latest completed week.';
+  else if(latest.overspent===0)positive='No spending category ended below zero in the latest completed week.';
+  else if((latest.savings||0)>0)positive='The latest completed week included a planned savings amount.';
+  else positive='The completed week is now preserved as a comparison baseline instead of being lost after rollover.';
+  let adjustment='No specific adjustment is suggested by this summary. Use Scenario Sandbox if you want to test a change without modifying the live plan.';
+  if(latest.billAlerts>0)adjustment='You could review whether the bill-protection timing or weekly bill allocation still matches the way those obligations arrive.';
+  else if(latest.categories.some(x=>x.type==='LIVING'&&x.remaining<0))adjustment='You could review whether the Essential lane allocations still match the practical spending recorded in the latest completed week.';
+  else if(latest.categories.some(x=>x.type==='DISCRETIONARY'&&x.remaining<0))adjustment='You could test a different Lifestyle allocation or soft-cap threshold in Scenario Sandbox before changing the real plan.';
+  return {pattern,positive,adjustment};
+}
+const SCENARIO_DRAFT_KEY='thisweek.scenarioDraft.v1';
+function readScenarioDraft(){
+  const base={income:0,bills:0,savings:0,essentials:0,lifestyle:0};
+  try{return {...base,...JSON.parse(sessionStorage.getItem(SCENARIO_DRAFT_KEY)||'{}')};}catch{return base;}
+}
+function writeScenarioDraft(v){try{sessionStorage.setItem(SCENARIO_DRAFT_KEY,JSON.stringify(v));}catch{}return v;}
+function clearScenarioDraft(){try{sessionStorage.removeItem(SCENARIO_DRAFT_KEY);}catch{}}
+function scenarioEstimate(p,draft){
+  const currentEss=(p.essentials||[]).reduce((n,x)=>n+Math.max(0,x.remaining||0),0);
+  const currentFlex=(p.forYou||[]).reduce((n,x)=>n+Math.max(0,x.remaining||0),0);
+  const currentSavings=p.savingsThisWeek||0;
+  const currentBillTarget=(p.bills||[]).reduce((n,x)=>n+Math.max(0,x.weeklyRequired||0),0);
+  const delta=Math.round((draft.income||0)-(draft.bills||0)-(draft.savings||0)-(draft.essentials||0)-(draft.lifestyle||0));
+  return {
+    delta,
+    available:Math.round((p.available||0)+delta),
+    essentials:Math.round(currentEss-(draft.essentials||0)),
+    lifestyle:Math.round(currentFlex-(draft.lifestyle||0)),
+    savings:Math.max(0,Math.round(currentSavings+(draft.savings||0))),
+    billTarget:Math.max(0,Math.round(currentBillTarget+(draft.bills||0))),
+    incomeChange:Math.round(draft.income||0)
+  };
 }
 function topNWithMore(items,max=3){return {shown:items.slice(0,max),more:Math.max(0,items.length-max)};}
 
@@ -5997,19 +6203,136 @@ async function renderPrecheck(){
 }
 
 function renderHistory(){
-  shellMeta('History','Weekly Memory','See how previous weeks were shaped','<a class="text-action" href="#details">Back</a>');nav('history');
-  const weeks=historySummaries(); if(!weeks.length){root.innerHTML='<div class="center"><div class="empty">No week history yet.</div></div>';return;}
-  const max=Math.max(1,...weeks.map(w=>Math.max(w.available,w.essLeft,w.flexLeft,w.savings,w.protected)));
-  root.innerHTML=`<div class="studio-stack"><section class="studio-hero" style="--studio-accent:#c4b5fd"><span class="studio-kicker">Visual memory</span><h2>Every week leaves a financial fingerprint.</h2><p class="studio-copy">Each fingerprint compares protection pressure, essentials, lifestyle room, and savings without turning history into a spreadsheet.</p></section><section class="history-track">${weeks.map(w=>`<div class="history-week"><div class="history-head"><strong>${weekWindow(w.start,w.end)}</strong><span>${w.closed?'Closed':'Current week'}</span></div><div class="history-fingerprint"><i style="--h:${Math.max(8,Math.round((w.protected/max)*44))}px"></i><i style="--h:${Math.max(8,Math.round((w.essLeft/max)*44))}px"></i><i style="--h:${Math.max(8,Math.round((w.flexLeft/max)*44))}px"></i><i style="--h:${Math.max(8,Math.round((w.savings/max)*44))}px"></i></div><div class="history-meta"><span>${formatCents(w.available)} available</span><span>${formatCents(w.spent)} spent</span><span>${formatCents(w.savings)} saved</span><span>${w.alerts} attention event${w.alerts===1?'':'s'}</span></div></div>`).join('')}</section></div>`;
+  shellMeta('History','Weekly Memory','Compare completed weeks without turning them into a spreadsheet','<a class="text-action" href="#details">Back</a>');nav('history');
+  const weeks=historySummaries();if(!weeks.length){root.innerHTML='<div class="center"><div class="empty">No week history yet.</div></div>';return;}
+  const closed=weeks.filter(w=>w.closed),trend=memoryTrend(weeks),learning=memoryLearningLoop(weeks),streak=plannedSavingsStreak(weeks);
+  const current=weeks.find(w=>!w.closed)||weeks[0],latestClosed=closed[0]||null;
+  const maxScale=Math.max(1,...weeks.map(w=>Math.max(w.essAllocated,w.flexAllocated,w.billTarget,w.savings||0,w.spent||0)));
+  root.innerHTML=`<div class="studio-stack">
+    <section class="memory-hero">
+      <span class="studio-kicker">Weekly Memory</span>
+      <h2>See the pattern, not just the numbers.</h2>
+      <p>History compares week-close planning states. It does not reconstruct bank balances or claim that past patterns predict future results.</p>
+      <div class="memory-overview">
+        <div class="memory-stat"><small>Weeks stored</small><strong>${weeks.length}</strong></div>
+        <div class="memory-stat"><small>Completed</small><strong>${closed.length}</strong></div>
+        <div class="memory-stat"><small>Planned savings streak</small><strong>${streak} week${streak===1?'':'s'}</strong></div>
+        <div class="memory-stat"><small>Latest closed alerts</small><strong>${latestClosed?latestClosed.alerts:'—'}</strong></div>
+      </div>
+      <div class="memory-trend">${escapeHtml(trend.label)}</div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><div><span class="section-kicker">Learning loop</span><h2>One pattern, one positive signal, one possible adjustment</h2><div class="section-caption">These are descriptive prompts derived from stored weeks, not financial advice.</div></div></div>
+      <div class="learning-loop">
+        <article class="learning-card" style="--learn-accent:#c4b5fd"><small>Pattern observed</small><strong>What changed</strong><span>${escapeHtml(learning.pattern)}</span></article>
+        <article class="learning-card" style="--learn-accent:#72d6aa"><small>Positive signal</small><strong>What held up</strong><span>${escapeHtml(learning.positive)}</span></article>
+        <article class="learning-card" style="--learn-accent:#f6d784"><small>Possible adjustment</small><strong>What you could test</strong><span>${escapeHtml(learning.adjustment)}</span></article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><div><span class="section-kicker">Visual fingerprints</span><h2>Week-by-week memory</h2><div class="section-caption">Bars show each week’s relative scale across Bills, Essentials, Lifestyle, and planned Savings.</div></div><a class="btn btn-secondary" href="#scenario">Test a what-if</a></div>
+      <div class="memory-week-list">
+        ${weeks.map(w=>{
+          const billPct=Math.min(100,Math.round((w.billTarget/maxScale)*100)),essPct=Math.min(100,Math.round((w.essAllocated/maxScale)*100)),flexPct=Math.min(100,Math.round((w.flexAllocated/maxScale)*100)),savePct=Math.min(100,Math.round(((w.savings||0)/maxScale)*100));
+          const topCats=(w.categories||[]).slice(0,5);
+          return`<article class="memory-week ${w.closed?'':'current'}">
+            <div class="memory-week-head"><div><strong>${weekWindow(w.start,w.end)}</strong><span>${formatCents(w.spent)} recorded spending · ${formatCents(w.available)} available at snapshot</span></div><span class="memory-status">${w.closed?'Completed':'Current'}</span></div>
+            <div class="memory-fingerprint-v21">
+              <div class="memory-fp-lane"><small>Bills target</small><strong>${formatCents(w.billTarget)}</strong><div class="memory-fp-bar"><i style="--pct:${billPct}%;--bar:#60a5fa"></i></div></div>
+              <div class="memory-fp-lane"><small>Essentials</small><strong>${formatCents(w.essAllocated)}</strong><div class="memory-fp-bar"><i style="--pct:${essPct}%;--bar:#6ee7b7"></i></div></div>
+              <div class="memory-fp-lane"><small>Lifestyle</small><strong>${formatCents(w.flexAllocated)}</strong><div class="memory-fp-bar"><i style="--pct:${flexPct}%;--bar:#f0a7d3"></i></div></div>
+              <div class="memory-fp-lane"><small>Planned savings</small><strong>${formatCents(w.savings||0)}</strong><div class="memory-fp-bar"><i style="--pct:${savePct}%;--bar:#f6d784"></i></div></div>
+            </div>
+            <div class="memory-week-meta">
+              <span class="memory-week-chip">${w.billAlerts} bill attention event${w.billAlerts===1?'':'s'}</span>
+              <span class="memory-week-chip">${w.overspent} lane${w.overspent===1?'':'s'} below zero</span>
+              <span class="memory-week-chip">${w.transactions} recorded transaction${w.transactions===1?'':'s'}</span>
+              <span class="memory-week-chip">${formatCents(w.billFunded)} marked protected</span>
+            </div>
+            <details class="memory-week-detail"><summary>Category close-out detail</summary><div class="memory-categories">${topCats.length?topCats.map(x=>`<div class="memory-category"><strong>${escapeHtml(x.name)}</strong><span>${x.usePct}% used · ${formatCents(x.remaining)} remaining</span></div>`).join(''):'<div class="empty">No category detail stored.</div>'}${(w.categories||[]).length>topCats.length?`<div class="memory-category"><strong>+${w.categories.length-topCats.length} more categories</strong><span>Stored in this week</span></div>`:''}</div></details>
+          </article>`;
+        }).join('')}
+      </div>
+    </section>
+
+    <div class="world-note">Weekly Memory reflects the app’s stored planning state at each week snapshot. It may not include activity that was never recorded or reconciled into This Week.</div>
+  </div>`;
 }
 
 async function renderScenario(){
-  shellMeta('Scenario','What-if Sandbox','Test changes without touching the live plan','<a class="text-action" href="#details">Back</a>');nav('scenario');
+  shellMeta('Scenario','What-if Sandbox','Compare a parallel plan without touching the live week','<a class="text-action" href="#details">Back</a>');nav('scenario');
   const userId=getStoredUserId();if(!userId){location.hash='setup';return;}
   try{
     const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);
-    root.innerHTML=`<div class="studio-stack"><section class="scenario-stage"><span class="studio-kicker">Parallel plan</span><h2 style="margin:6px 0">Change the assumptions, not the real week.</h2><p class="studio-copy">The sandbox estimates how selected changes could alter planning room. Nothing is saved unless you later edit the real Plan.</p><div class="scenario-controls"><div class="field-group"><label class="field-label">Income change</label><div class="amount-row"><span class="dollar">$</span><input id="scIncome" inputmode="decimal" placeholder="-200 or 200"></div></div><div class="field-group"><label class="field-label">Bill increase</label><div class="amount-row"><span class="dollar">$</span><input id="scBills" inputmode="decimal" placeholder="0.00"></div></div><div class="field-group"><label class="field-label">Extra savings</label><div class="amount-row"><span class="dollar">$</span><input id="scSavings" inputmode="decimal" placeholder="0.00"></div></div><div class="field-group"><label class="field-label">Lifestyle reduction</label><div class="amount-row"><span class="dollar">$</span><input id="scCut" inputmode="decimal" placeholder="0.00"></div></div></div><div class="scenario-output"><small>Scenario planning room</small><strong id="scOut">${formatCents(p.available)}</strong><p id="scCopy">Current Available Now is the starting point.</p></div><div class="action-row"><a class="btn btn-primary" href="#setup">Edit Real Plan</a><a class="btn btn-secondary" href="#home">Discard Scenario</a></div></section></div>`;
-    const ids=['scIncome','scBills','scSavings','scCut'];const update=()=>{const [income,bills,savings,cut]=ids.map(id=>(Number(document.getElementById(id).value)||0)*100);const out=p.available+income-bills-savings+cut;document.getElementById('scOut').textContent=formatCents(Math.round(out));document.getElementById('scCopy').textContent=`Compared with ${formatCents(p.available)} now, this scenario changes planning room by ${formatCents(Math.round(out-p.available))}. This is a preview, not a forecast of a bank balance.`;};ids.forEach(id=>document.getElementById(id).oninput=update);
+    let draft=readScenarioDraft();
+    const render=()=>{
+      const est=scenarioEstimate(p,draft),delta=est.available-(p.available||0),deltaClass=delta>0?'positive':delta<0?'negative':'';
+      root.innerHTML=`<div class="studio-stack scenario-lab">
+        <section class="studio-hero" style="--studio-accent:#c4b5fd"><span class="studio-kicker">Parallel plan</span><h2>Change assumptions without changing the real week.</h2><p class="studio-copy">Scenario Sandbox is a temporary planning model. It does not edit transactions, bills, savings goals, or the live Plan.</p></section>
+
+        <section class="scenario-compare">
+          <div class="scenario-side current"><small>Current plan</small><strong>${formatCents(p.available)}</strong><span>Current Available Now from the live weekly plan.</span></div>
+          <div class="scenario-arrow">→</div>
+          <div class="scenario-side preview"><small>Scenario planning room</small><strong>${formatCents(est.available)}</strong><span>Estimated planning room after the assumptions below.</span><span class="scenario-delta ${deltaClass}">${delta===0?'No change':(delta>0?'+':'-')+formatCents(Math.abs(delta))+' vs current'}</span></div>
+        </section>
+
+        <section class="section">
+          <div class="section-head"><div><span class="section-kicker">Quick scenarios</span><h2>Start with one variable or combine several</h2><div class="section-caption">Presets only fill the temporary sandbox.</div></div><button class="btn btn-secondary" id="clearScenario">Reset preview</button></div>
+          <div class="scenario-presets">
+            <button class="scenario-preset" data-preset="incomeDown">Income -$100</button>
+            <button class="scenario-preset" data-preset="billUp">Bills +$50</button>
+            <button class="scenario-preset" data-preset="saveUp">Savings +$25</button>
+            <button class="scenario-preset" data-preset="essUp">Essentials +$25</button>
+            <button class="scenario-preset" data-preset="flexCut">Lifestyle -$25</button>
+          </div>
+          <div class="scenario-control-grid" style="margin-top:9px">
+            <div class="scenario-control"><label>Income change</label><span>Positive means more weekly income; negative means less.</span><div class="amount-row"><span class="dollar">$</span><input id="scIncome" inputmode="decimal" value="${(draft.income/100)||''}" placeholder="-100 or 100"></div></div>
+            <div class="scenario-control"><label>Bill target change</label><span>Positive means higher weekly bill requirement; negative means lower.</span><div class="amount-row"><span class="dollar">$</span><input id="scBills" inputmode="decimal" value="${(draft.bills/100)||''}" placeholder="50 or -50"></div></div>
+            <div class="scenario-control"><label>Extra planned savings</label><span>Positive reserves more planning room for savings; negative reduces it.</span><div class="amount-row"><span class="dollar">$</span><input id="scSavings" inputmode="decimal" value="${(draft.savings/100)||''}" placeholder="25 or -25"></div></div>
+            <div class="scenario-control"><label>Essential allocation change</label><span>Positive means more Essential allocation; negative means a reduction.</span><div class="amount-row"><span class="dollar">$</span><input id="scEssentials" inputmode="decimal" value="${(draft.essentials/100)||''}" placeholder="25 or -25"></div></div>
+            <div class="scenario-control"><label>Lifestyle allocation change</label><span>Positive means more Lifestyle allocation; negative means a reduction.</span><div class="amount-row"><span class="dollar">$</span><input id="scLifestyle" inputmode="decimal" value="${(draft.lifestyle/100)||''}" placeholder="-25 or 25"></div></div>
+          </div>
+        </section>
+
+        <section class="scenario-ghost-flow" aria-label="Current versus scenario category summary">
+          <div class="scenario-ghost-node a">Bills target<strong>${formatCents((p.bills||[]).reduce((n,x)=>n+(x.weeklyRequired||0),0))} → ${formatCents(est.billTarget)}</strong></div>
+          <div class="scenario-ghost-node b">Essentials left<strong>${formatCents((p.essentials||[]).reduce((n,x)=>n+Math.max(0,x.remaining||0),0))} → ${formatCents(est.essentials)}</strong></div>
+          <div class="scenario-ghost-node c">Lifestyle left<strong>${formatCents((p.forYou||[]).reduce((n,x)=>n+Math.max(0,x.remaining||0),0))} → ${formatCents(est.lifestyle)}</strong></div>
+          <div class="scenario-ghost-node d">Planned savings<strong>${formatCents(p.savingsThisWeek||0)} → ${formatCents(est.savings)}</strong></div>
+        </section>
+
+        <section class="scenario-impact-grid">
+          <div class="scenario-impact"><small>Income effect</small><strong>${draft.income?(draft.income>0?'+':'-')+formatCents(Math.abs(draft.income)):'No change'}</strong></div>
+          <div class="scenario-impact"><small>Bill effect</small><strong>${draft.bills?(draft.bills>0?'+':'-')+formatCents(Math.abs(draft.bills)):'No change'}</strong></div>
+          <div class="scenario-impact"><small>Savings effect</small><strong>${draft.savings?(draft.savings>0?'+':'-')+formatCents(Math.abs(draft.savings)):'No change'}</strong></div>
+          <div class="scenario-impact"><small>Essentials effect</small><strong>${draft.essentials?(draft.essentials>0?'+':'-')+formatCents(Math.abs(draft.essentials)):'No change'}</strong></div>
+          <div class="scenario-impact"><small>Lifestyle effect</small><strong>${draft.lifestyle?(draft.lifestyle>0?'+':'-')+formatCents(Math.abs(draft.lifestyle)):'No change'}</strong></div>
+          <div class="scenario-impact"><small>Net room change</small><strong>${delta===0?'No change':(delta>0?'+':'-')+formatCents(Math.abs(delta))}</strong></div>
+        </section>
+
+        <div class="scenario-preview-only"><strong>Preview only.</strong> The scenario is an arithmetic planning comparison, not a forecast of a bank balance or future cash flow. Nothing here becomes real until you deliberately change the Plan or record actual activity.</div>
+        <div class="action-row"><a class="btn btn-primary" href="#setup">Open Plan to apply intentionally</a><a class="btn btn-secondary" href="#history">Compare with Weekly Memory</a></div>
+      </div>`;
+
+      const fields={scIncome:'income',scBills:'bills',scSavings:'savings',scEssentials:'essentials',scLifestyle:'lifestyle'};
+      Object.entries(fields).forEach(([id,key])=>{
+        const el=document.getElementById(id);if(!el)return;
+        el.addEventListener('input',e=>{
+          draft={...draft,[key]:Math.round((Number(e.target.value)||0)*100)};writeScenarioDraft(draft);
+          const estNext=scenarioEstimate(p,draft),nextDelta=estNext.available-(p.available||0);
+          document.querySelector('.scenario-side.preview strong').textContent=formatCents(estNext.available);
+          const deltaEl=document.querySelector('.scenario-delta');if(deltaEl){deltaEl.className='scenario-delta '+(nextDelta>0?'positive':nextDelta<0?'negative':'');deltaEl.textContent=nextDelta===0?'No change':(nextDelta>0?'+':'-')+formatCents(Math.abs(nextDelta))+' vs current';}
+        });
+        el.addEventListener('change',()=>render());
+      });
+      document.querySelectorAll('.scenario-preset').forEach(btn=>btn.onclick=()=>{
+        const presets={incomeDown:{income:-10000},billUp:{bills:5000},saveUp:{savings:2500},essUp:{essentials:2500},flexCut:{lifestyle:-2500}};
+        draft={...draft,...(presets[btn.dataset.preset]||{})};writeScenarioDraft(draft);render();
+      });
+      document.getElementById('clearScenario')?.addEventListener('click',()=>{draft={income:0,bills:0,savings:0,essentials:0,lifestyle:0};clearScenarioDraft();render();});
+    };render();
   }catch(e){root.innerHTML=errBox(e.message);}
 }
 
