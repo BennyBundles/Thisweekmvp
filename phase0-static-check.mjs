@@ -28,6 +28,11 @@ requireText('Phase 2 progressive disclosure','PHASE 2 — PROGRESSIVE DISCLOSURE
 requireText('Phase 2 disclosure controller','initZenDisclosure');
 requireText('Phase 2 attention override','phase2AttentionOverride');
 requireText('Phase 2 More menu','zen-more-menu');
+requireText('Phase 3 bottom-sheet system','PHASE 3 — BOTTOM SHEETS + LIGHTWEIGHT INSPECTION v15');
+requireText('Phase 3 shared sheet controller','openAppSheet');
+requireText('Phase 3 child inspection','phase3ChildSheetModel');
+requireText('Phase 3 command expansion','phase3CommandSheetModel');
+requireText('Phase 3 swipe dismiss','drag>72');
 requireText('CSV import','normalizeImportedRows');
 requireText('Transaction import endpoint','/transaction/import');
 requireText('Bill contribution endpoint','/bill/contribute');
