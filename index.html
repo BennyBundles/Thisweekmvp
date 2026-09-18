@@ -4688,6 +4688,33 @@ body[data-performance="lite"] .fin-event-token:nth-child(n+3){display:none!impor
 @media(max-width:430px){.perf-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:320px){.perf-row{grid-template-columns:1fr}.perf-value{text-align:left}}
 
+
+/* PHASE 13 — NORMALIZED DATA MODEL + BACKEND READINESS v25 */
+.data-model-hero{
+  padding:14px;border-radius:22px;border:1px solid rgba(114,214,170,.10);
+  background:linear-gradient(145deg,rgba(114,214,170,.045),rgba(103,232,249,.018),rgba(255,255,255,.01))
+}
+.data-model-hero h2{margin:5px 0 5px;font-size:1rem}
+.data-model-hero p{margin:0;color:var(--text-soft);font-size:.62rem;line-height:1.46}
+.data-model-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:10px}
+.data-model-stat{padding:9px;border-radius:13px;border:1px solid rgba(177,206,221,.05);background:rgba(255,255,255,.014)}
+.data-model-stat small{display:block;font-size:.38rem;text-transform:uppercase;letter-spacing:.08em;color:#728b96}
+.data-model-stat strong{display:block;margin-top:3px;font-size:.62rem}
+.entity-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.entity-card{padding:10px;border-radius:15px;border:1px solid rgba(177,206,221,.055);background:rgba(255,255,255,.012)}
+.entity-card small{display:block;font-size:.38rem;letter-spacing:.08em;text-transform:uppercase;color:#718b96}
+.entity-card strong{display:block;margin-top:4px;font-size:.72rem}
+.entity-card span{display:block;margin-top:3px;color:#7f98a3;font-size:.46rem;line-height:1.35}
+.schema-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:9px 10px;border-radius:14px;border:1px solid rgba(177,206,221,.05);background:rgba(255,255,255,.012)}
+.schema-row strong{display:block;font-size:.58rem}.schema-row span{display:block;margin-top:3px;color:#7e96a1;font-size:.47rem;line-height:1.4}
+.schema-badge{margin:0!important;padding:5px 7px;border-radius:999px;border:1px solid rgba(114,214,170,.09);background:rgba(114,214,170,.025);color:#9fc7b3!important;font-size:.44rem!important;white-space:nowrap}
+.schema-code{margin-top:7px;padding:10px;border-radius:14px;border:1px solid rgba(177,206,221,.05);background:#06121d;color:#94adb7;font:500 .47rem/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;overflow-wrap:anywhere}
+.export-actions{display:flex;gap:7px;flex-wrap:wrap}
+.backend-contract{display:grid;gap:6px}
+.backend-contract .schema-row{border-color:rgba(103,232,249,.06)}
+@media(max-width:430px){.data-model-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.entity-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:330px){.entity-grid,.data-model-summary{grid-template-columns:1fr}}
+
 </style></head><body><a class="skip-link" href="#app">Skip to main content</a><div class="sr-only" id="routeAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app" tabindex="-1">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="zen-home">
@@ -5299,7 +5326,7 @@ function obligationTimeline(p){
 }
 function route(){ return (location.hash.replace('#','')||'home').split('?')[0]; }
 function nav(routeName){
-  const detailRoutes=['insights','reset','bills','essentials','lifestyle','savings','history','scenario','connections','future','qa','performance'];
+  const detailRoutes=['insights','reset','bills','essentials','lifestyle','savings','history','scenario','connections','future','qa','performance','data-model'];
   const activeRoute=detailRoutes.includes(routeName)?'details':routeName==='setup'||routeName==='preferences'?'plan':routeName==='precheck'?'log':routeName;
   document.body.dataset.route=activeRoute;
   const index={home:0,log:1,details:2,plan:3}[activeRoute]??0;
@@ -6004,6 +6031,175 @@ function connectedDataSummary(){
     sourceName:d.sourceName
   };
 }
+const CONNECTED_ACCOUNT_INTERFACE_VERSION=1;
+const PROVIDER_ADAPTER_CONTRACT=Object.freeze({
+  interfaceVersion:CONNECTED_ACCOUNT_INTERFACE_VERSION,
+  accountFields:['id','provider','providerAccountId','displayName','status','capabilities','provenance'],
+  capabilities:['transactions','pendingTransactions','balances','refresh','disconnect'],
+  requiredAdapterMethods:['listAccounts','fetchTransactions'],
+  optionalAdapterMethods:['connect','refresh','disconnect'],
+  secretPolicy:'Provider credentials and access tokens must never be stored in this browser-local model.'
+});
+function normalizeConnectedAccount(account={}){
+  const capabilities=account.capabilities&&typeof account.capabilities==='object'?account.capabilities:{};
+  return {
+    id:String(account.id||uid()),
+    provider:String(account.provider||'unknown'),
+    providerAccountId:account.providerAccountId==null?null:String(account.providerAccountId),
+    displayName:String(account.displayName||account.name||'Connected source'),
+    status:['active','needs_reconnect','disconnected','reference_only'].includes(account.status)?account.status:'reference_only',
+    capabilities:{
+      transactions:!!capabilities.transactions,
+      pendingTransactions:!!capabilities.pendingTransactions,
+      balances:!!capabilities.balances,
+      refresh:!!capabilities.refresh,
+      disconnect:!!capabilities.disconnect
+    },
+    provenance:{
+      sourceType:String(account.provenance?.sourceType||'provider'),
+      importedAt:account.provenance?.importedAt||null,
+      firstSeenAt:account.provenance?.firstSeenAt||null
+    }
+  };
+}
+function providerAccountsFromConnectedData(data=readConnectedData()){
+  return (data.sources||[]).map(source=>normalizeConnectedAccount({
+    id:'source_'+source.id,
+    provider:'local-file',
+    providerAccountId:null,
+    displayName:source.name||'Imported file source',
+    status:'reference_only',
+    capabilities:{transactions:true,pendingTransactions:true,balances:false,refresh:false,disconnect:false},
+    provenance:{sourceType:'file_import',firstSeenAt:source.firstImportedAt||null,importedAt:data.importedAt||null}
+  }));
+}
+function stableCompositeId(prefix,...parts){
+  return [prefix,...parts.map(x=>String(x??'none').replace(/[^a-zA-Z0-9_-]/g,'_'))].join(':');
+}
+function buildNormalizedDataModel(){
+  const state=readState();
+  if(!state)throw new Error('Build a plan before creating a portable data model.');
+  const connected=readConnectedData(),goals=normalizeSavingsGoals(readSavingsGoals()),ui=readUiPrefs(),flexCaps=readFlexCaps(),recommendations=readRecommendationPrefs();
+  const userId=state.userId||getStoredUserId()||'local-user';
+  const living=(state.config?.livingNeeds||[]).map(x=>({
+    id:x.id,userId,type:'essential',name:x.name,active:x.active!==false,weeklyLimitCents:x.weeklyLimit||0,offsetCents:x.ebtOffset||0
+  }));
+  const discretionary=(state.config?.discretionary||[]).map(x=>({
+    id:x.id,userId,type:'lifestyle',name:x.name,active:x.active!==false,weeklyLimitCents:x.weeklyLimit||0,offsetCents:0
+  }));
+  const categories=[...living,...discretionary];
+  const weeks=(state.weeks||[]).map(w=>({
+    id:w.id,userId,startAt:w.start,endAt:w.end,status:w.status||'ON_TRACK',closed:!!w.closed,createdAt:w.createdAt||null,savingsPlannedCents:w.savingsAmount||0
+  }));
+  const weekCategoryBalances=(state.weeks||[]).flatMap(w=>(w.balances||[]).map(b=>({
+    id:stableCompositeId('week-category',w.id,b.categoryId),weekId:w.id,categoryId:b.categoryId,
+    categoryType:b.categoryType==='LIVING'?'essential':'lifestyle',
+    allocatedCents:b.allocated||0,spentCents:b.spent||0,remainingCents:b.remaining||0
+  })));
+  const bills=(state.config?.bills||[]).map(b=>({
+    id:b.id,userId,name:b.name,active:b.active!==false,amountCents:b.amount||0,frequency:b.frequency||null,dueDate:b.dueDate||null
+  }));
+  const billContributions=(state.weeks||[]).flatMap(w=>(w.billAllocations||[]).map(b=>({
+    id:stableCompositeId('bill-week',w.id,b.billId),weekId:w.id,billId:b.billId,
+    contributedCents:b.contributed||0,weeklyRequiredCents:b.weeklyRequired||0,requiredByTodayCents:b.requiredByToday||0,
+    status:b.status||'ON_TRACK',recordType:'weekly_aggregate_snapshot'
+  })));
+  const transactions=(state.transactions||[]).map(t=>({
+    id:t.id,userId,weekId:t.weekId,categoryId:t.categoryId,categoryType:t.categoryType==='LIVING'?'essential':'lifestyle',
+    amountCents:t.amount||0,note:t.note||null,source:t.source||'manual',importSource:t.importSource||null,
+    externalId:t.externalId||null,createdAt:t.createdAt||null
+  }));
+  const adjustments=(state.adjustments||[]).map(a=>({
+    id:a.id||stableCompositeId('adjustment',a.weekId,a.targetType,a.targetId,a.createdAt),weekId:a.weekId,
+    targetType:a.targetType,targetId:a.targetId||null,adjustedValueCents:a.adjustedValue||0,createdAt:a.createdAt||null
+  }));
+  const savingsGoals=goals.map(g=>({
+    id:g.id,userId,name:g.name,type:g.type||'goal',active:g.active!==false,priority:g.priority||'medium',
+    targetCents:g.target||0,currentCents:g.current||0
+  }));
+  const importSources=(connected.sources||[]).map(s=>({
+    id:s.id,name:s.name||'Import source',kind:'file_import',firstImportedAt:s.firstImportedAt||null
+  }));
+  const imports=(connected.batches||[]).map(b=>({
+    id:b.id,sourceName:b.sourceName||null,importedAt:b.importedAt||null,totalRows:b.total||0,
+    newCount:b.newCount||0,duplicateCount:b.duplicateCount||0,recordIds:[...(b.recordIds||[])],externalIds:[...(b.externalIds||[])]
+  }));
+  const importRecords=(connected.records||[]).map(r=>({
+    id:r.id,batchId:r.batchId||null,externalId:r.externalId||null,fingerprint:r.fingerprint||null,sourceName:r.source||null,
+    transactionAt:r.date||null,description:r.description||null,amountCents:r.amount||0,direction:r.direction||'outflow',
+    postingStatus:r.status||'posted',reviewState:r.reviewState||'unmatched',importedAt:r.importedAt||null
+  }));
+  const reconciliations=(connected.records||[]).filter(r=>r.reconciled||r.reviewState==='reconciled').map(r=>({
+    id:stableCompositeId('reconciliation',r.id),importRecordId:r.id,externalId:r.externalId||null,
+    categoryId:r.categoryId||null,categoryType:r.categoryType==='LIVING'?'essential':r.categoryType==='DISCRETIONARY'?'lifestyle':null,
+    categoryName:r.categoryName||null,reconciledAt:r.reconciledAt||null,status:'applied'
+  }));
+  const connectedAccounts=providerAccountsFromConnectedData(connected);
+  return {
+    modelVersion:NORMALIZED_MODEL_VERSION,
+    currency:'USD',
+    amountUnit:'cent',
+    users:[{id:userId,createdAt:state.createdAt||null,timezone:state.config?.timezone||null}],
+    payProfiles:[{id:stableCompositeId('pay-profile',userId),userId,...clone(state.config?.payProfile||{})}],
+    weekRules:[{id:stableCompositeId('week-rule',userId),userId,anchorDow:state.config?.weekAnchorDow??null,anchorMinutes:state.config?.weekAnchorMinutes??null,timezone:state.config?.timezone||null}],
+    savingsPolicies:[{id:stableCompositeId('savings-policy',userId),userId,active:!!state.config?.savingsRule?.active,weeklyAmountCents:state.config?.savingsRule?.weeklyAmount||0}],
+    usersPreferences:[{id:stableCompositeId('preferences',userId),userId,presentation:ui,lifestyleSoftCaps:flexCaps,recommendations}],
+    categories,weeks,weekCategoryBalances,bills,billContributions,transactions,adjustments,savingsGoals,
+    connectedAccounts,importSources,imports,importRecords,reconciliations,
+    connectedAudit:(connected.audit||[]).map(a=>({...a}))
+  };
+}
+function normalizedEntityCounts(model=buildNormalizedDataModel()){
+  const names=['users','weeks','categories','transactions','billContributions','savingsGoals','imports','importRecords','reconciliations','connectedAccounts'];
+  return Object.fromEntries(names.map(name=>[name,Array.isArray(model[name])?model[name].length:0]));
+}
+function buildPortableDataEnvelope(){
+  const model=buildNormalizedDataModel(),counts=normalizedEntityCounts(model);
+  return {
+    exportSchema:'thisweek.portable',
+    exportSchemaVersion:PORTABLE_DATA_SCHEMA_VERSION,
+    coreSchemaVersion:CORE_SCHEMA_VERSION,
+    modelVersion:NORMALIZED_MODEL_VERSION,
+    exportedAt:nowIso(),
+    source:{application:'This Week',runtime:'browser-local',currency:'USD',amountUnit:'cent'},
+    providerAdapterContract:PROVIDER_ADAPTER_CONTRACT,
+    counts,
+    data:model
+  };
+}
+function validatePortableDataEnvelope(envelope){
+  const errors=[];
+  if(!envelope||typeof envelope!=='object')errors.push('Envelope must be an object.');
+  if(envelope?.exportSchema!=='thisweek.portable')errors.push('Unexpected export schema.');
+  if(envelope?.exportSchemaVersion!==PORTABLE_DATA_SCHEMA_VERSION)errors.push('Unsupported portable schema version.');
+  const required=['users','weeks','categories','transactions','billContributions','savingsGoals','imports','reconciliations','usersPreferences'];
+  for(const name of required)if(!Array.isArray(envelope?.data?.[name]))errors.push('Missing entity collection: '+name);
+  return {valid:errors.length===0,errors};
+}
+function serializePortableData(pretty=true){
+  const envelope=buildPortableDataEnvelope(),check=validatePortableDataEnvelope(envelope);
+  if(!check.valid)throw new Error(check.errors.join(' '));
+  return JSON.stringify(envelope,null,pretty?2:0);
+}
+function downloadPortableDataExport(){
+  const json=serializePortableData(true),blob=new Blob([json],{type:'application/json;charset=utf-8'});
+  const date=new Date().toISOString().slice(0,10),url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='this-week-data-'+date+'.json';document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+  return json.length;
+}
+function portableDataPreview(){
+  const envelope=buildPortableDataEnvelope();
+  return {
+    exportSchema:envelope.exportSchema,
+    exportSchemaVersion:envelope.exportSchemaVersion,
+    coreSchemaVersion:envelope.coreSchemaVersion,
+    modelVersion:envelope.modelVersion,
+    counts:envelope.counts,
+    providerInterfaceVersion:CONNECTED_ACCOUNT_INTERFACE_VERSION
+  };
+}
+
 if(!window.__thisWeekStorageSyncBound){
   window.__thisWeekStorageSyncBound=true;
   window.addEventListener('storage',e=>{
@@ -6544,7 +6740,8 @@ async function renderDetails(){
           tool('preferences','Presentation','Motion, density & contrast','Control how much information and movement the interface shows.','Display','#f0a7d3',semanticIcon('settings')),
           tool('future','Architecture','System Architecture','See how adaptive constellations, choreography, and connected data fit together.','Guide','#9fc8d1',semanticIcon('architecture')),
           tool('qa','Quality','Device QA','Run mobile viewport, overflow, touch, storage, parser, and static-runtime checks on this device.','QA','#67e8f9',semanticIcon('settings')),
-          tool('performance','Runtime','Performance & Resilience','Inspect render timing, storage growth, adaptive tier, and derived-cache behavior.','Health','#72d6aa',semanticIcon('analysis'))
+          tool('performance','Runtime','Performance & Resilience','Inspect render timing, storage growth, adaptive tier, and derived-cache behavior.','Health','#72d6aa',semanticIcon('analysis')),
+          tool('data-model','Data model','Data Model & Export','Inspect normalized entities, provider contracts, provenance, and portable JSON serialization.','Schema','#9fc8d1',semanticIcon('architecture'))
         ].join('')
       }
     ];
@@ -7061,6 +7258,62 @@ async function renderConnections(){
   }catch(e){root.innerHTML=errBox(e.message);}
 }
 
+function renderDataModel(){
+  shellMeta('Data','Data Model & Export','Inspect the normalized local model and create a portable JSON export','<a class="text-action" href="#details">Back</a>');nav('data-model');
+  const userId=getStoredUserId();if(!userId){root.innerHTML='<div class="center"><div class="error">Build a plan first.</div><a class="btn btn-primary" href="#setup">Build Plan</a></div>';return;}
+  try{
+    const envelope=buildPortableDataEnvelope(),counts=envelope.counts,check=validatePortableDataEnvelope(envelope),accounts=envelope.data.connectedAccounts||[];
+    const entityCards=[
+      ['Users',counts.users,'Identity + timezone'],
+      ['Weeks',counts.weeks,'Weekly planning cycles'],
+      ['Categories',counts.categories,'Essential + Lifestyle lanes'],
+      ['Transactions',counts.transactions,'Manual + reconciled activity'],
+      ['Bill snapshots',counts.billContributions,'Weekly aggregate protection records'],
+      ['Savings goals',counts.savingsGoals,'Purpose-specific goal records'],
+      ['Imports',counts.imports,'Confirmed import batches'],
+      ['Import records',counts.importRecords,'Provenance-preserving activity'],
+      ['Reconciliations',counts.reconciliations,'Explicit applied matches']
+    ];
+    root.innerHTML=`<div class="studio-stack">
+      <section class="data-model-hero"><span class="studio-kicker">Phase 13 normalized model</span><h2>Browser-local today. Server-mappable later.</h2><p>The active app still runs locally at zero infrastructure cost. This normalized view separates entities and provenance so a future backend can ingest them without redefining the financial product.</p><div class="data-model-summary">
+        <div class="data-model-stat"><small>Core schema</small><strong>v${CORE_SCHEMA_VERSION}</strong></div>
+        <div class="data-model-stat"><small>Portable schema</small><strong>v${PORTABLE_DATA_SCHEMA_VERSION}</strong></div>
+        <div class="data-model-stat"><small>Model</small><strong>${escapeHtml(NORMALIZED_MODEL_VERSION)}</strong></div>
+        <div class="data-model-stat"><small>Validation</small><strong>${check.valid?'Valid':'Review'}</strong></div>
+      </div></section>
+
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Normalized entities</span><h2>Financial records have explicit boundaries</h2><div class="section-caption">Amounts in the portable model are integer cents and currency is explicitly USD.</div></div></div>
+        <div class="entity-grid">${entityCards.map(([name,count,copy])=>`<div class="entity-card"><small>${escapeHtml(name)}</small><strong>${count}</strong><span>${escapeHtml(copy)}</span></div>`).join('')}</div>
+      </section>
+
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Provider-neutral contract</span><h2>Connected accounts are adapters, not the planning model</h2><div class="section-caption">Future providers can implement the same interface without changing Available Now or reconciliation rules.</div></div></div>
+        <div class="backend-contract">
+          <div class="schema-row"><div><strong>Interface version</strong><span>Provider account records use one normalized capability contract.</span></div><span class="schema-badge">v${CONNECTED_ACCOUNT_INTERFACE_VERSION}</span></div>
+          <div class="schema-row"><div><strong>Required adapter methods</strong><span>${escapeHtml(PROVIDER_ADAPTER_CONTRACT.requiredAdapterMethods.join(' · '))}</span></div><span class="schema-badge">provider-neutral</span></div>
+          <div class="schema-row"><div><strong>Client secret policy</strong><span>${escapeHtml(PROVIDER_ADAPTER_CONTRACT.secretPolicy)}</span></div><span class="schema-badge">no secrets</span></div>
+          <div class="schema-row"><div><strong>Current account/source interfaces</strong><span>${accounts.length?accounts.map(a=>a.displayName+' · '+a.provider).join(' | '):'No connected-account interfaces. Local file import remains available.'}</span></div><span class="schema-badge">${accounts.length}</span></div>
+        </div>
+      </section>
+
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Import provenance</span><h2>Imported activity stays traceable</h2><div class="section-caption">Import records, import batches, source records, and reconciliation metadata remain separate collections.</div></div></div>
+        <div class="schema-row"><div><strong>${counts.importRecords} import record${counts.importRecords===1?'':'s'}</strong><span>${counts.reconciliations} explicitly reconciled · ${envelope.data.importSources.length} source${envelope.data.importSources.length===1?'':'s'} · external IDs and fingerprints retained where available.</span></div><span class="schema-badge">provenance</span></div>
+      </section>
+
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Portable serialization</span><h2>Export a backend-ready snapshot</h2><div class="section-caption">The JSON contains local app data and normalized records. Treat the downloaded file as sensitive financial information.</div></div></div>
+        <div class="export-actions"><button class="btn btn-primary" id="downloadPortableExport">Export JSON</button><button class="btn btn-secondary" id="previewPortableSchema">Preview schema summary</button></div>
+        <pre class="schema-code" id="portableSchemaPreview" hidden></pre>
+      </section>
+
+      <div class="world-note">Export is read-only. It does not upload data, create an account, change your plan, or enable multi-device sync. Future sync still requires a backend, authentication, conflict handling, and security/privacy work.</div>
+    </div>`;
+    document.getElementById('downloadPortableExport')?.addEventListener('click',()=>{const bytes=downloadPortableDataExport();toast('Portable JSON export created · '+(bytes/1024).toFixed(1)+' KB');});
+    document.getElementById('previewPortableSchema')?.addEventListener('click',()=>{
+      const pre=document.getElementById('portableSchemaPreview');pre.hidden=!pre.hidden;
+      if(!pre.hidden)pre.textContent=JSON.stringify(portableDataPreview(),null,2);
+    });
+  }catch(e){root.innerHTML=errBox(e.message);}
+}
+
 function renderPerformance(){
   shellMeta('Quality','Performance & Resilience','Inspect runtime cost, storage growth, caches, and fallback state','<a class="text-action" href="#details">Back</a>');nav('performance');
   const draw=()=>{
@@ -7361,7 +7614,7 @@ let historyTraversalPending=false;
 try{history.scrollRestoration='manual';}catch{}
 
 function routeAccessibleName(routeName){
-  return ({home:'Home',log:'Add Spending',details:'Details',insights:'Advanced Insights',bills:'Bill Protection Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex Studio',savings:'Savings Goal Studio',precheck:'Purchase Pre-check',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data Center',preferences:'Presentation and Accessibility',future:'System Architecture',qa:'Device QA',performance:'Performance and Resilience',reset:'New Week',setup:'Plan'})[routeName]||'Home';
+  return ({home:'Home',log:'Add Spending',details:'Details',insights:'Advanced Insights',bills:'Bill Protection Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex Studio',savings:'Savings Goal Studio',precheck:'Purchase Pre-check',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data Center',preferences:'Presentation and Accessibility',future:'System Architecture',qa:'Device QA',performance:'Performance and Resilience','data-model':'Data Model and Export',reset:'New Week',setup:'Plan'})[routeName]||'Home';
 }
 function announceRoute(routeName,focusMain=true){
   const announcer=document.getElementById('routeAnnouncer'),main=document.getElementById('app');
@@ -7390,6 +7643,7 @@ async function render(){
   else if(r==='preferences')await renderPreferences();
   else if(r==='qa')await renderDeviceQA();
   else if(r==='performance')await renderPerformance();
+  else if(r==='data-model')await renderDataModel();
   else if(r==='future')await renderFutureLab();
   else if(r==='reset')await renderReset();
   else if(r==='setup')await renderSetup();
