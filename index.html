@@ -5164,7 +5164,7 @@ function dueDateLabel(value){
   if(Number.isNaN(d.getTime()))return 'Recurring';
   return d.toLocaleDateString(undefined,{month:'short',day:'numeric'});
 }
-function homeSignals(p){
+function computeHomeSignals(p){
   const cats=[...(p.essentials||[]),...(p.forYou||[])];
   const totalAllocated=cats.reduce((n,x)=>n+Math.max(0,x.allocated||0),0);
   const totalSpent=cats.reduce((n,x)=>n+Math.max(0,(x.allocated||0)-(x.remaining||0)),0);
@@ -5204,6 +5204,13 @@ function homeSignals(p){
     :'The current week needs attention. Focus on the highlighted items first.';
   return {totalAllocated,totalSpent,weekProgress,spendPct,billTarget,billFunded,billCoverage,billAlerts,overspent,score,state,healthLabel,velocityLabel,velocityRatio,nextTitle,nextCopy,stateCopy};
 }
+const homeSignalsCache=new WeakMap();
+function homeSignals(p){
+  const cached=homeSignalsCache.get(p);if(cached){noteCache(true);return cached;}
+  noteCache(false);
+  const value=computeHomeSignals(p);homeSignalsCache.set(p,value);return value;
+}
+
 function obligationTimeline(p){
   const list=[...(p.bills||[])].sort((a,b)=>{
     const ad=a.dueDate?new Date(a.dueDate).getTime():Number.MAX_SAFE_INTEGER;
@@ -5457,7 +5464,7 @@ function recommendationSeverityLabel(severity){
   return severity==='critical'?'Critical planning signal':severity==='important'?'Important planning signal':severity==='info'?'Informational planning signal':'No urgent planning signal';
 }
 
-function simpleDecision(p){
+function computeSimpleDecision(p){
   const cats=[...(p.essentials||[]),...(p.forYou||[])];
   const behind=(p.bills||[]).filter(b=>b.status!=='ON_TRACK'||(b.requiredByToday||0)>(b.contributed||0));
   const overspent=cats.filter(x=>(x.remaining||0)<0);
@@ -5480,6 +5487,13 @@ function simpleDecision(p){
     }
   }
   return {behind,overspent,essentialsLeft,lifestyleLeft,attention,next};
+}
+
+const simpleDecisionCache=new WeakMap();
+function simpleDecision(p){
+  const cached=simpleDecisionCache.get(p);if(cached){noteCache(true);return cached;}
+  noteCache(false);
+  const value=computeSimpleDecision(p);simpleDecisionCache.set(p,value);return value;
 }
 
 function compactHomeCommand(p,d){
@@ -5589,12 +5603,20 @@ function bindSystemPreferenceListeners(){
     motion.addEventListener?.('change',update);contrast.addEventListener?.('change',update);
   }catch{}
 }
-function weekTimeState(p){
+function computeWeekTimeState(p){
   const s=new Date(p.week.start).getTime(),e=new Date(p.week.end).getTime(),n=Date.now();
   const pct=Math.max(0,Math.min(100,Math.round((n-s)/Math.max(1,e-s)*100)));
   const days=Math.max(0,Math.ceil((e-n)/86400000));
   return {pct,days,label:days===0?'Rollover due':days===1?'1 day left':days+' days left'};
 }
+const weekTimeCache=new WeakMap();
+function weekTimeState(p){
+  const bucket=Math.floor(Date.now()/60000),cached=weekTimeCache.get(p);
+  if(cached&&cached.bucket===bucket){noteCache(true);return cached.value;}
+  noteCache(false);
+  const value=computeWeekTimeState(p);weekTimeCache.set(p,{bucket,value});return value;
+}
+
 function recentWeekTransaction(weekId){
   const st=readState(); if(!st)return null;
   const tx=(st.transactions||[]).filter(x=>x.weekId===weekId).sort((a,b)=>b.createdAt.localeCompare(a.createdAt))[0];
@@ -5680,7 +5702,7 @@ function writeSavingsGoals(goals){
   savingsGoalsCache=clone(goals);savingsGoalsCacheRevision=runtimePerf.revision;
   safeLocalStorageSet(SAVINGS_GOALS_KEY,JSON.stringify(goals));return goals;
 }
-function historySummaries(){
+function computeHistorySummaries(){
   const st=readState(); if(!st)return [];
   const living=Object.fromEntries((st.config.livingNeeds||[]).map(x=>[x.id,x.name]));
   const disc=Object.fromEntries((st.config.discretionary||[]).map(x=>[x.id,x.name]));
@@ -5714,6 +5736,13 @@ function historySummaries(){
     };
   });
 }
+let historySummaryCache={revision:-1,data:null};
+function historySummaries(){
+  if(historySummaryCache.data&&historySummaryCache.revision===runtimePerf.revision){noteCache(true);return historySummaryCache.data;}
+  noteCache(false);
+  const data=computeHistorySummaries();historySummaryCache={revision:runtimePerf.revision,data};return data;
+}
+
 function memoryTrend(weeks){
   const closed=weeks.filter(w=>w.closed);
   if(closed.length<2)return {label:'More completed weeks will make comparisons more useful.',delta:null};
