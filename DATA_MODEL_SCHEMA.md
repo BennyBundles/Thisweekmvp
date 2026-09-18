@@ -412,3 +412,41 @@ A future server migration still requires:
 - server-side validation
 
 Those concerns are not simulated in the current browser-only implementation.
+
+
+## Integrity validation
+
+The portable model is checked by `validateNormalizedDataModel()`.
+
+Current validation covers:
+
+- required normalized collections;
+- unique primary keys within each collection;
+- manifest-defined foreign-key references;
+- integer values for fields ending in `Cents`;
+- basic imported-record state consistency;
+- reconciliation state consistency.
+
+The portable envelope validator incorporates this integrity result.
+
+## Historical references
+
+Current Plan configuration is not assumed to contain every identity referenced by historical data.
+
+When older weeks or transactions refer to a category that has since been removed from current Plan configuration, export preserves the ID as an inactive `Archived category` with `historical_reference` provenance.
+
+The same approach applies to historical bill allocations through `Archived bill` references.
+
+This allows historical foreign keys to remain valid without reactivating deleted configuration items or fabricating historical amounts.
+
+## Round-trip validation
+
+`serializePortableData()` produces the JSON representation.
+
+`deserializePortableData()` parses and validates that representation without applying it.
+
+The in-app round-trip test confirms:
+
+`normalized model -> portable JSON -> parsed envelope -> validation`
+
+This is a serialization compatibility test, not a restore/sync operation.
