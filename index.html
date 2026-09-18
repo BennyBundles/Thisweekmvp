@@ -3865,6 +3865,105 @@ body[data-density="compact"] .studio-copy{max-width:58ch}
   .fin-event-caption,.local-confirm,.zen-zone.event-confirm,.zen-core.event-confirm,.zen-scene.week-rebuild{animation:none!important}
 }
 
+
+/* PHASE 5 — DETAILS SYSTEM MAP v17 */
+.system-map-shell{display:grid;gap:12px}
+.system-map-hero{
+  position:relative;overflow:hidden;padding:17px;border-radius:26px;
+  border:1px solid rgba(177,206,221,.09);
+  background:
+    radial-gradient(circle at 88% 10%,rgba(103,232,249,.07),transparent 28%),
+    linear-gradient(145deg,rgba(8,24,38,.98),rgba(4,15,27,.99));
+  box-shadow:0 20px 46px rgba(0,0,0,.22);
+}
+.system-map-hero::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.010) 1px,transparent 1px);
+  background-size:22px 22px;mask-image:linear-gradient(to bottom,#000,transparent 82%)
+}
+.system-map-hero>*{position:relative;z-index:1}
+.system-map-kicker{font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:#9fc9d2;font-weight:850}
+.system-map-hero h2{margin:5px 0 5px;font-size:1.25rem;letter-spacing:-.04em}
+.system-map-hero p{margin:0;color:var(--text-soft);font-size:.72rem;line-height:1.45;max-width:62ch}
+.system-map-overview{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:14px}
+.system-map-stat{
+  padding:9px 10px;border-radius:15px;border:1px solid rgba(177,206,221,.065);background:rgba(255,255,255,.018)
+}
+.system-map-stat small{display:block;font-size:.44rem;letter-spacing:.09em;text-transform:uppercase;color:#7e98a3}
+.system-map-stat strong{display:block;margin-top:3px;font-size:.76rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.system-map-search{
+  display:grid;grid-template-columns:30px minmax(0,1fr) auto;align-items:center;gap:7px;
+  margin-top:11px;padding:6px 7px;border-radius:15px;border:1px solid rgba(177,206,221,.075);
+  background:rgba(255,255,255,.022)
+}
+.system-map-search svg{width:15px;height:15px;justify-self:center}.system-map-search svg *{stroke:#82a0ac;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.system-map-search input{min-width:0;border:0;outline:0;background:transparent;color:#e8f5f8;font:inherit;font-size:.67rem;padding:7px 0}
+.system-map-search input::placeholder{color:#6f8a95}
+.system-map-search span{padding:6px 8px;border-radius:10px;background:rgba(255,255,255,.025);color:#7f98a3;font-size:.48rem;white-space:nowrap}
+
+.system-map-groups{display:grid;gap:8px}
+.system-group{
+  overflow:hidden;border-radius:20px;border:1px solid rgba(177,206,221,.075);
+  background:linear-gradient(145deg,rgba(8,23,35,.88),rgba(5,17,28,.93))
+}
+.system-group[open]{border-color:rgba(177,206,221,.105)}
+.system-group>summary{
+  list-style:none;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;
+  padding:13px 14px;cursor:pointer;user-select:none
+}
+.system-group>summary::-webkit-details-marker{display:none}
+.system-group-summary small{display:block;font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:#8098a4}
+.system-group-summary strong{display:block;margin-top:3px;font-size:.82rem}
+.system-group-summary span{display:block;margin-top:3px;font-size:.56rem;line-height:1.35;color:#8fa5ae}
+.system-group-toggle{
+  width:28px;height:28px;border-radius:10px;display:grid;place-items:center;
+  border:1px solid rgba(177,206,221,.06);background:rgba(255,255,255,.02);color:#94adb7;
+  transition:transform var(--motion-fast) var(--ease-soft)
+}
+.system-group[open] .system-group-toggle{transform:rotate(45deg)}
+.system-group-body{padding:0 10px 10px}
+.system-tool-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.system-tool{
+  --tool-accent:#67e8f9;
+  min-height:82px;display:grid;grid-template-columns:38px minmax(0,1fr) auto;gap:8px;align-items:center;
+  padding:10px;border-radius:16px;border:1px solid rgba(177,206,221,.055);
+  background:linear-gradient(145deg,color-mix(in srgb,var(--tool-accent) 4%,rgba(255,255,255,.018)),rgba(255,255,255,.012));
+  color:var(--text);text-decoration:none;transition:transform var(--motion-fast) var(--ease-spring),border-color var(--motion-fast) ease,background var(--motion-fast) ease
+}
+.system-tool:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--tool-accent) 18%,rgba(177,206,221,.06));background:linear-gradient(145deg,color-mix(in srgb,var(--tool-accent) 7%,rgba(255,255,255,.02)),rgba(255,255,255,.016))}
+.system-tool[hidden]{display:none}
+.system-tool-icon{
+  width:38px;height:38px;border-radius:13px;display:grid;place-items:center;
+  background:linear-gradient(145deg,color-mix(in srgb,var(--tool-accent) 74%,#fff),var(--tool-accent));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.38),0 8px 17px rgba(0,0,0,.16)
+}
+.system-tool-icon svg{width:20px;height:20px}.system-tool-icon svg *{stroke:#06111d;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.system-tool-copy{min-width:0}
+.system-tool-copy small{display:block;font-size:.43rem;letter-spacing:.09em;text-transform:uppercase;color:#829aa5}
+.system-tool-copy strong{display:block;margin-top:3px;font-size:.69rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.system-tool-copy span{display:block;margin-top:3px;font-size:.51rem;line-height:1.3;color:#849ca6}
+.system-tool-arrow{width:25px;height:25px;border-radius:9px;display:grid;place-items:center;background:rgba(255,255,255,.02);color:#7e99a4;font-size:.77rem}
+.system-map-empty{
+  display:none;padding:17px;text-align:center;border-radius:18px;border:1px dashed rgba(177,206,221,.08);color:#819aa5;font-size:.64rem
+}
+.system-map-empty.show{display:block}
+.system-map-footnote{
+  display:flex;align-items:flex-start;gap:8px;padding:10px 11px;border-radius:16px;
+  border:1px solid rgba(177,206,221,.055);background:rgba(255,255,255,.012);
+  color:#7e97a2;font-size:.56rem;line-height:1.4
+}
+.system-map-footnote i{width:7px;height:7px;flex:0 0 auto;margin-top:4px;border-radius:50%;background:#67e8f9;box-shadow:0 0 8px rgba(103,232,249,.28)}
+
+@media(max-width:430px){
+  .system-map-hero{padding:14px;border-radius:22px}
+  .system-map-overview{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .system-tool-grid{grid-template-columns:1fr}
+  .system-tool{min-height:72px}
+}
+@media(max-width:360px){
+  .system-map-search span{display:none}
+}
+
 </style></head><body><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="zen-home">
@@ -4983,48 +5082,99 @@ async function renderHome(){
 }
 
 async function renderDetails(){
-  shellMeta('Details','Financial Anatomy','Open one layer at a time and follow how the week is structured','<a class="text-action" href="#insights">Insights</a>');
+  shellMeta('Details','System Map','Choose the layer you want without loading every tool onto Home','<a class="text-action" href="#home">Home</a>');
   nav('details');
   const userId=getStoredUserId();
   if(!userId){root.innerHTML='<div class="center"><div class="error">Build a plan first.</div><a class="btn btn-primary" href="#setup">Build Plan</a></div>';return;}
   try{
     const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);
-    const st=detailBudgetStats(p);
-    const sections={
-      essentials:{title:'Core spending lanes',copy:'Your practical weekly needs and the money still available inside them.',html:p.essentials.length?p.essentials.map(categoryRow).join(''):'<div class="empty">No essentials configured.</div>'},
-      lifestyle:{title:'Flexible spending',copy:'Optional spending lanes that can expand or contract around your week.',html:p.forYou.length?p.forYou.map(categoryRow).join(''):'<div class="empty">No flexible categories configured.</div>'},
-      bills:{title:'Protected obligations',copy:'Required bill funding and the protection structure underneath the week.',html:p.bills.length?p.bills.map(billRow).join(''):'<div class="empty">No bills configured.</div>'}
-    };
-    root.innerHTML=`<div class="anatomy-stack">
-      <section class="anatomy-stage">
-        <div class="anatomy-head"><small>Financial anatomy</small><strong>Follow the weekly structure.</strong><span>Tap a branch to open only that layer.</span></div>
-        <div class="anatomy-spine"></div>
-        <button class="anatomy-node left n1 active" type="button" data-section="essentials"><small>Essentials</small><strong>${formatCents(p.essentials.reduce((n,x)=>n+Math.max(0,x.remaining||0),0))}</strong><span>Core needs</span></button>
-        <button class="anatomy-node right n2" type="button" data-section="lifestyle"><small>Lifestyle</small><strong>${formatCents(p.forYou.reduce((n,x)=>n+Math.max(0,x.remaining||0),0))}</strong><span>Flexible lanes</span></button>
-        <button class="anatomy-node left n3" type="button" data-section="bills"><small>Protected</small><strong>${formatCents(p.protected)}</strong><span>Required bills</span></button>
-        <div class="anatomy-core"><div><small>Available</small><strong>${formatCents(p.available)}</strong><span>Weekly center</span></div></div>
+    const st=detailBudgetStats(p),signals=homeSignals(p),connected=connectedDataSummary(),time=weekTimeState(p);
+    const savings=readSavingsGoals(),attentionBills=(p.bills||[]).filter(b=>b.status!=='ON_TRACK'||(b.requiredByToday||0)>(b.contributed||0)).length;
+    const overspent=[...(p.essentials||[]),...(p.forYou||[])].filter(x=>(x.remaining||0)<0).length;
+
+    const tool=(route,kicker,title,copy,badge,accent,icon)=>`<a class="system-tool" href="#${route}" data-tool-search="${escapeHtml((kicker+' '+title+' '+copy+' '+badge).toLowerCase())}" style="--tool-accent:${accent}"><span class="system-tool-icon">${icon}</span><span class="system-tool-copy"><small>${escapeHtml(kicker)}</small><strong>${escapeHtml(title)}</strong><span>${escapeHtml(copy)}</span></span><span class="system-tool-arrow">›</span></a>`;
+
+    const groups=[
+      {
+        id:'current',eyebrow:'Current week',title:'What is happening now',copy:'Inspect the active week, its four money worlds, and any cycle action.',open:true,
+        html:[
+          tool('bills','Bills',attentionBills?attentionBills+' need attention':'Protected','Fund and time required obligations.',attentionBills?'Attention':'Current','#60a5fa',sceneIcon('bills')),
+          tool('essentials','Essentials',formatCents(p.essentials.reduce((n,x)=>n+Math.max(0,x.remaining||0),0))+' left','See need-based runway and remaining-week coverage.','Runway','#6ee7b7',sceneIcon('essentials')),
+          tool('lifestyle','Lifestyle',formatCents(p.forYou.reduce((n,x)=>n+Math.max(0,x.remaining||0),0))+' left','Inspect flexible-spending pace and room.','Flex','#f0a7d3',sceneIcon('lifestyle')),
+          tool('savings','Savings',formatCents(p.savingsThisWeek||0)+' this week','Inspect purpose-specific goals and progress.','Goals','#f6d784',sceneIcon('savings')),
+          tool('reset','Cycle',time.label,'Close the current cycle only when you are ready.','New week','#c4b5fd',semanticIcon('refresh'))
+        ].join('')
+      },
+      {
+        id:'planning',eyebrow:'Planning tools',title:'Decide before you act',copy:'Use simulations and focused studios when a decision needs more than a glance.',
+        html:[
+          tool('precheck','Purchase pre-check','Can I Spend This?','Preview a purchase without recording it.','Simulate','#67e8f9',semanticIcon('shopping')),
+          tool('scenario','What-if','Scenario Sandbox','Test income, bill, savings, and lifestyle changes without touching the live plan.','What-if','#c4b5fd',semanticIcon('goal')),
+          tool('log','Transaction','Add Spending','Record a purchase into the correct weekly lane.','Action','#72d6aa',semanticIcon('purchase'))
+        ].join('')
+      },
+      {
+        id:'data',eyebrow:'Data & history',title:'Understand what changed',copy:'Reconcile outside activity, review past weeks, and inspect deeper signals.',
+        html:[
+          tool('connections','Connected data',connected.unreconciled?connected.unreconciled+' to review':'No review queue','Import and reconcile outside transaction data.','Data','#67e8f9',semanticIcon('link')),
+          tool('history','History','Weekly Memory','See previous weeks as visual financial fingerprints.','History','#a78bfa',semanticIcon('history')),
+          tool('insights','Analysis',signals.healthLabel,'Open pace, coverage, health, and explainability tools.','Insights','#38bdf8',semanticIcon('analysis'))
+        ].join('')
+      },
+      {
+        id:'settings',eyebrow:'System & settings',title:'Control how the app works',copy:'Change the plan, presentation, or inspect the architecture without altering Home.',
+        html:[
+          tool('setup','Plan','Edit weekly structure','Change pay, bills, categories, savings, and week rhythm.','Plan','#72d6aa',semanticIcon('plan')),
+          tool('preferences','Presentation','Motion, density & contrast','Control how much information and movement the interface shows.','Display','#f0a7d3',semanticIcon('settings')),
+          tool('future','Architecture','System Architecture','See how adaptive constellations, choreography, and connected data fit together.','Guide','#9fc8d1',semanticIcon('architecture'))
+        ].join('')
+      }
+    ];
+
+    root.innerHTML=`<div class="system-map-shell">
+      <section class="system-map-hero">
+        <span class="system-map-kicker">Details = map, not dashboard</span>
+        <h2>Everything advanced has a predictable place.</h2>
+        <p>Home stays compact. Details organizes the deeper system. Studios handle focused work.</p>
+        <div class="system-map-overview">
+          <div class="system-map-stat"><small>Available</small><strong>${formatCents(p.available)}</strong></div>
+          <div class="system-map-stat"><small>Spent</small><strong>${formatCents(st.spent)}</strong></div>
+          <div class="system-map-stat"><small>Protected</small><strong>${formatCents(p.protected)}</strong></div>
+          <div class="system-map-stat"><small>Savings</small><strong>${formatCents(p.savingsThisWeek||0)}</strong></div>
+        </div>
+        <label class="system-map-search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="5.8"/><path d="m15.2 15.2 4.2 4.2"/></svg>
+          <input id="systemToolSearch" type="search" placeholder="Find a tool or task" autocomplete="off" aria-label="Find a tool or task">
+          <span id="systemSearchCount">All tools</span>
+        </label>
       </section>
-      <section class="detail-snapshot">
-        <div class="detail-stat"><span>Available</span><strong>${formatCents(p.available)}</strong></div>
-        <div class="detail-stat"><span>Spent</span><strong>${formatCents(st.spent)}</strong></div>
-        <div class="detail-stat"><span>Protected</span><strong>${formatCents(p.protected)}</strong></div>
-      </section>
-      <section class="anatomy-panel">
-        <div class="anatomy-panel-head"><div><small id="anatomyKicker">Essentials</small><strong id="anatomyTitle">${sections.essentials.title}</strong><span id="anatomyCopy">${sections.essentials.copy}</span></div><span class="deep-link-badge">Open layer</span></div>
-        <div class="anatomy-panel-body"><div class="row-list" id="anatomyRows">${sections.essentials.html}</div></div>
-      </section>
-      <div class="anatomy-actions"><a class="deep-link" href="#bills"><div><strong>Bill Protection Studio</strong><span>Fund and time required obligations.</span></div><span class="deep-link-badge">Studio</span></a><a class="deep-link" href="#essentials"><div><strong>Essentials Runway</strong><span>Translate remaining money into weekly coverage.</span></div><span class="deep-link-badge">Runway</span></a><a class="deep-link" href="#savings"><div><strong>Savings Goal Studio</strong><span>Give weekly savings visible destinations.</span></div><span class="deep-link-badge">Goals</span></a><a class="deep-link" href="#lifestyle"><div><strong>Lifestyle Flex Studio</strong><span>See flexible spending pace without judgment-heavy warnings.</span></div><span class="deep-link-badge">Flex</span></a><a class="deep-link" href="#precheck"><div><strong>Can I Spend This?</strong><span>Preview a purchase before logging it.</span></div><span class="deep-link-badge">Simulate</span></a><a class="deep-link" href="#history"><div><strong>Weekly Memory</strong><span>See previous weeks as visual fingerprints.</span></div><span class="deep-link-badge">History</span></a><a class="deep-link" href="#scenario"><div><strong>Scenario Sandbox</strong><span>Test changes without touching the live plan.</span></div><span class="deep-link-badge">What-if</span></a><a class="deep-link" href="#preferences"><div><strong>Presentation Settings</strong><span>Motion, density, and contrast controls.</span></div><span class="deep-link-badge">Personalize</span></a><a class="deep-link" href="#connections"><div><strong>Connected Data Center</strong><span>Import and reconcile outside transaction data without replacing the plan.</span></div><span class="deep-link-badge">Data</span></a><a class="deep-link" href="#future"><div><strong>System Architecture</strong><span>See how adaptive constellations, choreography, and connected data fit together.</span></div><span class="deep-link-badge">Guide</span></a><a class="deep-link" href="#insights"><div><strong>Advanced Insights</strong><span>Move into the analytical observatory.</span></div><span class="deep-link-badge">Deeper</span></a><a class="deep-link" href="#reset"><div><strong>Start New Week</strong><span>Open the cycle-transition flow.</span></div><span class="deep-link-badge">Rollover</span></a></div>
+
+      <div class="system-map-groups">
+        ${groups.map(g=>`<details class="system-group" data-system-group="${g.id}" ${g.open?'open':''}><summary><span class="system-group-summary"><small>${escapeHtml(g.eyebrow)}</small><strong>${escapeHtml(g.title)}</strong><span>${escapeHtml(g.copy)}</span></span><span class="system-group-toggle">+</span></summary><div class="system-group-body"><div class="system-tool-grid">${g.html}</div></div></details>`).join('')}
+        <div class="system-map-empty" id="systemMapEmpty">No matching tool. Try a category, action, history, data, or settings term.</div>
+      </div>
+
+      <div class="system-map-footnote"><i></i><span>Details is intentionally more capable than Home, but it still reveals one grouped layer at a time. Opening a tool does not change financial data unless that tool contains an explicit action.</span></div>
     </div>`;
-    const nodes=[...document.querySelectorAll('.anatomy-node')];
-    const kicker=document.getElementById('anatomyKicker'), title=document.getElementById('anatomyTitle'), copy=document.getElementById('anatomyCopy'), rows=document.getElementById('anatomyRows');
-    nodes.forEach(btn=>btn.onclick=()=>{
-      nodes.forEach(x=>x.classList.toggle('active',x===btn));
-      const key=btn.dataset.section, s=sections[key];
-      kicker.textContent=key==='bills'?'Protection':key[0].toUpperCase()+key.slice(1);
-      title.textContent=s.title; copy.textContent=s.copy; rows.innerHTML=s.html;
-      rows.parentElement.style.animation='none'; void rows.parentElement.offsetWidth; rows.parentElement.style.animation='';
-      if(navigator.vibrate)navigator.vibrate(5);
-    });
+
+    const search=document.getElementById('systemToolSearch'),count=document.getElementById('systemSearchCount'),empty=document.getElementById('systemMapEmpty');
+    const tools=[...document.querySelectorAll('.system-tool')],groupEls=[...document.querySelectorAll('.system-group')];
+    const applySearch=()=>{
+      const q=search.value.trim().toLowerCase();let visible=0;
+      groupEls.forEach(group=>{
+        let groupVisible=0;
+        group.querySelectorAll('.system-tool').forEach(link=>{
+          const match=!q||link.dataset.toolSearch.includes(q);
+          link.hidden=!match;if(match){visible++;groupVisible++;}
+        });
+        group.hidden=!!q&&groupVisible===0;
+        if(q&&groupVisible>0)group.open=true;
+      });
+      count.textContent=q?`${visible} match${visible===1?'':'es'}`:'All tools';
+      empty.classList.toggle('show',!!q&&visible===0);
+    };
+    search.addEventListener('input',applySearch);
+    tools.forEach(link=>link.addEventListener('click',()=>gentleHaptic()));
   }catch(e){root.innerHTML=errBox(e.message);}
 }
 
