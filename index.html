@@ -4192,6 +4192,77 @@ body[data-density="compact"] .studio-copy{max-width:58ch}
   .reconcile-actions-v19{grid-template-columns:1fr}.reconcile-actions-v19 select{grid-column:auto}
 }
 
+
+/* PHASE 8 — EXPLAINABLE DECISION SUPPORT v20 */
+.zen-command.info{
+  border-color:rgba(103,232,249,.12);
+  background:linear-gradient(145deg,rgba(103,232,249,.045),rgba(255,255,255,.014))
+}
+.zen-command.none{
+  border-color:rgba(110,231,183,.08);
+  background:rgba(255,255,255,.018)
+}
+.sheet-explain{
+  margin-top:11px;border:1px solid rgba(177,206,221,.06);border-radius:15px;
+  background:rgba(255,255,255,.014);overflow:hidden
+}
+.sheet-explain summary{
+  list-style:none;cursor:pointer;padding:9px 10px;color:#a5bbc4;font-size:.56rem;font-weight:800
+}
+.sheet-explain summary::-webkit-details-marker{display:none}
+.sheet-explain-grid{display:grid;gap:6px;padding:0 10px 10px}
+.sheet-explain-item{
+  padding:8px 9px;border-radius:12px;background:rgba(255,255,255,.014)
+}
+.sheet-explain-item small{
+  display:block;font-size:.4rem;letter-spacing:.09em;text-transform:uppercase;color:#758f9a
+}
+.sheet-explain-item span{
+  display:block;margin-top:3px;color:#9cb1ba;font-size:.53rem;line-height:1.42
+}
+.recommendation-severity{
+  display:inline-flex;align-items:center;gap:6px;padding:5px 7px;border-radius:999px;
+  border:1px solid rgba(177,206,221,.07);background:rgba(255,255,255,.018);
+  color:#9eb4bd;font-size:.46rem;font-weight:850;text-transform:uppercase;letter-spacing:.07em
+}
+.recommendation-severity::before{
+  content:"";width:6px;height:6px;border-radius:50%;background:#67e8f9
+}
+.recommendation-severity.critical::before{background:#fb7185;box-shadow:0 0 8px rgba(251,113,133,.32)}
+.recommendation-severity.important::before{background:#f6d784;box-shadow:0 0 8px rgba(246,215,132,.28)}
+.recommendation-severity.info::before{background:#67e8f9;box-shadow:0 0 8px rgba(103,232,249,.28)}
+.recommendation-severity.none::before{background:#6ee7b7;box-shadow:0 0 8px rgba(110,231,183,.24)}
+
+.decision-support-card{
+  --decision-accent:#67e8f9;
+  padding:14px;border-radius:21px;
+  border:1px solid color-mix(in srgb,var(--decision-accent) 13%,rgba(177,206,221,.07));
+  background:linear-gradient(145deg,color-mix(in srgb,var(--decision-accent) 5%,rgba(255,255,255,.018)),rgba(255,255,255,.012))
+}
+.decision-support-head{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:10px
+}
+.decision-support-head h3{margin:5px 0 0;font-size:.9rem}
+.decision-support-card>p{margin:9px 0 0;color:var(--text-soft);font-size:.62rem;line-height:1.46}
+.decision-support-meta{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:10px
+}
+.decision-support-meta div{padding:8px;border-radius:12px;background:rgba(255,255,255,.016)}
+.decision-support-meta small{display:block;font-size:.4rem;text-transform:uppercase;letter-spacing:.08em;color:#748e99}
+.decision-support-meta strong{display:block;margin-top:3px;font-size:.58rem}
+.recommendation-controls{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;
+  margin-top:10px;padding-top:9px;border-top:1px solid rgba(177,206,221,.05)
+}
+.recommendation-controls span{color:#7d96a1;font-size:.5rem}
+.recommendation-controls button{
+  appearance:none;padding:7px 9px;border-radius:10px;border:1px solid rgba(177,206,221,.07);
+  background:rgba(255,255,255,.018);color:#9fb5be;font:inherit;font-size:.5rem;cursor:pointer
+}
+@media(max-width:390px){
+  .decision-support-meta{grid-template-columns:1fr}
+}
+
 </style></head><body><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="zen-home">
@@ -4744,6 +4815,190 @@ function categoryRow(c){ const spent=Math.max(0,c.allocated-c.remaining), fill=p
 function billRow(b){ const fill=percent(b.contributed,b.weeklyRequired||b.requiredByToday||1), warn=b.status!=='ON_TRACK'; return `<div class="finance-row"><div class="finance-head"><div><div class="finance-name">${escapeHtml(b.name)}</div><div class="finance-sub">Due today ${formatCents(b.requiredByToday)} · Weekly target ${formatCents(b.weeklyRequired)}</div></div><div class="finance-main ${warn?'attention':''}">${formatCents(b.contributed)} funded</div></div><div class="progress-track"><div class="progress-fill ${warn?'warn':''}" style="--fill:${fill}%"></div></div></div>`; }
 
 
+const RECOMMENDATION_PREFS_KEY='thisweek.recommendations.v1';
+function readRecommendationPrefs(){
+  const base={suppressed:{},seen:{}};
+  try{
+    const raw=JSON.parse(localStorage.getItem(RECOMMENDATION_PREFS_KEY)||'{}'),now=Date.now(),suppressed={};
+    for(const [k,v] of Object.entries(raw?.suppressed||{}))if(Number(v?.until||v)>now)suppressed[k]=typeof v==='object'?v:{until:Number(v)};
+    return {...base,...raw,suppressed,seen:raw?.seen||{}};
+  }catch{return base;}
+}
+function writeRecommendationPrefs(next){
+  const value={...readRecommendationPrefs(),...next};
+  try{localStorage.setItem(RECOMMENDATION_PREFS_KEY,JSON.stringify(value));}catch{}
+  return value;
+}
+function recommendationSuppressionCount(){
+  return Object.keys(readRecommendationPrefs().suppressed||{}).length;
+}
+function clearRecommendationSuppressions(){
+  const p=readRecommendationPrefs();p.suppressed={};writeRecommendationPrefs(p);
+}
+function recommendationFingerprint(id,key,weekId){return [id,key||'general',weekId||'week'].join('|');}
+function suppressRecommendation(rec){
+  if(!rec||rec.severity==='critical'||rec.severity==='none')return false;
+  const prefs=readRecommendationPrefs(),duration=rec.severity==='important'?4*60*60*1000:24*60*60*1000;
+  prefs.suppressed[rec.fingerprint]={until:Date.now()+duration,id:rec.id,severity:rec.severity,weekId:rec.weekId};
+  writeRecommendationPrefs(prefs);return true;
+}
+function recommendationIsSuppressed(rec){
+  if(!rec||rec.severity==='critical'||rec.severity==='none')return false;
+  const v=readRecommendationPrefs().suppressed?.[rec.fingerprint];
+  return !!v&&Number(v.until||v)>Date.now();
+}
+function recommendationAccent(rec){
+  if(rec.world&&WORLD_META[rec.world])return WORLD_META[rec.world].accent;
+  if(rec.severity==='critical')return '#fb7185';
+  if(rec.severity==='important')return '#f6d784';
+  if(rec.severity==='info')return '#67e8f9';
+  return '#6ee7b7';
+}
+function buildDecisionCandidates(p,d){
+  const s=homeSignals(p),time=weekTimeState(p),connected=connectedDataSummary(),weekId=p.week?.id||p.week?.start||'week';
+  const candidates=[];
+  const add=(r)=>candidates.push({...r,weekId,fingerprint:recommendationFingerprint(r.id,r.key,weekId)});
+  if((p.available||0)<0){
+    add({
+      id:'negative_available',key:'combined',severity:'critical',priority:120,tone:'danger',icon:'!',label:'Priority signal',
+      text:'Available Now is below $0',title:'Review the weekly plan balance',
+      amountLabel:'Available now',amount:formatCents(p.available),state:'Below planned spending lanes',
+      copy:'Recorded spending has moved the combined remaining Essential and Lifestyle lanes below zero in this weekly plan.',
+      href:'#details',actionLabel:'Open Details',
+      facts:[{label:'Available now',value:formatCents(p.available)},{label:'Overspent lanes',value:String(d.overspent.length)}],
+      explanation:{
+        what:'Available Now is the sum of remaining active spending lanes, and that sum is currently below zero.',
+        why:'A negative planning balance means recorded spending has exceeded the remaining category room represented by this weekly plan.',
+        data:'Active Essential and Lifestyle allocations plus spending recorded or explicitly reconciled into This Week.',
+        limits:'This is not a bank overdraft, account balance, credit assessment, or professional financial advice.'
+      }
+    });
+  }
+  if(d.behind.length){
+    const need=d.behind.reduce((n,b)=>n+Math.max(0,(b.requiredByToday||0)-(b.contributed||0)),0);
+    const ids=d.behind.map(b=>b.id).sort().join(',');
+    add({
+      id:'bill_gap',key:ids,severity:'critical',priority:110,tone:'warn',icon:'!',label:'Priority signal',
+      text:`Protect ${formatCents(need)} for bills`,title:'Review required bill protection',
+      amountLabel:'Protection gap',amount:formatCents(need),state:`${d.behind.length} bill${d.behind.length===1?'':'s'} behind today`,
+      copy:'At least one configured bill is below its required-by-today protection level.',
+      href:'#bills',route:'bills',world:'bills',actionLabel:'Open Bill Studio',
+      facts:[{label:'Bills affected',value:String(d.behind.length)},{label:'Available now',value:formatCents(p.available)}],
+      explanation:{
+        what:'One or more bill protection records are below the amount the plan calculates as required by today.',
+        why:'This Week prioritizes required obligations before lower-priority planning suggestions.',
+        data:'Configured bill amount, frequency, due date, weekly proration, and the amount you marked protected.',
+        limits:'Protected is a planning record. This Week cannot verify whether a bill was paid or whether money exists in an external account.'
+      }
+    });
+  }
+  if(time.days===0){
+    add({
+      id:'rollover_due',key:'due',severity:'important',priority:100,tone:'warn',icon:'↻',label:'Week transition',
+      text:'Review and start the next week',title:'Weekly cycle is ready to roll forward',
+      amountLabel:'Available now',amount:formatCents(p.available),state:'Rollover due',
+      copy:'The configured weekly cycle has reached its transition point.',
+      href:'#reset',actionLabel:'Review New Week',
+      facts:[{label:'Week end',value:new Date(p.week.end).toLocaleDateString()},{label:'Savings this week',value:formatCents(p.savingsThisWeek||0)}],
+      explanation:{
+        what:'The current plan has reached the configured weekly cycle boundary.',
+        why:'Starting the next cycle keeps week-specific allocations, bill requirements, and history separated.',
+        data:'Your configured week anchor and the current week start/end timestamps.',
+        limits:'Rolling the plan forward does not move money, pay bills, or change external accounts.'
+      }
+    });
+  }
+  if(d.overspent.length){
+    const x=d.overspent.slice().sort((a,b)=>(a.remaining||0)-(b.remaining||0))[0];
+    const isEssential=(p.essentials||[]).some(y=>y.id===x.id),world=isEssential?'essentials':'lifestyle',route=isEssential?'essentials':'lifestyle';
+    add({
+      id:'overspent_lane',key:x.id,severity:'important',priority:90,tone:'danger',icon:'!',label:'Review signal',
+      text:`${x.name} needs review`,title:`Review ${x.name}`,
+      amountLabel:'Beyond weekly lane',amount:formatCents(Math.abs(x.remaining||0)),state:isEssential?'Essential lane':'Lifestyle lane',
+      copy:'Recorded spending in this category is beyond its configured weekly allocation.',
+      href:'#'+route,route,world,actionLabel:isEssential?'Open Runway':'Open Flex Studio',
+      facts:[{label:'Category',value:x.name},{label:'Available now',value:formatCents(p.available)}],
+      explanation:{
+        what:`${x.name} has a remaining planning balance below zero.`,
+        why:'The signal highlights a category whose recorded spending has moved beyond the weekly amount you configured.',
+        data:'The category weekly allocation minus transactions recorded or explicitly reconciled into that category.',
+        limits:'Crossing a weekly lane does not mean the purchase was wrong, unaffordable outside this plan, or prohibited.'
+      }
+    });
+  }
+  if(s.velocityRatio>1.25&&s.totalAllocated>0){
+    add({
+      id:'fast_pace',key:'week',severity:'important',priority:70,tone:'warn',icon:'↗',label:'Pace signal',
+      text:'Recorded spending is ahead of week pace',title:'Review spending pace',
+      amountLabel:'Pace ratio',amount:`${Math.round(s.velocityRatio*100)}%`,state:s.velocityLabel,
+      copy:'The share of active category budgets used is currently running ahead of the share of the weekly cycle that has elapsed.',
+      href:'#insights',actionLabel:'Open Insights',
+      facts:[{label:'Budget used',value:`${Math.round(Math.min(140,s.spendPct))}%`},{label:'Week elapsed',value:`${Math.round(s.weekProgress)}%`}],
+      explanation:{
+        what:'Recorded spending is more than 1.25× the pace implied by elapsed week time.',
+        why:'A pace comparison can surface a changing week earlier than waiting for a category to reach zero.',
+        data:'Recorded category spending, active weekly category allocations, and elapsed time in the current cycle.',
+        limits:'This is a simple pacing comparison. Irregular purchase timing, missing transactions, or front-loaded expenses can make it look faster than the week really feels.'
+      }
+    });
+  }
+  if(connected.unreconciled>0){
+    add({
+      id:'imported_review',key:'queue',severity:'info',priority:55,tone:'info',icon:'↔',label:'Data review',
+      text:`${connected.unreconciled} imported purchase${connected.unreconciled===1?'':'s'} to review`,title:'Review imported purchases',
+      amountLabel:'Review queue',amount:String(connected.unreconciled),state:'Not applied to plan',
+      copy:'Posted imported outflows are waiting for category confirmation. They do not affect This Week until reconciled.',
+      href:'#connections',actionLabel:'Open Connected Data',
+      facts:[{label:'Needs review',value:String(connected.unreconciled)},{label:'Deferred',value:String(connected.deferred||0)}],
+      explanation:{
+        what:'Connected Data contains posted outflows that have not been assigned to a This Week category.',
+        why:'If they belong to the current planning week, reconciling them can make the weekly view more complete.',
+        data:'Local imported transaction records that are posted, outflow, and still unmatched.',
+        limits:'Imported files can be incomplete or overlapping. This Week does not apply these records until you confirm them.'
+      }
+    });
+  }
+  if(time.days===1){
+    add({
+      id:'rollover_soon',key:'soon',severity:'info',priority:50,tone:'info',icon:'↻',label:'Cycle note',
+      text:'1 day remains in this week',title:'Weekly rollover is approaching',
+      amountLabel:'Time remaining',amount:'1 day',state:'Informational',
+      copy:'The current weekly cycle is close to its configured endpoint.',
+      href:'#details',actionLabel:'Open Details',
+      facts:[{label:'Available now',value:formatCents(p.available)},{label:'Week end',value:new Date(p.week.end).toLocaleDateString()}],
+      explanation:{
+        what:'The current cycle has approximately one day remaining.',
+        why:'This is an informational cue so rollover does not arrive unexpectedly.',
+        data:'The current time and your configured week boundary.',
+        limits:'This is a calendar signal only. It does not imply that a financial action is required today.'
+      }
+    });
+  }
+  add({
+    id:'no_action',key:'clear',severity:'none',priority:0,tone:'none',icon:'✓',label:'Current state',
+    text:'No urgent action from the current plan',title:'No urgent action is being surfaced',
+    amountLabel:'Available now',amount:formatCents(p.available),state:'Current plan has no higher-priority signal',
+    copy:'This Week is not surfacing a more urgent planning issue from the data it currently has.',
+    href:'#log',actionLabel:'Add Spending',
+    facts:[{label:'Bills behind',value:String(d.behind.length)},{label:'Overspent lanes',value:String(d.overspent.length)}],
+    explanation:{
+      what:'No unsuppressed recommendation above the informational threshold is currently taking priority.',
+      why:'The app intentionally shows one primary signal instead of stacking multiple suggestions on Home.',
+      data:'Current weekly plan, recorded spending, bill protection, week timing, and locally imported review status.',
+      limits:'No urgent signal does not mean there are no future obligations, missing transactions, external-account issues, or circumstances outside This Week.'
+    }
+  });
+  const weight={critical:4,important:3,info:2,none:1};
+  return candidates.sort((a,b)=>(weight[b.severity]-weight[a.severity])||(b.priority-a.priority));
+}
+function primaryRecommendation(p,d,{ignoreSuppression=false}={}){
+  const candidates=buildDecisionCandidates(p,d);
+  return candidates.find(r=>ignoreSuppression||!recommendationIsSuppressed(r))||candidates[candidates.length-1];
+}
+function recommendationSeverityLabel(severity){
+  return severity==='critical'?'Critical planning signal':severity==='important'?'Important planning signal':severity==='info'?'Informational planning signal':'No urgent planning signal';
+}
+
 function simpleDecision(p){
   const cats=[...(p.essentials||[]),...(p.forYou||[])];
   const behind=(p.bills||[]).filter(b=>b.status!=='ON_TRACK'||(b.requiredByToday||0)>(b.contributed||0));
@@ -4770,15 +5025,7 @@ function simpleDecision(p){
 }
 
 function compactHomeCommand(p,d){
-  if(d.behind.length){
-    const need=d.behind.reduce((n,b)=>n+Math.max(0,(b.requiredByToday||0)-(b.contributed||0)),0);
-    return {tone:'warn',icon:'!',label:'Needs attention',text:`Protect ${formatCents(need)} for bills`,href:'#bills'};
-  }
-  if(d.overspent.length){
-    return {tone:'danger',icon:'!',label:'Spending review',text:`${d.overspent[0].name} needs review`,href:d.next.href};
-  }
-  if(d.next.href==='#reset')return {tone:'warn',icon:'↻',label:'Week ending',text:'Review and start the next week',href:'#reset'};
-  return {tone:'ok',icon:'✓',label:'Next step',text:'Add spending after purchases',href:'#log'};
+  return primaryRecommendation(p,d);
 }
 
 function phase2HomeWorlds(p,d,state){
@@ -4807,14 +5054,14 @@ function phase2HomeWorlds(p,d,state){
     savings:{route:'savings',accent:'#f6d784',label:'Savings',children:goals,explain:'Goal progress is a planning view and does not claim to be a bank-account balance.'}
   };
 }
-function phase2AttentionOverride(worlds,d){
-  if(d.behind.length){
+function phase2AttentionOverride(worlds,d,command){
+  if(command?.id==='bill_gap'&&d.behind.length){
     const b=d.behind.slice().sort((a,b)=>Math.max(0,(b.requiredByToday||0)-(b.contributed||0))-Math.max(0,(a.requiredByToday||0)-(a.contributed||0)))[0];
     const need=Math.max(0,(b.requiredByToday||0)-(b.contributed||0));
     return {world:'bills',title:b?.name||'Bills',copy:need?formatCents(need)+' needed today':'Needs review'};
   }
-  if(d.overspent.length){
-    const x=d.overspent[0],world=(worlds.essentials.children.some(c=>c.id===x.id)?'essentials':'lifestyle');
+  if(command?.id==='overspent_lane'&&d.overspent.length){
+    const x=d.overspent.slice().sort((a,b)=>(a.remaining||0)-(b.remaining||0))[0],world=(worlds.essentials.children.some(c=>c.id===x.id)?'essentials':'lifestyle');
     return {world,title:x.name,copy:formatCents(Math.abs(x.remaining||0))+' over limit'};
   }
   return null;
@@ -5288,6 +5535,7 @@ function openAppSheet(model={}){
       ${model.copy?`<p class="sheet-copy">${escapeHtml(model.copy)}</p>`:''}
       ${facts.length?`<div class="sheet-facts">${facts.map(f=>`<div class="sheet-fact"><small>${escapeHtml(f.label)}</small><strong>${escapeHtml(f.value)}</strong></div>`).join('')}</div>`:''}
       ${model.provenance?`<div class="sheet-provenance"><i></i><span>${escapeHtml(model.provenance)}</span></div>`:''}
+      ${model.explanation?`<details class="sheet-explain"><summary>How this signal was decided</summary><div class="sheet-explain-grid"><div class="sheet-explain-item"><small>What happened</small><span>${escapeHtml(model.explanation.what||'')}</span></div><div class="sheet-explain-item"><small>Why it matters</small><span>${escapeHtml(model.explanation.why||'')}</span></div><div class="sheet-explain-item"><small>Data used</small><span>${escapeHtml(model.explanation.data||'')}</span></div><div class="sheet-explain-item"><small>Limits</small><span>${escapeHtml(model.explanation.limits||'')}</span></div></div></details>`:''}
     </div>
     <div class="app-sheet-actions">${actions.map((a,i)=>a.href?`<a class="sheet-action ${i===0?'primary':''} ${actions.length===1?'full':''}" href="${a.href}" data-sheet-route="${a.route||''}" data-sheet-world="${a.world||''}">${escapeHtml(a.label)}</a>`:`<button class="sheet-action ${i===0?'primary':''} ${actions.length===1?'full':''}" type="button" data-sheet-action="${a.action||'close'}">${escapeHtml(a.label)}</button>`).join('')}</div>
   </section>`;
@@ -5301,7 +5549,11 @@ function openAppSheet(model={}){
     if(route&&world&&WORLD_META[world]){e.preventDefault();closeAppSheet({restore:false});const source=document.querySelector(`.zen-zone[data-world="${world}"]`);navigateWithChoreography(route,source,world);}
     else closeAppSheet({restore:false});
   }));
-  layer.querySelectorAll('[data-sheet-action]').forEach(b=>b.onclick=()=>{if(b.dataset.sheetAction==='close')closeAppSheet();});
+  layer.querySelectorAll('[data-sheet-action]').forEach(b=>b.onclick=()=>{
+    const action=b.dataset.sheetAction;
+    if(action==='close'){closeAppSheet();return;}
+    if(typeof model.onAction==='function')model.onAction(action);
+  });
   const focusables=()=>[...sheet.querySelectorAll('button,a[href],[tabindex]:not([tabindex="-1"])')].filter(x=>!x.disabled);
   layer.addEventListener('keydown',e=>{
     if(e.key==='Escape'){e.preventDefault();closeAppSheet();return;}
@@ -5327,18 +5579,31 @@ function phase3ChildSheetModel(world,child,worlds){
   return {accent:info.accent,kicker:base.kicker,title:child.name,amountLabel:'Current signal',amount:child.value,state:child.signal,copy:base.copy,facts:(child.facts&&child.facts.length?child.facts:[{label:'Category',value:info.label},{label:'Status',value:child.signal}]),provenance:base.provenance,actions:[{label:'Open '+info.label+' Studio',href:'#'+route,route,world},{label:'Close',action:'close'}]};
 }
 function phase3CommandSheetModel(p,d,command){
-  if(d.behind.length){
-    const need=d.behind.reduce((n,b)=>n+Math.max(0,(b.requiredByToday||0)-(b.contributed||0)),0);
-    return {accent:'#f6d784',kicker:'Recommended next action',title:'Protect required bills',amountLabel:'Protection gap',amount:formatCents(need),state:d.behind.length+' bill'+(d.behind.length===1?'':'s')+' need attention',copy:'Your configured required-by-today bill protection is short. This recommendation prioritizes obligations before optional spending.',facts:[{label:'Available now',value:formatCents(p.available)},{label:'Bills affected',value:String(d.behind.length)}],provenance:'Calculated from your This Week plan and bill contributions. It is not a bank-account balance.',actions:[{label:'Open Bill Studio',href:'#bills',route:'bills',world:'bills'},{label:'Close',action:'close'}]};
-  }
-  if(d.overspent.length){
-    const x=d.overspent[0],isEssential=(p.essentials||[]).some(y=>y.id===x.id),world=isEssential?'essentials':'lifestyle',route=isEssential?'essentials':'lifestyle';
-    return {accent:isEssential?'#6ee7b7':'#f0a7d3',kicker:'Recommended next action',title:'Review '+x.name,amountLabel:'Over weekly lane',amount:formatCents(Math.abs(x.remaining||0)),state:'Needs review',copy:'This lane has moved beyond its weekly allocation. Review the category before making additional spending decisions.',facts:[{label:'Available now',value:formatCents(p.available)},{label:'Lane type',value:isEssential?'Essential':'Lifestyle'}],provenance:'Calculated from the category’s weekly allocation minus recorded spending.',actions:[{label:'Open '+(isEssential?'Runway':'Flex Studio'),href:'#'+route,route,world},{label:'Close',action:'close'}]};
-  }
-  if(command.href==='#reset'){
-    return {accent:'#f6d784',kicker:'Week transition',title:'Review before starting a new week',amountLabel:'Available now',amount:formatCents(p.available),state:'Rollover due',copy:'Your current week is at its transition point. Review the current state before creating the next weekly cycle.',facts:[{label:'Week end',value:new Date(p.week.end).toLocaleDateString()},{label:'Savings this week',value:formatCents(p.savingsThisWeek||0)}],provenance:'Based on your configured weekly cycle.',actions:[{label:'Start New Week',href:'#reset'},{label:'Close',action:'close'}]};
-  }
-  return {accent:'#67e8f9',kicker:'Recommended next action',title:'Keep the week current',amountLabel:'Available now',amount:formatCents(p.available),state:'No urgent action',copy:'Nothing more urgent is currently being surfaced. Record purchases as they happen so the weekly planning signal stays useful.',facts:[{label:'Bills',value:d.behind.length?'Needs attention':'Protected'},{label:'Overspent lanes',value:String(d.overspent.length)}],provenance:'Recommendation is generated from your current weekly plan, bill protection, and recorded spending.',actions:[{label:'Add Spending',href:'#log'},{label:'Close',action:'close'}]};
+  const rec=command||primaryRecommendation(p,d),suppressible=rec.severity==='important'||rec.severity==='info';
+  const actions=[{label:rec.actionLabel||'Open',href:rec.href||'#details',route:rec.route||'',world:rec.world||''}];
+  if(suppressible)actions.push({label:rec.severity==='important'?'Remind in 4 hours':'Hide for 24 hours',action:'snooze'});
+  else if(rec.severity==='none')actions.push({label:'Close',action:'close'});
+  return {
+    accent:recommendationAccent(rec),
+    kicker:recommendationSeverityLabel(rec.severity),
+    title:rec.title,
+    amountLabel:rec.amountLabel||'Current signal',
+    amount:rec.amount||'—',
+    state:rec.state||rec.label,
+    copy:rec.copy,
+    facts:rec.facts||[],
+    provenance:'This is decision support derived from the This Week planning model. It does not make financial decisions for you.',
+    explanation:rec.explanation,
+    actions,
+    onAction:(action)=>{
+      if(action!=='snooze')return;
+      if(suppressRecommendation(rec)){
+        closeAppSheet({restore:false});
+        toast(rec.severity==='important'?'Suggestion hidden for 4 hours.':'Suggestion hidden for 24 hours.');
+        if((location.hash.replace('#','')||'home')==='home')renderHome();
+      }
+    }
+  };
 }
 
 function initZenDisclosure(p,d,worlds,attentionOverride,command){
@@ -5447,8 +5712,8 @@ async function renderHome(){
     const lifestyleStatus=lifestyleDanger?'Review':'In range';
     const savingsStatus=savingsTarget?(savingsGap<=0?'Target reached':`${formatCents(savingsGap)} to goal`):'Set aside';
     const sourceLabel=connected.total?`${connected.unreconciled} imported item${connected.unreconciled===1?'':'s'} to review`:'Data & imports';
-    const worlds=phase2HomeWorlds(p,d,state),attentionOverride=phase2AttentionOverride(worlds,d);
-    document.body.dataset.financialState=(d.behind.length||d.overspent.length||p.status!=='ON_TRACK')?'attention':'stable';
+    const worlds=phase2HomeWorlds(p,d,state),attentionOverride=phase2AttentionOverride(worlds,d,command);
+    document.body.dataset.financialState=(command.severity==='critical'||command.severity==='important')?'attention':'stable';
     root.innerHTML=`<div class="zen-home">
       <div class="zen-topline">
         <span class="zen-week">${weekWindow(p.week.start,p.week.end)}</span>
@@ -5488,7 +5753,7 @@ async function renderHome(){
         </button>
       </div>
 
-      <a class="zen-command ${command.tone==='warn'?'warn':command.tone==='danger'?'danger':''}" id="zenCommand" href="${command.href}" aria-haspopup="dialog">
+      <a class="zen-command ${['warn','danger','info','none'].includes(command.tone)?command.tone:''}" id="zenCommand" href="${command.href}" aria-haspopup="dialog" data-recommendation-id="${escapeHtml(command.id)}">
         <span class="zen-command-main"><span class="zen-command-icon">${command.icon}</span><span class="zen-command-copy"><small>${escapeHtml(command.label)}</small><strong>${escapeHtml(command.text)}</strong></span></span><span class="zen-command-arrow">›</span>
       </a>
     </div>`;
@@ -5606,7 +5871,7 @@ async function renderInsights(){
   if(!userId){root.innerHTML='<div class="center"><div class="error">Build a plan first.</div><a class="btn btn-primary" href="#setup">Build Plan</a></div>';return;}
   try{
     const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);
-    const s=homeSignals(p);
+    const s=homeSignals(p),decision=primaryRecommendation(p,simpleDecision(p)),snoozed=recommendationSuppressionCount();
     const spentPct=Math.round(clampUI(s.spendPct,0,100));
     const weekPct=Math.round(s.weekProgress);
     root.innerHTML=`<div class="insights-grid">
@@ -5617,6 +5882,13 @@ async function renderInsights(){
         <div class="obs-satellite b"><small>Week elapsed</small><strong>${weekPct}%</strong><span>Current cycle</span></div>
         <div class="obs-satellite c"><small>Bill coverage</small><strong>${Math.round(s.billCoverage)}%</strong><span>Protected funding</span></div>
         <div class="obs-satellite d"><small>Savings</small><strong>${formatCents(p.savingsThisWeek||0)}</strong><span>This week</span></div>
+      </section>
+      <section class="decision-support-card" style="--decision-accent:${recommendationAccent(decision)}">
+        <div class="decision-support-head"><div><span class="section-kicker">Decision support</span><h3>${escapeHtml(decision.title)}</h3></div><span class="recommendation-severity ${decision.severity}">${escapeHtml(decision.severity==='none'?'No urgent action':decision.severity)}</span></div>
+        <p>${escapeHtml(decision.copy)}</p>
+        <div class="decision-support-meta"><div><small>Current signal</small><strong>${escapeHtml(decision.amount||decision.text)}</strong></div><div><small>Primary action</small><strong>${escapeHtml(decision.actionLabel||'Review')}</strong></div></div>
+        <details class="sheet-explain" style="margin-top:10px"><summary>Why this signal appears</summary><div class="sheet-explain-grid"><div class="sheet-explain-item"><small>What happened</small><span>${escapeHtml(decision.explanation?.what||'')}</span></div><div class="sheet-explain-item"><small>Why it matters</small><span>${escapeHtml(decision.explanation?.why||'')}</span></div><div class="sheet-explain-item"><small>Data used</small><span>${escapeHtml(decision.explanation?.data||'')}</span></div><div class="sheet-explain-item"><small>Limits</small><span>${escapeHtml(decision.explanation?.limits||'')}</span></div></div></details>
+        <div class="recommendation-controls"><span>${snoozed?snoozed+' temporarily hidden suggestion'+(snoozed===1?'':'s'):'No suggestions are currently snoozed.'}</span>${snoozed?'<button id="restoreRecommendations" type="button">Restore hidden suggestions</button>':''}</div>
       </section>
       <section class="insight-pair">
         <div class="insight-card"><span class="section-kicker">Week health</span><h3>Planning signal</h3><div class="insight-number">${s.score}</div><div class="insight-caption">${s.healthLabel}. This combines balance pressure, overspent lanes, bill funding, and weekly pace.</div></div>
@@ -5640,6 +5912,7 @@ async function renderInsights(){
         <details class="intel-panel"><summary>Available money</summary><div class="intel-body">Available now is the sum of remaining balances in your active essential and flexible spending lanes. It is not a connected bank balance.</div></details>
       </div></section>
     </div>`;
+    document.getElementById('restoreRecommendations')?.addEventListener('click',()=>{clearRecommendationSuppressions();toast('Hidden suggestions restored.');renderInsights();});
   }catch(e){root.innerHTML=errBox(e.message);}
 }
 
