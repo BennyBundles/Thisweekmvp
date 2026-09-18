@@ -3964,6 +3964,138 @@ body[data-density="compact"] .studio-copy{max-width:58ch}
   .system-map-search span{display:none}
 }
 
+
+/* PHASE 6 — FOUR CATEGORY WORLDS v18 */
+.world-decision{
+  --world-accent:#67e8f9;
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;
+  padding:13px 14px;border-radius:20px;
+  border:1px solid color-mix(in srgb,var(--world-accent) 13%,rgba(177,206,221,.07));
+  background:linear-gradient(145deg,color-mix(in srgb,var(--world-accent) 6%,rgba(255,255,255,.018)),rgba(255,255,255,.012));
+}
+.world-decision small{display:block;font-size:.46rem;letter-spacing:.11em;text-transform:uppercase;color:#819aa5}
+.world-decision strong{display:block;margin-top:3px;font-size:.83rem}
+.world-decision span{display:block;margin-top:4px;color:var(--text-soft);font-size:.59rem;line-height:1.4}
+.world-decision .btn{white-space:nowrap}
+
+.bill-gravity-list{display:grid;gap:7px}
+.bill-gravity-row{
+  --pressure:#60a5fa;
+  display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:9px;align-items:center;
+  padding:10px;border-radius:17px;border:1px solid rgba(96,165,250,.075);
+  background:linear-gradient(145deg,rgba(96,165,250,.035),rgba(255,255,255,.012))
+}
+.bill-gravity-mark{
+  width:40px;height:40px;border-radius:14px;display:grid;place-items:center;position:relative;
+  background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.10)
+}
+.bill-gravity-mark svg{width:20px;height:20px}.bill-gravity-mark svg *{stroke:#8dc3ff;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.bill-gravity-main{min-width:0}
+.bill-gravity-main strong{display:block;font-size:.7rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bill-gravity-main span{display:block;margin-top:3px;font-size:.5rem;color:#89a2ae;line-height:1.35}
+.bill-gravity-value{text-align:right}
+.bill-gravity-value strong{display:block;font-size:.7rem}.bill-gravity-value span{display:block;margin-top:2px;font-size:.45rem;color:#8098a3}
+.bill-pressure{
+  height:5px;margin-top:6px;border-radius:999px;background:rgba(255,255,255,.04);overflow:hidden
+}
+.bill-pressure i{display:block;height:100%;width:var(--pct);border-radius:inherit;background:linear-gradient(90deg,#60a5fa,#67e8f9)}
+
+.world-list{display:grid;gap:8px}
+.world-row{
+  padding:12px;border-radius:18px;border:1px solid rgba(177,206,221,.07);background:rgba(255,255,255,.016)
+}
+.world-row-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.world-row-head strong{font-size:.76rem}.world-row-head span{font-size:.51rem;color:#849da8;text-align:right}
+.world-row-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.world-chip{
+  padding:5px 7px;border-radius:999px;border:1px solid rgba(177,206,221,.06);background:rgba(255,255,255,.018);
+  font-size:.48rem;color:#93aab4
+}
+.world-row-actions{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;align-items:center;margin-top:9px}
+.world-row-actions input,.world-row-actions select{
+  width:100%;min-width:0;padding:9px 10px;border-radius:11px;border:1px solid rgba(177,206,221,.085);
+  background:rgba(255,255,255,.025);color:#eaf6f8;font:inherit;font-size:.62rem
+}
+
+.runway-board{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px
+}
+.runway-lane{
+  --lane-accent:#6ee7b7;
+  position:relative;overflow:hidden;padding:12px;border-radius:19px;border:1px solid rgba(110,231,183,.075);
+  background:linear-gradient(145deg,rgba(110,231,183,.035),rgba(255,255,255,.012))
+}
+.runway-lane-head{display:grid;grid-template-columns:34px minmax(0,1fr);gap:8px;align-items:center}
+.runway-lane-icon{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(145deg,#dcffe8,#6ee7b7)}
+.runway-lane-icon svg{width:18px;height:18px}.runway-lane-icon svg *{stroke:#06111d;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.runway-lane-head strong{display:block;font-size:.69rem}.runway-lane-head span{display:block;margin-top:2px;font-size:.49rem;color:#88a59c}
+.runway-answer{margin-top:10px;font-size:.58rem;color:#cde7dc;line-height:1.4}
+.pace-meter{height:6px;margin-top:8px;border-radius:999px;background:rgba(255,255,255,.04);overflow:hidden}
+.pace-meter i{display:block;height:100%;width:var(--pct);border-radius:inherit;background:linear-gradient(90deg,#6ee7b7,#34d399)}
+.runway-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;margin-top:8px}
+.runway-fact{padding:7px;border-radius:11px;background:rgba(255,255,255,.018)}
+.runway-fact small{display:block;font-size:.4rem;text-transform:uppercase;letter-spacing:.08em;color:#78968c}
+.runway-fact strong{display:block;margin-top:3px;font-size:.57rem}
+
+.flex-board{display:grid;gap:8px}
+.flex-lane{
+  --flex-accent:#f0a7d3;
+  padding:12px;border-radius:19px;border:1px solid rgba(240,167,211,.075);
+  background:linear-gradient(145deg,rgba(240,167,211,.035),rgba(255,255,255,.012))
+}
+.flex-lane-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.flex-lane-head strong{display:block;font-size:.71rem}.flex-lane-head span{display:block;margin-top:3px;font-size:.5rem;color:#9e8698}
+.flex-temp{padding:5px 7px;border-radius:999px;border:1px solid rgba(240,167,211,.09);background:rgba(240,167,211,.04);font-size:.47rem;color:#d9bfd1;white-space:nowrap}
+.soft-cap-track{position:relative;height:7px;margin-top:9px;border-radius:999px;background:rgba(255,255,255,.04);overflow:hidden}
+.soft-cap-track i{display:block;height:100%;width:var(--used);border-radius:inherit;background:linear-gradient(90deg,#a78bfa,#f0a7d3)}
+.soft-cap-track b{position:absolute;left:var(--cap);top:-2px;width:2px;height:11px;background:#f6d784;box-shadow:0 0 7px rgba(246,215,132,.45)}
+.flex-lane-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-top:8px}
+.flex-lane-meta div{padding:7px;border-radius:11px;background:rgba(255,255,255,.016)}
+.flex-lane-meta small{display:block;font-size:.39rem;text-transform:uppercase;letter-spacing:.07em;color:#866f82}
+.flex-lane-meta strong{display:block;margin-top:3px;font-size:.55rem}
+.world-tuning{margin-top:8px;border-top:1px solid rgba(177,206,221,.055);padding-top:7px}
+.world-tuning summary{cursor:pointer;font-size:.52rem;color:#9cafb7;list-style:none}.world-tuning summary::-webkit-details-marker{display:none}
+.world-tuning-body{display:grid;grid-template-columns:1fr auto;gap:7px;align-items:center;margin-top:7px}
+.world-tuning-body label{font-size:.52rem;color:#839ba5}
+.world-tuning-body select{padding:7px 8px;border-radius:10px;border:1px solid rgba(177,206,221,.08);background:#0b1c2b;color:#eef8fa;font:inherit;font-size:.55rem}
+
+.savings-board{display:grid;gap:8px}
+.savings-goal{
+  --goal-accent:#f6d784;
+  padding:12px;border-radius:19px;border:1px solid rgba(246,215,132,.08);
+  background:linear-gradient(145deg,rgba(246,215,132,.035),rgba(114,214,170,.012))
+}
+.savings-goal.paused{opacity:.62}
+.savings-goal-head{display:grid;grid-template-columns:38px minmax(0,1fr) auto;gap:8px;align-items:center}
+.savings-goal-gem{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(145deg,#fff0b4,#f6d784 55%,#72d6aa)}
+.savings-goal-gem svg{width:20px;height:20px}.savings-goal-gem svg *{stroke:#06111d;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.savings-goal-head strong{display:block;font-size:.7rem}.savings-goal-head span{display:block;margin-top:3px;font-size:.49rem;color:#a59772}
+.goal-priority{padding:5px 7px;border-radius:999px;border:1px solid rgba(246,215,132,.10);background:rgba(246,215,132,.035);font-size:.45rem;color:#ddcc91;text-transform:uppercase}
+.savings-goal-progress{height:7px;margin-top:9px;border-radius:999px;background:rgba(255,255,255,.04);overflow:hidden}
+.savings-goal-progress i{display:block;height:100%;width:var(--pct);border-radius:inherit;background:linear-gradient(90deg,#f6d784,#72d6aa)}
+.savings-goal-facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin-top:8px}
+.savings-goal-facts div{padding:7px;border-radius:11px;background:rgba(255,255,255,.016)}
+.savings-goal-facts small{display:block;font-size:.38rem;text-transform:uppercase;letter-spacing:.07em;color:#91835f}
+.savings-goal-facts strong{display:block;margin-top:3px;font-size:.53rem}
+.goal-control-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;align-items:center;margin-top:9px}
+.goal-control-row input{width:100%;padding:9px 10px;border-radius:11px;border:1px solid rgba(177,206,221,.08);background:rgba(255,255,255,.024);color:#eef8fa;font:inherit;font-size:.6rem}
+.goal-settings{margin-top:8px;border-top:1px solid rgba(177,206,221,.055);padding-top:7px}
+.goal-settings summary{cursor:pointer;font-size:.52rem;color:#9cafb7;list-style:none}.goal-settings summary::-webkit-details-marker{display:none}
+.goal-settings-body{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:7px}
+.goal-settings-body button,.goal-settings-body select{
+  min-height:34px;border-radius:10px;border:1px solid rgba(177,206,221,.08);background:rgba(255,255,255,.022);color:#eef8fa;font:inherit;font-size:.55rem
+}
+.world-note{padding:9px 10px;border-radius:14px;border:1px solid rgba(177,206,221,.055);background:rgba(255,255,255,.012);font-size:.55rem;line-height:1.42;color:#819aa5}
+
+@media(max-width:430px){
+  .world-decision{grid-template-columns:1fr}.world-decision .btn{justify-self:start}
+  .runway-board{grid-template-columns:1fr}
+  .savings-goal-facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:360px){
+  .flex-lane-meta{grid-template-columns:1fr 1fr}.flex-lane-meta div:last-child{grid-column:1/-1}
+}
+
 </style></head><body><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="zen-home">
@@ -4586,6 +4718,46 @@ function semanticIcon(name,type='category'){
   else p=type==='bill'?'<path d="M7 4h10v16l-2-1.5L13 20l-2-1.5L9 20l-2-1.5V4Z"/><path d="M9.5 8h5M9.5 12h5"/>':'<circle cx="12" cy="12" r="7"/><path d="M8.5 12h7M12 8.5v7"/>';
   return '<svg viewBox="0 0 24 24" aria-hidden="true">'+p+'</svg>';
 }
+const FLEX_CAPS_KEY='thisweek.flexCaps.v1';
+const PRECHECK_HINT_KEY='thisweek.precheckHint.v1';
+function readFlexCaps(){
+  try{const v=JSON.parse(localStorage.getItem(FLEX_CAPS_KEY)||'{}');return v&&typeof v==='object'?v:{};}catch{return {};}
+}
+function writeFlexCaps(v){try{localStorage.setItem(FLEX_CAPS_KEY,JSON.stringify(v));}catch{}return v;}
+function setPrecheckHint(categoryId){try{sessionStorage.setItem(PRECHECK_HINT_KEY,String(categoryId||''));}catch{}}
+function consumePrecheckHint(){try{const v=sessionStorage.getItem(PRECHECK_HINT_KEY);sessionStorage.removeItem(PRECHECK_HINT_KEY);return v||null;}catch{return null;}}
+function billDaysToDue(date){
+  if(!date)return null;
+  const due=new Date(date);if(Number.isNaN(due.getTime()))return null;
+  const now=new Date();now.setHours(0,0,0,0);due.setHours(0,0,0,0);
+  return Math.ceil((due-now)/86400000);
+}
+function billUrgencyScore(b){
+  const todayGap=Math.max(0,(b.requiredByToday||0)-(b.contributed||0)),weekGap=Math.max(0,(b.weeklyRequired||0)-(b.contributed||0)),days=billDaysToDue(b.dueDate);
+  return (todayGap>0?100000:0)+(weekGap>0?10000:0)+(days==null?0:Math.max(0,2000-days*60))+Math.min(5000,weekGap/10);
+}
+function spendingLanePace(x,p){
+  const s=new Date(p.week.start).getTime(),e=new Date(p.week.end).getTime(),now=Date.now();
+  const elapsedRatio=Math.max(.08,Math.min(1,(now-s)/Math.max(1,e-s)));
+  const weekPct=elapsedRatio*100,spent=Math.max(0,(x.allocated||0)-(x.remaining||0)),spentPct=(x.allocated||0)>0?spent/Math.max(1,x.allocated)*100:0;
+  const elapsedDays=Math.max(1,(now-s)/86400000),dailySpent=spent/elapsedDays,runwayDays=dailySpent>0?Math.max(0,(x.remaining||0)/dailySpent):Infinity;
+  const paceRatio=spentPct/Math.max(1,weekPct);
+  const label=paceRatio<.82?'Slower than week':paceRatio<=1.18?'Tracking week':'Faster than week';
+  return {spent,spentPct,weekPct,runwayDays,paceRatio,label};
+}
+function normalizeSavingsGoals(goals){
+  return (goals||[]).map((g,i)=>({...g,active:g.active!==false,priority:g.priority||((g.type==='reserve'||i===0)?'high':'medium')}));
+}
+function goalPriorityWeight(priority){return priority==='high'?3:priority==='low'?1:2;}
+function goalSuggestedWeekly(goal,goals,weeklyBudget){
+  if(goal.active===false||weeklyBudget<=0)return 0;
+  const active=goals.filter(g=>g.active!==false&&Math.max(0,(g.target||0)-(g.current||0))>0);
+  const total=active.reduce((n,g)=>n+Math.max(1,(g.target||0)-(g.current||0))*goalPriorityWeight(g.priority),0);
+  if(total<=0)return 0;
+  const score=Math.max(1,(goal.target||0)-(goal.current||0))*goalPriorityWeight(goal.priority);
+  return Math.min(Math.max(0,(goal.target||0)-(goal.current||0)),Math.round(weeklyBudget*score/total));
+}
+
 function readSavingsGoals(){
   const st=readState(); const weekly=st?.config?.savingsRule?.weeklyAmount||0;
   const defaults=[
@@ -5224,54 +5396,67 @@ async function renderInsights(){
 
 
 async function renderBillsStudio(){
-  shellMeta('Bills','Protection Studio','Fund, time, and monitor required obligations','<a class="text-action" href="#details">Back</a>');
-  nav('bills'); const userId=getStoredUserId(); if(!userId){location.hash='setup';return;}
+  shellMeta('Bills','Protection Studio','Know what needs protection next and why','<a class="text-action" href="#details">Back</a>');
+  nav('bills');const userId=getStoredUserId();if(!userId){location.hash='setup';return;}
   try{
     const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);
-    const totalTarget=p.bills.reduce((n,b)=>n+(b.weeklyRequired||0),0), totalFunded=p.bills.reduce((n,b)=>n+(b.contributed||0),0);
-    const shields=p.bills.slice(0,3);
+    const ordered=[...(p.bills||[])].sort((a,b)=>billUrgencyScore(b)-billUrgencyScore(a));
+    const totalTarget=ordered.reduce((n,b)=>n+(b.weeklyRequired||0),0),totalFunded=ordered.reduce((n,b)=>n+(b.contributed||0),0);
+    const requiredToday=ordered.reduce((n,b)=>n+(b.requiredByToday||0),0),todayGap=ordered.reduce((n,b)=>n+Math.max(0,(b.requiredByToday||0)-(b.contributed||0)),0);
+    const next=ordered.find(b=>Math.max(0,(b.requiredByToday||0)-(b.contributed||0))>0)||ordered.find(b=>Math.max(0,(b.weeklyRequired||0)-(b.contributed||0))>0)||ordered[0];
+    const nextGap=next?Math.max(0,Math.max(next.requiredByToday||0,next.weeklyRequired||0)-(next.contributed||0)):0;
     root.innerHTML=`<div class="studio-stack">
-      <section class="studio-hero" style="--studio-accent:#60a5fa"><span class="studio-kicker">Bill Protection Studio</span><h2>Turn obligations into protected lanes.</h2><p class="studio-copy">The vault shows funding pressure, due timing, and which bill should be protected next.</p><div class="studio-summary"><div class="studio-stat"><small>Required this week</small><strong>${formatCents(totalTarget)}</strong><span>Configured bill share</span></div><div class="studio-stat"><small>Marked protected</small><strong>${formatCents(totalFunded)}</strong><span>Current contributions</span></div><div class="studio-stat"><small>Attention</small><strong>${p.bills.filter(b=>b.status!=='ON_TRACK').length}</strong><span>Behind required-by-today</span></div></div></section>
-      <section class="bill-vault"><div class="bill-orbit"></div><div class="vault-core"><div><small>Protection gap</small><strong>${formatCents(p.protected)}</strong></div></div>${shields.map((b,i)=>`<div class="bill-shield s${i+1}"><small>${b.status==='ON_TRACK'?'Protected':'Needs funding'}</small><strong>${escapeHtml(b.name)}</strong><span>${formatCents(b.contributed)} / ${formatCents(b.weeklyRequired)}</span><div class="shield-meter" style="--pct:${Math.min(100,Math.round((b.contributed||0)/Math.max(1,b.weeklyRequired||1)*100))}%"><b></b></div></div>`).join('')}</section>
-      <section class="section"><div class="section-head"><div><span class="section-kicker">Obligations</span><h2>Fund next</h2><div class="section-caption">“Mark protected” updates the amount you have already set aside for that bill.</div></div></div><div class="bill-list-grid">${p.bills.map(b=>`<div class="bill-studio-row"><div><h3>${escapeHtml(b.name)}</h3><p>${b.dueDate?dueDateLabel(b.dueDate):'Recurring bill'} · Required today ${formatCents(b.requiredByToday)} · Weekly target ${formatCents(b.weeklyRequired)} · ${b.status==='ON_TRACK'?'On track':'Needs attention'}</p></div><div class="bill-action"><input inputmode="decimal" placeholder="25.00" aria-label="Amount to protect for ${escapeHtml(b.name)}"><button class="btn btn-primary protect-bill" data-id="${b.id}">Mark protected</button></div></div>`).join('')}</div></section>
+      <section class="studio-hero" style="--studio-accent:#60a5fa"><span class="studio-kicker">Bill Protection Studio</span><h2>Protect the next obligation, not every number at once.</h2><p class="studio-copy">Required-by-today pressure is separated from the full weekly target so the next action stays clear.</p><div class="studio-summary"><div class="studio-stat"><small>Required today</small><strong>${formatCents(requiredToday)}</strong><span>${todayGap?formatCents(todayGap)+' still unprotected':'Covered for today'}</span></div><div class="studio-stat"><small>Weekly target</small><strong>${formatCents(totalTarget)}</strong><span>${formatCents(totalFunded)} marked protected</span></div><div class="studio-stat"><small>Attention</small><strong>${ordered.filter(b=>(b.contributed||0)<(b.requiredByToday||0)).length}</strong><span>Behind today’s protection level</span></div></div></section>
+      <section class="world-decision" style="--world-accent:#60a5fa"><div><small>Fund next</small><strong>${next?escapeHtml(next.name):'No bills configured'}</strong><span>${next?(nextGap?formatCents(nextGap)+' remains before its current target is protected.':'This obligation is currently protected.'):'Add recurring obligations in Plan.'}</span></div>${next&&nextGap?`<button class="btn btn-primary" id="fundNextBill" data-id="${next.id}" data-gap="${nextGap}">Prepare ${formatCents(nextGap)}</button>`:'<a class="btn btn-secondary" href="#setup">Edit Plan</a>'}</section>
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Due-date gravity</span><h2>Nearest pressure first</h2><div class="section-caption">Required-by-today gaps outrank later weekly targets.</div></div></div><div class="bill-gravity-list">${ordered.length?ordered.map(b=>{const today=Math.max(0,(b.requiredByToday||0)-(b.contributed||0)),week=Math.max(0,(b.weeklyRequired||0)-(b.contributed||0)),fundPct=Math.min(100,Math.round((b.contributed||0)/Math.max(1,b.weeklyRequired||1)*100)),days=billDaysToDue(b.dueDate);return`<div class="bill-gravity-row"><span class="bill-gravity-mark">${semanticIcon(b.name,'bill')}</span><div class="bill-gravity-main"><strong>${escapeHtml(b.name)}</strong><span>${b.dueDate?dueDateLabel(b.dueDate):'Recurring'} · ${days==null?'Due timing configured in Plan':days<0?'Past configured due date':days===0?'Due today':days===1?'Due in 1 day':'Due in '+days+' days'} · ${today?'Needs '+formatCents(today)+' today':'Today protected'}</span><div class="bill-pressure" style="--pct:${fundPct}%"><i></i></div></div><div class="bill-gravity-value"><strong>${formatCents(week)}</strong><span>to weekly target</span></div></div>`}).join(''):'<div class="empty">No bills configured.</div>'}</div></section>
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Protection controls</span><h2>Mark money you have set aside</h2><div class="section-caption">This updates the planning record only; it does not move money at a bank.</div></div></div><div class="world-list">${ordered.map(b=>{const today=Math.max(0,(b.requiredByToday||0)-(b.contributed||0)),week=Math.max(0,(b.weeklyRequired||0)-(b.contributed||0));return`<div class="world-row bill-fund-row" data-bill-id="${b.id}"><div class="world-row-head"><strong>${escapeHtml(b.name)}</strong><span>${today?'Needs '+formatCents(today)+' today':week?formatCents(week)+' to weekly target':'Protected'}</span></div><div class="world-row-meta"><span class="world-chip">${b.dueDate?dueDateLabel(b.dueDate):'Recurring'}</span><span class="world-chip">${escapeHtml(b.frequency||'recurring')}</span><span class="world-chip">${formatCents(b.contributed||0)} protected</span></div><div class="world-row-actions"><input inputmode="decimal" placeholder="25.00" aria-label="Amount to protect for ${escapeHtml(b.name)}"><button class="btn btn-primary protect-bill" data-id="${b.id}">Mark protected</button></div></div>`}).join('')}</div></section>
+      <div class="world-note">Protection values are planning records. They indicate money you intend to reserve for obligations; they do not verify or move funds in an external account.</div>
     </div>`;
+    document.getElementById('fundNextBill')?.addEventListener('click',e=>{const btn=e.currentTarget,row=document.querySelector(`.bill-fund-row[data-bill-id="${btn.dataset.id}"]`),input=row?.querySelector('input');if(input){input.value=(Number(btn.dataset.gap)/100).toFixed(2);row.scrollIntoView({behavior:readUiPrefs().motion==='reduced'?'auto':'smooth',block:'center'});input.focus();}});
     document.querySelectorAll('.protect-bill').forEach(btn=>btn.onclick=async()=>{
-      const input=btn.parentElement.querySelector('input'),dollars=Number(input.value);
-      if(!Number.isFinite(dollars)||dollars<=0){toast('Enter an amount greater than $0.');return;}
-      btn.disabled=true;
-      try{
-        const row=btn.closest('.bill-studio-row'),billName=row?.querySelector('h3')?.textContent||'Bill';
-        await apiRequest('/bill/contribute',{method:'POST',body:JSON.stringify({userId,billId:btn.dataset.id,amount:Math.round(dollars*100)})});
-        queueFinancialEvent('billProtected','bills',{amount:Math.round(dollars*100),name:billName});
-        playLocalConfirmation(row,'bills');toast('Bill protection updated.');
-        await new Promise(r=>setTimeout(r,readUiPrefs().motion==='reduced'?0:280));await renderBillsStudio();
-      }catch(e){toast(e.message);btn.disabled=false;}
-    });
+      const input=btn.parentElement.querySelector('input'),dollars=Number(input.value);if(!Number.isFinite(dollars)||dollars<=0){toast('Enter an amount greater than $0.');return;}
+      btn.disabled=true;try{const row=btn.closest('.world-row'),billName=row?.querySelector('.world-row-head strong')?.textContent||'Bill';await apiRequest('/bill/contribute',{method:'POST',body:JSON.stringify({userId,billId:btn.dataset.id,amount:Math.round(dollars*100)})});queueFinancialEvent('billProtected','bills',{amount:Math.round(dollars*100),name:billName});playLocalConfirmation(row,'bills');toast('Bill protection updated.');await new Promise(r=>setTimeout(r,readUiPrefs().motion==='reduced'?0:280));await renderBillsStudio();}catch(e){toast(e.message);btn.disabled=false;}});
   }catch(e){root.innerHTML=errBox(e.message);}
 }
 
 async function renderEssentialsStudio(){
-  shellMeta('Essentials','Runway Studio','See how long practical weekly lanes can last','<a class="text-action" href="#details">Back</a>');
-  nav('essentials'); const userId=getStoredUserId(); if(!userId){location.hash='setup';return;}
+  shellMeta('Essentials','Runway Studio','Answer whether practical spending can last the week','<a class="text-action" href="#details">Back</a>');
+  nav('essentials');const userId=getStoredUserId();if(!userId){location.hash='setup';return;}
   try{
-    const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`), time=weekTimeState(p);
-    const days=Math.max(1,time.days||1);
-    root.innerHTML=`<div class="studio-stack"><section class="studio-hero" style="--studio-accent:#6ee7b7"><span class="studio-kicker">Essentials Runway</span><h2>Translate dollars into remaining-week coverage.</h2><p class="studio-copy">Each practical lane shows remaining money, estimated daily room, and how much of its original weekly allocation is still available.</p><div class="studio-summary"><div class="studio-stat"><small>Days remaining</small><strong>${time.days}</strong><span>${time.label}</span></div><div class="studio-stat"><small>Essentials left</small><strong>${formatCents(p.essentials.reduce((n,x)=>n+Math.max(0,x.remaining),0))}</strong><span>All need-based lanes</span></div><div class="studio-stat"><small>Active lanes</small><strong>${p.essentials.length}</strong><span>Configured essentials</span></div></div></section>
-      <section class="runway-grid">${p.essentials.map(x=>{const pct=Math.max(0,Math.min(100,Math.round(Math.max(0,x.remaining)/Math.max(1,x.allocated)*100)));const daily=Math.round(Math.max(0,x.remaining)/days);return`<div class="runway-card"><div class="runway-ring" style="--pct:${pct}%"></div><div class="runway-icon">${semanticIcon(x.name)}</div><small>${pct}% remaining</small><strong>${escapeHtml(x.name)} · ${formatCents(x.remaining)}</strong><p>About ${formatCents(daily)} per remaining day if spread evenly through this cycle.</p></div>`}).join('')}</section>
-      <section class="section"><div class="next-step"><div class="next-step-copy"><small>Practical check</small><strong>Need to test a purchase?</strong><span>Preview an amount before recording it.</span></div><a class="btn btn-primary" href="#precheck">Can I spend this?</a></div></section>
+    const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`),time=weekTimeState(p),days=Math.max(1,time.days||1);
+    const lanes=(p.essentials||[]).map(x=>({...x,pace:spendingLanePace(x,p)}));
+    const totalLeft=lanes.reduce((n,x)=>n+Math.max(0,x.remaining||0),0),totalAllocated=lanes.reduce((n,x)=>n+Math.max(0,x.allocated||0),0);
+    const pressure=lanes.filter(x=>(x.remaining||0)<0||x.pace.runwayDays<days).sort((a,b)=>(a.pace.runwayDays||999)-(b.pace.runwayDays||999));
+    const critical=pressure[0];
+    const overall=critical?(critical.remaining<0?`${critical.name} is already beyond its weekly lane.`:`${critical.name} may not last the remaining ${days} day${days===1?'':'s'} at its current recorded pace.`):'Recorded essentials are positioned to last through the remaining week at the current pace.';
+    root.innerHTML=`<div class="studio-stack">
+      <section class="studio-hero" style="--studio-accent:#6ee7b7"><span class="studio-kicker">Essentials Runway</span><h2>Will practical spending last the week?</h2><p class="studio-copy">Runway compares remaining money with recorded spending pace. It is a planning estimate, not a prediction of future transactions.</p><div class="studio-summary"><div class="studio-stat"><small>Days remaining</small><strong>${time.days}</strong><span>${time.label}</span></div><div class="studio-stat"><small>Essentials left</small><strong>${formatCents(totalLeft)}</strong><span>of ${formatCents(totalAllocated)} allocated</span></div><div class="studio-stat"><small>Pressure lanes</small><strong>${pressure.length}</strong><span>May need review at current pace</span></div></div></section>
+      <section class="world-decision" style="--world-accent:#6ee7b7"><div><small>Runway answer</small><strong>${pressure.length?'Review one practical lane':'Current runway looks workable'}</strong><span>${escapeHtml(overall)}</span></div><a class="btn btn-primary" href="#precheck">Pre-check purchase</a></section>
+      <section class="runway-board">${lanes.length?lanes.map(x=>{const remainingPct=Math.max(0,Math.min(100,Math.round(Math.max(0,x.remaining||0)/Math.max(1,x.allocated||1)*100))),runway=x.pace.runwayDays===Infinity?'Full week+':x.remaining<0?'0 days':Math.min(99,x.pace.runwayDays).toFixed(x.pace.runwayDays<10?1:0)+' days',answer=x.remaining<0?'Weekly lane exceeded':x.pace.runwayDays>=days?'Likely to last at current recorded pace':'Current pace could use more room';return`<article class="runway-lane"><div class="runway-lane-head"><span class="runway-lane-icon">${semanticIcon(x.name)}</span><span><strong>${escapeHtml(x.name)}</strong><span>${x.pace.label}</span></span></div><div class="runway-answer">${answer}</div><div class="pace-meter" style="--pct:${remainingPct}%"><i></i></div><div class="runway-facts"><div class="runway-fact"><small>Remaining</small><strong>${formatCents(x.remaining||0)}</strong></div><div class="runway-fact"><small>Runway</small><strong>${runway}</strong></div><div class="runway-fact"><small>Daily room</small><strong>${formatCents(Math.round(Math.max(0,x.remaining||0)/days))}</strong></div><div class="runway-fact"><small>Used</small><strong>${Math.round(x.pace.spentPct)}%</strong></div></div><button class="btn btn-secondary precheck-lane" data-id="${x.id}" style="margin-top:9px">Pre-check this lane</button></article>`}).join(''):'<div class="empty">No essential lanes configured.</div>'}</section>
+      <div class="world-note">Runway is based on recorded spending so far. Missing or delayed transactions can make the estimate look more comfortable than reality.</div>
     </div>`;
+    document.querySelectorAll('.precheck-lane').forEach(btn=>btn.onclick=()=>{setPrecheckHint(btn.dataset.id);location.hash='precheck';});
   }catch(e){root.innerHTML=errBox(e.message);}
 }
 
 async function renderSavingsStudio(){
-  shellMeta('Savings','Goal Studio','Give weekly savings visible purposes and milestones','<a class="text-action" href="#details">Back</a>');
-  nav('savings'); const userId=getStoredUserId(); if(!userId){location.hash='setup';return;}
+  shellMeta('Savings','Goal Studio','Prioritize savings destinations without confusing them with bank balances','<a class="text-action" href="#details">Back</a>');
+  nav('savings');const userId=getStoredUserId();if(!userId){location.hash='setup';return;}
   try{
-    const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`); let goals=readSavingsGoals();
+    const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`),st=readState(),weeklyBudget=st?.config?.savingsRule?.active?Math.max(0,st.config.savingsRule.weeklyAmount||0):0;
+    let goals=normalizeSavingsGoals(readSavingsGoals());
     const draw=()=>{
-      root.innerHTML=`<div class="studio-stack"><section class="studio-hero" style="--studio-accent:#f6d784"><span class="studio-kicker">Savings Goal Studio</span><h2>Turn one savings number into visible destinations.</h2><p class="studio-copy">Goals are purpose-specific planning buckets. They do not move bank money; they help you visualize where your saved money is meant to go.</p><div class="studio-summary"><div class="studio-stat"><small>This week</small><strong>${formatCents(p.savingsThisWeek||0)}</strong><span>Current weekly saving</span></div><div class="studio-stat"><small>Goals</small><strong>${goals.length}</strong><span>Purpose-specific targets</span></div><div class="studio-stat"><small>Total progress</small><strong>${formatCents(goals.reduce((n,g)=>n+(g.current||0),0))}</strong><span>Saved across goals</span></div></div></section><section class="goal-grid">${goals.map(g=>{const pct=Math.max(0,Math.min(100,Math.round((g.current||0)/Math.max(1,g.target||1)*100)));return`<div class="goal-card"><div class="goal-gem">${semanticIcon(g.name,g.type)}</div><small>${pct}% complete</small><strong>${escapeHtml(g.name)}</strong><p>${formatCents(g.current||0)} of ${formatCents(g.target||0)}</p><div class="goal-progress" style="--pct:${pct}%"><b></b></div><div class="bill-action" style="margin-top:10px"><input inputmode="decimal" placeholder="25.00"><button class="btn btn-primary add-goal" data-id="${g.id}">Add</button></div></div>`}).join('')}</section></div>`;
-      document.querySelectorAll('.add-goal').forEach(btn=>btn.onclick=()=>{const input=btn.parentElement.querySelector('input'),d=Number(input.value);if(!Number.isFinite(d)||d<=0){toast('Enter an amount greater than $0.');return;}const goal=goals.find(g=>g.id===btn.dataset.id),card=btn.closest('.goal-card');goals=goals.map(g=>g.id===btn.dataset.id?{...g,current:(g.current||0)+Math.round(d*100)}:g);writeSavingsGoals(goals);queueFinancialEvent('savingsAdded','savings',{amount:Math.round(d*100),name:goal?.name||'Savings goal'});playLocalConfirmation(card,'savings');toast('Goal progress updated.');setTimeout(draw,readUiPrefs().motion==='reduced'?0:300);});
-    }; draw();
+      const active=goals.filter(g=>g.active!==false),totalProgress=goals.reduce((n,g)=>n+(g.current||0),0),totalGap=active.reduce((n,g)=>n+Math.max(0,(g.target||0)-(g.current||0)),0);
+      root.innerHTML=`<div class="studio-stack">
+        <section class="studio-hero" style="--studio-accent:#f6d784"><span class="studio-kicker">Savings Goal Studio</span><h2>Give every saved dollar a visible purpose.</h2><p class="studio-copy">Goal progress is a planning layer. It does not claim that the same amount exists in a connected savings account.</p><div class="studio-summary"><div class="studio-stat"><small>Weekly savings plan</small><strong>${formatCents(p.savingsThisWeek||0)}</strong><span>${weeklyBudget?'Configured weekly amount':'No weekly target configured'}</span></div><div class="studio-stat"><small>Active goals</small><strong>${active.length}</strong><span>${goals.length-active.length} paused</span></div><div class="studio-stat"><small>Active goal gap</small><strong>${formatCents(totalGap)}</strong><span>${formatCents(totalProgress)} tracked progress</span></div></div></section>
+        <section class="world-decision" style="--world-accent:#f6d784"><div><small>Suggested weekly distribution</small><strong>${weeklyBudget?'Allocate the weekly savings plan by priority and remaining gap':'Set a weekly savings target to generate suggestions'}</strong><span>${weeklyBudget?'Suggestions do not move money; they divide your configured weekly savings amount across active goals.':'The goal cards still track progress, but no weekly allocation suggestion is generated.'}</span></div><a class="btn btn-secondary" href="#setup">Edit savings plan</a></section>
+        <section class="savings-board">${goals.length?goals.map(g=>{const pct=Math.max(0,Math.min(100,Math.round((g.current||0)/Math.max(1,g.target||1)*100))),gap=Math.max(0,(g.target||0)-(g.current||0)),suggested=goalSuggestedWeekly(g,goals,weeklyBudget);return`<article class="savings-goal ${g.active===false?'paused':''}" data-goal-id="${g.id}"><div class="savings-goal-head"><span class="savings-goal-gem">${semanticIcon(g.name,g.type)}</span><span><strong>${escapeHtml(g.name)}</strong><span>${g.active===false?'Paused':pct>=100?'Complete':'Active goal'}</span></span><span class="goal-priority">${escapeHtml(g.priority)} priority</span></div><div class="savings-goal-progress" style="--pct:${pct}%"><i></i></div><div class="savings-goal-facts"><div><small>Current</small><strong>${formatCents(g.current||0)}</strong></div><div><small>Target</small><strong>${formatCents(g.target||0)}</strong></div><div><small>Gap</small><strong>${formatCents(gap)}</strong></div><div><small>Suggested / week</small><strong>${g.active===false?'Paused':weeklyBudget?formatCents(suggested):'—'}</strong></div></div><div class="goal-control-row"><input inputmode="decimal" placeholder="25.00" aria-label="Add progress to ${escapeHtml(g.name)}"><button class="btn btn-primary add-goal" data-id="${g.id}" ${g.active===false?'disabled':''}>Add progress</button></div><details class="goal-settings"><summary>Goal controls</summary><div class="goal-settings-body"><select class="goal-priority-select" data-id="${g.id}" aria-label="Priority for ${escapeHtml(g.name)}"><option value="high" ${g.priority==='high'?'selected':''}>High priority</option><option value="medium" ${g.priority==='medium'?'selected':''}>Medium priority</option><option value="low" ${g.priority==='low'?'selected':''}>Low priority</option></select><button class="goal-toggle" data-id="${g.id}" type="button">${g.active===false?'Resume goal':'Pause goal'}</button></div></details></article>`}).join(''):'<div class="empty">No savings goals configured.</div>'}</section>
+        <div class="world-note">Suggested weekly amounts are planning allocations derived from your configured weekly savings target, goal priority, and remaining gap. They are not financial advice or automatic transfers.</div>
+      </div>`;
+      document.querySelectorAll('.add-goal').forEach(btn=>btn.onclick=()=>{const input=btn.parentElement.querySelector('input'),d=Number(input.value);if(!Number.isFinite(d)||d<=0){toast('Enter an amount greater than $0.');return;}const goal=goals.find(g=>g.id===btn.dataset.id),card=btn.closest('.savings-goal');goals=goals.map(g=>g.id===btn.dataset.id?{...g,current:(g.current||0)+Math.round(d*100)}:g);writeSavingsGoals(goals);queueFinancialEvent('savingsAdded','savings',{amount:Math.round(d*100),name:goal?.name||'Savings goal'});playLocalConfirmation(card,'savings');toast('Goal progress updated.');setTimeout(draw,readUiPrefs().motion==='reduced'?0:300);});
+      document.querySelectorAll('.goal-priority-select').forEach(sel=>sel.onchange=()=>{goals=goals.map(g=>g.id===sel.dataset.id?{...g,priority:sel.value}:g);writeSavingsGoals(goals);toast('Goal priority updated.');draw();});
+      document.querySelectorAll('.goal-toggle').forEach(btn=>btn.onclick=()=>{goals=goals.map(g=>g.id===btn.dataset.id?{...g,active:g.active===false}:g);writeSavingsGoals(goals);toast(goals.find(g=>g.id===btn.dataset.id)?.active===false?'Goal paused.':'Goal resumed.');draw();});
+    };draw();
   }catch(e){root.innerHTML=errBox(e.message);}
 }
 
@@ -5283,6 +5468,7 @@ async function renderPrecheck(){
     const cats=[...p.essentials.map(x=>({...x,type:'LIVING'})),...p.forYou.map(x=>({...x,type:'DISCRETIONARY'}))];
     root.innerHTML=`<div class="studio-stack"><section class="precheck-stage"><span class="studio-kicker">Purchase simulation</span><h2 style="margin:6px 0">Test it before you log it.</h2><p class="studio-copy">This uses your This Week plan—not a bank balance—to preview what a purchase would leave behind.</p><div class="precheck-orb"><div><small>Available now</small><strong id="preOrb">${formatCents(p.available)}</strong><span>Planning balance</span></div></div><div class="field-grid"><div class="field-group"><label class="field-label">Purchase amount</label><div class="amount-row"><span class="dollar">$</span><input id="preAmount" inputmode="decimal" placeholder="0.00"></div></div><div class="field-group"><label class="field-label">Category</label><select id="preCat" class="select-field">${cats.map(x=>`<option value="${x.id}">${escapeHtml(x.name)}</option>`).join('')}</select></div></div><div id="preResult" class="precheck-result"><strong>Enter an amount.</strong><span>You’ll see what remains in the selected lane and overall planning balance.</span></div><div class="action-row"><a class="btn btn-secondary" href="#home">Back Home</a><a class="btn btn-primary" href="#log">Log Spending</a></div></section></div>`;
     const amount=document.getElementById('preAmount'),cat=document.getElementById('preCat'),result=document.getElementById('preResult'),orb=document.getElementById('preOrb');
+    const precheckHint=consumePrecheckHint();if(precheckHint&&cats.some(x=>x.id===precheckHint))cat.value=precheckHint;
     const calc=()=>{const cents=Math.round((Number(amount.value)||0)*100),x=cats.find(c=>c.id===cat.value)||cats[0];if(!x||cents<=0){result.className='precheck-result';result.innerHTML='<strong>Enter an amount.</strong><span>Preview remains temporary until you log the purchase.</span>';orb.textContent=formatCents(p.available);return;}const lane=x.remaining-cents,overall=p.available-cents,good=lane>=0&&overall>=0;result.className='precheck-result '+(good?'good':'watch');result.innerHTML=`<strong>${good?'This fits the current plan.':'This would pressure the current plan.'}</strong><span>${escapeHtml(x.name)} would have ${formatCents(lane)} left and Available Now would become ${formatCents(overall)}. Protected-bill calculations are shown separately.</span>`;orb.textContent=formatCents(overall);};
     amount.oninput=calc;cat.onchange=calc;
   }catch(e){root.innerHTML=errBox(e.message);}
@@ -5315,16 +5501,22 @@ function renderPreferences(){
 
 
 async function renderLifestyleStudio(){
-  shellMeta('Lifestyle','Flex Studio','Understand optional spending without turning Home into a spreadsheet','<a class="text-action" href="#home">Home</a>');
+  shellMeta('Lifestyle','Flex Studio','Use optional-spending pace without moralizing the choice','<a class="text-action" href="#details">Back</a>');
   nav('lifestyle');const userId=getStoredUserId();if(!userId){location.hash='setup';return;}
   try{
-    const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`),s=homeSignals(p),weekPct=Math.max(1,s.weekProgress);
-    const cats=p.forYou||[],allocated=cats.reduce((n,x)=>n+(x.allocated||0),0),spent=cats.reduce((n,x)=>n+Math.max(0,(x.allocated||0)-(x.remaining||0)),0),spentPct=allocated?spent/allocated*100:0,ratio=spentPct/weekPct;
-    const temp=ratio<.85?'Calm':ratio<1.2?'Active':'Hot',copy=temp==='Calm'?'Flexible spending is moving slower than the week.':temp==='Active'?'Flexible spending is roughly tracking the week.':'Flexible spending is moving faster than elapsed time.';
-    const top=cats.slice().sort((a,b)=>((a.remaining||0)/(a.allocated||1))-((b.remaining||0)/(b.allocated||1))).slice(0,3);
-    root.innerHTML=`<div class="studio-stack"><section class="studio-hero" style="--studio-accent:#f0a7d3"><span class="studio-kicker">Lifestyle Flex Studio</span><h2>Keep optional spending expressive, not chaotic.</h2><p class="studio-copy">This view uses pace and remaining room instead of good/bad judgments.</p><div class="studio-summary"><div class="studio-stat"><small>Flex temperature</small><strong>${temp}</strong><span>${copy}</span></div><div class="studio-stat"><small>Remaining</small><strong>${formatCents(cats.reduce((n,x)=>n+Math.max(0,x.remaining),0))}</strong><span>Across flexible lanes</span></div><div class="studio-stat"><small>Used</small><strong>${Math.round(spentPct)}%</strong><span>${Math.round(weekPct)}% of week elapsed</span></div></div></section>
-      <section class="lifestyle-world"><div class="flex-orbit"></div><div class="flex-core"><div><small>Flex temperature</small><strong>${temp}</strong><span>${formatCents(spent)} used</span></div></div>${top.map((x,i)=>`<div class="flex-node n${i+1}"><small>${Math.max(0,Math.round((x.remaining||0)/Math.max(1,x.allocated||1)*100))}% left</small><strong>${escapeHtml(x.name)}</strong><span>${formatCents(x.remaining)} remaining</span></div>`).join('')}</section>
-      <section class="section"><div class="next-step"><div class="next-step-copy"><small>Low-friction tool</small><strong>Thinking about a purchase?</strong><span>Preview the effect first; nothing changes until you log it.</span></div><a class="btn btn-primary" href="#precheck">Can I spend this?</a></div></section></div>`;
+    const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`),s=homeSignals(p),weekPct=Math.max(1,s.weekProgress),caps=readFlexCaps();
+    const cats=(p.forYou||[]).map(x=>{const spent=Math.max(0,(x.allocated||0)-(x.remaining||0)),spentPct=(x.allocated||0)>0?spent/Math.max(1,x.allocated)*100:0,capPct=Math.max(50,Math.min(100,Number(caps[x.id]||80))),capAmount=Math.round((x.allocated||0)*capPct/100),capRoom=capAmount-spent,pace=spendingLanePace(x,p);return{...x,spent,spentPct,capPct,capAmount,capRoom,pace};});
+    const allocated=cats.reduce((n,x)=>n+(x.allocated||0),0),spent=cats.reduce((n,x)=>n+x.spent,0),spentPct=allocated?spent/allocated*100:0,ratio=spentPct/weekPct,temp=ratio<.85?'Calm':ratio<1.2?'Active':'Hot';
+    const copy=temp==='Calm'?'Flexible spending is moving slower than the week.':temp==='Active'?'Flexible spending is roughly tracking elapsed time.':'Flexible spending is moving faster than elapsed time.';
+    const totalRoom=cats.reduce((n,x)=>n+Math.max(0,x.remaining||0),0),beyond=cats.filter(x=>x.capRoom<0).length;
+    root.innerHTML=`<div class="studio-stack">
+      <section class="studio-hero" style="--studio-accent:#f0a7d3"><span class="studio-kicker">Lifestyle Flex Studio</span><h2>Know the pace without labeling the choice.</h2><p class="studio-copy">Soft caps are optional warning lines. They never block a purchase or change the underlying weekly allocation.</p><div class="studio-summary"><div class="studio-stat"><small>Flex temperature</small><strong>${temp}</strong><span>${copy}</span></div><div class="studio-stat"><small>Flexible room</small><strong>${formatCents(totalRoom)}</strong><span>Across optional lanes</span></div><div class="studio-stat"><small>Past soft cap</small><strong>${beyond}</strong><span>Informational warning only</span></div></div></section>
+      <section class="world-decision" style="--world-accent:#f0a7d3"><div><small>Flex interpretation</small><strong>${temp==='Hot'?'Pace is currently faster than the week':'Current pace is '+temp.toLowerCase()}</strong><span>${copy} A soft cap can warn earlier without creating a hard spending lock.</span></div><a class="btn btn-primary" href="#precheck">Can I spend this?</a></section>
+      <section class="flex-board">${cats.length?cats.map(x=>{const state=x.capRoom<0?'Beyond soft cap':x.spentPct>=x.capPct*.85?'Near soft cap':'Within soft cap';return`<article class="flex-lane"><div class="flex-lane-head"><span><strong>${escapeHtml(x.name)}</strong><span>${x.pace.label}</span></span><span class="flex-temp">${state}</span></div><div class="soft-cap-track" style="--used:${Math.min(100,x.spentPct)}%;--cap:${x.capPct}%"><i></i><b></b></div><div class="flex-lane-meta"><div><small>Remaining</small><strong>${formatCents(x.remaining||0)}</strong></div><div><small>Used</small><strong>${Math.round(x.spentPct)}%</strong></div><div><small>Soft-cap room</small><strong>${formatCents(x.capRoom)}</strong></div></div><button class="btn btn-secondary precheck-flex" data-id="${x.id}" style="margin-top:9px">Pre-check this lane</button><details class="world-tuning"><summary>Soft-cap settings</summary><div class="world-tuning-body"><label for="cap-${x.id}">Warning line only</label><select id="cap-${x.id}" class="flex-cap-select" data-id="${x.id}"><option value="70" ${x.capPct===70?'selected':''}>70%</option><option value="80" ${x.capPct===80?'selected':''}>80%</option><option value="90" ${x.capPct===90?'selected':''}>90%</option><option value="100" ${x.capPct===100?'selected':''}>100%</option></select></div></details></article>`}).join(''):'<div class="empty">No flexible lanes configured.</div>'}</section>
+      <div class="world-note">Soft caps are personal planning warnings. Exceeding one does not imply a purchase is wrong, unaffordable, or prohibited; use Pre-check for the broader weekly impact.</div>
+    </div>`;
+    document.querySelectorAll('.precheck-flex').forEach(btn=>btn.onclick=()=>{setPrecheckHint(btn.dataset.id);location.hash='precheck';});
+    document.querySelectorAll('.flex-cap-select').forEach(sel=>sel.onchange=()=>{const next=readFlexCaps();next[sel.dataset.id]=Number(sel.value);writeFlexCaps(next);toast('Soft cap updated.');renderLifestyleStudio();});
   }catch(e){root.innerHTML=errBox(e.message);}
 }
 
