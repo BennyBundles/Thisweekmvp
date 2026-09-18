@@ -4660,6 +4660,34 @@ img,svg,canvas,video{max-width:100%}
 .qa-summary strong{display:block;margin-top:3px;font-size:.72rem}
 @media(max-width:350px){.qa-summary{grid-template-columns:1fr}.qa-row{grid-template-columns:22px minmax(0,1fr)}.qa-state{grid-column:2}}
 
+
+/* PHASE 12 — PERFORMANCE + RESILIENCE v24 */
+body[data-performance="lite"]::before,
+body[data-performance="lite"]::after,
+body[data-performance="lite"] .screen::before{animation:none!important;opacity:.18}
+body[data-performance="lite"] .screen::after{opacity:.18}
+body[data-performance="lite"] :where(.topbar,.bottom-nav,.app-toast,.app-sheet){backdrop-filter:blur(10px)}
+body[data-performance="lite"] .route-enter{animation-duration:.22s!important;filter:none!important}
+body[data-performance="lite"] .zen-flow .line{animation-duration:30s!important}
+body[data-performance="lite"] .obs-scan{animation-duration:8s!important}
+body[data-performance="lite"] .pulse-line,
+body[data-performance="lite"] .progress-fill::after,
+body[data-performance="lite"] .btn-primary::after{animation:none!important}
+body[data-performance="lite"] .zen-scene::before,
+body[data-performance="lite"] .zen-scene::after{opacity:.22}
+body[data-performance="lite"] .fin-event-token:nth-child(n+3){display:none!important}
+.perf-hero{padding:14px;border-radius:22px;border:1px solid rgba(103,232,249,.09);background:linear-gradient(145deg,rgba(103,232,249,.04),rgba(255,255,255,.012))}
+.perf-hero h2{margin:5px 0 5px;font-size:1rem}.perf-hero p{margin:0;color:var(--text-soft);font-size:.62rem;line-height:1.45}
+.perf-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:10px}
+.perf-stat{padding:9px;border-radius:13px;background:rgba(255,255,255,.014);border:1px solid rgba(177,206,221,.05)}
+.perf-stat small{display:block;font-size:.38rem;text-transform:uppercase;letter-spacing:.08em;color:#728b96}.perf-stat strong{display:block;margin-top:3px;font-size:.63rem}
+.perf-list{display:grid;gap:6px}.perf-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:9px 10px;border-radius:14px;border:1px solid rgba(177,206,221,.05);background:rgba(255,255,255,.012)}
+.perf-row strong{display:block;font-size:.58rem}.perf-row span{display:block;margin-top:3px;color:#7f98a3;font-size:.47rem;line-height:1.4}.perf-value{font-size:.55rem!important;color:#b8ccd4!important;white-space:nowrap}
+.perf-meter{height:6px;margin-top:7px;border-radius:999px;background:rgba(255,255,255,.035);overflow:hidden}.perf-meter i{display:block;height:100%;width:var(--pct);border-radius:inherit;background:linear-gradient(90deg,#67e8f9,#72d6aa)}
+.perf-note{padding:9px 10px;border-radius:14px;border:1px solid rgba(246,215,132,.07);background:rgba(246,215,132,.02);color:#a99f7c;font-size:.51rem;line-height:1.44}
+@media(max-width:430px){.perf-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:320px){.perf-row{grid-template-columns:1fr}.perf-value{text-align:left}}
+
 </style></head><body><a class="skip-link" href="#app">Skip to main content</a><div class="sr-only" id="routeAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app" tabindex="-1">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="zen-home">
@@ -5849,7 +5877,7 @@ function playFinancialEventOnHome(event){
   if(prefs.effectiveMotion!=='reduced'){
     const layer=document.createElement('div');layer.className='fin-event-layer';
     if(world!=='available'&&event.type!=='weekReset'){
-      for(let i=0;i<3;i++){const token=document.createElement('span');token.className='fin-event-token';token.dataset.world=world;token.textContent='$';layer.appendChild(token);}
+      for(let i=0;i<maxEventParticles();i++){const token=document.createElement('span');token.className='fin-event-token';token.dataset.world=world;token.textContent='$';layer.appendChild(token);}
     }else if(event.type!=='weekReset'){
       const token=document.createElement('span');token.className='fin-event-token';token.dataset.world='available';token.textContent='✓';layer.appendChild(token);
     }
@@ -7142,6 +7170,39 @@ function renderSetup(){
   Object.keys(bpMap).forEach(id=>q(id)?.addEventListener('input',()=>{updateBlueprint();const el=q(bpMap[id]);if(el){el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');}}));
   updateBlueprint();
   q('savePlan').onclick=async()=>{ const fields=['netPay','savings','rent','phone','groceries','gas','eating','fun'], box=q('setupErr'); if(fields.some(x=>!valid(x))||cents('netPay')<=0){box.innerHTML=errBox('Enter valid dollar amounts. Net pay must be greater than $0.');return;} const rd=Number(q('rentDay').value),pd=Number(q('phoneDay').value); if(rd<1||rd>28||pd<1||pd>28){box.innerHTML=errBox('Use a due day from 1 to 28 for this preview.');return;} const due=day=>{const n=new Date(),d=new Date(n.getFullYear(),n.getMonth(),day,17);if(d<n)d.setMonth(d.getMonth()+1);return d.toISOString();}; const preset={userId:current?.userId||getStoredUserId()||undefined,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||'America/New_York',weekAnchorDow:Number(q('weekDay').value),weekAnchorMinutes:Number(q('weekHour').value)*60,payProfile:{netPayAmount:cents('netPay'),payFrequency:q('payFrequency').value,payAnchorAt:new Date().toISOString()},bills:[{name:'Housing',amount:cents('rent'),frequency:'monthly',dueDate:due(rd)},{name:'Phone',amount:cents('phone'),frequency:'monthly',dueDate:due(pd)}],livingNeeds:[{name:'Groceries',weeklyLimit:cents('groceries'),ebtOffset:0},{name:'Gas / Transit',weeklyLimit:cents('gas'),ebtOffset:0}],discretionary:[{name:'Eating Out',weeklyLimit:cents('eating')},{name:'Fun',weeklyLimit:cents('fun')}],savingsRule:{weeklyAmount:cents('savings'),active:cents('savings')>0}}; const btn=q('savePlan');btn.disabled=true;btn.textContent='Building your week...';try{const r=await apiRequest('/setup',{method:'POST',body:JSON.stringify(preset)});setStoredUserId(r.userId);await apiRequest('/week/current',{method:'POST',body:JSON.stringify({userId:r.userId})});location.hash='home';}catch(e){btn.disabled=false;btn.textContent='Save & Open Dashboard';box.innerHTML=errBox(e.message);} };
+}
+
+const PERF_STORAGE_SOFT_BYTES=2*1024*1024;
+function runtimePerformanceTier(){
+  const cores=Number(navigator.hardwareConcurrency||0),memory=Number(navigator.deviceMemory||0),save=!!navigator.connection?.saveData;
+  if(save||(cores&&cores<=4)||(memory&&memory<=4)||document.documentElement.clientWidth<=320)return 'lite';
+  return 'standard';
+}
+function applyRuntimePerformanceTier(){document.body.dataset.performance=runtimePerformanceTier();}
+function maxEventParticles(){if(effectiveUiPrefs().effectiveMotion==='reduced')return 0;return runtimePerformanceTier()==='lite'?2:3;}
+function recordRouteRender(route,started){
+  const ms=Math.max(0,performance.now()-started),prior=runtimePerf.route[route]||{count:0,total:0,max:0,last:0};
+  prior.count++;prior.total+=ms;prior.max=Math.max(prior.max,ms);prior.last=ms;runtimePerf.route[route]=prior;
+}
+function storageFootprint(){
+  const rows=[];let total=0;
+  try{
+    for(let i=0;i<localStorage.length;i++){
+      const key=localStorage.key(i);if(!key||!key.startsWith('thisweek.'))continue;
+      const value=localStorage.getItem(key)||'',bytes=typeof TextEncoder==='function'?new TextEncoder().encode(value).length:value.length*2;
+      total+=bytes;rows.push({key,bytes});
+    }
+  }catch{}
+  return {total,rows:rows.sort((a,b)=>b.bytes-a.bytes),softPct:Math.min(100,Math.round(total/PERF_STORAGE_SOFT_BYTES*100))};
+}
+function clearDerivedRuntimeCaches(){
+  uiPrefsCache=null;connectedDataCache=null;savingsGoalsCache=null;savingsGoalsCacheRevision=-1;historySummaryCache={revision:-1,data:null};
+  runtimePerf.cacheHits=0;runtimePerf.cacheMisses=0;
+}
+function bindLongTaskObserver(){
+  if(window.__thisWeekLongTaskBound||!('PerformanceObserver'in window))return;
+  window.__thisWeekLongTaskBound=true;
+  try{const obs=new PerformanceObserver(list=>{runtimePerf.longTasks+=list.getEntries().length;});obs.observe({type:'longtask',buffered:true});}catch{}
 }
 
 const DEVICE_QA_TEST_KEY='thisweek.qa.roundtrip';
