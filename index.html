@@ -3613,6 +3613,110 @@ body[data-route="home"] main{padding-top:2px;padding-bottom:calc(96px + env(safe
   .zen-peek,.zen-more-menu,.zen-attention-child{animation:none!important}
 }
 
+
+/* PHASE 3 — BOTTOM SHEETS + LIGHTWEIGHT INSPECTION v15 */
+body.app-sheet-open{overflow:hidden}
+.app-sheet-backdrop{
+  position:fixed;inset:0;z-index:1200;display:flex;align-items:flex-end;justify-content:center;
+  padding:12px;background:rgba(1,7,13,.52);backdrop-filter:blur(7px);
+  opacity:0;pointer-events:none;transition:opacity var(--motion-fast) ease;
+}
+.app-sheet-backdrop.open{opacity:1;pointer-events:auto}
+.app-sheet{
+  --sheet-accent:#67e8f9;
+  width:min(520px,100%);
+  max-height:min(72svh,640px);
+  display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;
+  border-radius:28px 28px 22px 22px;
+  overflow:hidden;
+  border:1px solid color-mix(in srgb,var(--sheet-accent) 16%,rgba(177,206,221,.10));
+  background:
+    radial-gradient(circle at 82% -6%,color-mix(in srgb,var(--sheet-accent) 10%,transparent),transparent 30%),
+    linear-gradient(155deg,rgba(9,27,42,.995),rgba(4,15,27,.995));
+  box-shadow:0 -18px 60px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.035);
+  transform:translateY(108%);
+  transition:transform var(--motion-normal) var(--ease-spring);
+  will-change:transform;
+}
+.app-sheet-backdrop.open .app-sheet{transform:translateY(var(--sheet-drag,0px))}
+.app-sheet-handle-wrap{
+  min-height:28px;display:grid;place-items:center;touch-action:none;cursor:grab;
+}
+.app-sheet-handle-wrap:active{cursor:grabbing}
+.app-sheet-handle{width:42px;height:4px;border-radius:99px;background:rgba(177,206,221,.20)}
+.app-sheet-head{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+  padding:4px 16px 12px;
+}
+.app-sheet-title-wrap{min-width:0}
+.app-sheet-kicker{font-size:.52rem;letter-spacing:.13em;text-transform:uppercase;color:#8fa8b2;font-weight:850}
+.app-sheet-head h2{margin:5px 0 0;font-size:1.12rem;line-height:1.08;letter-spacing:-.035em}
+.app-sheet-close{
+  width:34px;height:34px;flex:0 0 auto;display:grid;place-items:center;
+  border-radius:12px;border:1px solid rgba(177,206,221,.08);background:rgba(255,255,255,.025);
+  color:#b8cbd2;font:inherit;font-size:1rem;cursor:pointer
+}
+.app-sheet-body{
+  min-height:0;overflow:auto;overscroll-behavior:contain;
+  padding:0 16px 14px;-webkit-overflow-scrolling:touch;
+}
+.sheet-hero{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:end;
+  padding:13px;border-radius:20px;border:1px solid rgba(177,206,221,.075);background:rgba(255,255,255,.022)
+}
+.sheet-hero small{display:block;font-size:.48rem;letter-spacing:.10em;text-transform:uppercase;color:#8ca4ae}
+.sheet-hero strong{display:block;margin-top:4px;font-size:1.25rem;line-height:1;letter-spacing:-.045em}
+.sheet-state{
+  justify-self:end;align-self:center;padding:7px 9px;border-radius:999px;
+  border:1px solid color-mix(in srgb,var(--sheet-accent) 16%,rgba(177,206,221,.06));
+  background:color-mix(in srgb,var(--sheet-accent) 6%,rgba(255,255,255,.015));
+  color:#d9e9ee;font-size:.54rem;font-weight:800;white-space:nowrap
+}
+.sheet-copy{margin:12px 2px 0;color:var(--text-soft);font-size:.71rem;line-height:1.48}
+.sheet-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+.sheet-fact{padding:10px;border-radius:16px;border:1px solid rgba(177,206,221,.065);background:rgba(255,255,255,.018)}
+.sheet-fact small{display:block;font-size:.45rem;letter-spacing:.09em;text-transform:uppercase;color:#8099a4}
+.sheet-fact strong{display:block;margin-top:4px;font-size:.72rem;line-height:1.25}
+.sheet-provenance{
+  display:flex;align-items:flex-start;gap:8px;margin-top:11px;padding:9px 10px;border-radius:14px;
+  border:1px solid rgba(177,206,221,.055);background:rgba(255,255,255,.014);color:#819aa5;font-size:.57rem;line-height:1.4
+}
+.sheet-provenance i{width:7px;height:7px;flex:0 0 auto;border-radius:50%;margin-top:4px;background:var(--sheet-accent);box-shadow:0 0 8px color-mix(in srgb,var(--sheet-accent) 35%,transparent)}
+.app-sheet-actions{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;
+  padding:10px 16px calc(12px + env(safe-area-inset-bottom,0px));
+  border-top:1px solid rgba(177,206,221,.06);
+  background:rgba(4,15,27,.90);
+}
+.sheet-action{
+  min-height:42px;display:grid;place-items:center;padding:9px 11px;border-radius:14px;
+  border:1px solid rgba(177,206,221,.08);background:rgba(255,255,255,.025);color:#dcebf0;
+  text-decoration:none;font:inherit;font-size:.63rem;font-weight:850;text-align:center;cursor:pointer
+}
+.sheet-action.primary{
+  border-color:color-mix(in srgb,var(--sheet-accent) 18%,rgba(177,206,221,.06));
+  background:linear-gradient(145deg,color-mix(in srgb,var(--sheet-accent) 11%,rgba(255,255,255,.025)),rgba(255,255,255,.018));
+  color:#f1fafc;
+}
+.sheet-action.full{grid-column:1/-1}
+.zen-command{cursor:pointer}
+.zen-child{touch-action:manipulation}
+
+@media(max-width:430px){
+  .app-sheet-backdrop{padding:7px 7px calc(7px + env(safe-area-inset-bottom,0px))}
+  .app-sheet{max-height:68svh;border-radius:24px 24px 18px 18px}
+  .app-sheet-head{padding-left:13px;padding-right:13px}
+  .app-sheet-body{padding-left:13px;padding-right:13px}
+  .app-sheet-actions{padding-left:13px;padding-right:13px}
+}
+@media(max-width:360px){
+  .sheet-facts{grid-template-columns:1fr}
+  .app-sheet-actions{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  .app-sheet-backdrop,.app-sheet{transition:none!important}
+}
+
 </style></head><body><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="zen-home">
@@ -4420,8 +4524,84 @@ function initMoneyTheater(p,d){
   apply('bills');
   const timer=setInterval(()=>{if(userTouched){clearInterval(timer);return;}autoIndex=(autoIndex+1)%order.length;apply(order[autoIndex]);},4200);
 }
-function initZenDisclosure(p,d,worlds,attentionOverride){
-  const scene=document.getElementById('zenScene'),peek=document.getElementById('zenPeek'),more=document.getElementById('zenMoreMenu'),core=document.getElementById('zenCore'),attention=document.getElementById('zenAttention');
+let activeAppSheet=null;
+function isAppSheetOpen(){return !!document.querySelector('.app-sheet-backdrop.open');}
+function closeAppSheet(options={}){
+  const layer=document.querySelector('.app-sheet-backdrop');
+  if(!layer)return;
+  const restore=options.restore!==false,previous=activeAppSheet?.previousFocus;
+  layer.classList.remove('open');document.body.classList.remove('app-sheet-open');
+  setTimeout(()=>{layer.remove();activeAppSheet=null;if(restore&&previous&&typeof previous.focus==='function')previous.focus();},readUiPrefs().motion==='reduced'?0:220);
+}
+function openAppSheet(model={}){
+  closeAppSheet({restore:false});
+  const previousFocus=document.activeElement,layer=document.createElement('div');
+  layer.className='app-sheet-backdrop';
+  const accent=model.accent||'#67e8f9',facts=(model.facts||[]).slice(0,4);
+  const actions=(model.actions||[]).slice(0,3);
+  layer.innerHTML=`<section class="app-sheet" role="dialog" aria-modal="true" aria-labelledby="appSheetTitle" style="--sheet-accent:${accent}">
+    <div class="app-sheet-handle-wrap" data-sheet-drag><span class="app-sheet-handle"></span></div>
+    <div class="app-sheet-head"><div class="app-sheet-title-wrap"><span class="app-sheet-kicker">${escapeHtml(model.kicker||'This Week')}</span><h2 id="appSheetTitle">${escapeHtml(model.title||'Details')}</h2></div><button class="app-sheet-close" type="button" aria-label="Close">×</button></div>
+    <div class="app-sheet-body">
+      <div class="sheet-hero"><div><small>${escapeHtml(model.amountLabel||'Current')}</small><strong>${escapeHtml(model.amount||'—')}</strong></div><span class="sheet-state">${escapeHtml(model.state||'Overview')}</span></div>
+      ${model.copy?`<p class="sheet-copy">${escapeHtml(model.copy)}</p>`:''}
+      ${facts.length?`<div class="sheet-facts">${facts.map(f=>`<div class="sheet-fact"><small>${escapeHtml(f.label)}</small><strong>${escapeHtml(f.value)}</strong></div>`).join('')}</div>`:''}
+      ${model.provenance?`<div class="sheet-provenance"><i></i><span>${escapeHtml(model.provenance)}</span></div>`:''}
+    </div>
+    <div class="app-sheet-actions">${actions.map((a,i)=>a.href?`<a class="sheet-action ${i===0?'primary':''} ${actions.length===1?'full':''}" href="${a.href}" data-sheet-route="${a.route||''}" data-sheet-world="${a.world||''}">${escapeHtml(a.label)}</a>`:`<button class="sheet-action ${i===0?'primary':''} ${actions.length===1?'full':''}" type="button" data-sheet-action="${a.action||'close'}">${escapeHtml(a.label)}</button>`).join('')}</div>
+  </section>`;
+  document.body.appendChild(layer);document.body.classList.add('app-sheet-open');activeAppSheet={previousFocus,model,layer};
+  requestAnimationFrame(()=>layer.classList.add('open'));
+  const sheet=layer.querySelector('.app-sheet'),closeBtn=layer.querySelector('.app-sheet-close');
+  closeBtn.onclick=()=>closeAppSheet();
+  layer.addEventListener('click',e=>{if(e.target===layer)closeAppSheet();});
+  layer.querySelectorAll('[data-sheet-route]').forEach(a=>a.addEventListener('click',e=>{
+    const route=a.dataset.sheetRoute,world=a.dataset.sheetWorld;
+    if(route&&world&&WORLD_META[world]){e.preventDefault();closeAppSheet({restore:false});const source=document.querySelector(`.zen-zone[data-world="${world}"]`);navigateWithChoreography(route,source,world);}
+    else closeAppSheet({restore:false});
+  }));
+  layer.querySelectorAll('[data-sheet-action]').forEach(b=>b.onclick=()=>{if(b.dataset.sheetAction==='close')closeAppSheet();});
+  const focusables=()=>[...sheet.querySelectorAll('button,a[href],[tabindex]:not([tabindex="-1"])')].filter(x=>!x.disabled);
+  layer.addEventListener('keydown',e=>{
+    if(e.key==='Escape'){e.preventDefault();closeAppSheet();return;}
+    if(e.key==='Tab'){const fs=focusables();if(!fs.length)return;const first=fs[0],last=fs[fs.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}
+  });
+  let startY=0,drag=0,tracking=false;
+  const handle=layer.querySelector('[data-sheet-drag]');
+  handle.addEventListener('pointerdown',e=>{tracking=true;startY=e.clientY;drag=0;handle.setPointerCapture?.(e.pointerId);});
+  handle.addEventListener('pointermove',e=>{if(!tracking)return;drag=Math.max(0,e.clientY-startY);sheet.style.setProperty('--sheet-drag',Math.min(drag,180)+'px');});
+  const finishDrag=()=>{if(!tracking)return;tracking=false;if(drag>72)closeAppSheet();else sheet.style.setProperty('--sheet-drag','0px');drag=0;};
+  handle.addEventListener('pointerup',finishDrag);handle.addEventListener('pointercancel',finishDrag);
+  setTimeout(()=>closeBtn.focus(),readUiPrefs().motion==='reduced'?0:120);
+}
+function phase3ChildSheetModel(world,child,worlds){
+  const info=worlds[world],route=info.route;
+  const models={
+    bills:{kicker:'Bill protection',copy:'Inspect the obligation here without leaving Home. Open the studio only when you need funding controls, due timing, or the full bill list.',provenance:'Plan-derived from your configured bill schedule and protection contributions.'},
+    essentials:{kicker:'Essential runway',copy:'This is a quick inspection of one practical spending lane. The full Runway Studio adds remaining-week pacing and daily-room context.',provenance:'Plan-derived from this week’s allocation and recorded spending.'},
+    lifestyle:{kicker:'Lifestyle flex',copy:'This is a quick view of one optional spending lane. Open Flex Studio for pace and broader flexible-spending context.',provenance:'Plan-derived from this week’s flexible allocation and recorded spending.'},
+    savings:{kicker:'Savings goal',copy:'This is a planning-goal view, not a verified bank-account balance. Open Goal Studio to update or inspect full goal progress.',provenance:'Stored locally as a planning goal separate from connected-account balances.'}
+  };
+  const base=models[world]||{kicker:'Category detail',copy:info.explain,provenance:'Plan-derived from This Week.'};
+  return {accent:info.accent,kicker:base.kicker,title:child.name,amountLabel:'Current signal',amount:child.value,state:child.signal,copy:base.copy,facts:[{label:'Category',value:info.label},{label:'Status',value:child.signal}],provenance:base.provenance,actions:[{label:'Open '+info.label+' Studio',href:'#'+route,route,world},{label:'Close',action:'close'}]};
+}
+function phase3CommandSheetModel(p,d,command){
+  if(d.behind.length){
+    const need=d.behind.reduce((n,b)=>n+Math.max(0,(b.requiredByToday||0)-(b.contributed||0)),0);
+    return {accent:'#f6d784',kicker:'Recommended next action',title:'Protect required bills',amountLabel:'Protection gap',amount:formatCents(need),state:d.behind.length+' bill'+(d.behind.length===1?'':'s')+' need attention',copy:'Your configured required-by-today bill protection is short. This recommendation prioritizes obligations before optional spending.',facts:[{label:'Available now',value:formatCents(p.available)},{label:'Bills affected',value:String(d.behind.length)}],provenance:'Calculated from your This Week plan and bill contributions. It is not a bank-account balance.',actions:[{label:'Open Bill Studio',href:'#bills',route:'bills',world:'bills'},{label:'Close',action:'close'}]};
+  }
+  if(d.overspent.length){
+    const x=d.overspent[0],isEssential=(p.essentials||[]).some(y=>y.id===x.id),world=isEssential?'essentials':'lifestyle',route=isEssential?'essentials':'lifestyle';
+    return {accent:isEssential?'#6ee7b7':'#f0a7d3',kicker:'Recommended next action',title:'Review '+x.name,amountLabel:'Over weekly lane',amount:formatCents(Math.abs(x.remaining||0)),state:'Needs review',copy:'This lane has moved beyond its weekly allocation. Review the category before making additional spending decisions.',facts:[{label:'Available now',value:formatCents(p.available)},{label:'Lane type',value:isEssential?'Essential':'Lifestyle'}],provenance:'Calculated from the category’s weekly allocation minus recorded spending.',actions:[{label:'Open '+(isEssential?'Runway':'Flex Studio'),href:'#'+route,route,world},{label:'Close',action:'close'}]};
+  }
+  if(command.href==='#reset'){
+    return {accent:'#f6d784',kicker:'Week transition',title:'Review before starting a new week',amountLabel:'Available now',amount:formatCents(p.available),state:'Rollover due',copy:'Your current week is at its transition point. Review the current state before creating the next weekly cycle.',facts:[{label:'Week end',value:new Date(p.week.end).toLocaleDateString()},{label:'Savings this week',value:formatCents(p.savingsThisWeek||0)}],provenance:'Based on your configured weekly cycle.',actions:[{label:'Start New Week',href:'#reset'},{label:'Close',action:'close'}]};
+  }
+  return {accent:'#67e8f9',kicker:'Recommended next action',title:'Keep the week current',amountLabel:'Available now',amount:formatCents(p.available),state:'No urgent action',copy:'Nothing more urgent is currently being surfaced. Record purchases as they happen so the weekly planning signal stays useful.',facts:[{label:'Bills',value:d.behind.length?'Needs attention':'Protected'},{label:'Overspent lanes',value:String(d.overspent.length)}],provenance:'Recommendation is generated from your current weekly plan, bill protection, and recorded spending.',actions:[{label:'Add Spending',href:'#log'},{label:'Close',action:'close'}]};
+}
+
+function initZenDisclosure(p,d,worlds,attentionOverride,command){
+  const scene=document.getElementById('zenScene'),peek=document.getElementById('zenPeek'),more=document.getElementById('zenMoreMenu'),core=document.getElementById('zenCore'),attention=document.getElementById('zenAttention'),commandEl=document.getElementById('zenCommand');
   if(!scene||!peek)return;
   const zones=[...scene.querySelectorAll('.zen-zone')],prefs=readUiPrefs();
   let active=null,selectedChild=null,collapseTimer=null;
@@ -4431,7 +4611,7 @@ function initZenDisclosure(p,d,worlds,attentionOverride){
     clearTimeout(collapseTimer);
     if(!active)return;
     collapseTimer=setTimeout(()=>{
-      if(peek.contains(document.activeElement)||more.contains(document.activeElement)){resetTimer();return;}
+      if(peek.contains(document.activeElement)||more.contains(document.activeElement)||isAppSheetOpen()){resetTimer();return;}
       collapse();
     },10000);
   };
@@ -4457,7 +4637,8 @@ function initZenDisclosure(p,d,worlds,attentionOverride){
     more.innerHTML=menuItems(world).map(x=>x.action?`<button type="button" data-action="${x.action}"><span>${escapeHtml(x.label)}</span><span>${escapeHtml(x.meta)}</span></button>`:`<a href="${x.href}"><span>${escapeHtml(x.label)}</span><span>${escapeHtml(x.meta)}</span></a>`).join('');
     more.classList.toggle('show');
     more.querySelector('[data-action="explain"]')?.addEventListener('click',()=>{
-      const summary=peek.querySelector('.zen-peek-summary');if(summary)summary.textContent=worlds[world].explain;
+      const info=worlds[world];
+      openAppSheet({accent:info.accent,kicker:info.label+' explanation',title:'What this state means',amountLabel:'Current category',amount:info.label,state:'Explainable signal',copy:info.explain,provenance:'The signal is derived from the current This Week plan and recorded activity. It does not replace the full category studio.',actions:[{label:'Open '+info.label+' Studio',href:'#'+info.route,route:info.route,world},{label:'Close',action:'close'}]});
       more.classList.remove('show');resetTimer();
     });
     more.querySelectorAll('a').forEach(a=>a.addEventListener('click',e=>{
@@ -4477,6 +4658,7 @@ function initZenDisclosure(p,d,worlds,attentionOverride){
     peek.querySelectorAll('[data-child]').forEach(btn=>btn.onclick=()=>{
       peek.querySelectorAll('.zen-child').forEach(x=>x.classList.remove('active'));btn.classList.add('active');selectedChild=shown[Number(btn.dataset.child)];
       const summary=peek.querySelector('.zen-peek-summary');if(summary&&selectedChild)summary.textContent=selectedChild.name+' · '+selectedChild.signal+' · '+selectedChild.value;
+      openAppSheet(phase3ChildSheetModel(world,selectedChild,worlds));
       resetTimer();
     });
   };
@@ -4499,6 +4681,7 @@ function initZenDisclosure(p,d,worlds,attentionOverride){
   });
   core?.addEventListener('click',e=>{if(active){e.preventDefault();collapse();}else{e.preventDefault();navigateWithChoreography('precheck',core,'available');}});
   attention?.addEventListener('click',()=>{if(attentionOverride)focus(attentionOverride.world);});
+  commandEl?.addEventListener('click',e=>{e.preventDefault();openAppSheet(phase3CommandSheetModel(p,d,command));});
   scene.addEventListener('pointerdown',resetTimer,{passive:true});
   scene.addEventListener('keydown',resetTimer);
   document.addEventListener('visibilitychange',()=>{if(document.hidden)clearTimeout(collapseTimer);else resetTimer();});
@@ -4564,12 +4747,12 @@ async function renderHome(){
         </button>
       </div>
 
-      <a class="zen-command ${command.tone==='warn'?'warn':command.tone==='danger'?'danger':''}" href="${command.href}">
+      <a class="zen-command ${command.tone==='warn'?'warn':command.tone==='danger'?'danger':''}" id="zenCommand" href="${command.href}" aria-haspopup="dialog">
         <span class="zen-command-main"><span class="zen-command-icon">${command.icon}</span><span class="zen-command-copy"><small>${escapeHtml(command.label)}</small><strong>${escapeHtml(command.text)}</strong></span></span><span class="zen-command-arrow">›</span>
       </a>
     </div>`;
 
-    initZenDisclosure(p,d,worlds,attentionOverride);
+    initZenDisclosure(p,d,worlds,attentionOverride,command);
   }catch(e){
     root.innerHTML=`<div class="center">${errBox(e.message)}<button class="btn-primary" onclick="renderHome()">Retry</button></div>`;
   }
@@ -4923,6 +5106,7 @@ function renderSetup(){
 }
 
 async function render(){
+  closeAppSheet({restore:false});
   applyUiPrefs();
   const r=route();
   window.scrollTo({top:0,behavior:'smooth'});
