@@ -5312,14 +5312,14 @@ const RECOMMENDATION_PREFS_KEY='thisweek.recommendations.v1';
 function readRecommendationPrefs(){
   const base={suppressed:{},seen:{}};
   try{
-    const raw=JSON.parse(localStorage.getItem(RECOMMENDATION_PREFS_KEY)||'{}'),now=Date.now(),suppressed={};
+    const raw=JSON.parse(safeLocalStorageGet(RECOMMENDATION_PREFS_KEY)||'{}'),now=Date.now(),suppressed={};
     for(const [k,v] of Object.entries(raw?.suppressed||{}))if(Number(v?.until||v)>now)suppressed[k]=typeof v==='object'?v:{until:Number(v)};
     return {...base,...raw,suppressed,seen:raw?.seen||{}};
   }catch{return base;}
 }
 function writeRecommendationPrefs(next){
   const value={...readRecommendationPrefs(),...next};
-  try{localStorage.setItem(RECOMMENDATION_PREFS_KEY,JSON.stringify(value));}catch{}
+  try{safeLocalStorageSet(RECOMMENDATION_PREFS_KEY,JSON.stringify(value));}catch{}
   return value;
 }
 function recommendationSuppressionCount(){
@@ -5680,9 +5680,9 @@ function semanticIcon(name,type='category'){
 const FLEX_CAPS_KEY='thisweek.flexCaps.v1';
 const PRECHECK_HINT_KEY='thisweek.precheckHint.v1';
 function readFlexCaps(){
-  try{const v=JSON.parse(localStorage.getItem(FLEX_CAPS_KEY)||'{}');return v&&typeof v==='object'?v:{};}catch{return {};}
+  try{const v=JSON.parse(safeLocalStorageGet(FLEX_CAPS_KEY)||'{}');return v&&typeof v==='object'?v:{};}catch{return {};}
 }
-function writeFlexCaps(v){try{localStorage.setItem(FLEX_CAPS_KEY,JSON.stringify(v));}catch{}return v;}
+function writeFlexCaps(v){try{safeLocalStorageSet(FLEX_CAPS_KEY,JSON.stringify(v));}catch{}return v;}
 function setPrecheckHint(categoryId){try{sessionStorage.setItem(PRECHECK_HINT_KEY,String(categoryId||''));}catch{}}
 function consumePrecheckHint(){try{const v=sessionStorage.getItem(PRECHECK_HINT_KEY);sessionStorage.removeItem(PRECHECK_HINT_KEY);return v||null;}catch{return null;}}
 function billDaysToDue(date){
@@ -5891,7 +5891,8 @@ function playFinancialEventOnHome(event){
 function playLocalConfirmation(el,world='available'){
   if(!el)return;
   const meta=WORLD_META[world]||WORLD_META.available;
-  el.style.setProperty('--confirm-accent',meta.accent);el.classList.remove('local-confirm');void el.offsetWidth;el.classList.add('local-confirm');
+  el.style.setProperty('--confirm-accent',meta.accent);el.classList.remove('local-confirm');
+  requestAnimationFrame(()=>el.classList.add('local-confirm'));
   setTimeout(()=>el.classList.remove('local-confirm'),effectiveUiPrefs().effectiveMotion==='reduced'?20:1100);
 }
 let sceneMotionObserver=null;
@@ -5962,6 +5963,7 @@ function connectedDataSummary(){
 if(!window.__thisWeekStorageSyncBound){
   window.__thisWeekStorageSyncBound=true;
   window.addEventListener('storage',e=>{
+    if(e.key===USER_ID_KEY)volatileUserId=e.newValue||null;
     if(e.key===STATE_KEY){
       volatileState=null;volatileStateSerialized=null;lastPersistedStateSerialized=e.newValue||null;
       runtimePerf.revision++;savingsGoalsCache=null;savingsGoalsCacheRevision=-1;
@@ -7255,6 +7257,7 @@ function updateMobileViewportState(){
   document.documentElement.style.setProperty('--keyboard-inset',keyboard+'px');
   document.body.dataset.keyboard=keyboard>140?'open':'closed';
   document.body.dataset.viewport=w<=320?'320':w<=375?'375':w<=390?'390':w<=430?'430':w<768?'phone-wide':w<1024?'tablet':'desktop';
+  if(typeof applyRuntimePerformanceTier==='function')applyRuntimePerformanceTier();
   lastVisualViewportHeight=h;
 }
 function bindMobileViewportController(){
