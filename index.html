@@ -3161,6 +3161,47 @@ body[data-density="rich"] .v10-mini-node{min-height:54px}
   .v11-source-gate{top:10px}.v11-event{top:39px}
 }
 
+
+/* FUTURE LAYER LAB v1 — previews for ideas 20, 4, 2 */
+.future-stack{display:grid;gap:15px}
+.future-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.future-tab{appearance:none;padding:12px;border-radius:18px;border:1px solid rgba(177,206,221,.08);background:rgba(255,255,255,.025);color:#dcecf2;text-align:left;cursor:pointer}
+.future-tab small{display:block;font-size:.49rem;text-transform:uppercase;letter-spacing:.11em;color:#8fa7b2}.future-tab strong{display:block;margin-top:4px;font-size:.78rem}
+.future-tab.active{border-color:rgba(103,232,249,.18);background:linear-gradient(145deg,rgba(103,232,249,.07),rgba(255,255,255,.02));box-shadow:0 10px 24px rgba(0,0,0,.16)}
+.future-panel{display:none}.future-panel.active{display:block;animation:routeEnter .35s var(--ease-soft) both}
+.future-preview{position:relative;overflow:hidden;padding:18px;border-radius:28px;border:1px solid rgba(177,206,221,.10);background:linear-gradient(145deg,rgba(8,24,39,.98),rgba(5,16,28,.98));box-shadow:0 24px 58px rgba(0,0,0,.24)}
+.future-preview h2{margin:6px 0 6px;font-size:1.35rem;letter-spacing:-.04em}.future-preview p{margin:0;color:var(--text-soft);font-size:.76rem;line-height:1.5}
+.preview-only{display:inline-flex;margin-top:10px;padding:6px 8px;border-radius:999px;border:1px solid rgba(246,215,132,.12);background:rgba(246,215,132,.05);font-size:.51rem;letter-spacing:.1em;text-transform:uppercase;color:#e9dba6}
+
+.data-twin{display:grid;grid-template-columns:1fr 34px 1fr;gap:10px;align-items:stretch;margin-top:16px}
+.twin-column{padding:14px;border-radius:22px;border:1px solid rgba(177,206,221,.08);background:rgba(255,255,255,.022)}
+.twin-column h3{margin:0 0 10px;font-size:.84rem}
+.data-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid rgba(177,206,221,.06)}.data-row:last-child{border-bottom:0}
+.data-row div strong{display:block;font-size:.73rem}.data-row div span{display:block;margin-top:2px;color:var(--text-soft);font-size:.58rem}.data-row b{font-size:.73rem}
+.sync-bridge{position:relative;display:grid;place-items:center}.sync-bridge::before{content:"";position:absolute;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,transparent,#67e8f9,#6ee7b7,transparent);animation:syncPulse 3.2s ease-in-out infinite}.sync-dot{position:relative;z-index:2;width:16px;height:16px;border-radius:50%;background:#67e8f9;box-shadow:0 0 14px rgba(103,232,249,.5);animation:syncTravel 3.2s ease-in-out infinite}
+.reconcile-card{margin-top:12px;padding:12px;border-radius:18px;border:1px solid rgba(110,231,183,.10);background:rgba(110,231,183,.035)}.reconcile-card strong{display:block;font-size:.78rem}.reconcile-card span{display:block;margin-top:4px;color:var(--text-soft);font-size:.62rem;line-height:1.4}
+
+.choreo-stage{position:relative;min-height:350px;margin-top:16px;border-radius:26px;overflow:hidden;border:1px solid rgba(177,206,221,.08);background:radial-gradient(circle at 50% 50%,rgba(103,232,249,.08),transparent 28%),linear-gradient(145deg,rgba(4,15,27,.98),rgba(8,22,34,.96))}
+.choreo-node{position:absolute;width:106px;min-height:64px;padding:10px;border-radius:18px;border:1px solid rgba(177,206,221,.09);background:rgba(8,22,35,.9);transition:all .55s var(--ease-spring);z-index:4}.choreo-node strong{display:block;font-size:.7rem}.choreo-node span{display:block;margin-top:3px;color:var(--text-soft);font-size:.55rem}
+.choreo-node.bills{left:14px;top:18px}.choreo-node.essentials{right:14px;top:18px}.choreo-node.lifestyle{left:14px;bottom:18px}.choreo-node.savings{right:14px;bottom:18px}
+.choreo-core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:120px;height:120px;border-radius:50%;display:grid;place-items:center;text-align:center;border:1px solid rgba(103,232,249,.15);background:linear-gradient(145deg,rgba(18,52,61,.96),rgba(5,19,31,.98));transition:all .55s var(--ease-spring)}
+.choreo-world{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease;background:radial-gradient(circle at 50% 20%,color-mix(in srgb,var(--world,#67e8f9) 18%,transparent),transparent 28%)}
+.choreo-stage[data-world="bills"]{--world:#60a5fa}.choreo-stage[data-world="essentials"]{--world:#6ee7b7}.choreo-stage[data-world="savings"]{--world:#f6d784}.choreo-stage[data-world="lifestyle"]{--world:#f0a7d3}
+.choreo-stage[data-world]:not([data-world="home"]) .choreo-world{opacity:1}
+.choreo-stage[data-world="bills"] .choreo-node.bills,.choreo-stage[data-world="essentials"] .choreo-node.essentials,.choreo-stage[data-world="lifestyle"] .choreo-node.lifestyle,.choreo-stage[data-world="savings"] .choreo-node.savings{left:50%;top:45px;right:auto;bottom:auto;transform:translateX(-50%) scale(1.25);border-color:color-mix(in srgb,var(--world) 28%,transparent);background:color-mix(in srgb,var(--world) 10%,rgba(8,22,35,.94))}
+.choreo-stage[data-world]:not([data-world="home"]) .choreo-core{top:68%;width:170px;height:92px;border-radius:24px;border-color:color-mix(in srgb,var(--world) 24%,transparent);background:linear-gradient(145deg,color-mix(in srgb,var(--world) 10%,rgba(8,22,35,.96)),rgba(5,18,30,.96))}
+.choreo-controls{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.choreo-btn{padding:8px 10px;border-radius:12px;border:1px solid rgba(177,206,221,.08);background:rgba(255,255,255,.025);color:#dcecf2;font-size:.61rem;cursor:pointer}
+
+.constellation-stage{position:relative;min-height:380px;margin-top:16px;border-radius:26px;border:1px solid rgba(177,206,221,.08);background:radial-gradient(circle at 50% 50%,rgba(110,231,183,.08),transparent 30%),linear-gradient(145deg,rgba(5,20,28,.98),rgba(5,16,27,.98));overflow:hidden}
+.const-parent{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:118px;height:118px;border-radius:50%;display:grid;place-items:center;text-align:center;background:linear-gradient(145deg,rgba(22,66,52,.98),rgba(6,22,29,.98));border:1px solid rgba(110,231,183,.18);box-shadow:0 0 0 11px rgba(110,231,183,.025)}
+.const-parent strong{font-size:.86rem}.const-parent span{display:block;margin-top:3px;font-size:.56rem;color:var(--text-soft)}
+.const-child{position:absolute;width:94px;padding:9px;border-radius:17px;border:1px solid rgba(110,231,183,.10);background:rgba(8,28,31,.90);text-align:center;transition:all .45s var(--ease-spring);animation:v10MiniFloat 6s ease-in-out infinite}.const-child strong{display:block;font-size:.65rem}.const-child span{display:block;margin-top:3px;color:var(--text-soft);font-size:.52rem}
+.const-more{border-style:dashed;background:rgba(255,255,255,.025)}
+.const-density{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.density-demo{padding:8px 10px;border-radius:12px;border:1px solid rgba(177,206,221,.08);background:rgba(255,255,255,.025);color:#dcecf2;font-size:.61rem;cursor:pointer}.density-demo.active{border-color:rgba(110,231,183,.18);background:rgba(110,231,183,.06)}
+.future-notes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:12px}.future-note{padding:12px;border-radius:18px;border:1px solid rgba(177,206,221,.08);background:rgba(255,255,255,.022)}.future-note small{display:block;font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;color:#8fa7b2}.future-note strong{display:block;margin-top:4px;font-size:.73rem}.future-note span{display:block;margin-top:4px;color:var(--text-soft);font-size:.59rem;line-height:1.4}
+@keyframes syncPulse{0%,100%{opacity:.35}50%{opacity:1}}@keyframes syncTravel{0%,100%{transform:translateY(-80px)}50%{transform:translateY(80px)}}
+@media(max-width:600px){.future-tabs{grid-template-columns:1fr}.data-twin{grid-template-columns:1fr}.sync-bridge{height:34px}.sync-bridge::before{left:6px;right:6px;top:50%;bottom:auto;height:2px;width:auto}.sync-dot{animation:none}.future-notes{grid-template-columns:1fr}}
+
 </style></head><body><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="hero-card">
@@ -4038,7 +4079,7 @@ async function renderDetails(){
         <div class="anatomy-panel-head"><div><small id="anatomyKicker">Essentials</small><strong id="anatomyTitle">${sections.essentials.title}</strong><span id="anatomyCopy">${sections.essentials.copy}</span></div><span class="deep-link-badge">Open layer</span></div>
         <div class="anatomy-panel-body"><div class="row-list" id="anatomyRows">${sections.essentials.html}</div></div>
       </section>
-      <div class="anatomy-actions"><a class="deep-link" href="#bills"><div><strong>Bill Protection Studio</strong><span>Fund and time required obligations.</span></div><span class="deep-link-badge">Studio</span></a><a class="deep-link" href="#essentials"><div><strong>Essentials Runway</strong><span>Translate remaining money into weekly coverage.</span></div><span class="deep-link-badge">Runway</span></a><a class="deep-link" href="#savings"><div><strong>Savings Goal Studio</strong><span>Give weekly savings visible destinations.</span></div><span class="deep-link-badge">Goals</span></a><a class="deep-link" href="#precheck"><div><strong>Can I Spend This?</strong><span>Preview a purchase before logging it.</span></div><span class="deep-link-badge">Simulate</span></a><a class="deep-link" href="#history"><div><strong>Weekly Memory</strong><span>See previous weeks as visual fingerprints.</span></div><span class="deep-link-badge">History</span></a><a class="deep-link" href="#scenario"><div><strong>Scenario Sandbox</strong><span>Test changes without touching the live plan.</span></div><span class="deep-link-badge">What-if</span></a><a class="deep-link" href="#preferences"><div><strong>Presentation Settings</strong><span>Motion, density, and contrast controls.</span></div><span class="deep-link-badge">Personalize</span></a><a class="deep-link" href="#insights"><div><strong>Advanced Insights</strong><span>Move into the analytical observatory.</span></div><span class="deep-link-badge">Deeper</span></a><a class="deep-link" href="#reset"><div><strong>Start New Week</strong><span>Open the cycle-transition flow.</span></div><span class="deep-link-badge">Rollover</span></a></div>
+      <div class="anatomy-actions"><a class="deep-link" href="#bills"><div><strong>Bill Protection Studio</strong><span>Fund and time required obligations.</span></div><span class="deep-link-badge">Studio</span></a><a class="deep-link" href="#essentials"><div><strong>Essentials Runway</strong><span>Translate remaining money into weekly coverage.</span></div><span class="deep-link-badge">Runway</span></a><a class="deep-link" href="#savings"><div><strong>Savings Goal Studio</strong><span>Give weekly savings visible destinations.</span></div><span class="deep-link-badge">Goals</span></a><a class="deep-link" href="#precheck"><div><strong>Can I Spend This?</strong><span>Preview a purchase before logging it.</span></div><span class="deep-link-badge">Simulate</span></a><a class="deep-link" href="#history"><div><strong>Weekly Memory</strong><span>See previous weeks as visual fingerprints.</span></div><span class="deep-link-badge">History</span></a><a class="deep-link" href="#scenario"><div><strong>Scenario Sandbox</strong><span>Test changes without touching the live plan.</span></div><span class="deep-link-badge">What-if</span></a><a class="deep-link" href="#preferences"><div><strong>Presentation Settings</strong><span>Motion, density, and contrast controls.</span></div><span class="deep-link-badge">Personalize</span></a><a class="deep-link" href="#future"><div><strong>Future Layer Lab</strong><span>Preview connected data, scene choreography, and adaptive constellations.</span></div><span class="deep-link-badge">Preview</span></a><a class="deep-link" href="#insights"><div><strong>Advanced Insights</strong><span>Move into the analytical observatory.</span></div><span class="deep-link-badge">Deeper</span></a><a class="deep-link" href="#reset"><div><strong>Start New Week</strong><span>Open the cycle-transition flow.</span></div><span class="deep-link-badge">Rollover</span></a></div>
     </div>`;
     const nodes=[...document.querySelectorAll('.anatomy-node')];
     const kicker=document.getElementById('anatomyKicker'), title=document.getElementById('anatomyTitle'), copy=document.getElementById('anatomyCopy'), rows=document.getElementById('anatomyRows');
@@ -4181,6 +4222,62 @@ function renderPreferences(){
   root.innerHTML=`<div class="studio-stack"><section class="studio-hero"><span class="studio-kicker">Personalization</span><h2>Same calculations. Different presentation.</h2><p class="studio-copy">These settings only change visual density, motion, and contrast; they do not change your financial data.</p></section><section class="pref-grid">${group('Motion','Control the pace and intensity of ambient movement.','motion',[{value:'calm',label:'Calm'},{value:'dynamic',label:'Dynamic'},{value:'cinematic',label:'Cinematic'},{value:'reduced',label:'Reduced'}])}${group('Visual density','Choose how much supporting information appears at once.','density',[{value:'compact',label:'Compact'},{value:'balanced',label:'Balanced'},{value:'rich',label:'Rich'}])}${group('Contrast','Increase text and edge contrast without changing the palette.','contrast',[{value:'normal',label:'Normal'},{value:'high',label:'High'}])}</section></div>`;
   document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{writeUiPrefs({[b.dataset.key]:b.dataset.value});renderPreferences();});
 }
+
+function renderFutureLab(){
+  shellMeta('Future Lab','Preview Layers 20 · 4 · 2','See how the next three systems would sit on top of the upgraded base','<a class="text-action" href="#details">Back</a>');
+  nav('future');
+  root.innerHTML=`<div class="future-stack">
+    <section class="studio-hero" style="--studio-accent:#67e8f9"><span class="studio-kicker">Preview only</span><h2>Three possible layers above the new base.</h2><p class="studio-copy">These are visual/product prototypes, not active financial integrations. Switch between them to see how each would extend the 13 upgrades already built.</p></section>
+    <div class="future-tabs">
+      <button class="future-tab active" data-preview="connected"><small>Idea 20</small><strong>Connected financial data</strong></button>
+      <button class="future-tab" data-preview="choreo"><small>Idea 4</small><strong>Scene-to-page choreography</strong></button>
+      <button class="future-tab" data-preview="constellation"><small>Idea 2</small><strong>Adaptive sub-constellations</strong></button>
+    </div>
+
+    <section class="future-panel active" data-panel="connected">
+      <div class="future-preview"><span class="studio-kicker">20 · Connected data layer</span><h2>The planner stays central; bank data becomes a reconciliation layer.</h2><p>The visual separates planned Available Now from actual account data instead of collapsing them into one confusing number.</p><span class="preview-only">Mock data · no account connection active</span>
+        <div class="data-twin">
+          <div class="twin-column"><h3>This Week planner</h3><div class="data-row"><div><strong>Available Now</strong><span>Plan-derived</span></div><b>$642</b></div><div class="data-row"><div><strong>Protected Bills</strong><span>Planning reserve</span></div><b>$380</b></div><div class="data-row"><div><strong>Savings</strong><span>Weekly target</span></div><b>$145</b></div></div>
+          <div class="sync-bridge"><div class="sync-dot"></div></div>
+          <div class="twin-column"><h3>Connected accounts</h3><div class="data-row"><div><strong>Checking</strong><span>Posted balance</span></div><b>$1,284</b></div><div class="data-row"><div><strong>Pending</strong><span>Not yet reconciled</span></div><b>-$86</b></div><div class="data-row"><div><strong>Matched transactions</strong><span>Suggested categories</span></div><b>4</b></div></div>
+        </div>
+        <div class="reconcile-card"><strong>Suggested match · $42.17 Grocery Store → Groceries</strong><span>The connected layer would ask for confirmation before changing This Week’s category history. Raw bank balance would never replace the planning model.</span></div>
+        <div class="future-notes"><div class="future-note"><small>Separation</small><strong>Plan vs. actual</strong><span>Users always know whether a number comes from their plan or a financial institution.</span></div><div class="future-note"><small>Reconciliation</small><strong>Suggest, then confirm</strong><span>Imported transactions can be matched without silently rewriting the week.</span></div><div class="future-note"><small>Safety</small><strong>Pending stays pending</strong><span>Pending transactions remain visually distinct until posted.</span></div></div>
+      </div>
+    </section>
+
+    <section class="future-panel" data-panel="choreo">
+      <div class="future-preview"><span class="studio-kicker">4 · Scene-to-page choreography</span><h2>Navigation would physically emerge from the Home scene.</h2><p>Instead of fading to an unrelated page, the selected category becomes the visual source of the next screen.</p><span class="preview-only">Interactive transition mockup</span>
+        <div class="choreo-stage" id="choreoStage" data-world="home"><div class="choreo-world"></div><div class="choreo-node bills"><strong>Bills</strong><span>Protection world</span></div><div class="choreo-node essentials"><strong>Essentials</strong><span>Runway world</span></div><div class="choreo-node lifestyle"><strong>Lifestyle</strong><span>Flexible world</span></div><div class="choreo-node savings"><strong>Savings</strong><span>Goal world</span></div><div class="choreo-core"><div><strong>Available</strong><span>$642 · Home scene</span></div></div></div>
+        <div class="choreo-controls"><button class="choreo-btn" data-world="home">Home</button><button class="choreo-btn" data-world="bills">Bills</button><button class="choreo-btn" data-world="essentials">Essentials</button><button class="choreo-btn" data-world="lifestyle">Lifestyle</button><button class="choreo-btn" data-world="savings">Savings</button></div>
+        <div class="future-notes"><div class="future-note"><small>Entry</small><strong>Selected node expands</strong><span>The category grows toward the user while the rest of Home recedes.</span></div><div class="future-note"><small>Continuity</small><strong>Same object, deeper page</strong><span>Color, emblem, and motion persist into the destination studio.</span></div><div class="future-note"><small>Return</small><strong>Reverse collapse</strong><span>Back navigation visually rebuilds the four-category Home system.</span></div></div>
+      </div>
+    </section>
+
+    <section class="future-panel" data-panel="constellation">
+      <div class="future-preview"><span class="studio-kicker">2 · Adaptive sub-category constellations</span><h2>Each parent could automatically rearrange around any number of real categories.</h2><p>The layout algorithm changes shape as the user adds or removes lanes, while Home still caps visible density.</p><span class="preview-only">Interactive layout preview</span>
+        <div class="constellation-stage" id="constStage"><div class="const-parent"><div><strong>Essentials</strong><span>Adaptive parent</span></div></div></div>
+        <div class="const-density"><button class="density-demo active" data-count="2">2 children</button><button class="density-demo" data-count="3">3 children</button><button class="density-demo" data-count="4">4 children</button><button class="density-demo" data-count="7">7 children</button></div>
+        <div class="future-notes"><div class="future-note"><small>1–2 lanes</small><strong>Balanced arc</strong><span>Large readable children with generous spacing.</span></div><div class="future-note"><small>3–4 lanes</small><strong>Triangle / diamond</strong><span>Compact geometry without shrinking the category labels too far.</span></div><div class="future-note"><small>5+ lanes</small><strong>Top 3 + “N more”</strong><span>Home remains controlled; the full constellation opens only after focus.</span></div></div>
+      </div>
+    </section>
+  </div>`;
+
+  const tabs=[...document.querySelectorAll('.future-tab')],panels=[...document.querySelectorAll('.future-panel')];
+  tabs.forEach(t=>t.onclick=()=>{tabs.forEach(x=>x.classList.toggle('active',x===t));panels.forEach(p=>p.classList.toggle('active',p.dataset.panel===t.dataset.preview));});
+  const stage=document.getElementById('choreoStage');document.querySelectorAll('.choreo-btn').forEach(b=>b.onclick=()=>{stage.dataset.world=b.dataset.world;});
+  const constStage=document.getElementById('constStage');
+  const names=['Groceries','Gas','Transit','Household','Medicine','Childcare','Other'];
+  const layout=(count)=>{
+    const visible=count>4?4:count;
+    const pts={2:[[28,46],[72,46]],3:[[50,20],[24,68],[76,68]],4:[[28,26],[72,26],[28,72],[72,72]]}[visible]||[[50,20],[24,68],[76,68]];
+    const children=[];
+    for(let i=0;i<visible;i++){const isMore=count>4&&i===3;children.push(`<div class="const-child ${isMore?'const-more':''}" style="left:${pts[i][0]}%;top:${pts[i][1]}%;transform:translate(-50%,-50%);animation-delay:-${i*1.2}s"><strong>${isMore?'+'+(count-3)+' more':names[i]}</strong><span>${isMore?'Open focused view':'$'+(42+i*19)+' left'}</span></div>`);}
+    constStage.innerHTML='<div class="const-parent"><div><strong>Essentials</strong><span>'+count+' configured lanes</span></div></div>'+children.join('');
+  };
+  document.querySelectorAll('.density-demo').forEach(b=>b.onclick=()=>{document.querySelectorAll('.density-demo').forEach(x=>x.classList.toggle('active',x===b));layout(Number(b.dataset.count));});
+  layout(2);
+}
 async function renderLog(){
   shellMeta('Add Spending','Transaction Flow','Send a purchase into the right spending lane','<span class="header-pill">Flow entry</span>');
   nav('log');
@@ -4322,6 +4419,7 @@ async function render(){
   if(r==='history')return renderHistory();
   if(r==='scenario')return renderScenario();
   if(r==='preferences')return renderPreferences();
+  if(r==='future')return renderFutureLab();
   if(r==='reset')return renderReset();
   if(r==='setup')return renderSetup();
   return renderHome();
