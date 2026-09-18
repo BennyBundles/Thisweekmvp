@@ -4688,34 +4688,88 @@ function uid() {
   return `${Date.now().toString(36)}${Math.random().toString(36).slice(2)}`;
 }
 
-function clone(v) { return JSON.parse(JSON.stringify(v)); }
+function clone(v){
+  if(v==null)return v;
+  try{return typeof structuredClone==='function'?structuredClone(v):JSON.parse(JSON.stringify(v));}
+  catch{return JSON.parse(JSON.stringify(v));}
+}
 function nowIso() { return new Date().toISOString(); }
-let volatileUserId = null;
-let volatileState = null;
-function getStoredUserId() {
-  try { return localStorage.getItem(USER_ID_KEY) || volatileUserId; } catch { return volatileUserId; }
+
+const runtimePerf={revision:0,route:{},cacheHits:0,cacheMisses:0,longTasks:0,storageWrites:0,storageWriteSkips:0};
+const runtimeStorageHealth={available:true,lastError:null,lastFailureAt:null};
+let volatileUserId=null;
+let volatileState=null;
+let volatileStateSerialized=null;
+let lastPersistedStateSerialized=null;
+
+function noteCache(hit){if(hit)runtimePerf.cacheHits++;else runtimePerf.cacheMisses++;}
+function safeLocalStorageGet(key){
+  try{const v=localStorage.getItem(key);runtimeStorageHealth.available=true;return v;}
+  catch(e){runtimeStorageHealth.available=false;runtimeStorageHealth.lastError=e?.message||'Storage unavailable';runtimeStorageHealth.lastFailureAt=nowIso();return null;}
 }
-function setStoredUserId(id) {
-  volatileUserId = id;
-  try { localStorage.setItem(USER_ID_KEY, id); } catch {}
+function safeLocalStorageSet(key,value){
+  try{localStorage.setItem(key,value);runtimeStorageHealth.available=true;runtimePerf.storageWrites++;return true;}
+  catch(e){runtimeStorageHealth.available=false;runtimeStorageHealth.lastError=e?.message||'Storage write failed';runtimeStorageHealth.lastFailureAt=nowIso();return false;}
 }
-function readState() {
-  try {
-    const v = localStorage.getItem(STATE_KEY);
-    return v ? JSON.parse(v) : (volatileState ? clone(volatileState) : null);
-  } catch {
-    return volatileState ? clone(volatileState) : null;
+function safeLocalStorageRemove(key){
+  try{localStorage.removeItem(key);runtimeStorageHealth.available=true;return true;}
+  catch(e){runtimeStorageHealth.available=false;runtimeStorageHealth.lastError=e?.message||'Storage remove failed';runtimeStorageHealth.lastFailureAt=nowIso();return false;}
+}
+function normalizeRuntimeState(state){
+  if(!state||typeof state!=='object')return null;
+  if(!Array.isArray(state.weeks))state.weeks=[];
+  if(!Array.isArray(state.transactions))state.transactions=[];
+  if(!Array.isArray(state.adjustments))state.adjustments=[];
+  if(!Array.isArray(state.importedExternalIds))state.importedExternalIds=[];
+  if(state.config&&typeof state.config==='object'){
+    if(!Array.isArray(state.config.bills))state.config.bills=[];
+    if(!Array.isArray(state.config.livingNeeds))state.config.livingNeeds=[];
+    if(!Array.isArray(state.config.discretionary))state.config.discretionary=[];
   }
-}
-function writeState(state) {
-  volatileState = clone(state);
-  try { localStorage.setItem(STATE_KEY, JSON.stringify(state)); } catch {}
+  for(const week of state.weeks){
+    if(!Array.isArray(week.balances))week.balances=[];
+    if(!Array.isArray(week.billAllocations))week.billAllocations=[];
+  }
   return state;
 }
-function clearState() {
-  volatileState = null;
-  volatileUserId = null;
-  try { localStorage.removeItem(STATE_KEY); localStorage.removeItem(USER_ID_KEY); } catch {}
+function getStoredUserId(){
+  if(volatileUserId)return volatileUserId;
+  const stored=safeLocalStorageGet(USER_ID_KEY);
+  if(stored)volatileUserId=stored;
+  return stored||null;
+}
+function setStoredUserId(id){volatileUserId=id;safeLocalStorageSet(USER_ID_KEY,id);}
+function readState(){
+  if(volatileStateSerialized){
+    noteCache(true);
+    try{return JSON.parse(volatileStateSerialized);}catch{}
+  }
+  noteCache(false);
+  const raw=safeLocalStorageGet(STATE_KEY);
+  if(!raw)return volatileState?clone(volatileState):null;
+  try{
+    const parsed=normalizeRuntimeState(JSON.parse(raw));
+    volatileState=clone(parsed);volatileStateSerialized=JSON.stringify(parsed);lastPersistedStateSerialized=raw;
+    return parsed;
+  }catch{return volatileState?clone(volatileState):null;}
+}
+function writeState(state){
+  const normalized=normalizeRuntimeState(state);
+  let serialized;
+  try{serialized=JSON.stringify(normalized);}catch{return state;}
+  const changed=serialized!==volatileStateSerialized;
+  volatileStateSerialized=serialized;
+  try{volatileState=JSON.parse(serialized);}catch{volatileState=clone(normalized);}
+  if(changed)runtimePerf.revision++;
+  if(serialized!==lastPersistedStateSerialized){
+    if(safeLocalStorageSet(STATE_KEY,serialized))lastPersistedStateSerialized=serialized;
+  }else runtimePerf.storageWriteSkips++;
+  return state;
+}
+function clearState(){
+  volatileState=null;volatileStateSerialized=null;lastPersistedStateSerialized=null;volatileUserId=null;
+  runtimePerf.revision++;
+  safeLocalStorageRemove(STATE_KEY);safeLocalStorageRemove(USER_ID_KEY);
 }
 
 function formatCents(cents) {
