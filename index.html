@@ -3597,6 +3597,8 @@ body[data-route="home"] main{padding-top:2px;padding-bottom:calc(96px + env(safe
 @keyframes attentionBreathe{0%,100%{box-shadow:0 10px 20px rgba(0,0,0,.18)}50%{box-shadow:0 10px 22px rgba(0,0,0,.20),0 0 15px rgba(246,215,132,.09)}}
 
 @media(max-width:390px){
+  .zen-more-menu[data-world="bills"],.zen-more-menu[data-world="essentials"]{top:195px}
+  .zen-more-menu[data-world="lifestyle"],.zen-more-menu[data-world="savings"]{bottom:195px}
   .zen-peek{width:102px;padding:6px}
   .zen-peek[data-world="bills"],.zen-peek[data-world="lifestyle"]{left:5px}
   .zen-peek[data-world="essentials"],.zen-peek[data-world="savings"]{right:5px}
@@ -4499,7 +4501,7 @@ function initZenDisclosure(p,d,worlds,attentionOverride){
   attention?.addEventListener('click',()=>{if(attentionOverride)focus(attentionOverride.world);});
   scene.addEventListener('pointerdown',resetTimer,{passive:true});
   scene.addEventListener('keydown',resetTimer);
-  document.addEventListener('visibilitychange',()=>{if(document.hidden)clearTimeout(collapseTimer);else resetTimer();},{once:true});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)clearTimeout(collapseTimer);else resetTimer();});
 }
 
 async function renderHome(){
