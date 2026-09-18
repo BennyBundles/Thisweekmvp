@@ -3717,6 +3717,154 @@ body.app-sheet-open{overflow:hidden}
   .app-sheet-backdrop,.app-sheet{transition:none!important}
 }
 
+
+/* PHASE 4 — MOTION DISCIPLINE + SEMANTIC EVENTS v16 */
+:root{
+  --motion-ambient-opacity:.30;
+  --motion-focus-opacity:.95;
+  --motion-event-duration:1450ms;
+  --motion-confirm-duration:760ms;
+}
+body[data-motion="calm"]{
+  --motion-ambient-opacity:.18;
+  --motion-focus-opacity:.78;
+  --motion-event-duration:1750ms;
+  --motion-confirm-duration:820ms;
+}
+body[data-motion="dynamic"]{
+  --motion-ambient-opacity:.28;
+  --motion-focus-opacity:.95;
+}
+body[data-motion="cinematic"]{
+  --motion-ambient-opacity:.34;
+  --motion-focus-opacity:1;
+  --motion-event-duration:1850ms;
+  --motion-confirm-duration:980ms;
+}
+body[data-motion="reduced"]{
+  --motion-ambient-opacity:.08;
+  --motion-focus-opacity:.72;
+  --motion-event-duration:1ms;
+  --motion-confirm-duration:1ms;
+}
+.zen-flow .line{opacity:var(--motion-ambient-opacity)!important;animation-duration:22s!important}
+.zen-scene::before{animation-duration:34s!important;opacity:.55}
+.zen-scene::after{animation-duration:30s!important;opacity:.45}
+.zen-core{animation-duration:8s!important}
+body[data-motion="calm"] .zen-scene::after,
+body[data-motion="calm"] .zen-scene::before{opacity:.28}
+body[data-motion="cinematic"] .zen-scene::after{opacity:.64}
+body[data-motion="cinematic"] .zen-core{animation-duration:6.2s!important}
+
+.zen-scene[data-focus] .zen-flow .line{opacity:.08!important}
+.zen-scene[data-focus="bills"] .zen-flow .bills,
+.zen-scene[data-focus="essentials"] .zen-flow .essentials,
+.zen-scene[data-focus="lifestyle"] .zen-flow .lifestyle,
+.zen-scene[data-focus="savings"] .zen-flow .savings{
+  opacity:var(--motion-focus-opacity)!important;
+  stroke-width:4.2;
+  stroke-dasharray:7 11;
+  animation-duration:7s!important;
+}
+.zen-scene[data-focus="bills"] .zen-flow .bills{filter:drop-shadow(0 0 9px rgba(96,165,250,.34))}
+.zen-scene[data-focus="essentials"] .zen-flow .essentials{filter:drop-shadow(0 0 9px rgba(110,231,183,.34))}
+.zen-scene[data-focus="lifestyle"] .zen-flow .lifestyle{filter:drop-shadow(0 0 9px rgba(240,167,211,.34))}
+.zen-scene[data-focus="savings"] .zen-flow .savings{filter:drop-shadow(0 0 9px rgba(246,215,132,.32))}
+
+.fin-event-layer{position:absolute;inset:0;z-index:5;pointer-events:none;overflow:hidden}
+.fin-event-token{
+  --event-color:#67e8f9;
+  position:absolute;left:0;top:0;width:18px;height:18px;border-radius:50%;
+  display:grid;place-items:center;color:#06111d;font-size:.52rem;font-weight:950;
+  background:linear-gradient(145deg,#f3fdff,var(--event-color));
+  box-shadow:0 0 16px color-mix(in srgb,var(--event-color) 55%,transparent),0 7px 16px rgba(0,0,0,.25);
+  offset-rotate:0deg;
+  animation:financialTravel var(--motion-event-duration) cubic-bezier(.18,.76,.16,1) both;
+}
+.fin-event-token:nth-child(2){animation-delay:90ms;transform:scale(.82)}
+.fin-event-token:nth-child(3){animation-delay:180ms;transform:scale(.66)}
+.fin-event-token[data-world="bills"]{--event-color:#60a5fa;offset-path:path("M 180 210 C140 165 103 120 62 72")}
+.fin-event-token[data-world="essentials"]{--event-color:#6ee7b7;offset-path:path("M 180 210 C220 165 257 120 298 72")}
+.fin-event-token[data-world="lifestyle"]{--event-color:#f0a7d3;offset-path:path("M 180 210 C140 255 103 300 62 348")}
+.fin-event-token[data-world="savings"]{--event-color:#f6d784;offset-path:path("M 180 210 C220 255 257 300 298 348")}
+.fin-event-token[data-world="available"]{--event-color:#67e8f9;left:50%;top:50%;animation:financialPulse var(--motion-confirm-duration) ease-out both}
+.zen-zone.event-confirm{animation:zoneConfirm var(--motion-confirm-duration) cubic-bezier(.18,.86,.2,1) both!important}
+.zen-core.event-confirm{animation:coreConfirm var(--motion-confirm-duration) cubic-bezier(.18,.86,.2,1) both!important}
+.zen-scene.week-rebuild{animation:weekRebuild calc(var(--motion-event-duration) * 1.15) cubic-bezier(.18,.86,.2,1) both}
+.fin-event-caption{
+  position:absolute;z-index:11;left:50%;top:50%;transform:translate(-50%,84px);
+  max-width:220px;padding:6px 9px;border-radius:999px;
+  border:1px solid color-mix(in srgb,var(--event-accent,#67e8f9) 17%,rgba(177,206,221,.07));
+  background:rgba(4,15,27,.84);backdrop-filter:blur(10px);
+  color:#cfe0e6;font-size:.48rem;letter-spacing:.06em;text-transform:uppercase;text-align:center;
+  animation:eventCaption var(--motion-confirm-duration) ease both;
+}
+.local-confirm{position:relative;overflow:hidden;animation:localConfirm var(--motion-confirm-duration) cubic-bezier(.18,.86,.2,1) both}
+.local-confirm::after{
+  content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--confirm-accent,#67e8f9) 28%,transparent),0 0 28px color-mix(in srgb,var(--confirm-accent,#67e8f9) 11%,transparent);
+  animation:eventCaption var(--motion-confirm-duration) ease both;
+}
+
+body.motion-paused .zen-scene *,
+body.motion-paused .zen-scene::before,
+body.motion-paused .zen-scene::after,
+.zen-scene.scene-paused *,
+.zen-scene.scene-paused::before,
+.zen-scene.scene-paused::after{animation-play-state:paused!important}
+body[data-motion="reduced"] .fin-event-token{display:none!important}
+body[data-motion="reduced"] .zen-flow .line{animation:none!important}
+body[data-motion="reduced"] .zen-scene::before,
+body[data-motion="reduced"] .zen-scene::after,
+body[data-motion="reduced"] .zen-core{animation:none!important}
+
+body[data-route="home"] .zen-home{box-shadow:0 18px 48px rgba(0,7,14,.27)}
+.studio-stack>.section:not(.form-card),
+.studio-stack>.summary-card-full{border-color:rgba(177,206,221,.055);box-shadow:none}
+.runway-card,.goal-card,.history-week{box-shadow:0 9px 20px rgba(0,0,0,.12)}
+body[data-density="compact"] .studio-copy{max-width:58ch}
+
+@keyframes financialTravel{
+  0%{offset-distance:0%;opacity:0;filter:blur(1px);transform:scale(.65)}
+  15%{opacity:1;filter:none}
+  76%{opacity:1}
+  100%{offset-distance:100%;opacity:0;transform:scale(1.08)}
+}
+@keyframes financialPulse{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}
+  35%{opacity:1}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(2.8)}
+}
+@keyframes zoneConfirm{
+  0%{transform:scale(1);filter:brightness(1)}
+  35%{transform:scale(1.055);filter:brightness(1.22)}
+  100%{transform:scale(1);filter:brightness(1)}
+}
+@keyframes coreConfirm{
+  0%{transform:translate(-50%,-50%) scale(1);filter:brightness(1)}
+  40%{transform:translate(-50%,-50%) scale(1.045);filter:brightness(1.17)}
+  100%{transform:translate(-50%,-50%) scale(1);filter:brightness(1)}
+}
+@keyframes weekRebuild{
+  0%{opacity:.42;transform:scale(.965);filter:blur(3px)}
+  45%{opacity:.82;transform:scale(1.012);filter:blur(0)}
+  100%{opacity:1;transform:none;filter:none}
+}
+@keyframes eventCaption{
+  0%{opacity:0;filter:blur(2px)}
+  25%{opacity:1;filter:none}
+  75%{opacity:1}
+  100%{opacity:0}
+}
+@keyframes localConfirm{
+  0%{filter:brightness(1);transform:scale(1)}
+  38%{filter:brightness(1.12);transform:scale(1.008)}
+  100%{filter:brightness(1);transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .fin-event-caption,.local-confirm,.zen-zone.event-confirm,.zen-core.event-confirm,.zen-scene.week-rebuild{animation:none!important}
+}
+
 </style></head><body><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="zen-home">
@@ -4365,6 +4513,71 @@ function historySummaries(){
 function topNWithMore(items,max=3){return {shown:items.slice(0,max),more:Math.max(0,items.length-max)};}
 
 
+const FIN_EVENT_KEY='thisweek.finEvent.v1';
+function queueFinancialEvent(type,world='available',detail={}){
+  const event={type,world,detail,at:Date.now()};
+  try{sessionStorage.setItem(FIN_EVENT_KEY,JSON.stringify(event));}catch{}
+  return event;
+}
+function consumeFinancialEvent(){
+  try{
+    const raw=sessionStorage.getItem(FIN_EVENT_KEY);if(!raw)return null;
+    sessionStorage.removeItem(FIN_EVENT_KEY);
+    const event=JSON.parse(raw);
+    if(!event||Date.now()-(event.at||0)>12000)return null;
+    return event;
+  }catch{return null;}
+}
+function financialEventLabel(event){
+  if(!event)return '';
+  const amount=Number.isInteger(event.detail?.amount)?formatCents(event.detail.amount):'';
+  if(event.type==='purchase')return amount?`${amount} recorded · ${event.detail?.name||'spending'}`:'Spending recorded';
+  if(event.type==='billProtected')return amount?`${amount} marked protected`:'Bill protection updated';
+  if(event.type==='savingsAdded')return amount?`${amount} added to ${event.detail?.name||'savings goal'}`:'Savings goal updated';
+  if(event.type==='reconciled')return amount?`${amount} reconciled · ${event.detail?.name||'transaction'}`:'Imported purchase reconciled';
+  if(event.type==='weekReset')return 'New weekly cycle ready';
+  return 'Weekly plan updated';
+}
+function playFinancialEventOnHome(event){
+  const scene=document.getElementById('zenScene');if(!scene||!event)return;
+  const prefs=readUiPrefs(),world=event.world||'available';
+  const target=world==='available'?document.getElementById('zenCore'):scene.querySelector(`.zen-zone[data-world="${world}"]`);
+  if(event.type==='weekReset')scene.classList.add('week-rebuild');
+  if(target){target.classList.add('event-confirm');setTimeout(()=>target.classList.remove('event-confirm'),prefs.motion==='reduced'?20:1200);}
+  const label=financialEventLabel(event);
+  if(prefs.motion!=='reduced'){
+    const layer=document.createElement('div');layer.className='fin-event-layer';
+    if(world!=='available'&&event.type!=='weekReset'){
+      for(let i=0;i<3;i++){const token=document.createElement('span');token.className='fin-event-token';token.dataset.world=world;token.textContent='$';layer.appendChild(token);}
+    }else if(event.type!=='weekReset'){
+      const token=document.createElement('span');token.className='fin-event-token';token.dataset.world='available';token.textContent='✓';layer.appendChild(token);
+    }
+    scene.appendChild(layer);setTimeout(()=>layer.remove(),2400);
+  }
+  if(label){
+    const caption=document.createElement('div');caption.className='fin-event-caption';caption.style.setProperty('--event-accent',(WORLD_META[world]||WORLD_META.available).accent);caption.textContent=label;scene.appendChild(caption);setTimeout(()=>caption.remove(),prefs.motion==='reduced'?1500:1900);
+  }
+  if(navigator.vibrate&&prefs.motion!=='reduced')navigator.vibrate(event.type==='weekReset'?[8,35,8]:8);
+}
+function playLocalConfirmation(el,world='available'){
+  if(!el)return;
+  const meta=WORLD_META[world]||WORLD_META.available;
+  el.style.setProperty('--confirm-accent',meta.accent);el.classList.remove('local-confirm');void el.offsetWidth;el.classList.add('local-confirm');
+  setTimeout(()=>el.classList.remove('local-confirm'),readUiPrefs().motion==='reduced'?20:1100);
+}
+let sceneMotionObserver=null;
+function initMotionDiscipline(){
+  document.body.classList.toggle('motion-paused',document.hidden);
+  if(sceneMotionObserver){try{sceneMotionObserver.disconnect();}catch{}}
+  const scene=document.getElementById('zenScene');if(!scene||!('IntersectionObserver'in window))return;
+  sceneMotionObserver=new IntersectionObserver(entries=>entries.forEach(entry=>scene.classList.toggle('scene-paused',!entry.isIntersecting)),{threshold:.12});
+  sceneMotionObserver.observe(scene);
+}
+if(!window.__thisWeekMotionVisibilityBound){
+  window.__thisWeekMotionVisibilityBound=true;
+  document.addEventListener('visibilitychange',()=>document.body.classList.toggle('motion-paused',document.hidden));
+}
+
 const CONNECTED_DATA_KEY='thisweek.connectedData.v1';
 function readConnectedData(){
   const base={sourceName:null,importedAt:null,records:[]};
@@ -4761,6 +4974,9 @@ async function renderHome(){
     </div>`;
 
     initZenDisclosure(p,d,worlds,attentionOverride,command);
+    initMotionDiscipline();
+    const pendingFinancialEvent=consumeFinancialEvent();
+    if(pendingFinancialEvent)requestAnimationFrame(()=>playFinancialEventOnHome(pendingFinancialEvent));
   }catch(e){
     root.innerHTML=`<div class="center">${errBox(e.message)}<button class="btn-primary" onclick="renderHome()">Retry</button></div>`;
   }
@@ -4873,7 +5089,13 @@ async function renderBillsStudio(){
       const input=btn.parentElement.querySelector('input'),dollars=Number(input.value);
       if(!Number.isFinite(dollars)||dollars<=0){toast('Enter an amount greater than $0.');return;}
       btn.disabled=true;
-      try{await apiRequest('/bill/contribute',{method:'POST',body:JSON.stringify({userId,billId:btn.dataset.id,amount:Math.round(dollars*100)})});toast('Bill protection updated.');await renderBillsStudio();}catch(e){toast(e.message);btn.disabled=false;}
+      try{
+        const row=btn.closest('.bill-studio-row'),billName=row?.querySelector('h3')?.textContent||'Bill';
+        await apiRequest('/bill/contribute',{method:'POST',body:JSON.stringify({userId,billId:btn.dataset.id,amount:Math.round(dollars*100)})});
+        queueFinancialEvent('billProtected','bills',{amount:Math.round(dollars*100),name:billName});
+        playLocalConfirmation(row,'bills');toast('Bill protection updated.');
+        await new Promise(r=>setTimeout(r,readUiPrefs().motion==='reduced'?0:280));await renderBillsStudio();
+      }catch(e){toast(e.message);btn.disabled=false;}
     });
   }catch(e){root.innerHTML=errBox(e.message);}
 }
@@ -4898,7 +5120,7 @@ async function renderSavingsStudio(){
     const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`); let goals=readSavingsGoals();
     const draw=()=>{
       root.innerHTML=`<div class="studio-stack"><section class="studio-hero" style="--studio-accent:#f6d784"><span class="studio-kicker">Savings Goal Studio</span><h2>Turn one savings number into visible destinations.</h2><p class="studio-copy">Goals are purpose-specific planning buckets. They do not move bank money; they help you visualize where your saved money is meant to go.</p><div class="studio-summary"><div class="studio-stat"><small>This week</small><strong>${formatCents(p.savingsThisWeek||0)}</strong><span>Current weekly saving</span></div><div class="studio-stat"><small>Goals</small><strong>${goals.length}</strong><span>Purpose-specific targets</span></div><div class="studio-stat"><small>Total progress</small><strong>${formatCents(goals.reduce((n,g)=>n+(g.current||0),0))}</strong><span>Saved across goals</span></div></div></section><section class="goal-grid">${goals.map(g=>{const pct=Math.max(0,Math.min(100,Math.round((g.current||0)/Math.max(1,g.target||1)*100)));return`<div class="goal-card"><div class="goal-gem">${semanticIcon(g.name,g.type)}</div><small>${pct}% complete</small><strong>${escapeHtml(g.name)}</strong><p>${formatCents(g.current||0)} of ${formatCents(g.target||0)}</p><div class="goal-progress" style="--pct:${pct}%"><b></b></div><div class="bill-action" style="margin-top:10px"><input inputmode="decimal" placeholder="25.00"><button class="btn btn-primary add-goal" data-id="${g.id}">Add</button></div></div>`}).join('')}</section></div>`;
-      document.querySelectorAll('.add-goal').forEach(btn=>btn.onclick=()=>{const input=btn.parentElement.querySelector('input'),d=Number(input.value);if(!Number.isFinite(d)||d<=0){toast('Enter an amount greater than $0.');return;}goals=goals.map(g=>g.id===btn.dataset.id?{...g,current:(g.current||0)+Math.round(d*100)}:g);writeSavingsGoals(goals);toast('Goal progress updated.');draw();});
+      document.querySelectorAll('.add-goal').forEach(btn=>btn.onclick=()=>{const input=btn.parentElement.querySelector('input'),d=Number(input.value);if(!Number.isFinite(d)||d<=0){toast('Enter an amount greater than $0.');return;}const goal=goals.find(g=>g.id===btn.dataset.id),card=btn.closest('.goal-card');goals=goals.map(g=>g.id===btn.dataset.id?{...g,current:(g.current||0)+Math.round(d*100)}:g);writeSavingsGoals(goals);queueFinancialEvent('savingsAdded','savings',{amount:Math.round(d*100),name:goal?.name||'Savings goal'});playLocalConfirmation(card,'savings');toast('Goal progress updated.');setTimeout(draw,readUiPrefs().motion==='reduced'?0:300);});
     }; draw();
   }catch(e){root.innerHTML=errBox(e.message);}
 }
@@ -4976,7 +5198,7 @@ async function renderConnections(){
       file.onchange=()=>{const chosen=file.files?.[0];if(!chosen)return;const reader=new FileReader();reader.onload=()=>{try{const rows=parseCsvText(reader.result),records=normalizeImportedRows(rows,document.getElementById('signMode').value,chosen.name);writeConnectedData({sourceName:chosen.name,importedAt:nowIso(),records});toast(`Imported ${records.length} records for review.`);draw();}catch(e){toast(e.message);}};reader.readAsText(chosen);};
       document.getElementById('demoImport').onclick=()=>{const demo=[{Date:new Date().toISOString().slice(0,10),Description:'Neighborhood Grocery Market',Amount:'-42.17',Status:'Posted'},{Date:new Date().toISOString().slice(0,10),Description:'City Fuel Station',Amount:'-36.80',Status:'Posted'},{Date:new Date().toISOString().slice(0,10),Description:'Local Pizza',Amount:'-28.55',Status:'Pending'},{Date:new Date().toISOString().slice(0,10),Description:'Payroll Deposit',Amount:'1800.00',Status:'Posted'}];const records=normalizeImportedRows(demo,'negativePurchase','Demo connection');writeConnectedData({sourceName:'Demo connection',importedAt:nowIso(),records});toast('Demo transaction data loaded.');draw();};
       document.getElementById('clearImport').onclick=()=>{writeConnectedData({sourceName:null,importedAt:null,records:[]});toast('Imported data cleared.');draw();};
-      document.querySelectorAll('.reconcile-btn').forEach(btn=>btn.onclick=async()=>{const d=readConnectedData(),rec=d.records.find(x=>x.id===btn.dataset.id),sel=document.querySelector(`select[data-rec="${btn.dataset.id}"]`);if(!rec||!sel)return;const [type,id]=sel.value.split('|');btn.disabled=true;try{await apiRequest('/transaction/import',{method:'POST',body:JSON.stringify({userId,categoryType:type,categoryId:id,amount:rec.amount,note:rec.description,externalId:rec.externalId,createdAt:rec.date})});rec.reconciled=true;rec.categoryId=id;rec.categoryType=type;writeConnectedData(d);toast('Imported purchase reconciled.');draw();}catch(e){toast(e.message);btn.disabled=false;}});
+      document.querySelectorAll('.reconcile-btn').forEach(btn=>btn.onclick=async()=>{const d=readConnectedData(),rec=d.records.find(x=>x.id===btn.dataset.id),sel=document.querySelector(`select[data-rec="${btn.dataset.id}"]`);if(!rec||!sel)return;const [type,id]=sel.value.split('|');btn.disabled=true;try{await apiRequest('/transaction/import',{method:'POST',body:JSON.stringify({userId,categoryType:type,categoryId:id,amount:rec.amount,note:rec.description,externalId:rec.externalId,createdAt:rec.date})});rec.reconciled=true;rec.categoryId=id;rec.categoryType=type;writeConnectedData(d);queueFinancialEvent('reconciled',type==='LIVING'?'essentials':'lifestyle',{amount:rec.amount,name:rec.description});playLocalConfirmation(btn.closest('.reconcile-row'),type==='LIVING'?'essentials':'lifestyle');toast('Imported purchase reconciled.');setTimeout(draw,readUiPrefs().motion==='reduced'?0:300);}catch(e){toast(e.message);btn.disabled=false;}});
     };draw();
   }catch(e){root.innerHTML=errBox(e.message);}
 }
@@ -5053,8 +5275,10 @@ async function renderLog(){
       if(!selected||!Number.isFinite(dollars)||dollars<=0){box.innerHTML=errBox('Enter a valid amount greater than $0.');return;}
       submit.disabled=true;submit.textContent='Sending...';chamber.classList.add('sending');focus.textContent=`Sending to ${selected.name}...`;
       try{
-        await new Promise(r=>setTimeout(r,520));
+        await new Promise(r=>setTimeout(r,readUiPrefs().motion==='reduced'?0:520));
         await apiRequest('/transaction',{method:'POST',body:JSON.stringify({userId,categoryType:selected.type,categoryId:selected.id,amount:Math.round(dollars*100),note:note||undefined})});
+        queueFinancialEvent('purchase',selected.type==='LIVING'?'essentials':'lifestyle',{amount:Math.round(dollars*100),name:selected.name});
+        playLocalConfirmation(chamber,selected.type==='LIVING'?'essentials':'lifestyle');
         focus.textContent='Transaction placed';
         toast('Spending added. Your week is updated.');
         setTimeout(()=>{location.hash='home';},280);
@@ -5087,8 +5311,10 @@ async function renderReset(){
       const b=document.getElementById('confirmReset'), portal=document.getElementById('cyclePortal');
       b.disabled=true;b.textContent='Opening next week...';portal.classList.add('transitioning');
       try{
-        await new Promise(r=>setTimeout(r,650));
+        await new Promise(r=>setTimeout(r,readUiPrefs().motion==='reduced'?0:650));
         await apiRequest('/week/reset',{method:'POST',body:JSON.stringify({userId})});
+        queueFinancialEvent('weekReset','available',{});
+        playLocalConfirmation(portal,'available');
         toast('New week started. Your plan is ready.');
         setTimeout(()=>{location.hash='home';},260);
       }catch(e){b.disabled=false;b.textContent='Start New Week';portal.classList.remove('transitioning');alert(e.message);}
@@ -5115,6 +5341,7 @@ function renderSetup(){
 
 async function render(){
   closeAppSheet({restore:false});
+  if(sceneMotionObserver){try{sceneMotionObserver.disconnect();}catch{}sceneMotionObserver=null;}
   applyUiPrefs();
   const r=route();
   window.scrollTo({top:0,behavior:'smooth'});
