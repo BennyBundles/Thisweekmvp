@@ -5590,12 +5590,12 @@ function financialEventLabel(event){
 }
 function playFinancialEventOnHome(event){
   const scene=document.getElementById('zenScene');if(!scene||!event)return;
-  const prefs=readUiPrefs(),world=event.world||'available';
+  const prefs=effectiveUiPrefs(),world=event.world||'available';
   const target=world==='available'?document.getElementById('zenCore'):scene.querySelector(`.zen-zone[data-world="${world}"]`);
   if(event.type==='weekReset')scene.classList.add('week-rebuild');
-  if(target){target.classList.add('event-confirm');setTimeout(()=>target.classList.remove('event-confirm'),prefs.motion==='reduced'?20:1200);}
+  if(target){target.classList.add('event-confirm');setTimeout(()=>target.classList.remove('event-confirm'),prefs.effectiveMotion==='reduced'?20:1200);}
   const label=financialEventLabel(event);
-  if(prefs.motion!=='reduced'){
+  if(prefs.effectiveMotion!=='reduced'){
     const layer=document.createElement('div');layer.className='fin-event-layer';
     if(world!=='available'&&event.type!=='weekReset'){
       for(let i=0;i<3;i++){const token=document.createElement('span');token.className='fin-event-token';token.dataset.world=world;token.textContent='$';layer.appendChild(token);}
@@ -5605,7 +5605,7 @@ function playFinancialEventOnHome(event){
     scene.appendChild(layer);setTimeout(()=>layer.remove(),2400);
   }
   if(label){
-    const caption=document.createElement('div');caption.className='fin-event-caption';caption.style.setProperty('--event-accent',(WORLD_META[world]||WORLD_META.available).accent);caption.textContent=label;scene.appendChild(caption);setTimeout(()=>caption.remove(),prefs.motion==='reduced'?1500:1900);
+    const caption=document.createElement('div');caption.className='fin-event-caption';caption.style.setProperty('--event-accent',(WORLD_META[world]||WORLD_META.available).accent);caption.textContent=label;scene.appendChild(caption);setTimeout(()=>caption.remove(),prefs.effectiveMotion==='reduced'?1500:1900);
   }
   if(navigator.vibrate&&prefs.haptics==='on'&&effectiveUiPrefs().effectiveMotion!=='reduced')navigator.vibrate(event.type==='weekReset'?[8,35,8]:8);
 }
@@ -5613,7 +5613,7 @@ function playLocalConfirmation(el,world='available'){
   if(!el)return;
   const meta=WORLD_META[world]||WORLD_META.available;
   el.style.setProperty('--confirm-accent',meta.accent);el.classList.remove('local-confirm');void el.offsetWidth;el.classList.add('local-confirm');
-  setTimeout(()=>el.classList.remove('local-confirm'),readUiPrefs().motion==='reduced'?20:1100);
+  setTimeout(()=>el.classList.remove('local-confirm'),effectiveUiPrefs().effectiveMotion==='reduced'?20:1100);
 }
 let sceneMotionObserver=null;
 function initMotionDiscipline(){
@@ -5790,8 +5790,8 @@ const WORLD_META={
   available:{route:'precheck',title:'Purchase Pre-check',accent:'#67e8f9',icon:'essentials'}
 };
 function navigateWithChoreography(route,sourceEl,world){
-  const prefs=readUiPrefs();
-  if(prefs.motion==='reduced'||!sourceEl){sessionStorage.setItem('thisweek.routeEntry',JSON.stringify({world,route,at:Date.now()}));location.hash=route;return;}
+  const prefs=effectiveUiPrefs();
+  if(prefs.effectiveMotion==='reduced'||!sourceEl){sessionStorage.setItem('thisweek.routeEntry',JSON.stringify({world,route,at:Date.now()}));location.hash=route;return;}
   const meta=WORLD_META[world]||WORLD_META.available,r=sourceEl.getBoundingClientRect(),overlay=document.createElement('div');
   overlay.className='route-morph';overlay.style.setProperty('--morph',meta.accent);
   overlay.style.left=r.left+'px';overlay.style.top=r.top+'px';overlay.style.width=r.width+'px';overlay.style.height=r.height+'px';
@@ -5900,7 +5900,7 @@ function closeAppSheet(options={}){
   if(!layer)return;
   const restore=options.restore!==false,previous=activeAppSheet?.previousFocus;
   layer.classList.remove('open');document.body.classList.remove('app-sheet-open');
-  setTimeout(()=>{layer.remove();activeAppSheet=null;if(restore&&previous&&typeof previous.focus==='function')previous.focus();},readUiPrefs().motion==='reduced'?0:220);
+  setTimeout(()=>{layer.remove();activeAppSheet=null;if(restore&&previous&&typeof previous.focus==='function')previous.focus();},effectiveUiPrefs().effectiveMotion==='reduced'?0:220);
 }
 function openAppSheet(model={}){
   const existing=document.querySelector('.app-sheet-backdrop');
@@ -5947,7 +5947,7 @@ function openAppSheet(model={}){
   handle.addEventListener('pointermove',e=>{if(!tracking)return;drag=Math.max(0,e.clientY-startY);sheet.style.setProperty('--sheet-drag',Math.min(drag,180)+'px');});
   const finishDrag=()=>{if(!tracking)return;tracking=false;if(drag>72)closeAppSheet();else sheet.style.setProperty('--sheet-drag','0px');drag=0;};
   handle.addEventListener('pointerup',finishDrag);handle.addEventListener('pointercancel',finishDrag);
-  setTimeout(()=>closeBtn.focus(),readUiPrefs().motion==='reduced'?0:120);
+  setTimeout(()=>closeBtn.focus(),effectiveUiPrefs().effectiveMotion==='reduced'?0:120);
 }
 function phase3ChildSheetModel(world,child,worlds){
   const info=worlds[world],route=info.route;
@@ -6316,10 +6316,10 @@ async function renderBillsStudio(){
       <section class="section"><div class="section-head"><div><span class="section-kicker">Protection controls</span><h2>Mark money you have set aside</h2><div class="section-caption">This updates the planning record only; it does not move money at a bank.</div></div></div><div class="world-list">${ordered.map(b=>{const today=Math.max(0,(b.requiredByToday||0)-(b.contributed||0)),week=Math.max(0,(b.weeklyRequired||0)-(b.contributed||0));return`<div class="world-row bill-fund-row" data-bill-id="${b.id}"><div class="world-row-head"><strong>${escapeHtml(b.name)}</strong><span>${today?'Needs '+formatCents(today)+' today':week?formatCents(week)+' to weekly target':'Protected'}</span></div><div class="world-row-meta"><span class="world-chip">${b.dueDate?dueDateLabel(b.dueDate):'Recurring'}</span><span class="world-chip">${escapeHtml(b.frequency||'recurring')}</span><span class="world-chip">${formatCents(b.contributed||0)} protected</span></div><div class="world-row-actions"><input inputmode="decimal" placeholder="25.00" aria-label="Amount to protect for ${escapeHtml(b.name)}"><button class="btn btn-primary protect-bill" data-id="${b.id}">Mark protected</button></div></div>`}).join('')}</div></section>
       <div class="world-note">Protection values are planning records. They indicate money you intend to reserve for obligations; they do not verify or move funds in an external account.</div>
     </div>`;
-    document.getElementById('fundNextBill')?.addEventListener('click',e=>{const btn=e.currentTarget,row=document.querySelector(`.bill-fund-row[data-bill-id="${btn.dataset.id}"]`),input=row?.querySelector('input');if(input){input.value=(Number(btn.dataset.gap)/100).toFixed(2);row.scrollIntoView({behavior:readUiPrefs().motion==='reduced'?'auto':'smooth',block:'center'});input.focus();}});
+    document.getElementById('fundNextBill')?.addEventListener('click',e=>{const btn=e.currentTarget,row=document.querySelector(`.bill-fund-row[data-bill-id="${btn.dataset.id}"]`),input=row?.querySelector('input');if(input){input.value=(Number(btn.dataset.gap)/100).toFixed(2);row.scrollIntoView({behavior:effectiveUiPrefs().effectiveMotion==='reduced'?'auto':'smooth',block:'center'});input.focus();}});
     document.querySelectorAll('.protect-bill').forEach(btn=>btn.onclick=async()=>{
       const input=btn.parentElement.querySelector('input'),dollars=Number(input.value);if(!Number.isFinite(dollars)||dollars<=0){toast('Enter an amount greater than $0.');return;}
-      btn.disabled=true;try{const row=btn.closest('.world-row'),billName=row?.querySelector('.world-row-head strong')?.textContent||'Bill';await apiRequest('/bill/contribute',{method:'POST',body:JSON.stringify({userId,billId:btn.dataset.id,amount:Math.round(dollars*100)})});queueFinancialEvent('billProtected','bills',{amount:Math.round(dollars*100),name:billName});playLocalConfirmation(row,'bills');toast('Bill protection updated.');await new Promise(r=>setTimeout(r,readUiPrefs().motion==='reduced'?0:280));await renderBillsStudio();}catch(e){toast(e.message);btn.disabled=false;}});
+      btn.disabled=true;try{const row=btn.closest('.world-row'),billName=row?.querySelector('.world-row-head strong')?.textContent||'Bill';await apiRequest('/bill/contribute',{method:'POST',body:JSON.stringify({userId,billId:btn.dataset.id,amount:Math.round(dollars*100)})});queueFinancialEvent('billProtected','bills',{amount:Math.round(dollars*100),name:billName});playLocalConfirmation(row,'bills');toast('Bill protection updated.');await new Promise(r=>setTimeout(r,effectiveUiPrefs().effectiveMotion==='reduced'?0:280));await renderBillsStudio();}catch(e){toast(e.message);btn.disabled=false;}});
   }catch(e){root.innerHTML=errBox(e.message);}
 }
 
@@ -6357,7 +6357,7 @@ async function renderSavingsStudio(){
         <section class="savings-board">${goals.length?goals.map(g=>{const pct=Math.max(0,Math.min(100,Math.round((g.current||0)/Math.max(1,g.target||1)*100))),gap=Math.max(0,(g.target||0)-(g.current||0)),suggested=goalSuggestedWeekly(g,goals,weeklyBudget);return`<article class="savings-goal ${g.active===false?'paused':''}" data-goal-id="${g.id}"><div class="savings-goal-head"><span class="savings-goal-gem">${semanticIcon(g.name,g.type)}</span><span><strong>${escapeHtml(g.name)}</strong><span>${g.active===false?'Paused':pct>=100?'Complete':'Active goal'}</span></span><span class="goal-priority">${escapeHtml(g.priority)} priority</span></div><div class="savings-goal-progress" style="--pct:${pct}%"><i></i></div><div class="savings-goal-facts"><div><small>Current</small><strong>${formatCents(g.current||0)}</strong></div><div><small>Target</small><strong>${formatCents(g.target||0)}</strong></div><div><small>Gap</small><strong>${formatCents(gap)}</strong></div><div><small>Suggested / week</small><strong>${g.active===false?'Paused':weeklyBudget?formatCents(suggested):'—'}</strong></div></div><div class="goal-control-row"><input inputmode="decimal" placeholder="25.00" aria-label="Add progress to ${escapeHtml(g.name)}"><button class="btn btn-primary add-goal" data-id="${g.id}" ${g.active===false?'disabled':''}>Add progress</button></div><details class="goal-settings"><summary>Goal controls</summary><div class="goal-settings-body"><select class="goal-priority-select" data-id="${g.id}" aria-label="Priority for ${escapeHtml(g.name)}"><option value="high" ${g.priority==='high'?'selected':''}>High priority</option><option value="medium" ${g.priority==='medium'?'selected':''}>Medium priority</option><option value="low" ${g.priority==='low'?'selected':''}>Low priority</option></select><button class="goal-toggle" data-id="${g.id}" type="button">${g.active===false?'Resume goal':'Pause goal'}</button></div></details></article>`}).join(''):'<div class="empty">No savings goals configured.</div>'}</section>
         <div class="world-note">Suggested weekly amounts are planning allocations derived from your configured weekly savings target, goal priority, and remaining gap. They are not financial advice or automatic transfers.</div>
       </div>`;
-      document.querySelectorAll('.add-goal').forEach(btn=>btn.onclick=()=>{const input=btn.parentElement.querySelector('input'),d=Number(input.value);if(!Number.isFinite(d)||d<=0){toast('Enter an amount greater than $0.');return;}const goal=goals.find(g=>g.id===btn.dataset.id),card=btn.closest('.savings-goal');goals=goals.map(g=>g.id===btn.dataset.id?{...g,current:(g.current||0)+Math.round(d*100)}:g);writeSavingsGoals(goals);queueFinancialEvent('savingsAdded','savings',{amount:Math.round(d*100),name:goal?.name||'Savings goal'});playLocalConfirmation(card,'savings');toast('Goal progress updated.');setTimeout(draw,readUiPrefs().motion==='reduced'?0:300);});
+      document.querySelectorAll('.add-goal').forEach(btn=>btn.onclick=()=>{const input=btn.parentElement.querySelector('input'),d=Number(input.value);if(!Number.isFinite(d)||d<=0){toast('Enter an amount greater than $0.');return;}const goal=goals.find(g=>g.id===btn.dataset.id),card=btn.closest('.savings-goal');goals=goals.map(g=>g.id===btn.dataset.id?{...g,current:(g.current||0)+Math.round(d*100)}:g);writeSavingsGoals(goals);queueFinancialEvent('savingsAdded','savings',{amount:Math.round(d*100),name:goal?.name||'Savings goal'});playLocalConfirmation(card,'savings');toast('Goal progress updated.');setTimeout(draw,effectiveUiPrefs().effectiveMotion==='reduced'?0:300);});
       document.querySelectorAll('.goal-priority-select').forEach(sel=>sel.onchange=()=>{goals=goals.map(g=>g.id===sel.dataset.id?{...g,priority:sel.value}:g);writeSavingsGoals(goals);toast('Goal priority updated.');draw();});
       document.querySelectorAll('.goal-toggle').forEach(btn=>btn.onclick=()=>{goals=goals.map(g=>g.id===btn.dataset.id?{...g,active:g.active===false}:g);writeSavingsGoals(goals);toast(goals.find(g=>g.id===btn.dataset.id)?.active===false?'Goal paused.':'Goal resumed.');draw();});
     };draw();
@@ -6683,7 +6683,7 @@ async function renderConnections(){
           rec.reconciled=true;rec.reviewState='reconciled';rec.categoryId=id;rec.categoryType=type;rec.categoryName=cat?.name||null;rec.reconciledAt=nowIso();
           appendConnectedAudit(d,'reconcile',rec,`Applied to ${cat?.name||'category'}`);writeConnectedData(d);
           queueFinancialEvent('reconciled',type==='LIVING'?'essentials':'lifestyle',{amount:rec.amount,name:rec.description});playLocalConfirmation(btn.closest('.reconcile-row'),type==='LIVING'?'essentials':'lifestyle');
-          p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);toast('Imported purchase reconciled.');setTimeout(draw,readUiPrefs().motion==='reduced'?0:250);
+          p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);toast('Imported purchase reconciled.');setTimeout(draw,effectiveUiPrefs().effectiveMotion==='reduced'?0:250);
         }catch(e){toast(e.message);btn.disabled=false;}
       });
 
@@ -6784,7 +6784,7 @@ async function renderLog(){
       if(!selected||!Number.isFinite(dollars)||dollars<=0){box.innerHTML=errBox('Enter a valid amount greater than $0.');return;}
       submit.disabled=true;submit.textContent='Sending...';chamber.classList.add('sending');focus.textContent=`Sending to ${selected.name}...`;
       try{
-        await new Promise(r=>setTimeout(r,readUiPrefs().motion==='reduced'?0:520));
+        await new Promise(r=>setTimeout(r,effectiveUiPrefs().effectiveMotion==='reduced'?0:520));
         await apiRequest('/transaction',{method:'POST',body:JSON.stringify({userId,categoryType:selected.type,categoryId:selected.id,amount:Math.round(dollars*100),note:note||undefined})});
         queueFinancialEvent('purchase',selected.type==='LIVING'?'essentials':'lifestyle',{amount:Math.round(dollars*100),name:selected.name});
         playLocalConfirmation(chamber,selected.type==='LIVING'?'essentials':'lifestyle');
@@ -6820,7 +6820,7 @@ async function renderReset(){
       const b=document.getElementById('confirmReset'), portal=document.getElementById('cyclePortal');
       b.disabled=true;b.textContent='Opening next week...';portal.classList.add('transitioning');
       try{
-        await new Promise(r=>setTimeout(r,readUiPrefs().motion==='reduced'?0:650));
+        await new Promise(r=>setTimeout(r,effectiveUiPrefs().effectiveMotion==='reduced'?0:650));
         await apiRequest('/week/reset',{method:'POST',body:JSON.stringify({userId})});
         queueFinancialEvent('weekReset','available',{});
         playLocalConfirmation(portal,'available');
