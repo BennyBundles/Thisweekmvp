@@ -4943,8 +4943,8 @@ function runGenerators(state, week) {
   week.status = (week.billAllocations.some(x => x.contributed < x.requiredByToday) || week.balances.some(x => x.remaining < 0)) ? "NEEDS_ATTENTION" : "ON_TRACK";
 }
 
-function homePayload(state, week) {
-  runGenerators(state, week);
+function homePayload(state, week, options={}) {
+  if(!options.generated)runGenerators(state, week);
   const livingNames = Object.fromEntries(state.config.livingNeeds.map(x => [x.id, x.name]));
   const discNames = Object.fromEntries(state.config.discretionary.map(x => [x.id, x.name]));
   const billNames = Object.fromEntries(state.config.bills.map(x => [x.id, x.name]));
@@ -5000,12 +5000,12 @@ function localApi(path, options = {}) {
   if (body.userId && body.userId !== state.userId) throw new Error("Unknown user.");
 
   if (url.pathname === "/week/current" && method === "POST") {
-    const week = ensureCurrentWeek(state); writeState(state); return homePayload(state, week);
+    const week = ensureCurrentWeek(state); writeState(state); return homePayload(state, week,{generated:true});
   }
   if (url.pathname === "/week/current" && method === "GET") {
     const week = state.weeks.filter(w => !w.closed).sort((a,b) => b.start.localeCompare(a.start))[0];
     if (!week) throw new Error("No open week. Return home first.");
-    runGenerators(state, week); writeState(state); return homePayload(state, week);
+    runGenerators(state, week); writeState(state); return homePayload(state, week,{generated:true});
   }
   if (url.pathname === "/bill/contribute" && method === "POST") {
     const week = state.weeks.filter(w => !w.closed).sort((a,b) => b.start.localeCompare(a.start))[0];
@@ -5015,7 +5015,7 @@ function localApi(path, options = {}) {
     if (!bill) throw new Error("Unknown bill.");
     if (!Number.isInteger(body.amount) || body.amount <= 0) throw new Error("Amount must be greater than $0.");
     bill.contributed = Math.min(Math.max(bill.weeklyRequired, bill.requiredByToday), bill.contributed + body.amount);
-    runGenerators(state, week); writeState(state); return homePayload(state, week);
+    runGenerators(state, week); writeState(state); return homePayload(state, week,{generated:true});
   }
   if (url.pathname === "/transaction/import/reverse" && method === "POST") {
     const txIndex=state.transactions.findIndex(t=>t.source==="import"&&t.externalId===body.externalId);
@@ -5101,22 +5101,22 @@ function localApi(path, options = {}) {
     if (balance.remaining < body.amount) throw new Error("Amount exceeds remaining balance for this category.");
     state.transactions.push({ id: uid(), weekId: week.id, categoryType: body.categoryType, categoryId: body.categoryId, amount: body.amount, note: body.note || null, createdAt: nowIso() });
     balance.spent += body.amount; balance.remaining -= body.amount;
-    runGenerators(state, week); writeState(state); return homePayload(state, week);
+    runGenerators(state, week); writeState(state); return homePayload(state, week,{generated:true});
   }
   if (url.pathname === "/adjustment" && method === "POST") {
     const week = state.weeks.find(w => !w.closed); if (!week) throw new Error("No open week.");
     const prev = body.targetType === "SAVINGS" ? week.savingsAmount : body.targetType === "BILL" ? week.billAllocations.find(x => x.billId === body.targetId)?.weeklyRequired : week.balances.find(x => x.categoryId === body.targetId)?.allocated;
     if (prev == null) throw new Error("Unknown adjustment target.");
     state.adjustments.push({ id: uid(), weekId: week.id, targetType: body.targetType, targetId: body.targetId, previousValue: prev, adjustedValue: body.adjustedValue, createdAt: nowIso() });
-    runGenerators(state, week); writeState(state); return homePayload(state, week);
+    runGenerators(state, week); writeState(state); return homePayload(state, week,{generated:true});
   }
   if (url.pathname === "/week/reset" && method === "POST") {
     const open = state.weeks.find(w => !w.closed);
-    if (!open) { const week = ensureCurrentWeek(state); writeState(state); return homePayload(state, week); }
+    if (!open) { const week = ensureCurrentWeek(state); writeState(state); return homePayload(state, week,{generated:true}); }
     open.closed = true;
     const ref = new Date(new Date(open.end).getTime() + 1000);
     const [start,end] = computeWeekBounds(state.config.weekAnchorDow, state.config.weekAnchorMinutes, state.config.timezone, ref);
-    const week = makeWeek(state, start, end); state.weeks.push(week); runGenerators(state, week); writeState(state); return homePayload(state, week);
+    const week = makeWeek(state, start, end); state.weeks.push(week); runGenerators(state, week); writeState(state); return homePayload(state, week,{generated:true});
   }
   throw new Error(`Unsupported action: ${method} ${url.pathname}`);
 }
