@@ -2335,6 +2335,184 @@ body[data-route="home"] .text-action{padding:8px 10px;font-size:.62rem}
   .bottom-nav::after{transition:none!important}
 }
 
+
+/* MULTI-DIRECTIONAL CATEGORY ENGINE v11 */
+.money-theater{
+  min-height:650px;
+  perspective:900px;
+  --tilt-x:0deg;
+  --tilt-y:0deg;
+}
+.scene-core-button{
+  transform:translate(-50%,-50%) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transform-style:preserve-3d;
+  overflow:visible;
+}
+.scene-core-button:active{
+  transform:translate(-50%,-50%) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(.97);
+}
+.scene-core-button .core-number{transform:translateZ(18px)}
+.scene-core-button .core-kicker,.scene-core-button .core-hint{transform:translateZ(11px)}
+.scene-core-button .core-shell{
+  position:absolute;inset:-28px;border-radius:50%;pointer-events:none;
+  border:1px solid color-mix(in srgb,var(--scene-accent) 12%,transparent);
+  box-shadow:inset 0 0 30px color-mix(in srgb,var(--scene-accent) 5%,transparent);
+  animation:artOrbitReverse 23s linear infinite;
+}
+.scene-core-button .core-shell::before,.scene-core-button .core-shell::after{
+  content:"";position:absolute;width:7px;height:7px;border-radius:50%;background:var(--scene-accent);
+  box-shadow:0 0 12px color-mix(in srgb,var(--scene-accent) 58%,transparent)
+}
+.scene-core-button .core-shell::before{top:-4px;left:50%}.scene-core-button .core-shell::after{bottom:-4px;left:50%}
+.scene-core-button .core-glass{
+  position:absolute;inset:17px;border-radius:50%;pointer-events:none;
+  background:linear-gradient(155deg,rgba(255,255,255,.075),transparent 34%,rgba(0,0,0,.10));
+  mix-blend-mode:screen;
+}
+.engine-dock{
+  position:absolute;z-index:10;left:12px;right:12px;bottom:12px;
+  border-radius:26px;border:1px solid rgba(177,206,221,.11);
+  background:
+    radial-gradient(circle at 12% 0%,color-mix(in srgb,var(--scene-accent) 8%,transparent),transparent 25%),
+    linear-gradient(145deg,rgba(3,13,23,.93),rgba(7,19,31,.90));
+  box-shadow:0 22px 42px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.028);
+  backdrop-filter:blur(18px);
+  overflow:hidden;
+}
+.engine-dock::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(120deg,transparent 0 38%,rgba(255,255,255,.03) 50%,transparent 62%),
+    repeating-linear-gradient(90deg,transparent 0 22px,rgba(255,255,255,.006) 23px);
+  animation:engineSweep 9s ease-in-out infinite;
+}
+.engine-head{
+  position:relative;z-index:2;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+  padding:13px 14px 10px;
+}
+.engine-head small{display:block;font-size:.52rem;letter-spacing:.15em;text-transform:uppercase;color:#95c7c1;font-weight:800}
+.engine-head strong{display:block;margin-top:4px;font-size:.96rem;letter-spacing:-.02em}
+.engine-head span{display:block;margin-top:3px;color:var(--text-soft);font-size:.65rem;line-height:1.35;max-width:22rem}
+.engine-mode{
+  flex:0 0 auto;padding:7px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.06);
+  background:rgba(255,255,255,.035);font-size:.52rem;text-transform:uppercase;letter-spacing:.11em;color:#d4e6ea
+}
+.engine-tabs{
+  position:relative;z-index:2;display:flex;gap:6px;overflow-x:auto;padding:0 12px 10px;scrollbar-width:none;
+}
+.engine-tabs::-webkit-scrollbar{display:none}
+.engine-tab{
+  appearance:none;flex:0 0 auto;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.035);
+  color:#b8cfd6;padding:7px 9px;border-radius:999px;font-size:.52rem;text-transform:uppercase;letter-spacing:.1em;cursor:pointer;
+  transition:transform .22s ease,border-color .22s ease,background .22s ease,color .22s ease;
+}
+.engine-tab.active{
+  transform:translateY(-1px);
+  border-color:color-mix(in srgb,var(--scene-accent) 28%,transparent);
+  background:color-mix(in srgb,var(--scene-accent) 10%,rgba(255,255,255,.025));
+  color:#f5feff;
+  box-shadow:0 0 16px color-mix(in srgb,var(--scene-accent) 10%,transparent);
+}
+.engine-network{
+  position:relative;z-index:2;margin:0 12px 10px;min-height:168px;
+  border-radius:22px;border:1px solid rgba(255,255,255,.05);
+  background:rgba(255,255,255,.012);
+  overflow:hidden;
+}
+.engine-network::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(circle at center,rgba(255,255,255,.025) 1px,transparent 1.5px);
+  background-size:15px 15px;
+  mask-image:linear-gradient(180deg,#000,transparent 120%);
+}
+.subflow-svg{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.subflow-path{
+  fill:none;stroke:color-mix(in srgb,var(--scene-accent) 30%,transparent);stroke-width:1.2;
+  stroke-dasharray:4 7;animation:subflowDash 8s linear infinite;
+}
+.subflow-path.secondary{opacity:.45;animation-direction:reverse;animation-duration:11s}
+.subflow-hub{fill:var(--scene-accent);opacity:.75;filter:drop-shadow(0 0 5px var(--scene-accent))}
+.subcards{
+  position:relative;z-index:2;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:10px;
+}
+.engine-card{
+  appearance:none;position:relative;overflow:hidden;min-width:0;padding:10px;text-align:left;color:var(--text);
+  border-radius:16px;border:1px solid rgba(177,206,221,.085);
+  background:linear-gradient(145deg,rgba(8,22,36,.90),rgba(5,16,27,.87));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.02);
+  cursor:pointer;
+  transition:transform .24s var(--ease-spring),border-color .24s ease,background .24s ease,box-shadow .24s ease;
+}
+.engine-card::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(circle at 8% 0%,color-mix(in srgb,var(--scene-accent) 8%,transparent),transparent 32%);
+}
+.engine-card:hover,.engine-card.active{
+  transform:translateY(-2px) scale(1.012);
+  border-color:color-mix(in srgb,var(--scene-accent) 26%,transparent);
+  background:linear-gradient(145deg,color-mix(in srgb,var(--scene-accent) 7%,rgba(8,22,36,.92)),rgba(5,16,27,.90));
+  box-shadow:0 12px 24px rgba(0,0,0,.17),0 0 18px color-mix(in srgb,var(--scene-accent) 7%,transparent);
+}
+.engine-card-top{display:flex;align-items:center;justify-content:space-between;gap:8px;position:relative}
+.engine-card-title{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.65rem;color:#edf6f8;font-weight:760}
+.engine-card-badge{
+  flex:0 0 auto;padding:4px 6px;border-radius:999px;background:rgba(255,255,255,.045);
+  font-size:.46rem;text-transform:uppercase;letter-spacing:.09em;color:#abc2ca
+}
+.engine-card-value{display:block;position:relative;margin-top:6px;font-size:.98rem;font-weight:820;letter-spacing:-.03em}
+.engine-card-meta{display:block;position:relative;margin-top:3px;color:var(--text-soft);font-size:.57rem;line-height:1.32;min-height:2.45em}
+.engine-meter{position:relative;margin-top:8px;height:5px;border-radius:999px;background:rgba(255,255,255,.05);overflow:hidden}
+.engine-meter span{display:block;height:100%;width:var(--fill,0%);border-radius:inherit;background:linear-gradient(90deg,var(--scene-accent),#d8fff7);box-shadow:0 0 9px color-mix(in srgb,var(--scene-accent) 22%,transparent)}
+.engine-port{
+  position:absolute;width:7px;height:7px;border-radius:50%;right:7px;bottom:7px;background:var(--scene-accent);
+  box-shadow:0 0 8px color-mix(in srgb,var(--scene-accent) 54%,transparent)
+}
+.engine-drawer{
+  position:relative;z-index:2;margin:0 12px 12px;padding:0;max-height:0;opacity:0;overflow:hidden;
+  border-radius:18px;border:1px solid transparent;background:rgba(255,255,255,.016);
+  transition:max-height .38s ease,opacity .24s ease,padding .3s ease,border-color .3s ease;
+}
+.engine-drawer.open{
+  max-height:220px;opacity:1;padding:11px 12px;border-color:rgba(177,206,221,.07)
+}
+.drawer-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.drawer-head small{display:block;font-size:.49rem;letter-spacing:.12em;text-transform:uppercase;color:#95c7c1}
+.drawer-head strong{display:block;margin-top:3px;font-size:.82rem}
+.drawer-close{appearance:none;border:none;background:rgba(255,255,255,.04);color:var(--text-soft);width:28px;height:28px;border-radius:10px;cursor:pointer}
+.drawer-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:10px}
+.drawer-stat{padding:8px;border-radius:13px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.045)}
+.drawer-stat span{display:block;font-size:.47rem;letter-spacing:.08em;text-transform:uppercase;color:#8fa7b2}
+.drawer-stat strong{display:block;margin-top:4px;font-size:.73rem}
+.drawer-actions{display:flex;gap:7px;margin-top:10px}
+.drawer-actions a{flex:1;min-height:36px;padding:9px 10px;border-radius:12px;font-size:.62rem}
+.scene-core-button[data-mode="bills"]{--scene-accent:var(--scene-blue)}
+.scene-core-button[data-mode="essentials"]{--scene-accent:var(--scene-mint)}
+.scene-core-button[data-mode="lifestyle"]{--scene-accent:var(--scene-pink)}
+.scene-core-button[data-mode="savings"]{--scene-accent:var(--scene-gold)}
+.bottom-nav{
+  transition:box-shadow .35s ease,border-color .35s ease;
+}
+body[data-route="home"] .bottom-nav::after{background:linear-gradient(145deg,rgba(103,232,249,.13),rgba(110,231,183,.06))}
+body[data-route="log"] .bottom-nav::after{background:linear-gradient(145deg,rgba(110,231,183,.13),rgba(96,165,250,.06))}
+body[data-route="details"] .bottom-nav::after{background:linear-gradient(145deg,rgba(96,165,250,.13),rgba(196,181,253,.06))}
+body[data-route="plan"] .bottom-nav::after{background:linear-gradient(145deg,rgba(246,215,132,.12),rgba(110,231,183,.06))}
+@keyframes engineSweep{0%,68%{transform:translateX(-120%)}88%,100%{transform:translateX(130%)}}
+@keyframes subflowDash{to{stroke-dashoffset:-84}}
+@media(max-width:390px){
+  .money-theater{min-height:708px}
+  .engine-head{padding:12px 12px 8px}
+  .engine-network{margin-inline:9px}
+  .engine-tabs{padding-inline:9px}
+  .subcards{gap:7px;padding:8px}
+  .engine-card{padding:9px}
+  .engine-card-meta{min-height:auto}
+  .drawer-grid{grid-template-columns:1fr 1fr}
+  .drawer-stat:last-child{grid-column:1/-1}
+}
+@media(prefers-reduced-motion:reduce){
+  .scene-core-button .core-shell,.engine-dock::before,.subflow-path{animation:none!important}
+}
+
 </style></head><body><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="hero-card">
@@ -2892,6 +3070,72 @@ function sceneIcon(type){
   return icons[type]||'';
 }
 
+function sceneCardModel(p,d){
+  const state=readState()||{};
+  const cfg=state.config||{};
+  const savingsTarget=Math.max(0,cfg.savingsRule?.weeklyAmount||0);
+  const mkCat=c=>{
+    const allocated=Math.max(0,c.allocated||0);
+    const spent=Math.max(0,allocated-(c.remaining||0));
+    const remaining=c.remaining||0;
+    return {
+      title:c.name,
+      badge:remaining<0?'Overspent':'Open',
+      value:formatCents(remaining),
+      meta:`Spent ${formatCents(spent)} of ${formatCents(allocated)}`,
+      fill:percent(spent,Math.max(1,allocated)),
+      aLabel:'Remaining',aValue:formatCents(remaining),
+      bLabel:'Spent',bValue:formatCents(spent),
+      cLabel:'Budget',cValue:formatCents(allocated),
+      action:'#log'
+    };
+  };
+  const billCards=(p.bills||[]).map(b=>{
+    const target=Math.max(0,b.weeklyRequired||b.requiredByToday||0);
+    const contributed=Math.max(0,b.contributed||0);
+    const gap=Math.max(0,(b.requiredByToday||0)-contributed);
+    return {
+      title:b.name,badge:b.status==='ON_TRACK'?'On track':'Attention',value:formatCents(contributed),
+      meta:`Due today ${formatCents(b.requiredByToday||0)} · target ${formatCents(target)}`,
+      fill:percent(contributed,Math.max(1,target)),
+      aLabel:'Funded',aValue:formatCents(contributed),
+      bLabel:'Today gap',bValue:formatCents(gap),
+      cLabel:'Weekly target',cValue:formatCents(target),
+      action:'#details'
+    };
+  });
+  const savingsNow=Math.max(0,p.savingsThisWeek||0);
+  const savingsGap=Math.max(0,savingsTarget-savingsNow);
+  const savingsCards=[
+    {title:'Saved this week',badge:'Current',value:formatCents(savingsNow),meta:'Protected toward this week’s growth target.',fill:percent(savingsNow,Math.max(1,savingsTarget||savingsNow||1)),aLabel:'Saved',aValue:formatCents(savingsNow),bLabel:'Target',bValue:savingsTarget?formatCents(savingsTarget):'Not set',cLabel:'Gap',cValue:formatCents(savingsGap),action:'#setup'},
+    {title:'Available now',badge:'Liquidity',value:formatCents(p.available),meta:'Current usable money compared with savings.',fill:percent(Math.max(0,p.available),Math.max(1,Math.max(0,p.available)+savingsNow)),aLabel:'Available',aValue:formatCents(p.available),bLabel:'Saved',bValue:formatCents(savingsNow),cLabel:'Week',cValue:p.status==='ON_TRACK'?'Stable':'Review',action:'#details'},
+    {title:'Protected bills',badge:'Context',value:formatCents(p.protected),meta:'Savings shown beside protected obligations.',fill:percent(savingsNow,Math.max(1,savingsNow+Math.max(0,p.protected))),aLabel:'Protected',aValue:formatCents(p.protected),bLabel:'Savings',bValue:formatCents(savingsNow),cLabel:'Balance',cValue:formatCents(p.available),action:'#details'},
+    {title:'Savings target',badge:'Goal',value:savingsTarget?formatCents(savingsTarget):'Not set',meta:'Edit the weekly goal inside Plan.',fill:percent(savingsNow,Math.max(1,savingsTarget||1)),aLabel:'Target',aValue:savingsTarget?formatCents(savingsTarget):'—',bLabel:'Current',bValue:formatCents(savingsNow),cLabel:'Gap',cValue:formatCents(savingsGap),action:'#setup'}
+  ];
+  const overview=[
+    {title:'Available now',badge:'Signal',value:formatCents(p.available),meta:'Your immediate weekly money signal.',fill:percent(Math.max(0,p.available),Math.max(1,d.essentialsLeft+d.lifestyleLeft+Math.max(0,p.protected)+savingsNow)),aLabel:'State',aValue:p.status==='ON_TRACK'?'Stable':'Review',bLabel:'Essentials',bValue:formatCents(d.essentialsLeft),cLabel:'Lifestyle',cValue:formatCents(d.lifestyleLeft),action:'#details'},
+    {title:'Protected bills',badge:'Protection',value:formatCents(p.protected),meta:'Money currently reserved for obligations.',fill:percent(Math.max(0,p.protected),Math.max(1,Math.max(0,p.protected)+Math.max(0,p.available))),aLabel:'Protected',aValue:formatCents(p.protected),bLabel:'Available',bValue:formatCents(p.available),cLabel:'Bills',cValue:String(p.bills.length),action:'#details'},
+    {title:'Needs + flex',badge:'Spending',value:formatCents(d.essentialsLeft+d.lifestyleLeft),meta:'Remaining room across active spending lanes.',fill:percent(Math.max(0,d.essentialsLeft+d.lifestyleLeft),Math.max(1,d.essentialsLeft+d.lifestyleLeft+Math.max(0,p.protected))),aLabel:'Needs',aValue:formatCents(d.essentialsLeft),bLabel:'Flex',bValue:formatCents(d.lifestyleLeft),cLabel:'Watch',cValue:String(d.overspent.length),action:'#details'},
+    {title:'Savings',badge:'Growth',value:formatCents(savingsNow),meta:'Money directed toward weekly growth.',fill:percent(savingsNow,Math.max(1,savingsTarget||savingsNow||1)),aLabel:'Saved',aValue:formatCents(savingsNow),bLabel:'Target',bValue:savingsTarget?formatCents(savingsTarget):'—',cLabel:'Gap',cValue:formatCents(savingsGap),action:'#setup'}
+  ];
+  const pad=(arr,label)=>{const out=[...arr].slice(0,4);while(out.length<4)out.push({title:`${label} lane ${out.length+1}`,badge:'Empty',value:'—',meta:'Add or configure this lane in Plan.',fill:0,aLabel:'State',aValue:'Empty',bLabel:'Plan',bValue:'Edit',cLabel:'Next',cValue:'Setup',action:'#setup'});return out;};
+  return {
+    available:{accent:'#67e8f9',title:'Whole-system overview',copy:'A four-way operating map of liquidity, protection, spending, and growth.',cards:overview},
+    bills:{accent:'#60a5fa',title:'Protected bills engine',copy:'Each obligation has its own funding rail, gap state, and weekly target.',cards:pad(billCards,'Bill')},
+    essentials:{accent:'#6ee7b7',title:'Essentials engine',copy:'Core weekly needs communicate remaining money, utilization, and overspend state.',cards:pad((p.essentials||[]).map(mkCat),'Essential')},
+    lifestyle:{accent:'#f0a7d3',title:'Lifestyle engine',copy:'Flexible spending lanes stay expressive but visibly tied back to available money.',cards:pad((p.forYou||[]).map(mkCat),'Lifestyle')},
+    savings:{accent:'#f6d784',title:'Savings engine',copy:'Growth, target progress, liquidity, and protected obligations work as one system.',cards:savingsCards}
+  };
+}
+
+function renderEngineCards(cards){
+  return cards.map((x,i)=>`<button class="engine-card" type="button" data-card-index="${i}"><div class="engine-card-top"><span class="engine-card-title">${escapeHtml(x.title)}</span><span class="engine-card-badge">${escapeHtml(x.badge)}</span></div><strong class="engine-card-value">${escapeHtml(x.value)}</strong><span class="engine-card-meta">${escapeHtml(x.meta)}</span><div class="engine-meter"><span style="--fill:${Math.round(clampUI(x.fill||0,0,100))}%"></span></div><span class="engine-port"></span></button>`).join('');
+}
+
+function renderEngineDrawer(card){
+  return `<div class="drawer-head"><div><small>Subcategory detail</small><strong>${escapeHtml(card.title)}</strong></div><button class="drawer-close" type="button" aria-label="Close detail">×</button></div><div class="drawer-grid"><div class="drawer-stat"><span>${escapeHtml(card.aLabel)}</span><strong>${escapeHtml(card.aValue)}</strong></div><div class="drawer-stat"><span>${escapeHtml(card.bLabel)}</span><strong>${escapeHtml(card.bValue)}</strong></div><div class="drawer-stat"><span>${escapeHtml(card.cLabel)}</span><strong>${escapeHtml(card.cValue)}</strong></div></div><div class="drawer-actions"><a class="btn btn-primary" href="${card.action||'#details'}">Open Tool</a><a class="btn btn-secondary" href="#log">Add Spend</a></div>`;
+}
+
 function initMoneyTheater(p,d){
   const theater=document.getElementById('moneyTheater');
   if(!theater)return;
@@ -2903,37 +3147,84 @@ function initMoneyTheater(p,d){
   const coreValue=document.getElementById('sceneCoreValue');
   const coreHint=document.getElementById('sceneCoreHint');
   const zones=[...theater.querySelectorAll('.money-zone')];
-  const map={
-    available:{accent:'#67e8f9',title:'Available now',value:formatCents(p.available),copy:'Your quick safe-to-use weekly signal.',hint:'Tap a zone'},
-    bills:{accent:'#60a5fa',title:'Protected bills',value:formatCents(p.protected),copy:d.behind.length?'At least one bill needs attention.':'Required bill money currently protected.',hint:'Bills selected'},
-    essentials:{accent:'#6ee7b7',title:'Essentials left',value:formatCents(d.essentialsLeft),copy:'Groceries, gas, transit, and other weekly needs.',hint:'Essentials selected'},
-    lifestyle:{accent:'#f0a7d3',title:'Lifestyle left',value:formatCents(d.lifestyleLeft),copy:'Flexible money for eating out, fun, and optional spending.',hint:'Lifestyle selected'},
-    savings:{accent:'#f6d784',title:'Savings',value:formatCents(p.savingsThisWeek||0),copy:'Money set aside toward this week’s savings target.',hint:'Savings selected'}
-  };
+  const tabs=[...theater.querySelectorAll('.engine-tab')];
+  const engineTitle=document.getElementById('engineTitle');
+  const engineCopy=document.getElementById('engineCopy');
+  const engineMode=document.getElementById('engineMode');
+  const cardsHost=document.getElementById('engineCards');
+  const drawer=document.getElementById('engineDrawer');
+  const model=sceneCardModel(p,d);
   let userTouched=false;
   let autoIndex=0;
+  let currentKey='available';
   const order=['available','bills','essentials','lifestyle','savings'];
+
+  const wireCards=()=>{
+    [...cardsHost.querySelectorAll('.engine-card')].forEach(card=>{
+      card.addEventListener('click',()=>{
+        userTouched=true;
+        const idx=Number(card.dataset.cardIndex);
+        const item=model[currentKey].cards[idx];
+        [...cardsHost.querySelectorAll('.engine-card')].forEach(x=>x.classList.toggle('active',x===card));
+        drawer.innerHTML=renderEngineDrawer(item);
+        drawer.classList.add('open');
+        drawer.querySelector('.drawer-close').onclick=()=>{
+          drawer.classList.remove('open');
+          [...cardsHost.querySelectorAll('.engine-card')].forEach(x=>x.classList.remove('active'));
+        };
+        if(navigator.vibrate) navigator.vibrate(6);
+      });
+    });
+  };
+
   const apply=(key,manual=false)=>{
-    const item=map[key]||map.available;
-    if(manual) userTouched=true;
+    const item=model[key]||model.available;
+    currentKey=key;
+    if(manual)userTouched=true;
     theater.dataset.focus=key;
     theater.style.setProperty('--scene-accent',item.accent);
     zones.forEach(z=>z.setAttribute('aria-pressed',String(z.dataset.zone===key)));
-    coreLabel.textContent=item.title;
-    coreValue.textContent=item.value;
-    coreHint.textContent=item.hint;
-    focusTitle.textContent=item.title;
-    focusValue.textContent=item.value;
+    tabs.forEach(t=>t.classList.toggle('active',t.dataset.scene===key));
+    core.dataset.mode=key;
+    const primaryValue=key==='bills'?p.protected:key==='essentials'?d.essentialsLeft:key==='lifestyle'?d.lifestyleLeft:key==='savings'?(p.savingsThisWeek||0):p.available;
+    const primaryTitle=key==='bills'?'Protected bills':key==='essentials'?'Essentials left':key==='lifestyle'?'Lifestyle left':key==='savings'?'Savings':'Available now';
+    coreLabel.textContent=primaryTitle;
+    coreValue.textContent=formatCents(primaryValue);
+    coreHint.textContent=key==='available'?'Tap a zone':`${key} selected`;
+    focusTitle.textContent=primaryTitle;
+    focusValue.textContent=formatCents(primaryValue);
     focusCopy.textContent=item.copy;
+    engineTitle.textContent=item.title;
+    engineCopy.textContent=item.copy;
+    engineMode.textContent=key==='available'?'Overview':key;
+    cardsHost.innerHTML=renderEngineCards(item.cards);
+    drawer.classList.remove('open');
+    drawer.innerHTML='';
+    wireCards();
   };
+
   zones.forEach(z=>z.addEventListener('click',()=>apply(z.dataset.zone,true)));
+  tabs.forEach(t=>t.addEventListener('click',()=>apply(t.dataset.scene,true)));
   core.addEventListener('click',()=>apply('available',true));
+
+  theater.addEventListener('pointermove',e=>{
+    const r=theater.getBoundingClientRect();
+    const px=(e.clientX-r.left)/Math.max(1,r.width)-.5;
+    const py=(e.clientY-r.top)/Math.max(1,r.height)-.5;
+    theater.style.setProperty('--tilt-y',`${(px*7).toFixed(2)}deg`);
+    theater.style.setProperty('--tilt-x',`${(-py*7).toFixed(2)}deg`);
+  });
+  theater.addEventListener('pointerleave',()=>{
+    theater.style.setProperty('--tilt-y','0deg');
+    theater.style.setProperty('--tilt-x','0deg');
+  });
+
   apply('available');
   const timer=setInterval(()=>{
     if(userTouched){clearInterval(timer);return;}
     autoIndex=(autoIndex+1)%order.length;
     apply(order[autoIndex]);
-  },3800);
+  },4200);
 }
 
 async function renderHome(){
@@ -2990,6 +3281,7 @@ async function renderHome(){
         </button>
 
         <button class="scene-core-button" id="sceneCore" aria-label="Return to available money">
+          <span class="core-shell"></span><span class="core-glass"></span>
           <span><span class="core-kicker" id="sceneCoreLabel">Available now</span><strong class="core-number" id="sceneCoreValue">${formatCents(p.available)}</strong><span class="core-hint" id="sceneCoreHint">Tap a zone</span></span>
         </button>
 
@@ -2999,6 +3291,15 @@ async function renderHome(){
           <span id="sceneFocusCopy">Your quick safe-to-use weekly signal.</span>
         </div>
         <div class="scene-instruction">Tap a zone · watch the flow react</div>
+        <div class="engine-dock">
+          <div class="engine-head"><div><small>Integrated category engine</small><strong id="engineTitle">Whole-system overview</strong><span id="engineCopy">A four-way operating map of liquidity, protection, spending, and growth.</span></div><div class="engine-mode" id="engineMode">Overview</div></div>
+          <div class="engine-tabs"><button class="engine-tab active" type="button" data-scene="available">Overview</button><button class="engine-tab" type="button" data-scene="bills">Bills</button><button class="engine-tab" type="button" data-scene="essentials">Essentials</button><button class="engine-tab" type="button" data-scene="lifestyle">Lifestyle</button><button class="engine-tab" type="button" data-scene="savings">Savings</button></div>
+          <div class="engine-network">
+            <svg class="subflow-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="subflow-path" d="M25 25 C50 25 50 25 75 25"/><path class="subflow-path" d="M25 75 C50 75 50 75 75 75"/><path class="subflow-path secondary" d="M25 25 C25 50 25 50 25 75"/><path class="subflow-path secondary" d="M75 25 C75 50 75 50 75 75"/><path class="subflow-path" d="M25 25 C45 45 55 55 75 75"/><path class="subflow-path" d="M75 25 C55 45 45 55 25 75"/><circle class="subflow-hub" cx="50" cy="50" r="1.5"/></svg>
+            <div class="subcards" id="engineCards"></div>
+          </div>
+          <div class="engine-drawer" id="engineDrawer"></div>
+        </div>
       </div>
 
       <div class="attention-line ${d.attention.tone==='danger'?'danger':d.attention.tone==='warn'?'warn':''}"><span class="attention-dot"></span><div class="attention-copy"><strong>${escapeHtml(d.attention.title)}</strong><span>${escapeHtml(d.attention.copy)}</span></div></div>
