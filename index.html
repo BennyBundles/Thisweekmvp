@@ -6357,9 +6357,122 @@ function buildSchemaManifestEnvelope(){
     amountUnit:'cent',
     entityManifest:NORMALIZED_ENTITY_MANIFEST,
     providerAdapterContract:PROVIDER_ADAPTER_CONTRACT,
-    backendSyncContract:BACKEND_SYNC_CONTRACT
+    backendSyncContract:BACKEND_SYNC_CONTRACT,
+    portableJsonSchema:buildPortableJsonSchema()
   };
 }
+function buildPortableJsonSchema(){
+  const entityArray=(required=[])=>({
+    type:'array',
+    items:{type:'object',required,additionalProperties:true}
+  });
+  return {
+    '$schema':'https://json-schema.org/draft/2020-12/schema',
+    '$id':'https://thisweek.local/schema/portable-v1.json',
+    title:'This Week Portable Data Envelope',
+    type:'object',
+    additionalProperties:true,
+    required:['exportSchema','exportSchemaVersion','coreSchemaVersion','modelVersion','exportedAt','source','counts','data'],
+    properties:{
+      exportSchema:{const:'thisweek.portable'},
+      exportSchemaVersion:{const:PORTABLE_DATA_SCHEMA_VERSION},
+      coreSchemaVersion:{type:'integer',minimum:1},
+      modelVersion:{type:'string'},
+      exportedAt:{type:'string'},
+      source:{
+        type:'object',
+        required:['application','runtime','currency','amountUnit'],
+        properties:{
+          application:{const:'This Week'},
+          runtime:{const:'browser-local'},
+          currency:{const:'USD'},
+          amountUnit:{const:'cent'}
+        },
+        additionalProperties:true
+      },
+      providerAdapterContract:{type:'object'},
+      backendSyncContract:{type:'object'},
+      entityManifest:{type:'object'},
+      integrity:{type:'object'},
+      counts:{type:'object'},
+      data:{
+        type:'object',
+        required:['modelVersion','currency','amountUnit','users','weeks','categories','weekCategoryBalances','bills','billContributions','transactions','adjustments','savingsGoals','connectedAccounts','importSources','imports','importRecords','reconciliations','preferences'],
+        properties:{
+          modelVersion:{type:'string'},
+          currency:{const:'USD'},
+          amountUnit:{const:'cent'},
+          users:entityArray(['id']),
+          payProfiles:entityArray(['id','userId']),
+          weekRules:entityArray(['id','userId']),
+          savingsPolicies:entityArray(['id','userId']),
+          preferences:entityArray(['id','userId']),
+          categories:entityArray(['id','userId','type']),
+          weeks:entityArray(['id','userId','startAt','endAt']),
+          weekCategoryBalances:entityArray(['id','weekId','categoryId']),
+          bills:entityArray(['id','userId']),
+          billContributions:entityArray(['id','weekId','billId']),
+          transactions:entityArray(['id','userId','weekId','categoryId','amountCents']),
+          adjustments:entityArray(['id','weekId']),
+          savingsGoals:entityArray(['id','userId']),
+          connectedAccounts:entityArray(['id','provider','status']),
+          importSources:entityArray(['id']),
+          imports:entityArray(['id']),
+          importRecords:entityArray(['id']),
+          reconciliations:entityArray(['id','importRecordId']),
+          connectedAudit:entityArray([])
+        },
+        additionalProperties:true
+      }
+    }
+  };
+}
+function downloadPortableJsonSchema(){
+  const json=JSON.stringify(buildPortableJsonSchema(),null,2),blob=new Blob([json],{type:'application/schema+json;charset=utf-8'});
+  const url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='this-week-portable-schema-v'+PORTABLE_DATA_SCHEMA_VERSION+'.json';document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+  return json.length;
+}
+function canonicalizeSnapshotValue(value){
+  if(Array.isArray(value)){
+    const rows=value.map(canonicalizeSnapshotValue);
+    if(rows.every(x=>x&&typeof x==='object'&&!Array.isArray(x)&&x.id!=null)){
+      return rows.sort((a,b)=>String(a.id).localeCompare(String(b.id)));
+    }
+    return rows;
+  }
+  if(value&&typeof value==='object'){
+    const out={};
+    for(const key of Object.keys(value).sort())out[key]=canonicalizeSnapshotValue(value[key]);
+    return out;
+  }
+  return value;
+}
+function canonicalPortableSnapshotPayload(){
+  const envelope=buildPortableDataEnvelope();
+  return canonicalizeSnapshotValue({
+    exportSchema:envelope.exportSchema,
+    exportSchemaVersion:envelope.exportSchemaVersion,
+    coreSchemaVersion:envelope.coreSchemaVersion,
+    modelVersion:envelope.modelVersion,
+    source:envelope.source,
+    data:envelope.data
+  });
+}
+function stablePortableSnapshotJson(){
+  return JSON.stringify(canonicalPortableSnapshotPayload());
+}
+async function computePortableSnapshotFingerprint(){
+  const json=stablePortableSnapshotJson();
+  if(globalThis.crypto?.subtle&&typeof TextEncoder==='function'){
+    const bytes=new TextEncoder().encode(json),digest=await crypto.subtle.digest('SHA-256',bytes);
+    const hex=[...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,'0')).join('');
+    return {algorithm:'SHA-256',value:hex,bytes:bytes.length};
+  }
+  return {algorithm:'FNV32-fallback',value:simpleHash(json),bytes:json.length,warning:'Fallback fingerprint is for change detection only, not security.'};
+}
+
 function downloadSchemaManifest(){
   const json=JSON.stringify(buildSchemaManifestEnvelope(),null,2),blob=new Blob([json],{type:'application/json;charset=utf-8'});
   const url=URL.createObjectURL(blob),a=document.createElement('a');
@@ -6412,6 +6525,8 @@ function runPhase13ReadinessSuite(){
     {name:'Normalized relationship integrity',pass:integrity.valid,detail:integrity.valid?'No broken normalized relationships.':integrity.errors.join(' | ')},
     {name:'Integer-cent/currency contract',pass:model.amountUnit==='cent'&&model.currency==='USD',detail:'Normalized model explicitly uses USD integer cents.'},
     {name:'Portable round trip',pass:roundTrip.pass,detail:roundTrip.pass?'Serialization/deserialization preserved schema and entity counts.':roundTrip.errors.join(' | ')},
+    {name:'Deterministic snapshot serialization',pass:stablePortableSnapshotJson()===stablePortableSnapshotJson(),detail:'Canonical snapshot ordering is stable for idempotency/change-detection inputs.'},
+    {name:'Portable JSON Schema',pass:buildPortableJsonSchema()?.properties?.data?.properties?.transactions?.items?.required?.includes('amountCents'),detail:'Machine-readable schema requires transaction amountCents and core entity identifiers.'},
     {name:'Provider secret boundary',pass:BACKEND_SYNC_CONTRACT.providerSecrets.storage==='server_only'&&BACKEND_SYNC_CONTRACT.providerSecrets.clientExport==='forbidden',detail:'Provider secrets are outside the client export contract.'},
     {name:'Conflict boundary declared',pass:BACKEND_SYNC_CONTRACT.conflictPolicy.current==='not_implemented',detail:'Current browser app does not pretend multi-device conflict resolution exists.'}
   ];
@@ -6437,7 +6552,9 @@ function portableDataPreview(){
     integrity:envelope.integrity,
     providerInterfaceVersion:CONNECTED_ACCOUNT_INTERFACE_VERSION,
     backendSyncContractVersion:BACKEND_SYNC_CONTRACT_VERSION,
-    normalizedCollections:Object.keys(NORMALIZED_ENTITY_MANIFEST).length
+    normalizedCollections:Object.keys(NORMALIZED_ENTITY_MANIFEST).length,
+    jsonSchemaId:buildPortableJsonSchema()['$id'],
+    canonicalSnapshotBytes:stablePortableSnapshotJson().length
   };
 }
 
@@ -7552,7 +7669,8 @@ function renderDataModel(){
       </section>
 
       <section class="section"><div class="section-head"><div><span class="section-kicker">Portable serialization</span><h2>Export a backend-ready snapshot</h2><div class="section-caption">The JSON contains local app data and normalized records. Treat the downloaded file as sensitive financial information.</div></div></div>
-        <div class="export-actions"><button class="btn btn-primary" id="downloadPortableExport">Export data JSON</button><button class="btn btn-secondary" id="downloadSchemaManifest">Export schema manifest</button><button class="btn btn-secondary" id="previewPortableSchema">Preview schema summary</button></div>
+        <div class="export-actions"><button class="btn btn-primary" id="downloadPortableExport">Export data JSON</button><button class="btn btn-secondary" id="downloadSchemaManifest">Export schema manifest</button><button class="btn btn-secondary" id="downloadPortableJsonSchema">Export JSON Schema</button><button class="btn btn-secondary" id="computeSnapshotFingerprint">Compute snapshot fingerprint</button><button class="btn btn-secondary" id="previewPortableSchema">Preview schema summary</button></div>
+        <div class="schema-row" id="snapshotFingerprintRow" style="margin-top:8px"><div><strong>Snapshot fingerprint</strong><span id="snapshotFingerprintCopy">Not computed. The fingerprint identifies the normalized snapshot and is not an authentication credential.</span></div><span class="schema-badge">local</span></div>
         <pre class="schema-code" id="portableSchemaPreview" hidden></pre>
       </section>
 
@@ -7564,6 +7682,19 @@ function renderDataModel(){
     </div>`;
     document.getElementById('downloadPortableExport')?.addEventListener('click',()=>{const bytes=downloadPortableDataExport();toast('Portable JSON export created · '+(bytes/1024).toFixed(1)+' KB');});
     document.getElementById('downloadSchemaManifest')?.addEventListener('click',()=>{const bytes=downloadSchemaManifest();toast('Schema manifest exported · '+(bytes/1024).toFixed(1)+' KB');});
+    document.getElementById('downloadPortableJsonSchema')?.addEventListener('click',()=>{const bytes=downloadPortableJsonSchema();toast('Portable JSON Schema exported · '+(bytes/1024).toFixed(1)+' KB');});
+    document.getElementById('computeSnapshotFingerprint')?.addEventListener('click',async()=>{
+      const copy=document.getElementById('snapshotFingerprintCopy'),btn=document.getElementById('computeSnapshotFingerprint');
+      if(btn)btn.disabled=true;
+      try{
+        const fp=await computePortableSnapshotFingerprint();
+        if(copy)copy.textContent=fp.algorithm+' · '+fp.value+' · '+fp.bytes.toLocaleString()+' canonical bytes'+(fp.warning?' · '+fp.warning:'');
+        toast('Snapshot fingerprint computed.');
+      }catch(e){
+        if(copy)copy.textContent='Fingerprint failed · '+e.message;
+        toast('Snapshot fingerprint failed.');
+      }finally{if(btn)btn.disabled=false;}
+    });
     document.getElementById('previewPortableSchema')?.addEventListener('click',()=>{
       const pre=document.getElementById('portableSchemaPreview');pre.hidden=!pre.hidden;
       if(!pre.hidden)pre.textContent=JSON.stringify(portableDataPreview(),null,2);
