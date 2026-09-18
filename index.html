@@ -962,6 +962,263 @@ main {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; animation-delay: 0ms !important; scroll-behavior: auto !important; }
 }
+
+/* FRIENDLY MOTION SYSTEM v3 */
+:root{
+  --ease-spring:cubic-bezier(.2,.8,.2,1);
+  --ease-soft:cubic-bezier(.22,1,.36,1);
+  --tap-scale:.985;
+}
+body{
+  overscroll-behavior-y:none;
+}
+.screen::before{
+  content:"";
+  position:fixed;
+  z-index:-1;
+  inset:-18vh -30vw auto;
+  height:58vh;
+  background:
+    radial-gradient(circle at 28% 38%, rgba(45,212,191,.14), transparent 32%),
+    radial-gradient(circle at 72% 22%, rgba(56,189,248,.13), transparent 28%),
+    radial-gradient(circle at 58% 68%, rgba(139,92,246,.10), transparent 34%);
+  filter:blur(10px);
+  animation:auroraDrift 13s var(--ease-soft) infinite alternate;
+  pointer-events:none;
+}
+main{
+  transition:opacity .22s ease, transform .32s var(--ease-soft), filter .22s ease;
+}
+main.route-enter{
+  animation:routeIn .46s var(--ease-soft) both;
+}
+.hero-card,.section,.form-card,.summary-card-full,.warning-card,.menu-tile,.finance-row{
+  transform:translateZ(0);
+}
+.hero-card{
+  border-color:rgba(153,246,228,.16);
+}
+.hero-card::before{
+  animation:heroGlow 8s ease-in-out infinite alternate;
+}
+.friendly-guide{
+  margin-top:16px;
+  padding:16px;
+  border-radius:26px;
+  border:1px solid rgba(153,246,228,.13);
+  background:
+    linear-gradient(135deg,rgba(45,212,191,.075),rgba(56,189,248,.035) 48%,rgba(139,92,246,.055)),
+    rgba(8,20,38,.82);
+  box-shadow:0 18px 44px rgba(1,8,20,.26);
+  overflow:hidden;
+  position:relative;
+}
+.friendly-guide::after{
+  content:"";
+  position:absolute;
+  width:150px;height:150px;border-radius:999px;
+  right:-70px;top:-85px;
+  background:rgba(94,234,212,.10);
+  filter:blur(8px);
+}
+.guide-head{
+  position:relative;z-index:1;
+  display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+}
+.guide-title{
+  margin:5px 0 0;
+  font-size:1.05rem;
+  letter-spacing:-.025em;
+}
+.guide-copy{
+  margin:7px 0 0;
+  color:var(--text-soft);
+  font-size:.88rem;
+  line-height:1.48;
+}
+.guide-steps{
+  position:relative;z-index:1;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:9px;
+  margin-top:14px;
+}
+.guide-step{
+  min-width:0;
+  padding:12px 10px;
+  border-radius:18px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.065);
+  transition:transform .25s var(--ease-spring),background .25s ease,border-color .25s ease;
+}
+.guide-step:active{transform:scale(.98)}
+.guide-num{
+  width:28px;height:28px;border-radius:11px;
+  display:grid;place-items:center;
+  margin-bottom:9px;
+  color:#06101d;
+  font-size:.72rem;font-weight:900;
+  background:linear-gradient(135deg,#99f6e4,#86efac);
+  box-shadow:0 8px 18px rgba(45,212,191,.16);
+}
+.guide-step strong{display:block;font-size:.82rem;line-height:1.25}
+.guide-step span{display:block;margin-top:4px;color:var(--text-soft);font-size:.72rem;line-height:1.34}
+.next-best{
+  margin-top:14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:13px;
+  border-radius:18px;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.075);
+}
+.next-orb{
+  width:40px;height:40px;flex:0 0 40px;
+  border-radius:15px;
+  display:grid;place-items:center;
+  color:#06101d;
+  font-weight:900;
+  background:linear-gradient(135deg,#5eead4,#60a5fa);
+  box-shadow:0 10px 24px rgba(45,212,191,.19);
+  animation:orbBreathe 3.8s ease-in-out infinite;
+}
+.next-best strong{display:block;font-size:.88rem}
+.next-best span{display:block;color:var(--text-soft);font-size:.76rem;margin-top:3px}
+.menu-tile{
+  position:relative;
+  min-height:138px;
+  overflow:hidden;
+}
+.menu-tile::after{
+  content:"";
+  position:absolute;
+  inset:auto -26px -34px auto;
+  width:90px;height:90px;border-radius:999px;
+  background:radial-gradient(circle,rgba(94,234,212,.13),transparent 68%);
+  transition:transform .38s var(--ease-soft),opacity .25s ease;
+}
+.menu-tile:active::after{transform:scale(1.35)}
+.menu-icon{
+  width:42px;height:42px;border-radius:15px;
+  display:grid;place-items:center;
+  margin-bottom:11px;
+  font-size:1.05rem;
+  background:linear-gradient(135deg,rgba(153,246,228,.14),rgba(96,165,250,.11));
+  border:1px solid rgba(153,246,228,.12);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07);
+}
+.nav-link{
+  min-height:64px;
+  touch-action:manipulation;
+}
+.nav-link,.menu-tile,button,.btn,.chip{
+  -webkit-tap-highlight-color:transparent;
+}
+.nav-link.tap-pulse,.menu-tile.tap-pulse,button.tap-pulse,.btn.tap-pulse,.chip.tap-pulse{
+  animation:tapPulse .32s var(--ease-spring);
+}
+.nav-link.active{
+  box-shadow:inset 0 0 0 1px rgba(153,246,228,.06),0 10px 28px rgba(4,18,32,.14);
+}
+.nav-link.active .nav-icon{
+  animation:navPop .42s var(--ease-spring);
+}
+.finance-row{
+  transition:transform .25s var(--ease-spring),border-color .25s ease,background .25s ease;
+}
+.finance-row:active{
+  transform:scale(.992);
+  background:rgba(255,255,255,.06);
+}
+.progress-fill{
+  position:relative;
+  overflow:hidden;
+}
+.progress-fill::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  transform:translateX(-120%);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.34),transparent);
+  animation:progressSheen 3.6s 1.2s ease-in-out infinite;
+}
+.form-card input,.form-card select,.form-card textarea,.amount-row{
+  transition:border-color .2s ease,box-shadow .2s ease,background .2s ease,transform .2s var(--ease-spring);
+}
+.form-card input:focus,.form-card select:focus,.form-card textarea:focus,.amount-row:focus-within{
+  border-color:rgba(94,234,212,.38);
+  box-shadow:0 0 0 4px rgba(45,212,191,.075);
+  background:rgba(255,255,255,.06);
+}
+.btn-primary{
+  min-height:54px;
+  position:relative;
+  overflow:hidden;
+}
+.btn-primary::after{
+  content:"";
+  position:absolute;
+  inset:-40% auto -40% -35%;
+  width:30%;
+  transform:skewX(-18deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.46),transparent);
+  animation:ctaSweep 4.4s ease-in-out infinite;
+}
+.app-toast{
+  position:fixed;
+  z-index:80;
+  left:50%;
+  bottom:calc(104px + env(safe-area-inset-bottom,0px));
+  width:min(420px,calc(100% - 32px));
+  transform:translate(-50%,20px) scale(.98);
+  opacity:0;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:13px 14px;
+  border-radius:18px;
+  border:1px solid rgba(153,246,228,.15);
+  background:rgba(7,17,31,.94);
+  color:var(--text);
+  box-shadow:0 18px 50px rgba(0,0,0,.34);
+  backdrop-filter:blur(18px);
+  pointer-events:none;
+  transition:opacity .2s ease,transform .32s var(--ease-spring);
+}
+.app-toast.show{opacity:1;transform:translate(-50%,0) scale(1)}
+.toast-dot{
+  width:28px;height:28px;border-radius:11px;flex:0 0 28px;
+  display:grid;place-items:center;
+  color:#07111f;font-weight:900;font-size:.75rem;
+  background:linear-gradient(135deg,#99f6e4,#86efac);
+}
+.app-toast span{font-size:.84rem;line-height:1.35}
+.soft-help{
+  margin-top:12px;
+  color:var(--text-soft);
+  font-size:.78rem;
+  line-height:1.45;
+}
+@keyframes auroraDrift{from{transform:translate3d(-2%,0,0) scale(1)}to{transform:translate3d(5%,3%,0) scale(1.08)}}
+@keyframes heroGlow{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(-12px,-7px,0) scale(1.08)}}
+@keyframes routeIn{from{opacity:.35;transform:translateY(10px) scale(.995);filter:blur(2px)}to{opacity:1;transform:none;filter:none}}
+@keyframes tapPulse{0%{transform:scale(1)}45%{transform:scale(.975)}100%{transform:scale(1)}}
+@keyframes navPop{0%{transform:scale(.82) rotate(-5deg)}70%{transform:scale(1.06)}100%{transform:scale(1)}}
+@keyframes orbBreathe{0%,100%{transform:scale(1);box-shadow:0 10px 24px rgba(45,212,191,.19)}50%{transform:scale(1.045);box-shadow:0 12px 32px rgba(45,212,191,.28)}}
+@keyframes progressSheen{0%,55%{transform:translateX(-120%)}78%,100%{transform:translateX(150%)}}
+@keyframes ctaSweep{0%,65%{left:-35%}86%,100%{left:135%}}
+@media(max-width:390px){
+  .guide-steps{grid-template-columns:1fr}
+  .guide-step{display:grid;grid-template-columns:28px 1fr;column-gap:10px;align-items:start}
+  .guide-step .guide-num{grid-row:1/3;margin:0}
+  .guide-step strong,.guide-step span{grid-column:2}
+  .menu-tile{min-height:128px}
+}
+@media(prefers-reduced-motion:reduce){
+  .screen::before,.hero-card::before,.next-orb,.progress-fill::after,.btn-primary::after{animation:none!important}
+}
+
 </style></head><body><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16l4-4 3 3 5-7 4 4"></path><path d="M4 20h16"></path></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Weekly planning</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="hero-card">
@@ -969,8 +1226,8 @@ main {
         <span class="preview-badge">Home dashboard · instant preview</span>
         <span class="status-pill status-ok">On Track</span>
       </div>
-      <h2 class="hero-title">Weekly financial control, designed to feel premium.</h2>
-      <p class="hero-subtitle">Track protected obligations, flexible categories, and weekly momentum at a glance.</p>
+      <h2 class="hero-title">Your week, made simple.</h2>
+      <p class="hero-subtitle">See what is safe to spend, what needs attention, and what to do next without digging through numbers.</p>
       <div class="hero-amount">
         <div class="hero-amount-value">$310.00</div>
         <div class="hero-amount-label">Available now</div>
@@ -990,7 +1247,7 @@ main {
       <div class="section-head"><div><span class="section-kicker">Productivity</span><h2>Quick actions</h2></div><span class="kpi-badge">Dashboard</span></div>
       <div class="menu-grid">
         <a class="menu-tile" href="#log"><div class="menu-kicker">Action</div><div class="menu-title">Log spending</div><div class="menu-copy">Capture a transaction and recalculate the remaining budget.</div></a>
-        <a class="menu-tile" href="#reset"><div class="menu-kicker">Planning</div><div class="menu-title">Start new week</div><div class="menu-copy">Close the active week and open the next budgeting cycle.</div></a>
+        <a class="menu-tile" href="#reset"><div class="menu-icon">↻</div><div class="menu-kicker">Weekly reset</div><div class="menu-title">Start new week</div><div class="menu-copy">Review the current week first, then move into a clean new cycle.</div></a>
       </div>
     </section>
 
@@ -1020,7 +1277,7 @@ main {
     </section>
   </div>
   <noscript><div class="inline-note" style="margin:16px"><span>ⓘ</span><span>JavaScript is disabled in this viewer, so this page is showing the full static Home preview.</span></div></noscript>
-</main><nav class="bottom-nav" aria-label="Primary"><a class="nav-link active" data-route="home" href="#home"><span class="nav-icon">⌂</span><span>Home</span></a><a class="nav-link" data-route="log" href="#log"><span class="nav-icon">＋</span><span>Log</span></a><a class="nav-link" data-route="reset" href="#reset"><span class="nav-icon">↻</span><span>New Week</span></a></nav></div><script>// This Week - browser-persistent preview runtime.
+</main><nav class="bottom-nav" aria-label="Primary"><a class="nav-link active" data-route="home" href="#home"><span class="nav-icon">⌂</span><span>Home</span></a><a class="nav-link" data-route="log" href="#log"><span class="nav-icon">＋</span><span>Add Spend</span></a><a class="nav-link" data-route="reset" href="#reset"><span class="nav-icon">↻</span><span>New Week</span></a></nav></div><script>// This Week - browser-persistent preview runtime.
 // Data is stored in localStorage so the Vercel preview stays usable without a server database.
 
 const USER_ID_KEY = "thisweek.userId";
@@ -1361,6 +1618,36 @@ function nav(routeName){ navLinks.forEach(a=>a.classList.toggle('active',a.datas
 function shellMeta(kicker,title,sub,action=''){ headerKicker.textContent=kicker; headerTitle.textContent=title; headerSub.textContent=sub; headerAction.innerHTML=action; }
 function errBox(msg){ return msg?`<div class="error">${escapeHtml(msg)}</div>`:''; }
 
+function gentleHaptic(){
+  try { if (navigator.vibrate) navigator.vibrate(7); } catch {}
+}
+let toastTimer=null;
+function toast(message){
+  let node=document.getElementById('appToast');
+  if(!node){
+    node=document.createElement('div');
+    node.id='appToast';
+    node.className='app-toast';
+    node.setAttribute('role','status');
+    node.setAttribute('aria-live','polite');
+    node.innerHTML='<div class="toast-dot">✓</div><span></span>';
+    document.body.appendChild(node);
+  }
+  node.querySelector('span').textContent=message;
+  clearTimeout(toastTimer);
+  requestAnimationFrame(()=>node.classList.add('show'));
+  toastTimer=setTimeout(()=>node.classList.remove('show'),2200);
+}
+document.addEventListener('click',e=>{
+  const hit=e.target.closest('button,.btn,.menu-tile,.nav-link,.chip');
+  if(!hit)return;
+  gentleHaptic();
+  hit.classList.remove('tap-pulse');
+  void hit.offsetWidth;
+  hit.classList.add('tap-pulse');
+  setTimeout(()=>hit.classList.remove('tap-pulse'),360);
+});
+
 function categoryRow(c){ const spent=Math.max(0,c.allocated-c.remaining), fill=percent(spent,c.allocated); return `<div class="finance-row"><div class="finance-head"><div><div class="finance-name">${escapeHtml(c.name)}</div><div class="finance-sub">Spent ${formatCents(spent)} of ${formatCents(c.allocated)}</div></div><div class="finance-main ${c.remaining<0?'attention':''}">${formatCents(c.remaining)} left</div></div><div class="progress-track"><div class="progress-fill ${c.remaining<0?'warn':''}" style="--fill:${fill}%"></div></div></div>`; }
 function billRow(b){ const fill=percent(b.contributed,b.weeklyRequired||b.requiredByToday||1), warn=b.status!=='ON_TRACK'; return `<div class="finance-row"><div class="finance-head"><div><div class="finance-name">${escapeHtml(b.name)}</div><div class="finance-sub">Due today ${formatCents(b.requiredByToday)} · Weekly target ${formatCents(b.weeklyRequired)}</div></div><div class="finance-main ${warn?'attention':''}">${formatCents(b.contributed)} funded</div></div><div class="progress-track"><div class="progress-fill ${warn?'warn':''}" style="--fill:${fill}%"></div></div></div>`; }
 
@@ -1385,33 +1672,43 @@ async function renderHome(){
     const forYou=p.forYou.length?p.forYou.map(categoryRow).join(''):'<div class="empty-card"><div class="empty">No discretionary categories set up.</div></div>';
     const bills=p.bills.length?p.bills.map(billRow).join(''):'<div class="empty-card"><div class="empty">No bills set up.</div></div>';
     const alertCount=p.bills.filter(b=>b.status!=='ON_TRACK').length+p.essentials.filter(c=>c.remaining<0).length+p.forYou.filter(c=>c.remaining<0).length;
-    root.innerHTML=`<div class="fade-stack"><section class="hero-card"><div class="hero-topline"><span class="preview-badge">Live preview · browser storage</span><span class="status-pill ${p.status==='ON_TRACK'?'status-ok':'status-attention'}">${p.status==='ON_TRACK'?'On Track':'Needs Attention'}</span></div><h2 class="hero-title">Weekly financial control, designed to feel premium.</h2><p class="hero-subtitle">Track protected obligations, flexible categories, and weekly momentum at a glance.</p><div class="hero-amount"><div class="hero-amount-value">${formatCents(p.available)}</div><div class="hero-amount-label">Available now</div></div><div class="hero-strip"><div class="mini-metric"><div class="mini-label">Protected bills</div><div class="mini-value">${formatCents(p.protected)}</div></div><div class="mini-metric"><div class="mini-label">Savings this week</div><div class="mini-value">${formatCents(p.savingsThisWeek||0)}</div></div></div><div class="pulse-card"><div class="pulse-head"><div><div class="mini-label">Weekly pulse</div><div class="pulse-value">Budget capacity</div></div><span class="pulse-chip">Live</span></div><svg class="pulse-chart" viewBox="0 0 320 74"><defs><linearGradient id="pulseStroke" x1="0" x2="1"><stop offset="0" stop-color="#34d399"/><stop offset=".55" stop-color="#2dd4bf"/><stop offset="1" stop-color="#38bdf8"/></linearGradient></defs><path class="pulse-grid" d="M0 18H320M0 37H320M0 56H320"/><path class="pulse-area" d="M0 61 C35 59 45 40 78 44 S124 59 155 35 S213 14 244 28 S287 46 320 18 L320 74 L0 74Z"/><path class="pulse-line" d="M0 61 C35 59 45 40 78 44 S124 59 155 35 S213 14 244 28 S287 46 320 18"/></svg></div><div class="week-range"><span>Week window</span><span>${weekWindow(p.week.start,p.week.end)}</span></div></section><section class="section"><div class="section-head"><div><span class="section-kicker">Productivity</span><h2>Quick actions</h2></div><span class="kpi-badge">${alertCount} watch item${alertCount===1?'':'s'}</span></div><div class="menu-grid"><a class="menu-tile" href="#log"><div class="menu-kicker">Action</div><div class="menu-title">Log spending</div><div class="menu-copy">Capture a transaction and instantly recalculate the remaining budget.</div></a><a class="menu-tile" href="#reset"><div class="menu-kicker">Planning</div><div class="menu-title">Start new week</div><div class="menu-copy">Close the active week and open the next budgeting cycle.</div></a></div></section><section class="section"><div class="section-head"><div><span class="section-kicker">Essentials</span><h2>Core spending lanes</h2><div class="section-caption">The practical categories you rely on every week.</div></div></div><div class="row-list">${essentials}</div></section><section class="section"><div class="section-head"><div><span class="section-kicker">Lifestyle</span><h2>For you</h2><div class="section-caption">Flexible spending with clear visual guardrails.</div></div></div><div class="row-list">${forYou}</div></section><section class="section"><div class="section-head"><div><span class="section-kicker">Protection</span><h2>Bill runway</h2><div class="section-caption">Due-date weighted bill coverage for the current week.</div></div></div><div class="row-list">${bills}</div></section></div>`;
+    root.innerHTML=`<div class="fade-stack"><section class="hero-card"><div class="hero-topline"><span class="preview-badge">Live preview · browser storage</span><span class="status-pill ${p.status==='ON_TRACK'?'status-ok':'status-attention'}">${p.status==='ON_TRACK'?'On Track':'Needs Attention'}</span></div><h2 class="hero-title">Weekly financial control, designed to feel premium.</h2><p class="hero-subtitle">Track protected obligations, flexible categories, and weekly momentum at a glance.</p><div class="hero-amount"><div class="hero-amount-value">${formatCents(p.available)}</div><div class="hero-amount-label">Available now</div></div><div class="hero-strip"><div class="mini-metric"><div class="mini-label">Protected bills</div><div class="mini-value">${formatCents(p.protected)}</div></div><div class="mini-metric"><div class="mini-label">Savings this week</div><div class="mini-value">${formatCents(p.savingsThisWeek||0)}</div></div></div><div class="pulse-card"><div class="pulse-head"><div><div class="mini-label">Weekly pulse</div><div class="pulse-value">Budget capacity</div></div><span class="pulse-chip">Live</span></div><svg class="pulse-chart" viewBox="0 0 320 74"><defs><linearGradient id="pulseStroke" x1="0" x2="1"><stop offset="0" stop-color="#34d399"/><stop offset=".55" stop-color="#2dd4bf"/><stop offset="1" stop-color="#38bdf8"/></linearGradient></defs><path class="pulse-grid" d="M0 18H320M0 37H320M0 56H320"/><path class="pulse-area" d="M0 61 C35 59 45 40 78 44 S124 59 155 35 S213 14 244 28 S287 46 320 18 L320 74 L0 74Z"/><path class="pulse-line" d="M0 61 C35 59 45 40 78 44 S124 59 155 35 S213 14 244 28 S287 46 320 18"/></svg></div><div class="week-range"><span>Week window</span><span>${weekWindow(p.week.start,p.week.end)}</span></div></section><section class="section"><div class="section-head"><div><span class="section-kicker">Productivity</span><h2>Quick actions</h2></div><span class="kpi-badge">${alertCount} watch item${alertCount===1?'':'s'}</span></div><div class="menu-grid"><a class="menu-tile" href="#log"><div class="menu-icon">＋</div><div class="menu-kicker">Most used</div><div class="menu-title">Add spending</div><div class="menu-copy">Enter a purchase in a few taps. Your remaining money updates right away.</div></a><a class="menu-tile" href="#reset"><div class="menu-kicker">Planning</div><div class="menu-title">Start new week</div><div class="menu-copy">Close the active week and open the next budgeting cycle.</div></a></div></section><section class="section"><div class="section-head"><div><span class="section-kicker">Essentials</span><h2>Core spending lanes</h2><div class="section-caption">The practical categories you rely on every week.</div></div></div><div class="row-list">${essentials}</div></section><section class="section"><div class="section-head"><div><span class="section-kicker">Lifestyle</span><h2>For you</h2><div class="section-caption">Flexible spending with clear visual guardrails.</div></div></div><div class="row-list">${forYou}</div></section><section class="section"><div class="section-head"><div><span class="section-kicker">Protection</span><h2>Bill runway</h2><div class="section-caption">Due-date weighted bill coverage for the current week.</div></div></div><div class="row-list">${bills}</div></section></div>`;
   }catch(e){ root.innerHTML=`<div class="center">${errBox(e.message)}<button class="btn-primary" onclick="renderHome()">Retry</button></div>`; }
 }
 
 async function renderLog(){
-  shellMeta('Spending Flow','Log Spending','Fast entry with cleaner decision support','<span class="header-pill">Entry</span>'); nav('log'); const userId=getStoredUserId();
+  shellMeta('Add Spending','Add a Purchase','Choose where it belongs, enter the amount, and you are done','<span class="header-pill">Quick entry</span>'); nav('log'); const userId=getStoredUserId();
   if(!userId){ root.innerHTML='<div class="center"><div class="error">Build a plan first.</div><a class="btn btn-primary" href="#setup">Build My Plan</a></div>'; return; }
-  try{ const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`); const cats=[...p.essentials.map(c=>({...c,type:'LIVING'})),...p.forYou.map(c=>({...c,type:'DISCRETIONARY'}))]; let selected=null; root.innerHTML=`<div class="fade-stack"><section class="hero-card"><div class="hero-topline"><span class="eyebrow">Transaction capture</span><span class="kpi-badge">Real-time update</span></div><h2 class="hero-title">Add a new spending event.</h2><p class="hero-subtitle">Select a lane, enter the amount, and the dashboard recalculates instantly.</p></section><section class="form-card"><div id="formErr"></div><div class="field-group"><label class="field-label">Choose category</label><div class="chip-row">${cats.map(c=>`<button type="button" class="chip" data-id="${escapeHtml(c.id)}" data-type="${escapeHtml(c.type)}">${escapeHtml(c.name)} · ${formatCents(c.remaining)}</button>`).join('')}</div></div><div class="field-group"><label class="field-label">Amount</label><div class="amount-row"><span class="dollar">$</span><input type="text" inputmode="decimal" id="amountInput" placeholder="0.00"></div><div class="form-helper">Use decimal format like 12.50 or 44.</div></div><div class="field-group"><label class="field-label">Note</label><input type="text" id="noteInput" placeholder="What was this for?" maxlength="500"></div><div class="stack-actions"><button class="btn-primary" id="submitSpend" disabled>Log Spending</button><a class="btn btn-secondary" href="#home">Back to dashboard</a></div></section></div>`;
+  try{ const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`); const cats=[...p.essentials.map(c=>({...c,type:'LIVING'})),...p.forYou.map(c=>({...c,type:'DISCRETIONARY'}))]; let selected=null; root.innerHTML=`<div class="fade-stack"><section class="hero-card"><div class="hero-topline"><span class="eyebrow">Transaction capture</span><span class="kpi-badge">Real-time update</span></div><h2 class="hero-title">What did you spend?</h2><p class="hero-subtitle">Pick a category, enter the amount, add a note if useful, then tap Add Spending.</p><div class="soft-help">Tip: the first category is preselected so most entries take only a few taps.</div></section><section class="form-card"><div id="formErr"></div><div class="field-group"><label class="field-label">Choose category</label><div class="chip-row">${cats.map(c=>`<button type="button" class="chip" data-id="${escapeHtml(c.id)}" data-type="${escapeHtml(c.type)}">${escapeHtml(c.name)} · ${formatCents(c.remaining)}</button>`).join('')}</div></div><div class="field-group"><label class="field-label">Amount</label><div class="amount-row"><span class="dollar">$</span><input type="text" inputmode="decimal" id="amountInput" placeholder="0.00"></div><div class="form-helper">Use decimal format like 12.50 or 44.</div></div><div class="field-group"><label class="field-label">Note</label><input type="text" id="noteInput" placeholder="What was this for?" maxlength="500"></div><div class="stack-actions"><button class="btn-primary" id="submitSpend" disabled>Add Spending</button><a class="btn btn-secondary" href="#home">Back to dashboard</a></div></section></div>`;
     const chips=[...document.querySelectorAll('.chip')]; chips.forEach(btn=>btn.onclick=()=>{ chips.forEach(b=>b.classList.remove('selected')); btn.classList.add('selected'); selected={id:btn.dataset.id,type:btn.dataset.type}; document.getElementById('submitSpend').disabled=false; }); if(chips[0]) chips[0].click();
-    document.getElementById('submitSpend').onclick=async()=>{ const dollars=Number(document.getElementById('amountInput').value), note=document.getElementById('noteInput').value.trim(), box=document.getElementById('formErr'); if(!selected||!Number.isFinite(dollars)||dollars<=0){ box.innerHTML=errBox('Enter a valid amount greater than $0.'); return; } const btn=document.getElementById('submitSpend'); btn.disabled=true; btn.textContent='Logging...'; try{ await apiRequest('/transaction',{method:'POST',body:JSON.stringify({userId,categoryType:selected.type,categoryId:selected.id,amount:Math.round(dollars*100),note:note||undefined})}); location.hash='home'; }catch(e){ box.innerHTML=errBox(e.message); btn.disabled=false; btn.textContent='Log Spending'; } };
+    document.getElementById('submitSpend').onclick=async()=>{ const dollars=Number(document.getElementById('amountInput').value), note=document.getElementById('noteInput').value.trim(), box=document.getElementById('formErr'); if(!selected||!Number.isFinite(dollars)||dollars<=0){ box.innerHTML=errBox('Enter a valid amount greater than $0.'); return; } const btn=document.getElementById('submitSpend'); btn.disabled=true; btn.textContent='Adding...'; try{ await apiRequest('/transaction',{method:'POST',body:JSON.stringify({userId,categoryType:selected.type,categoryId:selected.id,amount:Math.round(dollars*100),note:note||undefined})}); toast('Spending added. Your week is updated.'); location.hash='home'; }catch(e){ box.innerHTML=errBox(e.message); btn.disabled=false; btn.textContent='Add Spending'; } };
   }catch(e){ root.innerHTML=errBox(e.message); }
 }
 
 async function renderReset(){
-  shellMeta('Cycle Control','Start New Week','Roll the planning engine into the next budget cycle','<span class="header-pill">Reset</span>'); nav('reset'); const userId=getStoredUserId(); if(!userId){ root.innerHTML='<div class="center"><div class="error">Build a plan first.</div><a class="btn btn-primary" href="#setup">Build My Plan</a></div>'; return; }
-  try{ const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`); root.innerHTML=`<div class="fade-stack"><section class="hero-card"><div class="hero-topline"><span class="eyebrow">Weekly rollover</span><span class="status-pill ${p.status==='ON_TRACK'?'status-ok':'status-attention'}">${p.status==='ON_TRACK'?'On Track':'Needs Attention'}</span></div><h2 class="hero-title">Close the current week and open the next one.</h2><p class="hero-subtitle">This carries you forward using the same weekly anchor and pay-cycle logic.</p></section><section class="summary-card-full"><span class="section-kicker">Current week snapshot</span><h2>Ready for rollover</h2><div class="info-grid"><div class="info-stat"><div class="small-label">Week window</div><div class="info-value">${weekWindow(p.week.start,p.week.end)}</div></div><div class="info-stat"><div class="small-label">Available</div><div class="info-value">${formatCents(p.available)}</div></div><div class="info-stat"><div class="small-label">Protected</div><div class="info-value">${formatCents(p.protected)}</div></div><div class="info-stat"><div class="small-label">Savings</div><div class="info-value">${formatCents(p.savingsThisWeek||0)}</div></div></div></section><section class="warning-card"><h3>What happens next</h3><p class="warning">Starting a new week closes the current cycle, regenerates bill and category allocations, and recalculates the next week from your configured local weekly anchor.</p></section><section class="form-card"><div class="stack-actions"><button class="btn-primary" id="confirmReset">Start New Week</button><a class="btn btn-secondary" href="#home">Cancel</a></div></section></div>`; document.getElementById('confirmReset').onclick=async()=>{ const b=document.getElementById('confirmReset'); b.disabled=true; b.textContent='Starting...'; try{ await apiRequest('/week/reset',{method:'POST',body:JSON.stringify({userId})}); location.hash='home'; }catch(e){ b.disabled=false; b.textContent='Start New Week'; alert(e.message); } };
+  shellMeta('Weekly Reset','Start a New Week','Review this week, then move forward with a clean plan','<span class="header-pill">2-step reset</span>'); nav('reset'); const userId=getStoredUserId(); if(!userId){ root.innerHTML='<div class="center"><div class="error">Build a plan first.</div><a class="btn btn-primary" href="#setup">Build My Plan</a></div>'; return; }
+  try{ const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`); root.innerHTML=`<div class="fade-stack"><section class="hero-card"><div class="hero-topline"><span class="eyebrow">Weekly rollover</span><span class="status-pill ${p.status==='ON_TRACK'?'status-ok':'status-attention'}">${p.status==='ON_TRACK'?'On Track':'Needs Attention'}</span></div><h2 class="hero-title">Ready for a fresh week?</h2><p class="hero-subtitle">Nothing happens until you confirm below. Your plan settings carry forward automatically.</p></section><section class="summary-card-full"><span class="section-kicker">Current week snapshot</span><h2>Ready for rollover</h2><div class="info-grid"><div class="info-stat"><div class="small-label">Week window</div><div class="info-value">${weekWindow(p.week.start,p.week.end)}</div></div><div class="info-stat"><div class="small-label">Available</div><div class="info-value">${formatCents(p.available)}</div></div><div class="info-stat"><div class="small-label">Protected</div><div class="info-value">${formatCents(p.protected)}</div></div><div class="info-stat"><div class="small-label">Savings</div><div class="info-value">${formatCents(p.savingsThisWeek||0)}</div></div></div></section><section class="warning-card"><h3>What happens next</h3><p class="warning">Starting a new week closes the current cycle, regenerates bill and category allocations, and recalculates the next week from your configured local weekly anchor.</p></section><section class="form-card"><div class="stack-actions"><button class="btn-primary" id="confirmReset">Start New Week</button><a class="btn btn-secondary" href="#home">Cancel</a></div></section></div>`; document.getElementById('confirmReset').onclick=async()=>{ const b=document.getElementById('confirmReset'); b.disabled=true; b.textContent='Starting...'; try{ await apiRequest('/week/reset',{method:'POST',body:JSON.stringify({userId})}); toast('New week started. Your plan is ready.'); location.hash='home'; }catch(e){ b.disabled=false; b.textContent='Start New Week'; alert(e.message); } };
   }catch(e){ root.innerHTML=errBox(e.message); }
 }
 
 function renderSetup(){
-  shellMeta('Plan Builder','Build Your Week','Personalize income, bills, savings, and weekly lanes','<span class="header-pill">Setup</span>'); nav('setup'); const current=readState();
+  shellMeta('Your Plan','Set Up Your Week','A few simple choices shape the whole dashboard','<span class="header-pill">Guided setup</span>'); nav('setup'); const current=readState();
   root.innerHTML=`<div class="fade-stack"><section class="hero-card"><div class="hero-topline"><span class="eyebrow">Guided setup</span><span class="kpi-badge">3 min</span></div><h2 class="hero-title">Make the dashboard yours.</h2><p class="hero-subtitle">Use realistic numbers. You can edit the plan again later.</p><div class="setup-meter"><span></span><span></span><span></span><span></span></div></section><section class="form-card"><div id="setupErr"></div><div class="form-section-title">Income & savings</div><div class="field-grid"><div class="field-group"><label class="field-label">Net pay</label><div class="amount-row"><span class="dollar">$</span><input id="netPay" inputmode="decimal" value="1800.00"></div></div><div class="field-group"><label class="field-label">Pay frequency</label><select id="payFrequency" class="select-field"><option value="weekly">Weekly</option><option value="biweekly" selected>Biweekly</option><option value="monthly">Monthly</option></select></div></div><div class="field-group"><label class="field-label">Weekly savings target</label><div class="amount-row"><span class="dollar">$</span><input id="savings" inputmode="decimal" value="50.00"></div></div></section><section class="form-card"><div class="form-section-title">Main bills</div><div class="field-grid"><div class="field-group"><label class="field-label">Housing / rent</label><div class="amount-row"><span class="dollar">$</span><input id="rent" inputmode="decimal" value="1500.00"></div></div><div class="field-group"><label class="field-label">Phone</label><div class="amount-row"><span class="dollar">$</span><input id="phone" inputmode="decimal" value="80.00"></div></div></div><div class="field-grid"><div class="field-group"><label class="field-label">Rent due day</label><input class="text-field" id="rentDay" inputmode="numeric" value="1"></div><div class="field-group"><label class="field-label">Phone due day</label><input class="text-field" id="phoneDay" inputmode="numeric" value="10"></div></div></section><section class="form-card"><div class="form-section-title">Weekly spending lanes</div><div class="field-grid"><div class="field-group"><label class="field-label">Groceries</label><div class="amount-row"><span class="dollar">$</span><input id="groceries" inputmode="decimal" value="120.00"></div></div><div class="field-group"><label class="field-label">Gas / transit</label><div class="amount-row"><span class="dollar">$</span><input id="gas" inputmode="decimal" value="60.00"></div></div><div class="field-group"><label class="field-label">Eating out</label><div class="amount-row"><span class="dollar">$</span><input id="eating" inputmode="decimal" value="80.00"></div></div><div class="field-group"><label class="field-label">Fun</label><div class="amount-row"><span class="dollar">$</span><input id="fun" inputmode="decimal" value="50.00"></div></div></div></section><section class="form-card"><div class="form-section-title">Week rhythm</div><div class="field-grid"><div class="field-group"><label class="field-label">Week starts</label><select id="weekDay" class="select-field"><option value="1">Monday</option><option value="2">Tuesday</option><option value="3" selected>Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option><option value="0">Sunday</option></select></div><div class="field-group"><label class="field-label">At</label><select id="weekHour" class="select-field"><option value="9">9:00 AM</option><option value="12">12:00 PM</option><option value="17" selected>5:00 PM</option><option value="20">8:00 PM</option></select></div></div><div class="inline-note"><span>◌</span><span>The preview uses your browser timezone.</span></div><div class="stack-actions"><button id="savePlan" class="btn-primary">Save & Open Dashboard</button><a href="#home" class="btn btn-secondary">Cancel</a></div></section></div>`;
   const q=id=>document.getElementById(id), cents=id=>Math.round(Number(q(id).value)*100), valid=id=>Number.isFinite(cents(id))&&cents(id)>=0;
   if(current?.config){ const c=current.config; q('netPay').value=(c.payProfile.netPayAmount/100).toFixed(2); q('payFrequency').value=c.payProfile.payFrequency; q('savings').value=((c.savingsRule?.weeklyAmount||0)/100).toFixed(2); const rent=c.bills.find(x=>/rent|housing/i.test(x.name))||c.bills[0], phone=c.bills.find(x=>/phone/i.test(x.name))||c.bills[1]; if(rent){q('rent').value=(rent.amount/100).toFixed(2);q('rentDay').value=new Date(rent.dueDate).getDate();} if(phone){q('phone').value=(phone.amount/100).toFixed(2);q('phoneDay').value=new Date(phone.dueDate).getDate();} const find=(a,n)=>a.find(x=>x.name.toLowerCase().includes(n)), g=find(c.livingNeeds,'groc'), gas=find(c.livingNeeds,'gas'), eat=find(c.discretionary,'eating'), fun=find(c.discretionary,'fun'); if(g)q('groceries').value=(g.weeklyLimit/100).toFixed(2); if(gas)q('gas').value=(gas.weeklyLimit/100).toFixed(2); if(eat)q('eating').value=(eat.weeklyLimit/100).toFixed(2); if(fun)q('fun').value=(fun.weeklyLimit/100).toFixed(2); q('weekDay').value=String(c.weekAnchorDow);q('weekHour').value=String(Math.floor(c.weekAnchorMinutes/60)); }
   q('savePlan').onclick=async()=>{ const fields=['netPay','savings','rent','phone','groceries','gas','eating','fun'], box=q('setupErr'); if(fields.some(x=>!valid(x))||cents('netPay')<=0){box.innerHTML=errBox('Enter valid dollar amounts. Net pay must be greater than $0.');return;} const rd=Number(q('rentDay').value),pd=Number(q('phoneDay').value); if(rd<1||rd>28||pd<1||pd>28){box.innerHTML=errBox('Use a due day from 1 to 28 for this preview.');return;} const due=day=>{const n=new Date(),d=new Date(n.getFullYear(),n.getMonth(),day,17);if(d<n)d.setMonth(d.getMonth()+1);return d.toISOString();}; const preset={userId:current?.userId||getStoredUserId()||undefined,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||'America/New_York',weekAnchorDow:Number(q('weekDay').value),weekAnchorMinutes:Number(q('weekHour').value)*60,payProfile:{netPayAmount:cents('netPay'),payFrequency:q('payFrequency').value,payAnchorAt:new Date().toISOString()},bills:[{name:'Housing',amount:cents('rent'),frequency:'monthly',dueDate:due(rd)},{name:'Phone',amount:cents('phone'),frequency:'monthly',dueDate:due(pd)}],livingNeeds:[{name:'Groceries',weeklyLimit:cents('groceries'),ebtOffset:0},{name:'Gas / Transit',weeklyLimit:cents('gas'),ebtOffset:0}],discretionary:[{name:'Eating Out',weeklyLimit:cents('eating')},{name:'Fun',weeklyLimit:cents('fun')}],savingsRule:{weeklyAmount:cents('savings'),active:cents('savings')>0}}; const btn=q('savePlan');btn.disabled=true;btn.textContent='Building your week...';try{const r=await apiRequest('/setup',{method:'POST',body:JSON.stringify(preset)});setStoredUserId(r.userId);await apiRequest('/week/current',{method:'POST',body:JSON.stringify({userId:r.userId})});location.hash='home';}catch(e){btn.disabled=false;btn.textContent='Save & Open Dashboard';box.innerHTML=errBox(e.message);} };
 }
 
-async function render(){ const r=route(); window.scrollTo(0,0); if(r==='log')return renderLog(); if(r==='reset')return renderReset(); if(r==='setup')return renderSetup(); return renderHome(); }
+async function render(){
+  const r=route();
+  window.scrollTo(0,0);
+  root.classList.remove('route-enter');
+  if(r==='log') await renderLog();
+  else if(r==='reset') await renderReset();
+  else if(r==='setup') await renderSetup();
+  else await renderHome();
+  void root.offsetWidth;
+  root.classList.add('route-enter');
+}
 window.addEventListener('hashchange',render); render();
 </script></body></html>
