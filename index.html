@@ -5299,8 +5299,7 @@ document.addEventListener('click',e=>{
   if(!hit)return;
   gentleHaptic();
   hit.classList.remove('tap-pulse');
-  void hit.offsetWidth;
-  hit.classList.add('tap-pulse');
+  requestAnimationFrame(()=>hit.classList.add('tap-pulse'));
   setTimeout(()=>hit.classList.remove('tap-pulse'),360);
 });
 
@@ -7209,7 +7208,7 @@ function renderSetup(){
     set('bpIncomeValue',income);set('bpBillsValue',bills);set('bpSpendingValue',spending);set('bpSavingsValue',savings);
   };
   const bpMap={netPay:'bpIncome',rent:'bpBills',phone:'bpBills',groceries:'bpSpending',gas:'bpSpending',eating:'bpSpending',fun:'bpSpending',savings:'bpSavings'};
-  Object.keys(bpMap).forEach(id=>q(id)?.addEventListener('input',()=>{updateBlueprint();const el=q(bpMap[id]);if(el){el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');}}));
+  Object.keys(bpMap).forEach(id=>q(id)?.addEventListener('input',()=>{updateBlueprint();const el=q(bpMap[id]);if(el){el.classList.remove('flash');requestAnimationFrame(()=>el.classList.add('flash'));}}));
   updateBlueprint();
   q('savePlan').onclick=async()=>{ const fields=['netPay','savings','rent','phone','groceries','gas','eating','fun'], box=q('setupErr'); if(fields.some(x=>!valid(x))||cents('netPay')<=0){box.innerHTML=errBox('Enter valid dollar amounts. Net pay must be greater than $0.');return;} const rd=Number(q('rentDay').value),pd=Number(q('phoneDay').value); if(rd<1||rd>28||pd<1||pd>28){box.innerHTML=errBox('Use a due day from 1 to 28 for this preview.');return;} const due=day=>{const n=new Date(),d=new Date(n.getFullYear(),n.getMonth(),day,17);if(d<n)d.setMonth(d.getMonth()+1);return d.toISOString();}; const preset={userId:current?.userId||getStoredUserId()||undefined,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||'America/New_York',weekAnchorDow:Number(q('weekDay').value),weekAnchorMinutes:Number(q('weekHour').value)*60,payProfile:{netPayAmount:cents('netPay'),payFrequency:q('payFrequency').value,payAnchorAt:new Date().toISOString()},bills:[{name:'Housing',amount:cents('rent'),frequency:'monthly',dueDate:due(rd)},{name:'Phone',amount:cents('phone'),frequency:'monthly',dueDate:due(pd)}],livingNeeds:[{name:'Groceries',weeklyLimit:cents('groceries'),ebtOffset:0},{name:'Gas / Transit',weeklyLimit:cents('gas'),ebtOffset:0}],discretionary:[{name:'Eating Out',weeklyLimit:cents('eating')},{name:'Fun',weeklyLimit:cents('fun')}],savingsRule:{weeklyAmount:cents('savings'),active:cents('savings')>0}}; const btn=q('savePlan');btn.disabled=true;btn.textContent='Building your week...';try{const r=await apiRequest('/setup',{method:'POST',body:JSON.stringify(preset)});setStoredUserId(r.userId);await apiRequest('/week/current',{method:'POST',body:JSON.stringify({userId:r.userId})});location.hash='home';}catch(e){btn.disabled=false;btn.textContent='Save & Open Dashboard';box.innerHTML=errBox(e.message);} };
 }
