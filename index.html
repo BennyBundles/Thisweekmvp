@@ -3024,6 +3024,143 @@ body[data-route="details"] .cycle-portal{--cycle-accent:#6ee7b7}
   .v10-haze,.v10-arc,.v10-particle,.v10-token,.v10-core-orbit,.v10-mini-node,.v10 .money-zone,.v10 .zone-emblem::before{animation:none!important}
 }
 
+
+/* PRODUCT EXPANSION BASE v11 */
+:root{
+  --motion-fast:220ms;
+  --motion-normal:380ms;
+  --motion-nav:520ms;
+  --motion-ambient:12s;
+}
+body[data-motion="calm"]{--motion-ambient:22s;--motion-normal:460ms}
+body[data-motion="dynamic"]{--motion-ambient:10s;--motion-normal:340ms}
+body[data-motion="cinematic"]{--motion-ambient:8s;--motion-normal:420ms;--motion-nav:600ms}
+body[data-motion="reduced"] *,body[data-motion="reduced"] *::before,body[data-motion="reduced"] *::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+body[data-contrast="high"]{--text:#fff;--text-soft:#c7d9e1;--text-faint:#a8bec8}
+body[data-density="compact"] .v10-mini-cluster .v10-mini-node:nth-child(n+3){display:none}
+body[data-density="compact"] .detail-caption,body[data-density="compact"] .studio-copy{display:none}
+body[data-density="rich"] .v10-mini-node{min-height:54px}
+
+.week-time-ring{
+  position:absolute;z-index:5;left:50%;top:50%;width:188px;height:188px;transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;
+  background:conic-gradient(#67e8f9 0 var(--week),rgba(255,255,255,.035) var(--week) 100%);
+  -webkit-mask:radial-gradient(circle,transparent 0 74px,#000 75px 79px,transparent 80px);
+  mask:radial-gradient(circle,transparent 0 74px,#000 75px 79px,transparent 80px);
+  filter:drop-shadow(0 0 8px rgba(103,232,249,.18));
+}
+.week-time-copy{
+  position:absolute;z-index:8;left:50%;top:calc(50% + 95px);transform:translateX(-50%);font-size:.51rem;letter-spacing:.11em;text-transform:uppercase;color:#8da7b2;white-space:nowrap
+}
+.v11-source-gate{
+  position:absolute;z-index:8;left:50%;top:14px;transform:translateX(-50%);
+  display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:999px;
+  background:rgba(4,15,25,.72);border:1px solid rgba(177,206,221,.08);backdrop-filter:blur(10px);
+  color:#a9c3cc;font-size:.54rem;letter-spacing:.10em;text-transform:uppercase;white-space:nowrap
+}
+.v11-source-gate i{width:7px;height:7px;border-radius:50%;background:#67e8f9;box-shadow:0 0 10px rgba(103,232,249,.55);animation:v11SourcePulse 2.6s ease-in-out infinite}
+.v11-event{
+  position:absolute;z-index:8;left:50%;top:46px;transform:translateX(-50%);
+  padding:6px 9px;border-radius:999px;background:rgba(255,255,255,.025);border:1px solid rgba(177,206,221,.06);
+  color:#8fa7b2;font-size:.49rem;white-space:nowrap;opacity:.9
+}
+.scene-focus-link{
+  display:inline-flex;margin-top:7px;padding:6px 8px;border-radius:10px;border:1px solid color-mix(in srgb,var(--scene-accent) 18%,rgba(177,206,221,.06));
+  background:color-mix(in srgb,var(--scene-accent) 6%,rgba(255,255,255,.02));color:#e8f5f8;text-decoration:none;font-size:.54rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase
+}
+.next-tool-link{font-size:.67rem;color:#a8cad1;text-decoration:none;padding:8px 10px;border-radius:12px;border:1px solid rgba(177,206,221,.08);background:rgba(255,255,255,.025)}
+.command-explain{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:8px}
+.command-explain span{font-size:.61rem;color:var(--text-faint)}
+.command-explain a{font-size:.61rem;color:#9ed7c8;text-decoration:none}
+
+.studio-stack{display:grid;gap:15px}
+.studio-hero{
+  position:relative;overflow:hidden;padding:20px;border-radius:28px;border:1px solid rgba(177,206,221,.10);
+  background:linear-gradient(145deg,rgba(10,27,43,.97),rgba(5,17,29,.98));box-shadow:0 24px 58px rgba(0,0,0,.25)
+}
+.studio-hero::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 84% 8%,color-mix(in srgb,var(--studio-accent,#67e8f9) 10%,transparent),transparent 28%)}
+.studio-hero>*{position:relative;z-index:1}
+.studio-kicker{font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:#9fc8c9;font-weight:850}
+.studio-hero h2{margin:6px 0 6px;font-size:1.55rem;letter-spacing:-.045em}
+.studio-copy{margin:0;color:var(--text-soft);font-size:.8rem;line-height:1.5}
+.studio-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:15px}
+.studio-stat{padding:12px;border-radius:18px;border:1px solid rgba(177,206,221,.08);background:rgba(255,255,255,.025)}
+.studio-stat small{display:block;color:#8fa7b2;font-size:.52rem;letter-spacing:.10em;text-transform:uppercase}
+.studio-stat strong{display:block;margin-top:5px;font-size:1rem;letter-spacing:-.03em}
+.studio-stat span{display:block;margin-top:3px;color:var(--text-soft);font-size:.61rem;line-height:1.3}
+
+.bill-vault{
+  position:relative;min-height:320px;border-radius:28px;overflow:hidden;border:1px solid rgba(96,165,250,.13);
+  background:radial-gradient(circle at 50% 50%,rgba(96,165,250,.10),transparent 34%),linear-gradient(145deg,rgba(7,24,45,.96),rgba(4,15,28,.98))
+}
+.vault-core{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:128px;height:128px;border-radius:50%;display:grid;place-items:center;text-align:center;
+  background:radial-gradient(circle at 32% 24%,rgba(255,255,255,.14),transparent 18%),linear-gradient(145deg,rgba(24,60,100,.98),rgba(7,22,38,.98));
+  border:1px solid rgba(96,165,250,.23);box-shadow:0 0 0 10px rgba(96,165,250,.025),0 18px 40px rgba(0,0,0,.28)
+}
+.vault-core small{font-size:.53rem;text-transform:uppercase;letter-spacing:.12em;color:#aac8da}.vault-core strong{display:block;margin-top:5px;font-size:1.3rem}
+.bill-orbit{position:absolute;left:50%;top:50%;width:236px;height:236px;transform:translate(-50%,-50%);border-radius:50%;border:1px dashed rgba(96,165,250,.09);animation:artOrbit 24s linear infinite}
+.bill-shield{
+  position:absolute;width:112px;padding:10px;border-radius:18px;border:1px solid rgba(96,165,250,.10);background:rgba(8,25,44,.90);box-shadow:0 12px 24px rgba(0,0,0,.20)
+}
+.bill-shield small{display:block;font-size:.48rem;text-transform:uppercase;letter-spacing:.09em;color:#88abc4}.bill-shield strong{display:block;margin-top:4px;font-size:.72rem}.bill-shield span{display:block;margin-top:3px;font-size:.57rem;color:var(--text-soft)}
+.bill-shield.s1{left:10px;top:28px}.bill-shield.s2{right:10px;top:28px}.bill-shield.s3{left:50%;bottom:20px;transform:translateX(-50%)}
+.shield-meter{height:5px;border-radius:99px;background:rgba(255,255,255,.05);overflow:hidden;margin-top:7px}.shield-meter b{display:block;height:100%;width:var(--pct);background:linear-gradient(90deg,#60a5fa,#67e8f9);border-radius:inherit}
+.bill-list-grid{display:grid;gap:10px}
+.bill-studio-row{display:grid;grid-template-columns:1fr auto;gap:12px;padding:14px;border-radius:20px;border:1px solid rgba(177,206,221,.08);background:rgba(255,255,255,.024)}
+.bill-studio-row h3{margin:0;font-size:.9rem}.bill-studio-row p{margin:5px 0 0;color:var(--text-soft);font-size:.67rem;line-height:1.4}
+.bill-action{display:flex;align-items:center;gap:7px}.bill-action input{width:86px;background:rgba(255,255,255,.035);border:1px solid rgba(177,206,221,.10);border-radius:12px;color:#fff;padding:10px;font:inherit}
+
+.runway-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.runway-card{position:relative;overflow:hidden;padding:15px;border-radius:22px;border:1px solid rgba(110,231,183,.10);background:linear-gradient(145deg,rgba(11,44,37,.82),rgba(6,20,28,.94))}
+.runway-icon{width:42px;height:42px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(145deg,#d8ffe5,#6ee7b7);margin-bottom:11px}
+.runway-icon svg{width:23px;height:23px}.runway-icon svg *{stroke:#06111d;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.runway-card small{display:block;color:#92b6ac;font-size:.51rem;letter-spacing:.1em;text-transform:uppercase}.runway-card strong{display:block;margin-top:4px;font-size:1.02rem}.runway-card p{margin:5px 0 0;color:var(--text-soft);font-size:.65rem;line-height:1.4}
+.runway-ring{position:absolute;right:12px;top:12px;width:54px;height:54px;border-radius:50%;background:conic-gradient(#6ee7b7 0 var(--pct),rgba(255,255,255,.04) var(--pct) 100%);-webkit-mask:radial-gradient(circle,transparent 0 19px,#000 20px 24px,transparent 25px)}
+
+.goal-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.goal-card{position:relative;padding:15px;border-radius:22px;border:1px solid rgba(246,215,132,.11);background:linear-gradient(145deg,rgba(57,45,17,.82),rgba(11,24,28,.94));overflow:hidden}
+.goal-gem{width:48px;height:48px;display:grid;place-items:center;border-radius:17px;background:linear-gradient(145deg,#fff0b4,#f6d784 55%,#72d6aa);box-shadow:0 10px 22px rgba(0,0,0,.20);margin-bottom:10px}
+.goal-card small{display:block;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:#c8b881}.goal-card strong{display:block;margin-top:4px;font-size:.86rem}.goal-card p{margin:5px 0 0;font-size:.63rem;color:var(--text-soft);line-height:1.4}
+.goal-progress{height:6px;margin-top:10px;border-radius:99px;background:rgba(255,255,255,.05);overflow:hidden}.goal-progress b{display:block;height:100%;width:var(--pct);background:linear-gradient(90deg,#f6d784,#72d6aa);border-radius:inherit}
+
+.precheck-stage,.scenario-stage{
+  position:relative;overflow:hidden;padding:20px;border-radius:28px;border:1px solid rgba(177,206,221,.10);background:linear-gradient(145deg,rgba(7,25,39,.98),rgba(5,17,29,.98))
+}
+.precheck-orb{width:152px;height:152px;margin:18px auto;display:grid;place-items:center;text-align:center;border-radius:50%;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.14),transparent 18%),linear-gradient(145deg,rgba(25,72,76,.98),rgba(8,26,38,.98));border:1px solid rgba(103,232,249,.20);box-shadow:0 0 0 12px rgba(103,232,249,.025),0 20px 42px rgba(0,0,0,.28)}
+.precheck-orb strong{font-size:1.35rem;letter-spacing:-.05em}.precheck-orb span{display:block;margin-top:5px;color:var(--text-soft);font-size:.63rem}
+.precheck-result{padding:14px;border-radius:20px;border:1px solid rgba(177,206,221,.08);background:rgba(255,255,255,.025);margin-top:12px}
+.precheck-result.good{border-color:rgba(110,231,183,.14)}.precheck-result.watch{border-color:rgba(246,215,132,.15)}
+.precheck-result strong{display:block;font-size:.92rem}.precheck-result span{display:block;margin-top:5px;color:var(--text-soft);font-size:.68rem;line-height:1.45}
+
+.history-track{display:grid;gap:11px}
+.history-week{padding:14px;border-radius:22px;border:1px solid rgba(177,206,221,.08);background:rgba(255,255,255,.023)}
+.history-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.history-head strong{font-size:.88rem}.history-head span{font-size:.61rem;color:var(--text-soft)}
+.history-fingerprint{display:grid;grid-template-columns:repeat(4,minmax(12px,1fr));gap:6px;height:44px;margin-top:10px;align-items:end}
+.history-fingerprint i{display:block;height:var(--h);border-radius:8px 8px 5px 5px;box-shadow:0 8px 16px rgba(0,0,0,.15)}
+.history-fingerprint i:nth-child(1){background:linear-gradient(180deg,#60a5fa,#26558b)}.history-fingerprint i:nth-child(2){background:linear-gradient(180deg,#6ee7b7,#28795d)}.history-fingerprint i:nth-child(3){background:linear-gradient(180deg,#f0a7d3,#804776)}.history-fingerprint i:nth-child(4){background:linear-gradient(180deg,#f6d784,#86702d)}
+.history-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}.history-meta span{padding:6px 8px;border-radius:999px;border:1px solid rgba(177,206,221,.07);font-size:.56rem;color:#acc2cb}
+
+.scenario-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
+.scenario-output{margin-top:15px;padding:16px;border-radius:22px;border:1px solid rgba(196,181,253,.11);background:linear-gradient(145deg,rgba(46,34,67,.45),rgba(8,21,32,.92))}
+.scenario-output small{display:block;color:#b9aed2;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase}.scenario-output strong{display:block;margin-top:5px;font-size:1.45rem;letter-spacing:-.05em}.scenario-output p{margin:5px 0 0;color:var(--text-soft);font-size:.67rem;line-height:1.45}
+
+.pref-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.pref-card{padding:14px;border-radius:20px;border:1px solid rgba(177,206,221,.08);background:rgba(255,255,255,.025)}
+.pref-card h3{margin:0;font-size:.86rem}.pref-card p{margin:5px 0 10px;color:var(--text-soft);font-size:.65rem;line-height:1.4}
+.choice-row{display:flex;gap:7px;flex-wrap:wrap}.choice{padding:8px 10px;border-radius:12px;border:1px solid rgba(177,206,221,.08);background:rgba(255,255,255,.025);color:#dfeef3;font-size:.63rem;cursor:pointer}.choice.active{border-color:rgba(103,232,249,.20);background:rgba(103,232,249,.08)}
+
+@keyframes v11SourcePulse{0%,100%{opacity:.55;transform:scale(.9)}50%{opacity:1;transform:scale(1.14)}}
+@media(max-width:600px){
+  .studio-summary,.goal-grid{grid-template-columns:1fr 1fr}.studio-stat:last-child{grid-column:1/-1}
+  .runway-grid,.scenario-controls,.pref-grid{grid-template-columns:1fr}
+  .goal-card:last-child{grid-column:1/-1}
+}
+@media(max-width:390px){
+  .week-time-ring{width:166px;height:166px;-webkit-mask:radial-gradient(circle,transparent 0 65px,#000 66px 70px,transparent 71px)}
+  .week-time-copy{top:calc(50% + 85px)}
+  .v11-source-gate{top:10px}.v11-event{top:39px}
+}
+
 </style></head><body><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="hero-card">
@@ -3364,6 +3501,16 @@ function localApi(path, options = {}) {
     if (!week) throw new Error("No open week. Return home first.");
     runGenerators(state, week); writeState(state); return homePayload(state, week);
   }
+  if (url.pathname === "/bill/contribute" && method === "POST") {
+    const week = state.weeks.filter(w => !w.closed).sort((a,b) => b.start.localeCompare(a.start))[0];
+    if (!week) throw new Error("No open week.");
+    runGenerators(state, week);
+    const bill = week.billAllocations.find(x => x.billId === body.billId);
+    if (!bill) throw new Error("Unknown bill.");
+    if (!Number.isInteger(body.amount) || body.amount <= 0) throw new Error("Amount must be greater than $0.");
+    bill.contributed = Math.min(Math.max(bill.weeklyRequired, bill.requiredByToday), bill.contributed + body.amount);
+    runGenerators(state, week); writeState(state); return homePayload(state, week);
+  }
   if (url.pathname === "/transaction" && method === "POST") {
     const week = state.weeks.filter(w => !w.closed).sort((a,b) => b.start.localeCompare(a.start))[0];
     if (!week) throw new Error("No open week.");
@@ -3491,7 +3638,8 @@ function obligationTimeline(p){
 }
 function route(){ return (location.hash.replace('#','')||'home').split('?')[0]; }
 function nav(routeName){
-  const activeRoute=routeName==='insights'||routeName==='reset'?'details':routeName==='setup'?'plan':routeName;
+  const detailRoutes=['insights','reset','bills','essentials','savings','history','scenario','future'];
+  const activeRoute=detailRoutes.includes(routeName)?'details':routeName==='setup'||routeName==='preferences'?'plan':routeName==='precheck'?'log':routeName;
   document.body.dataset.route=activeRoute;
   const index={home:0,log:1,details:2,plan:3}[activeRoute]??0;
   const bottomNav=document.querySelector('.bottom-nav');
@@ -3548,10 +3696,10 @@ function simpleDecision(p){
   if(behind.length){
     const need=behind.reduce((n,b)=>n+Math.max(0,(b.requiredByToday||0)-(b.contributed||0)),0);
     attention={tone:'warn',title:'Protected bills need attention',copy:`${behind.length} bill${behind.length===1?'':'s'} · ${formatCents(need)} still needed today`};
-    next={title:'Review protected bills',copy:'See which bill needs funding and how much.',label:'Review',href:'#details'};
+    next={title:'Review protected bills',copy:'See which bill needs funding and how much.',label:'Review',href:'#bills'};
   }else if(overspent.length){
     attention={tone:'danger',title:'Spending needs attention',copy:`${overspent[0].name} is below its weekly limit.`};
-    next={title:'Review the overspent lane',copy:'See the category detail before more flexible spending.',label:'Review',href:'#details'};
+    next={title:'Review the overspent lane',copy:'See the category detail before more flexible spending.',label:'Review',href:overspent[0]&&p.essentials.some(x=>x.id===overspent[0].id)?'#essentials':'#details'};
   }else{
     const end=new Date(p.week.end).getTime();
     if(Number.isFinite(end)&&end-Date.now()<36*60*60*1000){
@@ -3571,6 +3719,71 @@ function detailBudgetStats(p){
 }
 
 
+
+const UI_PREFS_KEY='thisweek.uiPrefs.v1';
+const SAVINGS_GOALS_KEY='thisweek.savingsGoals.v1';
+function readUiPrefs(){
+  const base={motion:'dynamic',density:'balanced',contrast:'normal'};
+  try{return {...base,...JSON.parse(localStorage.getItem(UI_PREFS_KEY)||'{}')};}catch{return base;}
+}
+function writeUiPrefs(next){const v={...readUiPrefs(),...next};try{localStorage.setItem(UI_PREFS_KEY,JSON.stringify(v));}catch{}applyUiPrefs();return v;}
+function applyUiPrefs(){const p=readUiPrefs();document.body.dataset.motion=p.motion;document.body.dataset.density=p.density;document.body.dataset.contrast=p.contrast;}
+function weekTimeState(p){
+  const s=new Date(p.week.start).getTime(),e=new Date(p.week.end).getTime(),n=Date.now();
+  const pct=Math.max(0,Math.min(100,Math.round((n-s)/Math.max(1,e-s)*100)));
+  const days=Math.max(0,Math.ceil((e-n)/86400000));
+  return {pct,days,label:days===0?'Rollover due':days===1?'1 day left':days+' days left'};
+}
+function recentWeekTransaction(weekId){
+  const st=readState(); if(!st)return null;
+  const tx=(st.transactions||[]).filter(x=>x.weekId===weekId).sort((a,b)=>b.createdAt.localeCompare(a.createdAt))[0];
+  if(!tx)return null;
+  const all=[...(st.config.livingNeeds||[]),...(st.config.discretionary||[])];
+  const cat=all.find(x=>x.id===tx.categoryId);
+  return {...tx,name:cat?.name||'Spending'};
+}
+function semanticIcon(name,type='category'){
+  const n=String(name||'').toLowerCase();
+  let p='';
+  if(/rent|house|housing|mortgage/.test(n))p='<path d="M4.5 11.2 12 5l7.5 6.2v7.3h-5V14h-5v4.5h-5v-7.3Z"/>';
+  else if(/util|electric|power|water/.test(n))p='<path d="m13 3-6 10h5l-1 8 6-11h-5l1-7Z"/>';
+  else if(/phone|mobile/.test(n))p='<rect x="7.5" y="3.5" width="9" height="17" rx="2"/><path d="M10.5 17.5h3"/>';
+  else if(/groc|food/.test(n))p='<rect x="4.5" y="9.5" width="15" height="9" rx="2"/><path d="M8 9.5c.5-2 1.8-3.5 4-4.5 2.2 1 3.5 2.5 4 4.5"/>';
+  else if(/gas|fuel/.test(n))p='<path d="M7 20V5h8v15M6 20h10M9 8h4M15 9h2l2 2v6.5a1.5 1.5 0 0 1-3 0V13"/>';
+  else if(/transit|bus|train/.test(n))p='<rect x="5" y="4" width="14" height="13" rx="3"/><path d="M8 20l2-3h4l2 3M8 8h8M8.5 13h.01M15.5 13h.01"/>';
+  else if(/dining|eat|restaurant/.test(n))p='<circle cx="12" cy="12" r="5"/><path d="M4 4v7M7 4v7M4 8h3M20 4v16"/>';
+  else if(/shop|retail/.test(n))p='<path d="M6 8h12l1 12H5L6 8Z"/><path d="M9 9V7a3 3 0 0 1 6 0v2"/>';
+  else if(/fun|entertain|movie|game/.test(n))p='<path d="M5 8h14v10H5V8Z"/><path d="m7 5 2 3 2-3 2 3 2-3 2 3"/>';
+  else if(/emergency|reserve/.test(n))p='<path d="M12 3.5 18 6v5c0 4-2.3 7-6 9-3.7-2-6-5-6-9V6l6-2.5Z"/><path d="M12 8v7M8.5 11.5h7"/>';
+  else if(/payoff|debt/.test(n))p='<path d="M5 7h14M5 12h10M5 17h6"/><path d="m15 16 2 2 3-4"/>';
+  else p=type==='bill'?'<path d="M7 4h10v16l-2-1.5L13 20l-2-1.5L9 20l-2-1.5V4Z"/><path d="M9.5 8h5M9.5 12h5"/>':'<circle cx="12" cy="12" r="7"/><path d="M8.5 12h7M12 8.5v7"/>';
+  return '<svg viewBox="0 0 24 24" aria-hidden="true">'+p+'</svg>';
+}
+function readSavingsGoals(){
+  const st=readState(); const weekly=st?.config?.savingsRule?.weeklyAmount||0;
+  const defaults=[
+    {id:'emergency',name:'Emergency Reserve',target:Math.max(weekly*20,100000),current:Math.max(weekly*3,0),type:'reserve'},
+    {id:'sinking',name:'Sinking Fund',target:Math.max(weekly*10,50000),current:Math.max(weekly*2,0),type:'future'},
+    {id:'payoff',name:'Payoff Goal',target:Math.max(weekly*15,75000),current:Math.max(weekly,0),type:'payoff'}
+  ];
+  try{const x=JSON.parse(localStorage.getItem(SAVINGS_GOALS_KEY)||'null');return Array.isArray(x)&&x.length?x:defaults;}catch{return defaults;}
+}
+function writeSavingsGoals(goals){try{localStorage.setItem(SAVINGS_GOALS_KEY,JSON.stringify(goals));}catch{}return goals;}
+function historySummaries(){
+  const st=readState(); if(!st)return [];
+  const living=Object.fromEntries((st.config.livingNeeds||[]).map(x=>[x.id,x.name]));
+  const disc=Object.fromEntries((st.config.discretionary||[]).map(x=>[x.id,x.name]));
+  return (st.weeks||[]).slice().sort((a,b)=>b.start.localeCompare(a.start)).map(w=>{
+    const ess=(w.balances||[]).filter(x=>x.categoryType==='LIVING');
+    const flex=(w.balances||[]).filter(x=>x.categoryType==='DISCRETIONARY');
+    const sum=a=>a.reduce((n,x)=>n+Math.max(0,x.remaining||0),0);
+    const spent=a=>a.reduce((n,x)=>n+Math.max(0,(x.allocated||0)-(x.remaining||0)),0);
+    const bills=(w.billAllocations||[]);
+    return {id:w.id,start:w.start,end:w.end,closed:!!w.closed,available:sum([...(w.balances||[])]),essLeft:sum(ess),flexLeft:sum(flex),spent:spent(w.balances||[]),protected:bills.reduce((n,x)=>n+Math.max(0,(x.requiredByToday||0)-(x.contributed||0)),0),savings:w.savingsAmount||0,alerts:bills.filter(x=>(x.contributed||0)<(x.requiredByToday||0)).length+(w.balances||[]).filter(x=>(x.remaining||0)<0).length};
+  });
+}
+function topNWithMore(items,max=3){return {shown:items.slice(0,max),more:Math.max(0,items.length-max)};}
+
 function sceneIcon(type){
   const icons={
     bills:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5 18.2 6v5.1c0 4.1-2.4 7.1-6.2 9-3.8-1.9-6.2-4.9-6.2-9V6L12 3.5Z"/><path d="m9 11.7 2 2 4.2-4.2"/></svg>',
@@ -3588,6 +3801,7 @@ function initMoneyTheater(p,d){
   const focusTitle=document.getElementById('sceneFocusTitle');
   const focusCopy=document.getElementById('sceneFocusCopy');
   const focusValue=document.getElementById('sceneFocusValue');
+  const focusLink=document.getElementById('sceneFocusLink');
   const clusters={
     bills:document.getElementById('miniBills'),
     essentials:document.getElementById('miniEssentials'),
@@ -3641,11 +3855,11 @@ function initMoneyTheater(p,d){
   clusters.savings.innerHTML=miniMarkup(savingsKids);
 
   const map={
-    available:{accent:'#67e8f9',title:'Available now',value:formatCents(p.available),copy:'The center stays your safe-to-use weekly signal while all four category systems remain visible around it.'},
-    bills:{accent:'#60a5fa',title:'Protected bills',value:formatCents(p.protected),copy:d.behind.length?'Bills are active and at least one obligation needs attention.':'Bills are protected and their mini runway indicators remain visible.'},
-    essentials:{accent:'#6ee7b7',title:'Essentials left',value:formatCents(d.essentialsLeft),copy:'Groceries, gas, transit, and other practical lanes remain visible as a living sub-system.'},
-    lifestyle:{accent:'#f0a7d3',title:'Lifestyle left',value:formatCents(d.lifestyleLeft),copy:'Flexible spending stays visually separate with its own expressive color and motion language.'},
-    savings:{accent:'#f6d784',title:'Savings',value:formatCents(savingsActual),copy:'Savings uses a calmer gold-and-jade system with target and progress mini indicators.'}
+    available:{accent:'#67e8f9',title:'Available now',value:formatCents(p.available),copy:'The center stays your safe-to-use weekly signal while all four category systems remain visible around it.',href:'#precheck'},
+    bills:{accent:'#60a5fa',title:'Protected bills',value:formatCents(p.protected),copy:d.behind.length?'Bills are active and at least one obligation needs attention.':'Bills are protected and their mini runway indicators remain visible.',href:'#bills'},
+    essentials:{accent:'#6ee7b7',title:'Essentials left',value:formatCents(d.essentialsLeft),copy:'Groceries, gas, transit, and other practical lanes remain visible as a living sub-system.',href:'#essentials'},
+    lifestyle:{accent:'#f0a7d3',title:'Lifestyle left',value:formatCents(d.lifestyleLeft),copy:'Flexible spending stays visually separate with its own expressive color and motion language.',href:'#details'},
+    savings:{accent:'#f6d784',title:'Savings',value:formatCents(savingsActual),copy:'Savings uses a calmer gold-and-jade system with target and progress mini indicators.',href:'#savings'}
   };
 
   let userTouched=false;
@@ -3661,6 +3875,7 @@ function initMoneyTheater(p,d){
     focusTitle.textContent=item.title;
     focusValue.textContent=item.value;
     focusCopy.textContent=item.copy;
+    if(focusLink)focusLink.href=item.href||'#details';
     if(navigator.vibrate&&manual)navigator.vibrate(5);
   };
 
@@ -3698,6 +3913,10 @@ async function renderHome(){
   try{
     const p=await apiRequest('/week/current',{method:'POST',body:JSON.stringify({userId})});
     const d=simpleDecision(p);
+    const time=weekTimeState(p);
+    const recent=recentWeekTransaction(p.week.id);
+    const state=readState();
+    const payLabel=state?.config?.payProfile?.netPayAmount?formatCents(state.config.payProfile.netPayAmount):'Plan source';
     document.body.dataset.financialState=p.status==='ON_TRACK'?'stable':'attention';
     root.innerHTML=`<div class="home-command">
       <div class="home-head">
@@ -3707,13 +3926,13 @@ async function renderHome(){
       <div class="available-block"><div class="available-amount">${formatCents(p.available)}</div><div class="available-label">Available now</div></div>
 
       <div class="money-theater v10" id="moneyTheater" data-focus="bills" aria-label="Interactive weekly money flow with four live category systems">
-        <div class="v10-ambient">
+        <div class="v11-source-gate"><i></i><span>Pay plan · ${payLabel}</span></div>${recent?`<div class="v11-event">Recent flow · ${formatCents(recent.amount)} → ${escapeHtml(recent.name)}</div>`:''}<div class="v10-ambient">
           <div class="v10-haze bills"></div><div class="v10-haze essentials"></div><div class="v10-haze lifestyle"></div><div class="v10-haze savings"></div>
           <div class="v10-arc a"></div><div class="v10-arc b"></div><div class="v10-arc c"></div>
           <span class="v10-particle p1"></span><span class="v10-particle p2"></span><span class="v10-particle p3"></span><span class="v10-particle p4"></span><span class="v10-particle p5"></span><span class="v10-particle p6"></span><span class="v10-particle p7"></span><span class="v10-particle p8"></span>
         </div>
         <div class="scene-trim top"></div><div class="scene-trim bottom"></div>
-        <div class="scene-artmark one"></div><div class="scene-artmark two"></div><div class="v10-core-orbit"></div>
+        <div class="scene-artmark one"></div><div class="scene-artmark two"></div><div class="v10-core-orbit"></div><div class="week-time-ring" style="--week:${time.pct}%"></div><div class="week-time-copy">${time.pct}% through week · ${escapeHtml(time.label)}</div>
         <svg class="flow-network" viewBox="0 0 360 560" aria-hidden="true">
           <path class="flow-bed" d="M180 278 C135 218 96 148 56 94"/>
           <path class="flow-bed" d="M180 278 C225 218 264 148 304 94"/>
@@ -3762,7 +3981,7 @@ async function renderHome(){
         <div class="scene-focus" aria-live="polite">
           <small id="sceneFocusTitle">Protected bills</small>
           <strong id="sceneFocusValue">${formatCents(p.protected)}</strong>
-          <span id="sceneFocusCopy">All four systems stay visible; the selected one becomes brighter and more detailed.</span>
+          <span id="sceneFocusCopy">All four systems stay visible; the selected one becomes brighter and more detailed.</span><a class="scene-focus-link" id="sceneFocusLink" href="#bills">Open studio</a>
         </div>
         <div class="v10-scene-legend">
           <i class="v10-legend-dot" style="color:#60a5fa;background:#60a5fa"></i><span>Bills</span><span class="sep">•</span>
@@ -3780,7 +3999,7 @@ async function renderHome(){
       </div>
 
       <div class="attention-line ${d.attention.tone==='danger'?'danger':d.attention.tone==='warn'?'warn':''}"><span class="attention-dot"></span><div class="attention-copy"><strong>${escapeHtml(d.attention.title)}</strong><span>${escapeHtml(d.attention.copy)}</span></div></div>
-      <div class="next-step"><div class="next-step-copy"><small>Next suggested step</small><strong>${escapeHtml(d.next.title)}</strong><span>${escapeHtml(d.next.copy)}</span></div><a class="btn btn-primary" href="${d.next.href}">${escapeHtml(d.next.label)}</a></div>
+      <div class="next-step"><div class="next-step-copy"><small>Next suggested step</small><strong>${escapeHtml(d.next.title)}</strong><span>${escapeHtml(d.next.copy)}</span><div class="command-explain"><span>One recommendation only; deeper reasoning stays below Home.</span><a href="#insights">Why this?</a></div></div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><a class="next-tool-link" href="#precheck">Can I spend this?</a><a class="btn btn-primary" href="${d.next.href}">${escapeHtml(d.next.label)}</a></div></div>
     </div>`;
     initMoneyTheater(p,d);
   }catch(e){
@@ -3819,7 +4038,7 @@ async function renderDetails(){
         <div class="anatomy-panel-head"><div><small id="anatomyKicker">Essentials</small><strong id="anatomyTitle">${sections.essentials.title}</strong><span id="anatomyCopy">${sections.essentials.copy}</span></div><span class="deep-link-badge">Open layer</span></div>
         <div class="anatomy-panel-body"><div class="row-list" id="anatomyRows">${sections.essentials.html}</div></div>
       </section>
-      <div class="anatomy-actions"><a class="deep-link" href="#insights"><div><strong>Advanced Insights</strong><span>Move into the analytical observatory.</span></div><span class="deep-link-badge">Deeper</span></a><a class="deep-link" href="#reset"><div><strong>Start New Week</strong><span>Open the cycle-transition flow.</span></div><span class="deep-link-badge">Rollover</span></a></div>
+      <div class="anatomy-actions"><a class="deep-link" href="#bills"><div><strong>Bill Protection Studio</strong><span>Fund and time required obligations.</span></div><span class="deep-link-badge">Studio</span></a><a class="deep-link" href="#essentials"><div><strong>Essentials Runway</strong><span>Translate remaining money into weekly coverage.</span></div><span class="deep-link-badge">Runway</span></a><a class="deep-link" href="#savings"><div><strong>Savings Goal Studio</strong><span>Give weekly savings visible destinations.</span></div><span class="deep-link-badge">Goals</span></a><a class="deep-link" href="#precheck"><div><strong>Can I Spend This?</strong><span>Preview a purchase before logging it.</span></div><span class="deep-link-badge">Simulate</span></a><a class="deep-link" href="#history"><div><strong>Weekly Memory</strong><span>See previous weeks as visual fingerprints.</span></div><span class="deep-link-badge">History</span></a><a class="deep-link" href="#scenario"><div><strong>Scenario Sandbox</strong><span>Test changes without touching the live plan.</span></div><span class="deep-link-badge">What-if</span></a><a class="deep-link" href="#preferences"><div><strong>Presentation Settings</strong><span>Motion, density, and contrast controls.</span></div><span class="deep-link-badge">Personalize</span></a><a class="deep-link" href="#insights"><div><strong>Advanced Insights</strong><span>Move into the analytical observatory.</span></div><span class="deep-link-badge">Deeper</span></a><a class="deep-link" href="#reset"><div><strong>Start New Week</strong><span>Open the cycle-transition flow.</span></div><span class="deep-link-badge">Rollover</span></a></div>
     </div>`;
     const nodes=[...document.querySelectorAll('.anatomy-node')];
     const kicker=document.getElementById('anatomyKicker'), title=document.getElementById('anatomyTitle'), copy=document.getElementById('anatomyCopy'), rows=document.getElementById('anatomyRows');
@@ -3878,6 +4097,90 @@ async function renderInsights(){
   }catch(e){root.innerHTML=errBox(e.message);}
 }
 
+
+async function renderBillsStudio(){
+  shellMeta('Bills','Protection Studio','Fund, time, and monitor required obligations','<a class="text-action" href="#details">Back</a>');
+  nav('bills'); const userId=getStoredUserId(); if(!userId){location.hash='setup';return;}
+  try{
+    const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);
+    const totalTarget=p.bills.reduce((n,b)=>n+(b.weeklyRequired||0),0), totalFunded=p.bills.reduce((n,b)=>n+(b.contributed||0),0);
+    const shields=p.bills.slice(0,3);
+    root.innerHTML=`<div class="studio-stack">
+      <section class="studio-hero" style="--studio-accent:#60a5fa"><span class="studio-kicker">Bill Protection Studio</span><h2>Turn obligations into protected lanes.</h2><p class="studio-copy">The vault shows funding pressure, due timing, and which bill should be protected next.</p><div class="studio-summary"><div class="studio-stat"><small>Required this week</small><strong>${formatCents(totalTarget)}</strong><span>Configured bill share</span></div><div class="studio-stat"><small>Marked protected</small><strong>${formatCents(totalFunded)}</strong><span>Current contributions</span></div><div class="studio-stat"><small>Attention</small><strong>${p.bills.filter(b=>b.status!=='ON_TRACK').length}</strong><span>Behind required-by-today</span></div></div></section>
+      <section class="bill-vault"><div class="bill-orbit"></div><div class="vault-core"><div><small>Protection gap</small><strong>${formatCents(p.protected)}</strong></div></div>${shields.map((b,i)=>`<div class="bill-shield s${i+1}"><small>${b.status==='ON_TRACK'?'Protected':'Needs funding'}</small><strong>${escapeHtml(b.name)}</strong><span>${formatCents(b.contributed)} / ${formatCents(b.weeklyRequired)}</span><div class="shield-meter" style="--pct:${Math.min(100,Math.round((b.contributed||0)/Math.max(1,b.weeklyRequired||1)*100))}%"><b></b></div></div>`).join('')}</section>
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Obligations</span><h2>Fund next</h2><div class="section-caption">“Mark protected” updates the amount you have already set aside for that bill.</div></div></div><div class="bill-list-grid">${p.bills.map(b=>`<div class="bill-studio-row"><div><h3>${escapeHtml(b.name)}</h3><p>${b.dueDate?dueDateLabel(b.dueDate):'Recurring bill'} · Required today ${formatCents(b.requiredByToday)} · Weekly target ${formatCents(b.weeklyRequired)} · ${b.status==='ON_TRACK'?'On track':'Needs attention'}</p></div><div class="bill-action"><input inputmode="decimal" placeholder="25.00" aria-label="Amount to protect for ${escapeHtml(b.name)}"><button class="btn btn-primary protect-bill" data-id="${b.id}">Mark protected</button></div></div>`).join('')}</div></section>
+    </div>`;
+    document.querySelectorAll('.protect-bill').forEach(btn=>btn.onclick=async()=>{
+      const input=btn.parentElement.querySelector('input'),dollars=Number(input.value);
+      if(!Number.isFinite(dollars)||dollars<=0){toast('Enter an amount greater than $0.');return;}
+      btn.disabled=true;
+      try{await apiRequest('/bill/contribute',{method:'POST',body:JSON.stringify({userId,billId:btn.dataset.id,amount:Math.round(dollars*100)})});toast('Bill protection updated.');await renderBillsStudio();}catch(e){toast(e.message);btn.disabled=false;}
+    });
+  }catch(e){root.innerHTML=errBox(e.message);}
+}
+
+async function renderEssentialsStudio(){
+  shellMeta('Essentials','Runway Studio','See how long practical weekly lanes can last','<a class="text-action" href="#details">Back</a>');
+  nav('essentials'); const userId=getStoredUserId(); if(!userId){location.hash='setup';return;}
+  try{
+    const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`), time=weekTimeState(p);
+    const days=Math.max(1,time.days||1);
+    root.innerHTML=`<div class="studio-stack"><section class="studio-hero" style="--studio-accent:#6ee7b7"><span class="studio-kicker">Essentials Runway</span><h2>Translate dollars into remaining-week coverage.</h2><p class="studio-copy">Each practical lane shows remaining money, estimated daily room, and how much of its original weekly allocation is still available.</p><div class="studio-summary"><div class="studio-stat"><small>Days remaining</small><strong>${time.days}</strong><span>${time.label}</span></div><div class="studio-stat"><small>Essentials left</small><strong>${formatCents(p.essentials.reduce((n,x)=>n+Math.max(0,x.remaining),0))}</strong><span>All need-based lanes</span></div><div class="studio-stat"><small>Active lanes</small><strong>${p.essentials.length}</strong><span>Configured essentials</span></div></div></section>
+      <section class="runway-grid">${p.essentials.map(x=>{const pct=Math.max(0,Math.min(100,Math.round(Math.max(0,x.remaining)/Math.max(1,x.allocated)*100)));const daily=Math.round(Math.max(0,x.remaining)/days);return`<div class="runway-card"><div class="runway-ring" style="--pct:${pct}%"></div><div class="runway-icon">${semanticIcon(x.name)}</div><small>${pct}% remaining</small><strong>${escapeHtml(x.name)} · ${formatCents(x.remaining)}</strong><p>About ${formatCents(daily)} per remaining day if spread evenly through this cycle.</p></div>`}).join('')}</section>
+      <section class="section"><div class="next-step"><div class="next-step-copy"><small>Practical check</small><strong>Need to test a purchase?</strong><span>Preview an amount before recording it.</span></div><a class="btn btn-primary" href="#precheck">Can I spend this?</a></div></section>
+    </div>`;
+  }catch(e){root.innerHTML=errBox(e.message);}
+}
+
+async function renderSavingsStudio(){
+  shellMeta('Savings','Goal Studio','Give weekly savings visible purposes and milestones','<a class="text-action" href="#details">Back</a>');
+  nav('savings'); const userId=getStoredUserId(); if(!userId){location.hash='setup';return;}
+  try{
+    const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`); let goals=readSavingsGoals();
+    const draw=()=>{
+      root.innerHTML=`<div class="studio-stack"><section class="studio-hero" style="--studio-accent:#f6d784"><span class="studio-kicker">Savings Goal Studio</span><h2>Turn one savings number into visible destinations.</h2><p class="studio-copy">Goals are purpose-specific planning buckets. They do not move bank money; they help you visualize where your saved money is meant to go.</p><div class="studio-summary"><div class="studio-stat"><small>This week</small><strong>${formatCents(p.savingsThisWeek||0)}</strong><span>Current weekly saving</span></div><div class="studio-stat"><small>Goals</small><strong>${goals.length}</strong><span>Purpose-specific targets</span></div><div class="studio-stat"><small>Total progress</small><strong>${formatCents(goals.reduce((n,g)=>n+(g.current||0),0))}</strong><span>Saved across goals</span></div></div></section><section class="goal-grid">${goals.map(g=>{const pct=Math.max(0,Math.min(100,Math.round((g.current||0)/Math.max(1,g.target||1)*100)));return`<div class="goal-card"><div class="goal-gem">${semanticIcon(g.name,g.type)}</div><small>${pct}% complete</small><strong>${escapeHtml(g.name)}</strong><p>${formatCents(g.current||0)} of ${formatCents(g.target||0)}</p><div class="goal-progress" style="--pct:${pct}%"><b></b></div><div class="bill-action" style="margin-top:10px"><input inputmode="decimal" placeholder="25.00"><button class="btn btn-primary add-goal" data-id="${g.id}">Add</button></div></div>`}).join('')}</section></div>`;
+      document.querySelectorAll('.add-goal').forEach(btn=>btn.onclick=()=>{const input=btn.parentElement.querySelector('input'),d=Number(input.value);if(!Number.isFinite(d)||d<=0){toast('Enter an amount greater than $0.');return;}goals=goals.map(g=>g.id===btn.dataset.id?{...g,current:(g.current||0)+Math.round(d*100)}:g);writeSavingsGoals(goals);toast('Goal progress updated.');draw();});
+    }; draw();
+  }catch(e){root.innerHTML=errBox(e.message);}
+}
+
+async function renderPrecheck(){
+  shellMeta('Pre-check','Can I Spend This?','Preview the effect before recording a purchase','<a class="text-action" href="#log">Add Spend</a>');
+  nav('precheck'); const userId=getStoredUserId(); if(!userId){location.hash='setup';return;}
+  try{
+    const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);
+    const cats=[...p.essentials.map(x=>({...x,type:'LIVING'})),...p.forYou.map(x=>({...x,type:'DISCRETIONARY'}))];
+    root.innerHTML=`<div class="studio-stack"><section class="precheck-stage"><span class="studio-kicker">Purchase simulation</span><h2 style="margin:6px 0">Test it before you log it.</h2><p class="studio-copy">This uses your This Week plan—not a bank balance—to preview what a purchase would leave behind.</p><div class="precheck-orb"><div><small>Available now</small><strong id="preOrb">${formatCents(p.available)}</strong><span>Planning balance</span></div></div><div class="field-grid"><div class="field-group"><label class="field-label">Purchase amount</label><div class="amount-row"><span class="dollar">$</span><input id="preAmount" inputmode="decimal" placeholder="0.00"></div></div><div class="field-group"><label class="field-label">Category</label><select id="preCat" class="select-field">${cats.map(x=>`<option value="${x.id}">${escapeHtml(x.name)}</option>`).join('')}</select></div></div><div id="preResult" class="precheck-result"><strong>Enter an amount.</strong><span>You’ll see what remains in the selected lane and overall planning balance.</span></div><div class="action-row"><a class="btn btn-secondary" href="#home">Back Home</a><a class="btn btn-primary" href="#log">Log Spending</a></div></section></div>`;
+    const amount=document.getElementById('preAmount'),cat=document.getElementById('preCat'),result=document.getElementById('preResult'),orb=document.getElementById('preOrb');
+    const calc=()=>{const cents=Math.round((Number(amount.value)||0)*100),x=cats.find(c=>c.id===cat.value)||cats[0];if(!x||cents<=0){result.className='precheck-result';result.innerHTML='<strong>Enter an amount.</strong><span>Preview remains temporary until you log the purchase.</span>';orb.textContent=formatCents(p.available);return;}const lane=x.remaining-cents,overall=p.available-cents,good=lane>=0&&overall>=0;result.className='precheck-result '+(good?'good':'watch');result.innerHTML=`<strong>${good?'This fits the current plan.':'This would pressure the current plan.'}</strong><span>${escapeHtml(x.name)} would have ${formatCents(lane)} left and Available Now would become ${formatCents(overall)}. Protected-bill calculations are shown separately.</span>`;orb.textContent=formatCents(overall);};
+    amount.oninput=calc;cat.onchange=calc;
+  }catch(e){root.innerHTML=errBox(e.message);}
+}
+
+function renderHistory(){
+  shellMeta('History','Weekly Memory','See how previous weeks were shaped','<a class="text-action" href="#details">Back</a>');nav('history');
+  const weeks=historySummaries(); if(!weeks.length){root.innerHTML='<div class="center"><div class="empty">No week history yet.</div></div>';return;}
+  const max=Math.max(1,...weeks.map(w=>Math.max(w.available,w.essLeft,w.flexLeft,w.savings,w.protected)));
+  root.innerHTML=`<div class="studio-stack"><section class="studio-hero" style="--studio-accent:#c4b5fd"><span class="studio-kicker">Visual memory</span><h2>Every week leaves a financial fingerprint.</h2><p class="studio-copy">Each fingerprint compares protection pressure, essentials, lifestyle room, and savings without turning history into a spreadsheet.</p></section><section class="history-track">${weeks.map(w=>`<div class="history-week"><div class="history-head"><strong>${weekWindow(w.start,w.end)}</strong><span>${w.closed?'Closed':'Current week'}</span></div><div class="history-fingerprint"><i style="--h:${Math.max(8,Math.round((w.protected/max)*44))}px"></i><i style="--h:${Math.max(8,Math.round((w.essLeft/max)*44))}px"></i><i style="--h:${Math.max(8,Math.round((w.flexLeft/max)*44))}px"></i><i style="--h:${Math.max(8,Math.round((w.savings/max)*44))}px"></i></div><div class="history-meta"><span>${formatCents(w.available)} available</span><span>${formatCents(w.spent)} spent</span><span>${formatCents(w.savings)} saved</span><span>${w.alerts} attention event${w.alerts===1?'':'s'}</span></div></div>`).join('')}</section></div>`;
+}
+
+async function renderScenario(){
+  shellMeta('Scenario','What-if Sandbox','Test changes without touching the live plan','<a class="text-action" href="#details">Back</a>');nav('scenario');
+  const userId=getStoredUserId();if(!userId){location.hash='setup';return;}
+  try{
+    const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);
+    root.innerHTML=`<div class="studio-stack"><section class="scenario-stage"><span class="studio-kicker">Parallel plan</span><h2 style="margin:6px 0">Change the assumptions, not the real week.</h2><p class="studio-copy">The sandbox estimates how selected changes could alter planning room. Nothing is saved unless you later edit the real Plan.</p><div class="scenario-controls"><div class="field-group"><label class="field-label">Income change</label><div class="amount-row"><span class="dollar">$</span><input id="scIncome" inputmode="decimal" placeholder="-200 or 200"></div></div><div class="field-group"><label class="field-label">Bill increase</label><div class="amount-row"><span class="dollar">$</span><input id="scBills" inputmode="decimal" placeholder="0.00"></div></div><div class="field-group"><label class="field-label">Extra savings</label><div class="amount-row"><span class="dollar">$</span><input id="scSavings" inputmode="decimal" placeholder="0.00"></div></div><div class="field-group"><label class="field-label">Lifestyle reduction</label><div class="amount-row"><span class="dollar">$</span><input id="scCut" inputmode="decimal" placeholder="0.00"></div></div></div><div class="scenario-output"><small>Scenario planning room</small><strong id="scOut">${formatCents(p.available)}</strong><p id="scCopy">Current Available Now is the starting point.</p></div><div class="action-row"><a class="btn btn-primary" href="#setup">Edit Real Plan</a><a class="btn btn-secondary" href="#home">Discard Scenario</a></div></section></div>`;
+    const ids=['scIncome','scBills','scSavings','scCut'];const update=()=>{const [income,bills,savings,cut]=ids.map(id=>(Number(document.getElementById(id).value)||0)*100);const out=p.available+income-bills-savings+cut;document.getElementById('scOut').textContent=formatCents(Math.round(out));document.getElementById('scCopy').textContent=`Compared with ${formatCents(p.available)} now, this scenario changes planning room by ${formatCents(Math.round(out-p.available))}. This is a preview, not a forecast of a bank balance.`;};ids.forEach(id=>document.getElementById(id).oninput=update);
+  }catch(e){root.innerHTML=errBox(e.message);}
+}
+
+function renderPreferences(){
+  shellMeta('Preferences','Presentation Settings','Choose how dense and animated the system feels','<a class="text-action" href="#setup">Plan</a>');nav('preferences');
+  const p=readUiPrefs();
+  const group=(title,copy,key,opts)=>`<div class="pref-card"><h3>${title}</h3><p>${copy}</p><div class="choice-row">${opts.map(o=>`<button class="choice ${p[key]===o.value?'active':''}" data-key="${key}" data-value="${o.value}">${o.label}</button>`).join('')}</div></div>`;
+  root.innerHTML=`<div class="studio-stack"><section class="studio-hero"><span class="studio-kicker">Personalization</span><h2>Same calculations. Different presentation.</h2><p class="studio-copy">These settings only change visual density, motion, and contrast; they do not change your financial data.</p></section><section class="pref-grid">${group('Motion','Control the pace and intensity of ambient movement.','motion',[{value:'calm',label:'Calm'},{value:'dynamic',label:'Dynamic'},{value:'cinematic',label:'Cinematic'},{value:'reduced',label:'Reduced'}])}${group('Visual density','Choose how much supporting information appears at once.','density',[{value:'compact',label:'Compact'},{value:'balanced',label:'Balanced'},{value:'rich',label:'Rich'}])}${group('Contrast','Increase text and edge contrast without changing the palette.','contrast',[{value:'normal',label:'Normal'},{value:'high',label:'High'}])}</section></div>`;
+  document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{writeUiPrefs({[b.dataset.key]:b.dataset.value});renderPreferences();});
+}
 async function renderLog(){
   shellMeta('Add Spending','Transaction Flow','Send a purchase into the right spending lane','<span class="header-pill">Flow entry</span>');
   nav('log');
@@ -4006,11 +4309,19 @@ function renderSetup(){
 }
 
 async function render(){
+  applyUiPrefs();
   const r=route();
   window.scrollTo({top:0,behavior:'smooth'});
   if(r==='log')return renderLog();
   if(r==='details')return renderDetails();
   if(r==='insights')return renderInsights();
+  if(r==='bills')return renderBillsStudio();
+  if(r==='essentials')return renderEssentialsStudio();
+  if(r==='savings')return renderSavingsStudio();
+  if(r==='precheck')return renderPrecheck();
+  if(r==='history')return renderHistory();
+  if(r==='scenario')return renderScenario();
+  if(r==='preferences')return renderPreferences();
   if(r==='reset')return renderReset();
   if(r==='setup')return renderSetup();
   return renderHome();
