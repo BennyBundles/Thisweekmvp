@@ -6040,6 +6040,25 @@ const PROVIDER_ADAPTER_CONTRACT=Object.freeze({
   optionalAdapterMethods:['connect','refresh','disconnect'],
   secretPolicy:'Provider credentials and access tokens must never be stored in this browser-local model.'
 });
+const NORMALIZED_ENTITY_MANIFEST=Object.freeze({
+  users:{primaryKey:'id',foreignKeys:[]},
+  payProfiles:{primaryKey:'id',foreignKeys:['userId -> users.id']},
+  weekRules:{primaryKey:'id',foreignKeys:['userId -> users.id']},
+  weeks:{primaryKey:'id',foreignKeys:['userId -> users.id']},
+  categories:{primaryKey:'id',foreignKeys:['userId -> users.id']},
+  weekCategoryBalances:{primaryKey:'id',foreignKeys:['weekId -> weeks.id','categoryId -> categories.id']},
+  bills:{primaryKey:'id',foreignKeys:['userId -> users.id']},
+  billContributions:{primaryKey:'id',foreignKeys:['weekId -> weeks.id','billId -> bills.id']},
+  transactions:{primaryKey:'id',foreignKeys:['userId -> users.id','weekId -> weeks.id','categoryId -> categories.id']},
+  savingsPolicies:{primaryKey:'id',foreignKeys:['userId -> users.id']},
+  savingsGoals:{primaryKey:'id',foreignKeys:['userId -> users.id']},
+  connectedAccounts:{primaryKey:'id',foreignKeys:[]},
+  importSources:{primaryKey:'id',foreignKeys:[]},
+  imports:{primaryKey:'id',foreignKeys:[]},
+  importRecords:{primaryKey:'id',foreignKeys:['batchId -> imports.id']},
+  reconciliations:{primaryKey:'id',foreignKeys:['importRecordId -> importRecords.id','categoryId -> categories.id']},
+  preferences:{primaryKey:'id',foreignKeys:['userId -> users.id']}
+});
 function normalizeConnectedAccount(account={}){
   const capabilities=account.capabilities&&typeof account.capabilities==='object'?account.capabilities:{};
   return {
@@ -6140,10 +6159,15 @@ function buildNormalizedDataModel(){
     currency:'USD',
     amountUnit:'cent',
     users:[{id:userId,createdAt:state.createdAt||null,timezone:state.config?.timezone||null}],
-    payProfiles:[{id:stableCompositeId('pay-profile',userId),userId,...clone(state.config?.payProfile||{})}],
+    payProfiles:[{
+      id:stableCompositeId('pay-profile',userId),userId,
+      netPayCents:state.config?.payProfile?.netPayAmount||0,
+      frequency:state.config?.payProfile?.payFrequency||null,
+      anchorAt:state.config?.payProfile?.payAnchorAt||null
+    }],
     weekRules:[{id:stableCompositeId('week-rule',userId),userId,anchorDow:state.config?.weekAnchorDow??null,anchorMinutes:state.config?.weekAnchorMinutes??null,timezone:state.config?.timezone||null}],
     savingsPolicies:[{id:stableCompositeId('savings-policy',userId),userId,active:!!state.config?.savingsRule?.active,weeklyAmountCents:state.config?.savingsRule?.weeklyAmount||0}],
-    usersPreferences:[{id:stableCompositeId('preferences',userId),userId,presentation:ui,lifestyleSoftCaps:flexCaps,recommendations}],
+    preferences:[{id:stableCompositeId('preferences',userId),userId,presentation:ui,lifestyleSoftCaps:flexCaps,recommendations}],
     categories,weeks,weekCategoryBalances,bills,billContributions,transactions,adjustments,savingsGoals,
     connectedAccounts,importSources,imports,importRecords,reconciliations,
     connectedAudit:(connected.audit||[]).map(a=>({...a}))
@@ -6163,6 +6187,7 @@ function buildPortableDataEnvelope(){
     exportedAt:nowIso(),
     source:{application:'This Week',runtime:'browser-local',currency:'USD',amountUnit:'cent'},
     providerAdapterContract:PROVIDER_ADAPTER_CONTRACT,
+    entityManifest:NORMALIZED_ENTITY_MANIFEST,
     counts,
     data:model
   };
@@ -6172,7 +6197,7 @@ function validatePortableDataEnvelope(envelope){
   if(!envelope||typeof envelope!=='object')errors.push('Envelope must be an object.');
   if(envelope?.exportSchema!=='thisweek.portable')errors.push('Unexpected export schema.');
   if(envelope?.exportSchemaVersion!==PORTABLE_DATA_SCHEMA_VERSION)errors.push('Unsupported portable schema version.');
-  const required=['users','weeks','categories','transactions','billContributions','savingsGoals','imports','reconciliations','usersPreferences'];
+  const required=['users','weeks','categories','transactions','billContributions','savingsGoals','imports','reconciliations','preferences'];
   for(const name of required)if(!Array.isArray(envelope?.data?.[name]))errors.push('Missing entity collection: '+name);
   return {valid:errors.length===0,errors};
 }
@@ -6180,6 +6205,14 @@ function serializePortableData(pretty=true){
   const envelope=buildPortableDataEnvelope(),check=validatePortableDataEnvelope(envelope);
   if(!check.valid)throw new Error(check.errors.join(' '));
   return JSON.stringify(envelope,null,pretty?2:0);
+}
+function deserializePortableData(json){
+  let envelope;
+  try{envelope=typeof json==='string'?JSON.parse(json):clone(json);}
+  catch{throw new Error('Portable data is not valid JSON.');}
+  const check=validatePortableDataEnvelope(envelope);
+  if(!check.valid)throw new Error(check.errors.join(' '));
+  return envelope;
 }
 function downloadPortableDataExport(){
   const json=serializePortableData(true),blob=new Blob([json],{type:'application/json;charset=utf-8'});
@@ -6196,7 +6229,8 @@ function portableDataPreview(){
     coreSchemaVersion:envelope.coreSchemaVersion,
     modelVersion:envelope.modelVersion,
     counts:envelope.counts,
-    providerInterfaceVersion:CONNECTED_ACCOUNT_INTERFACE_VERSION
+    providerInterfaceVersion:CONNECTED_ACCOUNT_INTERFACE_VERSION,
+    normalizedCollections:Object.keys(NORMALIZED_ENTITY_MANIFEST).length
   };
 }
 
@@ -7272,7 +7306,8 @@ function renderDataModel(){
       ['Savings goals',counts.savingsGoals,'Purpose-specific goal records'],
       ['Imports',counts.imports,'Confirmed import batches'],
       ['Import records',counts.importRecords,'Provenance-preserving activity'],
-      ['Reconciliations',counts.reconciliations,'Explicit applied matches']
+      ['Reconciliations',counts.reconciliations,'Explicit applied matches'],
+      ['Preferences',envelope.data.preferences.length,'Presentation + local decision controls']
     ];
     root.innerHTML=`<div class="studio-stack">
       <section class="data-model-hero"><span class="studio-kicker">Phase 13 normalized model</span><h2>Browser-local today. Server-mappable later.</h2><p>The active app still runs locally at zero infrastructure cost. This normalized view separates entities and provenance so a future backend can ingest them without redefining the financial product.</p><div class="data-model-summary">
@@ -7290,6 +7325,7 @@ function renderDataModel(){
         <div class="backend-contract">
           <div class="schema-row"><div><strong>Interface version</strong><span>Provider account records use one normalized capability contract.</span></div><span class="schema-badge">v${CONNECTED_ACCOUNT_INTERFACE_VERSION}</span></div>
           <div class="schema-row"><div><strong>Required adapter methods</strong><span>${escapeHtml(PROVIDER_ADAPTER_CONTRACT.requiredAdapterMethods.join(' · '))}</span></div><span class="schema-badge">provider-neutral</span></div>
+          <div class="schema-row"><div><strong>Entity relationship manifest</strong><span>${Object.keys(NORMALIZED_ENTITY_MANIFEST).length} normalized collections define primary and foreign-key mappings for a future server model.</span></div><span class="schema-badge">mapped</span></div>
           <div class="schema-row"><div><strong>Client secret policy</strong><span>${escapeHtml(PROVIDER_ADAPTER_CONTRACT.secretPolicy)}</span></div><span class="schema-badge">no secrets</span></div>
           <div class="schema-row"><div><strong>Current account/source interfaces</strong><span>${accounts.length?accounts.map(a=>a.displayName+' · '+a.provider).join(' | '):'No connected-account interfaces. Local file import remains available.'}</span></div><span class="schema-badge">${accounts.length}</span></div>
         </div>
