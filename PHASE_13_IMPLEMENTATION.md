@@ -242,3 +242,109 @@ Final Phase 13 source commit:
 `a514771f3a5ea2c606cf8a8116c6e6f904613c36`
 
 This refinement completes the practical backend-readiness requirement by ensuring the exported model is not only normalized, but also internally self-consistent before it is considered portable.
+
+
+## Continued backend-readiness completion
+
+Phase 13 was extended beyond basic normalization so the future server boundary is testable rather than only documented.
+
+### Future sync contract
+
+The runtime now defines:
+
+`BACKEND_SYNC_CONTRACT_VERSION = 1`
+
+The contract records the current state accurately:
+
+- client mode is snapshot-only;
+- HTTPS/JSON transport is future-facing rather than active;
+- client-generated idempotency keys will be required for snapshot writes;
+- future incremental sync still requires server revisions, per-record version/update metadata, tombstones, and conflict detection;
+- authentication is not implemented in the local app;
+- provider secrets are server-only;
+- conflicting financial mutations must never be silently merged.
+
+This prevents Phase 13 from implying that multi-device sync is already solved.
+
+### Machine-readable schema manifest
+
+A schema-only export can now be created from:
+
+**Details → System & Settings → Data Model & Export → Export schema manifest**
+
+The manifest contains:
+
+- core schema version;
+- portable schema version;
+- normalized model version;
+- entity relationships;
+- provider-adapter contract;
+- future sync contract.
+
+It contains no transaction history or user financial amounts.
+
+A repository snapshot of the contract is also available as:
+
+`DATA_MODEL_MANIFEST.json`
+
+### Migration self-tests
+
+The Data Model route can now run fixture-based migration checks without writing fixture data into the live plan.
+
+The checks include:
+
+- V1 → current schema;
+- legacy missing-array repair;
+- preservation of financial values through migration;
+- V2 → V3 metadata migration;
+- future schema versions are not silently downgraded.
+
+### Portable round-trip self-test
+
+The readiness suite now performs:
+
+1. normalized model build;
+2. envelope serialization;
+3. JSON parse/deserialization;
+4. envelope validation;
+5. schema/count comparison.
+
+The parsed result is never applied to live state.
+
+### Full Phase 13 readiness suite
+
+The in-app **Backend readiness suite** combines:
+
+- migration checks;
+- normalized relationship integrity;
+- integer-cent/USD contract;
+- portable serialization round trip;
+- provider-secret boundary;
+- explicit conflict boundary.
+
+This creates a repeatable local test surface for future backend work.
+
+### Backend contract documentation
+
+The repository now includes:
+
+`BACKEND_READINESS_CONTRACT.md`
+
+It defines the expected future boundary for:
+
+- authenticated snapshot ingestion;
+- idempotency;
+- incremental change tracking;
+- provider-token storage;
+- conflict handling;
+- historical identity preservation;
+- portable restore safety;
+- future server implementation order.
+
+### Continued Phase 13 app commit
+
+Latest Phase 13 application commit:
+
+`d1d87805acfb1083d45c19335db68ec99f231d62`
+
+This commit adds the future sync contract, schema-manifest export, migration self-tests, portable round-trip test, and integrated readiness suite.
