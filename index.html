@@ -1219,7 +1219,373 @@ main.route-enter{
   .screen::before,.hero-card::before,.next-orb,.progress-fill::after,.btn-primary::after{animation:none!important}
 }
 
-</style></head><body><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16l4-4 3 3 5-7 4 4"></path><path d="M4 20h16"></path></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Weekly planning</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app">
+
+/* TRUSTED FINANCE ARCHITECTURE v4 */
+:root{
+  --bg:#050d16;
+  --bg-alt:#091523;
+  --panel:rgba(8,22,36,.88);
+  --panel-strong:rgba(10,28,46,.97);
+  --panel-soft:rgba(255,255,255,.045);
+  --line:rgba(177,206,221,.13);
+  --line-strong:rgba(177,206,221,.22);
+  --text:#eef6f7;
+  --text-soft:#9fb3bd;
+  --text-faint:#718590;
+  --green:#53d7a0;
+  --green-2:#42c995;
+  --teal:#57c9c1;
+  --cyan:#6bb9d8;
+  --violet:#8b90c9;
+  --amber:#d7b56d;
+  --rose:#e1848d;
+  --trust-gold:#d5b06a;
+  --trust-steel:#9bb6c2;
+  --trust-ink:#06111d;
+  --trust-jade:#4cd39c;
+  --trust-aqua:#64c9c4;
+  --grad-main:linear-gradient(135deg,#0c2031 0%,#102a3b 38%,#113443 70%,#17362f 100%);
+  --grad-accent:linear-gradient(135deg,#65d7b0 0%,#55c9b8 48%,#75bfd5 100%);
+  --grad-trust:linear-gradient(135deg,rgba(213,176,106,.20),rgba(76,211,156,.08) 44%,rgba(107,185,216,.08));
+  --shadow-xl:0 30px 72px rgba(0,7,14,.46);
+  --shadow-lg:0 18px 42px rgba(0,7,14,.31);
+}
+html,body{
+  background:
+    radial-gradient(circle at 14% 5%,rgba(76,211,156,.10),transparent 23%),
+    radial-gradient(circle at 88% 11%,rgba(107,185,216,.08),transparent 25%),
+    linear-gradient(180deg,#040b13 0%,#07111c 38%,#091625 100%);
+}
+body::before{
+  opacity:.34;
+  background:rgba(76,211,156,.13);
+}
+body::after{
+  opacity:.34;
+  background:rgba(107,185,216,.10);
+}
+.screen{
+  isolation:isolate;
+}
+.screen::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+  opacity:.34;
+  background-image:
+    linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px),
+    radial-gradient(circle at 50% 0%,rgba(213,176,106,.045),transparent 36%);
+  background-size:28px 28px,28px 28px,100% 100%;
+  mask-image:linear-gradient(180deg,#000 0%,rgba(0,0,0,.72) 52%,transparent 100%);
+}
+.topbar{
+  background:linear-gradient(180deg,rgba(4,11,19,.97),rgba(4,11,19,.79) 72%,rgba(4,11,19,0));
+}
+.topbar-inner{
+  border-color:rgba(177,206,221,.12);
+  background:
+    linear-gradient(135deg,rgba(14,34,51,.98),rgba(8,24,39,.94) 58%,rgba(12,35,39,.92));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.045),
+    0 18px 42px rgba(0,7,14,.28);
+}
+.topbar-inner::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(110deg,transparent 0 36%,rgba(255,255,255,.026) 46%,transparent 56%);
+  transform:translateX(-100%);
+  animation:headerScan 9s ease-in-out infinite;
+}
+.brand-mark{
+  width:46px;
+  height:46px;
+  border-radius:15px;
+  color:#eaf7f4;
+  background:
+    linear-gradient(145deg,rgba(213,176,106,.13),rgba(76,211,156,.14) 52%,rgba(107,185,216,.11));
+  border:1px solid rgba(213,176,106,.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.07),
+    0 12px 24px rgba(0,10,18,.25);
+}
+.brand-mark svg{width:28px;height:28px}
+.brand-mark .logo-ring{
+  transform-origin:12px 12px;
+  animation:logoOrbit 12s linear infinite;
+}
+.brand-kicker{
+  color:#9ed7c8;
+  letter-spacing:.19em;
+}
+.topbar h1{
+  color:#f3f8f8;
+  font-weight:780;
+}
+.brand-subtitle{
+  color:#95aab5;
+}
+.hero-card{
+  background:
+    linear-gradient(145deg,rgba(12,32,49,.99),rgba(11,27,42,.94) 48%,rgba(12,38,37,.90));
+  border-color:rgba(177,206,221,.13);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 28px 66px rgba(0,7,14,.38);
+}
+.hero-card::after{
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:22px 22px;
+  opacity:.9;
+}
+.preview-badge,.eyebrow,.section-kicker,.kpi-badge{
+  background:rgba(255,255,255,.035);
+  color:#a7dcca;
+  border-color:rgba(177,206,221,.10);
+}
+.status-ok{
+  color:#bdf5d4;
+  background:rgba(76,211,156,.105);
+  border-color:rgba(76,211,156,.15);
+}
+.status-attention{
+  color:#ffd1d5;
+  background:rgba(225,132,141,.10);
+  border-color:rgba(225,132,141,.16);
+}
+.hero-amount-value{
+  color:#f7fbfa;
+  text-shadow:0 0 28px rgba(76,211,156,.10);
+}
+.mini-metric,.summary-card,.menu-tile,.info-stat,.finance-row{
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.018)),
+    rgba(7,20,33,.58);
+  border-color:rgba(177,206,221,.09);
+}
+.section,.form-card,.summary-card-full,.warning-card,.empty-card{
+  background:
+    linear-gradient(160deg,rgba(12,29,45,.90),rgba(7,19,31,.90)),
+    rgba(8,22,36,.9);
+  border-color:rgba(177,206,221,.10);
+}
+.section::before,.form-card::before,.summary-card-full::before{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:1px;
+  background:linear-gradient(180deg,transparent,rgba(76,211,156,.24),transparent);
+  opacity:.62;
+}
+.trust-ribbon{
+  margin-top:14px;
+  display:grid;
+  grid-template-columns:1.2fr .9fr .9fr;
+  gap:10px;
+}
+.trust-cell{
+  padding:13px 12px;
+  border-radius:18px;
+  border:1px solid rgba(177,206,221,.085);
+  background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.015));
+}
+.trust-cell .small-label{
+  color:#8199a5;
+}
+.trust-cell strong{
+  display:block;
+  margin-top:7px;
+  font-size:.94rem;
+  color:#edf7f4;
+  letter-spacing:-.02em;
+}
+.trust-cell.primary{
+  background:linear-gradient(135deg,rgba(76,211,156,.085),rgba(107,185,216,.035));
+  border-color:rgba(76,211,156,.12);
+}
+.finance-row{
+  position:relative;
+  overflow:hidden;
+}
+.finance-row::after{
+  content:"";
+  position:absolute;
+  top:0;bottom:0;left:0;
+  width:3px;
+  border-radius:99px;
+  background:linear-gradient(180deg,rgba(76,211,156,.78),rgba(87,201,193,.15));
+  opacity:.56;
+}
+.progress-track{
+  height:9px;
+  background:rgba(255,255,255,.045);
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.28);
+}
+.progress-fill{
+  background:linear-gradient(90deg,#4cd39c,#58c8b8 52%,#6bb9d8);
+  box-shadow:0 0 20px rgba(76,211,156,.16);
+}
+.friendly-guide{
+  background:
+    linear-gradient(145deg,rgba(12,32,48,.94),rgba(7,22,35,.94)),
+    var(--grad-trust);
+  border-color:rgba(213,176,106,.11);
+}
+.guide-num,.toast-dot{
+  color:#06111d;
+  background:linear-gradient(135deg,#7ad7b5,#76c9ca);
+}
+.next-orb{
+  color:#06111d;
+  background:linear-gradient(135deg,#78d9b7,#75c7cd);
+}
+.menu-icon{
+  color:#dff6ef;
+  background:linear-gradient(145deg,rgba(76,211,156,.10),rgba(107,185,216,.07));
+  border-color:rgba(177,206,221,.10);
+}
+.bottom-nav{
+  padding:8px;
+  bottom:calc(10px + env(safe-area-inset-bottom,0px));
+  border-radius:25px;
+  background:
+    linear-gradient(180deg,rgba(8,22,36,.94),rgba(5,15,25,.96));
+  border-color:rgba(177,206,221,.13);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 24px 54px rgba(0,4,10,.46);
+}
+.bottom-nav::before{
+  content:"";
+  position:absolute;
+  top:-1px;
+  left:10%;
+  right:10%;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(213,176,106,.32),rgba(76,211,156,.22),transparent);
+}
+.nav-link{
+  min-height:68px;
+  border:1px solid transparent;
+}
+.nav-link.active{
+  color:#eff9f6;
+  background:linear-gradient(145deg,rgba(76,211,156,.11),rgba(107,185,216,.055));
+  border-color:rgba(177,206,221,.09);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035);
+}
+.nav-link .nav-icon{
+  background:rgba(255,255,255,.025);
+  border-color:rgba(177,206,221,.075);
+}
+.nav-link.active .nav-icon{
+  background:linear-gradient(145deg,rgba(76,211,156,.17),rgba(107,185,216,.10));
+  border-color:rgba(76,211,156,.15);
+}
+.finance-dock{
+  position:fixed;
+  z-index:29;
+  left:50%;
+  bottom:calc(94px + env(safe-area-inset-bottom,0px));
+  transform:translateX(-50%);
+  width:min(426px,calc(100% - 38px));
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:8px 11px;
+  border:1px solid rgba(177,206,221,.10);
+  border-radius:16px;
+  background:rgba(5,15,25,.82);
+  backdrop-filter:blur(16px);
+  box-shadow:0 14px 34px rgba(0,5,11,.30);
+  transition:opacity .22s ease,transform .3s var(--ease-spring);
+}
+.finance-dock.hide{
+  opacity:0;
+  transform:translate(-50%,10px);
+  pointer-events:none;
+}
+.dock-state{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+}
+.dock-led{
+  width:8px;height:8px;flex:0 0 8px;
+  border-radius:99px;
+  background:#4cd39c;
+  box-shadow:0 0 12px rgba(76,211,156,.48);
+}
+.dock-copy{
+  min-width:0;
+}
+.dock-copy strong{
+  display:block;
+  font-size:.71rem;
+  color:#dfeceb;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.dock-copy span{
+  display:block;
+  margin-top:1px;
+  font-size:.62rem;
+  color:#7f95a0;
+  white-space:nowrap;
+}
+.dock-secure{
+  flex:0 0 auto;
+  font-size:.62rem;
+  color:#a5baa9;
+  padding:5px 8px;
+  border-radius:999px;
+  border:1px solid rgba(213,176,106,.10);
+  background:rgba(213,176,106,.035);
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+.amount-row:focus-within,
+.form-card input:focus,
+.form-card select:focus,
+.form-card textarea:focus{
+  border-color:rgba(76,211,156,.32);
+  box-shadow:0 0 0 4px rgba(76,211,156,.055);
+}
+.btn-primary{
+  color:#06111d;
+  background:linear-gradient(135deg,#74d6b2,#67c9bd 52%,#79bfd2);
+  box-shadow:0 13px 30px rgba(76,211,156,.14);
+}
+.btn-secondary{
+  background:rgba(255,255,255,.035);
+  border-color:rgba(177,206,221,.09);
+}
+@keyframes headerScan{
+  0%,74%{transform:translateX(-115%)}
+  90%,100%{transform:translateX(115%)}
+}
+@keyframes logoOrbit{
+  to{transform:rotate(360deg)}
+}
+@media(max-width:390px){
+  .trust-ribbon{grid-template-columns:1fr 1fr}
+  .trust-cell.primary{grid-column:1/-1}
+  .finance-dock{width:calc(100% - 34px)}
+}
+@media(prefers-reduced-motion:reduce){
+  .topbar-inner::after,.brand-mark .logo-ring{animation:none!important}
+}
+
+</style></head><body><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="hero-card">
       <div class="hero-topline">
@@ -1277,7 +1643,7 @@ main.route-enter{
     </section>
   </div>
   <noscript><div class="inline-note" style="margin:16px"><span>ⓘ</span><span>JavaScript is disabled in this viewer, so this page is showing the full static Home preview.</span></div></noscript>
-</main><nav class="bottom-nav" aria-label="Primary"><a class="nav-link active" data-route="home" href="#home"><span class="nav-icon">⌂</span><span>Home</span></a><a class="nav-link" data-route="log" href="#log"><span class="nav-icon">＋</span><span>Add Spend</span></a><a class="nav-link" data-route="reset" href="#reset"><span class="nav-icon">↻</span><span>New Week</span></a></nav></div><script>// This Week - browser-persistent preview runtime.
+</main><nav class="bottom-nav" aria-label="Primary"><a class="nav-link active" data-route="home" href="#home"><span class="nav-icon">⌂</span><span>Home</span></a><a class="nav-link" data-route="log" href="#log"><span class="nav-icon">＋</span><span>Add Spend</span></a><a class="nav-link" data-route="reset" href="#reset"><span class="nav-icon">↻</span><span>New Week</span></a></nav><div class="finance-dock" id="financeDock"><div class="dock-state"><span class="dock-led"></span><div class="dock-copy"><strong id="dockTitle">Weekly plan active</strong><span id="dockSub">Local financial workspace</span></div></div><span class="dock-secure">Private</span></div></div><script>// This Week - browser-persistent preview runtime.
 // Data is stored in localStorage so the Vercel preview stays usable without a server database.
 
 const USER_ID_KEY = "thisweek.userId";
@@ -1608,13 +1974,29 @@ const headerKicker = document.getElementById('headerKicker');
 const headerSub = document.getElementById('headerSub');
 const headerAction = document.getElementById('headerAction');
 const navLinks = [...document.querySelectorAll('.nav-link')];
+const financeDock = document.getElementById('financeDock');
+const dockTitle = document.getElementById('dockTitle');
+const dockSub = document.getElementById('dockSub');
 
 function moneyValue(id){ return Math.round(Number(document.getElementById(id).value)*100); }
 function clampUI(n,min,max){ return Math.max(min,Math.min(max,n)); }
 function percent(part,total){ return !Number.isFinite(total)||total<=0?0:clampUI(part/total*100,0,100); }
 function weekWindow(start,end){ const f={month:'short',day:'numeric'}; return `${new Date(start).toLocaleDateString(undefined,f)} - ${new Date(end).toLocaleDateString(undefined,f)}`; }
 function route(){ return (location.hash.replace('#','')||'home').split('?')[0]; }
-function nav(routeName){ navLinks.forEach(a=>a.classList.toggle('active',a.dataset.route===routeName)); }
+function nav(routeName){
+  navLinks.forEach(a=>a.classList.toggle('active',a.dataset.route===routeName));
+  if(financeDock){
+    const copy={
+      home:['Weekly plan active','Your dashboard is current'],
+      log:['Quick entry','Add spending to keep balances accurate'],
+      reset:['Week rollover','Review before opening the next cycle'],
+      setup:['Plan settings','Changes update your weekly model']
+    }[routeName]||['Financial workspace','Private browser-based planning'];
+    dockTitle.textContent=copy[0];
+    dockSub.textContent=copy[1];
+    financeDock.classList.toggle('hide',routeName==='setup');
+  }
+}
 function shellMeta(kicker,title,sub,action=''){ headerKicker.textContent=kicker; headerTitle.textContent=title; headerSub.textContent=sub; headerAction.innerHTML=action; }
 function errBox(msg){ return msg?`<div class="error">${escapeHtml(msg)}</div>`:''; }
 
@@ -1652,7 +2034,7 @@ function categoryRow(c){ const spent=Math.max(0,c.allocated-c.remaining), fill=p
 function billRow(b){ const fill=percent(b.contributed,b.weeklyRequired||b.requiredByToday||1), warn=b.status!=='ON_TRACK'; return `<div class="finance-row"><div class="finance-head"><div><div class="finance-name">${escapeHtml(b.name)}</div><div class="finance-sub">Due today ${formatCents(b.requiredByToday)} · Weekly target ${formatCents(b.weeklyRequired)}</div></div><div class="finance-main ${warn?'attention':''}">${formatCents(b.contributed)} funded</div></div><div class="progress-track"><div class="progress-fill ${warn?'warn':''}" style="--fill:${fill}%"></div></div></div>`; }
 
 async function renderHome(){
-  shellMeta('This Week','Cashflow Dashboard','Friendly planning with a credentialed market-style feel','<a class="text-action" href="#setup">Edit Plan</a><button class="text-action" id="clearBtn">Reset</button>'); nav('home');
+  shellMeta('This Week','Cashflow Dashboard','Private weekly cashflow control with clear financial guardrails','<a class="text-action" href="#setup">Edit Plan</a><button class="text-action" id="clearBtn">Reset</button>'); nav('home');
   const clear=document.getElementById('clearBtn'); clear.onclick=()=>{ if(confirm('Clear all This Week preview data on this browser?')){ clearState(); render(); } };
   let userId=getStoredUserId();
   if(!userId){
