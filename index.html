@@ -4253,15 +4253,22 @@ function compactHomeCommand(p,d){
 
 function phase2HomeWorlds(p,d,state){
   const pct=(remaining,allocated)=>allocated>0?Math.max(0,Math.min(100,Math.round(Math.max(0,remaining)/allocated*100))):0;
+  const wt=weekTimeState(p),days=Math.max(1,wt.days||1);
   const billChildren=(p.bills||[]).map(b=>{
-    const need=Math.max(0,(b.requiredByToday||0)-(b.contributed||0));
-    return {id:b.id,name:b.name,value:need?formatCents(need)+' needed':formatCents(Math.max(0,(b.weeklyRequired||0)-(b.contributed||0)))+' left',signal:need?'Needs attention':b.status==='ON_TRACK'?'On track':'Review',priority:need?1000:Math.max(0,(b.weeklyRequired||0)-(b.contributed||0)),icon:semanticIcon(b.name,'bill')};
+    const need=Math.max(0,(b.requiredByToday||0)-(b.contributed||0)),remainingWeek=Math.max(0,(b.weeklyRequired||0)-(b.contributed||0));
+    return {id:b.id,name:b.name,value:need?formatCents(need)+' needed':formatCents(remainingWeek)+' left',signal:need?'Needs attention':b.status==='ON_TRACK'?'On track':'Review',priority:need?1000:remainingWeek,icon:semanticIcon(b.name,'bill'),facts:[{label:'Required today',value:formatCents(b.requiredByToday||0)},{label:'Marked protected',value:formatCents(b.contributed||0)},{label:'Weekly target',value:formatCents(b.weeklyRequired||0)},{label:'Due',value:b.dueDate?dueDateLabel(b.dueDate):'Recurring'}]};
   }).sort((a,b)=>b.priority-a.priority);
-  const essentialChildren=(p.essentials||[]).map(x=>({id:x.id,name:x.name,value:formatCents(x.remaining)+' left',signal:(x.remaining||0)<0?'Over limit':pct(x.remaining,x.allocated)<=25?'Running low':'On pace',priority:(x.remaining||0)<0?1000:100-pct(x.remaining,x.allocated),icon:semanticIcon(x.name)})).sort((a,b)=>b.priority-a.priority);
-  const lifestyleChildren=(p.forYou||[]).map(x=>({id:x.id,name:x.name,value:formatCents(x.remaining)+' left',signal:(x.remaining||0)<0?'Over limit':pct(x.remaining,x.allocated)<=25?'Moving fast':'In range',priority:(x.remaining||0)<0?1000:100-pct(x.remaining,x.allocated),icon:semanticIcon(x.name)})).sort((a,b)=>b.priority-a.priority);
+  const essentialChildren=(p.essentials||[]).map(x=>{
+    const used=Math.max(0,(x.allocated||0)-(x.remaining||0)),usedPct=x.allocated?Math.round(used/Math.max(1,x.allocated)*100):0,daily=Math.round(Math.max(0,x.remaining||0)/days);
+    return {id:x.id,name:x.name,value:formatCents(x.remaining)+' left',signal:(x.remaining||0)<0?'Over limit':pct(x.remaining,x.allocated)<=25?'Running low':'On pace',priority:(x.remaining||0)<0?1000:100-pct(x.remaining,x.allocated),icon:semanticIcon(x.name),facts:[{label:'Allocated',value:formatCents(x.allocated||0)},{label:'Remaining',value:formatCents(x.remaining||0)},{label:'Used',value:usedPct+'%'},{label:'Per day left',value:formatCents(daily)}]};
+  }).sort((a,b)=>b.priority-a.priority);
+  const lifestyleChildren=(p.forYou||[]).map(x=>{
+    const used=Math.max(0,(x.allocated||0)-(x.remaining||0)),usedPct=x.allocated?Math.round(used/Math.max(1,x.allocated)*100):0,daily=Math.round(Math.max(0,x.remaining||0)/days);
+    return {id:x.id,name:x.name,value:formatCents(x.remaining)+' left',signal:(x.remaining||0)<0?'Over limit':pct(x.remaining,x.allocated)<=25?'Moving fast':'In range',priority:(x.remaining||0)<0?1000:100-pct(x.remaining,x.allocated),icon:semanticIcon(x.name),facts:[{label:'Allocated',value:formatCents(x.allocated||0)},{label:'Remaining',value:formatCents(x.remaining||0)},{label:'Used',value:usedPct+'%'},{label:'Per day left',value:formatCents(daily)}]};
+  }).sort((a,b)=>b.priority-a.priority);
   const goals=readSavingsGoals().map(g=>{
-    const done=Math.max(0,Math.min(100,Math.round((g.current||0)/Math.max(1,g.target||1)*100)));
-    return {id:g.id,name:g.name,value:formatCents(g.current||0)+' saved',signal:done>=100?'Complete':done+'% complete',priority:100-done,icon:semanticIcon(g.name,g.type)};
+    const done=Math.max(0,Math.min(100,Math.round((g.current||0)/Math.max(1,g.target||1)*100))),gap=Math.max(0,(g.target||0)-(g.current||0));
+    return {id:g.id,name:g.name,value:formatCents(g.current||0)+' saved',signal:done>=100?'Complete':done+'% complete',priority:100-done,icon:semanticIcon(g.name,g.type),facts:[{label:'Current',value:formatCents(g.current||0)},{label:'Target',value:formatCents(g.target||0)},{label:'Remaining',value:formatCents(gap)},{label:'Progress',value:done+'%'}]};
   }).sort((a,b)=>b.priority-a.priority);
   return {
     bills:{route:'bills',accent:'#60a5fa',label:'Bills',children:billChildren,explain:d.behind.length?'At least one bill is behind its required-by-today protection.':'Required bills are currently protected.'},
@@ -4534,7 +4541,8 @@ function closeAppSheet(options={}){
   setTimeout(()=>{layer.remove();activeAppSheet=null;if(restore&&previous&&typeof previous.focus==='function')previous.focus();},readUiPrefs().motion==='reduced'?0:220);
 }
 function openAppSheet(model={}){
-  closeAppSheet({restore:false});
+  const existing=document.querySelector('.app-sheet-backdrop');
+  if(existing){existing.remove();document.body.classList.remove('app-sheet-open');activeAppSheet=null;}
   const previousFocus=document.activeElement,layer=document.createElement('div');
   layer.className='app-sheet-backdrop';
   const accent=model.accent||'#67e8f9',facts=(model.facts||[]).slice(0,4);
@@ -4583,7 +4591,7 @@ function phase3ChildSheetModel(world,child,worlds){
     savings:{kicker:'Savings goal',copy:'This is a planning-goal view, not a verified bank-account balance. Open Goal Studio to update or inspect full goal progress.',provenance:'Stored locally as a planning goal separate from connected-account balances.'}
   };
   const base=models[world]||{kicker:'Category detail',copy:info.explain,provenance:'Plan-derived from This Week.'};
-  return {accent:info.accent,kicker:base.kicker,title:child.name,amountLabel:'Current signal',amount:child.value,state:child.signal,copy:base.copy,facts:[{label:'Category',value:info.label},{label:'Status',value:child.signal}],provenance:base.provenance,actions:[{label:'Open '+info.label+' Studio',href:'#'+route,route,world},{label:'Close',action:'close'}]};
+  return {accent:info.accent,kicker:base.kicker,title:child.name,amountLabel:'Current signal',amount:child.value,state:child.signal,copy:base.copy,facts:(child.facts&&child.facts.length?child.facts:[{label:'Category',value:info.label},{label:'Status',value:child.signal}]),provenance:base.provenance,actions:[{label:'Open '+info.label+' Studio',href:'#'+route,route,world},{label:'Close',action:'close'}]};
 }
 function phase3CommandSheetModel(p,d,command){
   if(d.behind.length){
