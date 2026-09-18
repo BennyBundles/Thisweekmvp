@@ -5502,30 +5502,37 @@ function compactHomeCommand(p,d){
 
 function phase2HomeWorlds(p,d,state){
   const pct=(remaining,allocated)=>allocated>0?Math.max(0,Math.min(100,Math.round(Math.max(0,remaining)/allocated*100))):0;
-  const wt=weekTimeState(p),days=Math.max(1,wt.days||1);
-  const billChildren=(p.bills||[]).map(b=>{
+  const wt=weekTimeState(p),days=Math.max(1,wt.days||1),childCache={};
+  const buildBills=()=> (p.bills||[]).map(b=>{
     const need=Math.max(0,(b.requiredByToday||0)-(b.contributed||0)),remainingWeek=Math.max(0,(b.weeklyRequired||0)-(b.contributed||0));
     return {id:b.id,name:b.name,value:need?formatCents(need)+' needed':formatCents(remainingWeek)+' left',signal:need?'Needs attention':b.status==='ON_TRACK'?'On track':'Review',priority:need?1000:remainingWeek,icon:semanticIcon(b.name,'bill'),facts:[{label:'Required today',value:formatCents(b.requiredByToday||0)},{label:'Marked protected',value:formatCents(b.contributed||0)},{label:'Weekly target',value:formatCents(b.weeklyRequired||0)},{label:'Due',value:b.dueDate?dueDateLabel(b.dueDate):'Recurring'}]};
   }).sort((a,b)=>b.priority-a.priority);
-  const essentialChildren=(p.essentials||[]).map(x=>{
+  const buildEssentials=()=> (p.essentials||[]).map(x=>{
     const used=Math.max(0,(x.allocated||0)-(x.remaining||0)),usedPct=x.allocated?Math.round(used/Math.max(1,x.allocated)*100):0,daily=Math.round(Math.max(0,x.remaining||0)/days);
     return {id:x.id,name:x.name,value:formatCents(x.remaining)+' left',signal:(x.remaining||0)<0?'Over limit':pct(x.remaining,x.allocated)<=25?'Running low':'On pace',priority:(x.remaining||0)<0?1000:100-pct(x.remaining,x.allocated),icon:semanticIcon(x.name),facts:[{label:'Allocated',value:formatCents(x.allocated||0)},{label:'Remaining',value:formatCents(x.remaining||0)},{label:'Used',value:usedPct+'%'},{label:'Per day left',value:formatCents(daily)}]};
   }).sort((a,b)=>b.priority-a.priority);
-  const lifestyleChildren=(p.forYou||[]).map(x=>{
+  const buildLifestyle=()=> (p.forYou||[]).map(x=>{
     const used=Math.max(0,(x.allocated||0)-(x.remaining||0)),usedPct=x.allocated?Math.round(used/Math.max(1,x.allocated)*100):0,daily=Math.round(Math.max(0,x.remaining||0)/days);
     return {id:x.id,name:x.name,value:formatCents(x.remaining)+' left',signal:(x.remaining||0)<0?'Over limit':pct(x.remaining,x.allocated)<=25?'Moving fast':'In range',priority:(x.remaining||0)<0?1000:100-pct(x.remaining,x.allocated),icon:semanticIcon(x.name),facts:[{label:'Allocated',value:formatCents(x.allocated||0)},{label:'Remaining',value:formatCents(x.remaining||0)},{label:'Used',value:usedPct+'%'},{label:'Per day left',value:formatCents(daily)}]};
   }).sort((a,b)=>b.priority-a.priority);
-  const goals=readSavingsGoals().map(g=>{
+  const buildSavings=()=> readSavingsGoals().map(g=>{
     const done=Math.max(0,Math.min(100,Math.round((g.current||0)/Math.max(1,g.target||1)*100))),gap=Math.max(0,(g.target||0)-(g.current||0));
     return {id:g.id,name:g.name,value:formatCents(g.current||0)+' saved',signal:done>=100?'Complete':done+'% complete',priority:100-done,icon:semanticIcon(g.name,g.type),facts:[{label:'Current',value:formatCents(g.current||0)},{label:'Target',value:formatCents(g.target||0)},{label:'Remaining',value:formatCents(gap)},{label:'Progress',value:done+'%'}]};
   }).sort((a,b)=>b.priority-a.priority);
+  const make=(key,route,accent,label,explain,builder)=>({route,accent,label,explain,getChildren:()=>{
+    if(childCache[key]){noteCache(true);return childCache[key];}
+    noteCache(false);childCache[key]=builder();return childCache[key];
+  }});
+  const essentialOver=(p.essentials||[]).some(x=>(x.remaining||0)<0),lifestyleOver=(p.forYou||[]).some(x=>(x.remaining||0)<0);
   return {
-    bills:{route:'bills',accent:'#60a5fa',label:'Bills',children:billChildren,explain:d.behind.length?'At least one bill is behind its required-by-today protection.':'Required bills are currently protected.'},
-    essentials:{route:'essentials',accent:'#6ee7b7',label:'Essentials',children:essentialChildren,explain:essentialChildren[0]?.signal==='Over limit'?'An essential lane is below its weekly limit.':'Need-based spending is summarized here; open Runway for deeper pacing.'},
-    lifestyle:{route:'lifestyle',accent:'#f0a7d3',label:'Lifestyle',children:lifestyleChildren,explain:lifestyleChildren[0]?.signal==='Over limit'?'A flexible lane is below its weekly limit.':'Flexible spending stays optional and separate from protected money.'},
-    savings:{route:'savings',accent:'#f6d784',label:'Savings',children:goals,explain:'Goal progress is a planning view and does not claim to be a bank-account balance.'}
+    bills:make('bills','bills','#60a5fa','Bills',d.behind.length?'At least one bill is behind its required-by-today protection.':'Required bills are currently protected.',buildBills),
+    essentials:make('essentials','essentials','#6ee7b7','Essentials',essentialOver?'An essential lane is below its weekly limit.':'Need-based spending is summarized here; open Runway for deeper pacing.',buildEssentials),
+    lifestyle:make('lifestyle','lifestyle','#f0a7d3','Lifestyle',lifestyleOver?'A flexible lane is below its weekly limit.':'Flexible spending stays optional and separate from protected money.',buildLifestyle),
+    savings:make('savings','savings','#f6d784','Savings','Goal progress is a planning view and does not claim to be a bank-account balance.',buildSavings)
   };
 }
+function phase2WorldChildren(info){return typeof info?.getChildren==='function'?info.getChildren():(info?.children||[]);}
+
 function phase2AttentionOverride(worlds,d,command){
   if(command?.id==='bill_gap'&&d.behind.length){
     const b=d.behind.slice().sort((a,b)=>Math.max(0,(b.requiredByToday||0)-(b.contributed||0))-Math.max(0,(a.requiredByToday||0)-(a.contributed||0)))[0];
@@ -5533,7 +5540,7 @@ function phase2AttentionOverride(worlds,d,command){
     return {world:'bills',title:b?.name||'Bills',copy:need?formatCents(need)+' needed today':'Needs review'};
   }
   if(command?.id==='overspent_lane'&&d.overspent.length){
-    const x=d.overspent.slice().sort((a,b)=>(a.remaining||0)-(b.remaining||0))[0],world=(worlds.essentials.children.some(c=>c.id===x.id)?'essentials':'lifestyle');
+    const x=d.overspent.slice().sort((a,b)=>(a.remaining||0)-(b.remaining||0))[0],world=command?.world||'lifestyle';
     return {world,title:x.name,copy:formatCents(Math.abs(x.remaining||0))+' over limit'};
   }
   return null;
@@ -5860,6 +5867,7 @@ function playLocalConfirmation(el,world='available'){
   setTimeout(()=>el.classList.remove('local-confirm'),effectiveUiPrefs().effectiveMotion==='reduced'?20:1100);
 }
 let sceneMotionObserver=null;
+let zenDisclosureVisibilityCleanup=null;
 function initMotionDiscipline(){
   document.body.classList.toggle('motion-paused',document.hidden);
   if(sceneMotionObserver){try{sceneMotionObserver.disconnect();}catch{}}
@@ -6298,7 +6306,7 @@ function initZenDisclosure(p,d,worlds,attentionOverride,command){
     resetTimer();
   };
   const renderPeek=(world)=>{
-    const info=worlds[world],limit=visibleLimit(),children=info.children||[],shown=children.slice(0,limit),remaining=Math.max(0,children.length-shown.length);
+    const info=worlds[world],limit=visibleLimit(),children=phase2WorldChildren(info),shown=children.slice(0,limit),remaining=Math.max(0,children.length-shown.length);
     peek.dataset.world=world;peek.style.setProperty('--peek-accent',info.accent);
     peek.innerHTML=`<div class="zen-peek-head"><small>${escapeHtml(info.label)} peek</small><button class="zen-peek-close" type="button" aria-label="Collapse category">×</button></div><div class="zen-peek-children">${shown.map((x,i)=>`<button class="zen-child" type="button" data-child="${i}"><span class="zen-child-icon">${x.icon||''}</span><span class="zen-child-copy"><strong>${escapeHtml(x.name)}</strong><span>${escapeHtml(x.signal)} · ${escapeHtml(x.value)}</span></span></button>`).join('')}${remaining?`<button class="zen-child more" type="button" data-more-count="${remaining}"><span class="zen-child-copy"><strong>+${remaining} more</strong><span>Open studio for all</span></span></button>`:''}</div><div class="zen-peek-summary">${escapeHtml(info.explain)}</div><div class="zen-peek-tools"><button class="zen-open" type="button">Open studio</button><button class="zen-more" type="button" aria-label="More ${escapeHtml(info.label)} actions">•••</button></div>`;
     peek.classList.add('show');
@@ -6335,7 +6343,10 @@ function initZenDisclosure(p,d,worlds,attentionOverride,command){
   commandEl?.addEventListener('click',e=>{e.preventDefault();openAppSheet(phase3CommandSheetModel(p,d,command));});
   scene.addEventListener('pointerdown',resetTimer,{passive:true});
   scene.addEventListener('keydown',resetTimer);
-  document.addEventListener('visibilitychange',()=>{if(document.hidden)clearTimeout(collapseTimer);else resetTimer();});
+  if(zenDisclosureVisibilityCleanup)zenDisclosureVisibilityCleanup();
+  const visibilityHandler=()=>{if(document.hidden)clearTimeout(collapseTimer);else resetTimer();};
+  document.addEventListener('visibilitychange',visibilityHandler);
+  zenDisclosureVisibilityCleanup=()=>{document.removeEventListener('visibilitychange',visibilityHandler);clearTimeout(collapseTimer);};
 }
 
 async function renderHome(){
@@ -7211,6 +7222,7 @@ function announceRoute(routeName,focusMain=true){
 }
 async function render(){
   closeAppSheet({restore:false});
+  if(zenDisclosureVisibilityCleanup){zenDisclosureVisibilityCleanup();zenDisclosureVisibilityCleanup=null;}
   if(sceneMotionObserver){try{sceneMotionObserver.disconnect();}catch{}sceneMotionObserver=null;}
   applyUiPrefs();bindSystemPreferenceListeners();bindMobileViewportController();
   const r=route(),routeChanged=lastRenderedRoute!==null&&lastRenderedRoute!==r;
