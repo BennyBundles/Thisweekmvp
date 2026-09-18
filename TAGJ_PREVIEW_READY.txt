@@ -1,0 +1,1 @@
+TAGJ V12 preview branch complete. Static Vercel build configuration is present.
