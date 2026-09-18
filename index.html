@@ -3490,6 +3490,127 @@ body[data-route="home"] main{padding-top:2px;padding-bottom:calc(96px + env(safe
   .zen-scene::before,.zen-scene::after,.zen-flow .line,.zen-core{animation:none!important}
 }
 
+
+/* PHASE 2 — PROGRESSIVE DISCLOSURE v14 */
+.zen-scene[data-focus] .zen-flow .line{opacity:.12;transition:opacity var(--motion-normal) ease,stroke-width var(--motion-normal) ease,filter var(--motion-normal) ease}
+.zen-scene[data-focus="bills"] .zen-flow .bills{opacity:.95;stroke-width:4;filter:drop-shadow(0 0 8px rgba(96,165,250,.34))}
+.zen-scene[data-focus="essentials"] .zen-flow .essentials{opacity:.95;stroke-width:4;filter:drop-shadow(0 0 8px rgba(110,231,183,.32))}
+.zen-scene[data-focus="lifestyle"] .zen-flow .lifestyle{opacity:.95;stroke-width:4;filter:drop-shadow(0 0 8px rgba(240,167,211,.32))}
+.zen-scene[data-focus="savings"] .zen-flow .savings{opacity:.95;stroke-width:4;filter:drop-shadow(0 0 8px rgba(246,215,132,.30))}
+.zen-zone{cursor:pointer}
+.zen-zone.focused{
+  transform:translateY(-2px) scale(1.025);
+  z-index:10;
+}
+.zen-zone.bills.focused{border-color:rgba(96,165,250,.28);box-shadow:0 16px 34px rgba(0,0,0,.24),0 0 24px rgba(96,165,250,.12)}
+.zen-zone.essentials.focused{border-color:rgba(110,231,183,.25);box-shadow:0 16px 34px rgba(0,0,0,.24),0 0 24px rgba(110,231,183,.11)}
+.zen-zone.lifestyle.focused{border-color:rgba(240,167,211,.25);box-shadow:0 16px 34px rgba(0,0,0,.24),0 0 24px rgba(240,167,211,.11)}
+.zen-zone.savings.focused{border-color:rgba(246,215,132,.26);box-shadow:0 16px 34px rgba(0,0,0,.24),0 0 24px rgba(246,215,132,.11)}
+.zen-zone.dim{opacity:.58;filter:saturate(.72)}
+.zen-zone.focused .zen-zone-copy span::after{
+  content:" · tap again";color:#c3d8df;opacity:.74;font-size:.46rem;
+}
+.zen-core.dim{opacity:.72;transform:translate(-50%,-50%) scale(.96)}
+
+.zen-peek{
+  --peek-accent:#67e8f9;
+  position:absolute;z-index:9;width:116px;display:none;gap:5px;
+  padding:7px;border-radius:17px;
+  border:1px solid color-mix(in srgb,var(--peek-accent) 17%,rgba(177,206,221,.07));
+  background:linear-gradient(145deg,color-mix(in srgb,var(--peek-accent) 5%,rgba(5,18,29,.92)),rgba(4,15,26,.91));
+  box-shadow:0 16px 30px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.025);
+  backdrop-filter:blur(14px);
+  animation:peekIn var(--motion-normal) var(--ease-spring) both;
+}
+.zen-peek.show{display:grid}
+.zen-peek[data-world="bills"]{left:8px;top:98px}
+.zen-peek[data-world="essentials"]{right:8px;top:98px}
+.zen-peek[data-world="lifestyle"]{left:8px;bottom:98px}
+.zen-peek[data-world="savings"]{right:8px;bottom:98px}
+.zen-peek-head{display:flex;align-items:center;justify-content:space-between;gap:5px}
+.zen-peek-head small{font-size:.42rem;letter-spacing:.1em;text-transform:uppercase;color:#8ba3ae}
+.zen-peek-close{
+  width:24px;height:24px;display:grid;place-items:center;padding:0;border-radius:9px;
+  border:1px solid rgba(177,206,221,.07);background:rgba(255,255,255,.025);color:#a9c0c9;cursor:pointer;font:inherit
+}
+.zen-peek-children{display:grid;gap:4px}
+.zen-child{
+  appearance:none;width:100%;min-height:38px;display:grid;grid-template-columns:24px 1fr;align-items:center;gap:6px;
+  padding:5px;border-radius:12px;border:1px solid rgba(177,206,221,.055);
+  background:rgba(255,255,255,.018);color:var(--text);text-align:left;cursor:pointer;
+  transition:transform var(--motion-fast) var(--ease-spring),background var(--motion-fast) ease,border-color var(--motion-fast) ease;
+}
+.zen-child:hover,.zen-child.active{transform:translateY(-1px);background:color-mix(in srgb,var(--peek-accent) 5%,rgba(255,255,255,.02));border-color:color-mix(in srgb,var(--peek-accent) 16%,rgba(177,206,221,.05))}
+.zen-child-icon{width:24px;height:24px;border-radius:9px;display:grid;place-items:center;background:color-mix(in srgb,var(--peek-accent) 14%,rgba(255,255,255,.035))}
+.zen-child-icon svg{width:13px;height:13px}.zen-child-icon svg *{stroke:var(--peek-accent);stroke-width:1.9;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.zen-child-copy{min-width:0}
+.zen-child-copy strong{display:block;font-size:.56rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.zen-child-copy span{display:block;margin-top:2px;font-size:.44rem;color:#8fa6b0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.zen-child.more{grid-template-columns:1fr;text-align:center;border-style:dashed}
+.zen-child.more .zen-child-copy strong{font-size:.54rem;color:#a8c0c9}
+.zen-peek-summary{
+  min-height:24px;padding:5px 6px;border-radius:10px;background:rgba(255,255,255,.018);
+  color:#90a8b2;font-size:.45rem;line-height:1.3;
+}
+.zen-peek-tools{display:grid;grid-template-columns:1fr 30px;gap:5px}
+.zen-open{
+  appearance:none;min-height:30px;border-radius:10px;border:1px solid color-mix(in srgb,var(--peek-accent) 15%,rgba(177,206,221,.06));
+  background:color-mix(in srgb,var(--peek-accent) 6%,rgba(255,255,255,.018));color:#e7f4f7;
+  font:inherit;font-size:.48rem;font-weight:850;letter-spacing:.055em;text-transform:uppercase;cursor:pointer
+}
+.zen-more{
+  appearance:none;min-height:30px;border-radius:10px;border:1px solid rgba(177,206,221,.07);
+  background:rgba(255,255,255,.024);color:#b6cbd2;font:inherit;font-size:.75rem;cursor:pointer
+}
+.zen-more-menu{
+  position:absolute;z-index:12;width:154px;display:none;gap:4px;padding:6px;border-radius:14px;
+  border:1px solid rgba(177,206,221,.08);background:rgba(5,17,28,.97);box-shadow:0 18px 34px rgba(0,0,0,.30);backdrop-filter:blur(16px)
+}
+.zen-more-menu.show{display:grid;animation:peekIn .22s var(--ease-soft) both}
+.zen-more-menu[data-world="bills"],.zen-more-menu[data-world="lifestyle"]{left:8px}
+.zen-more-menu[data-world="essentials"],.zen-more-menu[data-world="savings"]{right:8px}
+.zen-more-menu[data-world="bills"],.zen-more-menu[data-world="essentials"]{top:245px}
+.zen-more-menu[data-world="lifestyle"],.zen-more-menu[data-world="savings"]{bottom:245px}
+.zen-more-menu a,.zen-more-menu button{
+  appearance:none;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 9px;border-radius:10px;
+  border:0;background:transparent;color:#dbeaf0;text-decoration:none;font:inherit;font-size:.55rem;text-align:left;cursor:pointer
+}
+.zen-more-menu a:hover,.zen-more-menu button:hover{background:rgba(255,255,255,.035)}
+.zen-more-menu span{color:#718d99;font-size:.48rem}
+
+.zen-attention-child{
+  position:absolute;z-index:8;display:flex;align-items:center;gap:6px;max-width:124px;
+  padding:6px 8px;border-radius:12px;border:1px solid rgba(246,215,132,.15);
+  background:linear-gradient(145deg,rgba(246,215,132,.065),rgba(5,17,28,.91));
+  box-shadow:0 10px 20px rgba(0,0,0,.18);color:#e9edf0;cursor:pointer;
+  animation:attentionBreathe 3.8s ease-in-out infinite;
+}
+.zen-attention-child[hidden]{display:none}
+.zen-attention-child.bills{left:14px;top:98px}.zen-attention-child.essentials{right:14px;top:98px}
+.zen-attention-child.lifestyle{left:14px;bottom:98px}.zen-attention-child.savings{right:14px;bottom:98px}
+.zen-attention-dot{width:7px;height:7px;flex:0 0 auto;border-radius:50%;background:#f6d784;box-shadow:0 0 9px rgba(246,215,132,.34)}
+.zen-attention-copy{min-width:0}
+.zen-attention-copy strong{display:block;font-size:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.zen-attention-copy span{display:block;margin-top:2px;font-size:.42rem;color:#afbdc2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+@keyframes peekIn{from{opacity:0;transform:translateY(4px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes attentionBreathe{0%,100%{box-shadow:0 10px 20px rgba(0,0,0,.18)}50%{box-shadow:0 10px 22px rgba(0,0,0,.20),0 0 15px rgba(246,215,132,.09)}}
+
+@media(max-width:390px){
+  .zen-peek{width:102px;padding:6px}
+  .zen-peek[data-world="bills"],.zen-peek[data-world="lifestyle"]{left:5px}
+  .zen-peek[data-world="essentials"],.zen-peek[data-world="savings"]{right:5px}
+  .zen-child{grid-template-columns:21px 1fr;gap:5px;padding:4px;min-height:34px}
+  .zen-child-icon{width:21px;height:21px;border-radius:8px}.zen-child-icon svg{width:12px;height:12px}
+  .zen-child-copy strong{font-size:.51rem}.zen-child-copy span{font-size:.4rem}
+  .zen-peek-summary{font-size:.41rem}
+  .zen-more-menu{width:142px}
+  .zen-attention-child{max-width:110px;padding:5px 7px}
+}
+@media(prefers-reduced-motion:reduce){
+  .zen-peek,.zen-more-menu,.zen-attention-child{animation:none!important}
+}
+
 </style></head><body><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="zen-home">
@@ -4024,6 +4145,38 @@ function compactHomeCommand(p,d){
   return {tone:'ok',icon:'✓',label:'Next step',text:'Add spending after purchases',href:'#log'};
 }
 
+function phase2HomeWorlds(p,d,state){
+  const pct=(remaining,allocated)=>allocated>0?Math.max(0,Math.min(100,Math.round(Math.max(0,remaining)/allocated*100))):0;
+  const billChildren=(p.bills||[]).map(b=>{
+    const need=Math.max(0,(b.requiredByToday||0)-(b.contributed||0));
+    return {id:b.id,name:b.name,value:need?formatCents(need)+' needed':formatCents(Math.max(0,(b.weeklyRequired||0)-(b.contributed||0)))+' left',signal:need?'Needs attention':b.status==='ON_TRACK'?'On track':'Review',priority:need?1000:Math.max(0,(b.weeklyRequired||0)-(b.contributed||0)),icon:semanticIcon(b.name,'bill')};
+  }).sort((a,b)=>b.priority-a.priority);
+  const essentialChildren=(p.essentials||[]).map(x=>({id:x.id,name:x.name,value:formatCents(x.remaining)+' left',signal:(x.remaining||0)<0?'Over limit':pct(x.remaining,x.allocated)<=25?'Running low':'On pace',priority:(x.remaining||0)<0?1000:100-pct(x.remaining,x.allocated),icon:semanticIcon(x.name)})).sort((a,b)=>b.priority-a.priority);
+  const lifestyleChildren=(p.forYou||[]).map(x=>({id:x.id,name:x.name,value:formatCents(x.remaining)+' left',signal:(x.remaining||0)<0?'Over limit':pct(x.remaining,x.allocated)<=25?'Moving fast':'In range',priority:(x.remaining||0)<0?1000:100-pct(x.remaining,x.allocated),icon:semanticIcon(x.name)})).sort((a,b)=>b.priority-a.priority);
+  const goals=readSavingsGoals().map(g=>{
+    const done=Math.max(0,Math.min(100,Math.round((g.current||0)/Math.max(1,g.target||1)*100)));
+    return {id:g.id,name:g.name,value:formatCents(g.current||0)+' saved',signal:done>=100?'Complete':done+'% complete',priority:100-done,icon:semanticIcon(g.name,g.type)};
+  }).sort((a,b)=>b.priority-a.priority);
+  return {
+    bills:{route:'bills',accent:'#60a5fa',label:'Bills',children:billChildren,explain:d.behind.length?'At least one bill is behind its required-by-today protection.':'Required bills are currently protected.'},
+    essentials:{route:'essentials',accent:'#6ee7b7',label:'Essentials',children:essentialChildren,explain:essentialChildren[0]?.signal==='Over limit'?'An essential lane is below its weekly limit.':'Need-based spending is summarized here; open Runway for deeper pacing.'},
+    lifestyle:{route:'lifestyle',accent:'#f0a7d3',label:'Lifestyle',children:lifestyleChildren,explain:lifestyleChildren[0]?.signal==='Over limit'?'A flexible lane is below its weekly limit.':'Flexible spending stays optional and separate from protected money.'},
+    savings:{route:'savings',accent:'#f6d784',label:'Savings',children:goals,explain:'Goal progress is a planning view and does not claim to be a bank-account balance.'}
+  };
+}
+function phase2AttentionOverride(worlds,d){
+  if(d.behind.length){
+    const b=d.behind.slice().sort((a,b)=>Math.max(0,(b.requiredByToday||0)-(b.contributed||0))-Math.max(0,(a.requiredByToday||0)-(a.contributed||0)))[0];
+    const need=Math.max(0,(b.requiredByToday||0)-(b.contributed||0));
+    return {world:'bills',title:b?.name||'Bills',copy:need?formatCents(need)+' needed today':'Needs review'};
+  }
+  if(d.overspent.length){
+    const x=d.overspent[0],world=(worlds.essentials.children.some(c=>c.id===x.id)?'essentials':'lifestyle');
+    return {world,title:x.name,copy:formatCents(Math.abs(x.remaining||0))+' over limit'};
+  }
+  return null;
+}
+
 function detailBudgetStats(p){
   const cats=[...(p.essentials||[]),...(p.forYou||[])];
   const allocated=cats.reduce((n,x)=>n+Math.max(0,x.allocated||0),0);
@@ -4265,6 +4418,90 @@ function initMoneyTheater(p,d){
   apply('bills');
   const timer=setInterval(()=>{if(userTouched){clearInterval(timer);return;}autoIndex=(autoIndex+1)%order.length;apply(order[autoIndex]);},4200);
 }
+function initZenDisclosure(p,d,worlds,attentionOverride){
+  const scene=document.getElementById('zenScene'),peek=document.getElementById('zenPeek'),more=document.getElementById('zenMoreMenu'),core=document.getElementById('zenCore'),attention=document.getElementById('zenAttention');
+  if(!scene||!peek)return;
+  const zones=[...scene.querySelectorAll('.zen-zone')],prefs=readUiPrefs();
+  let active=null,selectedChild=null,collapseTimer=null;
+
+  const visibleLimit=()=>matchMedia('(max-width:390px)').matches?2:(prefs.density==='rich'?3:prefs.density==='balanced'?3:2);
+  const resetTimer=()=>{
+    clearTimeout(collapseTimer);
+    if(!active)return;
+    collapseTimer=setTimeout(()=>{
+      if(peek.contains(document.activeElement)||more.contains(document.activeElement)){resetTimer();return;}
+      collapse();
+    },10000);
+  };
+  const collapse=()=>{
+    active=null;selectedChild=null;clearTimeout(collapseTimer);
+    scene.removeAttribute('data-focus');
+    zones.forEach(z=>{z.classList.remove('focused','dim');z.setAttribute('aria-expanded','false');});
+    core?.classList.remove('dim');
+    peek.className='zen-peek';peek.innerHTML='';
+    more.className='zen-more-menu';more.innerHTML='';
+    if(attentionOverride&&attention){attention.hidden=false;attention.className='zen-attention-child '+attentionOverride.world;}
+  };
+  const menuItems=(world)=>{
+    const route=worlds[world].route;
+    const items=[{label:'Open studio',meta:'Deep view',href:'#'+route},{label:'Explain state',meta:'Why?',action:'explain'},{label:'Edit plan',meta:'Plan',href:'#setup'}];
+    if(world==='essentials'||world==='lifestyle')items.splice(2,0,{label:'Can I spend this?',meta:'Preview',href:'#precheck'});
+    if(world==='savings')items.splice(2,0,{label:'Scenario sandbox',meta:'What-if',href:'#scenario'});
+    if(world==='bills')items.splice(2,0,{label:'Weekly history',meta:'Past weeks',href:'#history'});
+    return items;
+  };
+  const renderMore=(world)=>{
+    more.dataset.world=world;
+    more.innerHTML=menuItems(world).map(x=>x.action?`<button type="button" data-action="${x.action}"><span>${escapeHtml(x.label)}</span><span>${escapeHtml(x.meta)}</span></button>`:`<a href="${x.href}"><span>${escapeHtml(x.label)}</span><span>${escapeHtml(x.meta)}</span></a>`).join('');
+    more.classList.toggle('show');
+    more.querySelector('[data-action="explain"]')?.addEventListener('click',()=>{
+      const summary=peek.querySelector('.zen-peek-summary');if(summary)summary.textContent=worlds[world].explain;
+      more.classList.remove('show');resetTimer();
+    });
+    more.querySelectorAll('a').forEach(a=>a.addEventListener('click',e=>{
+      const href=a.getAttribute('href');if(href==='#'+worlds[world].route){e.preventDefault();const source=zones.find(z=>z.dataset.world===world);navigateWithChoreography(worlds[world].route,source,world);}
+    }));
+    resetTimer();
+  };
+  const renderPeek=(world)=>{
+    const info=worlds[world],limit=visibleLimit(),children=info.children||[],shown=children.slice(0,limit),remaining=Math.max(0,children.length-shown.length);
+    peek.dataset.world=world;peek.style.setProperty('--peek-accent',info.accent);
+    peek.innerHTML=`<div class="zen-peek-head"><small>${escapeHtml(info.label)} peek</small><button class="zen-peek-close" type="button" aria-label="Collapse category">×</button></div><div class="zen-peek-children">${shown.map((x,i)=>`<button class="zen-child" type="button" data-child="${i}"><span class="zen-child-icon">${x.icon||''}</span><span class="zen-child-copy"><strong>${escapeHtml(x.name)}</strong><span>${escapeHtml(x.signal)} · ${escapeHtml(x.value)}</span></span></button>`).join('')}${remaining?`<button class="zen-child more" type="button" data-more-count="${remaining}"><span class="zen-child-copy"><strong>+${remaining} more</strong><span>Open studio for all</span></span></button>`:''}</div><div class="zen-peek-summary">${escapeHtml(info.explain)}</div><div class="zen-peek-tools"><button class="zen-open" type="button">Open studio</button><button class="zen-more" type="button" aria-label="More ${escapeHtml(info.label)} actions">•••</button></div>`;
+    peek.classList.add('show');
+    peek.querySelector('.zen-peek-close').onclick=collapse;
+    peek.querySelector('.zen-open').onclick=()=>{const source=zones.find(z=>z.dataset.world===world);navigateWithChoreography(info.route,source,world);};
+    peek.querySelector('.zen-more').onclick=()=>renderMore(world);
+    peek.querySelector('[data-more-count]')?.addEventListener('click',()=>{const source=zones.find(z=>z.dataset.world===world);navigateWithChoreography(info.route,source,world);});
+    peek.querySelectorAll('[data-child]').forEach(btn=>btn.onclick=()=>{
+      peek.querySelectorAll('.zen-child').forEach(x=>x.classList.remove('active'));btn.classList.add('active');selectedChild=shown[Number(btn.dataset.child)];
+      const summary=peek.querySelector('.zen-peek-summary');if(summary&&selectedChild)summary.textContent=selectedChild.name+' · '+selectedChild.signal+' · '+selectedChild.value;
+      resetTimer();
+    });
+  };
+  const focus=(world)=>{
+    active=world;selectedChild=null;scene.dataset.focus=world;
+    zones.forEach(z=>{const on=z.dataset.world===world;z.classList.toggle('focused',on);z.classList.toggle('dim',!on);z.setAttribute('aria-expanded',String(on));});
+    core?.classList.add('dim');more.className='zen-more-menu';more.innerHTML='';
+    if(attention)attention.hidden=true;
+    renderPeek(world);resetTimer();
+  };
+
+  zones.forEach(z=>{
+    z.setAttribute('aria-expanded','false');
+    z.addEventListener('click',e=>{
+      e.preventDefault();
+      const world=z.dataset.world;
+      if(active===world){navigateWithChoreography(worlds[world].route,z,world);return;}
+      focus(world);
+    });
+  });
+  core?.addEventListener('click',e=>{if(active){e.preventDefault();collapse();}else{e.preventDefault();navigateWithChoreography('precheck',core,'available');}});
+  attention?.addEventListener('click',()=>{if(attentionOverride)focus(attentionOverride.world);});
+  scene.addEventListener('pointerdown',resetTimer,{passive:true});
+  scene.addEventListener('keydown',resetTimer);
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)clearTimeout(collapseTimer);else resetTimer();},{once:true});
+}
+
 async function renderHome(){
   shellMeta('This Week','This Week','','<a class="text-action" href="#setup">Plan</a>');
   nav('home');
@@ -4284,44 +4521,45 @@ async function renderHome(){
     const lifestyleStatus=lifestyleDanger?'Review':'In range';
     const savingsStatus=savingsTarget?(savingsGap<=0?'Target reached':`${formatCents(savingsGap)} to goal`):'Set aside';
     const sourceLabel=connected.total?`${connected.unreconciled} imported item${connected.unreconciled===1?'':'s'} to review`:'Data & imports';
+    const worlds=phase2HomeWorlds(p,d,state),attentionOverride=phase2AttentionOverride(worlds,d);
     document.body.dataset.financialState=(d.behind.length||d.overspent.length||p.status!=='ON_TRACK')?'attention':'stable';
     root.innerHTML=`<div class="zen-home">
       <div class="zen-topline">
         <span class="zen-week">${weekWindow(p.week.start,p.week.end)}</span>
         <a class="zen-source" href="#connections" aria-label="${escapeHtml(sourceLabel)}" title="${escapeHtml(sourceLabel)}">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7.5 7.2 5.7a3.2 3.2 0 0 0-4.5 4.5l3.1 3.1a3.2 3.2 0 0 0 4.5 0l1.3-1.3"/><path d="m15 16.5 1.8 1.8a3.2 3.2 0 0 0 4.5-4.5l-3.1-3.1a3.2 3.2 0 0 0-4.5 0L12.4 12"/><path d="m8.5 15.5 7-7"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7.5 7.2 5.7a3.2 3.2 0 0 0-4.5 4.5l3.1 3.1a3.2 3.2 0 0 0 4.5 0l1.3-1.3"/><path d="m15 16.5 1.8 1.8a3.2 3.2 0 0 0-4.5-4.5l-3.1-3.1a3.2 3.2 0 0 0-4.5 0L12.4 12"/><path d="m8.5 15.5 7-7"/></svg>
           ${connected.unreconciled>0?`<span class="zen-source-badge">${connected.unreconciled>9?'9+':connected.unreconciled}</span>`:''}
         </a>
       </div>
 
-      <div class="zen-scene" id="zenScene" aria-label="Weekly financial overview">
+      <div class="zen-scene" id="zenScene" aria-label="Weekly financial overview. Tap a category once to peek, then again to enter its studio.">
         <svg class="zen-flow" viewBox="0 0 360 420" aria-hidden="true">
-          <path class="bed" d="M180 210 C140 165 103 120 62 72"/>
-          <path class="bed" d="M180 210 C220 165 257 120 298 72"/>
-          <path class="bed" d="M180 210 C140 255 103 300 62 348"/>
-          <path class="bed" d="M180 210 C220 255 257 300 298 348"/>
-          <path class="line bills" d="M180 210 C140 165 103 120 62 72"/>
-          <path class="line essentials" d="M180 210 C220 165 257 120 298 72"/>
-          <path class="line lifestyle" d="M180 210 C140 255 103 300 62 348"/>
-          <path class="line savings" d="M180 210 C220 255 257 300 298 348"/>
+          <path class="bed" d="M180 210 C140 165 103 120 62 72"/><path class="bed" d="M180 210 C220 165 257 120 298 72"/><path class="bed" d="M180 210 C140 255 103 300 62 348"/><path class="bed" d="M180 210 C220 255 257 300 298 348"/>
+          <path class="line bills" d="M180 210 C140 165 103 120 62 72"/><path class="line essentials" d="M180 210 C220 165 257 120 298 72"/><path class="line lifestyle" d="M180 210 C140 255 103 300 62 348"/><path class="line savings" d="M180 210 C220 255 257 300 298 348"/>
         </svg>
 
-        <a class="zen-zone bills" href="#bills" data-world="bills" aria-label="Bills, ${formatCents(p.protected)}, ${escapeHtml(billsStatus)}">
+        <a class="zen-zone bills" href="#bills" data-world="bills" aria-label="Bills, ${formatCents(p.protected)}, ${escapeHtml(billsStatus)}. Tap once to peek.">
           <span class="zen-emblem">${sceneIcon('bills')}</span><span class="zen-zone-copy"><small>Bills</small><strong>${formatCents(p.protected)}</strong><span><i class="zen-signal ${d.behind.length?'warn':''}"></i>${escapeHtml(billsStatus)}</span></span>
         </a>
-        <a class="zen-zone essentials" href="#essentials" data-world="essentials" aria-label="Essentials, ${formatCents(d.essentialsLeft)}, ${essentialsStatus}">
+        <a class="zen-zone essentials" href="#essentials" data-world="essentials" aria-label="Essentials, ${formatCents(d.essentialsLeft)}, ${essentialsStatus}. Tap once to peek.">
           <span class="zen-emblem">${sceneIcon('essentials')}</span><span class="zen-zone-copy"><small>Essentials</small><strong>${formatCents(d.essentialsLeft)}</strong><span><i class="zen-signal ${essentialDanger?'danger':''}"></i>${essentialsStatus}</span></span>
         </a>
-        <a class="zen-zone lifestyle" href="#lifestyle" data-world="lifestyle" aria-label="Lifestyle, ${formatCents(d.lifestyleLeft)}, ${lifestyleStatus}">
+        <a class="zen-zone lifestyle" href="#lifestyle" data-world="lifestyle" aria-label="Lifestyle, ${formatCents(d.lifestyleLeft)}, ${lifestyleStatus}. Tap once to peek.">
           <span class="zen-emblem">${sceneIcon('lifestyle')}</span><span class="zen-zone-copy"><small>Lifestyle</small><strong>${formatCents(d.lifestyleLeft)}</strong><span><i class="zen-signal ${lifestyleDanger?'danger':''}"></i>${lifestyleStatus}</span></span>
         </a>
-        <a class="zen-zone savings" href="#savings" data-world="savings" aria-label="Savings, ${formatCents(savingsActual)}, ${escapeHtml(savingsStatus)}">
+        <a class="zen-zone savings" href="#savings" data-world="savings" aria-label="Savings, ${formatCents(savingsActual)}, ${escapeHtml(savingsStatus)}. Tap once to peek.">
           <span class="zen-emblem">${sceneIcon('savings')}</span><span class="zen-zone-copy"><small>Savings</small><strong>${formatCents(savingsActual)}</strong><span><i class="zen-signal"></i>${escapeHtml(savingsStatus)}</span></span>
         </a>
 
-        <a class="zen-core" href="#precheck" style="--week:${time.pct}%" aria-label="Available now ${formatCents(p.available)}. ${escapeHtml(time.label)}. Open purchase pre-check.">
+        <a class="zen-core" id="zenCore" href="#precheck" style="--week:${time.pct}%" aria-label="Available now ${formatCents(p.available)}. ${escapeHtml(time.label)}. Open purchase pre-check.">
           <span><small>Available now</small><strong>${formatCents(p.available)}</strong><span>Safe-to-use planning signal</span><b class="zen-days">${time.days}d</b></span>
         </a>
+
+        <div class="zen-peek" id="zenPeek" aria-live="polite"></div>
+        <div class="zen-more-menu" id="zenMoreMenu"></div>
+        <button class="zen-attention-child ${attentionOverride?attentionOverride.world:''}" id="zenAttention" ${attentionOverride?'':'hidden'} type="button">
+          ${attentionOverride?`<i class="zen-attention-dot"></i><span class="zen-attention-copy"><strong>${escapeHtml(attentionOverride.title)}</strong><span>${escapeHtml(attentionOverride.copy)}</span></span>`:''}
+        </button>
       </div>
 
       <a class="zen-command ${command.tone==='warn'?'warn':command.tone==='danger'?'danger':''}" href="${command.href}">
@@ -4329,10 +4567,7 @@ async function renderHome(){
       </a>
     </div>`;
 
-    document.querySelectorAll('.zen-zone').forEach(el=>el.addEventListener('click',e=>{
-      e.preventDefault();
-      navigateWithChoreography(el.getAttribute('href').replace('#',''),el,el.dataset.world);
-    }));
+    initZenDisclosure(p,d,worlds,attentionOverride);
   }catch(e){
     root.innerHTML=`<div class="center">${errBox(e.message)}<button class="btn-primary" onclick="renderHome()">Retry</button></div>`;
   }
