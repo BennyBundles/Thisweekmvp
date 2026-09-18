@@ -2452,6 +2452,213 @@ body[data-route="home"] .text-action{padding:8px 10px;font-size:.62rem}
   .scene-core-button .core-shell,.money-zone::after,.zone-emblem{animation:none!important}
 }
 
+
+/* DISTINCT PAGE ENVIRONMENTS v13 */
+
+/* ADD SPEND — TRANSACTION FLOW CHAMBER */
+body[data-route="log"]{
+  --page-accent:#6ee7b7;
+}
+body[data-route="log"] .topbar-inner{
+  background:
+    radial-gradient(circle at 86% 10%,rgba(110,231,183,.13),transparent 28%),
+    linear-gradient(135deg,rgba(9,35,37,.97),rgba(6,24,36,.91));
+  border-color:rgba(110,231,183,.11);
+}
+.tx-stack{display:grid;gap:14px}
+.transaction-chamber{
+  --tx-accent:#6ee7b7;
+  position:relative;min-height:390px;overflow:hidden;border-radius:30px;
+  border:1px solid rgba(110,231,183,.12);
+  background:
+    radial-gradient(circle at 50% 48%,color-mix(in srgb,var(--tx-accent) 10%,transparent),transparent 26%),
+    radial-gradient(circle at 18% 8%,rgba(103,232,249,.08),transparent 24%),
+    linear-gradient(145deg,rgba(4,18,29,.98),rgba(4,24,29,.96));
+  box-shadow:0 26px 58px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.035);
+  isolation:isolate;
+}
+.transaction-chamber::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.013) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.011) 1px,transparent 1px);
+  background-size:18px 18px;
+  mask-image:radial-gradient(circle at 50% 48%,#000,rgba(0,0,0,.18) 73%,transparent);
+}
+.transaction-chamber::after{
+  content:"";position:absolute;width:310px;height:310px;border-radius:50%;left:50%;top:48%;
+  transform:translate(-50%,-50%);pointer-events:none;
+  background:conic-gradient(from 20deg,transparent,var(--tx-accent),transparent 20%,transparent 54%,rgba(103,232,249,.2),transparent 65%);
+  opacity:.09;filter:blur(22px);animation:txHalo 15s linear infinite;
+}
+.tx-head{position:relative;z-index:5;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:16px 16px 0}
+.tx-head small{display:block;color:#9ad9cb;font-size:.56rem;letter-spacing:.15em;text-transform:uppercase;font-weight:800}
+.tx-head strong{display:block;margin-top:4px;font-size:1rem}
+.tx-head span{display:block;margin-top:3px;color:var(--text-soft);font-size:.68rem}
+.tx-live{padding:7px 9px;border-radius:999px;border:1px solid rgba(110,231,183,.12);background:rgba(110,231,183,.07);color:#c8f7df;font-size:.52rem;letter-spacing:.12em;text-transform:uppercase}
+.tx-network{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.tx-bed{fill:none;stroke:rgba(177,206,221,.07);stroke-width:12;stroke-linecap:round}
+.tx-path{fill:none;stroke:var(--tx-accent);stroke-width:2.4;stroke-dasharray:8 12;stroke-linecap:round;opacity:.22;animation:txDash 7.5s linear infinite;transition:opacity .28s ease,stroke-width .28s ease,filter .28s ease}
+.transaction-chamber[data-target="0"] .tx-path.p0,
+.transaction-chamber[data-target="1"] .tx-path.p1,
+.transaction-chamber[data-target="2"] .tx-path.p2,
+.transaction-chamber[data-target="3"] .tx-path.p3{
+  opacity:1;stroke-width:4.6;filter:drop-shadow(0 0 10px color-mix(in srgb,var(--tx-accent) 55%,transparent))
+}
+.tx-token{
+  position:absolute;z-index:4;width:17px;height:17px;border-radius:50%;display:grid;place-items:center;
+  background:linear-gradient(135deg,#e8fff7,var(--tx-accent));color:#06111d;font-size:8px;font-weight:900;
+  box-shadow:0 0 0 4px color-mix(in srgb,var(--tx-accent) 8%,transparent),0 0 16px color-mix(in srgb,var(--tx-accent) 42%,transparent);
+  opacity:.58;
+}
+.tx-token.one{offset-path:path("M180 194 C134 156 104 121 66 88");animation:txPacket 6s linear infinite}
+.tx-token.two{offset-path:path("M180 194 C226 156 256 121 294 88");animation:txPacket 6.6s -2.4s linear infinite}
+.tx-token.three{offset-path:path("M180 194 C133 231 102 267 66 304");animation:txPacket 6.2s -1.3s linear infinite}
+.tx-token.four{offset-path:path("M180 194 C227 231 258 267 294 304");animation:txPacket 6.8s -3.4s linear infinite}
+.tx-core{
+  appearance:none;position:absolute;z-index:6;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:148px;height:148px;border-radius:50%;padding:0;display:grid;place-items:center;text-align:center;
+  color:var(--text);cursor:default;
+  background:
+    radial-gradient(circle at 31% 25%,rgba(255,255,255,.14),transparent 20%),
+    radial-gradient(circle at 43% 36%,color-mix(in srgb,var(--tx-accent) 22%,transparent),rgba(7,29,38,.98) 55%,rgba(3,16,27,.99) 74%);
+  border:1px solid color-mix(in srgb,var(--tx-accent) 30%,transparent);
+  box-shadow:0 0 0 10px color-mix(in srgb,var(--tx-accent) 4%,transparent),0 0 0 20px rgba(255,255,255,.014),0 22px 44px rgba(0,0,0,.31),inset 0 1px 0 rgba(255,255,255,.08);
+  animation:txCoreBreathe 4.2s ease-in-out infinite;
+}
+.tx-core::before{content:"";position:absolute;inset:-15px;border-radius:50%;border:1px dashed color-mix(in srgb,var(--tx-accent) 20%,transparent);animation:artOrbit 15s linear infinite}
+.tx-core small{display:block;color:#a9c9c2;font-size:.55rem;letter-spacing:.15em;text-transform:uppercase}
+.tx-core strong{display:block;margin-top:5px;font-size:1.55rem;letter-spacing:-.05em}
+.tx-core span{display:block;margin-top:4px;color:var(--text-soft);font-size:.6rem}
+.tx-receiver{
+  appearance:none;position:absolute;z-index:7;width:124px;min-height:66px;padding:8px;
+  display:grid;grid-template-columns:35px 1fr;align-items:center;gap:8px;text-align:left;
+  border-radius:19px;border:1px solid rgba(177,206,221,.09);color:var(--text);
+  background:linear-gradient(145deg,rgba(7,23,35,.95),rgba(4,16,28,.92));
+  box-shadow:0 14px 28px rgba(0,0,0,.20),inset 0 1px 0 rgba(255,255,255,.02);
+  cursor:pointer;transition:transform .26s var(--ease-spring),border-color .25s ease,background .25s ease,box-shadow .25s ease,opacity .25s ease;
+}
+.tx-receiver.r0{left:12px;top:66px}.tx-receiver.r1{right:12px;top:66px}.tx-receiver.r2{left:12px;bottom:24px}.tx-receiver.r3{right:12px;bottom:24px}
+.tx-receiver.selected{
+  transform:translateY(-3px) scale(1.02);
+  border-color:color-mix(in srgb,var(--tx-accent) 32%,transparent);
+  background:linear-gradient(145deg,color-mix(in srgb,var(--tx-accent) 7%,rgba(7,23,35,.96)),rgba(4,16,28,.94));
+  box-shadow:0 18px 34px rgba(0,0,0,.24),0 0 22px color-mix(in srgb,var(--tx-accent) 9%,transparent)
+}
+.tx-receiver:not(.selected){opacity:.78}
+.tx-rec-icon{
+  width:35px;height:35px;border-radius:12px;display:grid;place-items:center;
+  background:linear-gradient(145deg,#bbf7d0,#67e8f9);color:#06111d;font-weight:900;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.42),0 8px 16px rgba(0,0,0,.16);
+}
+.tx-rec-icon svg{width:19px;height:19px}.tx-rec-icon path,.tx-rec-icon rect{stroke:#06111d;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.tx-rec-copy{min-width:0}.tx-rec-copy small{display:block;font-size:.49rem;text-transform:uppercase;letter-spacing:.11em;color:#8fa7b2}.tx-rec-copy strong{display:block;margin-top:3px;font-size:.72rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tx-rec-copy span{display:block;margin-top:2px;font-size:.54rem;color:var(--text-soft)}
+.tx-chamber-focus{
+  position:absolute;z-index:8;left:50%;bottom:16px;transform:translateX(-50%);
+  padding:7px 10px;border-radius:999px;background:rgba(3,13,23,.72);border:1px solid rgba(177,206,221,.07);
+  color:#9bb8c0;font-size:.54rem;letter-spacing:.11em;text-transform:uppercase;white-space:nowrap;backdrop-filter:blur(10px)
+}
+.transaction-chamber.sending .tx-core{animation:txSendPulse .68s ease both}
+.transaction-chamber.sending .tx-path{opacity:1;stroke-width:5}
+.transaction-chamber.sending .tx-token{animation-duration:.9s!important;opacity:1}
+.tx-form{
+  border-radius:26px;border:1px solid rgba(110,231,183,.10);
+  background:linear-gradient(145deg,rgba(7,26,31,.88),rgba(7,20,32,.86));
+}
+.tx-form .amount-row{background:rgba(255,255,255,.035);border-color:rgba(110,231,183,.11)}
+.tx-form .amount-row input{font-size:2rem}
+
+/* DETAILS — FINANCIAL ANATOMY */
+body[data-route="details"]{--page-accent:#60a5fa}
+body[data-route="details"] .topbar-inner{
+  background:
+    radial-gradient(circle at 88% 6%,rgba(96,165,250,.13),transparent 28%),
+    linear-gradient(135deg,rgba(10,25,44,.98),rgba(8,20,36,.92));
+  border-color:rgba(96,165,250,.11);
+}
+.anatomy-stack{display:grid;gap:14px}
+.anatomy-stage{
+  position:relative;min-height:430px;overflow:hidden;border-radius:30px;border:1px solid rgba(96,165,250,.11);
+  background:
+    radial-gradient(circle at 50% 45%,rgba(96,165,250,.07),transparent 26%),
+    linear-gradient(145deg,rgba(5,17,30,.98),rgba(8,21,36,.97));
+  box-shadow:0 25px 56px rgba(0,0,0,.29),inset 0 1px 0 rgba(255,255,255,.03);
+}
+.anatomy-stage::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.010) 1px,transparent 1px);
+  background-size:20px 20px;
+}
+.anatomy-head{position:relative;z-index:5;padding:16px}
+.anatomy-head small{display:block;color:#a7c8ee;font-size:.56rem;letter-spacing:.15em;text-transform:uppercase;font-weight:800}
+.anatomy-head strong{display:block;margin-top:4px;font-size:1rem}
+.anatomy-head span{display:block;margin-top:3px;color:var(--text-soft);font-size:.67rem}
+.anatomy-spine{
+  position:absolute;z-index:1;left:50%;top:74px;bottom:34px;width:3px;transform:translateX(-50%);
+  background:linear-gradient(180deg,rgba(96,165,250,0),rgba(96,165,250,.65) 16%,rgba(103,232,249,.45) 52%,rgba(110,231,183,.5) 83%,rgba(110,231,183,0));
+  box-shadow:0 0 14px rgba(96,165,250,.24);
+}
+.anatomy-spine::before{
+  content:"";position:absolute;width:11px;height:11px;border-radius:50%;left:50%;top:0;transform:translate(-50%,-50%);
+  background:#8cc7ff;box-shadow:0 0 16px rgba(96,165,250,.55);animation:spineTravel 5.4s ease-in-out infinite;
+}
+.anatomy-node{
+  appearance:none;position:absolute;z-index:4;width:144px;min-height:72px;padding:10px;text-align:left;color:var(--text);
+  border-radius:20px;border:1px solid rgba(177,206,221,.09);background:linear-gradient(145deg,rgba(8,23,38,.94),rgba(5,16,28,.91));
+  box-shadow:0 15px 28px rgba(0,0,0,.20),inset 0 1px 0 rgba(255,255,255,.02);cursor:pointer;
+  transition:transform .28s var(--ease-spring),border-color .25s ease,background .25s ease,box-shadow .25s ease,opacity .25s ease;
+}
+.anatomy-node::after{
+  content:"";position:absolute;top:50%;width:40px;height:2px;background:linear-gradient(90deg,rgba(96,165,250,.6),transparent);box-shadow:0 0 8px rgba(96,165,250,.18)
+}
+.anatomy-node.left::after{right:-42px}.anatomy-node.right::after{left:-42px;transform:rotate(180deg)}
+.anatomy-node.n1{left:14px;top:104px}.anatomy-node.n2{right:14px;top:192px}.anatomy-node.n3{left:14px;top:280px}
+.anatomy-node.active{
+  transform:translateY(-2px) scale(1.025);border-color:rgba(103,232,249,.22);
+  background:linear-gradient(145deg,rgba(10,31,49,.97),rgba(5,18,30,.93));
+  box-shadow:0 18px 34px rgba(0,0,0,.23),0 0 24px rgba(96,165,250,.08)
+}
+.anatomy-node:not(.active){opacity:.72}
+.anatomy-node small{display:block;font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:#9bb8c3}
+.anatomy-node strong{display:block;margin-top:5px;font-size:.84rem}
+.anatomy-node span{display:block;margin-top:3px;color:var(--text-soft);font-size:.58rem;line-height:1.3}
+.anatomy-core{
+  position:absolute;z-index:5;left:50%;top:50%;transform:translate(-50%,-50%);width:118px;height:118px;border-radius:50%;
+  display:grid;place-items:center;text-align:center;background:radial-gradient(circle at 32% 25%,rgba(255,255,255,.12),rgba(9,31,47,.98) 52%,rgba(4,16,28,.99));
+  border:1px solid rgba(103,232,249,.20);box-shadow:0 0 0 9px rgba(96,165,250,.025),0 18px 38px rgba(0,0,0,.28);
+  animation:anatomyPulse 4.8s ease-in-out infinite;
+}
+.anatomy-core small{display:block;font-size:.5rem;text-transform:uppercase;letter-spacing:.12em;color:#9db7c1}.anatomy-core strong{display:block;margin-top:4px;font-size:1.12rem}.anatomy-core span{display:block;margin-top:3px;color:var(--text-soft);font-size:.56rem}
+.anatomy-panel{
+  border-radius:24px;border:1px solid rgba(96,165,250,.09);background:linear-gradient(145deg,rgba(7,20,34,.90),rgba(7,18,30,.86));
+  box-shadow:0 18px 38px rgba(0,0,0,.20),inset 0 1px 0 rgba(255,255,255,.025);overflow:hidden
+}
+.anatomy-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:14px 14px 8px}
+.anatomy-panel-head small{display:block;color:#9ec2ee;font-size:.53rem;letter-spacing:.13em;text-transform:uppercase}
+.anatomy-panel-head strong{display:block;margin-top:3px;font-size:.94rem}.anatomy-panel-head span{display:block;margin-top:3px;color:var(--text-soft);font-size:.64rem}
+.anatomy-panel-body{padding:0 12px 12px;animation:anatomyPanelIn .32s var(--ease-soft) both}
+.anatomy-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@keyframes txHalo{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes txDash{to{stroke-dashoffset:-160}}
+@keyframes txPacket{0%{offset-distance:0%;opacity:0}8%{opacity:.8}92%{opacity:.8}100%{offset-distance:100%;opacity:0}}
+@keyframes txCoreBreathe{0%,100%{box-shadow:0 0 0 10px color-mix(in srgb,var(--tx-accent) 4%,transparent),0 0 0 20px rgba(255,255,255,.014),0 22px 44px rgba(0,0,0,.31)}50%{box-shadow:0 0 0 15px color-mix(in srgb,var(--tx-accent) 6%,transparent),0 0 0 26px rgba(255,255,255,.010),0 25px 50px rgba(0,0,0,.34)}}
+@keyframes txSendPulse{0%{transform:translate(-50%,-50%) scale(1)}45%{transform:translate(-50%,-50%) scale(.9)}75%{transform:translate(-50%,-50%) scale(1.08)}100%{transform:translate(-50%,-50%) scale(1)}}
+@keyframes spineTravel{0%,100%{top:0;opacity:.25}50%{top:100%;opacity:1}}
+@keyframes anatomyPulse{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.035)}}
+@keyframes anatomyPanelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(max-width:390px){
+  .transaction-chamber{min-height:410px}
+  .tx-receiver{width:112px}
+  .tx-receiver.r0,.tx-receiver.r2{left:8px}.tx-receiver.r1,.tx-receiver.r3{right:8px}
+  .tx-rec-copy span{display:none}
+  .anatomy-stage{min-height:446px}
+  .anatomy-node{width:128px}
+  .anatomy-node.n1,.anatomy-node.n3{left:8px}.anatomy-node.n2{right:8px}
+}
+@media(prefers-reduced-motion:reduce){
+  .transaction-chamber::after,.tx-path,.tx-token,.tx-core,.anatomy-spine::before,.anatomy-core{animation:none!important}
+}
+
 </style></head><body><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="hero-card">
@@ -3146,29 +3353,48 @@ async function renderHome(){
 }
 
 async function renderDetails(){
-  shellMeta('Details','Weekly Details','Open only the area you want to inspect','<a class="text-action" href="#insights">Insights</a>');
+  shellMeta('Details','Financial Anatomy','Open one layer at a time and follow how the week is structured','<a class="text-action" href="#insights">Insights</a>');
   nav('details');
   const userId=getStoredUserId();
   if(!userId){root.innerHTML='<div class="center"><div class="error">Build a plan first.</div><a class="btn btn-primary" href="#setup">Build Plan</a></div>';return;}
   try{
     const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);
     const st=detailBudgetStats(p);
-    const essentials=p.essentials.length?p.essentials.map(categoryRow).join(''):'<div class="empty">No essentials configured.</div>';
-    const flexible=p.forYou.length?p.forYou.map(categoryRow).join(''):'<div class="empty">No flexible categories configured.</div>';
-    const bills=p.bills.length?p.bills.map(billRow).join(''):'<div class="empty">No bills configured.</div>';
-    root.innerHTML=`<div class="detail-stack">
-      <section class="detail-intro"><span class="section-kicker">Details</span><h2>More detail, one layer at a time.</h2><p>Home stays simple. Open a section below only when you want to inspect the underlying numbers.</p></section>
+    const sections={
+      essentials:{title:'Core spending lanes',copy:'Your practical weekly needs and the money still available inside them.',html:p.essentials.length?p.essentials.map(categoryRow).join(''):'<div class="empty">No essentials configured.</div>'},
+      lifestyle:{title:'Flexible spending',copy:'Optional spending lanes that can expand or contract around your week.',html:p.forYou.length?p.forYou.map(categoryRow).join(''):'<div class="empty">No flexible categories configured.</div>'},
+      bills:{title:'Protected obligations',copy:'Required bill funding and the protection structure underneath the week.',html:p.bills.length?p.bills.map(billRow).join(''):'<div class="empty">No bills configured.</div>'}
+    };
+    root.innerHTML=`<div class="anatomy-stack">
+      <section class="anatomy-stage">
+        <div class="anatomy-head"><small>Financial anatomy</small><strong>Follow the weekly structure.</strong><span>Tap a branch to open only that layer.</span></div>
+        <div class="anatomy-spine"></div>
+        <button class="anatomy-node left n1 active" type="button" data-section="essentials"><small>Essentials</small><strong>${formatCents(p.essentials.reduce((n,x)=>n+Math.max(0,x.remaining||0),0))}</strong><span>Core needs</span></button>
+        <button class="anatomy-node right n2" type="button" data-section="lifestyle"><small>Lifestyle</small><strong>${formatCents(p.forYou.reduce((n,x)=>n+Math.max(0,x.remaining||0),0))}</strong><span>Flexible lanes</span></button>
+        <button class="anatomy-node left n3" type="button" data-section="bills"><small>Protected</small><strong>${formatCents(p.protected)}</strong><span>Required bills</span></button>
+        <div class="anatomy-core"><div><small>Available</small><strong>${formatCents(p.available)}</strong><span>Weekly center</span></div></div>
+      </section>
       <section class="detail-snapshot">
         <div class="detail-stat"><span>Available</span><strong>${formatCents(p.available)}</strong></div>
         <div class="detail-stat"><span>Spent</span><strong>${formatCents(st.spent)}</strong></div>
         <div class="detail-stat"><span>Protected</span><strong>${formatCents(p.protected)}</strong></div>
       </section>
-      <details class="detail-accordion" open><summary><div class="detail-accordion-title"><span>Essentials</span><strong>Core spending lanes</strong></div></summary><div class="detail-panel"><div class="row-list">${essentials}</div></div></details>
-      <details class="detail-accordion"><summary><div class="detail-accordion-title"><span>Lifestyle</span><strong>Flexible spending</strong></div></summary><div class="detail-panel"><div class="row-list">${flexible}</div></div></details>
-      <details class="detail-accordion"><summary><div class="detail-accordion-title"><span>Bills</span><strong>Protected obligations</strong></div></summary><div class="detail-panel"><div class="row-list">${bills}</div></div></details>
-      <a class="deep-link" href="#insights"><div><strong>Advanced Insights</strong><span>Week health, spending pace, money-flow analysis, bill runway, and explainable calculations.</span></div><span class="deep-link-badge">Deeper layer</span></a>
-      <a class="deep-link" href="#reset"><div><strong>Start a New Week</strong><span>Review the current cycle and roll the plan forward when you are ready.</span></div><span class="deep-link-badge">Weekly reset</span></a>
+      <section class="anatomy-panel">
+        <div class="anatomy-panel-head"><div><small id="anatomyKicker">Essentials</small><strong id="anatomyTitle">${sections.essentials.title}</strong><span id="anatomyCopy">${sections.essentials.copy}</span></div><span class="deep-link-badge">Open layer</span></div>
+        <div class="anatomy-panel-body"><div class="row-list" id="anatomyRows">${sections.essentials.html}</div></div>
+      </section>
+      <div class="anatomy-actions"><a class="deep-link" href="#insights"><div><strong>Advanced Insights</strong><span>Move into the analytical observatory.</span></div><span class="deep-link-badge">Deeper</span></a><a class="deep-link" href="#reset"><div><strong>Start New Week</strong><span>Open the cycle-transition flow.</span></div><span class="deep-link-badge">Rollover</span></a></div>
     </div>`;
+    const nodes=[...document.querySelectorAll('.anatomy-node')];
+    const kicker=document.getElementById('anatomyKicker'), title=document.getElementById('anatomyTitle'), copy=document.getElementById('anatomyCopy'), rows=document.getElementById('anatomyRows');
+    nodes.forEach(btn=>btn.onclick=()=>{
+      nodes.forEach(x=>x.classList.toggle('active',x===btn));
+      const key=btn.dataset.section, s=sections[key];
+      kicker.textContent=key==='bills'?'Protection':key[0].toUpperCase()+key.slice(1);
+      title.textContent=s.title; copy.textContent=s.copy; rows.innerHTML=s.html;
+      rows.parentElement.style.animation='none'; void rows.parentElement.offsetWidth; rows.parentElement.style.animation='';
+      if(navigator.vibrate)navigator.vibrate(5);
+    });
   }catch(e){root.innerHTML=errBox(e.message);}
 }
 
@@ -3210,12 +3436,80 @@ async function renderInsights(){
 }
 
 async function renderLog(){
-  shellMeta('Add Spending','Add a Purchase','Choose where it belongs, enter the amount, and you are done','<span class="header-pill">Quick entry</span>'); nav('log'); const userId=getStoredUserId();
+  shellMeta('Add Spending','Transaction Flow','Send a purchase into the right spending lane','<span class="header-pill">Flow entry</span>');
+  nav('log');
+  const userId=getStoredUserId();
   if(!userId){ root.innerHTML='<div class="center"><div class="error">Build a plan first.</div><a class="btn btn-primary" href="#setup">Build My Plan</a></div>'; return; }
-  try{ const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`); const cats=[...p.essentials.map(c=>({...c,type:'LIVING'})),...p.forYou.map(c=>({...c,type:'DISCRETIONARY'}))]; let selected=null; root.innerHTML=`<div class="fade-stack"><section class="hero-card"><div class="hero-topline"><span class="eyebrow">Transaction capture</span><span class="kpi-badge">Real-time update</span></div><h2 class="hero-title">What did you spend?</h2><p class="hero-subtitle">Pick a category, enter the amount, add a note if useful, then tap Add Spending.</p><div class="soft-help">Tip: the first category is preselected so most entries take only a few taps.</div></section><section class="form-card"><div id="formErr"></div><div class="field-group"><label class="field-label">Choose category</label><div class="chip-row">${cats.map(c=>`<button type="button" class="chip" data-id="${escapeHtml(c.id)}" data-type="${escapeHtml(c.type)}">${escapeHtml(c.name)} · ${formatCents(c.remaining)}</button>`).join('')}</div></div><div class="field-group"><label class="field-label">Amount</label><div class="amount-row"><span class="dollar">$</span><input type="text" inputmode="decimal" id="amountInput" placeholder="0.00"></div><div class="form-helper">Use decimal format like 12.50 or 44.</div></div><div class="field-group"><label class="field-label">Note</label><input type="text" id="noteInput" placeholder="What was this for?" maxlength="500"></div><div class="stack-actions"><button class="btn-primary" id="submitSpend" disabled>Add Spending</button><a class="btn btn-secondary" href="#home">Back to dashboard</a></div></section></div>`;
-    const chips=[...document.querySelectorAll('.chip')]; chips.forEach(btn=>btn.onclick=()=>{ chips.forEach(b=>b.classList.remove('selected')); btn.classList.add('selected'); selected={id:btn.dataset.id,type:btn.dataset.type}; document.getElementById('submitSpend').disabled=false; }); if(chips[0]) chips[0].click();
-    document.getElementById('submitSpend').onclick=async()=>{ const dollars=Number(document.getElementById('amountInput').value), note=document.getElementById('noteInput').value.trim(), box=document.getElementById('formErr'); if(!selected||!Number.isFinite(dollars)||dollars<=0){ box.innerHTML=errBox('Enter a valid amount greater than $0.'); return; } const btn=document.getElementById('submitSpend'); btn.disabled=true; btn.textContent='Adding...'; try{ await apiRequest('/transaction',{method:'POST',body:JSON.stringify({userId,categoryType:selected.type,categoryId:selected.id,amount:Math.round(dollars*100),note:note||undefined})}); toast('Spending added. Your week is updated.'); location.hash='home'; }catch(e){ box.innerHTML=errBox(e.message); btn.disabled=false; btn.textContent='Add Spending'; } };
-  }catch(e){ root.innerHTML=errBox(e.message); }
+  try{
+    const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);
+    const cats=[...p.essentials.map(c=>({...c,type:'LIVING'})),...p.forYou.map(c=>({...c,type:'DISCRETIONARY'}))].slice(0,4);
+    let selected=null;
+    const iconFor=(i)=>[
+      '<svg viewBox="0 0 24 24"><rect x="4.5" y="9.6" width="15" height="8.8" rx="2.2"/><path d="M8.2 9.6c.5-2.1 1.8-3.7 3.8-4.7 2 1 3.3 2.6 3.8 4.7"/></svg>',
+      '<svg viewBox="0 0 24 24"><path d="M6 16.5h12M8 16.5l1.5-7h5l1.5 7M10.2 9.5l1.8-3 1.8 3"/></svg>',
+      '<svg viewBox="0 0 24 24"><path d="M12 4.5 13.7 9l4.7 1.7-4.7 1.7-1.7 4.5-1.7-4.5-4.7-1.7L10.3 9 12 4.5Z"/></svg>',
+      '<svg viewBox="0 0 24 24"><path d="M7 6.5h10l2 5-7 6-7-6 2-5Z"/><path d="M5 11.5h14"/></svg>'
+    ][i%4];
+
+    root.innerHTML=`<div class="tx-stack">
+      <section class="transaction-chamber" id="transactionChamber" data-target="0">
+        <div class="tx-head"><div><small>Transaction chamber</small><strong>Send money into the right lane.</strong><span>The selected category becomes the active receiver.</span></div><div class="tx-live">Live</div></div>
+        <svg class="tx-network" viewBox="0 0 360 390" aria-hidden="true">
+          <path class="tx-bed" d="M180 194 C134 156 104 121 66 88"/><path class="tx-bed" d="M180 194 C226 156 256 121 294 88"/><path class="tx-bed" d="M180 194 C133 231 102 267 66 304"/><path class="tx-bed" d="M180 194 C227 231 258 267 294 304"/>
+          <path class="tx-path p0" d="M180 194 C134 156 104 121 66 88"/><path class="tx-path p1" d="M180 194 C226 156 256 121 294 88"/><path class="tx-path p2" d="M180 194 C133 231 102 267 66 304"/><path class="tx-path p3" d="M180 194 C227 231 258 267 294 304"/>
+        </svg>
+        <div class="tx-token one">$</div><div class="tx-token two">$</div><div class="tx-token three">$</div><div class="tx-token four">$</div>
+        ${cats.map((cat,i)=>`<button class="tx-receiver r${i}" type="button" data-index="${i}" data-id="${escapeHtml(cat.id)}" data-type="${escapeHtml(cat.type)}"><span class="tx-rec-icon">${iconFor(i)}</span><span class="tx-rec-copy"><small>${cat.type==='LIVING'?'Essential':'Lifestyle'}</small><strong>${escapeHtml(cat.name)}</strong><span>${formatCents(cat.remaining)} left</span></span></button>`).join('')}
+        <div class="tx-core"><div><small>Purchase amount</small><strong id="txCoreAmount">$0.00</strong><span id="txCoreLane">Choose a lane</span></div></div>
+        <div class="tx-chamber-focus" id="txFocus">Select a category receiver</div>
+      </section>
+
+      <section class="form-card tx-form">
+        <div id="formErr"></div>
+        <div class="field-group"><label class="field-label">Amount</label><div class="amount-row"><span class="dollar">$</span><input type="text" inputmode="decimal" id="amountInput" placeholder="0.00"></div></div>
+        <div class="field-group"><label class="field-label">Note</label><input type="text" id="noteInput" placeholder="What was this for?" maxlength="500"></div>
+        <div class="stack-actions"><button class="btn-primary" id="submitSpend" disabled>Add Spending</button><a class="btn btn-secondary" href="#home">Back to dashboard</a></div>
+      </section>
+    </div>`;
+
+    const chamber=document.getElementById('transactionChamber');
+    const receivers=[...document.querySelectorAll('.tx-receiver')];
+    const amountInput=document.getElementById('amountInput');
+    const coreAmount=document.getElementById('txCoreAmount');
+    const coreLane=document.getElementById('txCoreLane');
+    const focus=document.getElementById('txFocus');
+    const submit=document.getElementById('submitSpend');
+
+    const choose=btn=>{
+      receivers.forEach(x=>x.classList.toggle('selected',x===btn));
+      selected={id:btn.dataset.id,type:btn.dataset.type,name:btn.querySelector('.tx-rec-copy strong').textContent,index:Number(btn.dataset.index)};
+      chamber.dataset.target=String(selected.index);
+      coreLane.textContent=selected.name;
+      focus.textContent=`Active receiver · ${selected.name}`;
+      submit.disabled=false;
+      if(navigator.vibrate)navigator.vibrate(5);
+    };
+    receivers.forEach(btn=>btn.onclick=()=>choose(btn));
+    if(receivers[0])choose(receivers[0]);
+
+    amountInput.addEventListener('input',()=>{
+      const n=Number(amountInput.value);
+      coreAmount.textContent=Number.isFinite(n)&&n>0?formatCents(Math.round(n*100)):'$0.00';
+    });
+
+    submit.onclick=async()=>{
+      const dollars=Number(amountInput.value), note=document.getElementById('noteInput').value.trim(), box=document.getElementById('formErr');
+      if(!selected||!Number.isFinite(dollars)||dollars<=0){box.innerHTML=errBox('Enter a valid amount greater than $0.');return;}
+      submit.disabled=true;submit.textContent='Sending...';chamber.classList.add('sending');focus.textContent=`Sending to ${selected.name}...`;
+      try{
+        await new Promise(r=>setTimeout(r,520));
+        await apiRequest('/transaction',{method:'POST',body:JSON.stringify({userId,categoryType:selected.type,categoryId:selected.id,amount:Math.round(dollars*100),note:note||undefined})});
+        focus.textContent='Transaction placed';
+        toast('Spending added. Your week is updated.');
+        setTimeout(()=>{location.hash='home';},280);
+      }catch(e){box.innerHTML=errBox(e.message);submit.disabled=false;submit.textContent='Add Spending';chamber.classList.remove('sending');}
+    };
+  }catch(e){root.innerHTML=errBox(e.message);}
 }
 
 async function renderReset(){
