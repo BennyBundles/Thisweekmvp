@@ -3202,6 +3202,104 @@ body[data-density="rich"] .v10-mini-node{min-height:54px}
 @keyframes syncPulse{0%,100%{opacity:.35}50%{opacity:1}}@keyframes syncTravel{0%,100%{transform:translateY(-80px)}50%{transform:translateY(80px)}}
 @media(max-width:600px){.future-tabs{grid-template-columns:1fr}.data-twin{grid-template-columns:1fr}.sync-bridge{height:34px}.sync-bridge::before{left:6px;right:6px;top:50%;bottom:auto;height:2px;width:auto}.sync-dot{animation:none}.future-notes{grid-template-columns:1fr}}
 
+
+/* ADAPTIVE WORLDS + CHOREOGRAPHY + CONNECTED DATA v12 */
+.v10-mini-cluster{
+  width:150px;height:122px;display:block;pointer-events:none;overflow:visible;
+  transition:transform var(--motion-normal) var(--ease-spring),opacity var(--motion-normal) ease;
+}
+.v10-mini-cluster.bills{left:5px;top:116px}.v10-mini-cluster.essentials{right:5px;top:116px}
+.v10-mini-cluster.lifestyle{left:5px;bottom:116px}.v10-mini-cluster.savings{right:5px;bottom:116px}
+.v10-mini-node{
+  position:absolute!important;width:76px!important;min-height:50px!important;padding:6px 6px 6px 28px!important;
+  left:var(--cx)!important;top:var(--cy)!important;transform:translate(-50%,-50%) scale(var(--cs,1))!important;
+  border-radius:14px!important;transition:transform var(--motion-normal) var(--ease-spring),opacity var(--motion-normal) ease,box-shadow var(--motion-normal) ease!important;
+}
+.v10-mini-node .mini-gauge{left:5px!important;top:8px!important;width:21px!important;height:21px!important}
+.v10-mini-node .mini-symbol{position:absolute;left:10px;top:13px;width:11px;height:11px;z-index:2;display:grid;place-items:center}
+.v10-mini-node .mini-symbol svg{width:11px;height:11px}.v10-mini-node .mini-symbol svg *{stroke:var(--mini-accent);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.v10-mini-node small{font-size:.43rem!important}.v10-mini-node strong{font-size:.59rem!important}.v10-mini-node span{font-size:.48rem!important}
+.v10-mini-node.more-node{padding-left:7px!important;text-align:center;border-style:dashed!important;background:rgba(255,255,255,.025)!important}
+.v10-mini-node.more-node strong{font-size:.68rem!important}.v10-mini-node.more-node .mini-gauge,.v10-mini-node.more-node .mini-symbol{display:none}
+.v10-mini-cluster.focused{transform:scale(1.04);z-index:9}.v10-mini-cluster:not(.focused){opacity:.78}
+.v10-mini-cluster.focused .v10-mini-node{box-shadow:0 10px 20px rgba(0,0,0,.20),0 0 16px color-mix(in srgb,var(--mini-accent) 7%,transparent)}
+.constellation-cap{
+  position:absolute;z-index:8;padding:5px 7px;border-radius:999px;border:1px solid rgba(177,206,221,.07);
+  background:rgba(4,15,25,.72);color:#8fa7b2;font-size:.46rem;letter-spacing:.08em;text-transform:uppercase;pointer-events:none
+}
+.constellation-cap.bills{left:15px;top:101px}.constellation-cap.essentials{right:15px;top:101px}
+.constellation-cap.lifestyle{left:15px;bottom:101px}.constellation-cap.savings{right:15px;bottom:101px}
+.scene-usage-hint{
+  position:absolute;z-index:9;left:50%;bottom:42px;transform:translateX(-50%);white-space:nowrap;
+  padding:5px 8px;border-radius:999px;background:rgba(4,15,25,.65);border:1px solid rgba(177,206,221,.06);
+  color:#7f9aa6;font-size:.47rem;letter-spacing:.08em;text-transform:uppercase
+}
+.v11-source-gate{color:inherit;text-decoration:none;cursor:pointer}
+.v11-source-gate:hover{border-color:rgba(103,232,249,.14);background:rgba(103,232,249,.04)}
+
+.route-morph{
+  position:fixed;z-index:9999;margin:0;padding:12px;border-radius:20px;pointer-events:none;
+  display:flex;align-items:center;gap:10px;color:#fff;
+  background:linear-gradient(145deg,color-mix(in srgb,var(--morph) 18%,rgba(8,22,35,.98)),rgba(5,16,28,.98));
+  border:1px solid color-mix(in srgb,var(--morph) 30%,transparent);
+  box-shadow:0 24px 70px rgba(0,0,0,.36),0 0 40px color-mix(in srgb,var(--morph) 12%,transparent);
+  overflow:hidden;transform-origin:center
+}
+.route-morph::after{content:"";position:absolute;inset:-20%;background:conic-gradient(from 0deg,transparent,var(--morph),transparent 22%,transparent 60%);opacity:.12;filter:blur(16px);animation:sceneHaloSpin 4s linear infinite}
+.route-morph .morph-icon{position:relative;z-index:2;width:42px;height:42px;border-radius:15px;display:grid;place-items:center;background:color-mix(in srgb,var(--morph) 72%,#fff)}
+.route-morph .morph-icon svg{width:23px;height:23px}.route-morph .morph-icon svg *{stroke:#06111d;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.route-morph .morph-copy{position:relative;z-index:2}.route-morph small{display:block;font-size:.49rem;letter-spacing:.11em;text-transform:uppercase;color:#a8c0c9}.route-morph strong{display:block;margin-top:3px;font-size:.82rem}
+.route-entry-world{animation:routeWorldEntry var(--motion-nav) var(--ease-spring) both}
+.route-entry-world::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--entry) 16%,transparent),0 0 30px color-mix(in srgb,var(--entry) 7%,transparent);animation:entryGlow 1.1s ease-out both}
+@keyframes routeWorldEntry{from{opacity:0;transform:translateY(-14px) scale(.965);filter:blur(3px)}to{opacity:1;transform:none;filter:none}}
+@keyframes entryGlow{0%{opacity:1}100%{opacity:0}}
+
+.lifestyle-world{
+  position:relative;overflow:hidden;min-height:300px;border-radius:28px;border:1px solid rgba(240,167,211,.12);
+  background:radial-gradient(circle at 50% 45%,rgba(240,167,211,.10),transparent 30%),linear-gradient(145deg,rgba(45,23,51,.86),rgba(8,18,31,.96))
+}
+.flex-orbit{position:absolute;left:50%;top:50%;width:190px;height:190px;transform:translate(-50%,-50%);border-radius:50%;border:1px dashed rgba(240,167,211,.11);animation:artOrbit 21s linear infinite}
+.flex-core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:122px;height:122px;border-radius:50%;display:grid;place-items:center;text-align:center;background:linear-gradient(145deg,rgba(83,42,92,.96),rgba(11,23,36,.98));border:1px solid rgba(240,167,211,.19);box-shadow:0 0 0 10px rgba(240,167,211,.025),0 20px 40px rgba(0,0,0,.26)}
+.flex-core small{font-size:.5rem;text-transform:uppercase;letter-spacing:.1em;color:#c9a7c1}.flex-core strong{display:block;margin-top:4px;font-size:1.2rem}.flex-core span{display:block;margin-top:3px;color:var(--text-soft);font-size:.58rem}
+.flex-node{position:absolute;width:108px;padding:10px;border-radius:18px;border:1px solid rgba(240,167,211,.09);background:rgba(34,20,42,.88);box-shadow:0 12px 24px rgba(0,0,0,.18)}
+.flex-node.n1{left:10px;top:26px}.flex-node.n2{right:10px;top:26px}.flex-node.n3{left:50%;bottom:20px;transform:translateX(-50%)}
+.flex-node small{display:block;font-size:.47rem;text-transform:uppercase;letter-spacing:.08em;color:#c3a0b9}.flex-node strong{display:block;margin-top:4px;font-size:.7rem}.flex-node span{display:block;margin-top:3px;color:var(--text-soft);font-size:.55rem}
+
+.connections-stack{display:grid;gap:14px}
+.connection-stage{position:relative;overflow:hidden;padding:18px;border-radius:28px;border:1px solid rgba(103,232,249,.10);background:linear-gradient(145deg,rgba(6,23,37,.98),rgba(5,16,28,.98));box-shadow:0 24px 58px rgba(0,0,0,.24)}
+.connection-stage::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 90% 8%,rgba(103,232,249,.09),transparent 26%),radial-gradient(circle at 6% 90%,rgba(110,231,183,.07),transparent 25%)}
+.connection-stage>*{position:relative;z-index:1}
+.connection-split{display:grid;grid-template-columns:1fr 36px 1fr;gap:10px;align-items:stretch;margin-top:15px}
+.connection-column{padding:13px;border-radius:20px;border:1px solid rgba(177,206,221,.08);background:rgba(255,255,255,.022)}
+.connection-column h3{margin:0 0 8px;font-size:.82rem}.connection-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid rgba(177,206,221,.055)}.connection-row:last-child{border-bottom:0}
+.connection-row strong{font-size:.69rem}.connection-row span{display:block;margin-top:2px;color:var(--text-soft);font-size:.55rem}.connection-row b{font-size:.69rem}
+.connection-bridge{display:grid;place-items:center;position:relative}.connection-bridge::before{content:"";position:absolute;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,transparent,#67e8f9,#6ee7b7,transparent)}.connection-bridge i{position:relative;z-index:1;width:13px;height:13px;border-radius:50%;background:#67e8f9;box-shadow:0 0 14px rgba(103,232,249,.55);animation:syncTravel 3.2s ease-in-out infinite}
+.import-card{padding:15px;border-radius:22px;border:1px solid rgba(177,206,221,.08);background:rgba(255,255,255,.022)}
+.import-card h3{margin:0;font-size:.88rem}.import-card p{margin:5px 0 12px;color:var(--text-soft);font-size:.65rem;line-height:1.45}
+.file-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.file-input{width:100%;padding:11px;border-radius:14px;border:1px solid rgba(177,206,221,.09);background:rgba(255,255,255,.03);color:#dcebf1}
+.reconcile-list{display:grid;gap:9px}
+.reconcile-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:12px;border-radius:18px;border:1px solid rgba(177,206,221,.075);background:rgba(255,255,255,.02)}
+.reconcile-row strong{display:block;font-size:.76rem}.reconcile-row span{display:block;margin-top:3px;color:var(--text-soft);font-size:.58rem;line-height:1.35}
+.reconcile-tools{display:flex;gap:7px;align-items:center}.reconcile-tools select{max-width:140px;padding:8px;border-radius:11px;border:1px solid rgba(177,206,221,.08);background:#0b1c2b;color:#e8f5f8;font:inherit;font-size:.61rem}
+.data-badge{display:inline-flex;padding:6px 8px;border-radius:999px;border:1px solid rgba(177,206,221,.07);font-size:.51rem;letter-spacing:.08em;text-transform:uppercase;color:#9fb5be}.data-badge.pending{border-color:rgba(246,215,132,.12);color:#e6d79c}.data-badge.posted{border-color:rgba(110,231,183,.12);color:#bdebd2}
+.provider-slot{padding:13px;border-radius:20px;border:1px dashed rgba(177,206,221,.10);background:rgba(255,255,255,.018)}.provider-slot strong{display:block;font-size:.77rem}.provider-slot span{display:block;margin-top:4px;color:var(--text-soft);font-size:.61rem;line-height:1.4}
+
+.arch-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.arch-card{padding:14px;border-radius:21px;border:1px solid rgba(177,206,221,.08);background:rgba(255,255,255,.022)}.arch-card small{display:block;font-size:.49rem;text-transform:uppercase;letter-spacing:.1em;color:#8fa7b2}.arch-card strong{display:block;margin-top:5px;font-size:.8rem}.arch-card span{display:block;margin-top:5px;color:var(--text-soft);font-size:.62rem;line-height:1.4}.arch-card a{display:inline-flex;margin-top:9px;font-size:.6rem;color:#9ed7c8;text-decoration:none}
+
+@media(max-width:600px){
+  .connection-split{grid-template-columns:1fr}.connection-bridge{height:28px}.connection-bridge::before{left:8px;right:8px;top:50%;bottom:auto;width:auto;height:2px}.connection-bridge i{animation:none}
+  .file-row{grid-template-columns:1fr}.reconcile-row{grid-template-columns:1fr}.reconcile-tools{flex-wrap:wrap}.arch-grid{grid-template-columns:1fr}
+}
+@media(max-width:390px){
+  .v10-mini-cluster{width:116px;height:96px}
+  .v10-mini-cluster.bills{left:2px;top:104px}.v10-mini-cluster.essentials{right:2px;top:104px}
+  .v10-mini-cluster.lifestyle{left:2px;bottom:120px}.v10-mini-cluster.savings{right:2px;bottom:120px}
+  .v10-mini-node{width:61px!important;min-height:43px!important;padding:5px 4px 5px 23px!important}
+  .v10-mini-node .mini-gauge{width:18px!important;height:18px!important;left:3px!important;top:7px!important}.v10-mini-node .mini-symbol{left:7px;top:11px}
+  .v10-mini-node strong{font-size:.53rem!important}.v10-mini-node span{display:none!important}.v10-mini-node small{font-size:.39rem!important}
+  .constellation-cap{display:none}.scene-usage-hint{bottom:37px;font-size:.42rem}
+}
+
 </style></head><body><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="hero-card">
@@ -3552,6 +3650,26 @@ function localApi(path, options = {}) {
     bill.contributed = Math.min(Math.max(bill.weeklyRequired, bill.requiredByToday), bill.contributed + body.amount);
     runGenerators(state, week); writeState(state); return homePayload(state, week);
   }
+  if (url.pathname === "/transaction/import" && method === "POST") {
+    state.importedExternalIds = Array.isArray(state.importedExternalIds) ? state.importedExternalIds : [];
+    if (body.externalId && state.importedExternalIds.includes(body.externalId)) {
+      const open = state.weeks.filter(w => !w.closed).sort((a,b) => b.start.localeCompare(a.start))[0] || ensureCurrentWeek(state);
+      writeState(state); return homePayload(state, open);
+    }
+    const when = body.createdAt ? new Date(body.createdAt) : new Date();
+    let week = state.weeks.find(w => when >= new Date(w.start) && when < new Date(w.end));
+    if (!week) week = state.weeks.filter(w => !w.closed).sort((a,b) => b.start.localeCompare(a.start))[0] || ensureCurrentWeek(state);
+    runGenerators(state, week);
+    const balance = week.balances.find(b => b.categoryId === body.categoryId && b.categoryType === body.categoryType);
+    if (!balance) throw new Error("Unknown category for imported transaction.");
+    if (!Number.isInteger(body.amount) || body.amount <= 0) throw new Error("Imported amount must be greater than $0.");
+    state.transactions.push({ id: uid(), weekId: week.id, categoryType: body.categoryType, categoryId: body.categoryId, amount: body.amount, note: body.note || null, source: "import", externalId: body.externalId || null, createdAt: body.createdAt || nowIso() });
+    balance.spent += body.amount; balance.remaining -= body.amount;
+    if (body.externalId) state.importedExternalIds.push(body.externalId);
+    runGenerators(state, week); writeState(state);
+    const open = state.weeks.filter(w => !w.closed).sort((a,b) => b.start.localeCompare(a.start))[0] || week;
+    return homePayload(state, open);
+  }
   if (url.pathname === "/transaction" && method === "POST") {
     const week = state.weeks.filter(w => !w.closed).sort((a,b) => b.start.localeCompare(a.start))[0];
     if (!week) throw new Error("No open week.");
@@ -3679,7 +3797,7 @@ function obligationTimeline(p){
 }
 function route(){ return (location.hash.replace('#','')||'home').split('?')[0]; }
 function nav(routeName){
-  const detailRoutes=['insights','reset','bills','essentials','savings','history','scenario','future'];
+  const detailRoutes=['insights','reset','bills','essentials','lifestyle','savings','history','scenario','connections','future'];
   const activeRoute=detailRoutes.includes(routeName)?'details':routeName==='setup'||routeName==='preferences'?'plan':routeName==='precheck'?'log':routeName;
   document.body.dataset.route=activeRoute;
   const index={home:0,log:1,details:2,plan:3}[activeRoute]??0;
@@ -3825,6 +3943,98 @@ function historySummaries(){
 }
 function topNWithMore(items,max=3){return {shown:items.slice(0,max),more:Math.max(0,items.length-max)};}
 
+
+const CONNECTED_DATA_KEY='thisweek.connectedData.v1';
+function readConnectedData(){
+  const base={sourceName:null,importedAt:null,records:[]};
+  try{const v=JSON.parse(localStorage.getItem(CONNECTED_DATA_KEY)||'null');return v&&Array.isArray(v.records)?{...base,...v}:base;}catch{return base;}
+}
+function writeConnectedData(v){try{localStorage.setItem(CONNECTED_DATA_KEY,JSON.stringify(v));}catch{}return v;}
+function connectedDataSummary(){
+  const d=readConnectedData(),r=d.records||[];
+  return {total:r.length,pending:r.filter(x=>x.status==='pending').length,unreconciled:r.filter(x=>x.direction==='outflow'&&x.status!=='pending'&&!x.reconciled).length,reconciled:r.filter(x=>x.reconciled).length,sourceName:d.sourceName};
+}
+function csvSplitLine(line){
+  const out=[];let cur='',q=false;
+  for(let i=0;i<line.length;i++){const ch=line[i];if(ch==='"'){if(q&&line[i+1]==='"'){cur+='"';i++;}else q=!q;}else if(ch===','&&!q){out.push(cur);cur='';}else cur+=ch;}
+  out.push(cur);return out;
+}
+function parseCsvText(text){
+  const lines=String(text||'').replace(/\r/g,'').split('\n').filter(x=>x.trim().length);
+  if(lines.length<2)throw new Error('CSV needs a header row and at least one transaction.');
+  const headers=csvSplitLine(lines[0]).map(x=>x.trim());
+  return lines.slice(1).map(line=>{const vals=csvSplitLine(line);const o={};headers.forEach((h,i)=>o[h]=vals[i]??'');return o;});
+}
+function simpleHash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0).toString(36);}
+function firstKey(obj,tests){const keys=Object.keys(obj);return keys.find(k=>tests.some(t=>k.toLowerCase().includes(t)))||null;}
+function parseMoneyRaw(v){const n=Number(String(v??'').replace(/[$,()]/g,m=>m==='('?'-':'').replace(')','').trim());return Number.isFinite(n)?n:0;}
+function normalizeImportedRows(rows,signMode='negativePurchase',sourceName='CSV Import'){
+  return rows.map((row,i)=>{
+    const dk=firstKey(row,['date','posted','transaction date']),descK=firstKey(row,['description','merchant','memo','name','details']);
+    const debitK=firstKey(row,['debit','withdrawal','charge']),creditK=firstKey(row,['credit','deposit']),amountK=firstKey(row,['amount','amt']);
+    const statusK=firstKey(row,['status','state','pending']);
+    let direction='outflow',amount=0;
+    const debit=debitK?Math.abs(parseMoneyRaw(row[debitK])):0,credit=creditK?Math.abs(parseMoneyRaw(row[creditK])):0;
+    if(debit>0){direction='outflow';amount=debit;}else if(credit>0){direction='inflow';amount=credit;}else{const raw=amountK?parseMoneyRaw(row[amountK]):0;amount=Math.abs(raw);direction=signMode==='positivePurchase'?(raw>=0?'outflow':'inflow'):(raw<=0?'outflow':'inflow');}
+    const dateRaw=dk?row[dk]:'',dateObj=dateRaw?new Date(dateRaw):new Date(),date=Number.isNaN(dateObj.getTime())?nowIso():dateObj.toISOString();
+    const description=String(descK?row[descK]:'Transaction').trim()||'Transaction';
+    const statusText=String(statusK?row[statusK]:'').toLowerCase();
+    const status=statusText.includes('pend')?'pending':'posted';
+    const amountCents=Math.round(amount*100);
+    const externalId='csv_'+simpleHash([sourceName,date,description,amountCents,direction,i].join('|'));
+    return {id:uid(),externalId,date,description,amount:amountCents,direction,status,reconciled:false,source:sourceName};
+  }).filter(x=>x.amount>0);
+}
+function categorySuggestion(record,p){
+  const cats=[...p.essentials.map(x=>({...x,type:'LIVING'})),...p.forYou.map(x=>({...x,type:'DISCRETIONARY'}))];
+  if(!cats.length)return null;
+  const d=record.description.toLowerCase();
+  const groups=[
+    {terms:['grocery','market','supermarket','aldi','kroger','whole foods','walmart'],match:['groc','food']},
+    {terms:['shell','exxon','bp ','fuel','gas station','sunoco'],match:['gas','fuel']},
+    {terms:['uber','lyft','transit','sept','metro','train','bus'],match:['transit','transport','gas']},
+    {terms:['doordash','ubereats','restaurant','cafe','pizza','grill','diner'],match:['eat','dining','food out']},
+    {terms:['netflix','spotify','movie','cinema','game','entertain'],match:['fun','entertain']},
+    {terms:['amazon','target','mall','shop','store'],match:['shop','fun']}
+  ];
+  let scored=cats.map(cat=>{let score=0;const n=cat.name.toLowerCase();for(const token of n.split(/\s+/))if(token.length>2&&d.includes(token))score+=5;for(const g of groups)if(g.terms.some(t=>d.includes(t))&&g.match.some(m=>n.includes(m)))score+=4;return {cat,score};}).sort((a,b)=>b.score-a.score);
+  return scored[0]?.cat||cats[0];
+}
+const WORLD_META={
+  bills:{route:'bills',title:'Protected Bills',accent:'#60a5fa',icon:'bills'},
+  essentials:{route:'essentials',title:'Essentials Runway',accent:'#6ee7b7',icon:'essentials'},
+  lifestyle:{route:'lifestyle',title:'Lifestyle Flex',accent:'#f0a7d3',icon:'lifestyle'},
+  savings:{route:'savings',title:'Savings Goals',accent:'#f6d784',icon:'savings'},
+  available:{route:'precheck',title:'Purchase Pre-check',accent:'#67e8f9',icon:'essentials'}
+};
+function navigateWithChoreography(route,sourceEl,world){
+  const prefs=readUiPrefs();
+  if(prefs.motion==='reduced'||!sourceEl){sessionStorage.setItem('thisweek.routeEntry',JSON.stringify({world,route,at:Date.now()}));location.hash=route;return;}
+  const meta=WORLD_META[world]||WORLD_META.available,r=sourceEl.getBoundingClientRect(),overlay=document.createElement('div');
+  overlay.className='route-morph';overlay.style.setProperty('--morph',meta.accent);
+  overlay.style.left=r.left+'px';overlay.style.top=r.top+'px';overlay.style.width=r.width+'px';overlay.style.height=r.height+'px';
+  overlay.innerHTML='<span class="morph-icon">'+sceneIcon(meta.icon)+'</span><span class="morph-copy"><small>Entering</small><strong>'+escapeHtml(meta.title)+'</strong></span>';
+  document.body.appendChild(overlay);
+  const target={left:16,top:Math.max(72,Math.min(window.innerHeight*.16,126)),width:Math.max(220,window.innerWidth-32),height:110};
+  const anim=overlay.animate([
+    {left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',borderRadius:'20px',opacity:1,transform:'scale(1)'},
+    {left:target.left+'px',top:target.top+'px',width:target.width+'px',height:target.height+'px',borderRadius:'28px',opacity:.98,transform:'scale(1.01)'}
+  ],{duration:520,easing:'cubic-bezier(.2,.9,.18,1)'});
+  sessionStorage.setItem('thisweek.routeEntry',JSON.stringify({world,route,at:Date.now()}));
+  setTimeout(()=>{location.hash=route;},230);
+  anim.finished.finally(()=>overlay.remove());
+}
+function applyRouteEntryTransition(route){
+  let info=null;try{info=JSON.parse(sessionStorage.getItem('thisweek.routeEntry')||'null');}catch{}
+  if(!info||Date.now()-(info.at||0)>2200||info.route!==route)return;
+  sessionStorage.removeItem('thisweek.routeEntry');
+  const target=root.querySelector('.studio-hero,.bill-vault,.lifestyle-world,.connection-stage,.precheck-stage');
+  if(!target)return;
+  const meta=WORLD_META[info.world]||WORLD_META.available;
+  target.style.setProperty('--entry',meta.accent);target.classList.add('route-entry-world');
+  setTimeout(()=>target.classList.remove('route-entry-world'),1000);
+}
+
 function sceneIcon(type){
   const icons={
     bills:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5 18.2 6v5.1c0 4.1-2.4 7.1-6.2 9-3.8-1.9-6.2-4.9-6.2-9V6L12 3.5Z"/><path d="m9 11.7 2 2 4.2-4.2"/></svg>',
@@ -3836,113 +4046,70 @@ function sceneIcon(type){
 }
 
 function initMoneyTheater(p,d){
-  const theater=document.getElementById('moneyTheater');
-  if(!theater)return;
-  const core=document.getElementById('sceneCore');
-  const focusTitle=document.getElementById('sceneFocusTitle');
-  const focusCopy=document.getElementById('sceneFocusCopy');
-  const focusValue=document.getElementById('sceneFocusValue');
-  const focusLink=document.getElementById('sceneFocusLink');
-  const clusters={
-    bills:document.getElementById('miniBills'),
-    essentials:document.getElementById('miniEssentials'),
-    lifestyle:document.getElementById('miniLifestyle'),
-    savings:document.getElementById('miniSavings')
-  };
-  const zones=[...theater.querySelectorAll('.money-zone')];
-  const state=readState();
-  const savingsTarget=state?.config?.savingsRule?.active ? Math.max(0,state.config.savingsRule.weeklyAmount||0) : 0;
-  const savingsActual=Math.max(0,p.savingsThisWeek||0);
-  const savingsToTarget=Math.max(0,savingsTarget-savingsActual);
-
+  const theater=document.getElementById('moneyTheater'); if(!theater)return;
+  const core=document.getElementById('sceneCore'),focusTitle=document.getElementById('sceneFocusTitle'),focusCopy=document.getElementById('sceneFocusCopy'),focusValue=document.getElementById('sceneFocusValue'),focusLink=document.getElementById('sceneFocusLink');
+  const clusters={bills:document.getElementById('miniBills'),essentials:document.getElementById('miniEssentials'),lifestyle:document.getElementById('miniLifestyle'),savings:document.getElementById('miniSavings')};
+  const zones=[...theater.querySelectorAll('.money-zone')],state=readState(),prefs=readUiPrefs();
+  const savingsTarget=state?.config?.savingsRule?.active?Math.max(0,state.config.savingsRule.weeklyAmount||0):0,savingsActual=Math.max(0,p.savingsThisWeek||0),savingsToTarget=Math.max(0,savingsTarget-savingsActual);
   const pct=(num,den)=>den>0?Math.max(0,Math.min(100,Math.round(num/den*100))):0;
-  const crop=(arr,max=3)=>arr.slice(0,max);
-  const miniSvg=(percent)=>`<svg class="mini-gauge" viewBox="0 0 36 36" aria-hidden="true"><circle class="track" cx="18" cy="18" r="14" pathLength="100"/><circle class="value" cx="18" cy="18" r="14" pathLength="100" stroke-dasharray="${percent} 100"/></svg>`;
-  const miniMarkup=(items)=>items.map(x=>`<div class="v10-mini-node">${miniSvg(x.pct)}<small>${escapeHtml(x.kicker)}</small><strong>${escapeHtml(x.name)}</strong><span>${escapeHtml(x.value)}</span></div>`).join('');
-
-  const billKids=crop(p.bills||[]).map(b=>({
-    kicker:b.status==='ON_TRACK'?'Protected':'Attention',
-    name:b.name,
-    value:`${formatCents(Math.max(0,(b.weeklyRequired||0)-(b.contributed||0)))} left`,
-    pct:pct(b.contributed||0,b.weeklyRequired||b.requiredByToday||1)
-  }));
-  if(billKids.length<3)billKids.push({kicker:'Protection',name:'Bill runway',value:formatCents(p.protected||0),pct:p.status==='ON_TRACK'?88:58});
-
-  const essentialKids=crop(p.essentials||[]).map(x=>({
-    kicker:'Essential',
-    name:x.name,
-    value:`${formatCents(Math.max(0,x.remaining||0))} left`,
-    pct:pct(Math.max(0,x.remaining||0),Math.max(1,x.allocated||1))
-  }));
-  if(essentialKids.length<3)essentialKids.push({kicker:'Summary',name:'Needs left',value:formatCents(d.essentialsLeft),pct:pct(d.essentialsLeft,Math.max(1,(p.essentials||[]).reduce((n,x)=>n+(x.allocated||0),0)))});
-
-  const lifestyleKids=crop(p.forYou||[]).map(x=>({
-    kicker:'Flexible',
-    name:x.name,
-    value:`${formatCents(Math.max(0,x.remaining||0))} left`,
-    pct:pct(Math.max(0,x.remaining||0),Math.max(1,x.allocated||1))
-  }));
-  if(lifestyleKids.length<3)lifestyleKids.push({kicker:'Summary',name:'Flex left',value:formatCents(d.lifestyleLeft),pct:pct(d.lifestyleLeft,Math.max(1,(p.forYou||[]).reduce((n,x)=>n+(x.allocated||0),0)))});
-
+  const gauge=(percent)=>`<svg class="mini-gauge" viewBox="0 0 36 36" aria-hidden="true"><circle class="track" cx="18" cy="18" r="14" pathLength="100"/><circle class="value" cx="18" cy="18" r="14" pathLength="100" stroke-dasharray="${percent} 100"/></svg>`;
+  const billKids=(p.bills||[]).map(b=>({kicker:b.status==='ON_TRACK'?'Protected':'Attention',name:b.name,value:`${formatCents(Math.max(0,(b.weeklyRequired||0)-(b.contributed||0)))} left`,pct:pct(b.contributed||0,b.weeklyRequired||b.requiredByToday||1),priority:b.status==='ON_TRACK'?1:10,icon:semanticIcon(b.name,'bill')})).sort((a,b)=>b.priority-a.priority);
+  const essentialKids=(p.essentials||[]).map(x=>({kicker:'Essential',name:x.name,value:`${formatCents(Math.max(0,x.remaining||0))} left`,pct:pct(Math.max(0,x.remaining||0),Math.max(1,x.allocated||1)),priority:100-pct(Math.max(0,x.remaining||0),Math.max(1,x.allocated||1)),icon:semanticIcon(x.name)})).sort((a,b)=>b.priority-a.priority);
+  const lifestyleKids=(p.forYou||[]).map(x=>({kicker:'Flexible',name:x.name,value:`${formatCents(Math.max(0,x.remaining||0))} left`,pct:pct(Math.max(0,x.remaining||0),Math.max(1,x.allocated||1)),priority:100-pct(Math.max(0,x.remaining||0),Math.max(1,x.allocated||1)),icon:semanticIcon(x.name)})).sort((a,b)=>b.priority-a.priority);
   const savingsKids=[
-    {kicker:'Current',name:'This week',value:formatCents(savingsActual),pct:pct(savingsActual,Math.max(1,savingsTarget||savingsActual||1))},
-    {kicker:'Target',name:'Weekly goal',value:savingsTarget?formatCents(savingsTarget):'Not set',pct:savingsTarget?100:0},
-    {kicker:'Gap',name:'To target',value:savingsTarget?formatCents(savingsToTarget):'—',pct:savingsTarget?pct(savingsActual,savingsTarget):0}
+    {kicker:'Current',name:'This week',value:formatCents(savingsActual),pct:pct(savingsActual,Math.max(1,savingsTarget||savingsActual||1)),priority:3,icon:semanticIcon('Emergency Reserve','reserve')},
+    {kicker:'Target',name:'Weekly goal',value:savingsTarget?formatCents(savingsTarget):'Not set',pct:savingsTarget?100:0,priority:2,icon:semanticIcon('Goal')},
+    {kicker:'Gap',name:'To target',value:savingsTarget?formatCents(savingsToTarget):'—',pct:savingsTarget?pct(savingsActual,savingsTarget):0,priority:1,icon:semanticIcon('Payoff','payoff')}
   ];
-
-  clusters.bills.innerHTML=miniMarkup(billKids.slice(0,3));
-  clusters.essentials.innerHTML=miniMarkup(essentialKids.slice(0,3));
-  clusters.lifestyle.innerHTML=miniMarkup(lifestyleKids.slice(0,3));
-  clusters.savings.innerHTML=miniMarkup(savingsKids);
+  const itemMap={bills:billKids,essentials:essentialKids,lifestyle:lifestyleKids,savings:savingsKids};
+  const points={1:[[50,50]],2:[[28,36],[72,64]],3:[[50,18],[24,72],[76,72]],4:[[24,24],[76,24],[24,76],[76,76]]};
+  const maxFor=(focused)=>{
+    const mobile=matchMedia('(max-width:390px)').matches;
+    let base=mobile?2:(prefs.density==='compact'?2:prefs.density==='rich'?4:3);
+    if(focused)base=Math.min(4,base+1);
+    return base;
+  };
+  const renderCluster=(key,focused)=>{
+    const el=clusters[key],items=itemMap[key]||[];if(!el)return;
+    el.classList.toggle('focused',focused);
+    const max=maxFor(focused),visible=Math.min(items.length,max);
+    let shown=items.slice(0,visible);
+    if(items.length>max&&max>0)shown=[...items.slice(0,Math.max(0,max-1)),{more:true,name:`+${items.length-(max-1)} more`,kicker:'More lanes',value:'Open studio',pct:0,icon:''}];
+    if(!shown.length)shown=[{name:'No lanes',kicker:'Not configured',value:'Edit Plan',pct:0,icon:''}];
+    const pts=points[Math.min(4,shown.length)]||points[3];
+    el.innerHTML=shown.map((x,i)=>`<div class="v10-mini-node ${x.more?'more-node':''}" style="--cx:${pts[i][0]}%;--cy:${pts[i][1]}%;--cs:${focused?1:.96}">${x.more?'':gauge(x.pct)}${x.more?'':`<span class="mini-symbol">${x.icon||''}</span>`}<small>${escapeHtml(x.kicker)}</small><strong>${escapeHtml(x.name)}</strong><span>${escapeHtml(x.value)}</span></div>`).join('');
+  };
 
   const map={
-    available:{accent:'#67e8f9',title:'Available now',value:formatCents(p.available),copy:'The center stays your safe-to-use weekly signal while all four category systems remain visible around it.',href:'#precheck'},
-    bills:{accent:'#60a5fa',title:'Protected bills',value:formatCents(p.protected),copy:d.behind.length?'Bills are active and at least one obligation needs attention.':'Bills are protected and their mini runway indicators remain visible.',href:'#bills'},
-    essentials:{accent:'#6ee7b7',title:'Essentials left',value:formatCents(d.essentialsLeft),copy:'Groceries, gas, transit, and other practical lanes remain visible as a living sub-system.',href:'#essentials'},
-    lifestyle:{accent:'#f0a7d3',title:'Lifestyle left',value:formatCents(d.lifestyleLeft),copy:'Flexible spending stays visually separate with its own expressive color and motion language.',href:'#details'},
-    savings:{accent:'#f6d784',title:'Savings',value:formatCents(savingsActual),copy:'Savings uses a calmer gold-and-jade system with target and progress mini indicators.',href:'#savings'}
+    available:{accent:'#67e8f9',title:'Available now',value:formatCents(p.available),copy:'The center remains the simple weekly answer. Category constellations stay capped so deeper detail appears only when you choose it.',href:'#precheck',label:'Open pre-check'},
+    bills:{accent:'#60a5fa',title:'Protected bills',value:formatCents(p.protected),copy:d.behind.length?'A bill needs protection. The most relevant obligations rise to the front without showing every detail at once.':'Bills are protected; the constellation highlights only the most useful obligations.',href:'#bills',label:'Open Bill Studio'},
+    essentials:{accent:'#6ee7b7',title:'Essentials left',value:formatCents(d.essentialsLeft),copy:'Need-based lanes are ranked by current relevance and automatically rearranged as your categories change.',href:'#essentials',label:'Open Runway'},
+    lifestyle:{accent:'#f0a7d3',title:'Lifestyle left',value:formatCents(d.lifestyleLeft),copy:'Flexible lanes stay expressive but controlled; faster-moving categories become more prominent.',href:'#lifestyle',label:'Open Flex Studio'},
+    savings:{accent:'#f6d784',title:'Savings',value:formatCents(savingsActual),copy:'Savings keeps a calmer visual rhythm while showing current, target, and gap at a glance.',href:'#savings',label:'Open Goal Studio'}
   };
-
-  let userTouched=false;
-  let autoIndex=0;
+  let userTouched=false,autoIndex=0,lastManual=null,lastManualAt=0;
   const order=['bills','essentials','lifestyle','savings'];
-
   const apply=(key,manual=false)=>{
-    const item=map[key]||map.available;
-    if(manual)userTouched=true;
-    theater.dataset.focus=key;
-    theater.style.setProperty('--scene-accent',item.accent);
+    const item=map[key]||map.available;if(manual)userTouched=true;
+    theater.dataset.focus=key;theater.style.setProperty('--scene-accent',item.accent);
     zones.forEach(z=>z.setAttribute('aria-pressed',String(z.dataset.zone===key)));
-    focusTitle.textContent=item.title;
-    focusValue.textContent=item.value;
-    focusCopy.textContent=item.copy;
-    if(focusLink)focusLink.href=item.href||'#details';
+    Object.keys(clusters).forEach(k=>renderCluster(k,k===key));
+    focusTitle.textContent=item.title;focusValue.textContent=item.value;focusCopy.textContent=item.copy;
+    if(focusLink){focusLink.href=item.href;focusLink.textContent=item.label;}
     if(navigator.vibrate&&manual)navigator.vibrate(5);
   };
-
-  zones.forEach(z=>z.addEventListener('click',()=>apply(z.dataset.zone,true)));
+  zones.forEach(z=>z.addEventListener('click',()=>{
+    const key=z.dataset.zone,now=Date.now();
+    if(lastManual===key&&now-lastManualAt<2400){const item=map[key];navigateWithChoreography(item.href.replace('#',''),z,key);lastManual=null;return;}
+    lastManual=key;lastManualAt=now;apply(key,true);
+  }));
+  if(focusLink)focusLink.addEventListener('click',e=>{e.preventDefault();const key=theater.dataset.focus||'available',item=map[key]||map.available;const source=zones.find(z=>z.dataset.zone===key)||core;navigateWithChoreography(item.href.replace('#',''),source,key);});
   core.addEventListener('click',()=>apply('available',true));
-
-  theater.addEventListener('pointermove',e=>{
-    const r=theater.getBoundingClientRect();
-    const px=(e.clientX-r.left)/Math.max(1,r.width)-.5;
-    const py=(e.clientY-r.top)/Math.max(1,r.height)-.5;
-    theater.style.setProperty('--tilt-y',`${(px*4).toFixed(2)}deg`);
-    theater.style.setProperty('--tilt-x',`${(-py*4).toFixed(2)}deg`);
-  });
-  theater.addEventListener('pointerleave',()=>{
-    theater.style.setProperty('--tilt-y','0deg');
-    theater.style.setProperty('--tilt-x','0deg');
-  });
-
+  theater.addEventListener('pointermove',e=>{const r=theater.getBoundingClientRect(),px=(e.clientX-r.left)/Math.max(1,r.width)-.5,py=(e.clientY-r.top)/Math.max(1,r.height)-.5;theater.style.setProperty('--tilt-y',`${(px*4).toFixed(2)}deg`);theater.style.setProperty('--tilt-x',`${(-py*4).toFixed(2)}deg`);});
+  theater.addEventListener('pointerleave',()=>{theater.style.setProperty('--tilt-y','0deg');theater.style.setProperty('--tilt-x','0deg');});
   apply('bills');
-  const timer=setInterval(()=>{
-    if(userTouched){clearInterval(timer);return;}
-    autoIndex=(autoIndex+1)%order.length;
-    apply(order[autoIndex]);
-  },3900);
+  const timer=setInterval(()=>{if(userTouched){clearInterval(timer);return;}autoIndex=(autoIndex+1)%order.length;apply(order[autoIndex]);},4200);
 }
-
 async function renderHome(){
   shellMeta('This Week','Weekly Dashboard','Four living money systems, one simple weekly decision surface','<a class="text-action" href="#setup">Plan</a>');
   nav('home');
@@ -3958,6 +4125,8 @@ async function renderHome(){
     const recent=recentWeekTransaction(p.week.id);
     const state=readState();
     const payLabel=state?.config?.payProfile?.netPayAmount?formatCents(state.config.payProfile.netPayAmount):'Plan source';
+    const connected=connectedDataSummary();
+    const sourceLabel=connected.total?`Imported data · ${connected.unreconciled} to review`:`Plan source · ${payLabel}`;
     document.body.dataset.financialState=p.status==='ON_TRACK'?'stable':'attention';
     root.innerHTML=`<div class="home-command">
       <div class="home-head">
@@ -3967,7 +4136,7 @@ async function renderHome(){
       <div class="available-block"><div class="available-amount">${formatCents(p.available)}</div><div class="available-label">Available now</div></div>
 
       <div class="money-theater v10" id="moneyTheater" data-focus="bills" aria-label="Interactive weekly money flow with four live category systems">
-        <div class="v11-source-gate"><i></i><span>Pay plan · ${payLabel}</span></div>${recent?`<div class="v11-event">Recent flow · ${formatCents(recent.amount)} → ${escapeHtml(recent.name)}</div>`:''}<div class="v10-ambient">
+        <a class="v11-source-gate" href="#connections"><i></i><span>${escapeHtml(sourceLabel)}</span></a>${recent?`<div class="v11-event">Recent flow · ${formatCents(recent.amount)} → ${escapeHtml(recent.name)}</div>`:''}<div class="v10-ambient">
           <div class="v10-haze bills"></div><div class="v10-haze essentials"></div><div class="v10-haze lifestyle"></div><div class="v10-haze savings"></div>
           <div class="v10-arc a"></div><div class="v10-arc b"></div><div class="v10-arc c"></div>
           <span class="v10-particle p1"></span><span class="v10-particle p2"></span><span class="v10-particle p3"></span><span class="v10-particle p4"></span><span class="v10-particle p5"></span><span class="v10-particle p6"></span><span class="v10-particle p7"></span><span class="v10-particle p8"></span>
@@ -4010,6 +4179,7 @@ async function renderHome(){
           <span class="zone-text-v9"><small>Savings</small><strong>${formatCents(p.savingsThisWeek||0)}</strong><span>Set aside</span></span>
         </button>
 
+        <div class="constellation-cap bills">Adaptive</div><div class="constellation-cap essentials">Adaptive</div><div class="constellation-cap lifestyle">Adaptive</div><div class="constellation-cap savings">Adaptive</div>
         <div class="v10-mini-cluster bills" id="miniBills"></div>
         <div class="v10-mini-cluster essentials" id="miniEssentials"></div>
         <div class="v10-mini-cluster lifestyle" id="miniLifestyle"></div>
@@ -4024,7 +4194,7 @@ async function renderHome(){
           <strong id="sceneFocusValue">${formatCents(p.protected)}</strong>
           <span id="sceneFocusCopy">All four systems stay visible; the selected one becomes brighter and more detailed.</span><a class="scene-focus-link" id="sceneFocusLink" href="#bills">Open studio</a>
         </div>
-        <div class="v10-scene-legend">
+        <div class="scene-usage-hint">Tap once to focus · twice to enter · bottom nav always works</div><div class="v10-scene-legend">
           <i class="v10-legend-dot" style="color:#60a5fa;background:#60a5fa"></i><span>Bills</span><span class="sep">•</span>
           <i class="v10-legend-dot" style="color:#6ee7b7;background:#6ee7b7"></i><span>Needs</span><span class="sep">•</span>
           <i class="v10-legend-dot" style="color:#f0a7d3;background:#f0a7d3"></i><span>Lifestyle</span><span class="sep">•</span>
@@ -4079,7 +4249,7 @@ async function renderDetails(){
         <div class="anatomy-panel-head"><div><small id="anatomyKicker">Essentials</small><strong id="anatomyTitle">${sections.essentials.title}</strong><span id="anatomyCopy">${sections.essentials.copy}</span></div><span class="deep-link-badge">Open layer</span></div>
         <div class="anatomy-panel-body"><div class="row-list" id="anatomyRows">${sections.essentials.html}</div></div>
       </section>
-      <div class="anatomy-actions"><a class="deep-link" href="#bills"><div><strong>Bill Protection Studio</strong><span>Fund and time required obligations.</span></div><span class="deep-link-badge">Studio</span></a><a class="deep-link" href="#essentials"><div><strong>Essentials Runway</strong><span>Translate remaining money into weekly coverage.</span></div><span class="deep-link-badge">Runway</span></a><a class="deep-link" href="#savings"><div><strong>Savings Goal Studio</strong><span>Give weekly savings visible destinations.</span></div><span class="deep-link-badge">Goals</span></a><a class="deep-link" href="#precheck"><div><strong>Can I Spend This?</strong><span>Preview a purchase before logging it.</span></div><span class="deep-link-badge">Simulate</span></a><a class="deep-link" href="#history"><div><strong>Weekly Memory</strong><span>See previous weeks as visual fingerprints.</span></div><span class="deep-link-badge">History</span></a><a class="deep-link" href="#scenario"><div><strong>Scenario Sandbox</strong><span>Test changes without touching the live plan.</span></div><span class="deep-link-badge">What-if</span></a><a class="deep-link" href="#preferences"><div><strong>Presentation Settings</strong><span>Motion, density, and contrast controls.</span></div><span class="deep-link-badge">Personalize</span></a><a class="deep-link" href="#future"><div><strong>Future Layer Lab</strong><span>Preview connected data, scene choreography, and adaptive constellations.</span></div><span class="deep-link-badge">Preview</span></a><a class="deep-link" href="#insights"><div><strong>Advanced Insights</strong><span>Move into the analytical observatory.</span></div><span class="deep-link-badge">Deeper</span></a><a class="deep-link" href="#reset"><div><strong>Start New Week</strong><span>Open the cycle-transition flow.</span></div><span class="deep-link-badge">Rollover</span></a></div>
+      <div class="anatomy-actions"><a class="deep-link" href="#bills"><div><strong>Bill Protection Studio</strong><span>Fund and time required obligations.</span></div><span class="deep-link-badge">Studio</span></a><a class="deep-link" href="#essentials"><div><strong>Essentials Runway</strong><span>Translate remaining money into weekly coverage.</span></div><span class="deep-link-badge">Runway</span></a><a class="deep-link" href="#savings"><div><strong>Savings Goal Studio</strong><span>Give weekly savings visible destinations.</span></div><span class="deep-link-badge">Goals</span></a><a class="deep-link" href="#lifestyle"><div><strong>Lifestyle Flex Studio</strong><span>See flexible spending pace without judgment-heavy warnings.</span></div><span class="deep-link-badge">Flex</span></a><a class="deep-link" href="#precheck"><div><strong>Can I Spend This?</strong><span>Preview a purchase before logging it.</span></div><span class="deep-link-badge">Simulate</span></a><a class="deep-link" href="#history"><div><strong>Weekly Memory</strong><span>See previous weeks as visual fingerprints.</span></div><span class="deep-link-badge">History</span></a><a class="deep-link" href="#scenario"><div><strong>Scenario Sandbox</strong><span>Test changes without touching the live plan.</span></div><span class="deep-link-badge">What-if</span></a><a class="deep-link" href="#preferences"><div><strong>Presentation Settings</strong><span>Motion, density, and contrast controls.</span></div><span class="deep-link-badge">Personalize</span></a><a class="deep-link" href="#connections"><div><strong>Connected Data Center</strong><span>Import and reconcile outside transaction data without replacing the plan.</span></div><span class="deep-link-badge">Data</span></a><a class="deep-link" href="#future"><div><strong>System Architecture</strong><span>See how adaptive constellations, choreography, and connected data fit together.</span></div><span class="deep-link-badge">Guide</span></a><a class="deep-link" href="#insights"><div><strong>Advanced Insights</strong><span>Move into the analytical observatory.</span></div><span class="deep-link-badge">Deeper</span></a><a class="deep-link" href="#reset"><div><strong>Start New Week</strong><span>Open the cycle-transition flow.</span></div><span class="deep-link-badge">Rollover</span></a></div>
     </div>`;
     const nodes=[...document.querySelectorAll('.anatomy-node')];
     const kicker=document.getElementById('anatomyKicker'), title=document.getElementById('anatomyTitle'), copy=document.getElementById('anatomyCopy'), rows=document.getElementById('anatomyRows');
@@ -4223,61 +4393,51 @@ function renderPreferences(){
   document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{writeUiPrefs({[b.dataset.key]:b.dataset.value});renderPreferences();});
 }
 
-function renderFutureLab(){
-  shellMeta('Future Lab','Preview Layers 20 · 4 · 2','See how the next three systems would sit on top of the upgraded base','<a class="text-action" href="#details">Back</a>');
-  nav('future');
-  root.innerHTML=`<div class="future-stack">
-    <section class="studio-hero" style="--studio-accent:#67e8f9"><span class="studio-kicker">Preview only</span><h2>Three possible layers above the new base.</h2><p class="studio-copy">These are visual/product prototypes, not active financial integrations. Switch between them to see how each would extend the 13 upgrades already built.</p></section>
-    <div class="future-tabs">
-      <button class="future-tab active" data-preview="connected"><small>Idea 20</small><strong>Connected financial data</strong></button>
-      <button class="future-tab" data-preview="choreo"><small>Idea 4</small><strong>Scene-to-page choreography</strong></button>
-      <button class="future-tab" data-preview="constellation"><small>Idea 2</small><strong>Adaptive sub-constellations</strong></button>
-    </div>
 
-    <section class="future-panel active" data-panel="connected">
-      <div class="future-preview"><span class="studio-kicker">20 · Connected data layer</span><h2>The planner stays central; bank data becomes a reconciliation layer.</h2><p>The visual separates planned Available Now from actual account data instead of collapsing them into one confusing number.</p><span class="preview-only">Mock data · no account connection active</span>
-        <div class="data-twin">
-          <div class="twin-column"><h3>This Week planner</h3><div class="data-row"><div><strong>Available Now</strong><span>Plan-derived</span></div><b>$642</b></div><div class="data-row"><div><strong>Protected Bills</strong><span>Planning reserve</span></div><b>$380</b></div><div class="data-row"><div><strong>Savings</strong><span>Weekly target</span></div><b>$145</b></div></div>
-          <div class="sync-bridge"><div class="sync-dot"></div></div>
-          <div class="twin-column"><h3>Connected accounts</h3><div class="data-row"><div><strong>Checking</strong><span>Posted balance</span></div><b>$1,284</b></div><div class="data-row"><div><strong>Pending</strong><span>Not yet reconciled</span></div><b>-$86</b></div><div class="data-row"><div><strong>Matched transactions</strong><span>Suggested categories</span></div><b>4</b></div></div>
-        </div>
-        <div class="reconcile-card"><strong>Suggested match · $42.17 Grocery Store → Groceries</strong><span>The connected layer would ask for confirmation before changing This Week’s category history. Raw bank balance would never replace the planning model.</span></div>
-        <div class="future-notes"><div class="future-note"><small>Separation</small><strong>Plan vs. actual</strong><span>Users always know whether a number comes from their plan or a financial institution.</span></div><div class="future-note"><small>Reconciliation</small><strong>Suggest, then confirm</strong><span>Imported transactions can be matched without silently rewriting the week.</span></div><div class="future-note"><small>Safety</small><strong>Pending stays pending</strong><span>Pending transactions remain visually distinct until posted.</span></div></div>
-      </div>
-    </section>
-
-    <section class="future-panel" data-panel="choreo">
-      <div class="future-preview"><span class="studio-kicker">4 · Scene-to-page choreography</span><h2>Navigation would physically emerge from the Home scene.</h2><p>Instead of fading to an unrelated page, the selected category becomes the visual source of the next screen.</p><span class="preview-only">Interactive transition mockup</span>
-        <div class="choreo-stage" id="choreoStage" data-world="home"><div class="choreo-world"></div><div class="choreo-node bills"><strong>Bills</strong><span>Protection world</span></div><div class="choreo-node essentials"><strong>Essentials</strong><span>Runway world</span></div><div class="choreo-node lifestyle"><strong>Lifestyle</strong><span>Flexible world</span></div><div class="choreo-node savings"><strong>Savings</strong><span>Goal world</span></div><div class="choreo-core"><div><strong>Available</strong><span>$642 · Home scene</span></div></div></div>
-        <div class="choreo-controls"><button class="choreo-btn" data-world="home">Home</button><button class="choreo-btn" data-world="bills">Bills</button><button class="choreo-btn" data-world="essentials">Essentials</button><button class="choreo-btn" data-world="lifestyle">Lifestyle</button><button class="choreo-btn" data-world="savings">Savings</button></div>
-        <div class="future-notes"><div class="future-note"><small>Entry</small><strong>Selected node expands</strong><span>The category grows toward the user while the rest of Home recedes.</span></div><div class="future-note"><small>Continuity</small><strong>Same object, deeper page</strong><span>Color, emblem, and motion persist into the destination studio.</span></div><div class="future-note"><small>Return</small><strong>Reverse collapse</strong><span>Back navigation visually rebuilds the four-category Home system.</span></div></div>
-      </div>
-    </section>
-
-    <section class="future-panel" data-panel="constellation">
-      <div class="future-preview"><span class="studio-kicker">2 · Adaptive sub-category constellations</span><h2>Each parent could automatically rearrange around any number of real categories.</h2><p>The layout algorithm changes shape as the user adds or removes lanes, while Home still caps visible density.</p><span class="preview-only">Interactive layout preview</span>
-        <div class="constellation-stage" id="constStage"><div class="const-parent"><div><strong>Essentials</strong><span>Adaptive parent</span></div></div></div>
-        <div class="const-density"><button class="density-demo active" data-count="2">2 children</button><button class="density-demo" data-count="3">3 children</button><button class="density-demo" data-count="4">4 children</button><button class="density-demo" data-count="7">7 children</button></div>
-        <div class="future-notes"><div class="future-note"><small>1–2 lanes</small><strong>Balanced arc</strong><span>Large readable children with generous spacing.</span></div><div class="future-note"><small>3–4 lanes</small><strong>Triangle / diamond</strong><span>Compact geometry without shrinking the category labels too far.</span></div><div class="future-note"><small>5+ lanes</small><strong>Top 3 + “N more”</strong><span>Home remains controlled; the full constellation opens only after focus.</span></div></div>
-      </div>
-    </section>
-  </div>`;
-
-  const tabs=[...document.querySelectorAll('.future-tab')],panels=[...document.querySelectorAll('.future-panel')];
-  tabs.forEach(t=>t.onclick=()=>{tabs.forEach(x=>x.classList.toggle('active',x===t));panels.forEach(p=>p.classList.toggle('active',p.dataset.panel===t.dataset.preview));});
-  const stage=document.getElementById('choreoStage');document.querySelectorAll('.choreo-btn').forEach(b=>b.onclick=()=>{stage.dataset.world=b.dataset.world;});
-  const constStage=document.getElementById('constStage');
-  const names=['Groceries','Gas','Transit','Household','Medicine','Childcare','Other'];
-  const layout=(count)=>{
-    const visible=count>4?4:count;
-    const pts={2:[[28,46],[72,46]],3:[[50,20],[24,68],[76,68]],4:[[28,26],[72,26],[28,72],[72,72]]}[visible]||[[50,20],[24,68],[76,68]];
-    const children=[];
-    for(let i=0;i<visible;i++){const isMore=count>4&&i===3;children.push(`<div class="const-child ${isMore?'const-more':''}" style="left:${pts[i][0]}%;top:${pts[i][1]}%;transform:translate(-50%,-50%);animation-delay:-${i*1.2}s"><strong>${isMore?'+'+(count-3)+' more':names[i]}</strong><span>${isMore?'Open focused view':'$'+(42+i*19)+' left'}</span></div>`);}
-    constStage.innerHTML='<div class="const-parent"><div><strong>Essentials</strong><span>'+count+' configured lanes</span></div></div>'+children.join('');
-  };
-  document.querySelectorAll('.density-demo').forEach(b=>b.onclick=()=>{document.querySelectorAll('.density-demo').forEach(x=>x.classList.toggle('active',x===b));layout(Number(b.dataset.count));});
-  layout(2);
+async function renderLifestyleStudio(){
+  shellMeta('Lifestyle','Flex Studio','Understand optional spending without turning Home into a spreadsheet','<a class="text-action" href="#home">Home</a>');
+  nav('lifestyle');const userId=getStoredUserId();if(!userId){location.hash='setup';return;}
+  try{
+    const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`),s=homeSignals(p),weekPct=Math.max(1,s.weekProgress);
+    const cats=p.forYou||[],allocated=cats.reduce((n,x)=>n+(x.allocated||0),0),spent=cats.reduce((n,x)=>n+Math.max(0,(x.allocated||0)-(x.remaining||0)),0),spentPct=allocated?spent/allocated*100:0,ratio=spentPct/weekPct;
+    const temp=ratio<.85?'Calm':ratio<1.2?'Active':'Hot',copy=temp==='Calm'?'Flexible spending is moving slower than the week.':temp==='Active'?'Flexible spending is roughly tracking the week.':'Flexible spending is moving faster than elapsed time.';
+    const top=cats.slice().sort((a,b)=>((a.remaining||0)/(a.allocated||1))-((b.remaining||0)/(b.allocated||1))).slice(0,3);
+    root.innerHTML=`<div class="studio-stack"><section class="studio-hero" style="--studio-accent:#f0a7d3"><span class="studio-kicker">Lifestyle Flex Studio</span><h2>Keep optional spending expressive, not chaotic.</h2><p class="studio-copy">This view uses pace and remaining room instead of good/bad judgments.</p><div class="studio-summary"><div class="studio-stat"><small>Flex temperature</small><strong>${temp}</strong><span>${copy}</span></div><div class="studio-stat"><small>Remaining</small><strong>${formatCents(cats.reduce((n,x)=>n+Math.max(0,x.remaining),0))}</strong><span>Across flexible lanes</span></div><div class="studio-stat"><small>Used</small><strong>${Math.round(spentPct)}%</strong><span>${Math.round(weekPct)}% of week elapsed</span></div></div></section>
+      <section class="lifestyle-world"><div class="flex-orbit"></div><div class="flex-core"><div><small>Flex temperature</small><strong>${temp}</strong><span>${formatCents(spent)} used</span></div></div>${top.map((x,i)=>`<div class="flex-node n${i+1}"><small>${Math.max(0,Math.round((x.remaining||0)/Math.max(1,x.allocated||1)*100))}% left</small><strong>${escapeHtml(x.name)}</strong><span>${formatCents(x.remaining)} remaining</span></div>`).join('')}</section>
+      <section class="section"><div class="next-step"><div class="next-step-copy"><small>Low-friction tool</small><strong>Thinking about a purchase?</strong><span>Preview the effect first; nothing changes until you log it.</span></div><a class="btn btn-primary" href="#precheck">Can I spend this?</a></div></section></div>`;
+  }catch(e){root.innerHTML=errBox(e.message);}
 }
+
+async function renderConnections(){
+  shellMeta('Data','Connected Data Center','Reconcile outside transaction data without replacing the weekly plan','<a class="text-action" href="#home">Home</a>');
+  nav('connections');const userId=getStoredUserId();if(!userId){location.hash='setup';return;}
+  try{
+    const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`),cats=[...p.essentials.map(x=>({...x,type:'LIVING'})),...p.forYou.map(x=>({...x,type:'DISCRETIONARY'}))];
+    const draw=()=>{
+      const d=readConnectedData(),summary=connectedDataSummary(),records=d.records||[],review=records.filter(x=>!x.reconciled).slice(0,30);
+      root.innerHTML=`<div class="connections-stack">
+        <section class="connection-stage"><span class="studio-kicker">Connected-data layer</span><h2 style="margin:6px 0">Plan and actual stay intentionally separate.</h2><p class="studio-copy">This no-cost build supports local CSV transaction import and reconciliation. Direct live bank sync still requires a financial-data provider and credentials; the adapter slot is visible but does not pretend to be connected.</p>
+          <div class="connection-split"><div class="connection-column"><h3>This Week planner</h3><div class="connection-row"><div><strong>Available Now</strong><span>Plan-derived</span></div><b>${formatCents(p.available)}</b></div><div class="connection-row"><div><strong>Protected Bills</strong><span>Planning reserve</span></div><b>${formatCents(p.protected)}</b></div><div class="connection-row"><div><strong>Savings</strong><span>Weekly plan</span></div><b>${formatCents(p.savingsThisWeek||0)}</b></div></div><div class="connection-bridge"><i></i></div><div class="connection-column"><h3>Imported actuality</h3><div class="connection-row"><div><strong>Records</strong><span>${escapeHtml(summary.sourceName||'No source imported')}</span></div><b>${summary.total}</b></div><div class="connection-row"><div><strong>Needs review</strong><span>Posted outflows not matched</span></div><b>${summary.unreconciled}</b></div><div class="connection-row"><div><strong>Pending</strong><span>Never applied until posted</span></div><b>${summary.pending}</b></div></div></div>
+        </section>
+        <section class="import-card"><h3>Import a transaction CSV</h3><p>Choose how your file represents purchases. The file stays in this browser’s local storage; imported purchases are only applied to This Week after you confirm a category match.</p><div class="file-row"><div class="field-group"><label class="field-label">CSV file</label><input class="file-input" type="file" id="bankFile" accept=".csv,text/csv"></div><div class="field-group"><label class="field-label">Amount sign convention</label><select id="signMode" class="select-field"><option value="negativePurchase">Negative amounts are purchases</option><option value="positivePurchase">Positive amounts are purchases</option></select></div></div><div class="action-row"><button class="btn btn-primary" id="demoImport">Load demo transactions</button><button class="btn btn-secondary" id="clearImport">Clear imported data</button></div></section>
+        <section class="provider-slot"><strong>Direct bank-sync adapter</strong><span>Architecture is reserved here for a provider such as an account-data API. It is intentionally disabled until provider credentials, consent flow, security review, and a backend are available.</span></section>
+        <section class="section"><div class="section-head"><div><span class="section-kicker">Reconciliation</span><h2>Confirm before changing the week</h2><div class="section-caption">Pending transactions and deposits remain reference-only. Posted purchases can be matched into an existing spending lane.</div></div></div><div class="reconcile-list">${review.length?review.map(r=>{const suggested=categorySuggestion(r,p);const options=cats.map(x=>`<option value="${x.type}|${x.id}" ${suggested&&suggested.id===x.id?'selected':''}>${escapeHtml(x.name)}</option>`).join('');return`<div class="reconcile-row"><div><strong>${escapeHtml(r.description)} · ${r.direction==='outflow'?'-':'+'}${formatCents(r.amount)}</strong><span>${new Date(r.date).toLocaleDateString()} · ${escapeHtml(r.source||'Import')} · <span class="data-badge ${r.status}">${r.status}</span> ${r.reconciled?'· reconciled':''}</span></div><div class="reconcile-tools">${r.direction==='outflow'&&r.status!=='pending'&&!r.reconciled?`<select data-rec="${r.id}">${options}</select><button class="btn btn-primary reconcile-btn" data-id="${r.id}">Reconcile</button>`:`<span class="data-badge">${r.reconciled?'Applied':r.direction==='inflow'?'Inflow reference':'Waiting'}</span>`}</div></div>`}).join(''):'<div class="empty">No imported transactions to review.</div>'}</div></section>
+      </div>`;
+
+      const file=document.getElementById('bankFile');
+      file.onchange=()=>{const chosen=file.files?.[0];if(!chosen)return;const reader=new FileReader();reader.onload=()=>{try{const rows=parseCsvText(reader.result),records=normalizeImportedRows(rows,document.getElementById('signMode').value,chosen.name);writeConnectedData({sourceName:chosen.name,importedAt:nowIso(),records});toast(`Imported ${records.length} records for review.`);draw();}catch(e){toast(e.message);}};reader.readAsText(chosen);};
+      document.getElementById('demoImport').onclick=()=>{const demo=[{Date:new Date().toISOString().slice(0,10),Description:'Neighborhood Grocery Market',Amount:'-42.17',Status:'Posted'},{Date:new Date().toISOString().slice(0,10),Description:'City Fuel Station',Amount:'-36.80',Status:'Posted'},{Date:new Date().toISOString().slice(0,10),Description:'Local Pizza',Amount:'-28.55',Status:'Pending'},{Date:new Date().toISOString().slice(0,10),Description:'Payroll Deposit',Amount:'1800.00',Status:'Posted'}];const records=normalizeImportedRows(demo,'negativePurchase','Demo connection');writeConnectedData({sourceName:'Demo connection',importedAt:nowIso(),records});toast('Demo transaction data loaded.');draw();};
+      document.getElementById('clearImport').onclick=()=>{writeConnectedData({sourceName:null,importedAt:null,records:[]});toast('Imported data cleared.');draw();};
+      document.querySelectorAll('.reconcile-btn').forEach(btn=>btn.onclick=async()=>{const d=readConnectedData(),rec=d.records.find(x=>x.id===btn.dataset.id),sel=document.querySelector(`select[data-rec="${btn.dataset.id}"]`);if(!rec||!sel)return;const [type,id]=sel.value.split('|');btn.disabled=true;try{await apiRequest('/transaction/import',{method:'POST',body:JSON.stringify({userId,categoryType:type,categoryId:id,amount:rec.amount,note:rec.description,externalId:rec.externalId,createdAt:rec.date})});rec.reconciled=true;rec.categoryId=id;rec.categoryType=type;writeConnectedData(d);toast('Imported purchase reconciled.');draw();}catch(e){toast(e.message);btn.disabled=false;}});
+    };draw();
+  }catch(e){root.innerHTML=errBox(e.message);}
+}
+function renderFutureLab(){
+  shellMeta('Architecture','System Guide','Understand the three systems that were promoted from preview into the product','<a class="text-action" href="#details">Back</a>');
+  nav('future');
+  root.innerHTML=`<div class="studio-stack"><section class="studio-hero" style="--studio-accent:#67e8f9"><span class="studio-kicker">Implemented architecture</span><h2>Adaptive, spatial, and reconciliation-aware.</h2><p class="studio-copy">The former Ideas 2, 4, and 20 now operate as product layers. The guide keeps them understandable without adding controls to Home.</p></section><section class="arch-grid"><div class="arch-card"><small>Adaptive constellations</small><strong>Density follows the user, not the other way around.</strong><span>Home ranks relevant sub-lanes, caps visible children by screen size and preference, and uses +N when complexity grows.</span><a href="#home">See on Home</a></div><div class="arch-card"><small>Scene choreography</small><strong>Category objects become navigation sources.</strong><span>Tap once to focus, tap again or use Open Studio to enter a category world. Bottom navigation remains a permanent fallback.</span><a href="#home">Try on Home</a></div><div class="arch-card"><small>Connected data</small><strong>Actual transactions reconcile into the plan.</strong><span>CSV imports are functional now; direct bank sync remains an adapter slot until a provider/backend is available.</span><a href="#connections">Open Data Center</a></div></section></div>`;
+}
+
 async function renderLog(){
   shellMeta('Add Spending','Transaction Flow','Send a purchase into the right spending lane','<span class="header-pill">Flow entry</span>');
   nav('log');
@@ -4409,20 +4569,23 @@ async function render(){
   applyUiPrefs();
   const r=route();
   window.scrollTo({top:0,behavior:'smooth'});
-  if(r==='log')return renderLog();
-  if(r==='details')return renderDetails();
-  if(r==='insights')return renderInsights();
-  if(r==='bills')return renderBillsStudio();
-  if(r==='essentials')return renderEssentialsStudio();
-  if(r==='savings')return renderSavingsStudio();
-  if(r==='precheck')return renderPrecheck();
-  if(r==='history')return renderHistory();
-  if(r==='scenario')return renderScenario();
-  if(r==='preferences')return renderPreferences();
-  if(r==='future')return renderFutureLab();
-  if(r==='reset')return renderReset();
-  if(r==='setup')return renderSetup();
-  return renderHome();
+  if(r==='log')await renderLog();
+  else if(r==='details')await renderDetails();
+  else if(r==='insights')await renderInsights();
+  else if(r==='bills')await renderBillsStudio();
+  else if(r==='essentials')await renderEssentialsStudio();
+  else if(r==='lifestyle')await renderLifestyleStudio();
+  else if(r==='savings')await renderSavingsStudio();
+  else if(r==='precheck')await renderPrecheck();
+  else if(r==='history')await renderHistory();
+  else if(r==='scenario')await renderScenario();
+  else if(r==='connections')await renderConnections();
+  else if(r==='preferences')await renderPreferences();
+  else if(r==='future')await renderFutureLab();
+  else if(r==='reset')await renderReset();
+  else if(r==='setup')await renderSetup();
+  else await renderHome();
+  requestAnimationFrame(()=>applyRouteEntryTransition(r));
 }
 window.addEventListener('hashchange',render); render();
 </script></body></html>
