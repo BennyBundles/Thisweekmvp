@@ -6040,6 +6040,34 @@ const PROVIDER_ADAPTER_CONTRACT=Object.freeze({
   optionalAdapterMethods:['connect','refresh','disconnect'],
   secretPolicy:'Provider credentials and access tokens must never be stored in this browser-local model.'
 });
+const BACKEND_SYNC_CONTRACT_VERSION=1;
+const BACKEND_SYNC_CONTRACT=Object.freeze({
+  version:BACKEND_SYNC_CONTRACT_VERSION,
+  transport:'future_https_json',
+  snapshot:{
+    exportSchema:'thisweek.portable',
+    clientGeneratedIdempotencyKey:'required',
+    recordIds:'stable',
+    amountUnit:'cent',
+    currency:'USD'
+  },
+  changeTracking:{
+    currentClientMode:'snapshot_only',
+    futureRequirements:['server revision','record updatedAt/version','conflict detection','tombstones for deletes']
+  },
+  conflictPolicy:{
+    current:'not_implemented',
+    futureRule:'Never silently merge conflicting financial mutations.'
+  },
+  authentication:{
+    current:'none',
+    futureRequirement:'Authenticated user-scoped server session'
+  },
+  providerSecrets:{
+    storage:'server_only',
+    clientExport:'forbidden'
+  }
+});
 const NORMALIZED_ENTITY_MANIFEST=Object.freeze({
   users:{primaryKey:'id',foreignKeys:[]},
   payProfiles:{primaryKey:'id',foreignKeys:['userId -> users.id']},
@@ -6221,6 +6249,7 @@ function buildPortableDataEnvelope(){
     exportedAt:nowIso(),
     source:{application:'This Week',runtime:'browser-local',currency:'USD',amountUnit:'cent'},
     providerAdapterContract:PROVIDER_ADAPTER_CONTRACT,
+    backendSyncContract:BACKEND_SYNC_CONTRACT,
     entityManifest:NORMALIZED_ENTITY_MANIFEST,
     integrity,
     counts,
@@ -6316,6 +6345,80 @@ function deserializePortableData(json){
   if(!check.valid)throw new Error(check.errors.join(' '));
   return envelope;
 }
+function buildSchemaManifestEnvelope(){
+  return {
+    schema:'thisweek.schema-manifest',
+    schemaVersion:1,
+    generatedAt:nowIso(),
+    coreSchemaVersion:CORE_SCHEMA_VERSION,
+    portableSchemaVersion:PORTABLE_DATA_SCHEMA_VERSION,
+    modelVersion:NORMALIZED_MODEL_VERSION,
+    currency:'USD',
+    amountUnit:'cent',
+    entityManifest:NORMALIZED_ENTITY_MANIFEST,
+    providerAdapterContract:PROVIDER_ADAPTER_CONTRACT,
+    backendSyncContract:BACKEND_SYNC_CONTRACT
+  };
+}
+function downloadSchemaManifest(){
+  const json=JSON.stringify(buildSchemaManifestEnvelope(),null,2),blob=new Blob([json],{type:'application/json;charset=utf-8'});
+  const url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='this-week-schema-manifest.json';document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+  return json.length;
+}
+function runCoreMigrationSelfTest(){
+  const tests=[];
+  const add=(name,pass,detail)=>tests.push({name,pass:!!pass,detail});
+  const v1={
+    userId:'fixture-user',
+    config:{bills:[],livingNeeds:[],discretionary:[],payProfile:{netPayAmount:123456}},
+    weeks:[{id:'fixture-week',balances:[],billAllocations:[]}],
+    transactions:[{id:'tx1',weekId:'fixture-week',categoryId:'cat1',categoryType:'LIVING',amount:1234}],
+  };
+  const migratedV1=normalizeRuntimeState(clone(v1));
+  add('V1 → current schema',migratedV1?.schemaVersion===CORE_SCHEMA_VERSION,'Expected schema v'+CORE_SCHEMA_VERSION+'.');
+  add('Missing arrays repaired',Array.isArray(migratedV1?.adjustments)&&Array.isArray(migratedV1?.importedExternalIds),'Legacy structural arrays exist after migration.');
+  add('Financial values preserved',migratedV1?.config?.payProfile?.netPayAmount===123456&&migratedV1?.transactions?.[0]?.amount===1234,'Fixture money values remain unchanged.');
+
+  const v2={schemaVersion:2,userId:'fixture-user',config:{bills:[],livingNeeds:[],discretionary:[]},weeks:[],transactions:[],adjustments:[],importedExternalIds:[]};
+  const migratedV2=normalizeRuntimeState(clone(v2));
+  add('V2 → V3 metadata',migratedV2?.schemaVersion===3&&migratedV2?.modelMeta?.amountUnit==='cent'&&migratedV2?.modelMeta?.currency==='USD','Model metadata added.');
+
+  const future={schemaVersion:CORE_SCHEMA_VERSION+2,userId:'future-user',config:{bills:[],livingNeeds:[],discretionary:[]},weeks:[],transactions:[],adjustments:[],importedExternalIds:[]};
+  const migratedFuture=normalizeRuntimeState(clone(future));
+  add('Future schema not downgraded',migratedFuture?.schemaVersion===CORE_SCHEMA_VERSION+2,'Newer schema marker is preserved.');
+  return tests;
+}
+function runPortableRoundTripSelfTest(){
+  const json=serializePortableData(false),parsed=deserializePortableData(json),check=validatePortableDataEnvelope(parsed),current=buildPortableDataEnvelope();
+  const sameCounts=JSON.stringify(parsed.counts)===JSON.stringify(current.counts);
+  const sameVersion=parsed.modelVersion===current.modelVersion&&parsed.coreSchemaVersion===current.coreSchemaVersion;
+  return {
+    pass:check.valid&&sameCounts&&sameVersion,
+    bytes:json.length,
+    sameCounts,
+    sameVersion,
+    errors:check.errors||[],
+    warnings:check.warnings||[]
+  };
+}
+function runPhase13ReadinessSuite(){
+  const migration=runCoreMigrationSelfTest();
+  const model=buildNormalizedDataModel(),integrity=validateNormalizedDataModel(model);
+  const roundTrip=runPortableRoundTripSelfTest();
+  const tests=[
+    ...migration,
+    {name:'Normalized relationship integrity',pass:integrity.valid,detail:integrity.valid?'No broken normalized relationships.':integrity.errors.join(' | ')},
+    {name:'Integer-cent/currency contract',pass:model.amountUnit==='cent'&&model.currency==='USD',detail:'Normalized model explicitly uses USD integer cents.'},
+    {name:'Portable round trip',pass:roundTrip.pass,detail:roundTrip.pass?'Serialization/deserialization preserved schema and entity counts.':roundTrip.errors.join(' | ')},
+    {name:'Provider secret boundary',pass:BACKEND_SYNC_CONTRACT.providerSecrets.storage==='server_only'&&BACKEND_SYNC_CONTRACT.providerSecrets.clientExport==='forbidden',detail:'Provider secrets are outside the client export contract.'},
+    {name:'Conflict boundary declared',pass:BACKEND_SYNC_CONTRACT.conflictPolicy.current==='not_implemented',detail:'Current browser app does not pretend multi-device conflict resolution exists.'}
+  ];
+  const passed=tests.filter(x=>x.pass).length;
+  return {pass:passed===tests.length,passed,total:tests.length,tests,integrity,roundTrip};
+}
+
 function downloadPortableDataExport(){
   const json=serializePortableData(true),blob=new Blob([json],{type:'application/json;charset=utf-8'});
   const date=new Date().toISOString().slice(0,10),url=URL.createObjectURL(blob),a=document.createElement('a');
@@ -6333,6 +6436,7 @@ function portableDataPreview(){
     counts:envelope.counts,
     integrity:envelope.integrity,
     providerInterfaceVersion:CONNECTED_ACCOUNT_INTERFACE_VERSION,
+    backendSyncContractVersion:BACKEND_SYNC_CONTRACT_VERSION,
     normalizedCollections:Object.keys(NORMALIZED_ENTITY_MANIFEST).length
   };
 }
@@ -7430,6 +7534,7 @@ function renderDataModel(){
           <div class="schema-row"><div><strong>Required adapter methods</strong><span>${escapeHtml(PROVIDER_ADAPTER_CONTRACT.requiredAdapterMethods.join(' · '))}</span></div><span class="schema-badge">provider-neutral</span></div>
           <div class="schema-row"><div><strong>Entity relationship manifest</strong><span>${Object.keys(NORMALIZED_ENTITY_MANIFEST).length} normalized collections define primary and foreign-key mappings for a future server model.</span></div><span class="schema-badge">mapped</span></div>
           <div class="schema-row"><div><strong>Client secret policy</strong><span>${escapeHtml(PROVIDER_ADAPTER_CONTRACT.secretPolicy)}</span></div><span class="schema-badge">no secrets</span></div>
+          <div class="schema-row"><div><strong>Future sync contract</strong><span>Snapshot-only today · future server revisions, tombstones, and conflict detection are required before multi-device sync.</span></div><span class="schema-badge">v${BACKEND_SYNC_CONTRACT_VERSION}</span></div>
           <div class="schema-row"><div><strong>Current account/source interfaces</strong><span>${accounts.length?accounts.map(a=>a.displayName+' · '+a.provider).join(' | '):'No connected-account interfaces. Local file import remains available.'}</span></div><span class="schema-badge">${accounts.length}</span></div>
         </div>
       </section>
@@ -7447,13 +7552,18 @@ function renderDataModel(){
       </section>
 
       <section class="section"><div class="section-head"><div><span class="section-kicker">Portable serialization</span><h2>Export a backend-ready snapshot</h2><div class="section-caption">The JSON contains local app data and normalized records. Treat the downloaded file as sensitive financial information.</div></div></div>
-        <div class="export-actions"><button class="btn btn-primary" id="downloadPortableExport">Export JSON</button><button class="btn btn-secondary" id="previewPortableSchema">Preview schema summary</button></div>
+        <div class="export-actions"><button class="btn btn-primary" id="downloadPortableExport">Export data JSON</button><button class="btn btn-secondary" id="downloadSchemaManifest">Export schema manifest</button><button class="btn btn-secondary" id="previewPortableSchema">Preview schema summary</button></div>
         <pre class="schema-code" id="portableSchemaPreview" hidden></pre>
+      </section>
+
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Backend readiness suite</span><h2>Test migrations, relationships, and serialization</h2><div class="section-caption">This runs fixture migrations and read-only contract checks. It never writes the fixture data into your plan.</div></div><button class="btn btn-secondary" id="runPhase13Suite">Run suite</button></div>
+        <div class="backend-contract" id="phase13SuiteResults"><div class="schema-row"><div><strong>Not run yet</strong><span>Run the suite to validate the current browser build against Phase 13 migration and export contracts.</span></div><span class="schema-badge">ready</span></div></div>
       </section>
 
       <div class="world-note">Export is read-only. It does not upload data, create an account, change your plan, or enable multi-device sync. Future sync still requires a backend, authentication, conflict handling, and security/privacy work.</div>
     </div>`;
     document.getElementById('downloadPortableExport')?.addEventListener('click',()=>{const bytes=downloadPortableDataExport();toast('Portable JSON export created · '+(bytes/1024).toFixed(1)+' KB');});
+    document.getElementById('downloadSchemaManifest')?.addEventListener('click',()=>{const bytes=downloadSchemaManifest();toast('Schema manifest exported · '+(bytes/1024).toFixed(1)+' KB');});
     document.getElementById('previewPortableSchema')?.addEventListener('click',()=>{
       const pre=document.getElementById('portableSchemaPreview');pre.hidden=!pre.hidden;
       if(!pre.hidden)pre.textContent=JSON.stringify(portableDataPreview(),null,2);
@@ -7468,6 +7578,17 @@ function renderDataModel(){
       }catch(e){
         if(copy)copy.textContent='Failed · '+e.message;
         toast('Portable serialization round trip failed.');
+      }
+    });
+    document.getElementById('runPhase13Suite')?.addEventListener('click',()=>{
+      const box=document.getElementById('phase13SuiteResults');
+      try{
+        const suite=runPhase13ReadinessSuite();
+        if(box)box.innerHTML=suite.tests.map(t=>`<div class="schema-row"><div><strong>${escapeHtml(t.name)}</strong><span>${escapeHtml(t.detail)}</span></div><span class="schema-badge">${t.pass?'pass':'fail'}</span></div>`).join('');
+        toast('Phase 13 readiness · '+suite.passed+'/'+suite.total+' checks passed.');
+      }catch(e){
+        if(box)box.innerHTML=`<div class="schema-row"><div><strong>Suite failed to run</strong><span>${escapeHtml(e.message)}</span></div><span class="schema-badge">fail</span></div>`;
+        toast('Phase 13 readiness suite failed.');
       }
     });
   }catch(e){root.innerHTML=errBox(e.message);}
