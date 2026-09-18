@@ -4096,6 +4096,102 @@ body[data-density="compact"] .studio-copy{max-width:58ch}
   .flex-lane-meta{grid-template-columns:1fr 1fr}.flex-lane-meta div:last-child{grid-column:1/-1}
 }
 
+
+/* PHASE 7 — CONNECTED DATA HARDENING v19 */
+.connection-command{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  padding:10px 12px;border-radius:17px;border:1px solid rgba(103,232,249,.075);background:rgba(103,232,249,.02)
+}
+.connection-command strong{display:block;font-size:.72rem}.connection-command span{display:block;margin-top:3px;color:#819aa5;font-size:.53rem;line-height:1.35}
+.connection-command-actions{display:flex;gap:6px;flex-wrap:wrap}
+.import-preview{
+  padding:14px;border-radius:22px;border:1px solid rgba(103,232,249,.11);
+  background:linear-gradient(145deg,rgba(103,232,249,.045),rgba(255,255,255,.014))
+}
+.import-preview-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.import-preview-head h3{margin:0;font-size:.84rem}.import-preview-head span{display:block;margin-top:4px;color:#819aa5;font-size:.55rem}
+.import-preview-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:10px}
+.import-preview-stat{padding:8px;border-radius:12px;border:1px solid rgba(177,206,221,.055);background:rgba(255,255,255,.016)}
+.import-preview-stat small{display:block;font-size:.39rem;text-transform:uppercase;letter-spacing:.08em;color:#77929e}
+.import-preview-stat strong{display:block;margin-top:3px;font-size:.63rem}
+.import-preview-list{display:grid;gap:5px;margin-top:9px}
+.import-preview-row{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:7px 8px;border-radius:12px;background:rgba(255,255,255,.014)
+}
+.import-preview-row strong{display:block;font-size:.57rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.import-preview-row span{display:block;margin-top:2px;font-size:.44rem;color:#819aa5}
+.import-preview-row b{font-size:.56rem}
+.import-duplicate{opacity:.58}
+.import-warning{
+  margin-top:9px;padding:8px 9px;border-radius:12px;border:1px solid rgba(246,215,132,.10);
+  background:rgba(246,215,132,.035);color:#bdaf81;font-size:.52rem;line-height:1.4
+}
+
+.data-filter-bar{display:flex;gap:6px;overflow-x:auto;padding-bottom:3px;scrollbar-width:none}
+.data-filter-bar::-webkit-scrollbar{display:none}
+.data-filter{
+  flex:0 0 auto;padding:7px 9px;border-radius:999px;border:1px solid rgba(177,206,221,.065);
+  background:rgba(255,255,255,.018);color:#97aeb7;font:inherit;font-size:.51rem;cursor:pointer
+}
+.data-filter.active{border-color:rgba(103,232,249,.16);background:rgba(103,232,249,.055);color:#d8edf2}
+.data-filter b{display:inline-grid;place-items:center;min-width:17px;height:17px;margin-left:4px;padding:0 4px;border-radius:999px;background:rgba(255,255,255,.035);font-size:.43rem}
+
+.reconcile-row.v19{grid-template-columns:minmax(0,1fr);gap:8px}
+.reconcile-top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:start}
+.reconcile-main strong{display:block;font-size:.72rem}.reconcile-main>span{display:block;margin-top:3px;color:#849da8;font-size:.53rem;line-height:1.4}
+.provenance-line{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.provenance-chip{
+  padding:4px 6px;border-radius:999px;border:1px solid rgba(177,206,221,.055);background:rgba(255,255,255,.014);
+  color:#819aa5;font-size:.43rem
+}
+.provenance-chip.review{border-color:rgba(246,215,132,.09);color:#c7b985}
+.provenance-chip.deferred{border-color:rgba(196,181,253,.10);color:#b9afd3}
+.provenance-chip.applied{border-color:rgba(110,231,183,.10);color:#a8d8bf}
+.reconcile-actions-v19{
+  display:grid;grid-template-columns:minmax(0,1fr) repeat(2,auto);gap:6px;align-items:center
+}
+.reconcile-actions-v19 select{
+  min-width:0;width:100%;padding:8px;border-radius:10px;border:1px solid rgba(177,206,221,.075);
+  background:#0b1c2b;color:#e8f5f8;font:inherit;font-size:.57rem
+}
+.reconcile-actions-v19 .btn{padding:8px 9px;font-size:.54rem}
+.data-mini-action{
+  appearance:none;padding:6px 8px;border-radius:10px;border:1px solid rgba(177,206,221,.065);background:rgba(255,255,255,.018);
+  color:#9db3bc;font:inherit;font-size:.5rem;cursor:pointer
+}
+.data-mini-action.danger{border-color:rgba(251,113,133,.10);color:#d7a3ad}
+.data-reference-note{
+  padding:8px 9px;border-radius:12px;border:1px solid rgba(177,206,221,.05);background:rgba(255,255,255,.012);
+  color:#8098a3;font-size:.51rem;line-height:1.4
+}
+
+.import-history{display:grid;gap:7px}
+.import-batch{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px;align-items:center;
+  padding:9px 10px;border-radius:14px;border:1px solid rgba(177,206,221,.055);background:rgba(255,255,255,.014)
+}
+.import-batch strong{display:block;font-size:.61rem}.import-batch span{display:block;margin-top:3px;color:#819aa5;font-size:.48rem;line-height:1.35}
+.audit-list{display:grid;gap:5px}
+.audit-row{
+  display:grid;grid-template-columns:8px minmax(0,1fr) auto;gap:8px;align-items:start;padding:7px 2px;border-bottom:1px solid rgba(177,206,221,.045)
+}
+.audit-row:last-child{border-bottom:0}
+.audit-dot{width:7px;height:7px;border-radius:50%;margin-top:4px;background:#67e8f9;box-shadow:0 0 7px rgba(103,232,249,.25)}
+.audit-row strong{display:block;font-size:.55rem}.audit-row span{display:block;margin-top:2px;color:#7f98a3;font-size:.46rem;line-height:1.35}.audit-row time{font-size:.43rem;color:#6e8792;white-space:nowrap}
+.provider-readiness{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:9px}
+.provider-ready-item{padding:8px;border-radius:12px;border:1px solid rgba(177,206,221,.05);background:rgba(255,255,255,.012)}
+.provider-ready-item small{display:block;font-size:.4rem;text-transform:uppercase;letter-spacing:.08em;color:#718b97}.provider-ready-item strong{display:block;margin-top:3px;font-size:.56rem}
+
+@media(max-width:430px){
+  .import-preview-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .reconcile-actions-v19{grid-template-columns:1fr 1fr}.reconcile-actions-v19 select{grid-column:1/-1}
+  .provider-readiness{grid-template-columns:1fr}
+}
+@media(max-width:340px){
+  .reconcile-top{grid-template-columns:1fr}
+  .reconcile-actions-v19{grid-template-columns:1fr}.reconcile-actions-v19 select{grid-column:auto}
+}
+
 </style></head><body><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="zen-home">
@@ -4399,6 +4495,61 @@ function localApi(path, options = {}) {
     bill.contributed = Math.min(Math.max(bill.weeklyRequired, bill.requiredByToday), bill.contributed + body.amount);
     runGenerators(state, week); writeState(state); return homePayload(state, week);
   }
+  if (url.pathname === "/transaction/import/reverse" && method === "POST") {
+    const txIndex=state.transactions.findIndex(t=>t.source==="import"&&t.externalId===body.externalId);
+    if(txIndex>=0){
+      const tx=state.transactions[txIndex],week=state.weeks.find(w=>w.id===tx.weekId);
+      if(week){
+        runGenerators(state,week);
+        const balance=week.balances.find(b=>b.categoryId===tx.categoryId&&b.categoryType===tx.categoryType);
+        if(balance){balance.spent=Math.max(0,(balance.spent||0)-tx.amount);balance.remaining=balance.allocated-balance.spent;}
+      }
+      state.transactions.splice(txIndex,1);
+      state.importedExternalIds=(state.importedExternalIds||[]).filter(id=>id!==body.externalId);
+      if(week)runGenerators(state,week);
+    }
+    writeState(state);
+    const open=state.weeks.filter(w=>!w.closed).sort((a,b)=>b.start.localeCompare(a.start))[0]||ensureCurrentWeek(state);
+    return homePayload(state,open);
+  }
+  if (url.pathname === "/transaction/import/reverse-batch" && method === "POST") {
+    const ids=[...new Set(Array.isArray(body.externalIds)?body.externalIds:[])];const affected=new Set();
+    for(const externalId of ids){
+      const idx=state.transactions.findIndex(t=>t.source==="import"&&t.externalId===externalId);if(idx<0)continue;
+      const tx=state.transactions[idx],week=state.weeks.find(w=>w.id===tx.weekId);
+      if(week){
+        runGenerators(state,week);
+        const balance=week.balances.find(b=>b.categoryId===tx.categoryId&&b.categoryType===tx.categoryType);
+        if(!balance)throw new Error("Cannot undo import because an applied category no longer exists.");
+        balance.spent=Math.max(0,(balance.spent||0)-tx.amount);balance.remaining=balance.allocated-balance.spent;affected.add(week.id);
+      }
+      state.transactions.splice(idx,1);
+    }
+    state.importedExternalIds=(state.importedExternalIds||[]).filter(id=>!ids.includes(id));
+    for(const weekId of affected){const w=state.weeks.find(x=>x.id===weekId);if(w)runGenerators(state,w);}
+    writeState(state);
+    const open=state.weeks.filter(w=>!w.closed).sort((a,b)=>b.start.localeCompare(a.start))[0]||ensureCurrentWeek(state);
+    return homePayload(state,open);
+  }
+  if (url.pathname === "/transaction/import/reclassify" && method === "POST") {
+    const tx=state.transactions.find(t=>t.source==="import"&&t.externalId===body.externalId);
+    if(!tx)throw new Error("Applied imported transaction was not found.");
+    if(tx.categoryId===body.categoryId&&tx.categoryType===body.categoryType){
+      const open=state.weeks.filter(w=>!w.closed).sort((a,b)=>b.start.localeCompare(a.start))[0]||ensureCurrentWeek(state);
+      return homePayload(state,open);
+    }
+    const week=state.weeks.find(w=>w.id===tx.weekId);if(!week)throw new Error("Transaction week was not found.");
+    runGenerators(state,week);
+    const oldBalance=week.balances.find(b=>b.categoryId===tx.categoryId&&b.categoryType===tx.categoryType);
+    const nextBalance=week.balances.find(b=>b.categoryId===body.categoryId&&b.categoryType===body.categoryType);
+    if(!nextBalance)throw new Error("New category is not available for that week.");
+    if(oldBalance){oldBalance.spent=Math.max(0,(oldBalance.spent||0)-tx.amount);oldBalance.remaining=oldBalance.allocated-oldBalance.spent;}
+    nextBalance.spent=(nextBalance.spent||0)+tx.amount;nextBalance.remaining=nextBalance.allocated-nextBalance.spent;
+    tx.categoryId=body.categoryId;tx.categoryType=body.categoryType;tx.reclassifiedAt=nowIso();
+    runGenerators(state,week);writeState(state);
+    const open=state.weeks.filter(w=>!w.closed).sort((a,b)=>b.start.localeCompare(a.start))[0]||week;
+    return homePayload(state,open);
+  }
   if (url.pathname === "/transaction/import" && method === "POST") {
     state.importedExternalIds = Array.isArray(state.importedExternalIds) ? state.importedExternalIds : [];
     if (body.externalId && state.importedExternalIds.includes(body.externalId)) {
@@ -4412,7 +4563,7 @@ function localApi(path, options = {}) {
     const balance = week.balances.find(b => b.categoryId === body.categoryId && b.categoryType === body.categoryType);
     if (!balance) throw new Error("Unknown category for imported transaction.");
     if (!Number.isInteger(body.amount) || body.amount <= 0) throw new Error("Imported amount must be greater than $0.");
-    state.transactions.push({ id: uid(), weekId: week.id, categoryType: body.categoryType, categoryId: body.categoryId, amount: body.amount, note: body.note || null, source: "import", externalId: body.externalId || null, createdAt: body.createdAt || nowIso() });
+    state.transactions.push({ id: uid(), weekId: week.id, categoryType: body.categoryType, categoryId: body.categoryId, amount: body.amount, note: body.note || null, source: "import", importSource: body.sourceName || null, externalId: body.externalId || null, createdAt: body.createdAt || nowIso() });
     balance.spent += body.amount; balance.remaining -= body.amount;
     if (body.externalId) state.importedExternalIds.push(body.externalId);
     runGenerators(state, week); writeState(state);
@@ -4850,44 +5001,130 @@ if(!window.__thisWeekMotionVisibilityBound){
 }
 
 const CONNECTED_DATA_KEY='thisweek.connectedData.v1';
-function readConnectedData(){
-  const base={sourceName:null,importedAt:null,records:[]};
-  try{const v=JSON.parse(localStorage.getItem(CONNECTED_DATA_KEY)||'null');return v&&Array.isArray(v.records)?{...base,...v}:base;}catch{return base;}
+let connectionImportPreview=null;
+function normalizeConnectedRecord(r={}){
+  const reconciled=!!r.reconciled;
+  const direction=r.direction||'outflow',status=r.status||'posted';
+  let reviewState=r.reviewState;
+  if(reconciled)reviewState='reconciled';
+  else if(status==='pending')reviewState='pending';
+  else if(direction==='inflow')reviewState='reference';
+  else if(!['unmatched','deferred'].includes(reviewState))reviewState='unmatched';
+  return {...r,reviewState,reconciled};
 }
-function writeConnectedData(v){try{localStorage.setItem(CONNECTED_DATA_KEY,JSON.stringify(v));}catch{}return v;}
+function readConnectedData(){
+  const base={version:2,sourceName:null,importedAt:null,records:[],batches:[],sources:[],audit:[]};
+  try{
+    const raw=JSON.parse(localStorage.getItem(CONNECTED_DATA_KEY)||'null');
+    if(!raw||!Array.isArray(raw.records))return base;
+    const records=raw.records.map(normalizeConnectedRecord);
+    return {...base,...raw,version:2,records,batches:Array.isArray(raw.batches)?raw.batches:[],sources:Array.isArray(raw.sources)?raw.sources:[],audit:Array.isArray(raw.audit)?raw.audit:[]};
+  }catch{return base;}
+}
+function writeConnectedData(v){
+  const next={version:2,sourceName:null,importedAt:null,records:[],batches:[],sources:[],audit:[],...v};
+  next.records=(next.records||[]).map(normalizeConnectedRecord);
+  next.audit=(next.audit||[]).slice(-120);
+  next.batches=(next.batches||[]).slice(-40);
+  try{localStorage.setItem(CONNECTED_DATA_KEY,JSON.stringify(next));}catch{}
+  return next;
+}
+function appendConnectedAudit(data,type,record=null,detail=''){
+  data.audit=Array.isArray(data.audit)?data.audit:[];
+  data.audit.push({id:uid(),type,recordId:record?.id||null,externalId:record?.externalId||null,description:record?.description||null,detail,at:nowIso()});
+  data.audit=data.audit.slice(-120);return data;
+}
 function connectedDataSummary(){
   const d=readConnectedData(),r=d.records||[];
-  return {total:r.length,pending:r.filter(x=>x.status==='pending').length,unreconciled:r.filter(x=>x.direction==='outflow'&&x.status!=='pending'&&!x.reconciled).length,reconciled:r.filter(x=>x.reconciled).length,sourceName:d.sourceName};
+  return {
+    total:r.length,
+    pending:r.filter(x=>x.reviewState==='pending').length,
+    unreconciled:r.filter(x=>x.reviewState==='unmatched').length,
+    deferred:r.filter(x=>x.reviewState==='deferred').length,
+    reconciled:r.filter(x=>x.reviewState==='reconciled'||x.reconciled).length,
+    references:r.filter(x=>x.reviewState==='reference').length,
+    sourceName:d.sourceName
+  };
 }
-function csvSplitLine(line){
-  const out=[];let cur='',q=false;
-  for(let i=0;i<line.length;i++){const ch=line[i];if(ch==='"'){if(q&&line[i+1]==='"'){cur+='"';i++;}else q=!q;}else if(ch===','&&!q){out.push(cur);cur='';}else cur+=ch;}
-  out.push(cur);return out;
+function countDelimiter(line,sep){
+  let q=false,count=0;
+  for(let i=0;i<line.length;i++){const ch=line[i];if(ch==='"'){if(q&&line[i+1]==='"')i++;else q=!q;}else if(!q&&ch===sep)count++;}
+  return count;
 }
-function parseCsvText(text){
-  const lines=String(text||'').replace(/\r/g,'').split('\n').filter(x=>x.trim().length);
-  if(lines.length<2)throw new Error('CSV needs a header row and at least one transaction.');
-  const headers=csvSplitLine(lines[0]).map(x=>x.trim());
-  return lines.slice(1).map(line=>{const vals=csvSplitLine(line);const o={};headers.forEach((h,i)=>o[h]=vals[i]??'');return o;});
+function detectDelimiter(text){
+  const line=String(text||'').replace(/^\uFEFF/,'').split(/\r?\n/).find(x=>x.trim().length)||'';
+  const choices=[',','\t',';'];return choices.map(sep=>({sep,n:countDelimiter(line,sep)})).sort((a,b)=>b.n-a.n)[0]?.sep||',';
 }
+function parseDelimitedText(text){
+  const src=String(text||'').replace(/^\uFEFF/,'');
+  const delimiter=detectDelimiter(src),rows=[];let row=[],cell='',q=false;
+  for(let i=0;i<src.length;i++){
+    const ch=src[i];
+    if(ch==='"'){if(q&&src[i+1]==='"'){cell+='"';i++;}else q=!q;continue;}
+    if(!q&&ch===delimiter){row.push(cell);cell='';continue;}
+    if(!q&&(ch==='\n'||ch==='\r')){
+      if(ch==='\r'&&src[i+1]==='\n')i++;
+      row.push(cell);cell='';
+      if(row.some(x=>String(x).trim().length))rows.push(row);
+      row=[];continue;
+    }
+    cell+=ch;
+  }
+  row.push(cell);if(row.some(x=>String(x).trim().length))rows.push(row);
+  if(rows.length<2)throw new Error('Transaction file needs a header row and at least one data row.');
+  const seen=new Map();
+  const headers=rows[0].map((h,i)=>{let name=String(h||'').trim()||`Column ${i+1}`;const k=name.toLowerCase();const n=(seen.get(k)||0)+1;seen.set(k,n);if(n>1)name+=` ${n}`;return name;});
+  return {delimiter,headers,rows:rows.slice(1).map(vals=>{const o={};headers.forEach((h,i)=>o[h]=vals[i]??'');return o;})};
+}
+function parseCsvText(text){return parseDelimitedText(text).rows;}
 function simpleHash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0).toString(36);}
-function firstKey(obj,tests){const keys=Object.keys(obj);return keys.find(k=>tests.some(t=>k.toLowerCase().includes(t)))||null;}
-function parseMoneyRaw(v){const n=Number(String(v??'').replace(/[$,()]/g,m=>m==='('?'-':'').replace(')','').trim());return Number.isFinite(n)?n:0;}
+function normalizedFieldName(s){return String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();}
+function importField(obj,aliases){
+  const keys=Object.keys(obj),norm=keys.map(k=>({k,n:normalizedFieldName(k)})),wanted=aliases.map(normalizedFieldName);
+  return norm.find(x=>wanted.includes(x.n))?.k||norm.find(x=>wanted.some(a=>a.length>2&&x.n.includes(a)))?.k||null;
+}
+function parseMoneyRaw(v){
+  let s=String(v??'').trim();if(!s)return 0;
+  const neg=/^\(.*\)$/.test(s)||/\bdr\b/i.test(s);
+  s=s.replace(/[()$£€¥,]/g,'').replace(/\b(cr|dr)\b/ig,'').trim();
+  const n=Number(s);return Number.isFinite(n)?(neg?-Math.abs(n):n):0;
+}
+function parseImportedDate(v){
+  const raw=String(v??'').trim();if(!raw)return nowIso();
+  const num=Number(raw);
+  if(Number.isFinite(num)&&num>20000&&num<80000){const d=new Date(Date.UTC(1899,11,30)+num*86400000);return d.toISOString();}
+  const mdY=raw.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})(?:\s+(.+))?$/);
+  if(mdY){let y=Number(mdY[3]);if(y<100)y+=y<70?2000:1900;const d=new Date(y,Number(mdY[1])-1,Number(mdY[2]));if(!Number.isNaN(d.getTime()))return d.toISOString();}
+  const d=new Date(raw);return Number.isNaN(d.getTime())?nowIso():d.toISOString();
+}
 function normalizeImportedRows(rows,signMode='negativePurchase',sourceName='CSV Import'){
-  return rows.map((row,i)=>{
-    const dk=firstKey(row,['date','posted','transaction date']),descK=firstKey(row,['description','merchant','memo','name','details']);
-    const debitK=firstKey(row,['debit','withdrawal','charge']),creditK=firstKey(row,['credit','deposit']),amountK=firstKey(row,['amount','amt']);
-    const statusK=firstKey(row,['status','state','pending']);
-    let direction='outflow',amount=0;
+  const occurrence=new Map();
+  return rows.map((row)=>{
+    const dk=importField(row,['transaction date','posted date','post date','date','effective date']);
+    const descK=importField(row,['description','merchant','merchant name','payee','memo','name','details','original description']);
+    const debitK=importField(row,['debit','withdrawal','withdrawals','charge','charges','money out']);
+    const creditK=importField(row,['credit','deposit','deposits','money in']);
+    const amountK=importField(row,['amount','transaction amount','amt']);
+    const statusK=importField(row,['status','transaction status','state','pending']);
+    const pendingK=importField(row,['is pending','pending']);
     const debit=debitK?Math.abs(parseMoneyRaw(row[debitK])):0,credit=creditK?Math.abs(parseMoneyRaw(row[creditK])):0;
-    if(debit>0){direction='outflow';amount=debit;}else if(credit>0){direction='inflow';amount=credit;}else{const raw=amountK?parseMoneyRaw(row[amountK]):0;amount=Math.abs(raw);direction=signMode==='positivePurchase'?(raw>=0?'outflow':'inflow'):(raw<=0?'outflow':'inflow');}
-    const dateRaw=dk?row[dk]:'',dateObj=dateRaw?new Date(dateRaw):new Date(),date=Number.isNaN(dateObj.getTime())?nowIso():dateObj.toISOString();
-    const description=String(descK?row[descK]:'Transaction').trim()||'Transaction';
-    const statusText=String(statusK?row[statusK]:'').toLowerCase();
-    const status=statusText.includes('pend')?'pending':'posted';
+    let direction='outflow',amount=0;
+    if(debit>0){direction='outflow';amount=debit;}
+    else if(credit>0){direction='inflow';amount=credit;}
+    else{
+      const raw=amountK?parseMoneyRaw(row[amountK]):0;amount=Math.abs(raw);
+      direction=signMode==='positivePurchase'?(raw>=0?'outflow':'inflow'):(raw<=0?'outflow':'inflow');
+    }
+    const date=parseImportedDate(dk?row[dk]:'');
+    const description=String(descK?row[descK]:'Transaction').replace(/\s+/g,' ').trim()||'Transaction';
+    const statusText=String(statusK?row[statusK]:'').toLowerCase(),pendingText=String(pendingK?row[pendingK]:'').toLowerCase();
+    const status=(statusText.includes('pend')||['true','yes','y','1'].includes(pendingText))?'pending':'posted';
     const amountCents=Math.round(amount*100);
-    const externalId='csv_'+simpleHash([sourceName,date,description,amountCents,direction,i].join('|'));
-    return {id:uid(),externalId,date,description,amount:amountCents,direction,status,reconciled:false,source:sourceName};
+    const dateKey=date.slice(0,10),descKey=description.toLowerCase().replace(/\s+/g,' ').trim();
+    const matchKey=[dateKey,descKey,amountCents,direction].join('|');
+    const n=(occurrence.get(matchKey)||0)+1;occurrence.set(matchKey,n);
+    const externalId='csv_'+simpleHash(matchKey+'|'+n);
+    return normalizeConnectedRecord({id:uid(),externalId,matchKey,occurrence:n,date,description,amount:amountCents,direction,status,reconciled:false,reviewState:status==='pending'?'pending':direction==='inflow'?'reference':'unmatched',source:sourceName,importedAt:nowIso()});
   }).filter(x=>x.amount>0);
 }
 function categorySuggestion(record,p){
@@ -4895,15 +5132,27 @@ function categorySuggestion(record,p){
   if(!cats.length)return null;
   const d=record.description.toLowerCase();
   const groups=[
-    {terms:['grocery','market','supermarket','aldi','kroger','whole foods','walmart'],match:['groc','food']},
-    {terms:['shell','exxon','bp ','fuel','gas station','sunoco'],match:['gas','fuel']},
-    {terms:['uber','lyft','transit','sept','metro','train','bus'],match:['transit','transport','gas']},
-    {terms:['doordash','ubereats','restaurant','cafe','pizza','grill','diner'],match:['eat','dining','food out']},
+    {terms:['grocery','market','supermarket','aldi','kroger','whole foods','walmart','food lion','publix'],match:['groc','food']},
+    {terms:['shell','exxon','bp ','fuel','gas station','sunoco','chevron','quiktrip'],match:['gas','fuel']},
+    {terms:['uber','lyft','transit','septa','metro','train','bus','marta'],match:['transit','transport','gas']},
+    {terms:['doordash','ubereats','restaurant','cafe','pizza','grill','diner','chick-fil-a','mcdonald'],match:['eat','dining','food out']},
     {terms:['netflix','spotify','movie','cinema','game','entertain'],match:['fun','entertain']},
-    {terms:['amazon','target','mall','shop','store'],match:['shop','fun']}
+    {terms:['amazon','target','mall','shop','store','best buy'],match:['shop','fun']}
   ];
-  let scored=cats.map(cat=>{let score=0;const n=cat.name.toLowerCase();for(const token of n.split(/\s+/))if(token.length>2&&d.includes(token))score+=5;for(const g of groups)if(g.terms.some(t=>d.includes(t))&&g.match.some(m=>n.includes(m)))score+=4;return {cat,score};}).sort((a,b)=>b.score-a.score);
+  const scored=cats.map(cat=>{let score=0;const n=cat.name.toLowerCase();for(const token of n.split(/\s+/))if(token.length>2&&d.includes(token))score+=5;for(const g of groups)if(g.terms.some(t=>d.includes(t))&&g.match.some(m=>n.includes(m)))score+=4;return {cat,score};}).sort((a,b)=>b.score-a.score);
   return scored[0]?.cat||cats[0];
+}
+function buildConnectedImportPreview(records,sourceName){
+  const d=readConnectedData(),state=readState(),known=new Set((d.records||[]).map(r=>r.externalId));
+  (state?.importedExternalIds||[]).forEach(id=>known.add(id));
+  const duplicateRecords=records.filter(r=>known.has(r.externalId)),newRecords=records.filter(r=>!known.has(r.externalId));
+  return {id:uid(),sourceName,createdAt:nowIso(),records,newRecords,duplicateRecords,total:records.length,pending:newRecords.filter(r=>r.status==='pending').length,inflows:newRecords.filter(r=>r.direction==='inflow').length,outflows:newRecords.filter(r=>r.direction==='outflow'&&r.status!=='pending').length};
+}
+function connectedCategoryName(record,p){
+  const all=[...(p.essentials||[]),...(p.forYou||[])];return all.find(x=>x.id===record.categoryId)?.name||record.categoryName||'Unknown category';
+}
+function auditTypeLabel(type){
+  return ({import:'Import confirmed',defer:'Review deferred',restore:'Returned to review',reconcile:'Reconciled',reclassify:'Category changed',unreconcile:'Reconciliation undone',undoBatch:'Import undone',clear:'Import metadata cleared'})[type]||type;
 }
 const WORLD_META={
   bills:{route:'bills',title:'Protected Bills',accent:'#60a5fa',icon:'bills'},
@@ -5521,29 +5770,125 @@ async function renderLifestyleStudio(){
 }
 
 async function renderConnections(){
-  shellMeta('Data','Connected Data Center','Reconcile outside transaction data without replacing the weekly plan','<a class="text-action" href="#home">Home</a>');
+  shellMeta('Data','Connected Data Center','Import, review, reconcile, correct, and trace outside transaction data','<a class="text-action" href="#details">Back</a>');
   nav('connections');const userId=getStoredUserId();if(!userId){location.hash='setup';return;}
   try{
-    const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`),cats=[...p.essentials.map(x=>({...x,type:'LIVING'})),...p.forYou.map(x=>({...x,type:'DISCRETIONARY'}))];
+    let p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);
+    let activeFilter='unmatched';
+    const categories=()=>[...(p.essentials||[]).map(x=>({...x,type:'LIVING'})),...(p.forYou||[]).map(x=>({...x,type:'DISCRETIONARY'}))];
+    const optionHtml=(selectedType,selectedId)=>categories().map(x=>`<option value="${x.type}|${x.id}" ${x.type===selectedType&&x.id===selectedId?'selected':''}>${escapeHtml(x.name)}</option>`).join('');
+    const filteredRecords=(records)=>{
+      if(activeFilter==='all')return records;
+      if(activeFilter==='reconciled')return records.filter(r=>r.reviewState==='reconciled'||r.reconciled);
+      if(activeFilter==='reference')return records.filter(r=>r.reviewState==='reference'||r.reviewState==='pending');
+      return records.filter(r=>r.reviewState===activeFilter);
+    };
     const draw=()=>{
-      const d=readConnectedData(),summary=connectedDataSummary(),records=d.records||[],review=records.filter(x=>!x.reconciled).slice(0,30);
+      const d=readConnectedData(),summary=connectedDataSummary(),records=(d.records||[]).slice().sort((a,b)=>String(b.date).localeCompare(String(a.date))),shown=filteredRecords(records).slice(0,60);
+      const preview=connectionImportPreview,batches=(d.batches||[]).slice().reverse(),audit=(d.audit||[]).slice().reverse().slice(0,14);
+      const filterButton=(id,label,count)=>`<button class="data-filter ${activeFilter===id?'active':''}" data-filter="${id}">${label}<b>${count}</b></button>`;
       root.innerHTML=`<div class="connections-stack">
-        <section class="connection-stage"><span class="studio-kicker">Connected-data layer</span><h2 style="margin:6px 0">Plan and actual stay intentionally separate.</h2><p class="studio-copy">This no-cost build supports local CSV transaction import and reconciliation. Direct live bank sync still requires a financial-data provider and credentials; the adapter slot is visible but does not pretend to be connected.</p>
-          <div class="connection-split"><div class="connection-column"><h3>This Week planner</h3><div class="connection-row"><div><strong>Available Now</strong><span>Plan-derived</span></div><b>${formatCents(p.available)}</b></div><div class="connection-row"><div><strong>Protected Bills</strong><span>Planning reserve</span></div><b>${formatCents(p.protected)}</b></div><div class="connection-row"><div><strong>Savings</strong><span>Weekly plan</span></div><b>${formatCents(p.savingsThisWeek||0)}</b></div></div><div class="connection-bridge"><i></i></div><div class="connection-column"><h3>Imported actuality</h3><div class="connection-row"><div><strong>Records</strong><span>${escapeHtml(summary.sourceName||'No source imported')}</span></div><b>${summary.total}</b></div><div class="connection-row"><div><strong>Needs review</strong><span>Posted outflows not matched</span></div><b>${summary.unreconciled}</b></div><div class="connection-row"><div><strong>Pending</strong><span>Never applied until posted</span></div><b>${summary.pending}</b></div></div></div>
+        <section class="connection-stage"><span class="studio-kicker">Connected-data layer</span><h2 style="margin:6px 0">Actual activity can inform the plan without becoming the plan.</h2><p class="studio-copy">Imported records stay separate until you explicitly reconcile a posted purchase. Pending items and deposits remain reference-only.</p>
+          <div class="connection-split"><div class="connection-column"><h3>This Week planner</h3><div class="connection-row"><div><strong>Available Now</strong><span>Plan-derived</span></div><b>${formatCents(p.available)}</b></div><div class="connection-row"><div><strong>Protected Bills</strong><span>Planning reserve</span></div><b>${formatCents(p.protected)}</b></div><div class="connection-row"><div><strong>Savings</strong><span>Weekly plan</span></div><b>${formatCents(p.savingsThisWeek||0)}</b></div></div><div class="connection-bridge"><i></i></div><div class="connection-column"><h3>Imported actuality</h3><div class="connection-row"><div><strong>Needs review</strong><span>Posted outflows not matched</span></div><b>${summary.unreconciled}</b></div><div class="connection-row"><div><strong>Deferred</strong><span>Intentionally postponed</span></div><b>${summary.deferred}</b></div><div class="connection-row"><div><strong>Applied</strong><span>Explicitly reconciled</span></div><b>${summary.reconciled}</b></div></div></div>
         </section>
-        <section class="import-card"><h3>Import a transaction CSV</h3><p>Choose how your file represents purchases. The file stays in this browser’s local storage; imported purchases are only applied to This Week after you confirm a category match.</p><div class="file-row"><div class="field-group"><label class="field-label">CSV file</label><input class="file-input" type="file" id="bankFile" accept=".csv,text/csv"></div><div class="field-group"><label class="field-label">Amount sign convention</label><select id="signMode" class="select-field"><option value="negativePurchase">Negative amounts are purchases</option><option value="positivePurchase">Positive amounts are purchases</option></select></div></div><div class="action-row"><button class="btn btn-primary" id="demoImport">Load demo transactions</button><button class="btn btn-secondary" id="clearImport">Clear imported data</button></div></section>
-        <section class="provider-slot"><strong>Direct bank-sync adapter</strong><span>Architecture is reserved here for a provider such as an account-data API. It is intentionally disabled until provider credentials, consent flow, security review, and a backend are available.</span></section>
-        <section class="section"><div class="section-head"><div><span class="section-kicker">Reconciliation</span><h2>Confirm before changing the week</h2><div class="section-caption">Pending transactions and deposits remain reference-only. Posted purchases can be matched into an existing spending lane.</div></div></div><div class="reconcile-list">${review.length?review.map(r=>{const suggested=categorySuggestion(r,p);const options=cats.map(x=>`<option value="${x.type}|${x.id}" ${suggested&&suggested.id===x.id?'selected':''}>${escapeHtml(x.name)}</option>`).join('');return`<div class="reconcile-row"><div><strong>${escapeHtml(r.description)} · ${r.direction==='outflow'?'-':'+'}${formatCents(r.amount)}</strong><span>${new Date(r.date).toLocaleDateString()} · ${escapeHtml(r.source||'Import')} · <span class="data-badge ${r.status}">${r.status}</span> ${r.reconciled?'· reconciled':''}</span></div><div class="reconcile-tools">${r.direction==='outflow'&&r.status!=='pending'&&!r.reconciled?`<select data-rec="${r.id}">${options}</select><button class="btn btn-primary reconcile-btn" data-id="${r.id}">Reconcile</button>`:`<span class="data-badge">${r.reconciled?'Applied':r.direction==='inflow'?'Inflow reference':'Waiting'}</span>`}</div></div>`}).join(''):'<div class="empty">No imported transactions to review.</div>'}</div></section>
+
+        <section class="import-card"><h3>Import transaction data</h3><p>CSV, tab-delimited, and semicolon-delimited exports are parsed locally. You preview the import before anything is added to the review queue.</p><div class="file-row"><div class="field-group"><label class="field-label">Transaction file</label><input class="file-input" type="file" id="bankFile" accept=".csv,.tsv,.txt,text/csv,text/tab-separated-values,text/plain"></div><div class="field-group"><label class="field-label">Amount sign convention</label><select id="signMode" class="select-field"><option value="negativePurchase">Negative amounts are purchases</option><option value="positivePurchase">Positive amounts are purchases</option></select></div></div><div class="action-row"><button class="btn btn-primary" id="demoImport">Preview demo data</button><button class="btn btn-secondary" id="clearImport">Clear import metadata</button></div></section>
+
+        ${preview?`<section class="import-preview"><div class="import-preview-head"><div><h3>Preview before import</h3><span>${escapeHtml(preview.sourceName)} · nothing has been added yet</span></div><span class="data-badge">${preview.total} rows</span></div><div class="import-preview-stats"><div class="import-preview-stat"><small>New</small><strong>${preview.newRecords.length}</strong></div><div class="import-preview-stat"><small>Duplicates</small><strong>${preview.duplicateRecords.length}</strong></div><div class="import-preview-stat"><small>Pending</small><strong>${preview.pending}</strong></div><div class="import-preview-stat"><small>Inflows</small><strong>${preview.inflows}</strong></div></div><div class="import-preview-list">${preview.records.slice(0,6).map(r=>`<div class="import-preview-row ${preview.duplicateRecords.some(x=>x.externalId===r.externalId)?'import-duplicate':''}"><div><strong>${escapeHtml(r.description)}</strong><span>${new Date(r.date).toLocaleDateString()} · ${r.status} · ${r.direction}</span></div><b>${r.direction==='outflow'?'-':'+'}${formatCents(r.amount)}</b></div>`).join('')}</div>${preview.duplicateRecords.length?`<div class="import-warning">Exact previously imported/applied fingerprints are excluded before confirmation. This protects against common re-import duplicates.</div>`:''}<div class="action-row"><button class="btn btn-primary" id="confirmImport" ${preview.newRecords.length?'':'disabled'}>Import ${preview.newRecords.length} new record${preview.newRecords.length===1?'':'s'}</button><button class="btn btn-secondary" id="cancelImport">Cancel preview</button></div></section>`:''}
+
+        <section class="connection-command"><div><strong>Review queue</strong><span>Unmatched records are actionable. Deferred records stop nagging until restored.</span></div><div class="connection-command-actions">${batches.length?`<button class="data-mini-action danger" id="undoLastImport">Undo last import</button>`:''}<a class="data-mini-action" href="#history">Weekly history</a></div></section>
+
+        <section class="section"><div class="data-filter-bar">${filterButton('unmatched','Review',summary.unreconciled)}${filterButton('deferred','Deferred',summary.deferred)}${filterButton('reconciled','Applied',summary.reconciled)}${filterButton('reference','Reference',summary.pending+summary.references)}${filterButton('all','All',summary.total)}</div><div class="reconcile-list" style="margin-top:9px">${shown.length?shown.map(r=>{
+          const suggested=categorySuggestion(r,p),selectedType=r.categoryType||(suggested?.type),selectedId=r.categoryId||(suggested?.id),catName=r.reconciled?connectedCategoryName(r,p):(suggested?.name||'Choose category');
+          const sourceDate=r.importedAt?new Date(r.importedAt).toLocaleDateString():'Legacy import';
+          let actions='';
+          if(r.reviewState==='unmatched'&&r.direction==='outflow'&&r.status!=='pending')actions=`<div class="reconcile-actions-v19"><select data-rec="${r.id}">${optionHtml(selectedType,selectedId)}</select><button class="btn btn-primary reconcile-btn" data-id="${r.id}">Reconcile</button><button class="data-mini-action defer-btn" data-id="${r.id}">Defer</button></div>`;
+          else if(r.reviewState==='deferred')actions=`<div class="reconcile-actions-v19"><select data-rec="${r.id}">${optionHtml(selectedType,selectedId)}</select><button class="btn btn-secondary restore-btn" data-id="${r.id}">Restore</button><span></span></div>`;
+          else if(r.reviewState==='reconciled'||r.reconciled)actions=`<div class="reconcile-actions-v19"><select data-rec="${r.id}">${optionHtml(r.categoryType,r.categoryId)}</select><button class="btn btn-secondary reclassify-btn" data-id="${r.id}">Change category</button><button class="data-mini-action danger unreconcile-btn" data-id="${r.id}">Undo</button></div>`;
+          else actions=`<div class="data-reference-note">${r.status==='pending'?'Pending transactions remain reference-only until a future posted record is imported.':'Inflows stay as reference context and are not silently converted into Available Now.'}</div>`;
+          return`<div class="reconcile-row v19" data-record-id="${r.id}"><div class="reconcile-top"><div class="reconcile-main"><strong>${escapeHtml(r.description)} · ${r.direction==='outflow'?'-':'+'}${formatCents(r.amount)}</strong><span>${new Date(r.date).toLocaleDateString()} · ${escapeHtml(r.source||'Import')} · ${r.reconciled?'Applied to '+escapeHtml(catName):r.reviewState==='deferred'?'Deferred from review':r.reviewState==='unmatched'?'Needs category confirmation':r.status==='pending'?'Pending reference':'Inflow reference'}</span><div class="provenance-line"><span class="provenance-chip">${escapeHtml(r.source||'Import')}</span><span class="provenance-chip">Imported ${escapeHtml(sourceDate)}</span><span class="provenance-chip ${r.reconciled?'applied':r.reviewState==='deferred'?'deferred':r.reviewState==='unmatched'?'review':''}">${escapeHtml(r.reviewState)}</span></div></div><span class="data-badge ${r.status}">${r.status}</span></div>${actions}</div>`;
+        }).join(''):'<div class="empty">Nothing in this view.</div>'}</div></section>
+
+        <details class="section"><summary style="cursor:pointer"><span class="section-kicker">Import history</span> <strong style="font-size:.74rem">Batches & undo</strong></summary><div class="import-history" style="margin-top:10px">${batches.length?batches.slice(0,8).map((b,i)=>`<div class="import-batch"><div><strong>${escapeHtml(b.sourceName||'Import')}</strong><span>${new Date(b.importedAt).toLocaleString()} · ${b.newCount} added · ${b.duplicateCount||0} duplicate${(b.duplicateCount||0)===1?'':'s'} excluded</span></div>${i===0?'<span class="data-badge">Latest</span>':''}</div>`).join(''):'<div class="empty">No import batches yet.</div>'}</div></details>
+
+        <details class="section"><summary style="cursor:pointer"><span class="section-kicker">Audit trail</span> <strong style="font-size:.74rem">Recent data actions</strong></summary><div class="audit-list" style="margin-top:10px">${audit.length?audit.map(a=>`<div class="audit-row"><i class="audit-dot"></i><div><strong>${escapeHtml(auditTypeLabel(a.type))}</strong><span>${escapeHtml(a.description||a.detail||'Connected data')}</span></div><time>${new Date(a.at).toLocaleDateString()}</time></div>`).join(''):'<div class="empty">No connected-data actions recorded yet.</div>'}</div></details>
+
+        <section class="provider-slot"><strong>Direct bank-sync adapter — intentionally inactive</strong><span>The local import/reconciliation layer is now hardened for a future provider, but live institution access still requires consent, token security, a backend, and provider credentials.</span><div class="provider-readiness"><div class="provider-ready-item"><small>Ready now</small><strong>Import → review → reconcile provenance</strong></div><div class="provider-ready-item"><small>Deferred</small><strong>Institution consent + secure token backend</strong></div></div></section>
       </div>`;
 
+      document.querySelectorAll('.data-filter').forEach(btn=>btn.onclick=()=>{activeFilter=btn.dataset.filter;draw();});
+
       const file=document.getElementById('bankFile');
-      file.onchange=()=>{const chosen=file.files?.[0];if(!chosen)return;const reader=new FileReader();reader.onload=()=>{try{const rows=parseCsvText(reader.result),records=normalizeImportedRows(rows,document.getElementById('signMode').value,chosen.name);writeConnectedData({sourceName:chosen.name,importedAt:nowIso(),records});toast(`Imported ${records.length} records for review.`);draw();}catch(e){toast(e.message);}};reader.readAsText(chosen);};
-      document.getElementById('demoImport').onclick=()=>{const demo=[{Date:new Date().toISOString().slice(0,10),Description:'Neighborhood Grocery Market',Amount:'-42.17',Status:'Posted'},{Date:new Date().toISOString().slice(0,10),Description:'City Fuel Station',Amount:'-36.80',Status:'Posted'},{Date:new Date().toISOString().slice(0,10),Description:'Local Pizza',Amount:'-28.55',Status:'Pending'},{Date:new Date().toISOString().slice(0,10),Description:'Payroll Deposit',Amount:'1800.00',Status:'Posted'}];const records=normalizeImportedRows(demo,'negativePurchase','Demo connection');writeConnectedData({sourceName:'Demo connection',importedAt:nowIso(),records});toast('Demo transaction data loaded.');draw();};
-      document.getElementById('clearImport').onclick=()=>{writeConnectedData({sourceName:null,importedAt:null,records:[]});toast('Imported data cleared.');draw();};
-      document.querySelectorAll('.reconcile-btn').forEach(btn=>btn.onclick=async()=>{const d=readConnectedData(),rec=d.records.find(x=>x.id===btn.dataset.id),sel=document.querySelector(`select[data-rec="${btn.dataset.id}"]`);if(!rec||!sel)return;const [type,id]=sel.value.split('|');btn.disabled=true;try{await apiRequest('/transaction/import',{method:'POST',body:JSON.stringify({userId,categoryType:type,categoryId:id,amount:rec.amount,note:rec.description,externalId:rec.externalId,createdAt:rec.date})});rec.reconciled=true;rec.categoryId=id;rec.categoryType=type;writeConnectedData(d);queueFinancialEvent('reconciled',type==='LIVING'?'essentials':'lifestyle',{amount:rec.amount,name:rec.description});playLocalConfirmation(btn.closest('.reconcile-row'),type==='LIVING'?'essentials':'lifestyle');toast('Imported purchase reconciled.');setTimeout(draw,readUiPrefs().motion==='reduced'?0:300);}catch(e){toast(e.message);btn.disabled=false;}});
+      file.onchange=()=>{const chosen=file.files?.[0];if(!chosen)return;const reader=new FileReader();reader.onload=()=>{try{const parsed=parseDelimitedText(reader.result),records=normalizeImportedRows(parsed.rows,document.getElementById('signMode').value,chosen.name);connectionImportPreview=buildConnectedImportPreview(records,chosen.name);toast(`Previewed ${records.length} records.`);draw();}catch(e){toast(e.message);}};reader.readAsText(chosen);};
+
+      document.getElementById('demoImport').onclick=()=>{const demo=[{Date:new Date().toISOString().slice(0,10),Description:'Neighborhood Grocery Market',Amount:'-42.17',Status:'Posted'},{Date:new Date().toISOString().slice(0,10),Description:'City Fuel Station',Amount:'-36.80',Status:'Posted'},{Date:new Date().toISOString().slice(0,10),Description:'Local Pizza',Amount:'-28.55',Status:'Pending'},{Date:new Date().toISOString().slice(0,10),Description:'Payroll Deposit',Amount:'1800.00',Status:'Posted'}];const records=normalizeImportedRows(demo,'negativePurchase','Demo connection');connectionImportPreview=buildConnectedImportPreview(records,'Demo connection');draw();};
+
+      document.getElementById('cancelImport')?.addEventListener('click',()=>{connectionImportPreview=null;draw();});
+      document.getElementById('confirmImport')?.addEventListener('click',()=>{
+        const preview=connectionImportPreview;if(!preview)return;
+        const d=readConnectedData(),batchId=uid(),importedAt=nowIso(),added=preview.newRecords.map(r=>({...r,batchId,importedAt,source:preview.sourceName}));
+        d.records=[...(d.records||[]),...added];d.sourceName=preview.sourceName;d.importedAt=importedAt;
+        d.batches=[...(d.batches||[]),{id:batchId,sourceName:preview.sourceName,importedAt,newCount:added.length,duplicateCount:preview.duplicateRecords.length,total:preview.total,recordIds:added.map(r=>r.id),externalIds:added.map(r=>r.externalId)}];
+        if(!d.sources.some(s=>s.name===preview.sourceName))d.sources.push({id:uid(),name:preview.sourceName,firstImportedAt:importedAt});
+        appendConnectedAudit(d,'import',null,`${preview.sourceName}: ${added.length} new, ${preview.duplicateRecords.length} duplicates excluded`);
+        writeConnectedData(d);connectionImportPreview=null;activeFilter='unmatched';toast(`Imported ${added.length} new records.`);draw();
+      });
+
+      document.getElementById('clearImport').onclick=()=>{
+        if(!confirm('Clear imported review metadata from this browser? Reconciled transactions already applied to the weekly plan will remain in the plan.'))return;
+        const previous=readConnectedData(),next={version:2,sourceName:null,importedAt:null,records:[],batches:[],sources:[],audit:[]};appendConnectedAudit(next,'clear',null,`Cleared ${previous.records.length} imported metadata records`);writeConnectedData(next);connectionImportPreview=null;toast('Import metadata cleared.');draw();
+      };
+
+      document.getElementById('undoLastImport')?.addEventListener('click',async()=>{
+        const d=readConnectedData(),batch=(d.batches||[])[d.batches.length-1];if(!batch)return;
+        const batchRecords=d.records.filter(r=>r.batchId===batch.id),applied=batchRecords.filter(r=>r.reconciled);
+        const msg=applied.length?`Undo the last import? This will also reverse ${applied.length} reconciled transaction${applied.length===1?'':'s'} from the weekly plan.`:'Undo the last import and remove its review records?';
+        if(!confirm(msg))return;
+        try{
+          if(applied.length)await apiRequest('/transaction/import/reverse-batch',{method:'POST',body:JSON.stringify({userId,externalIds:applied.map(r=>r.externalId)})});
+          d.records=d.records.filter(r=>r.batchId!==batch.id);d.batches=d.batches.filter(b=>b.id!==batch.id);appendConnectedAudit(d,'undoBatch',null,batch.sourceName||'Import');writeConnectedData(d);p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);toast('Last import undone.');draw();
+        }catch(e){toast(e.message);}
+      });
+
+      document.querySelectorAll('.defer-btn').forEach(btn=>btn.onclick=()=>{const d=readConnectedData(),rec=d.records.find(x=>x.id===btn.dataset.id);if(!rec)return;rec.reviewState='deferred';appendConnectedAudit(d,'defer',rec,'Deferred from review');writeConnectedData(d);toast('Transaction deferred.');draw();});
+      document.querySelectorAll('.restore-btn').forEach(btn=>btn.onclick=()=>{const d=readConnectedData(),rec=d.records.find(x=>x.id===btn.dataset.id);if(!rec)return;rec.reviewState='unmatched';appendConnectedAudit(d,'restore',rec,'Returned to review');writeConnectedData(d);activeFilter='unmatched';toast('Returned to review.');draw();});
+
+      document.querySelectorAll('.reconcile-btn').forEach(btn=>btn.onclick=async()=>{
+        const d=readConnectedData(),rec=d.records.find(x=>x.id===btn.dataset.id),sel=document.querySelector(`select[data-rec="${btn.dataset.id}"]`);if(!rec||!sel)return;
+        const [type,id]=sel.value.split('|'),cat=categories().find(x=>x.id===id&&x.type===type);btn.disabled=true;
+        try{
+          await apiRequest('/transaction/import',{method:'POST',body:JSON.stringify({userId,categoryType:type,categoryId:id,amount:rec.amount,note:rec.description,externalId:rec.externalId,createdAt:rec.date,sourceName:rec.source})});
+          rec.reconciled=true;rec.reviewState='reconciled';rec.categoryId=id;rec.categoryType=type;rec.categoryName=cat?.name||null;rec.reconciledAt=nowIso();
+          appendConnectedAudit(d,'reconcile',rec,`Applied to ${cat?.name||'category'}`);writeConnectedData(d);
+          queueFinancialEvent('reconciled',type==='LIVING'?'essentials':'lifestyle',{amount:rec.amount,name:rec.description});playLocalConfirmation(btn.closest('.reconcile-row'),type==='LIVING'?'essentials':'lifestyle');
+          p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);toast('Imported purchase reconciled.');setTimeout(draw,readUiPrefs().motion==='reduced'?0:250);
+        }catch(e){toast(e.message);btn.disabled=false;}
+      });
+
+      document.querySelectorAll('.unreconcile-btn').forEach(btn=>btn.onclick=async()=>{
+        const d=readConnectedData(),rec=d.records.find(x=>x.id===btn.dataset.id);if(!rec)return;
+        if(!confirm('Undo this reconciliation and return the imported purchase to the review queue?'))return;
+        btn.disabled=true;try{
+          await apiRequest('/transaction/import/reverse',{method:'POST',body:JSON.stringify({userId,externalId:rec.externalId})});
+          const prior=rec.categoryName||connectedCategoryName(rec,p);rec.reconciled=false;rec.reviewState='unmatched';delete rec.categoryId;delete rec.categoryType;delete rec.categoryName;delete rec.reconciledAt;
+          appendConnectedAudit(d,'unreconcile',rec,`Removed from ${prior}`);writeConnectedData(d);p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);activeFilter='unmatched';toast('Reconciliation undone.');draw();
+        }catch(e){toast(e.message);btn.disabled=false;}
+      });
+
+      document.querySelectorAll('.reclassify-btn').forEach(btn=>btn.onclick=async()=>{
+        const d=readConnectedData(),rec=d.records.find(x=>x.id===btn.dataset.id),sel=document.querySelector(`select[data-rec="${btn.dataset.id}"]`);if(!rec||!sel)return;
+        const [type,id]=sel.value.split('|');if(type===rec.categoryType&&id===rec.categoryId){toast('That category is already selected.');return;}
+        const cat=categories().find(x=>x.type===type&&x.id===id);btn.disabled=true;
+        try{
+          await apiRequest('/transaction/import/reclassify',{method:'POST',body:JSON.stringify({userId,externalId:rec.externalId,categoryType:type,categoryId:id})});
+          const prior=rec.categoryName||connectedCategoryName(rec,p);rec.categoryType=type;rec.categoryId=id;rec.categoryName=cat?.name||null;rec.reclassifiedAt=nowIso();
+          appendConnectedAudit(d,'reclassify',rec,`${prior} → ${cat?.name||'category'}`);writeConnectedData(d);p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);toast('Category corrected.');draw();
+        }catch(e){toast(e.message);btn.disabled=false;}
+      });
     };draw();
   }catch(e){root.innerHTML=errBox(e.message);}
 }
+
 function renderFutureLab(){
   shellMeta('Architecture','System Guide','Understand the three systems that were promoted from preview into the product','<a class="text-action" href="#details">Back</a>');
   nav('future');
