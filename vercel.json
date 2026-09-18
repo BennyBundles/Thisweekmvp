@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
   "installCommand": "",
   "buildCommand": "rm -rf .tagj-dist && mkdir -p .tagj-dist/tagj-assets && cp index.html full.html tagj.html artist.html producer.html creative.html .tagj-dist/ && cp tagj-assets/*.css .tagj-dist/tagj-assets/",
   "outputDirectory": ".tagj-dist",
