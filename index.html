@@ -4387,7 +4387,132 @@ body[data-density="compact"] .studio-copy{max-width:58ch}
   .scenario-impact-grid{grid-template-columns:1fr}
 }
 
-</style></head><body><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app">
+
+/* PHASE 10 — PERSONALIZATION + ACCESSIBILITY v22 */
+.sr-only{
+  position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;
+  overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important
+}
+.skip-link{
+  position:fixed;z-index:3000;left:10px;top:8px;transform:translateY(-160%);
+  padding:10px 12px;border-radius:12px;background:#eafaff;color:#071520;
+  font-weight:900;font-size:.72rem;text-decoration:none;box-shadow:0 12px 28px rgba(0,0,0,.28);
+  transition:transform .18s ease
+}
+.skip-link:focus{transform:none}
+:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{
+  outline:3px solid #a5f3fc!important;
+  outline-offset:3px!important;
+  box-shadow:0 0 0 5px rgba(103,232,249,.15)!important
+}
+html[data-text-size="large"]{font-size:112.5%}
+html[data-text-size="xlarge"]{font-size:125%}
+body[data-touch="comfortable"] :where(button,.btn,.choice,.nav-link,.text-action,.data-mini-action,.scenario-preset,.sheet-action){
+  min-height:44px
+}
+body[data-touch="comfortable"] input,
+body[data-touch="comfortable"] select,
+body[data-touch="comfortable"] textarea{min-height:44px}
+body[data-touch="comfortable"] .app-sheet-close,
+body[data-touch="comfortable"] .zen-peek-close{min-width:44px;min-height:44px}
+body[data-touch="comfortable"] .nav-link .nav-icon{min-width:32px;min-height:32px}
+
+body[data-contrast="high"]{
+  --text:#fff;
+  --text-soft:#d9e7ec;
+  --text-faint:#bad0d9;
+}
+body[data-contrast="high"] :where(.section,.pref-card,.system-group,.world-row,.runway-lane,.flex-lane,.savings-goal,.memory-week,.scenario-side,.app-sheet){
+  border-color:rgba(226,244,250,.20)!important
+}
+body[data-contrast="high"] :where(.btn,.choice,.nav-link,.text-action,.data-mini-action,.scenario-preset,.sheet-action){
+  border-color:rgba(226,244,250,.24)!important
+}
+body[data-contrast="high"] .bottom-nav{border-color:rgba(226,244,250,.20)}
+body[data-contrast="high"] .progress-track,
+body[data-contrast="high"] .pace-meter,
+body[data-contrast="high"] .soft-cap-track,
+body[data-contrast="high"] .savings-goal-progress{background:rgba(255,255,255,.12)}
+body[data-contrast="high"] .zen-zone{border-color:rgba(255,255,255,.18)}
+body[data-contrast="high"] .zen-zone-copy span,
+body[data-contrast="high"] .zen-command-copy small,
+body[data-contrast="high"] .system-tool-copy span{color:#d4e4e9}
+
+html[data-text-size="large"] .zen-zone-copy span,
+html[data-text-size="xlarge"] .zen-zone-copy span{display:none}
+html[data-text-size="large"] .zen-zone,
+html[data-text-size="xlarge"] .zen-zone{min-height:68px}
+html[data-text-size="xlarge"] .zen-zone{width:126px}
+html[data-text-size="xlarge"] .zen-core span>span{display:none}
+html[data-text-size="xlarge"] .system-tool{min-height:88px}
+html[data-text-size="xlarge"] .bottom-nav .nav-link{font-size:.62rem}
+html[data-text-size="xlarge"] .app-sheet{max-height:78svh}
+
+.pref-profile-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.pref-profile{
+  appearance:none;display:grid;align-content:start;text-align:left;min-height:118px;padding:12px;border-radius:18px;
+  border:1px solid rgba(177,206,221,.075);background:rgba(255,255,255,.018);color:var(--text);cursor:pointer
+}
+.pref-profile:hover{border-color:rgba(103,232,249,.16);background:rgba(103,232,249,.035)}
+.pref-profile.active{border-color:rgba(103,232,249,.22);background:linear-gradient(145deg,rgba(103,232,249,.065),rgba(255,255,255,.016))}
+.pref-profile small{font-size:.43rem;text-transform:uppercase;letter-spacing:.1em;color:#78919d}
+.pref-profile strong{margin-top:5px;font-size:.73rem}
+.pref-profile span{margin-top:5px;font-size:.52rem;line-height:1.38;color:#899fa9}
+.pref-profile b{margin-top:8px;font-size:.46rem;color:#aac0c8;font-weight:700}
+
+.pref-summary{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:11px 12px;border-radius:17px;
+  border:1px solid rgba(177,206,221,.06);background:rgba(255,255,255,.014)
+}
+.pref-summary strong{display:block;font-size:.67rem}
+.pref-summary span{display:block;margin-top:3px;font-size:.5rem;line-height:1.4;color:#8099a4}
+.pref-summary .data-badge{white-space:nowrap}
+.pref-advanced{
+  border-radius:20px;border:1px solid rgba(177,206,221,.065);background:rgba(255,255,255,.012);overflow:hidden
+}
+.pref-advanced>summary{
+  list-style:none;cursor:pointer;padding:12px 13px;display:flex;align-items:center;justify-content:space-between;gap:8px;
+  font-size:.66rem;font-weight:850;color:#d8e9ee
+}
+.pref-advanced>summary::-webkit-details-marker{display:none}
+.pref-advanced>summary::after{content:"+";width:26px;height:26px;border-radius:9px;display:grid;place-items:center;background:rgba(255,255,255,.02);color:#8fa7b2}
+.pref-advanced[open]>summary::after{content:"×"}
+.pref-advanced-body{padding:0 10px 10px}
+.pref-grid-v22{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pref-card-v22{padding:11px;border-radius:16px;border:1px solid rgba(177,206,221,.055);background:rgba(255,255,255,.012)}
+.pref-card-v22 h3{margin:0;font-size:.69rem}
+.pref-card-v22 p{margin:4px 0 8px;color:#8099a4;font-size:.52rem;line-height:1.4}
+.pref-card-v22 .choice-row{gap:5px}
+.pref-card-v22 .choice{padding:7px 8px;font-size:.54rem}
+.accessibility-status{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px
+}
+.accessibility-status div{padding:9px;border-radius:13px;border:1px solid rgba(177,206,221,.05);background:rgba(255,255,255,.012)}
+.accessibility-status small{display:block;font-size:.39rem;text-transform:uppercase;letter-spacing:.08em;color:#748d98}
+.accessibility-status strong{display:block;margin-top:3px;font-size:.56rem}
+.accessibility-note{
+  padding:9px 10px;border-radius:14px;border:1px solid rgba(110,231,183,.07);background:rgba(110,231,183,.018);
+  color:#8eaaa0;font-size:.52rem;line-height:1.45
+}
+
+@media(max-width:600px){
+  .pref-profile-grid{grid-template-columns:1fr}
+  .pref-profile{min-height:0}
+  .pref-grid-v22{grid-template-columns:1fr}
+}
+@media(max-width:390px){
+  html[data-text-size="large"] .zen-scene{min-height:405px}
+  html[data-text-size="xlarge"] .zen-scene{min-height:430px}
+  html[data-text-size="xlarge"] .zen-zone{width:113px}
+  html[data-text-size="xlarge"] .zen-core{width:120px;height:120px}
+  html[data-text-size="xlarge"] .zen-core strong{font-size:1.2rem}
+  html[data-text-size="xlarge"] .zen-command-copy strong{white-space:normal;line-height:1.25}
+}
+@media(prefers-reduced-motion:reduce){
+  .skip-link{transition:none}
+}
+
+</style></head><body><a class="skip-link" href="#app">Skip to main content</a><div class="sr-only" id="routeAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app" tabindex="-1">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="zen-home">
       <div class="zen-topline"><span class="zen-week">Current budgeting week</span></div>
@@ -4898,15 +5023,22 @@ function nav(routeName){
   const index={home:0,log:1,details:2,plan:3}[activeRoute]??0;
   const bottomNav=document.querySelector('.bottom-nav');
   if(bottomNav) bottomNav.style.setProperty('--nav-index',String(index));
-  navLinks.forEach(a=>a.classList.toggle('active',a.dataset.route===activeRoute));
+  navLinks.forEach(a=>{const active=a.dataset.route===activeRoute;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
   if(routeName!=='home') delete document.body.dataset.financialState;
   if(financeDock) financeDock.classList.add('hide');
 }
-function shellMeta(kicker,title,sub,action=''){ headerKicker.textContent=kicker; headerTitle.textContent=title; headerSub.textContent=sub; headerAction.innerHTML=action; }
-function errBox(msg){ return msg?`<div class="error">${escapeHtml(msg)}</div>`:''; }
+function shellMeta(kicker,title,sub,action=''){
+  headerKicker.textContent=kicker;headerTitle.textContent=title;headerSub.textContent=sub;headerAction.innerHTML=action;
+  document.title=(title||'This Week')+' · This Week';
+}
+function errBox(msg){ return msg?`<div class="error" role="alert">${escapeHtml(msg)}</div>`:''; }
 
 function gentleHaptic(){
-  try { if (navigator.vibrate) navigator.vibrate(7); } catch {}
+  try{
+    const p=effectiveUiPrefs();
+    if(p.haptics!=='on'||p.effectiveMotion==='reduced')return;
+    if(navigator.vibrate)navigator.vibrate(7);
+  }catch{}
 }
 let toastTimer=null;
 function toast(message){
@@ -5204,11 +5336,54 @@ function detailBudgetStats(p){
 const UI_PREFS_KEY='thisweek.uiPrefs.v1';
 const SAVINGS_GOALS_KEY='thisweek.savingsGoals.v1';
 function readUiPrefs(){
-  const base={motion:'dynamic',density:'compact',contrast:'normal'};
-  try{return {...base,...JSON.parse(localStorage.getItem(UI_PREFS_KEY)||'{}')};}catch{return base;}
+  const base={motion:'system',density:'compact',contrast:'system',textSize:'standard',touch:'comfortable',haptics:'on'};
+  try{
+    const raw=JSON.parse(localStorage.getItem(UI_PREFS_KEY)||'{}');
+    const merged={...base,...raw};
+    if(!['system','calm','dynamic','cinematic','reduced'].includes(merged.motion))merged.motion='system';
+    if(!['compact','balanced','rich'].includes(merged.density))merged.density='compact';
+    if(!['system','normal','high'].includes(merged.contrast))merged.contrast='system';
+    if(!['standard','large','xlarge'].includes(merged.textSize))merged.textSize='standard';
+    if(!['standard','comfortable'].includes(merged.touch))merged.touch='comfortable';
+    if(!['on','off'].includes(merged.haptics))merged.haptics='on';
+    return merged;
+  }catch{return base;}
 }
-function writeUiPrefs(next){const v={...readUiPrefs(),...next};try{localStorage.setItem(UI_PREFS_KEY,JSON.stringify(v));}catch{}applyUiPrefs();return v;}
-function applyUiPrefs(){const p=readUiPrefs();document.body.dataset.motion=p.motion;document.body.dataset.density=p.density;document.body.dataset.contrast=p.contrast;}
+function writeUiPrefs(next){
+  const v={...readUiPrefs(),...next};
+  try{localStorage.setItem(UI_PREFS_KEY,JSON.stringify(v));}catch{}
+  applyUiPrefs();return v;
+}
+function systemPrefersReducedMotion(){try{return matchMedia('(prefers-reduced-motion: reduce)').matches;}catch{return false;}}
+function systemPrefersMoreContrast(){try{return matchMedia('(prefers-contrast: more)').matches;}catch{return false;}}
+function effectiveUiPrefs(){
+  const p=readUiPrefs();
+  return {
+    ...p,
+    effectiveMotion:p.motion==='system'?(systemPrefersReducedMotion()?'reduced':'dynamic'):p.motion,
+    effectiveContrast:p.contrast==='system'?(systemPrefersMoreContrast()?'high':'normal'):p.contrast
+  };
+}
+function applyUiPrefs(){
+  const p=effectiveUiPrefs();
+  document.body.dataset.motion=p.effectiveMotion;
+  document.body.dataset.motionChoice=p.motion;
+  document.body.dataset.density=p.density;
+  document.body.dataset.contrast=p.effectiveContrast;
+  document.body.dataset.contrastChoice=p.contrast;
+  document.body.dataset.touch=p.touch;
+  document.body.dataset.haptics=p.haptics;
+  document.documentElement.dataset.textSize=p.textSize;
+}
+function bindSystemPreferenceListeners(){
+  if(window.__thisWeekSystemPrefsBound)return;
+  window.__thisWeekSystemPrefsBound=true;
+  try{
+    const motion=matchMedia('(prefers-reduced-motion: reduce)'),contrast=matchMedia('(prefers-contrast: more)');
+    const update=()=>{const p=readUiPrefs();if(p.motion==='system'||p.contrast==='system')applyUiPrefs();};
+    motion.addEventListener?.('change',update);contrast.addEventListener?.('change',update);
+  }catch{}
+}
 function weekTimeState(p){
   const s=new Date(p.week.start).getTime(),e=new Date(p.week.end).getTime(),n=Date.now();
   const pct=Math.max(0,Math.min(100,Math.round((n-s)/Math.max(1,e-s)*100)));
@@ -5432,7 +5607,7 @@ function playFinancialEventOnHome(event){
   if(label){
     const caption=document.createElement('div');caption.className='fin-event-caption';caption.style.setProperty('--event-accent',(WORLD_META[world]||WORLD_META.available).accent);caption.textContent=label;scene.appendChild(caption);setTimeout(()=>caption.remove(),prefs.motion==='reduced'?1500:1900);
   }
-  if(navigator.vibrate&&prefs.motion!=='reduced')navigator.vibrate(event.type==='weekReset'?[8,35,8]:8);
+  if(navigator.vibrate&&prefs.haptics==='on'&&effectiveUiPrefs().effectiveMotion!=='reduced')navigator.vibrate(event.type==='weekReset'?[8,35,8]:8);
 }
 function playLocalConfirmation(el,world='available'){
   if(!el)return;
@@ -5721,6 +5896,7 @@ let activeAppSheet=null;
 function isAppSheetOpen(){return !!document.querySelector('.app-sheet-backdrop.open');}
 function closeAppSheet(options={}){
   const layer=document.querySelector('.app-sheet-backdrop');
+  const screen=document.querySelector('.screen');if(screen)screen.removeAttribute('inert');
   if(!layer)return;
   const restore=options.restore!==false,previous=activeAppSheet?.previousFocus;
   layer.classList.remove('open');document.body.classList.remove('app-sheet-open');
@@ -5745,7 +5921,7 @@ function openAppSheet(model={}){
     </div>
     <div class="app-sheet-actions">${actions.map((a,i)=>a.href?`<a class="sheet-action ${i===0?'primary':''} ${actions.length===1?'full':''}" href="${a.href}" data-sheet-route="${a.route||''}" data-sheet-world="${a.world||''}">${escapeHtml(a.label)}</a>`:`<button class="sheet-action ${i===0?'primary':''} ${actions.length===1?'full':''}" type="button" data-sheet-action="${a.action||'close'}">${escapeHtml(a.label)}</button>`).join('')}</div>
   </section>`;
-  document.body.appendChild(layer);document.body.classList.add('app-sheet-open');activeAppSheet={previousFocus,model,layer};
+  document.body.appendChild(layer);document.body.classList.add('app-sheet-open');document.querySelector('.screen')?.setAttribute('inert','');activeAppSheet={previousFocus,model,layer};
   requestAnimationFrame(()=>layer.classList.add('open'));
   const sheet=layer.querySelector('.app-sheet'),closeBtn=layer.querySelector('.app-sheet-close');
   closeBtn.onclick=()=>closeAppSheet();
@@ -5883,7 +6059,7 @@ function initZenDisclosure(p,d,worlds,attentionOverride,command){
   };
 
   zones.forEach(z=>{
-    z.setAttribute('aria-expanded','false');
+    z.setAttribute('aria-expanded','false');z.setAttribute('aria-controls','zenPeek');
     z.addEventListener('click',e=>{
       e.preventDefault();
       const world=z.dataset.world;
@@ -6337,13 +6513,63 @@ async function renderScenario(){
 }
 
 function renderPreferences(){
-  shellMeta('Preferences','Presentation Settings','Choose how dense and animated the system feels','<a class="text-action" href="#setup">Plan</a>');nav('preferences');
-  const p=readUiPrefs();
-  const group=(title,copy,key,opts)=>`<div class="pref-card"><h3>${title}</h3><p>${copy}</p><div class="choice-row">${opts.map(o=>`<button class="choice ${p[key]===o.value?'active':''}" data-key="${key}" data-value="${o.value}">${o.label}</button>`).join('')}</div></div>`;
-  root.innerHTML=`<div class="studio-stack"><section class="studio-hero"><span class="studio-kicker">Personalization</span><h2>Same calculations. Different presentation.</h2><p class="studio-copy">These settings only change visual density, motion, and contrast; they do not change your financial data.</p></section><section class="pref-grid">${group('Motion','Control the pace and intensity of ambient movement.','motion',[{value:'calm',label:'Calm'},{value:'dynamic',label:'Dynamic'},{value:'cinematic',label:'Cinematic'},{value:'reduced',label:'Reduced'}])}${group('Visual density','Choose how much supporting information appears at once.','density',[{value:'compact',label:'Compact'},{value:'balanced',label:'Balanced'},{value:'rich',label:'Rich'}])}${group('Contrast','Increase text and edge contrast without changing the palette.','contrast',[{value:'normal',label:'Normal'},{value:'high',label:'High'}])}</section></div>`;
+  shellMeta('Preferences','Presentation & Accessibility','Make the interface fit you without changing the calculations','<a class="text-action" href="#setup">Plan</a>');nav('preferences');
+  const p=readUiPrefs(),effective=effectiveUiPrefs();
+  const isProfile=(name)=>{
+    if(name==='focused')return p.density==='compact'&&p.motion==='system'&&p.textSize==='standard'&&p.touch==='comfortable'&&p.contrast==='system';
+    if(name==='accessible')return p.density==='compact'&&p.motion==='reduced'&&p.textSize==='large'&&p.touch==='comfortable'&&p.contrast==='high';
+    if(name==='rich')return p.density==='rich'&&p.motion==='cinematic'&&p.textSize==='standard'&&p.touch==='comfortable'&&p.contrast==='normal';
+    return false;
+  };
+  const group=(title,copy,key,opts)=>`<div class="pref-card-v22"><h3>${title}</h3><p>${copy}</p><div class="choice-row">${opts.map(o=>`<button class="choice ${p[key]===o.value?'active':''}" data-key="${key}" data-value="${o.value}" aria-pressed="${p[key]===o.value?'true':'false'}">${o.label}</button>`).join('')}</div></div>`;
+  root.innerHTML=`<div class="studio-stack">
+    <section class="studio-hero" style="--studio-accent:#67e8f9"><span class="studio-kicker">Personalization</span><h2>Same financial model. Presentation that fits you.</h2><p class="studio-copy">Use a quick profile or fine-tune motion, density, type size, contrast, touch targets, and haptics. None of these settings change financial data.</p></section>
+
+    <section class="section">
+      <div class="section-head"><div><span class="section-kicker">Quick profiles</span><h2>Choose a starting point</h2><div class="section-caption">One tap changes presentation only.</div></div></div>
+      <div class="pref-profile-grid">
+        <button class="pref-profile ${isProfile('focused')?'active':''}" data-profile="focused"><small>Recommended default</small><strong>Focused</strong><span>Compact information, system-aware motion and contrast, comfortable touch targets.</span><b>Best for everyday use</b></button>
+        <button class="pref-profile ${isProfile('accessible')?'active':''}" data-profile="accessible"><small>Accessibility-forward</small><strong>Comfortable</strong><span>Large text, high contrast, reduced motion, generous touch targets.</span><b>Maximum readability</b></button>
+        <button class="pref-profile ${isProfile('rich')?'active':''}" data-profile="rich"><small>Visual depth</small><strong>Rich</strong><span>More supporting information with cinematic motion while keeping the same calculations.</span><b>Most expressive</b></button>
+      </div>
+    </section>
+
+    <div class="pref-summary">
+      <div><strong>Current presentation</strong><span>${p.density} density · ${p.textSize} text · ${p.touch} touch · ${p.haptics==='on'?'haptics on':'haptics off'}</span></div>
+      <span class="data-badge">${effective.effectiveMotion} motion</span>
+    </div>
+
+    <details class="pref-advanced">
+      <summary>Fine-tune presentation</summary>
+      <div class="pref-advanced-body"><div class="pref-grid-v22">
+        ${group('Motion','System follows iPhone/OS Reduce Motion automatically.','motion',[{value:'system',label:'System'},{value:'calm',label:'Calm'},{value:'dynamic',label:'Dynamic'},{value:'cinematic',label:'Cinematic'},{value:'reduced',label:'Reduced'}])}
+        ${group('Visual density','Control how much supporting information appears at once.','density',[{value:'compact',label:'Compact'},{value:'balanced',label:'Balanced'},{value:'rich',label:'Rich'}])}
+        ${group('Text size','Increase interface type without changing the financial model.','textSize',[{value:'standard',label:'Standard'},{value:'large',label:'Large'},{value:'xlarge',label:'Extra Large'}])}
+        ${group('Contrast','System follows the device contrast preference when available.','contrast',[{value:'system',label:'System'},{value:'normal',label:'Normal'},{value:'high',label:'High'}])}
+        ${group('Touch targets','Comfortable keeps primary controls at least about 44px tall.','touch',[{value:'standard',label:'Standard'},{value:'comfortable',label:'Comfortable'}])}
+        ${group('Haptics','Turn optional vibration feedback on or off. Reduced Motion also suppresses haptics.','haptics',[{value:'on',label:'On'},{value:'off',label:'Off'}])}
+      </div></div>
+    </details>
+
+    <section class="section">
+      <div class="section-head"><div><span class="section-kicker">Automatic accessibility</span><h2>Built into every profile</h2><div class="section-caption">These behaviors do not require a separate setting.</div></div></div>
+      <div class="accessibility-status">
+        <div><small>Keyboard</small><strong>Visible focus rings + Skip to Content</strong></div>
+        <div><small>Screen reader</small><strong>Route announcements + modal focus containment</strong></div>
+        <div><small>Navigation</small><strong>Current-page state announced</strong></div>
+        <div><small>Errors</small><strong>Important errors use alert semantics</strong></div>
+      </div>
+      <div class="accessibility-note" style="margin-top:8px">Color is not intended to be the only state signal: the app pairs accents with labels such as Critical, Needs attention, Protected, Running low, and Applied.</div>
+    </section>
+  </div>`;
+  const profiles={
+    focused:{motion:'system',density:'compact',contrast:'system',textSize:'standard',touch:'comfortable',haptics:'on'},
+    accessible:{motion:'reduced',density:'compact',contrast:'high',textSize:'large',touch:'comfortable',haptics:'off'},
+    rich:{motion:'cinematic',density:'rich',contrast:'normal',textSize:'standard',touch:'comfortable',haptics:'on'}
+  };
+  document.querySelectorAll('[data-profile]').forEach(b=>b.onclick=()=>{writeUiPrefs(profiles[b.dataset.profile]);toast('Presentation profile updated.');renderPreferences();});
   document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{writeUiPrefs({[b.dataset.key]:b.dataset.value});renderPreferences();});
 }
-
 
 async function renderLifestyleStudio(){
   shellMeta('Lifestyle','Flex Studio','Use optional-spending pace without moralizing the choice','<a class="text-action" href="#details">Back</a>');
@@ -6622,12 +6848,21 @@ function renderSetup(){
   q('savePlan').onclick=async()=>{ const fields=['netPay','savings','rent','phone','groceries','gas','eating','fun'], box=q('setupErr'); if(fields.some(x=>!valid(x))||cents('netPay')<=0){box.innerHTML=errBox('Enter valid dollar amounts. Net pay must be greater than $0.');return;} const rd=Number(q('rentDay').value),pd=Number(q('phoneDay').value); if(rd<1||rd>28||pd<1||pd>28){box.innerHTML=errBox('Use a due day from 1 to 28 for this preview.');return;} const due=day=>{const n=new Date(),d=new Date(n.getFullYear(),n.getMonth(),day,17);if(d<n)d.setMonth(d.getMonth()+1);return d.toISOString();}; const preset={userId:current?.userId||getStoredUserId()||undefined,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||'America/New_York',weekAnchorDow:Number(q('weekDay').value),weekAnchorMinutes:Number(q('weekHour').value)*60,payProfile:{netPayAmount:cents('netPay'),payFrequency:q('payFrequency').value,payAnchorAt:new Date().toISOString()},bills:[{name:'Housing',amount:cents('rent'),frequency:'monthly',dueDate:due(rd)},{name:'Phone',amount:cents('phone'),frequency:'monthly',dueDate:due(pd)}],livingNeeds:[{name:'Groceries',weeklyLimit:cents('groceries'),ebtOffset:0},{name:'Gas / Transit',weeklyLimit:cents('gas'),ebtOffset:0}],discretionary:[{name:'Eating Out',weeklyLimit:cents('eating')},{name:'Fun',weeklyLimit:cents('fun')}],savingsRule:{weeklyAmount:cents('savings'),active:cents('savings')>0}}; const btn=q('savePlan');btn.disabled=true;btn.textContent='Building your week...';try{const r=await apiRequest('/setup',{method:'POST',body:JSON.stringify(preset)});setStoredUserId(r.userId);await apiRequest('/week/current',{method:'POST',body:JSON.stringify({userId:r.userId})});location.hash='home';}catch(e){btn.disabled=false;btn.textContent='Save & Open Dashboard';box.innerHTML=errBox(e.message);} };
 }
 
+let lastRenderedRoute=null;
+function routeAccessibleName(routeName){
+  return ({home:'Home',log:'Add Spending',details:'Details',insights:'Advanced Insights',bills:'Bill Protection Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex Studio',savings:'Savings Goal Studio',precheck:'Purchase Pre-check',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data Center',preferences:'Presentation and Accessibility',future:'System Architecture',reset:'New Week',setup:'Plan'})[routeName]||'Home';
+}
+function announceRoute(routeName,focusMain=true){
+  const announcer=document.getElementById('routeAnnouncer'),main=document.getElementById('app');
+  if(announcer){announcer.textContent='';requestAnimationFrame(()=>announcer.textContent=routeAccessibleName(routeName)+' loaded');}
+  if(focusMain&&main)requestAnimationFrame(()=>{try{main.focus({preventScroll:true});}catch{main.focus();}});
+}
 async function render(){
   closeAppSheet({restore:false});
   if(sceneMotionObserver){try{sceneMotionObserver.disconnect();}catch{}sceneMotionObserver=null;}
-  applyUiPrefs();
-  const r=route();
-  window.scrollTo({top:0,behavior:'smooth'});
+  applyUiPrefs();bindSystemPreferenceListeners();
+  const r=route(),routeChanged=lastRenderedRoute!==null&&lastRenderedRoute!==r;
+  window.scrollTo({top:0,behavior:effectiveUiPrefs().effectiveMotion==='reduced'?'auto':'smooth'});
   if(r==='log')await renderLog();
   else if(r==='details')await renderDetails();
   else if(r==='insights')await renderInsights();
@@ -6645,6 +6880,8 @@ async function render(){
   else if(r==='setup')await renderSetup();
   else await renderHome();
   requestAnimationFrame(()=>applyRouteEntryTransition(r));
+  announceRoute(r,routeChanged);
+  lastRenderedRoute=r;
 }
 window.addEventListener('hashchange',render); render();
 </script></body></html>
