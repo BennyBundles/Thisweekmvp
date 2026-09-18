@@ -2102,6 +2102,239 @@ body[data-route="home"] .text-action{padding:8px 10px;font-size:.62rem}
   .interlock::before,.interlock-center,.orbit-chip,.simple-meter>span{animation:none!important}
 }
 
+
+/* EXPANSIVE INTERACTIVE MONEY SCENE v9 */
+:root{
+  --scene-aqua:#67e8f9;
+  --scene-mint:#6ee7b7;
+  --scene-blue:#60a5fa;
+  --scene-gold:#f6d784;
+  --scene-pink:#f0a7d3;
+}
+.home-command{
+  overflow:visible;
+  background:
+    radial-gradient(circle at 10% 0%,rgba(103,232,249,.10),transparent 25%),
+    radial-gradient(circle at 92% 10%,rgba(110,231,183,.12),transparent 24%),
+    radial-gradient(circle at 50% 100%,rgba(96,165,250,.08),transparent 29%),
+    linear-gradient(145deg,rgba(7,23,39,.99),rgba(4,17,30,.99) 48%,rgba(7,35,38,.97));
+}
+.home-command::before{
+  content:"";
+  position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  background:
+    linear-gradient(120deg,transparent 0 42%,rgba(255,255,255,.028) 48%,transparent 54%),
+    repeating-linear-gradient(90deg,transparent 0 24px,rgba(255,255,255,.008) 25px);
+  mix-blend-mode:screen;
+}
+.home-title{font-weight:860}
+.available-amount{
+  background:linear-gradient(135deg,#f8ffff,#bffcf0 45%,#9fdcf3);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 18px rgba(103,232,249,.10));
+}
+.money-theater{
+  --scene-accent:var(--scene-aqua);
+  position:relative;
+  min-height:398px;
+  margin-top:2px;
+  border-radius:32px;
+  overflow:hidden;
+  isolation:isolate;
+  border:1px solid rgba(177,206,221,.13);
+  background:
+    radial-gradient(circle at 50% 48%,color-mix(in srgb,var(--scene-accent) 11%,transparent),transparent 26%),
+    radial-gradient(circle at 18% 17%,rgba(96,165,250,.08),transparent 22%),
+    radial-gradient(circle at 82% 80%,rgba(110,231,183,.08),transparent 24%),
+    linear-gradient(145deg,rgba(3,14,25,.96),rgba(6,20,33,.95));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04),
+    inset 0 -24px 60px rgba(0,0,0,.14),
+    0 20px 46px rgba(0,0,0,.23);
+  transition:border-color .35s ease,background .5s ease,box-shadow .5s ease;
+}
+.money-theater::before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.014) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px);
+  background-size:18px 18px;
+  mask-image:radial-gradient(circle at 50% 50%,#000,rgba(0,0,0,.18) 74%,transparent);
+}
+.money-theater::after{
+  content:"";position:absolute;width:330px;height:330px;left:50%;top:50%;z-index:0;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:conic-gradient(from 0deg,transparent,var(--scene-accent),transparent 22%,transparent 48%,rgba(255,255,255,.08),transparent 60%);
+  filter:blur(26px);opacity:.13;
+  animation:sceneHaloSpin 18s linear infinite;
+}
+.scene-trim{
+  position:absolute;z-index:3;left:18px;right:18px;height:1px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(246,215,132,.34),color-mix(in srgb,var(--scene-accent) 48%,transparent),transparent);
+  box-shadow:0 0 16px color-mix(in srgb,var(--scene-accent) 16%,transparent);
+}
+.scene-trim.top{top:14px}.scene-trim.bottom{bottom:14px}
+.scene-artmark{
+  position:absolute;z-index:1;border-radius:50%;border:1px solid rgba(255,255,255,.035);pointer-events:none;
+}
+.scene-artmark.one{width:290px;height:290px;left:50%;top:50%;transform:translate(-50%,-50%);animation:artOrbit 24s linear infinite}
+.scene-artmark.two{width:244px;height:244px;left:50%;top:50%;transform:translate(-50%,-50%);border-style:dashed;animation:artOrbitReverse 19s linear infinite}
+.scene-artmark::before,.scene-artmark::after{
+  content:"";position:absolute;width:8px;height:8px;border-radius:50%;
+  background:var(--scene-accent);box-shadow:0 0 14px color-mix(in srgb,var(--scene-accent) 60%,transparent);
+}
+.scene-artmark::before{left:50%;top:-4px}.scene-artmark::after{left:50%;bottom:-4px}
+.flow-network{position:absolute;inset:0;width:100%;height:100%;z-index:1;overflow:visible;pointer-events:none}
+.flow-bed{
+  fill:none;stroke:rgba(177,206,221,.075);stroke-width:13;stroke-linecap:round;
+}
+.flow-line{
+  fill:none;stroke:var(--scene-accent);stroke-width:3.25;stroke-linecap:round;
+  stroke-dasharray:10 14;opacity:.58;filter:drop-shadow(0 0 8px color-mix(in srgb,var(--scene-accent) 38%,transparent));
+  animation:flowDashV9 8s linear infinite;
+  transition:opacity .3s ease,stroke-width .3s ease,filter .3s ease;
+}
+.flow-line.secondary{stroke-width:1.4;stroke-dasharray:3 9;opacity:.35;animation-duration:12s;animation-direction:reverse}
+.money-theater[data-focus="bills"] .flow-bills,
+.money-theater[data-focus="essentials"] .flow-essentials,
+.money-theater[data-focus="lifestyle"] .flow-lifestyle,
+.money-theater[data-focus="savings"] .flow-savings{
+  opacity:1;stroke-width:5;filter:drop-shadow(0 0 13px color-mix(in srgb,var(--scene-accent) 66%,transparent));
+}
+.flow-token{
+  position:absolute;z-index:4;width:18px;height:18px;border-radius:50%;
+  display:grid;place-items:center;font-size:9px;font-weight:900;color:#06111d;
+  background:linear-gradient(135deg,#d9fff7,var(--scene-accent));
+  box-shadow:0 0 0 4px color-mix(in srgb,var(--scene-accent) 9%,transparent),0 0 18px color-mix(in srgb,var(--scene-accent) 55%,transparent);
+  animation:flowToken 5.8s linear infinite;
+  pointer-events:none;
+}
+.flow-token.t1{offset-path:path("M 180 196 C 135 150 100 104 60 76");}
+.flow-token.t2{offset-path:path("M 180 196 C 225 150 260 104 300 76");animation-duration:6.4s;animation-delay:-2.1s}
+.flow-token.t3{offset-path:path("M 180 196 C 135 238 104 276 65 316");animation-duration:6s;animation-delay:-1.2s}
+.flow-token.t4{offset-path:path("M 180 196 C 225 238 256 276 295 316");animation-duration:6.8s;animation-delay:-3.4s}
+.flow-token.t5{offset-path:path("M 60 76 C 112 116 142 156 180 196 C 218 236 252 278 295 316");animation-duration:9.6s;animation-delay:-4.2s;opacity:.75}
+.scene-core-button{
+  appearance:none;position:absolute;z-index:6;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:154px;height:154px;padding:0;border-radius:50%;cursor:pointer;
+  display:grid;place-items:center;text-align:center;color:var(--text);
+  background:
+    radial-gradient(circle at 30% 24%,rgba(255,255,255,.16),transparent 19%),
+    radial-gradient(circle at 40% 34%,color-mix(in srgb,var(--scene-accent) 24%,transparent),rgba(7,30,42,.97) 52%,rgba(4,17,29,.99) 72%);
+  border:1px solid color-mix(in srgb,var(--scene-accent) 34%,transparent);
+  box-shadow:
+    0 0 0 9px color-mix(in srgb,var(--scene-accent) 4%,transparent),
+    0 0 0 19px rgba(255,255,255,.016),
+    0 22px 46px rgba(0,0,0,.33),
+    inset 0 1px 0 rgba(255,255,255,.09);
+  transition:background .45s ease,border-color .35s ease,box-shadow .35s ease,transform .3s var(--ease-spring);
+  animation:coreBreatheV9 4.6s ease-in-out infinite;
+}
+.scene-core-button:active{transform:translate(-50%,-50%) scale(.97)}
+.scene-core-button::before,.scene-core-button::after{
+  content:"";position:absolute;border-radius:50%;pointer-events:none;
+}
+.scene-core-button::before{inset:-13px;border:1px dashed color-mix(in srgb,var(--scene-accent) 23%,transparent);animation:artOrbit 15s linear infinite}
+.scene-core-button::after{inset:12px;border:1px solid rgba(255,255,255,.035)}
+.scene-core-button .core-kicker{font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:#a9c9c6;font-weight:800}
+.scene-core-button .core-number{display:block;margin-top:5px;font-size:1.55rem;letter-spacing:-.055em;font-weight:850}
+.scene-core-button .core-hint{display:block;margin-top:3px;font-size:.61rem;color:var(--text-soft)}
+.money-zone{
+  appearance:none;position:absolute;z-index:7;width:132px;min-height:72px;padding:10px;
+  display:grid;grid-template-columns:42px 1fr;align-items:center;gap:9px;text-align:left;
+  border-radius:21px;cursor:pointer;color:var(--text);
+  border:1px solid rgba(177,206,221,.10);
+  background:linear-gradient(145deg,rgba(8,22,36,.95),rgba(4,16,28,.91));
+  box-shadow:0 15px 30px rgba(0,0,0,.21),inset 0 1px 0 rgba(255,255,255,.025);
+  transition:transform .28s var(--ease-spring),border-color .3s ease,background .3s ease,box-shadow .3s ease,opacity .3s ease;
+  animation:zoneFloat 5.2s ease-in-out infinite;
+}
+.money-zone:hover,.money-zone[aria-pressed="true"]{
+  border-color:color-mix(in srgb,var(--scene-accent) 34%,transparent);
+  background:linear-gradient(145deg,color-mix(in srgb,var(--scene-accent) 9%,rgba(8,22,36,.96)),rgba(4,16,28,.94));
+  box-shadow:0 18px 36px rgba(0,0,0,.27),0 0 0 1px color-mix(in srgb,var(--scene-accent) 8%,transparent),0 0 24px color-mix(in srgb,var(--scene-accent) 9%,transparent);
+  transform:translateY(-3px) scale(1.015);
+}
+.money-zone[data-zone="bills"]{left:12px;top:18px;animation-delay:-.3s}
+.money-zone[data-zone="essentials"]{right:12px;top:18px;animation-delay:-1.2s}
+.money-zone[data-zone="lifestyle"]{left:12px;bottom:18px;animation-delay:-2.1s}
+.money-zone[data-zone="savings"]{right:12px;bottom:18px;animation-delay:-3s}
+.zone-emblem{
+  position:relative;width:42px;height:42px;border-radius:15px;display:grid;place-items:center;overflow:hidden;
+  background:linear-gradient(145deg,#a5f3fc,#67e8f9);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.42),0 9px 18px rgba(0,0,0,.18);
+}
+.money-zone[data-zone="essentials"] .zone-emblem{background:linear-gradient(145deg,#bbf7d0,#6ee7b7)}
+.money-zone[data-zone="lifestyle"] .zone-emblem{background:linear-gradient(145deg,#fbcfe8,#c4b5fd)}
+.money-zone[data-zone="savings"] .zone-emblem{background:linear-gradient(145deg,#fde68a,#a7f3d0)}
+.zone-emblem::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.28),transparent 48%);pointer-events:none}
+.zone-emblem svg{width:23px;height:23px;position:relative;z-index:1}
+.zone-emblem path,.zone-emblem rect,.zone-emblem circle,.zone-emblem line{stroke:#06111d;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.zone-text-v9{min-width:0}
+.zone-text-v9 small{display:block;font-size:.53rem;letter-spacing:.11em;text-transform:uppercase;color:#8fa7b2;font-weight:800}
+.zone-text-v9 strong{display:block;margin-top:3px;font-size:.84rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.zone-text-v9 span{display:block;margin-top:2px;font-size:.58rem;color:var(--text-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.scene-focus{
+  position:absolute;z-index:8;left:50%;bottom:92px;transform:translateX(-50%);
+  width:min(248px,68%);padding:10px 12px;border-radius:16px;text-align:center;
+  background:rgba(3,13,23,.72);border:1px solid rgba(177,206,221,.08);backdrop-filter:blur(12px);
+  box-shadow:0 12px 26px rgba(0,0,0,.18);
+  transition:border-color .3s ease,background .3s ease;
+}
+.scene-focus small{display:block;font-size:.51rem;text-transform:uppercase;letter-spacing:.14em;color:#8fa7b2}
+.scene-focus strong{display:block;margin-top:3px;font-size:.78rem}
+.scene-focus span{display:block;margin-top:2px;font-size:.6rem;line-height:1.3;color:var(--text-soft)}
+.scene-instruction{
+  position:absolute;z-index:8;left:50%;bottom:15px;transform:translateX(-50%);
+  padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.035);border:1px solid rgba(177,206,221,.07);
+  font-size:.56rem;text-transform:uppercase;letter-spacing:.11em;color:#90aab4;white-space:nowrap
+}
+.bottom-nav{
+  --nav-index:0;
+  overflow:hidden;isolation:isolate;
+}
+.bottom-nav::after{
+  content:"";position:absolute;z-index:0;top:7px;bottom:7px;left:7px;
+  width:calc((100% - 14px)/4);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 30% 20%,rgba(153,246,228,.13),transparent 45%),
+    linear-gradient(145deg,rgba(76,211,156,.11),rgba(107,185,216,.055));
+  border:1px solid rgba(153,246,228,.08);
+  box-shadow:0 10px 26px rgba(0,0,0,.15),inset 0 1px 0 rgba(255,255,255,.025);
+  transform:translateX(calc(var(--nav-index) * 100%));
+  transition:transform .44s var(--ease-spring),background .3s ease;
+}
+.bottom-nav .nav-link{position:relative;z-index:1;background:transparent!important;border-color:transparent!important;box-shadow:none!important}
+.bottom-nav .nav-link.active .nav-icon{box-shadow:0 0 0 1px rgba(153,246,228,.10),0 8px 20px rgba(45,212,191,.08)}
+@keyframes sceneHaloSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes artOrbit{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes artOrbitReverse{to{transform:translate(-50%,-50%) rotate(-360deg)}}
+@keyframes flowDashV9{to{stroke-dashoffset:-192}}
+@keyframes flowToken{0%{offset-distance:0%;opacity:0;transform:scale(.75)}8%{opacity:1;transform:scale(1)}92%{opacity:1}100%{offset-distance:100%;opacity:0;transform:scale(.8)}}
+@keyframes coreBreatheV9{0%,100%{box-shadow:0 0 0 9px color-mix(in srgb,var(--scene-accent) 4%,transparent),0 0 0 19px rgba(255,255,255,.016),0 22px 46px rgba(0,0,0,.33),inset 0 1px 0 rgba(255,255,255,.09)}50%{box-shadow:0 0 0 14px color-mix(in srgb,var(--scene-accent) 6%,transparent),0 0 0 25px rgba(255,255,255,.012),0 25px 54px rgba(0,0,0,.36),inset 0 1px 0 rgba(255,255,255,.1)}}
+@keyframes zoneFloat{0%,100%{margin-top:0}50%{margin-top:-4px}}
+@media(max-width:390px){
+  .money-theater{min-height:416px;border-radius:27px}
+  .scene-artmark.one{width:250px;height:250px}
+  .scene-artmark.two{width:210px;height:210px}
+  .scene-core-button{width:136px;height:136px}
+  .scene-core-button .core-number{font-size:1.35rem}
+  .money-zone{width:118px;min-height:66px;grid-template-columns:36px 1fr;padding:8px;gap:7px}
+  .zone-emblem{width:36px;height:36px;border-radius:13px}
+  .zone-emblem svg{width:20px;height:20px}
+  .zone-text-v9 strong{font-size:.74rem}
+  .zone-text-v9 span{display:none}
+  .money-zone[data-zone="bills"],.money-zone[data-zone="lifestyle"]{left:8px}
+  .money-zone[data-zone="essentials"],.money-zone[data-zone="savings"]{right:8px}
+  .scene-focus{bottom:86px;width:64%;padding:8px 9px}
+}
+@media(prefers-reduced-motion:reduce){
+  .money-theater::after,.scene-artmark,.flow-line,.flow-token,.scene-core-button,.money-zone{animation:none!important}
+  .bottom-nav::after{transition:none!important}
+}
+
 </style></head><body><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="hero-card">
@@ -2571,6 +2804,9 @@ function route(){ return (location.hash.replace('#','')||'home').split('?')[0]; 
 function nav(routeName){
   const activeRoute=routeName==='insights'||routeName==='reset'?'details':routeName==='setup'?'plan':routeName;
   document.body.dataset.route=activeRoute;
+  const index={home:0,log:1,details:2,plan:3}[activeRoute]??0;
+  const bottomNav=document.querySelector('.bottom-nav');
+  if(bottomNav) bottomNav.style.setProperty('--nav-index',String(index));
   navLinks.forEach(a=>a.classList.toggle('active',a.dataset.route===activeRoute));
   if(routeName!=='home') delete document.body.dataset.financialState;
   if(financeDock) financeDock.classList.add('hide');
@@ -2645,6 +2881,61 @@ function detailBudgetStats(p){
   return {allocated,spent,remaining};
 }
 
+
+function sceneIcon(type){
+  const icons={
+    bills:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5 18.2 6v5.1c0 4.1-2.4 7.1-6.2 9-3.8-1.9-6.2-4.9-6.2-9V6L12 3.5Z"/><path d="m9 11.7 2 2 4.2-4.2"/></svg>',
+    essentials:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="9.6" width="15" height="8.8" rx="2.2"/><path d="M8.2 9.6c.5-2.1 1.8-3.7 3.8-4.7 2 1 3.3 2.6 3.8 4.7"/><path d="M8.7 13h6.6"/></svg>',
+    lifestyle:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.5 13.7 9l4.7 1.7-4.7 1.7-1.7 4.5-1.7-4.5-4.7-1.7L10.3 9 12 4.5Z"/><path d="m18.2 5.8.6 1.6 1.6.6-1.6.6-.6 1.6-.6-1.6L16 8l1.6-.6.6-1.6Z"/></svg>',
+    savings:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 5.8h9.6l3 4-7.8 8.4-7.8-8.4 3-4Z"/><path d="M10 5.8 8.5 9.8 12 18.2l3.5-8.4L14 5.8"/><path d="M4.2 9.8h15.6"/></svg>'
+  };
+  return icons[type]||'';
+}
+
+function initMoneyTheater(p,d){
+  const theater=document.getElementById('moneyTheater');
+  if(!theater)return;
+  const core=document.getElementById('sceneCore');
+  const focusTitle=document.getElementById('sceneFocusTitle');
+  const focusCopy=document.getElementById('sceneFocusCopy');
+  const focusValue=document.getElementById('sceneFocusValue');
+  const coreLabel=document.getElementById('sceneCoreLabel');
+  const coreValue=document.getElementById('sceneCoreValue');
+  const coreHint=document.getElementById('sceneCoreHint');
+  const zones=[...theater.querySelectorAll('.money-zone')];
+  const map={
+    available:{accent:'#67e8f9',title:'Available now',value:formatCents(p.available),copy:'Your quick safe-to-use weekly signal.',hint:'Tap a zone'},
+    bills:{accent:'#60a5fa',title:'Protected bills',value:formatCents(p.protected),copy:d.behind.length?'At least one bill needs attention.':'Required bill money currently protected.',hint:'Bills selected'},
+    essentials:{accent:'#6ee7b7',title:'Essentials left',value:formatCents(d.essentialsLeft),copy:'Groceries, gas, transit, and other weekly needs.',hint:'Essentials selected'},
+    lifestyle:{accent:'#f0a7d3',title:'Lifestyle left',value:formatCents(d.lifestyleLeft),copy:'Flexible money for eating out, fun, and optional spending.',hint:'Lifestyle selected'},
+    savings:{accent:'#f6d784',title:'Savings',value:formatCents(p.savingsThisWeek||0),copy:'Money set aside toward this week’s savings target.',hint:'Savings selected'}
+  };
+  let userTouched=false;
+  let autoIndex=0;
+  const order=['available','bills','essentials','lifestyle','savings'];
+  const apply=(key,manual=false)=>{
+    const item=map[key]||map.available;
+    if(manual) userTouched=true;
+    theater.dataset.focus=key;
+    theater.style.setProperty('--scene-accent',item.accent);
+    zones.forEach(z=>z.setAttribute('aria-pressed',String(z.dataset.zone===key)));
+    coreLabel.textContent=item.title;
+    coreValue.textContent=item.value;
+    coreHint.textContent=item.hint;
+    focusTitle.textContent=item.title;
+    focusValue.textContent=item.value;
+    focusCopy.textContent=item.copy;
+  };
+  zones.forEach(z=>z.addEventListener('click',()=>apply(z.dataset.zone,true)));
+  core.addEventListener('click',()=>apply('available',true));
+  apply('available');
+  const timer=setInterval(()=>{
+    if(userTouched){clearInterval(timer);return;}
+    autoIndex=(autoIndex+1)%order.length;
+    apply(order[autoIndex]);
+  },3800);
+}
+
 async function renderHome(){
   shellMeta('This Week','Weekly Dashboard','What is available, what needs attention, and what to do next','<a class="text-action" href="#setup">Plan</a>');
   nav('home');
@@ -2659,20 +2950,61 @@ async function renderHome(){
     document.body.dataset.financialState=p.status==='ON_TRACK'?'stable':'attention';
     root.innerHTML=`<div class="home-command">
       <div class="home-head">
-        <div class="home-head-copy"><div class="home-eyebrow">Central dashboard</div><h2 class="home-title">Your week, made clear.</h2><div class="home-week">${weekWindow(p.week.start,p.week.end)}</div></div>
+        <div class="home-head-copy"><div class="home-eyebrow">Central dashboard</div><h2 class="home-title">Your week, in motion.</h2><div class="home-week">${weekWindow(p.week.start,p.week.end)}</div></div>
         <span class="home-state ${p.status==='ON_TRACK'?'':'attention'}">${p.status==='ON_TRACK'?'Stable':'Review'}</span>
       </div>
       <div class="available-block"><div class="available-amount">${formatCents(p.available)}</div><div class="available-label">Available now</div></div>
-      <div class="interlock" aria-label="Weekly money map">
-        <div class="orbit-chip bills"><span>Protected bills</span><strong>${formatCents(p.protected)}</strong></div>
-        <div class="orbit-chip essentials"><span>Essentials left</span><strong>${formatCents(d.essentialsLeft)}</strong></div>
-        <div class="interlock-center"><div><span>Available</span><strong>${formatCents(p.available)}</strong></div></div>
-        <div class="orbit-chip lifestyle"><span>Lifestyle left</span><strong>${formatCents(d.lifestyleLeft)}</strong></div>
-        <div class="orbit-chip savings"><span>Savings</span><strong>${formatCents(p.savingsThisWeek||0)}</strong></div>
+
+      <div class="money-theater" id="moneyTheater" data-focus="available" aria-label="Interactive weekly money flow">
+        <div class="scene-trim top"></div><div class="scene-trim bottom"></div>
+        <div class="scene-artmark one"></div><div class="scene-artmark two"></div>
+        <svg class="flow-network" viewBox="0 0 360 392" aria-hidden="true">
+          <path class="flow-bed" d="M180 196 C135 150 100 104 60 76"/>
+          <path class="flow-bed" d="M180 196 C225 150 260 104 300 76"/>
+          <path class="flow-bed" d="M180 196 C135 238 104 276 65 316"/>
+          <path class="flow-bed" d="M180 196 C225 238 256 276 295 316"/>
+          <path class="flow-line flow-bills" d="M180 196 C135 150 100 104 60 76"/>
+          <path class="flow-line flow-essentials" d="M180 196 C225 150 260 104 300 76"/>
+          <path class="flow-line flow-lifestyle" d="M180 196 C135 238 104 276 65 316"/>
+          <path class="flow-line flow-savings" d="M180 196 C225 238 256 276 295 316"/>
+          <path class="flow-line secondary" d="M60 76 C110 110 145 158 180 196 C215 234 250 280 295 316"/>
+          <path class="flow-line secondary" d="M300 76 C250 110 215 158 180 196 C145 234 110 280 65 316"/>
+        </svg>
+        <div class="flow-token t1">$</div><div class="flow-token t2">$</div><div class="flow-token t3">$</div><div class="flow-token t4">$</div><div class="flow-token t5">$</div>
+
+        <button class="money-zone" data-zone="bills" aria-pressed="false">
+          <span class="zone-emblem">${sceneIcon('bills')}</span>
+          <span class="zone-text-v9"><small>Protected</small><strong>${formatCents(p.protected)}</strong><span>Bills</span></span>
+        </button>
+        <button class="money-zone" data-zone="essentials" aria-pressed="false">
+          <span class="zone-emblem">${sceneIcon('essentials')}</span>
+          <span class="zone-text-v9"><small>Essentials</small><strong>${formatCents(d.essentialsLeft)}</strong><span>Needs left</span></span>
+        </button>
+        <button class="money-zone" data-zone="lifestyle" aria-pressed="false">
+          <span class="zone-emblem">${sceneIcon('lifestyle')}</span>
+          <span class="zone-text-v9"><small>Lifestyle</small><strong>${formatCents(d.lifestyleLeft)}</strong><span>Flexible left</span></span>
+        </button>
+        <button class="money-zone" data-zone="savings" aria-pressed="false">
+          <span class="zone-emblem">${sceneIcon('savings')}</span>
+          <span class="zone-text-v9"><small>Savings</small><strong>${formatCents(p.savingsThisWeek||0)}</strong><span>Set aside</span></span>
+        </button>
+
+        <button class="scene-core-button" id="sceneCore" aria-label="Return to available money">
+          <span><span class="core-kicker" id="sceneCoreLabel">Available now</span><strong class="core-number" id="sceneCoreValue">${formatCents(p.available)}</strong><span class="core-hint" id="sceneCoreHint">Tap a zone</span></span>
+        </button>
+
+        <div class="scene-focus" aria-live="polite">
+          <small id="sceneFocusTitle">Available now</small>
+          <strong id="sceneFocusValue">${formatCents(p.available)}</strong>
+          <span id="sceneFocusCopy">Your quick safe-to-use weekly signal.</span>
+        </div>
+        <div class="scene-instruction">Tap a zone · watch the flow react</div>
       </div>
+
       <div class="attention-line ${d.attention.tone==='danger'?'danger':d.attention.tone==='warn'?'warn':''}"><span class="attention-dot"></span><div class="attention-copy"><strong>${escapeHtml(d.attention.title)}</strong><span>${escapeHtml(d.attention.copy)}</span></div></div>
       <div class="next-step"><div class="next-step-copy"><small>Next suggested step</small><strong>${escapeHtml(d.next.title)}</strong><span>${escapeHtml(d.next.copy)}</span></div><a class="btn btn-primary" href="${d.next.href}">${escapeHtml(d.next.label)}</a></div>
     </div>`;
+    initMoneyTheater(p,d);
   }catch(e){
     root.innerHTML=`<div class="center">${errBox(e.message)}<button class="btn-primary" onclick="renderHome()">Retry</button></div>`;
   }
