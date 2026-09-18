@@ -5315,7 +5315,7 @@ function historySummaries(){
     })).sort((a,b)=>b.usePct-a.usePct);
     return {
       id:w.id,start:w.start,end:w.end,closed:!!w.closed,
-      available:sum(balances),essLeft:sum(ess),flexLeft:sum(flex),spent:allSpent,allocated:allAllocated,
+      available:balances.reduce((n,x)=>n+(x.remaining||0),0),essLeft:sum(ess),flexLeft:sum(flex),spent:allSpent,allocated:allAllocated,
       essAllocated,flexAllocated,essSpent,flexSpent,
       savings:w.savingsAmount||0,billGap,billFunded,billTarget,billAlerts,
       overspent:overspentBalances.length,alerts:billAlerts+overspentBalances.length,
@@ -5378,8 +5378,8 @@ function scenarioEstimate(p,draft){
   return {
     delta,
     available:Math.round((p.available||0)+delta),
-    essentials:Math.round(currentEss-(draft.essentials||0)),
-    lifestyle:Math.round(currentFlex-(draft.lifestyle||0)),
+    essentials:Math.round(currentEss+(draft.essentials||0)),
+    lifestyle:Math.round(currentFlex+(draft.lifestyle||0)),
     savings:Math.max(0,Math.round(currentSavings+(draft.savings||0))),
     billTarget:Math.max(0,Math.round(currentBillTarget+(draft.bills||0))),
     incomeChange:Math.round(draft.income||0)
