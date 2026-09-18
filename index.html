@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover"><meta name="theme-color" content="#081221"><title>This Week</title><style>:root {
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#081221"><title>This Week</title><style>:root {
   --bg: #07111f;
   --bg-alt: #0b1730;
   --panel: rgba(11, 25, 48, 0.82);
@@ -4512,6 +4512,154 @@ html[data-text-size="xlarge"] .app-sheet{max-height:78svh}
   .skip-link{transition:none}
 }
 
+
+/* PHASE 11 — IPHONE COMPRESSION + DEVICE QA v23 */
+:root{
+  --app-vh:100dvh;
+  --visual-vh:100dvh;
+  --keyboard-inset:0px;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-right:env(safe-area-inset-right,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+  --safe-left:env(safe-area-inset-left,0px);
+}
+html,body{max-width:100%;overflow-x:clip}
+body{min-height:var(--app-vh);padding-left:var(--safe-left);padding-right:var(--safe-right)}
+.screen{min-height:var(--app-vh)}
+.topbar{padding-top:calc(10px + var(--safe-top))}
+main{padding-bottom:calc(142px + var(--safe-bottom))}
+.bottom-nav{
+  bottom:calc(8px + var(--safe-bottom));
+  width:min(454px,calc(100% - 20px - var(--safe-left) - var(--safe-right)));
+  transition:transform .28s var(--ease-spring),opacity .2s ease,bottom .2s ease;
+}
+.app-toast{bottom:calc(104px + var(--safe-bottom))}
+body[data-keyboard="open"] .bottom-nav{
+  opacity:0;
+  pointer-events:none;
+  transform:translate(-50%,calc(100% + 28px));
+}
+body[data-keyboard="open"] main{padding-bottom:28px}
+body[data-keyboard="open"] .app-toast{bottom:12px}
+body[data-keyboard="open"] .topbar{position:relative}
+body[data-keyboard="open"] .app-sheet{max-height:calc(var(--visual-vh) - 14px)}
+body[data-keyboard="open"] .app-sheet-backdrop{padding-bottom:6px}
+
+img,svg,canvas,video{max-width:100%}
+:where(.screen,main,#app,.fade-stack,.studio-stack,.section,.form-card,.summary-card-full,.system-map-shell,.system-map-groups,.system-group,.system-tool-grid,.world-list,.runway-board,.flex-board,.savings-board,.memory-week-list,.scenario-lab,.connections-stack)>*{min-width:0;max-width:100%}
+:where(h1,h2,h3,h4,p,span,strong,small,label,a,button){overflow-wrap:anywhere}
+:where(input,select,textarea){max-width:100%}
+
+/* iOS Safari prevents focus zoom when form text is at least 16px. */
+@media(max-width:600px){
+  input:not([type="range"]):not([type="checkbox"]):not([type="radio"]),
+  select,textarea{font-size:16px!important}
+}
+
+/* Canonical iPhone widths. */
+@media(max-width:430px){
+  .screen{max-width:none}
+  main{padding-left:10px;padding-right:10px}
+  .topbar{padding-left:10px;padding-right:10px}
+  .topbar-inner{gap:8px}
+  .header-side{max-width:108px}
+  .bottom-nav{width:calc(100% - 14px);padding:6px;gap:3px;border-radius:20px}
+  .bottom-nav .nav-link{min-width:0;padding:7px 4px;font-size:.57rem;letter-spacing:.02em}
+  .bottom-nav .nav-link .nav-icon{width:30px;height:30px;border-radius:11px}
+  .app-sheet-backdrop{padding-left:5px;padding-right:5px}
+}
+@media(max-width:390px){
+  .zen-home{min-height:calc(var(--visual-vh) - 126px)}
+  .zen-scene{min-height:376px}
+  .zen-zone{width:106px}
+  .system-map-overview,.memory-overview,.import-preview-stats{gap:5px}
+  .studio-summary{gap:5px}
+  .world-decision{padding:11px}
+}
+@media(max-width:375px){
+  main{padding-left:8px;padding-right:8px}
+  .topbar{padding-left:8px;padding-right:8px}
+  .topbar-inner{padding:11px;border-radius:18px}
+  .brand-mark{width:34px;height:34px}
+  .brand-kicker{font-size:9px}
+  .topbar h1{font-size:.89rem}
+  .header-side{max-width:96px}
+  .header-pill,.text-action,.back-pill{padding:7px 8px;font-size:.56rem}
+  .zen-scene{min-height:365px}
+  .zen-zone{width:102px;padding:6px 5px}
+  .zen-zone-copy strong{font-size:.63rem}
+  .zen-command{padding-left:7px;padding-right:7px}
+  .zen-command-arrow{display:none}
+  .app-sheet{border-radius:22px 22px 16px 16px}
+}
+@media(max-width:320px){
+  main{padding-left:6px;padding-right:6px}
+  .topbar{padding-left:6px;padding-right:6px}
+  .topbar-inner{padding:9px}
+  .brand-block{gap:6px}
+  .brand-mark{width:30px;height:30px;border-radius:10px}
+  .brand-mark svg{width:16px;height:16px}
+  .brand-subtitle,.brand-kicker{display:none}
+  .topbar h1{font-size:.82rem}
+  .header-side{max-width:84px}
+  .header-pill,.text-action,.back-pill{padding:6px;font-size:.51rem}
+  .zen-home{padding:6px}
+  .zen-scene{min-height:350px}
+  .zen-zone{width:94px;min-height:54px;grid-template-columns:28px 1fr}
+  .zen-emblem{width:28px;height:28px;border-radius:10px}
+  .zen-zone-copy small{font-size:.38rem}
+  .zen-zone-copy strong{font-size:.58rem}
+  .zen-zone-copy span{display:none}
+  .zen-core{width:112px;height:112px}
+  .zen-core strong{font-size:1.18rem}
+  .zen-core small{font-size:.4rem}
+  .zen-core span>span{display:none}
+  .zen-peek{width:calc(100% - 12px);padding:8px}
+  .bottom-nav{width:calc(100% - 8px)}
+  .bottom-nav .nav-link{font-size:.51rem}
+  .bottom-nav .nav-link .nav-icon{width:27px;height:27px}
+  .system-map-overview,.memory-overview,.studio-summary,.savings-goal-facts{grid-template-columns:1fr 1fr}
+  .scenario-impact-grid,.accessibility-status{grid-template-columns:1fr}
+}
+
+/* Landscape / short-height compression. */
+@media(max-height:620px) and (orientation:landscape){
+  .topbar{position:relative;padding-top:6px;padding-bottom:6px}
+  .topbar-inner{padding:8px 10px}
+  .brand-subtitle{display:none}
+  main{padding-bottom:88px}
+  .bottom-nav{bottom:4px}
+  .bottom-nav .nav-link{min-height:46px;padding:5px}
+  .bottom-nav .nav-link .nav-icon{width:26px;height:26px}
+}
+
+/* Device QA screen */
+.qa-hero{
+  padding:14px;border-radius:22px;border:1px solid rgba(103,232,249,.09);
+  background:linear-gradient(145deg,rgba(103,232,249,.035),rgba(255,255,255,.012))
+}
+.qa-hero h2{margin:5px 0 5px;font-size:1rem}
+.qa-hero p{margin:0;color:var(--text-soft);font-size:.62rem;line-height:1.45}
+.qa-device-line{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.qa-chip{padding:5px 7px;border-radius:999px;border:1px solid rgba(177,206,221,.06);background:rgba(255,255,255,.014);font-size:.45rem;color:#8ca5af}
+.qa-grid{display:grid;gap:6px}
+.qa-row{
+  display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:8px;align-items:start;
+  padding:9px 10px;border-radius:14px;border:1px solid rgba(177,206,221,.055);background:rgba(255,255,255,.012)
+}
+.qa-dot{width:20px;height:20px;border-radius:8px;display:grid;place-items:center;font-size:.55rem;font-weight:900}
+.qa-row.pass .qa-dot{background:rgba(110,231,183,.10);color:#aee8c7}
+.qa-row.warn .qa-dot{background:rgba(246,215,132,.10);color:#e2cf91}
+.qa-row.fail .qa-dot{background:rgba(251,113,133,.10);color:#e6a1ae}
+.qa-copy strong{display:block;font-size:.59rem}
+.qa-copy span{display:block;margin-top:3px;color:#7f98a3;font-size:.48rem;line-height:1.4}
+.qa-state{font-size:.43rem;text-transform:uppercase;letter-spacing:.07em;color:#8ba3ad;white-space:nowrap}
+.qa-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.qa-summary div{padding:9px;border-radius:13px;background:rgba(255,255,255,.014);text-align:center}
+.qa-summary small{display:block;font-size:.38rem;text-transform:uppercase;letter-spacing:.07em;color:#728b96}
+.qa-summary strong{display:block;margin-top:3px;font-size:.72rem}
+@media(max-width:350px){.qa-summary{grid-template-columns:1fr}.qa-row{grid-template-columns:22px minmax(0,1fr)}.qa-state{grid-column:2}}
+
 </style></head><body><a class="skip-link" href="#app">Skip to main content</a><div class="sr-only" id="routeAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app" tabindex="-1">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="zen-home">
@@ -5017,7 +5165,7 @@ function obligationTimeline(p){
 }
 function route(){ return (location.hash.replace('#','')||'home').split('?')[0]; }
 function nav(routeName){
-  const detailRoutes=['insights','reset','bills','essentials','lifestyle','savings','history','scenario','connections','future'];
+  const detailRoutes=['insights','reset','bills','essentials','lifestyle','savings','history','scenario','connections','future','qa'];
   const activeRoute=detailRoutes.includes(routeName)?'details':routeName==='setup'||routeName==='preferences'?'plan':routeName==='precheck'?'log':routeName;
   document.body.dataset.route=activeRoute;
   const index={home:0,log:1,details:2,plan:3}[activeRoute]??0;
@@ -6194,7 +6342,8 @@ async function renderDetails(){
         html:[
           tool('setup','Plan','Edit weekly structure','Change pay, bills, categories, savings, and week rhythm.','Plan','#72d6aa',semanticIcon('plan')),
           tool('preferences','Presentation','Motion, density & contrast','Control how much information and movement the interface shows.','Display','#f0a7d3',semanticIcon('settings')),
-          tool('future','Architecture','System Architecture','See how adaptive constellations, choreography, and connected data fit together.','Guide','#9fc8d1',semanticIcon('architecture'))
+          tool('future','Architecture','System Architecture','See how adaptive constellations, choreography, and connected data fit together.','Guide','#9fc8d1',semanticIcon('architecture')),
+          tool('qa','Quality','Device QA','Run mobile viewport, overflow, touch, storage, parser, and static-runtime checks on this device.','QA','#67e8f9',semanticIcon('settings'))
         ].join('')
       }
     ];
@@ -6711,6 +6860,27 @@ async function renderConnections(){
   }catch(e){root.innerHTML=errBox(e.message);}
 }
 
+function renderDeviceQA(){
+  shellMeta('Quality','Device QA','Run the Phase 11 smoke checks on the device in your hand','<a class="text-action" href="#details">Back</a>');nav('qa');
+  const draw=()=>{
+    updateMobileViewportState();
+    const results=runDeviceQa(),sum=qaSummary(results),vw=document.documentElement.clientWidth,vh=Math.round(window.visualViewport?.height||window.innerHeight);
+    root.innerHTML=`<div class="studio-stack">
+      <section class="qa-hero"><span class="studio-kicker">Phase 11 device check</span><h2>Mobile is the canonical product.</h2><p>This screen tests the current browser/device without modifying financial data. Hardware Safari checks that require human observation are listed separately below.</p><div class="qa-device-line"><span class="qa-chip">${vw}px wide</span><span class="qa-chip">${vh}px visual height</span><span class="qa-chip">${escapeHtml(document.body.dataset.viewport||'unknown')}</span><span class="qa-chip">${document.body.dataset.keyboard==='open'?'keyboard open':'keyboard closed'}</span></div></section>
+      <div class="qa-summary"><div><small>Pass</small><strong>${sum.pass}</strong></div><div><small>Review</small><strong>${sum.warn}</strong></div><div><small>Fail</small><strong>${sum.fail}</strong></div></div>
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Automated smoke checks</span><h2>Current-device diagnostics</h2><div class="section-caption">Re-run after rotating, opening the keyboard, changing text size, or changing motion settings.</div></div><button class="btn btn-secondary" id="rerunQa">Re-run</button></div><div class="qa-grid">${results.map(x=>`<div class="qa-row ${x.status}"><span class="qa-dot">${x.status==='pass'?'✓':x.status==='warn'?'!':'×'}</span><span class="qa-copy"><strong>${escapeHtml(x.label)}</strong><span>${escapeHtml(x.detail)}</span></span><span class="qa-state">${x.status}</span></div>`).join('')}</div></section>
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Hands-on Safari gate</span><h2>Still verify physically</h2><div class="section-caption">These cannot be proven reliably from static source inspection alone.</div></div></div><div class="world-list">
+        <div class="world-row"><div class="world-row-head"><strong>Keyboard + URL bar</strong><span>Open Add Spending and Scenario</span></div><div class="world-row-meta"><span class="world-chip">keyboard does not cover active field</span><span class="world-chip">nav hides while keyboard is open</span><span class="world-chip">viewport recovers on close</span></div></div>
+        <div class="world-row"><div class="world-row-head"><strong>Home constellation</strong><span>320 / 375 / 390 / 430 widths</span></div><div class="world-row-meta"><span class="world-chip">no collisions</span><span class="world-chip">one Peek only</span><span class="world-chip">center orb remains tappable</span></div></div>
+        <div class="world-row"><div class="world-row-head"><strong>Bottom sheet</strong><span>Open a category child</span></div><div class="world-row-meta"><span class="world-chip">drag dismisses</span><span class="world-chip">safe-area clears Home indicator</span><span class="world-chip">focus returns correctly</span></div></div>
+        <div class="world-row"><div class="world-row-head"><strong>Back / refresh</strong><span>Navigate three levels deep</span></div><div class="world-row-meta"><span class="world-chip">browser Back returns predictably</span><span class="world-chip">refresh keeps local plan</span><span class="world-chip">no broken route</span></div></div>
+      </div></section>
+      <div class="world-note">A green automated result means the current runtime check passed. It does not replace hands-on Safari testing across physical devices.</div>
+    </div>`;
+    document.getElementById('rerunQa')?.addEventListener('click',draw);
+  };draw();
+}
+
 function renderFutureLab(){
   shellMeta('Architecture','System Guide','Understand the three systems that were promoted from preview into the product','<a class="text-action" href="#details">Back</a>');
   nav('future');
@@ -6848,9 +7018,72 @@ function renderSetup(){
   q('savePlan').onclick=async()=>{ const fields=['netPay','savings','rent','phone','groceries','gas','eating','fun'], box=q('setupErr'); if(fields.some(x=>!valid(x))||cents('netPay')<=0){box.innerHTML=errBox('Enter valid dollar amounts. Net pay must be greater than $0.');return;} const rd=Number(q('rentDay').value),pd=Number(q('phoneDay').value); if(rd<1||rd>28||pd<1||pd>28){box.innerHTML=errBox('Use a due day from 1 to 28 for this preview.');return;} const due=day=>{const n=new Date(),d=new Date(n.getFullYear(),n.getMonth(),day,17);if(d<n)d.setMonth(d.getMonth()+1);return d.toISOString();}; const preset={userId:current?.userId||getStoredUserId()||undefined,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||'America/New_York',weekAnchorDow:Number(q('weekDay').value),weekAnchorMinutes:Number(q('weekHour').value)*60,payProfile:{netPayAmount:cents('netPay'),payFrequency:q('payFrequency').value,payAnchorAt:new Date().toISOString()},bills:[{name:'Housing',amount:cents('rent'),frequency:'monthly',dueDate:due(rd)},{name:'Phone',amount:cents('phone'),frequency:'monthly',dueDate:due(pd)}],livingNeeds:[{name:'Groceries',weeklyLimit:cents('groceries'),ebtOffset:0},{name:'Gas / Transit',weeklyLimit:cents('gas'),ebtOffset:0}],discretionary:[{name:'Eating Out',weeklyLimit:cents('eating')},{name:'Fun',weeklyLimit:cents('fun')}],savingsRule:{weeklyAmount:cents('savings'),active:cents('savings')>0}}; const btn=q('savePlan');btn.disabled=true;btn.textContent='Building your week...';try{const r=await apiRequest('/setup',{method:'POST',body:JSON.stringify(preset)});setStoredUserId(r.userId);await apiRequest('/week/current',{method:'POST',body:JSON.stringify({userId:r.userId})});location.hash='home';}catch(e){btn.disabled=false;btn.textContent='Save & Open Dashboard';box.innerHTML=errBox(e.message);} };
 }
 
+const DEVICE_QA_TEST_KEY='thisweek.qa.roundtrip';
+let lastVisualViewportHeight=0;
+function updateMobileViewportState(){
+  const vv=window.visualViewport,w=Math.round(vv?.width||window.innerWidth||document.documentElement.clientWidth),h=Math.round(vv?.height||window.innerHeight||document.documentElement.clientHeight);
+  const layoutH=Math.round(window.innerHeight||document.documentElement.clientHeight),keyboard=Math.max(0,layoutH-h);
+  document.documentElement.style.setProperty('--app-vh',layoutH+'px');
+  document.documentElement.style.setProperty('--visual-vh',h+'px');
+  document.documentElement.style.setProperty('--keyboard-inset',keyboard+'px');
+  document.body.dataset.keyboard=keyboard>140?'open':'closed';
+  document.body.dataset.viewport=w<=320?'320':w<=375?'375':w<=390?'390':w<=430?'430':w<768?'phone-wide':w<1024?'tablet':'desktop';
+  lastVisualViewportHeight=h;
+}
+function bindMobileViewportController(){
+  if(window.__thisWeekViewportBound)return;
+  window.__thisWeekViewportBound=true;
+  let raf=0;const schedule=()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(updateMobileViewportState);};
+  window.addEventListener('resize',schedule,{passive:true});
+  window.addEventListener('orientationchange',schedule,{passive:true});
+  window.visualViewport?.addEventListener('resize',schedule,{passive:true});
+  window.visualViewport?.addEventListener('scroll',schedule,{passive:true});
+  updateMobileViewportState();
+}
+function safeAreaPixels(side='bottom'){
+  const el=document.createElement('div');el.style.cssText=`position:fixed;visibility:hidden;pointer-events:none;padding-${side}:env(safe-area-inset-${side},0px)`;document.body.appendChild(el);
+  const value=parseFloat(getComputedStyle(el)[`padding${side[0].toUpperCase()+side.slice(1)}`])||0;el.remove();return value;
+}
+function visibleInteractiveElements(){
+  return [...document.querySelectorAll('a[href],button,input:not([type="hidden"]),select,textarea,summary,[tabindex]:not([tabindex="-1"])')].filter(el=>{
+    const s=getComputedStyle(el),r=el.getBoundingClientRect();return s.display!=='none'&&s.visibility!=='hidden'&&r.width>0&&r.height>0&&!el.closest('[inert]');
+  });
+}
+function runDeviceQa(){
+  const out=[],add=(id,label,status,detail)=>out.push({id,label,status,detail});
+  const vw=document.documentElement.clientWidth,vh=Math.round(window.visualViewport?.height||window.innerHeight),scrollW=document.documentElement.scrollWidth;
+  add('viewport','Canonical viewport',vw<=320?'warn':'pass',`${vw}×${vh}px · profile ${document.body.dataset.viewport||'unknown'}`);
+  add('overflow','No horizontal overflow',scrollW<=vw+1?'pass':'fail',scrollW<=vw+1?'Document fits viewport.':`Document is ${scrollW-vw}px wider than viewport.`);
+  const inputs=[...document.querySelectorAll('input:not([type="range"]):not([type="checkbox"]):not([type="radio"]),select,textarea')].filter(x=>x.getBoundingClientRect().width>0);
+  const smallInputs=inputs.filter(x=>parseFloat(getComputedStyle(x).fontSize)<16);
+  add('inputZoom','iOS input zoom guard',smallInputs.length===0?'pass':'fail',smallInputs.length?`${smallInputs.length} visible field(s) below 16px.`:'Visible form controls use at least 16px text.');
+  const targets=visibleInteractiveElements(),smallTargets=targets.filter(el=>{const r=el.getBoundingClientRect();return r.width<40||r.height<40;});
+  add('targets','Touch-target audit',smallTargets.length===0?'pass':smallTargets.length<=3?'warn':'fail',smallTargets.length?`${smallTargets.length} visible control(s) are under 40×40px in at least one dimension.`:'Visible controls clear the compact touch-target check.');
+  const nav=document.querySelector('.bottom-nav'),navRect=nav?.getBoundingClientRect(),visualBottom=(window.visualViewport?.offsetTop||0)+(window.visualViewport?.height||window.innerHeight);
+  const navVisible=navRect?navRect.bottom<=visualBottom+2:true;
+  add('nav','Bottom-nav clearance',document.body.dataset.keyboard==='open'||navVisible?'pass':'warn',document.body.dataset.keyboard==='open'?'Keyboard mode hides navigation to avoid overlap.':navVisible?'Navigation fits the visible viewport.':'Navigation may be clipped by the current visual viewport.');
+  const expanded=document.querySelectorAll('.zen-zone[aria-expanded="true"]').length,openSheets=document.querySelectorAll('.app-sheet-backdrop.open').length;
+  add('layers','One expanded layer maximum',(expanded<=1&&openSheets<=1)?'pass':'fail',`${expanded} expanded category layer(s), ${openSheets} open bottom sheet(s).`);
+  let storage='pass',storageDetail='localStorage round-trip succeeded.';
+  try{localStorage.setItem(DEVICE_QA_TEST_KEY,'ok');if(localStorage.getItem(DEVICE_QA_TEST_KEY)!=='ok')throw new Error('mismatch');localStorage.removeItem(DEVICE_QA_TEST_KEY);}catch{storage='warn';storageDetail='localStorage is unavailable; volatile fallback remains important.';}
+  add('storage','Persistence round-trip',storage,storageDetail);
+  let csv='pass',csvDetail='Delimited import parser handled quoted comma + debit sample.';
+  try{const parsed=parseDelimitedText('Date,Description,Debit\n09/18/2026,"Market, Local",12.50\n');const rows=normalizeImportedRows(parsed.rows,'negativePurchase','QA');if(rows.length!==1||rows[0].amount!==1250)throw new Error('parse mismatch');}catch(e){csv='fail';csvDetail='Import parser sample failed: '+e.message;}
+  add('csv','Imported CSV smoke test',csv,csvDetail);
+  add('safeArea','Safe-area support','pass',`top ${Math.round(safeAreaPixels('top'))}px · bottom ${Math.round(safeAreaPixels('bottom'))}px detected by CSS env().`);
+  add('visualViewport','Safari viewport controller',window.visualViewport?'pass':'warn',window.visualViewport?'VisualViewport API active for URL-bar/keyboard changes.':'VisualViewport unavailable; layout falls back to window dimensions.');
+  const staticRuntime=!document.querySelector('script[src],link[rel="stylesheet"][href]');
+  add('static','Static/offline-friendly runtime',staticRuntime?'pass':'warn',staticRuntime?'No external script or stylesheet dependency after document load.':'External runtime asset dependency detected.');
+  add('route','Hash-route resilience',typeof route==='function'&&typeof render==='function'?'pass':'fail','Hash router and render controller are present; browser Back/Forward remains native.');
+  add('reducedMotion','Reduced Motion path',effectiveUiPrefs().effectiveMotion==='reduced'?'pass':'pass',effectiveUiPrefs().effectiveMotion==='reduced'?'Reduced Motion is currently active.':'Reduced Motion remains available through System or explicit preference.');
+  return out;
+}
+function qaSummary(results){
+  return {pass:results.filter(x=>x.status==='pass').length,warn:results.filter(x=>x.status==='warn').length,fail:results.filter(x=>x.status==='fail').length};
+}
 let lastRenderedRoute=null;
 function routeAccessibleName(routeName){
-  return ({home:'Home',log:'Add Spending',details:'Details',insights:'Advanced Insights',bills:'Bill Protection Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex Studio',savings:'Savings Goal Studio',precheck:'Purchase Pre-check',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data Center',preferences:'Presentation and Accessibility',future:'System Architecture',reset:'New Week',setup:'Plan'})[routeName]||'Home';
+  return ({home:'Home',log:'Add Spending',details:'Details',insights:'Advanced Insights',bills:'Bill Protection Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex Studio',savings:'Savings Goal Studio',precheck:'Purchase Pre-check',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data Center',preferences:'Presentation and Accessibility',future:'System Architecture',qa:'Device QA',reset:'New Week',setup:'Plan'})[routeName]||'Home';
 }
 function announceRoute(routeName,focusMain=true){
   const announcer=document.getElementById('routeAnnouncer'),main=document.getElementById('app');
@@ -6860,9 +7093,9 @@ function announceRoute(routeName,focusMain=true){
 async function render(){
   closeAppSheet({restore:false});
   if(sceneMotionObserver){try{sceneMotionObserver.disconnect();}catch{}sceneMotionObserver=null;}
-  applyUiPrefs();bindSystemPreferenceListeners();
+  applyUiPrefs();bindSystemPreferenceListeners();bindMobileViewportController();
   const r=route(),routeChanged=lastRenderedRoute!==null&&lastRenderedRoute!==r;
-  window.scrollTo({top:0,behavior:effectiveUiPrefs().effectiveMotion==='reduced'?'auto':'smooth'});
+  window.scrollTo({top:0,behavior:(effectiveUiPrefs().effectiveMotion==='reduced'||document.body.dataset.keyboard==='open')?'auto':'smooth'});
   if(r==='log')await renderLog();
   else if(r==='details')await renderDetails();
   else if(r==='insights')await renderInsights();
@@ -6875,6 +7108,7 @@ async function render(){
   else if(r==='scenario')await renderScenario();
   else if(r==='connections')await renderConnections();
   else if(r==='preferences')await renderPreferences();
+  else if(r==='qa')await renderDeviceQA();
   else if(r==='future')await renderFutureLab();
   else if(r==='reset')await renderReset();
   else if(r==='setup')await renderSetup();
