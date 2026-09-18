@@ -4709,6 +4709,9 @@ body[data-performance="lite"] .fin-event-token:nth-child(n+3){display:none!impor
 
 const USER_ID_KEY = "thisweek.userId";
 const STATE_KEY = "thisweek.state.v2";
+const CORE_SCHEMA_VERSION = 3;
+const PORTABLE_DATA_SCHEMA_VERSION = 1;
+const NORMALIZED_MODEL_VERSION = "2026-09";
 const DAY_MS = 86400000;
 
 function uid() {
@@ -4743,7 +4746,47 @@ function safeLocalStorageRemove(key){
   try{localStorage.removeItem(key);runtimeStorageHealth.available=true;return true;}
   catch(e){runtimeStorageHealth.available=false;runtimeStorageHealth.lastError=e?.message||'Storage remove failed';runtimeStorageHealth.lastFailureAt=nowIso();return false;}
 }
+function inferCoreSchemaVersion(state){
+  const explicit=Number(state?.schemaVersion||0);
+  if(Number.isInteger(explicit)&&explicit>0)return explicit;
+  return Array.isArray(state?.adjustments)||Array.isArray(state?.transactions)?2:1;
+}
+function migrateCoreStateV1ToV2(state){
+  const next=state&&typeof state==='object'?state:{};
+  if(!Array.isArray(next.weeks))next.weeks=[];
+  if(!Array.isArray(next.transactions))next.transactions=[];
+  if(!Array.isArray(next.adjustments))next.adjustments=[];
+  if(!Array.isArray(next.importedExternalIds))next.importedExternalIds=[];
+  next.schemaVersion=2;
+  return next;
+}
+function migrateCoreStateV2ToV3(state){
+  const next=state&&typeof state==='object'?state:{};
+  next.schemaVersion=3;
+  next.modelMeta={
+    ...(next.modelMeta&&typeof next.modelMeta==='object'?next.modelMeta:{}),
+    model:NORMALIZED_MODEL_VERSION,
+    currency:'USD',
+    amountUnit:'cent',
+    persistence:'browser-local'
+  };
+  return next;
+}
+function migrateCoreState(input){
+  if(!input||typeof input!=='object')return null;
+  let state=input,version=inferCoreSchemaVersion(state);
+  if(version<2){state=migrateCoreStateV1ToV2(state);version=2;}
+  if(version<3){state=migrateCoreStateV2ToV3(state);version=3;}
+  if(version>CORE_SCHEMA_VERSION){
+    state.schemaVersion=version;
+    return state;
+  }
+  state.schemaVersion=CORE_SCHEMA_VERSION;
+  if(!state.modelMeta||typeof state.modelMeta!=='object')state.modelMeta={model:NORMALIZED_MODEL_VERSION,currency:'USD',amountUnit:'cent',persistence:'browser-local'};
+  return state;
+}
 function normalizeRuntimeState(state){
+  state=migrateCoreState(state);
   if(!state||typeof state!=='object')return null;
   if(!Array.isArray(state.weeks))state.weeks=[];
   if(!Array.isArray(state.transactions))state.transactions=[];
@@ -4996,6 +5039,8 @@ function homePayload(state, week, options={}) {
 function normalizePreset(preset, userId) {
   const idify = arr => arr.map(x => ({ ...clone(x), id: x.id || uid(), active: x.active !== false }));
   return {
+    schemaVersion:CORE_SCHEMA_VERSION,
+    modelMeta:{model:NORMALIZED_MODEL_VERSION,currency:'USD',amountUnit:'cent',persistence:'browser-local'},
     userId,
     config: {
       timezone: preset.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone || "America/New_York",
