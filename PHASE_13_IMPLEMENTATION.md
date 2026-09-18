@@ -162,3 +162,83 @@ These remain future infrastructure/security work.
 The current browser-local system can now be represented as a versioned normalized envelope whose entity boundaries and relationships are suitable for future server persistence.
 
 That means a later backend can focus on storage, authentication, synchronization, and security rather than requiring the financial product model to be redesigned.
+
+
+## Continued Phase 13 hardening
+
+### Referential-integrity validation
+
+The normalized model now validates before portable export.
+
+The integrity pass checks:
+
+- collection presence;
+- duplicate primary keys;
+- manifest-defined foreign-key relationships;
+- integer-cent amount fields;
+- recognized import direction/status values;
+- reconciliation state.
+
+Portable-envelope validation now includes normalized-model integrity instead of checking only top-level collection presence.
+
+### Historical identity preservation
+
+Backend readiness exposed an important edge case: a category or bill can be removed from the current Plan while older weeks and transactions still reference its ID.
+
+Phase 13 now preserves those relationships in the normalized model.
+
+If a historical category is no longer present in current configuration, the portable model creates an inactive:
+
+`Archived category`
+
+reference with:
+
+`provenance: "historical_reference"`
+
+Likewise, historical bill allocations whose bill no longer exists in active configuration receive an inactive:
+
+`Archived bill`
+
+reference.
+
+These records exist to preserve relationship integrity. They do not invent historical financial amounts or reactivate deleted plan items.
+
+### Export integrity summary
+
+Each portable envelope now includes an integrity summary with:
+
+- valid / invalid state;
+- error count;
+- warning count;
+- bounded error details;
+- bounded warning details.
+
+Warnings can include preserved archived references.
+
+Errors prevent normal serialization from being treated as a valid portable export.
+
+### Serialization round-trip test
+
+The Data Model & Export screen now contains a non-destructive:
+
+**Run test**
+
+control.
+
+The test:
+
+1. builds the normalized model;
+2. serializes it to JSON;
+3. parses it through the portable deserializer;
+4. validates the parsed envelope again;
+5. reports success/failure.
+
+The test never applies the parsed data back into live state.
+
+### Final Phase 13 app refinement
+
+Final Phase 13 source commit:
+
+`a514771f3a5ea2c606cf8a8116c6e6f904613c36`
+
+This refinement completes the practical backend-readiness requirement by ensuring the exported model is not only normalized, but also internally self-consistent before it is considered portable.
