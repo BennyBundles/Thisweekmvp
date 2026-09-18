@@ -1907,6 +1907,201 @@ body[data-financial-state] .hero-card{
   .health-orbit,.velocity-fill,.flow-path,.flow-node,.intel-body{animation:none!important}
 }
 
+
+/* SIMPLE COMMAND CENTER v6 */
+.finance-dock{display:none!important}
+.bottom-nav{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:7px;
+  padding:8px;
+}
+body[data-route="home"] .topbar{padding-top:calc(8px + env(safe-area-inset-top,0px));padding-bottom:8px}
+body[data-route="home"] .topbar-inner{padding:11px 12px;border-radius:20px}
+body[data-route="home"] .brand-mark{width:38px;height:38px;border-radius:13px}
+body[data-route="home"] .brand-mark svg{width:23px;height:23px}
+body[data-route="home"] .brand-kicker{font-size:9px;margin-bottom:2px}
+body[data-route="home"] .topbar h1{font-size:.96rem}
+body[data-route="home"] .brand-subtitle{font-size:.68rem;line-height:1.18}
+body[data-route="home"] main{padding-top:2px}
+body[data-route="home"] .header-side{align-self:center}
+body[data-route="home"] .text-action{padding:8px 10px;font-size:.62rem}
+
+.home-command{
+  position:relative;
+  overflow:hidden;
+  display:grid;
+  gap:14px;
+  padding:20px;
+  border-radius:30px;
+  border:1px solid rgba(177,206,221,.13);
+  background:
+    radial-gradient(circle at 84% 7%,rgba(76,211,156,.11),transparent 28%),
+    radial-gradient(circle at 12% 82%,rgba(107,185,216,.07),transparent 28%),
+    linear-gradient(145deg,rgba(12,31,48,.99),rgba(7,21,34,.98) 55%,rgba(9,35,38,.95));
+  box-shadow:0 28px 70px rgba(0,7,14,.40),inset 0 1px 0 rgba(255,255,255,.035);
+}
+.home-command::after{
+  content:"";
+  position:absolute;inset:0;pointer-events:none;opacity:.42;
+  background-image:linear-gradient(rgba(255,255,255,.014) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.014) 1px,transparent 1px);
+  background-size:24px 24px;
+  mask-image:linear-gradient(180deg,#000,transparent 86%);
+}
+.home-command>*{position:relative;z-index:1}
+.home-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.home-head-copy{min-width:0}
+.home-eyebrow{font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:#9ed7c8;font-weight:800}
+.home-title{margin:5px 0 0;font-size:1.42rem;line-height:1.05;letter-spacing:-.04em}
+.home-week{margin-top:5px;color:var(--text-soft);font-size:.72rem}
+.home-state{
+  flex:0 0 auto;padding:8px 11px;border-radius:999px;
+  border:1px solid rgba(76,211,156,.15);background:rgba(76,211,156,.09);
+  color:#c9f7db;font-size:.65rem;font-weight:850;letter-spacing:.11em;text-transform:uppercase
+}
+.home-state.attention{border-color:rgba(225,132,141,.18);background:rgba(225,132,141,.09);color:#ffd4d9}
+.available-block{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap}
+.available-amount{font-size:clamp(2.4rem,11vw,3.35rem);font-weight:840;line-height:.88;letter-spacing:-.065em}
+.available-label{padding-bottom:5px;font-size:.67rem;letter-spacing:.2em;text-transform:uppercase;color:#8fa7b2;font-weight:750}
+
+.interlock{
+  position:relative;
+  height:216px;
+  border-radius:26px;
+  border:1px solid rgba(177,206,221,.09);
+  background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(255,255,255,.008));
+  overflow:hidden;
+}
+.interlock::before{
+  content:"";position:absolute;inset:12% 14%;
+  background:
+    linear-gradient(27deg,transparent 49.7%,rgba(76,211,156,.13) 50%,transparent 50.3%),
+    linear-gradient(-27deg,transparent 49.7%,rgba(107,185,216,.12) 50%,transparent 50.3%);
+  animation:interlockPulse 5s ease-in-out infinite;
+}
+.interlock-center{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:112px;height:112px;border-radius:50%;
+  display:grid;place-items:center;text-align:center;
+  background:radial-gradient(circle at 35% 25%,rgba(76,211,156,.18),rgba(8,28,38,.98) 62%);
+  border:1px solid rgba(76,211,156,.22);
+  box-shadow:0 0 0 8px rgba(76,211,156,.025),0 18px 36px rgba(0,0,0,.28);
+  animation:centerBreathe 4.4s ease-in-out infinite;
+}
+.interlock-center span,.orbit-chip span{display:block;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:#8fa7b2}
+.interlock-center strong{display:block;margin-top:4px;font-size:1.18rem;letter-spacing:-.04em}
+.orbit-chip{
+  position:absolute;width:104px;min-height:58px;padding:10px 9px;border-radius:18px;
+  display:grid;align-content:center;text-align:center;
+  background:rgba(5,18,30,.88);border:1px solid rgba(177,206,221,.10);
+  box-shadow:0 12px 26px rgba(0,7,14,.23);backdrop-filter:blur(10px);
+  animation:orbitInLite .48s var(--ease-soft) both;
+}
+.orbit-chip strong{display:block;margin-top:4px;font-size:.84rem;letter-spacing:-.02em}
+.orbit-chip.bills{left:12px;top:12px}
+.orbit-chip.essentials{right:12px;top:12px;animation-delay:.05s}
+.orbit-chip.lifestyle{left:12px;bottom:12px;animation-delay:.1s}
+.orbit-chip.savings{right:12px;bottom:12px;animation-delay:.15s}
+.attention-line{
+  display:flex;align-items:flex-start;gap:10px;padding:12px 13px;border-radius:18px;
+  border:1px solid rgba(177,206,221,.09);background:rgba(255,255,255,.026)
+}
+.attention-dot{
+  width:9px;height:9px;flex:0 0 9px;border-radius:50%;margin-top:5px;
+  background:#4cd39c;box-shadow:0 0 0 5px rgba(76,211,156,.07)
+}
+.attention-line.warn .attention-dot{background:#d5b06a;box-shadow:0 0 0 5px rgba(213,176,106,.07)}
+.attention-line.danger .attention-dot{background:#e1848d;box-shadow:0 0 0 5px rgba(225,132,141,.07)}
+.attention-copy{min-width:0}
+.attention-copy strong{display:block;font-size:.82rem}
+.attention-copy span{display:block;margin-top:3px;color:var(--text-soft);font-size:.7rem;line-height:1.35}
+.next-step{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 14px;
+  border-radius:20px;border:1px solid rgba(76,211,156,.15);
+  background:linear-gradient(135deg,rgba(76,211,156,.085),rgba(107,185,216,.035));
+}
+.next-step-copy{min-width:0}
+.next-step-copy small{display:block;color:#9ed7c8;font-size:.57rem;letter-spacing:.13em;text-transform:uppercase;font-weight:800}
+.next-step-copy strong{display:block;margin-top:4px;font-size:.9rem}
+.next-step-copy span{display:block;margin-top:3px;color:var(--text-soft);font-size:.68rem;line-height:1.32}
+.next-step .btn{flex:0 0 auto;min-height:42px;padding:11px 13px;border-radius:14px;font-size:.75rem}
+
+.detail-stack{display:grid;gap:14px}
+.detail-intro{
+  padding:18px;border-radius:24px;border:1px solid rgba(177,206,221,.10);
+  background:linear-gradient(145deg,rgba(12,30,46,.94),rgba(6,18,30,.94))
+}
+.detail-intro h2{margin:6px 0 5px;font-size:1.38rem;letter-spacing:-.035em}
+.detail-intro p{margin:0;color:var(--text-soft);font-size:.82rem;line-height:1.45}
+.detail-snapshot{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.detail-stat{padding:12px;border-radius:17px;border:1px solid rgba(177,206,221,.08);background:rgba(255,255,255,.025)}
+.detail-stat span{display:block;color:var(--text-faint);font-size:.57rem;letter-spacing:.1em;text-transform:uppercase}
+.detail-stat strong{display:block;margin-top:5px;font-size:.94rem;letter-spacing:-.02em}
+.detail-accordion{border:1px solid rgba(177,206,221,.09);border-radius:21px;background:rgba(255,255,255,.02);overflow:hidden}
+.detail-accordion summary{
+  list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:15px;cursor:pointer;-webkit-tap-highlight-color:transparent
+}
+.detail-accordion summary::-webkit-details-marker{display:none}
+.detail-accordion-title span{display:block;color:#9ed7c8;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;font-weight:800}
+.detail-accordion-title strong{display:block;margin-top:4px;font-size:.95rem}
+.detail-accordion summary::after{
+  content:"+";width:30px;height:30px;flex:0 0 30px;display:grid;place-items:center;border-radius:11px;
+  background:rgba(255,255,255,.035);color:#9fb3bd;transition:transform .25s var(--ease-spring)
+}
+.detail-accordion[open] summary::after{transform:rotate(45deg);background:rgba(76,211,156,.07)}
+.detail-panel{padding:0 13px 13px;animation:intelOpen .28s var(--ease-soft) both}
+.deep-link{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px;
+  border-radius:22px;border:1px solid rgba(213,176,106,.10);
+  background:linear-gradient(135deg,rgba(213,176,106,.055),rgba(76,211,156,.035));
+  text-decoration:none;color:var(--text)
+}
+.deep-link strong{display:block;font-size:.95rem}
+.deep-link span{display:block;margin-top:4px;color:var(--text-soft);font-size:.73rem;line-height:1.35}
+.deep-link-badge{flex:0 0 auto;padding:8px 10px;border-radius:999px;border:1px solid rgba(177,206,221,.09);font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:#aac1cb}
+
+.insights-grid{display:grid;gap:14px}
+.insight-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.insight-card{
+  padding:16px;border-radius:22px;border:1px solid rgba(177,206,221,.09);
+  background:linear-gradient(145deg,rgba(12,30,46,.92),rgba(6,18,30,.92))
+}
+.insight-card h3{margin:6px 0 0;font-size:1rem}
+.insight-number{margin-top:14px;font-size:2rem;font-weight:820;letter-spacing:-.05em}
+.insight-caption{margin-top:5px;color:var(--text-soft);font-size:.72rem;line-height:1.4}
+.simple-meter{margin-top:12px;height:8px;border-radius:99px;background:rgba(255,255,255,.045);overflow:hidden}
+.simple-meter>span{display:block;height:100%;width:var(--fill,0%);border-radius:inherit;background:linear-gradient(90deg,#4cd39c,#64c9c4);animation:velocityGrow .7s var(--ease-soft) both}
+
+@keyframes interlockPulse{0%,100%{opacity:.52;transform:scale(.98)}50%{opacity:1;transform:scale(1.03)}}
+@keyframes centerBreathe{0%,100%{box-shadow:0 0 0 8px rgba(76,211,156,.025),0 18px 36px rgba(0,0,0,.28)}50%{box-shadow:0 0 0 12px rgba(76,211,156,.04),0 20px 40px rgba(0,0,0,.30)}}
+@keyframes orbitInLite{from{opacity:0;transform:translateY(5px) scale(.96)}to{opacity:1;transform:none}}
+
+@media(max-width:390px){
+  body[data-route="home"] .brand-subtitle{display:none}
+  body[data-route="home"] .topbar h1{font-size:.9rem}
+  .home-command{padding:16px;border-radius:26px;gap:12px}
+  .home-title{font-size:1.25rem}
+  .available-amount{font-size:2.6rem}
+  .interlock{height:202px}
+  .interlock-center{width:100px;height:100px}
+  .orbit-chip{width:94px;min-height:54px;padding:8px}
+  .orbit-chip.bills,.orbit-chip.lifestyle{left:8px}
+  .orbit-chip.essentials,.orbit-chip.savings{right:8px}
+  .orbit-chip.bills,.orbit-chip.essentials{top:8px}
+  .orbit-chip.lifestyle,.orbit-chip.savings{bottom:8px}
+  .next-step{padding:11px 12px}
+  .next-step-copy span{display:none}
+  .bottom-nav{padding:7px 6px}
+  .nav-link{min-height:59px;padding:8px 4px;gap:4px;font-size:.62rem}
+  .nav-link .nav-icon{width:31px;height:31px;border-radius:12px}
+  .detail-snapshot{grid-template-columns:1fr 1fr}
+  .detail-stat:last-child{grid-column:1/-1}
+  .insight-pair{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  .interlock::before,.interlock-center,.orbit-chip,.simple-meter>span{animation:none!important}
+}
+
 </style></head><body><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="hero-card">
@@ -1970,7 +2165,7 @@ body[data-financial-state] .hero-card{
     </section>
   </div>
   <noscript><div class="inline-note" style="margin:16px"><span>ⓘ</span><span>JavaScript is disabled in this viewer, so this page is showing the full static Home preview.</span></div></noscript>
-</main><nav class="bottom-nav" aria-label="Primary"><a class="nav-link active" data-route="home" href="#home"><span class="nav-icon">⌂</span><span>Home</span></a><a class="nav-link" data-route="log" href="#log"><span class="nav-icon">＋</span><span>Add Spend</span></a><a class="nav-link" data-route="reset" href="#reset"><span class="nav-icon">↻</span><span>New Week</span></a></nav><div class="finance-dock" id="financeDock"><div class="dock-state"><span class="dock-led"></span><div class="dock-copy"><strong id="dockTitle">Weekly plan active</strong><span id="dockSub">Local financial workspace</span></div></div><span class="dock-secure">Private</span></div></div><script>// This Week - browser-persistent preview runtime.
+</main><nav class="bottom-nav" aria-label="Primary"><a class="nav-link active" data-route="home" href="#home"><span class="nav-icon">⌂</span><span>Home</span></a><a class="nav-link" data-route="log" href="#log"><span class="nav-icon">＋</span><span>Add Spend</span></a><a class="nav-link" data-route="details" href="#details"><span class="nav-icon">≣</span><span>Details</span></a><a class="nav-link" data-route="plan" href="#setup"><span class="nav-icon">⚙</span><span>Plan</span></a></nav><div class="finance-dock" id="financeDock"><div class="dock-state"><span class="dock-led"></span><div class="dock-copy"><strong id="dockTitle">Weekly plan active</strong><span id="dockSub">Local financial workspace</span></div></div><span class="dock-secure">Private</span></div></div><script>// This Week - browser-persistent preview runtime.
 // Data is stored in localStorage so the Vercel preview stays usable without a server database.
 
 const USER_ID_KEY = "thisweek.userId";
@@ -2374,19 +2569,11 @@ function obligationTimeline(p){
 }
 function route(){ return (location.hash.replace('#','')||'home').split('?')[0]; }
 function nav(routeName){
-  navLinks.forEach(a=>a.classList.toggle('active',a.dataset.route===routeName));
+  const activeRoute=routeName==='insights'||routeName==='reset'?'details':routeName==='setup'?'plan':routeName;
+  document.body.dataset.route=activeRoute;
+  navLinks.forEach(a=>a.classList.toggle('active',a.dataset.route===activeRoute));
   if(routeName!=='home') delete document.body.dataset.financialState;
-  if(financeDock){
-    const copy={
-      home:['Weekly plan active','Your dashboard is current'],
-      log:['Quick entry','Add spending to keep balances accurate'],
-      reset:['Week rollover','Review before opening the next cycle'],
-      setup:['Plan settings','Changes update your weekly model']
-    }[routeName]||['Financial workspace','Private browser-based planning'];
-    dockTitle.textContent=copy[0];
-    dockSub.textContent=copy[1];
-    financeDock.classList.toggle('hide',routeName==='setup');
-  }
+  if(financeDock) financeDock.classList.add('hide');
 }
 function shellMeta(kicker,title,sub,action=''){ headerKicker.textContent=kicker; headerTitle.textContent=title; headerSub.textContent=sub; headerAction.innerHTML=action; }
 function errBox(msg){ return msg?`<div class="error">${escapeHtml(msg)}</div>`:''; }
@@ -2424,133 +2611,135 @@ document.addEventListener('click',e=>{
 function categoryRow(c){ const spent=Math.max(0,c.allocated-c.remaining), fill=percent(spent,c.allocated); return `<div class="finance-row"><div class="finance-head"><div><div class="finance-name">${escapeHtml(c.name)}</div><div class="finance-sub">Spent ${formatCents(spent)} of ${formatCents(c.allocated)}</div></div><div class="finance-main ${c.remaining<0?'attention':''}">${formatCents(c.remaining)} left</div></div><div class="progress-track"><div class="progress-fill ${c.remaining<0?'warn':''}" style="--fill:${fill}%"></div></div></div>`; }
 function billRow(b){ const fill=percent(b.contributed,b.weeklyRequired||b.requiredByToday||1), warn=b.status!=='ON_TRACK'; return `<div class="finance-row"><div class="finance-head"><div><div class="finance-name">${escapeHtml(b.name)}</div><div class="finance-sub">Due today ${formatCents(b.requiredByToday)} · Weekly target ${formatCents(b.weeklyRequired)}</div></div><div class="finance-main ${warn?'attention':''}">${formatCents(b.contributed)} funded</div></div><div class="progress-track"><div class="progress-fill ${warn?'warn':''}" style="--fill:${fill}%"></div></div></div>`; }
 
+
+function simpleDecision(p){
+  const cats=[...(p.essentials||[]),...(p.forYou||[])];
+  const behind=(p.bills||[]).filter(b=>b.status!=='ON_TRACK'||(b.requiredByToday||0)>(b.contributed||0));
+  const overspent=cats.filter(x=>(x.remaining||0)<0);
+  const essentialsLeft=(p.essentials||[]).reduce((n,x)=>n+Math.max(0,x.remaining||0),0);
+  const lifestyleLeft=(p.forYou||[]).reduce((n,x)=>n+Math.max(0,x.remaining||0),0);
+  let attention={tone:'ok',title:'All clear right now',copy:'No urgent weekly issue is flagged.'};
+  let next={title:'Add spending after purchases',copy:'Keep the dashboard accurate as the week moves.',label:'Add Spend',href:'#log'};
+  if(behind.length){
+    const need=behind.reduce((n,b)=>n+Math.max(0,(b.requiredByToday||0)-(b.contributed||0)),0);
+    attention={tone:'warn',title:'Protected bills need attention',copy:`${behind.length} bill${behind.length===1?'':'s'} · ${formatCents(need)} still needed today`};
+    next={title:'Review protected bills',copy:'See which bill needs funding and how much.',label:'Review',href:'#details'};
+  }else if(overspent.length){
+    attention={tone:'danger',title:'Spending needs attention',copy:`${overspent[0].name} is below its weekly limit.`};
+    next={title:'Review the overspent lane',copy:'See the category detail before more flexible spending.',label:'Review',href:'#details'};
+  }else{
+    const end=new Date(p.week.end).getTime();
+    if(Number.isFinite(end)&&end-Date.now()<36*60*60*1000){
+      attention={tone:'warn',title:'Week rollover is coming up',copy:'Your current weekly cycle is close to ending.'};
+      next={title:'Review and start the next week',copy:'Check the summary before rolling forward.',label:'New Week',href:'#reset'};
+    }
+  }
+  return {behind,overspent,essentialsLeft,lifestyleLeft,attention,next};
+}
+
+function detailBudgetStats(p){
+  const cats=[...(p.essentials||[]),...(p.forYou||[])];
+  const allocated=cats.reduce((n,x)=>n+Math.max(0,x.allocated||0),0);
+  const spent=cats.reduce((n,x)=>n+Math.max(0,(x.allocated||0)-(x.remaining||0)),0);
+  const remaining=cats.reduce((n,x)=>n+Math.max(0,x.remaining||0),0);
+  return {allocated,spent,remaining};
+}
+
 async function renderHome(){
-  shellMeta('This Week','Cashflow Dashboard','Private weekly cashflow control with clear financial guardrails','<a class="text-action" href="#setup">Edit Plan</a><button class="text-action" id="clearBtn">Reset</button>'); nav('home');
-  const clear=document.getElementById('clearBtn'); clear.onclick=()=>{ if(confirm('Clear all This Week preview data on this browser?')){ clearState(); render(); } };
+  shellMeta('This Week','Weekly Dashboard','What is available, what needs attention, and what to do next','<a class="text-action" href="#setup">Plan</a>');
+  nav('home');
   let userId=getStoredUserId();
   if(!userId){
-    root.innerHTML='<div class="center"><div class="spinner"></div><div class="muted">Opening your weekly workspace…</div></div>';
-    try{
-      const created=await apiRequest('/setup',{method:'POST',body:JSON.stringify(DEMO_PRESET)});
-      userId=created.userId;
-      setStoredUserId(userId);
-    }catch(e){
-      root.innerHTML=`<div class="fade-stack"><section class="hero-card center" style="min-height:auto"><span class="eyebrow">Private Workspace</span><h2 class="hero-title" style="margin-top:14px">Build your first week.</h2><p class="subtitle">Set up income, bills, savings, and spending lanes to activate the dashboard.</p>${errBox(e.message)}<div class="menu-grid single" style="width:100%;margin-top:8px"><a class="btn btn-primary" href="#setup">Build My Plan</a></div></section></div>`;
-      return;
-    }
+    root.innerHTML=`<div class="home-command"><div class="home-head"><div class="home-head-copy"><div class="home-eyebrow">Start here</div><h2 class="home-title">One clear weekly money dashboard.</h2><div class="home-week">Set up your plan once, then Home does the simplifying.</div></div><span class="home-state">Ready</span></div><div class="available-block"><div class="available-amount">—</div><div class="available-label">Available now</div></div><div class="attention-line"><span class="attention-dot"></span><div class="attention-copy"><strong>No plan yet</strong><span>Add pay, bills, savings, and weekly spending lanes.</span></div></div><div class="next-step"><div class="next-step-copy"><small>Next suggested step</small><strong>Build your weekly plan</strong><span>This unlocks the live Home dashboard.</span></div><a class="btn btn-primary" href="#setup">Build Plan</a></div></div>`;
+    return;
   }
   try{
     const p=await apiRequest('/week/current',{method:'POST',body:JSON.stringify({userId})});
-    const s=homeSignals(p);
-    document.body.dataset.financialState=s.state;
-    if(dockTitle)dockTitle.textContent=`${s.healthLabel} week`;
-    if(dockSub)dockSub.textContent=`${s.velocityLabel} spending · ${Math.round(s.billCoverage)}% bill target funded`;
-
-    const essentials=p.essentials.length?p.essentials.map(categoryRow).join(''):'<div class="empty-card"><div class="empty">No essentials set up.</div></div>';
-    const forYou=p.forYou.length?p.forYou.map(categoryRow).join(''):'<div class="empty-card"><div class="empty">No discretionary categories set up.</div></div>';
-    const bills=p.bills.length?p.bills.map(billRow).join(''):'<div class="empty-card"><div class="empty">No bills set up.</div></div>';
-    const alertCount=s.billAlerts+s.overspent;
-    const flowBudget=Math.max(0,s.totalAllocated);
-    const remaining=Math.max(0,p.available);
-    const spendingUsedPct=Math.round(clampUI(s.spendPct,0,100));
-    const timeUsedPct=Math.round(s.weekProgress);
-    const velocityExplain=s.velocityLabel==='Fast pace'
-      ?'Spending has moved faster than the portion of the week that has elapsed.'
-      :s.velocityLabel==='Under pace'
-        ?'Spending is currently below the pace implied by the elapsed portion of the week.'
-        :'Spending is moving close to the pace implied by the elapsed portion of the week.';
-
-    root.innerHTML=`<div class="fade-stack">
-      <section class="hero-card">
-        <div class="hero-topline"><span class="preview-badge">Private weekly workspace</span><span class="status-pill ${s.state==='stable'?'status-ok':'status-attention'}">${s.healthLabel}</span></div>
-        <h2 class="hero-title">Your week, made simple.</h2>
-        <p class="hero-subtitle">See what is safe to spend, what needs attention, and what to do next without digging through numbers.</p>
-        <div class="hero-amount"><div class="hero-amount-value">${formatCents(p.available)}</div><div class="hero-amount-label">Available now</div></div>
-        <div class="trust-ribbon">
-          <div class="trust-cell primary"><div class="small-label">Safe-to-spend signal</div><strong>${s.healthLabel}</strong></div>
-          <div class="trust-cell"><div class="small-label">Spending pace</div><strong>${s.velocityLabel}</strong></div>
-          <div class="trust-cell"><div class="small-label">Data mode</div><strong>Private browser</strong></div>
-        </div>
-        <div class="signal-banner"><div class="signal-icon">${s.state==='stable'?'✓':s.state==='watch'?'!':'!'}</div><div class="signal-copy"><strong>${s.nextTitle}</strong><span>${s.nextCopy}</span></div></div>
-        <div class="hero-strip">
-          <div class="mini-metric"><div class="mini-label">Protected bills</div><div class="mini-value">${formatCents(p.protected)}</div></div>
-          <div class="mini-metric"><div class="mini-label">Savings this week</div><div class="mini-value">${formatCents(p.savingsThisWeek||0)}</div></div>
-        </div>
-        <div class="week-range"><span>Week window</span><span>${weekWindow(p.week.start,p.week.end)}</span></div>
-      </section>
-
-      <section class="os-grid">
-        <div class="os-card">
-          <div class="os-title-row"><div><span class="section-kicker">Week health</span><h3>Financial signal</h3></div><span class="kpi-badge">${s.healthLabel}</span></div>
-          <div class="health-orbit-wrap">
-            <div class="health-orbit" style="--score:${s.score}"><div class="health-orbit-core"><strong>${s.score}</strong><span>health</span></div></div>
-            <div class="health-facts">
-              <div class="health-fact"><span>Available</span><strong>${formatCents(p.available)}</strong></div>
-              <div class="health-fact"><span>Bill target funded</span><strong>${Math.round(s.billCoverage)}%</strong></div>
-              <div class="health-fact"><span>Watch items</span><strong>${alertCount}</strong></div>
-            </div>
-          </div>
-        </div>
-        <div class="os-card">
-          <div class="os-title-row"><div><span class="section-kicker">Velocity</span><h3>Spending pace</h3></div><span class="kpi-badge">${s.velocityLabel}</span></div>
-          <div class="velocity-stack">
-            <div class="velocity-row"><div class="velocity-meta"><span>Budget used</span><strong>${spendingUsedPct}%</strong></div><div class="velocity-track"><div class="velocity-fill" style="--fill:${spendingUsedPct}%"></div></div></div>
-            <div class="velocity-row"><div class="velocity-meta"><span>Week elapsed</span><strong>${timeUsedPct}%</strong></div><div class="velocity-track"><div class="velocity-fill time" style="--fill:${timeUsedPct}%"></div></div></div>
-            <div class="velocity-note">${velocityExplain}</div>
-          </div>
-        </div>
-      </section>
-
-      <section class="flow-architecture">
-        <div class="section-head"><div><span class="section-kicker">Money flow</span><h2>Weekly allocation architecture</h2><div class="section-caption">A visual map of where this week's spending plan currently sits.</div></div><span class="kpi-badge">Live model</span></div>
-        <div class="flow-stage">
-          <svg viewBox="0 0 360 250" preserveAspectRatio="none" aria-hidden="true">
-            <path class="flow-path" d="M180 124 C135 95 105 70 70 46"/>
-            <path class="flow-path blue" d="M180 124 C225 95 255 70 290 46"/>
-            <path class="flow-path gold" d="M180 124 C135 155 105 180 70 205"/>
-            <path class="flow-path" d="M180 124 C225 155 255 180 290 205"/>
-          </svg>
-          <div class="flow-node center"><span>Spending plan</span><strong>${formatCents(flowBudget)}</strong></div>
-          <div class="flow-node spent"><span>Spent</span><strong>${formatCents(s.totalSpent)}</strong></div>
-          <div class="flow-node remaining"><span>Remaining</span><strong>${formatCents(remaining)}</strong></div>
-          <div class="flow-node protected"><span>Protected now</span><strong>${formatCents(p.protected)}</strong></div>
-          <div class="flow-node savings"><span>Savings</span><strong>${formatCents(p.savingsThisWeek||0)}</strong></div>
-        </div>
-      </section>
-
-      <section class="friendly-guide">
-        <div class="guide-head"><div><span class="section-kicker">Simple by design</span><h2 class="guide-title">Three things to remember.</h2><p class="guide-copy">This Week handles the math. Keep spending current and roll the week forward when you are ready.</p></div><span class="kpi-badge">Easy mode</span></div>
-        <div class="guide-steps"><div class="guide-step"><div class="guide-num">1</div><strong>Check Available</strong><span>Your quick safe-to-spend signal.</span></div><div class="guide-step"><div class="guide-num">2</div><strong>Add Spending</strong><span>Log purchases as they happen.</span></div><div class="guide-step"><div class="guide-num">3</div><strong>Start New Week</strong><span>Move into a clean new cycle.</span></div></div>
-        <div class="next-best"><div class="next-orb">→</div><div><strong>${s.nextTitle}</strong><span>${s.nextCopy}</span></div></div>
-      </section>
-
-      <section class="section">
-        <div class="section-head"><div><span class="section-kicker">Productivity</span><h2>Quick actions</h2><div class="section-caption">The two actions you will use most often.</div></div><span class="kpi-badge">${alertCount} watch item${alertCount===1?'':'s'}</span></div>
-        <div class="menu-grid"><a class="menu-tile" href="#log"><div class="menu-icon">＋</div><div class="menu-kicker">Most used</div><div class="menu-title">Add spending</div><div class="menu-copy">Enter a purchase in a few taps. Your remaining money updates right away.</div></a><a class="menu-tile" href="#reset"><div class="menu-icon">↻</div><div class="menu-kicker">Weekly reset</div><div class="menu-title">Start new week</div><div class="menu-copy">Review the current week first, then move into a clean new cycle.</div></a></div>
-      </section>
-
-      <section class="section">
-        <div class="section-head"><div><span class="section-kicker">Obligations</span><h2>Upcoming bill runway</h2><div class="section-caption">Recurring obligations ordered by their configured due date.</div></div><span class="kpi-badge">${Math.round(s.billCoverage)}% funded</span></div>
-        ${obligationTimeline(p)}
-      </section>
-
-      <section class="section">
-        <div class="section-head"><div><span class="section-kicker">Intelligence</span><h2>Why the dashboard says this</h2><div class="section-caption">Open a signal only when you want the underlying explanation.</div></div><span class="kpi-badge">Explainable</span></div>
-        <div class="intel-stack">
-          <details class="intel-panel" open><summary>Week-health signal</summary><div class="intel-body"><strong>${s.healthLabel}:</strong> ${s.stateCopy} The health indicator combines negative available balance, categories below zero, bill funding status, and spending pace. It is a planning aid, not a credit or investment score.</div></details>
-          <details class="intel-panel"><summary>Spending velocity</summary><div class="intel-body">You have used <strong>${spendingUsedPct}%</strong> of active category budgets while approximately <strong>${timeUsedPct}%</strong> of the week has elapsed. ${velocityExplain}</div></details>
-          <details class="intel-panel"><summary>Protected obligations</summary><div class="intel-body">Your current weekly bill target is <strong>${formatCents(s.billTarget)}</strong>, with <strong>${formatCents(s.billFunded)}</strong> recorded as funded. “Protected now” shows the amount still required by today under the current allocation model.</div></details>
-          <details class="intel-panel"><summary>Available money</summary><div class="intel-body">Available now is the sum of the remaining balances in your active essential and flexible spending lanes. It does not represent a connected bank balance.</div></details>
-        </div>
-      </section>
-
-      <section class="section"><div class="section-head"><div><span class="section-kicker">Essentials</span><h2>Core spending lanes</h2><div class="section-caption">The practical categories you rely on every week.</div></div></div><div class="row-list">${essentials}</div></section>
-      <section class="section"><div class="section-head"><div><span class="section-kicker">Lifestyle</span><h2>For you</h2><div class="section-caption">Flexible spending with clear visual guardrails.</div></div></div><div class="row-list">${forYou}</div></section>
-      <section class="section"><div class="section-head"><div><span class="section-kicker">Protection</span><h2>Bill detail</h2><div class="section-caption">Due-date weighted bill coverage for the current week.</div></div></div><div class="row-list">${bills}</div></section>
+    const d=simpleDecision(p);
+    document.body.dataset.financialState=p.status==='ON_TRACK'?'stable':'attention';
+    root.innerHTML=`<div class="home-command">
+      <div class="home-head">
+        <div class="home-head-copy"><div class="home-eyebrow">Central dashboard</div><h2 class="home-title">Your week, made clear.</h2><div class="home-week">${weekWindow(p.week.start,p.week.end)}</div></div>
+        <span class="home-state ${p.status==='ON_TRACK'?'':'attention'}">${p.status==='ON_TRACK'?'Stable':'Review'}</span>
+      </div>
+      <div class="available-block"><div class="available-amount">${formatCents(p.available)}</div><div class="available-label">Available now</div></div>
+      <div class="interlock" aria-label="Weekly money map">
+        <div class="orbit-chip bills"><span>Protected bills</span><strong>${formatCents(p.protected)}</strong></div>
+        <div class="orbit-chip essentials"><span>Essentials left</span><strong>${formatCents(d.essentialsLeft)}</strong></div>
+        <div class="interlock-center"><div><span>Available</span><strong>${formatCents(p.available)}</strong></div></div>
+        <div class="orbit-chip lifestyle"><span>Lifestyle left</span><strong>${formatCents(d.lifestyleLeft)}</strong></div>
+        <div class="orbit-chip savings"><span>Savings</span><strong>${formatCents(p.savingsThisWeek||0)}</strong></div>
+      </div>
+      <div class="attention-line ${d.attention.tone==='danger'?'danger':d.attention.tone==='warn'?'warn':''}"><span class="attention-dot"></span><div class="attention-copy"><strong>${escapeHtml(d.attention.title)}</strong><span>${escapeHtml(d.attention.copy)}</span></div></div>
+      <div class="next-step"><div class="next-step-copy"><small>Next suggested step</small><strong>${escapeHtml(d.next.title)}</strong><span>${escapeHtml(d.next.copy)}</span></div><a class="btn btn-primary" href="${d.next.href}">${escapeHtml(d.next.label)}</a></div>
     </div>`;
   }catch(e){
     root.innerHTML=`<div class="center">${errBox(e.message)}<button class="btn-primary" onclick="renderHome()">Retry</button></div>`;
   }
+}
+
+async function renderDetails(){
+  shellMeta('Details','Weekly Details','Open only the area you want to inspect','<a class="text-action" href="#insights">Insights</a>');
+  nav('details');
+  const userId=getStoredUserId();
+  if(!userId){root.innerHTML='<div class="center"><div class="error">Build a plan first.</div><a class="btn btn-primary" href="#setup">Build Plan</a></div>';return;}
+  try{
+    const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);
+    const st=detailBudgetStats(p);
+    const essentials=p.essentials.length?p.essentials.map(categoryRow).join(''):'<div class="empty">No essentials configured.</div>';
+    const flexible=p.forYou.length?p.forYou.map(categoryRow).join(''):'<div class="empty">No flexible categories configured.</div>';
+    const bills=p.bills.length?p.bills.map(billRow).join(''):'<div class="empty">No bills configured.</div>';
+    root.innerHTML=`<div class="detail-stack">
+      <section class="detail-intro"><span class="section-kicker">Details</span><h2>More detail, one layer at a time.</h2><p>Home stays simple. Open a section below only when you want to inspect the underlying numbers.</p></section>
+      <section class="detail-snapshot">
+        <div class="detail-stat"><span>Available</span><strong>${formatCents(p.available)}</strong></div>
+        <div class="detail-stat"><span>Spent</span><strong>${formatCents(st.spent)}</strong></div>
+        <div class="detail-stat"><span>Protected</span><strong>${formatCents(p.protected)}</strong></div>
+      </section>
+      <details class="detail-accordion" open><summary><div class="detail-accordion-title"><span>Essentials</span><strong>Core spending lanes</strong></div></summary><div class="detail-panel"><div class="row-list">${essentials}</div></div></details>
+      <details class="detail-accordion"><summary><div class="detail-accordion-title"><span>Lifestyle</span><strong>Flexible spending</strong></div></summary><div class="detail-panel"><div class="row-list">${flexible}</div></div></details>
+      <details class="detail-accordion"><summary><div class="detail-accordion-title"><span>Bills</span><strong>Protected obligations</strong></div></summary><div class="detail-panel"><div class="row-list">${bills}</div></div></details>
+      <a class="deep-link" href="#insights"><div><strong>Advanced Insights</strong><span>Week health, spending pace, money-flow analysis, bill runway, and explainable calculations.</span></div><span class="deep-link-badge">Deeper layer</span></a>
+      <a class="deep-link" href="#reset"><div><strong>Start a New Week</strong><span>Review the current cycle and roll the plan forward when you are ready.</span></div><span class="deep-link-badge">Weekly reset</span></a>
+    </div>`;
+  }catch(e){root.innerHTML=errBox(e.message);}
+}
+
+async function renderInsights(){
+  shellMeta('Insights','Advanced Insights','Deeper financial signals and explainable weekly analytics','<a class="text-action" href="#details">Back</a>');
+  nav('insights');
+  const userId=getStoredUserId();
+  if(!userId){root.innerHTML='<div class="center"><div class="error">Build a plan first.</div><a class="btn btn-primary" href="#setup">Build Plan</a></div>';return;}
+  try{
+    const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);
+    const s=homeSignals(p);
+    const spentPct=Math.round(clampUI(s.spendPct,0,100));
+    const weekPct=Math.round(s.weekProgress);
+    root.innerHTML=`<div class="insights-grid">
+      <section class="detail-intro"><span class="section-kicker">Advanced layer</span><h2>Explore the numbers behind Home.</h2><p>These tools are intentionally one level deeper so the main dashboard remains fast and easy to interpret.</p></section>
+      <section class="insight-pair">
+        <div class="insight-card"><span class="section-kicker">Week health</span><h3>Planning signal</h3><div class="insight-number">${s.score}</div><div class="insight-caption">${s.healthLabel}. This combines balance pressure, overspent lanes, bill funding, and weekly pace.</div></div>
+        <div class="insight-card"><span class="section-kicker">Spending pace</span><h3>${s.velocityLabel}</h3><div class="insight-number">${spentPct}%</div><div class="insight-caption">Budget used versus ${weekPct}% of the weekly cycle elapsed.</div><div class="simple-meter"><span style="--fill:${spentPct}%"></span></div></div>
+      </section>
+      <section class="flow-architecture">
+        <div class="section-head"><div><span class="section-kicker">Money flow</span><h2>Weekly allocation model</h2><div class="section-caption">A deeper map of category spending, remaining money, protected obligations, and savings.</div></div><span class="kpi-badge">Advanced</span></div>
+        <div class="flow-stage">
+          <svg viewBox="0 0 360 250" preserveAspectRatio="none" aria-hidden="true"><path class="flow-path" d="M180 124 C135 95 105 70 70 46"/><path class="flow-path blue" d="M180 124 C225 95 255 70 290 46"/><path class="flow-path gold" d="M180 124 C135 155 105 180 70 205"/><path class="flow-path" d="M180 124 C225 155 255 180 290 205"/></svg>
+          <div class="flow-node center"><span>Spending plan</span><strong>${formatCents(s.totalAllocated)}</strong></div>
+          <div class="flow-node spent"><span>Spent</span><strong>${formatCents(s.totalSpent)}</strong></div>
+          <div class="flow-node remaining"><span>Available</span><strong>${formatCents(Math.max(0,p.available))}</strong></div>
+          <div class="flow-node protected"><span>Protected now</span><strong>${formatCents(p.protected)}</strong></div>
+          <div class="flow-node savings"><span>Savings</span><strong>${formatCents(p.savingsThisWeek||0)}</strong></div>
+        </div>
+      </section>
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Bill runway</span><h2>Upcoming obligations</h2><div class="section-caption">Recurring bills ordered by their configured due date.</div></div><span class="kpi-badge">${Math.round(s.billCoverage)}% funded</span></div>${obligationTimeline(p)}</section>
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Explainability</span><h2>How the signals are calculated</h2></div></div><div class="intel-stack">
+        <details class="intel-panel"><summary>Week-health signal</summary><div class="intel-body">The score combines negative available balance, categories below zero, bill-funding status, and spending pace. It is a planning aid, not a credit or investment score.</div></details>
+        <details class="intel-panel"><summary>Spending velocity</summary><div class="intel-body">This compares the share of active category budgets used with the share of the current weekly cycle that has elapsed.</div></details>
+        <details class="intel-panel"><summary>Available money</summary><div class="intel-body">Available now is the sum of remaining balances in your active essential and flexible spending lanes. It is not a connected bank balance.</div></details>
+      </div></section>
+    </div>`;
+  }catch(e){root.innerHTML=errBox(e.message);}
 }
 
 async function renderLog(){
@@ -2578,14 +2767,13 @@ function renderSetup(){
 
 async function render(){
   const r=route();
-  window.scrollTo(0,0);
-  root.classList.remove('route-enter');
-  if(r==='log') await renderLog();
-  else if(r==='reset') await renderReset();
-  else if(r==='setup') await renderSetup();
-  else await renderHome();
-  void root.offsetWidth;
-  root.classList.add('route-enter');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(r==='log')return renderLog();
+  if(r==='details')return renderDetails();
+  if(r==='insights')return renderInsights();
+  if(r==='reset')return renderReset();
+  if(r==='setup')return renderSetup();
+  return renderHome();
 }
 window.addEventListener('hashchange',render); render();
 </script></body></html>
