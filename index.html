@@ -5537,10 +5537,13 @@ function detailBudgetStats(p){
 
 const UI_PREFS_KEY='thisweek.uiPrefs.v1';
 const SAVINGS_GOALS_KEY='thisweek.savingsGoals.v1';
+let uiPrefsCache=null;
 function readUiPrefs(){
   const base={motion:'system',density:'compact',contrast:'system',textSize:'standard',touch:'comfortable',haptics:'on'};
+  if(uiPrefsCache){noteCache(true);return {...uiPrefsCache};}
+  noteCache(false);
   try{
-    const raw=JSON.parse(localStorage.getItem(UI_PREFS_KEY)||'{}');
+    const raw=JSON.parse(safeLocalStorageGet(UI_PREFS_KEY)||'{}');
     const merged={...base,...raw};
     if(!['system','calm','dynamic','cinematic','reduced'].includes(merged.motion))merged.motion='system';
     if(!['compact','balanced','rich'].includes(merged.density))merged.density='compact';
@@ -5548,12 +5551,12 @@ function readUiPrefs(){
     if(!['standard','large','xlarge'].includes(merged.textSize))merged.textSize='standard';
     if(!['standard','comfortable'].includes(merged.touch))merged.touch='comfortable';
     if(!['on','off'].includes(merged.haptics))merged.haptics='on';
-    return merged;
-  }catch{return base;}
+    uiPrefsCache={...merged};return {...merged};
+  }catch{uiPrefsCache={...base};return {...base};}
 }
 function writeUiPrefs(next){
-  const v={...readUiPrefs(),...next};
-  try{localStorage.setItem(UI_PREFS_KEY,JSON.stringify(v));}catch{}
+  const v={...readUiPrefs(),...next};uiPrefsCache={...v};
+  safeLocalStorageSet(UI_PREFS_KEY,JSON.stringify(v));
   applyUiPrefs();return v;
 }
 function systemPrefersReducedMotion(){try{return matchMedia('(prefers-reduced-motion: reduce)').matches;}catch{return false;}}
@@ -5657,16 +5660,26 @@ function goalSuggestedWeekly(goal,goals,weeklyBudget){
   return Math.min(Math.max(0,(goal.target||0)-(goal.current||0)),Math.round(weeklyBudget*score/total));
 }
 
+let savingsGoalsCache=null,savingsGoalsCacheRevision=-1;
 function readSavingsGoals(){
-  const st=readState(); const weekly=st?.config?.savingsRule?.weeklyAmount||0;
+  if(savingsGoalsCache&&savingsGoalsCacheRevision===runtimePerf.revision){noteCache(true);return clone(savingsGoalsCache);}
+  noteCache(false);
+  const st=readState();const weekly=st?.config?.savingsRule?.weeklyAmount||0;
   const defaults=[
     {id:'emergency',name:'Emergency Reserve',target:Math.max(weekly*20,100000),current:Math.max(weekly*3,0),type:'reserve'},
     {id:'sinking',name:'Sinking Fund',target:Math.max(weekly*10,50000),current:Math.max(weekly*2,0),type:'future'},
     {id:'payoff',name:'Payoff Goal',target:Math.max(weekly*15,75000),current:Math.max(weekly,0),type:'payoff'}
   ];
-  try{const x=JSON.parse(localStorage.getItem(SAVINGS_GOALS_KEY)||'null');return Array.isArray(x)&&x.length?x:defaults;}catch{return defaults;}
+  try{
+    const x=JSON.parse(safeLocalStorageGet(SAVINGS_GOALS_KEY)||'null');
+    const value=Array.isArray(x)&&x.length?x:defaults;
+    savingsGoalsCache=clone(value);savingsGoalsCacheRevision=runtimePerf.revision;return clone(value);
+  }catch{savingsGoalsCache=clone(defaults);savingsGoalsCacheRevision=runtimePerf.revision;return defaults;}
 }
-function writeSavingsGoals(goals){try{localStorage.setItem(SAVINGS_GOALS_KEY,JSON.stringify(goals));}catch{}return goals;}
+function writeSavingsGoals(goals){
+  savingsGoalsCache=clone(goals);savingsGoalsCacheRevision=runtimePerf.revision;
+  safeLocalStorageSet(SAVINGS_GOALS_KEY,JSON.stringify(goals));return goals;
+}
 function historySummaries(){
   const st=readState(); if(!st)return [];
   const living=Object.fromEntries((st.config.livingNeeds||[]).map(x=>[x.id,x.name]));
@@ -5832,6 +5845,7 @@ if(!window.__thisWeekMotionVisibilityBound){
 
 const CONNECTED_DATA_KEY='thisweek.connectedData.v1';
 let connectionImportPreview=null;
+let connectedDataCache=null;
 function normalizeConnectedRecord(r={}){
   const reconciled=!!r.reconciled;
   const direction=r.direction||'outflow',status=r.status||'posted';
@@ -5844,19 +5858,23 @@ function normalizeConnectedRecord(r={}){
 }
 function readConnectedData(){
   const base={version:2,sourceName:null,importedAt:null,records:[],batches:[],sources:[],audit:[]};
+  if(connectedDataCache){noteCache(true);return clone(connectedDataCache);}
+  noteCache(false);
   try{
-    const raw=JSON.parse(localStorage.getItem(CONNECTED_DATA_KEY)||'null');
-    if(!raw||!Array.isArray(raw.records))return base;
+    const raw=JSON.parse(safeLocalStorageGet(CONNECTED_DATA_KEY)||'null');
+    if(!raw||!Array.isArray(raw.records)){connectedDataCache=clone(base);return clone(base);}
     const records=raw.records.map(normalizeConnectedRecord);
-    return {...base,...raw,version:2,records,batches:Array.isArray(raw.batches)?raw.batches:[],sources:Array.isArray(raw.sources)?raw.sources:[],audit:Array.isArray(raw.audit)?raw.audit:[]};
-  }catch{return base;}
+    const value={...base,...raw,version:2,records,batches:Array.isArray(raw.batches)?raw.batches:[],sources:Array.isArray(raw.sources)?raw.sources:[],audit:Array.isArray(raw.audit)?raw.audit:[]};
+    connectedDataCache=clone(value);return value;
+  }catch{connectedDataCache=clone(base);return clone(base);}
 }
 function writeConnectedData(v){
   const next={version:2,sourceName:null,importedAt:null,records:[],batches:[],sources:[],audit:[],...v};
   next.records=(next.records||[]).map(normalizeConnectedRecord);
   next.audit=(next.audit||[]).slice(-120);
   next.batches=(next.batches||[]).slice(-40);
-  try{localStorage.setItem(CONNECTED_DATA_KEY,JSON.stringify(next));}catch{}
+  connectedDataCache=clone(next);
+  safeLocalStorageSet(CONNECTED_DATA_KEY,JSON.stringify(next));
   return next;
 }
 function appendConnectedAudit(data,type,record=null,detail=''){
@@ -5876,6 +5894,20 @@ function connectedDataSummary(){
     sourceName:d.sourceName
   };
 }
+if(!window.__thisWeekStorageSyncBound){
+  window.__thisWeekStorageSyncBound=true;
+  window.addEventListener('storage',e=>{
+    if(e.key===STATE_KEY){
+      volatileState=null;volatileStateSerialized=null;lastPersistedStateSerialized=e.newValue||null;
+      runtimePerf.revision++;savingsGoalsCache=null;savingsGoalsCacheRevision=-1;
+      if(typeof historySummaryCache!=='undefined')historySummaryCache={revision:-1,data:null};
+    }
+    if(e.key===UI_PREFS_KEY){uiPrefsCache=null;applyUiPrefs();}
+    if(e.key===SAVINGS_GOALS_KEY){savingsGoalsCache=null;savingsGoalsCacheRevision=-1;}
+    if(e.key===CONNECTED_DATA_KEY)connectedDataCache=null;
+  });
+}
+
 function countDelimiter(line,sep){
   let q=false,count=0;
   for(let i=0;i<line.length;i++){const ch=line[i];if(ch==='"'){if(q&&line[i+1]==='"')i++;else q=!q;}else if(!q&&ch===sep)count++;}
