@@ -387,6 +387,26 @@
           "note": "Official music URL supplied by Benny; duplicate submission deduplicated."
         }
       ]
+    },
+    "t311yDemonLife": {
+      "youtubeChannel": {
+        "status": "verified",
+        "url": "https://youtube.com/channel/UCBGWPJ1eQZvG4qxgk-rPunA",
+        "label": "T311Y Demon Life YouTube channel",
+        "note": "Official channel URL supplied by Benny."
+      },
+      "spotifyArtist": {
+        "status": "verified",
+        "url": "https://open.spotify.com/artist/7MOh3xxmsFiicVNPqor2QB",
+        "label": "T311Y Demon Life on Spotify",
+        "note": "Official artist-profile URL supplied by Benny."
+      },
+      "appleMusicArtist": {
+        "status": "verified",
+        "url": "https://music.apple.com/us/artist/t311y-demon-life/1731462945",
+        "label": "T311Y Demon Life on Apple Music",
+        "note": "Official artist-profile URL supplied by Benny."
+      }
     }
   }
 }
