@@ -50,14 +50,25 @@ PASS:
 - Draft governing law: **Wyoming**.
 - Draft forum clause: state or federal court of competent jurisdiction in Wyoming, subject to mandatory applicable law.
 
+## Rights / chain-of-title update
+
+Benjamin Alexander, as authorized representative for Thats A Good Jawn LLC and producer rights controller, represented on 2026-09-19 that all 22 beats in the catalogue are original works, have not been sold to anyone, have not been exclusively licensed or committed to another party, and remain available for licensing and potential exclusive sale.
+
+The previous provisional flags on:
+- beat-006 / Cold Receiver (working filename “beat for dt”),
+- beat-014 / Soft Armor (working filename “sarahs beat 3”), and
+- beat-015 / Half Truths (working filename containing “remix”)
+
+are therefore cleared as filename/context flags only. They are not treated as evidence of third-party ownership, a prior sale, or a derivative-work restriction.
+
+This is a producer/rights-controller attestation, not an independent title opinion from counsel or a third-party copyright database.
+
 ## Remaining legal activation blockers
 
-1. Confirm whether Thats A Good Jawn LLC owns each Beat copyright or is acting as authorized licensing administrator for the applicable rights controlled by Benjamin Alexander.
-2. Complete sample / third-party-rights review for each Beat.
-3. Provide lossless masters for the four MP3-only sources before lossless tiers are activated.
-4. Provide actual trackouts before Trackout Pro is activated.
-5. Have the final agreements reviewed by a qualified attorney before paid checkout.
-6. When checkout is added, retain the exact agreement version, Beat ID, tier, price, timestamp, transaction ID and electronic assent. Exclusive licenses should be retained as signed writings.
+1. For the four MP3-origin sources, do not represent WAV derivatives as original lossless masters.
+2. If Trackout Pro is marketed, disclose that the current three-part packs are derived stereo-separation trackouts rather than original DAW multitracks unless original multitracks are later supplied.
+3. Have final contract language reviewed by a qualified attorney before unattended paid checkout.
+4. At checkout, retain the exact agreement version, Beat ID, tier, price, timestamp, transaction ID and electronic assent; exclusive licenses should be retained as signed writings.
 
 ## Product behavior
 
