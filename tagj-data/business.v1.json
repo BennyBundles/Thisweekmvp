@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "tagj.business.v1",
+  "legal": {
+    "businessName": "Thats A Good Jawn LLC",
+    "brandName": "TAGJ"
+  },
+  "contact": {
+    "publicBusinessEmail": {
+      "value": "prodbybundles@yahoo.com",
+      "visibility": "public",
+      "purpose": [
+        "general business contact",
+        "artist inquiries",
+        "service inquiries"
+      ]
+    },
+    "completedRequestDeliveryEmail": {
+      "value": "prodbybundlez@gmail.com",
+      "visibility": "internal",
+      "purpose": [
+        "completed request delivery",
+        "request workflow destination"
+      ],
+      "note": "Do not expose publicly unless explicitly approved."
+    }
+  },
+  "requestRouting": {
+    "destinationEmail": "prodbybundlez@gmail.com",
+    "publicReplyTo": "prodbybundles@yahoo.com",
+    "backendConnected": false,
+    "note": "Authoritative routing values for future backend form submission. Current preview must not claim email delivery until backendConnected is true."
+  }
+}
