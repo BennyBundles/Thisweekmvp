@@ -32,6 +32,12 @@ const moneyLabJs=requireFile('money-lab/app.js');
 const moneyLabCheck=requireFile('money-lab-check.mjs');
 const phase22Doc=requireFile('PHASE_22_IMPLEMENTATION.md');
 const phase22Schema=requireFile('supabase/phase22/provider_sandbox_chain.sql');
+const phase23Doc=requireFile('PHASE_23_IMPLEMENTATION.md');
+const phase23Schema=requireFile('supabase/phase23/account_security.sql');
+const accountGateway=requireFile('supabase/functions/thisweek-account-gateway/index.ts');
+const accountHtml=requireFile('account/index.html');
+const accountJs=requireFile('account/app.js');
+const accountCheck=requireFile('account-check.mjs');
 
 
 let config=null;
@@ -72,7 +78,8 @@ if(html){
     ['Phase 21 card authorization controller',"cardAuthorizationMode:'controller_deployed_execution_locked'"],
     ['Phase 21 Money Lab link','href="./money-lab/"'],
     ['Phase 22 Sandbox chain',"sandboxChain:'plaid_unit_pinwheel_method'"],
-    ['Phase 22 credential-gated chain',"sandboxChainMode:'deployed_credentials_required'"]
+    ['Phase 22 credential-gated chain',"sandboxChainMode:'deployed_credentials_required'"],
+    ['Phase 23 Account Center link','href="./account/"']
   ];
   for(const [label,text] of critical)requireText('missing '+label,html,text);
 
@@ -176,6 +183,28 @@ if(phase20Gateway){
   requireText('Phase 22 gateway preflight Sandbox lock',phase20Gateway,'if (MONEY_EXECUTION_MODE !== "sandbox") return result');
 }
 if(phase19Gateway)requireText('Phase 22 provider gateway must request Plaid Auth',phase19Gateway,'products: ["auth", "transactions"]');
+
+if(phase23Schema){
+  requireText('Phase 23 session RPC',phase23Schema,'tw_auth_session_active');
+  requireText('Phase 23 closure table',phase23Schema,'tw_account_closure_requests');
+  requireText('Phase 23 browser roles revoked',phase23Schema,'from public, anon, authenticated');
+}
+if(accountGateway){
+  requireText('Phase 23 Account Gateway validates active session',accountGateway,'tw_auth_session_active');
+  requireText('Phase 23 Account Gateway hard delete',accountGateway,'auth.admin.deleteUser');
+  requireText('Phase 23 Account Gateway retention review',accountGateway,'retention_review_required');
+}
+if(accountHtml)requireText('Account Center exact Supabase origin',accountHtml,'connect-src https://xjtvawmppzwzrooairyx.supabase.co');
+if(accountJs){
+  requireText('Account Center password recovery',accountJs,'/auth/v1/recover');
+  requireText('Account Center MFA',accountJs,'/auth/v1/factors');
+  requireText('Account Center global signout',accountJs,'/auth/v1/logout?scope=global');
+  requireText('Account Center account gateway',accountJs,'/functions/v1/thisweek-account-gateway');
+  if(/service_role|sb_secret_/i.test(accountJs))failures.push('Account Center contains server-secret pattern');
+}
+if(!accountCheck)failures.push('Account Center checker unavailable');
+if(phase20Gateway)requireText('Money gateway rejects revoked session',phase20Gateway,'tw_auth_session_active');
+if(phase19Gateway)requireText('Provider gateway rejects revoked session',phase19Gateway,'tw_auth_session_active');
 
 
 if(workflow){
