@@ -119,6 +119,11 @@ Deno.serve(async (req: Request) => {
   if (MONEY_EXECUTION_MODE === "production") {
     const release = await admin.rpc("tw_release_money_enabled");
     if (release.error || release.data !== true) return decline("RestrictedCard");
+    const cardOwner = await admin.from("tw_money_virtual_cards")
+      .select("user_id").eq("provider","unit").eq("provider_card_id",providerCardId).maybeSingle();
+    if (cardOwner.error || !cardOwner.data?.user_id) return decline("RestrictedCard");
+    const legal = await admin.rpc("tw_user_production_legal_ready",{p_user_id:cardOwner.data.user_id});
+    if (legal.error || legal.data !== true) return decline("RestrictedCard");
   }
 
   const { data, error } = await admin.rpc("tw_money_risk_reserve_card_authorization", {
