@@ -52,3 +52,24 @@ The connected Supabase management interface available during this build does not
 This is intentional.
 
 A trusted administrator must perform the staff-role assignment before the console can return operational data.
+
+
+## Controlled bootstrap path
+
+The supported staff-provisioning surface is:
+
+`/ops/bootstrap/`
+
+First create a real account through Account & Security, confirm email, and enroll/verify TOTP to AAL2.
+
+The initial admin also requires the server-side Edge Function secret:
+
+`THISWEEK_BOOTSTRAP_ADMIN_EMAIL`
+
+set to the intended initial administrator's exact email address. The value is never returned to the browser.
+
+The first-admin action is available only while no This Week staff role exists. After bootstrap, only an AAL2 `admin` may assign or revoke `support_ops`, `risk_ops`, and `admin` roles. The last admin is protected from removal.
+
+All role changes use server-side Supabase Auth Admin APIs and create append-only `tw_ops_staff_role_events` receipts. Staff should refresh/re-authenticate after a role change.
+
+At the current Phase 34 checkpoint there are zero Auth users, so no staff role has been assigned.

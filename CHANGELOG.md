@@ -4,6 +4,17 @@ Production changes for **This Week** are recorded here.
 
 ## Phase 34 — Release Evidence & Sandbox Certification — 2026-09-19
 
+### Phase 34 continuation — controlled staff provisioning
+
+- Added append-only `tw_ops_staff_role_events` receipts for staff-role assignments and revocations.
+- Added service-only authoritative staff coverage/role RPCs.
+- Added JWT + active-session + AAL2 `thisweek-staff-gateway` using Supabase server-side `auth.admin.updateUserById`.
+- Added controlled first-admin bootstrap guarded by confirmed email, AAL2, zero existing staff, and server secret `THISWEEK_BOOTSTRAP_ADMIN_EMAIL`.
+- Added last-admin protection and confirmed-user requirements for later least-privilege role assignment.
+- Added `/ops/bootstrap/` with shared tab-scoped Auth; no service-role secret or bootstrap allowlist value is exposed to the browser.
+- Current state remains fail-closed: zero Auth users, zero staff users, bootstrap not executed, no release gate verified.
+
+
 ### Phase 34 continuation — release-candidate binding
 
 - Added append-only active release-candidate selections using a full 40-character commit SHA plus source reference.
