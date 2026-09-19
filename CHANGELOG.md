@@ -11,6 +11,7 @@ Production changes for **This Week** are recorded here.
 - Sandbox certification, rollback, and synthetic-incident derived evidence are now candidate-scoped, preventing historical passes from satisfying a newer release.
 - Added candidate report/readiness data and deployed-release manifest prefill in the staff console.
 - Candidate selection does not verify any production release gate and is not performed automatically by deployment.
+- Candidate changes automatically reset previously verified candidate-bound Sandbox-E2E and incident-drill gates, with immutable gate-event audit receipts.
 - Production money remains locked.
 
 
