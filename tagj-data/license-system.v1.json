@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "tagj.beat-license-system.v1",
-  "status": "draft_for_legal_review_not_checkout_active",
+  "schemaVersion": "tagj.beat-license-system.v1.1",
+  "status": "draft_for_attorney_review_not_checkout_active",
   "licensor": {
     "businessName": "Thats A Good Jawn LLC",
     "entityDescription": "Wyoming limited liability company registered to do business in Pennsylvania",
@@ -15,10 +15,10 @@
     "formationJurisdiction": "Wyoming",
     "operatingRegistration": "Pennsylvania foreign registration / authority to do business (user-confirmed)",
     "activationBlockers": [
-      "Confirm Thats A Good Jawn LLC owns or is authorized to license each beat's composition and source recording rights.",
-      "Complete sample/third-party-rights review for every beat.",
-      "For MP3-only sources, supply a lossless master before Premium, Unlimited, or Exclusive delivery.",
-      "Supply stems/trackouts before Trackout Pro can be sold.",
+      "Complete and sign the beat-specific Producer Rights / Sample Declaration for each beat before paid licensing.",
+      "Resolve any beat-specific provenance hold, including remix/derivative-work questions and prior-client/exclusive commitments.",
+      "For the four MP3-origin sources, supply a genuine lossless source master before any tier promises a true lossless master.",
+      "Supply original DAW stems/trackouts before Trackout Pro is marketed as original trackouts. Derived stereo-separation packs are not original multitracks.",
       "Have final contract language reviewed by a qualified attorney before enabling paid checkout."
     ]
   },
@@ -45,7 +45,27 @@
       "Training or fine-tuning a generative AI model on the Beat or stems without separate written permission.",
       "Using the Beat in unlawful, defamatory, or rights-infringing material."
     ],
-    "priorLeaseRule": "A later exclusive license does not terminate valid non-exclusive licenses granted before the exclusive effective date."
+    "priorLeaseRule": "A later exclusive license does not terminate valid non-exclusive licenses granted before the exclusive effective date.",
+    "rightsActivation": {
+      "declarationPath": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md",
+      "requiredBeforePaidLicensing": true,
+      "acceptableRightsStatuses": [
+        "original_no_third_party_material_attested",
+        "licensed_production_library_material_documented",
+        "third_party_material_cleared_documented"
+      ],
+      "note": "Technical audio analysis alone does not establish sample clearance or chain of title."
+    },
+    "royaltyAdministration": {
+      "note": "The beat license allocates composition ownership but does not waive separately administered songwriter/publisher royalties. Parties may register and collect their respective shares through applicable PROs, The MLC, publishers, administrators, distributors, or other lawful systems.",
+      "metadataRequirement": "Licensee must preserve accurate songwriter, publisher, producer and ownership metadata reasonably supplied by Licensor."
+    },
+    "derivedStems": {
+      "availableForAllCatalogBeats": true,
+      "productLabel": "Derived Mix-Control Stem Pack",
+      "status": "editing_asset_not_original_trackouts",
+      "disclosure": "Drums/percussion, bass and harmonic/music components are algorithmically derived from the stereo master. They are not original DAW multitracks and do not satisfy the default Trackout Pro promise unless the executed Schedule A expressly substitutes derived stems."
+    }
   },
   "tiers": [
     {
@@ -77,7 +97,7 @@
       "term": "5 years",
       "files": [
         "MP3",
-        "Lossless WAV"
+        "Genuine lossless WAV only when a genuine lossless source exists"
       ],
       "usage": {
         "audioStreams": 250000,
@@ -99,8 +119,8 @@
       "term": "7 years",
       "files": [
         "MP3",
-        "Lossless WAV",
-        "Trackouts/stems when supplied for the selected beat"
+        "Genuine lossless WAV when available",
+        "Original DAW trackouts/stems when supplied for the selected beat"
       ],
       "usage": {
         "audioStreams": 1000000,
@@ -112,7 +132,7 @@
       },
       "publishingSplit": "50% Bundles / 50% Licensee-side writers by default",
       "contentId": "Not permitted without prior written consent",
-      "availabilityRule": "Not saleable for a beat until its actual stems/trackouts are present.",
+      "availabilityRule": "Not saleable as original Trackout Pro until original DAW stems/trackouts exist. A derived stereo-separation pack may be offered only under explicit derived-stem disclosure in Schedule A.",
       "contractPath": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
     },
     {
@@ -123,8 +143,8 @@
       "term": "Perpetual",
       "files": [
         "MP3",
-        "Lossless WAV",
-        "Trackouts/stems only if specifically listed for the selected beat"
+        "Genuine lossless WAV only when a genuine lossless source exists",
+        "Original DAW trackouts/stems only if specifically listed in Schedule A"
       ],
       "usage": {
         "audioStreams": "unlimited",
@@ -147,8 +167,8 @@
       "term": "Perpetual",
       "files": [
         "MP3",
-        "Lossless WAV",
-        "Available stems/trackouts if they exist for the selected beat"
+        "Genuine lossless WAV only when a genuine lossless source exists",
+        "Original DAW stems/trackouts if they actually exist and are listed in Schedule A"
       ],
       "usage": {
         "audioStreams": "unlimited",
