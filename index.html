@@ -6919,6 +6919,7 @@ const LIVE_MONEY_CONFIG=Object.freeze({
   cardAuthorizationMode:'controller_deployed_execution_locked',
   sandboxChain:'plaid_unit_pinwheel_method',
   sandboxChainMode:'deployed_credentials_required',
+  riskMode:'sandbox_policy_active_production_fail_closed',
   executionMode:'disabled',
   authMode:'recoverable_user_required',
   ledgerMode:'server_double_entry',
@@ -6934,6 +6935,7 @@ function liveMoneyReadiness(){
     {label:'Signed provider webhooks',ready:c.webhookMode==='signed_receivers_deployed',detail:'Unit, Pinwheel and Method webhook signatures are verified before provider events are accepted.'},
     {label:'Card authorization controller',ready:c.cardAuthorizationMode==='controller_deployed_execution_locked',detail:'Unit authorization requests can reserve or decline an envelope, but execution remains locked.'},
     {label:'Sandbox orchestration',ready:c.sandboxChainMode==='deployed_credentials_required',detail:'Plaid → Unit funding, Unit account/card simulation, Pinwheel payroll switching, and Method dev bill pay are wired in the isolated Money Lab.'},
+    {label:'Risk & velocity controls',ready:c.riskMode==='sandbox_policy_active_production_fail_closed',detail:'Sandbox actions have per-transaction/daily velocity controls; production has no active policy and therefore stays fail-closed.'},
     {label:'Production identity',ready:c.authMode==='recoverable_user_active',detail:'The isolated Money Sandbox Lab now exercises recoverable Auth and TOTP MFA; the production planner is not network-enabled.'},
     {label:'Provider sandboxes',ready:c.executionMode==='sandbox',detail:'Unit, Pinwheel, Method and Plaid credentials must be configured server-side before sandbox execution is unlocked.'},
     {label:'Production browser network',ready:c.enabled===true,detail:'The production CSP remains deny-by-default until sandbox security testing passes.'}
