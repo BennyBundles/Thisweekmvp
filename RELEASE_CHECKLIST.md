@@ -6,6 +6,8 @@ Run before every production deployment to GitHub Pages.
 
 - [ ] `node phase0-static-check.mjs` passes.
 - [ ] `node release-smoke-check.mjs` passes.
+- [ ] `prepare-site.mjs` regenerates CSP SHA-256 hashes for the exact production HTML.
+- [ ] The validation job checks the staged production HTML, not an unprepared source copy.
 - [ ] Both JavaScript blocks compile.
 - [ ] Required Home, Details, Connected Data, Privacy, QA, Performance, and Data Model routes exist.
 - [ ] Browser zoom is not disabled.
@@ -43,7 +45,22 @@ Run before every production deployment to GitHub Pages.
 - [ ] Release notes recorded in CHANGELOG.
 - [ ] Major state migration notes recorded.
 - [ ] Cache-busted production URL prepared.
+- [ ] Stable milestone branch or immutable tag recorded.
+- [ ] Release record exists under `RELEASES/`.
+- [ ] Post-deploy workflow verification completed successfully.
 
 ### Rollback point
 
 The production rollback reference must be a full commit SHA and a preserved rollback branch before release changes are deployed.
+
+
+## Deployment-order safety
+
+- [ ] Production workflow uses one concurrency group.
+- [ ] Stale production run cancellation is enabled.
+- [ ] A newer commit cannot be followed by an older queued Pages deployment.
+
+## Stable milestone
+
+- [ ] Stable milestone branch/tag points at the exact validated release commit.
+- [ ] Stable milestone is not moved after release; create a new milestone for a later release.
