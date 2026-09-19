@@ -8,6 +8,10 @@ import {createHash} from 'node:crypto';
 
 const html=fs.readFileSync(new URL('./index.html', import.meta.url),'utf8');
 const failures=[];
+const cspUpdaterUrl=new URL('./update-csp-hashes.mjs', import.meta.url);
+const securityPrivacyUrl=new URL('./SECURITY_PRIVACY.md', import.meta.url);
+if(!fs.existsSync(cspUpdaterUrl))failures.push('Missing CSP hash updater utility');
+if(!fs.existsSync(securityPrivacyUrl))failures.push('Missing security/privacy trust document');
 const requireText=(label,text)=>{if(!html.includes(text))failures.push(label);};
 const forbidText=(label,text)=>{if(html.includes(text))failures.push(label);};
 
