@@ -23,6 +23,12 @@ need('Home renderer','async function renderHome()');
 need('Details renderer','async function renderDetails()');
 need('Plan renderer','function renderSetup()');
 need('Connected Data renderer','async function renderConnections()');
+need('Phase 20 Money Center','async function renderMoneyCenter()');
+need('Phase 20 Direct Deposit','async function renderDirectDeposit()');
+need('Phase 20 Bill Pay','async function renderBillPay()');
+need('Phase 20 Category Cards','async function renderCategoryCards()');
+need('Phase 20 money disabled',"executionMode:'disabled'");
+need('Phase 20 reward inactive',"rewardMode:'sandbox_template_inactive'");
 forbid('production state key leaked','"thisweek.state.v2"');
 forbid('production user key leaked','"thisweek.userId"');
 
