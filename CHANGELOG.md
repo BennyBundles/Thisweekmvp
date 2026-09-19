@@ -2,6 +2,33 @@
 
 Production changes for **This Week** are recorded here.
 
+## Phase 19 — Secure Provider Gateway (staged) — 2026-09-18
+
+### Provider architecture
+- Added a dedicated provider-backend schema package for consent, connection metadata, external accounts/balances, provider transactions, sync runs, and conflict records.
+- Added a JWT-authenticated Supabase Edge Function source package for a Plaid Hosted Link adapter, server-side account/transaction synchronization, Vault token references, and explicit disconnect.
+- Added a dedicated-backend activation guide; the existing shared Supabase project is not used for This Week provider data.
+- Added a Phase 19 readiness plane to Connected Data with a deliberately disabled institution-connect action.
+- Added provider-record normalization into the existing review semantics: pending stays reference-only, posted outflows require explicit reconciliation, and inflows never silently increase Available Now.
+- Added explicit external-balance labeling: provider balances never replace or redefine Available Now.
+- Extended Privacy & Local Data, the backend-readiness contract, the data-model manifest, the static regression gate, and release smoke tests for Phase 19.
+- Production retains `connect-src 'none'`, no browser `fetch()` provider path, an empty backend origin, and `LIVE_PROVIDER_CONFIG.enabled = false`.
+
+### Activation status
+- **No live financial institution is connected by this release.**
+- Activation requires a dedicated backend project, recoverable authentication, provider credentials/approval, Sandbox verification, security/RLS review, and an exact CSP backend allowlist.
+- Provider production usage may have external cost; Phase 19 does not assume paid access under the current zero-operating-budget constraint.
+
+### State migrations
+- No browser financial-state migration.
+- Core financial schema remains **v3**.
+- Portable data schema remains **v1**.
+- The Phase 19 provider schema is a separate server-side data plane and does not become the authority for the browser-local weekly Plan.
+
+### Rollback
+- Pre-Phase-19 commit: `e2c71206ae78b711db6e8baa90390481e3850d24`
+- Rollback branch: `rollback/phase19-pre-provider-2026-09-18`
+
 ## Phase 18 — Power-user Efficiency — 2026-09-18
 
 ### Optional efficiency layer
