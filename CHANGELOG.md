@@ -2,6 +2,30 @@
 
 Production changes for **This Week** are recorded here.
 
+## Phase 25 — Risk & Velocity Controls — 2026-09-19
+
+- Added server-only application risk policies, user controls, risk-event audit trail, and review queue.
+- Added idempotent per-user serialized velocity evaluation for amount/count thresholds.
+- Added conservative active Sandbox policy for ACH pulls, bill payments, virtual-card issue, card authorization, direct-deposit switches, and provider funding links.
+- Added an inactive production template; production has no active policy and fails closed with `risk_policy_unavailable`.
+- Added risk gating before Plaid→Unit link, external ACH pull, virtual-card issue, Pinwheel direct-deposit switch, and Method payment submission.
+- Closed the two-step Method authorize/submit bypass by placing the risk check in the shared provider-submit function.
+- Realtime Unit card authorization now evaluates risk before posting an envelope hold.
+- Added Money Lab risk-status surface and deterministic direct-deposit idempotency key.
+- Provider/program/bank limits remain authoritative and may be stricter than This Week application limits.
+
+### Activation state
+- Sandbox policy: active.
+- Production policy: intentionally inactive.
+- Live money: still disabled.
+- Reward offer: still inactive.
+- Production planner: still `connect-src 'none'`.
+
+### Rollback
+- Pre-Phase-25 risk baseline: `0f1fb9df2cbcfbba40bd0232035d6ffa121d42a0`
+- Risk rollback branch: `rollback/phase24-pre-risk-controls-2026-09-19`
+
+
 ## Phase 24 — Auth Production Hardening — 2026-09-19
 
 ### Canonical Auth redirects
