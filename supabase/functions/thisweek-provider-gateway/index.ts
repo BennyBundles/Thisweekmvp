@@ -410,7 +410,7 @@ Deno.serve(async (req: Request) => {
         vault_secret_id: vaultSecretId, status: "created", expires_at: expiration,
       });
       if (error) {
-        await vaultDelete(vaultSecretId);
+        await vaultDelete(admin, vaultSecretId);
         throw new Error("link_session_store_failed");
       }
       return json(origin, 200, { ok: true, sessionId, hostedLinkUrl, expiresAt: expiration });
