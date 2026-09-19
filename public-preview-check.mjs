@@ -32,6 +32,8 @@ need('Phase 20 reward inactive',"rewardMode:'sandbox_template_inactive'");
 need('Phase 21 signed webhook status',"webhookMode:'signed_receivers_deployed'");
 need('Phase 21 card authorization status',"cardAuthorizationMode:'controller_deployed_execution_locked'");
 need('Phase 21 Money Lab link','href="./money-lab/"');
+need('Phase 22 sandbox chain',"sandboxChain:'plaid_unit_pinwheel_method'");
+need('Phase 22 chain credential gate',"sandboxChainMode:'deployed_credentials_required'");
 forbid('production state key leaked','"thisweek.state.v2"');
 forbid('production user key leaked','"thisweek.userId"');
 
