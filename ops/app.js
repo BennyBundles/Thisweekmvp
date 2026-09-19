@@ -12,13 +12,13 @@ async function api(path,options={}){const r=await fetch(SUPABASE_URL+path,{...op
 async function ensureFresh(){if(!session?.refresh_token)return false;if((session.expires_at||0)-Math.floor(Date.now()/1000)>90)return true;const b=await api('/auth/v1/token?grant_type=refresh_token',{method:'POST',body:JSON.stringify({refresh_token:session.refresh_token})});writeSession(b);return true;}
 async function getUser(){if(!session?.access_token){user=null;updateUi();renderFactors();return null;}await ensureFresh();user=await api('/auth/v1/user',{method:'GET',auth:true});updateUi();renderFactors();return user;}
 function setResult(id,text,kind=''){const el=$(id);el.textContent=text||'';el.className='result '+kind;}
-function updateUi(){const p=session?.access_token?jwtPayload(session.access_token):{};$('sessionState').textContent=session?'Signed in':'Signed out';$('aalState').textContent=p.aal||'—';$('signOut').disabled=!session;$('verifyMfa').disabled=!session;$('refresh').disabled=!session;$('applyControl').disabled=!session;$('openIncident').disabled=!session;}
+function updateUi(){const p=session?.access_token?jwtPayload(session.access_token):{};$('sessionState').textContent=session?'Signed in':'Signed out';$('aalState').textContent=p.aal||'—';$('signOut').disabled=!session;$('verifyMfa').disabled=!session;$('refresh').disabled=!session;$('applyControl').disabled=!session;$('openIncident').disabled=!session;$('runMonitor').disabled=!session;}
 function renderFactors(){const el=$('factorSelect');el.textContent='';const factors=Array.isArray(user?.factors)?user.factors.filter(x=>x.status==='verified'):[];if(!factors.length){const o=document.createElement('option');o.value='';o.textContent='No verified factor';el.appendChild(o);return;}for(const f of factors){const o=document.createElement('option');o.value=f.id;o.textContent=(f.friendly_name||'TOTP')+' · '+f.status;el.appendChild(o);}}
 async function signIn(){const email=$('email').value.trim(),password=$('password').value;if(!email||password.length<10)throw new Error('Enter staff email and password.');const b=await api('/auth/v1/token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})});writeSession(b);$('password').value='';await getUser();setResult('authResult','Signed in. Verify MFA to open staff operations.','good');await refreshDashboard().catch(e=>setResult('authResult',e.message,'warn'));}
 async function signOut(){if(session)try{await api('/auth/v1/logout?scope=local',{method:'POST',auth:true,body:'{}'});}catch{}writeSession(null);user=null;dashboardData=null;renderFactors();clearDashboard();setResult('authResult','Signed out.','good');}
 async function verifyMfa(){await ensureFresh();const factorId=$('factorSelect').value,code=$('totpCode').value.trim();if(!factorId||!/^[0-9]{6,8}$/.test(code))throw new Error('Choose a verified factor and enter its current code.');const ch=await api('/auth/v1/factors/'+encodeURIComponent(factorId)+'/challenge',{method:'POST',auth:true,body:'{}'});const v=await api('/auth/v1/factors/'+encodeURIComponent(factorId)+'/verify',{method:'POST',auth:true,body:JSON.stringify({challenge_id:ch.id,code})});if(v.access_token)writeSession(v);$('totpCode').value='';await getUser();setResult('mfaResult','MFA verified.','good');await refreshDashboard();}
 async function ops(action,extra={}){await ensureFresh();const r=await fetch(SUPABASE_URL+'/functions/v1/thisweek-ops-gateway',{method:'POST',headers:{'apikey':PUBLISHABLE_KEY,'Authorization':'Bearer '+session.access_token,'Content-Type':'application/json'},body:JSON.stringify({action,...extra})});const text=await r.text();let b={};try{b=text?JSON.parse(text):{};}catch{b={raw:text};}if(!r.ok)throw new Error(b.error||('Ops Gateway HTTP '+r.status));return b;}
-function clearDashboard(){$('roleState').textContent='—';$('alertCount').textContent='—';$('reviewCount').textContent='—';$('healthState').textContent='—';for(const id of ['alerts','reviews','cases','support','incidents','health']){$(id).textContent='';const e=document.createElement('div');e.className='empty';e.textContent='No data loaded.';$(id).appendChild(e);}$('audit').textContent='';const e=document.createElement('div');e.className='empty';e.textContent='No audit data loaded.';$('audit').appendChild(e);}
+function clearDashboard(){$('roleState').textContent='—';$('alertCount').textContent='—';$('reviewCount').textContent='—';$('healthState').textContent='—';for(const id of ['alerts','reviews','cases','support','incidents','health','automation']){$(id).textContent='';const e=document.createElement('div');e.className='empty';e.textContent='No data loaded.';$(id).appendChild(e);}$('audit').textContent='';const e=document.createElement('div');e.className='empty';e.textContent='No audit data loaded.';$('audit').appendChild(e);setResult('notificationResult','');}
 function badge(text,severity='medium'){const s=document.createElement('span');s.className='badge '+severity;s.textContent=text;return s;}
 function money(cents){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(Number(cents||0)/100);}
 function button(label,fn,cls=''){const b=document.createElement('button');b.textContent=label;if(cls)b.className=cls;b.addEventListener('click',()=>fn().catch(e=>setResult('authResult',e.message,'bad')));return b;}
@@ -35,6 +35,60 @@ function renderHealth(h){
   p.textContent='Policy '+(h.policyVersion||'—')+' · critical overdue '+(c.criticalOverdue||0)+' · high overdue '+(c.highOverdue||0)+' · unanswered support '+(c.supportOverdue||0)+' · overdue reviews '+(c.reviewOverdue||0)+' · stale cases '+(c.staleCases||0)+' · recent provider failures '+(c.recentProviderFailures||0)+'.';
   item.appendChild(p);root.appendChild(item);$('healthState').textContent=String(h.state||'—');
 }
+
+function renderAutomation(a,role){
+  const root=$('automation');root.textContent='';
+  if(!a){const e=document.createElement('div');e.className='empty';e.textContent='No automated monitor data.';root.appendChild(e);return;}
+  const snapshot=a.latestSnapshot||{};
+  const run=a.latestRun||{};
+  const state=String(snapshot.health_state||run.safe_detail?.healthState||'unknown');
+  const item=itemBase('Scheduled monitor',state.toUpperCase(),state==='critical'?'critical':state==='degraded'?'high':'medium');
+  const c=snapshot.counts||{};
+  const age=a.heartbeatAgeMinutes==null?'unknown':Math.round(Number(a.heartbeatAgeMinutes))+'m';
+  const p=document.createElement('p');
+  p.textContent='Scheduler '+(a.schedulerState||'unknown')+' · heartbeat '+age+' ago · policy '+(snapshot.policy_version||'—')+
+    ' · ledger mismatches '+(c.unbalancedJournals||0)+
+    ' · stuck provider events '+(c.stuckProviderEvents||0)+
+    ' · stale transfers '+(c.staleTransfers24h||0)+
+    ' · stale bill payments '+(c.staleBillPayments24h||0)+
+    ' · provider failures '+(c.providerFailures15m||0)+'.';
+  item.appendChild(p);
+  const channel=document.createElement('p');
+  channel.textContent=a.externalChannelConfigured?'External paging configured.':'External paging is not configured; high/critical notifications remain durable in the outbox.';
+  item.appendChild(channel);
+  root.appendChild(item);
+
+  const notes=a.pendingNotifications||[];
+  if(!notes.length){
+    const e=document.createElement('div');e.className='empty';e.textContent='No pending external notifications.';root.appendChild(e);
+    return;
+  }
+  for(const n of notes){
+    const row=itemBase('Notification outbox',n.subject||'Operational notification',n.severity||'high');
+    const detail=document.createElement('p');
+    detail.textContent=(n.state||'pending')+' · '+new Date(n.created_at).toLocaleString()+' · '+(n.safe_body||'');
+    row.appendChild(detail);
+    const controls=document.createElement('div');controls.className='controls';
+    const reason=document.createElement('input');reason.placeholder='suppression reason';reason.maxLength=120;
+    const spacer1=document.createElement('div'),spacer2=document.createElement('div');
+    controls.append(reason,spacer1,spacer2);row.appendChild(controls);
+    const allowed=role==='risk_ops'||role==='admin';
+    const suppress=button('Suppress notification',async()=>{
+      if(!reason.value.trim())throw new Error('Enter a suppression reason.');
+      await ops('suppress_notification',{notificationId:n.id,reasonCode:reason.value.trim()});
+      setResult('notificationResult','Notification suppressed with audit record.','good');
+      await refreshDashboard();
+    },'danger');
+    suppress.disabled=!allowed;
+    row.appendChild(suppress);root.appendChild(row);
+  }
+}
+async function runMonitorNow(){
+  const d=await ops('run_monitor');
+  setResult('notificationResult','Monitor completed: '+(d.result?.healthState||'unknown')+'.','good');
+  await refreshDashboard();
+}
+
 function renderSupport(rows,messages){
   const root=$('support');root.textContent='';
   if(!rows.length){const e=document.createElement('div');e.className='empty';e.textContent='No open support requests.';root.appendChild(e);return;}
@@ -76,8 +130,8 @@ async function openIncident(){
   $('incidentTitle').value='';$('incidentSummary').value='';setResult('incidentResult','Incident opened: '+d.incidentId,'good');await refreshDashboard();
 }
 function renderAudit(rows){const root=$('audit');root.textContent='';if(!rows.length){const e=document.createElement('div');e.className='empty';e.textContent='No staff actions recorded.';root.appendChild(e);return;}for(const x of rows){const r=document.createElement('div');r.className='audit-row';const strong=document.createElement('strong');strong.textContent=(x.action||'action')+' · '+(x.staff_role||'role');const text=document.createTextNode(' — '+(x.target_type||'target')+' '+(x.target_ref||'')+' · '+new Date(x.created_at).toLocaleString()+(x.reason_code?' · '+x.reason_code:''));r.append(strong,text);root.appendChild(r);}}
-async function refreshDashboard(){const d=await ops('dashboard');dashboardData=d;$('roleState').textContent=d.staff?.role||'—';$('alertCount').textContent=String(d.alerts?.length||0);$('reviewCount').textContent=String(d.riskReviews?.length||0);renderHealth(d.health);renderAlerts(d.alerts||[]);renderSupport(d.supportRequests||[],d.supportMessages||[]);renderReviews(d.riskReviews||[],d.staff?.role||'');renderCases(d.cases||[]);renderIncidents(d.incidents||[]);renderAudit(d.recentStaffActions||[]);setResult('authResult','Operations data refreshed.','good');return d;}
+async function refreshDashboard(){const d=await ops('dashboard');dashboardData=d;const role=d.staff?.role||'';$('roleState').textContent=role||'—';$('alertCount').textContent=String(d.alerts?.length||0);$('reviewCount').textContent=String(d.riskReviews?.length||0);$('runMonitor').disabled=!(role==='risk_ops'||role==='admin');renderHealth(d.health);renderAutomation(d.automatedMonitor,role);renderAlerts(d.alerts||[]);renderSupport(d.supportRequests||[],d.supportMessages||[]);renderReviews(d.riskReviews||[],role);renderCases(d.cases||[]);renderIncidents(d.incidents||[]);renderAudit(d.recentStaffActions||[]);setResult('authResult','Operations data refreshed.','good');return d;}
 async function applyControl(){const userId=$('controlUserId').value.trim(),state=$('controlState').value,reason=$('controlReason').value.trim();if(!userId)throw new Error('Enter a user ID.');if(state!=='normal'&&!reason)throw new Error('Enter a control reason.');const d=await ops('set_user_control',{userId,state,reasonCode:reason||'control_cleared'});setResult('controlResult','Control updated: '+(d.result?.state||state)+'.','good');await refreshDashboard();}
 function bind(id,fn){$(id).addEventListener('click',()=>fn().catch(e=>setResult(id==='verifyMfa'?'mfaResult':id==='applyControl'?'controlResult':'authResult',e.message,'bad')));}
-bind('signIn',signIn);bind('signOut',signOut);bind('verifyMfa',verifyMfa);bind('refresh',refreshDashboard);bind('applyControl',applyControl);bind('openIncident',openIncident);
+bind('signIn',signIn);bind('signOut',signOut);bind('verifyMfa',verifyMfa);bind('refresh',refreshDashboard);bind('runMonitor',runMonitorNow);bind('applyControl',applyControl);bind('openIncident',openIncident);
 updateUi();clearDashboard();if(session?.access_token)getUser().then(()=>refreshDashboard()).catch(e=>setResult('authResult',e.message,'warn'));
