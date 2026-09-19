@@ -502,7 +502,7 @@ body:not([data-current-world]) .v143-request-fab,body[data-current-world="home"]
 .v148-detail{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;padding-top:14px;border-top:1px solid rgba(255,255,255,.09)}.v148-detail h3{margin:0;font-size:clamp(24px,4vw,42px);line-height:1}.v148-detail p{margin:8px 0 0;max-width:720px;font-size:12px;line-height:1.6;opacity:.68}.v148-swatches{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.v148-swatch{width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:var(--sw);box-shadow:inset 0 0 0 4px rgba(0,0,0,.13)}.v148-swatch span{position:absolute;clip:rect(0 0 0 0);width:1px;height:1px;overflow:hidden}
 .v148-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}.v148-meta div{padding:11px 12px;border:1px solid rgba(255,255,255,.09);border-radius:14px}.v148-meta b{display:block;font-size:9px}.v148-meta span{display:block;font-size:8px;line-height:1.45;opacity:.56;margin-top:4px}.v148-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.v148-actions button{min-height:40px;padding:0 13px;border:1px solid rgba(255,255,255,.15);border-radius:999px;background:rgba(255,255,255,.04);color:inherit;font:800 8px/1 ui-monospace,Menlo,monospace;letter-spacing:.07em;text-transform:uppercase}
 @media(max-width:620px){.v148-detail{grid-template-columns:1fr}.v148-swatches{justify-content:flex-start}.v148-meta{grid-template-columns:1fr}.v148-head{align-items:start;flex-direction:column}.v148-wave{min-height:44px}}
-</style><script id="v151-world-resume">try{sessionStorage.setItem('tagjIntroSeenV151','1');localStorage.setItem('tagjIntroSeenPersistentV151','1')}catch(_){}</script>
+</style><script id="v153-world-resume">try{sessionStorage.setItem('tagjIntroSeenV153','1')}catch(_){}</script>
 </head><body class="preview-shell"><div class="world-view world-home home-v10" data-world="home">
 <section class="screen" id="home"><div class="home-grid"></div><div class="home-noise"></div><div class="home-vignette"></div><div class="home-stage"><div class="compass">
 <div class="home-kicker"><b>TAGJ × BENNY BUNDLES</b> / ONE CENTER — FOUR DISTINCT WORLDS</div><div class="orbit o3"></div><div class="orbit o2"></div><div class="orbit o1"></div><div class="beam n"></div><div class="beam e"></div><div class="beam s"></div><div class="beam w"></div>
@@ -998,6 +998,18 @@ body:not([data-current-world]) .v143-request-fab,body[data-current-world="home"]
     const id=(hash||'#home').slice(1);
     if(id==='home') return 'home';
     for(const r of roots.slice(1)){ if(id===r || id.startsWith(r+'-')) return r; }
+
+    // Deep sections added after V12 do not all use a world-prefixed id.
+    // Resolve the owning world from the DOM before falling back. This prevents
+    // a generic detail hash (for example a V14/V15 dossier or tool id) from
+    // incorrectly reopening the center/home screen while the user is already
+    // inside TAGJ, Artist, Studio or Creative.
+    const target=document.getElementById(id);
+    const owner=target?.closest?.('.world-view');
+    if(owner?.dataset?.world && roots.includes(owner.dataset.world)) return owner.dataset.world;
+
+    const current=document.body.dataset.currentWorld;
+    if(current && current!=='home' && roots.includes(current)) return current;
     return 'home';
   }
   function show(world, anchor, behavior='auto'){
