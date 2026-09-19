@@ -367,3 +367,52 @@ Phase 14 source now satisfies the planned trust-hardening goals:
 - plan-derived and imported/reconciled data are explained distinctly.
 
 The remaining security work belongs to future backend/provider phases, where authentication, authorization, server validation, token encryption, privacy policy, and provider consent become necessary.
+
+
+## Continued Phase 14 refinements
+
+### Plan-edit confirmation
+
+Editing an existing Plan now requires an explicit high-impact confirmation before the updated:
+
+- income;
+- bills;
+- spending lanes;
+- savings target;
+- weekly rhythm
+
+become the basis for future weekly calculations.
+
+Creating the first Plan remains a deliberate setup submission and does not add a redundant confirmation step.
+
+### Runtime network-dependency guard
+
+The Phase 14 trust audit now verifies that the loaded static document has no external runtime:
+
+- script dependency;
+- stylesheet dependency.
+
+The static regression checker also fails if the current browser-only application source introduces:
+
+- `fetch(`
+- `XMLHttpRequest`
+- `WebSocket`
+- `sendBeacon`
+
+without deliberately revisiting the Phase 14 local-only boundary.
+
+These guards are expected to change in a future reviewed backend/provider phase rather than being silently bypassed.
+
+### Local retention disclosure
+
+The Privacy & Local Data screen now states the current local-retention behavior.
+
+- Core plan/history persists until edited or deleted from browser storage.
+- Connected Data audit history is bounded to the latest 120 actions.
+- Import batch history is bounded to the latest 40 batches.
+
+### Latest Phase 14 application commit
+
+`f7fef825dfd19ade72376a99705ed526a0385ea1`
+
+This is the latest Phase 14 app-source refinement.
