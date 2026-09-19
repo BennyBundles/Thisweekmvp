@@ -287,7 +287,7 @@
     ],
     "deployedFunctions": {
       "providerGateway": "thisweek-provider-gateway:v3",
-      "moneyGateway": "thisweek-money-gateway:v6",
+      "moneyGateway": "thisweek-money-gateway:v7",
       "signedWebhook": "thisweek-money-webhook:v3",
       "unitCardAuthorization": "thisweek-unit-card-authorization:v1"
     },
@@ -318,7 +318,6 @@
     "remainingGates": [
       "configure_provider_sandbox_credentials",
       "set_money_execution_mode_sandbox",
-      "register_provider_webhook_urls",
       "unit_programmatic_authorization_program_enablement",
       "run_end_to_end_sandbox_transactions",
       "fraud_limits_and_ach_return_controls",
@@ -338,6 +337,24 @@
       "methodEvent": "payment.update",
       "secretsReturnedToClient": false,
       "idempotency": "list_existing_then_create_missing"
+    },
+    "providerPreflight": {
+      "status": "deployed",
+      "action": "provider_preflight",
+      "bypassesExecutionLock": false,
+      "sandboxReadOnlyChecks": {
+        "plaid": "/institutions/get",
+        "unit": "/applications",
+        "pinwheel": "/v1/platforms?limit=1",
+        "method": "/entities"
+      },
+      "clientStates": [
+        "missing_credentials",
+        "execution_locked",
+        "credential_valid",
+        "credential_rejected"
+      ],
+      "secretValuesReturned": false
     }
   }
 }
