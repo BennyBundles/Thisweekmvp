@@ -2172,7 +2172,7 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
  const map={basicMp3:'basic-mp3-v1',premiumWav:'premium-wav-v1',trackoutPro:'trackout-pro-v1',unlimited:'unlimited-v1',exclusive:'exclusive-v1'};
  const reverse=Object.fromEntries(Object.entries(map).map(([k,v])=>[v,k]));
  const humanStatus=s=>String(s||'').replaceAll('_',' ');
- const price=t=>t.priceUsd?('</html>+t.priceUsd):(t.priceUsdMinimumOffer?('From </html>+t.priceUsdMinimumOffer):'Quote');
+ const price=t=>t.priceUsd?(String.fromCharCode(36)+t.priceUsd):(t.priceUsdMinimumOffer?('From '+String.fromCharCode(36)+t.priceUsdMinimumOffer):'Quote');
  function renderAnalysis(b){
    const a=b.analysis||{};
    const tags=(a.creativeTags||[]).map(x=>'<span>'+x+'</span>').join('');
