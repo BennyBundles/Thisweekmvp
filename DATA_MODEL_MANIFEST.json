@@ -142,5 +142,28 @@
     "conflictPolicy": "never silently merge conflicting financial mutations",
     "authentication": "future authenticated user-scoped server session",
     "providerSecrets": "server_only"
+  },
+  "phase19ProviderPlane": {
+    "status": "staged_not_active",
+    "activation": false,
+    "provider": "plaid",
+    "clientNetworkPolicy": "deny_until_dedicated_backend",
+    "planAuthority": "browser_local",
+    "schemaPath": "supabase/phase19/provider_schema.sql",
+    "gatewayPath": "supabase/functions/thisweek-provider-gateway/index.ts",
+    "tokenStorage": "server_vault_only",
+    "authRequirement": "recoverable_authenticated_user",
+    "entities": [
+      "tw_provider_consents",
+      "tw_provider_link_sessions",
+      "tw_provider_connections",
+      "tw_provider_accounts",
+      "tw_provider_transactions",
+      "tw_provider_sync_runs",
+      "tw_provider_conflicts"
+    ],
+    "reconciliationRule": "Provider activity remains reference data until explicit reconciliation creates a weekly transaction.",
+    "externalBalanceRule": "External provider balances never replace or redefine Available Now.",
+    "conflictRule": "Never silently merge conflicting financial mutations."
   }
 }
