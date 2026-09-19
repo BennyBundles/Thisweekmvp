@@ -6908,7 +6908,7 @@ const LIVE_PROVIDER_CONFIG=Object.freeze({
 });
 const LIVE_MONEY_CONFIG=Object.freeze({
   version:1,
-  state:'event_controllers_deployed',
+  state:'sandbox_chain_deployed_credential_gated',
   enabled:false,
   projectRef:'xjtvawmppzwzrooairyx',
   backendOrigin:'https://xjtvawmppzwzrooairyx.supabase.co',
@@ -6917,6 +6917,8 @@ const LIVE_MONEY_CONFIG=Object.freeze({
   cardAuthorizationFunction:'thisweek-unit-card-authorization',
   webhookMode:'signed_receivers_deployed',
   cardAuthorizationMode:'controller_deployed_execution_locked',
+  sandboxChain:'plaid_unit_pinwheel_method',
+  sandboxChainMode:'deployed_credentials_required',
   executionMode:'disabled',
   authMode:'recoverable_user_required',
   ledgerMode:'server_double_entry',
@@ -6931,6 +6933,7 @@ function liveMoneyReadiness(){
     {label:'Authenticated gateway',ready:!!c.gatewayFunction,detail:'thisweek-money-gateway is deployed with JWT verification.'},
     {label:'Signed provider webhooks',ready:c.webhookMode==='signed_receivers_deployed',detail:'Unit, Pinwheel and Method webhook signatures are verified before provider events are accepted.'},
     {label:'Card authorization controller',ready:c.cardAuthorizationMode==='controller_deployed_execution_locked',detail:'Unit authorization requests can reserve or decline an envelope, but execution remains locked.'},
+    {label:'Sandbox orchestration',ready:c.sandboxChainMode==='deployed_credentials_required',detail:'Plaid → Unit funding, Unit account/card simulation, Pinwheel payroll switching, and Method dev bill pay are wired in the isolated Money Lab.'},
     {label:'Production identity',ready:c.authMode==='recoverable_user_active',detail:'The isolated Money Sandbox Lab now exercises recoverable Auth and TOTP MFA; the production planner is not network-enabled.'},
     {label:'Provider sandboxes',ready:c.executionMode==='sandbox',detail:'Unit, Pinwheel, Method and Plaid credentials must be configured server-side before sandbox execution is unlocked.'},
     {label:'Production browser network',ready:c.enabled===true,detail:'The production CSP remains deny-by-default until sandbox security testing passes.'}
@@ -8518,9 +8521,9 @@ function moneyGateRows(){
 async function renderMoneyCenter(){
   shellMeta('Money','Money Center','Real-money infrastructure underneath the weekly planning layer','<a class="text-action" href="#details">Back</a>');nav('money');
   root.innerHTML='<div class="studio-stack">'+
-    '<section class="provider-readiness"><div class="provider-readiness-head"><div><small>Phase 20 · money foundation</small><h3>The server money layer is deployed. Live money movement is still locked.</h3></div><span class="provider-gate-badge">Ledger ready · execution off</span></div><p class="provider-readiness-copy">This Week now has a server-side double-entry ledger, account/envelope model, transfer state machine, payroll-switch records, rewards controls, bill payments, virtual cards and provider-event infrastructure. None of these records redefine the browser-local weekly Plan.</p><div class="provider-readiness-grid">'+moneyGateRows()+'</div></section>'+
+    '<section class="provider-readiness"><div class="provider-readiness-head"><div><small>Phase 20 · money foundation</small><h3>The provider Sandbox chain is deployed. Live money movement is still locked.</h3></div><span class="provider-gate-badge">Ledger ready · execution off</span></div><p class="provider-readiness-copy">This Week now has the double-entry money ledger plus an end-to-end Sandbox orchestration path for Plaid bank linking, Unit accounts/cards, Pinwheel payroll switching and Method bill pay. Provider credentials and execution flags remain server-gated, and none of these records redefine the browser-local weekly Plan.</p><div class="provider-readiness-grid">'+moneyGateRows()+'</div></section>'+
     '<section class="section"><div class="section-head"><div><small>Two-layer model</small><h3>Planning stays separate from custody.</h3></div></div><div class="trust-grid"><div class="trust-card"><small>Planning plane</small><strong>Available Now</strong><span>Still calculated from the weekly Plan. It is not a bank balance.</span></div><div class="trust-card"><small>Money plane</small><strong>This Week Cash</strong><span>Will represent actual server/provider-backed funds only after banking activation.</span></div><div class="trust-card"><small>Ledger</small><strong>Append-only</strong><span>Posted history is corrected with reversing entries rather than silent edits.</span></div><div class="trust-card"><small>Controls</small><strong>Envelope-first</strong><span>Bills, Essentials, Lifestyle and Savings can become enforceable money controls without changing the Plan.</span></div></div></section>'+
-    '<section class="section"><div class="section-head"><div><small>Sandbox identity</small><h3>Test the real authenticated boundary separately.</h3></div></div><div class="provider-boundary-note"><strong>Money Sandbox Lab:</strong> real Supabase email/password Auth, TOTP MFA, JWT gateway status/bootstrap and ledger inspection with network access restricted to the exact Supabase origin.</div><div class="action-row"><a class="btn btn-primary" href="./money-lab/">Open Money Sandbox Lab</a></div></section>'+
+    '<section class="section"><div class="section-head"><div><small>Sandbox identity</small><h3>Test the real authenticated boundary separately.</h3></div></div><div class="provider-boundary-note"><strong>Money Sandbox Lab:</strong> real Supabase Auth/TOTP plus a guided Sandbox chain for Plaid Hosted Link, Unit customer/account/funding/card tests, Pinwheel Deposit Switch and Method dev bill payments. Provider secrets remain server-side.</div><div class="action-row"><a class="btn btn-primary" href="./money-lab/">Open Money Sandbox Lab</a></div></section>'+
     '<section class="section"><div class="section-head"><div><small>Money tools</small><h3>Next executable surfaces</h3></div></div><div class="system-tool-grid"><a class="system-tool" href="#direct-deposit"><span class="system-tool-copy"><small>Payroll</small><strong>Direct Deposit</strong><span>Unit account target + Pinwheel Deposit Switch.</span></span><span class="system-tool-arrow">›</span></a><a class="system-tool" href="#bill-pay"><span class="system-tool-copy"><small>Payments</small><strong>Bill Pay</strong><span>Method liability payment with explicit user authorization.</span></span><span class="system-tool-arrow">›</span></a><a class="system-tool" href="#cards"><span class="system-tool-copy"><small>Cards</small><strong>Category Cards</strong><span>Unit virtual debit cards bound to a This Week envelope.</span></span><span class="system-tool-arrow">›</span></a><a class="system-tool" href="#connections"><span class="system-tool-copy"><small>Bank link</small><strong>Connected Data</strong><span>Plaid remains the verified external-bank connection plane.</span></span><span class="system-tool-arrow">›</span></a></div></section>'+
   '</div>';
 }
