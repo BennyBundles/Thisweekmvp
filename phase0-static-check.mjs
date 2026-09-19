@@ -363,6 +363,13 @@ requirePhase21FileText('Phase 22 Money Lab card simulation',moneyLabJs,"gateway(
 requirePhase21FileText('Phase 22 Money Lab Pinwheel open',moneyLabJs,'window.Pinwheel.open');
 requirePhase21FileText('Phase 22 Money Lab Method setup',moneyLabJs,"gateway('method_sandbox_setup'");
 requirePhase21FileText('Phase 22 Money Lab Method pay',moneyLabJs,"gateway('method_sandbox_payment'");
+requirePhase20FileText('Phase 22 Unit webhook registration type split',phase20Gateway,'"OnlyAuthorizationRequest"');
+requirePhase20FileText('Phase 22 Unit general webhook registration',phase20Gateway,'"NotAuthorizationRequest"');
+requirePhase20FileText('Phase 22 Pinwheel webhook registration',phase20Gateway,'"direct_deposit_allocations.added"');
+requirePhase20FileText('Phase 22 Method webhook auth token',phase20Gateway,'METHOD_WEBHOOK_AUTH_TOKEN');
+requirePhase20FileText('Phase 22 Method webhook HMAC secret',phase20Gateway,'METHOD_WEBHOOK_HMAC_SECRET');
+requirePhase20FileText('Phase 22 webhook action credential gated',phase20Gateway,'register_sandbox_webhooks');
+requirePhase21FileText('Phase 22 Lab webhook action',moneyLabJs,"gateway('register_sandbox_webhooks')");
 
 
 
