@@ -620,19 +620,27 @@ async function pinwheelLinkToken(payload: AnyRecord): Promise<AnyRecord> {
   return parseResponse(res);
 }
 
-async function methodPayment(payload: AnyRecord, idempotencyKey: string): Promise<AnyRecord> {
+async function methodRequest(path: string, init: RequestInit = {}): Promise<AnyRecord> {
   if (!canExecuteProvider("method")) throw new Error("method_not_configured");
-  const res = await fetch(METHOD_BASE_URL + "/payments", {
-    method: "POST",
+  const res = await fetch(METHOD_BASE_URL + path, {
+    ...init,
     headers: {
       "Authorization": "Bearer " + METHOD_API_KEY,
       "Method-Version": METHOD_VERSION,
-      "Idempotency-Key": idempotencyKey,
-      "Content-Type": "application/json",
+      ...(init.body ? { "Content-Type": "application/json" } : {}),
+      ...(init.headers || {}),
     },
+  });
+  const raw = await parseResponse(res);
+  return raw.data && typeof raw.data === "object" ? raw.data as AnyRecord : raw;
+}
+
+async function methodPayment(payload: AnyRecord, idempotencyKey: string): Promise<AnyRecord> {
+  return methodRequest("/payments", {
+    method: "POST",
+    headers: { "Idempotency-Key": idempotencyKey },
     body: JSON.stringify(payload),
   });
-  return parseResponse(res);
 }
 
 async function bootstrapMoney(admin: ReturnType<typeof createClient>, userId: string) {
@@ -875,6 +883,243 @@ async function createUnitVirtualCard(
   }).select("id,label,card_mode,status,last4,spend_limit_cents,provider").single();
   if (inserted.error || !inserted.data) throw new Error("card_store_failed");
   return inserted.data;
+}
+
+
+function deterministicDigits(source: string, count: number): string {
+  let out = "";
+  for (let i = 0; i < source.length && out.length < count; i++) {
+    const c = source.charCodeAt(i);
+    out += String((c * 7 + i * 3) % 10);
+  }
+  return out.padEnd(count, "7").slice(0, count);
+}
+
+async function methodSandboxSetup(
+  admin: ReturnType<typeof createClient>,
+  userId: string,
+) {
+  if (MONEY_EXECUTION_MODE !== "sandbox") throw new Error("sandbox_action_disabled");
+  if (!canExecuteProvider("method")) throw new Error("method_not_configured");
+
+  await bootstrapMoney(admin, userId);
+  const { data: customer } = await admin.from("tw_money_customers")
+    .select("id,method_entity_id,method_connect_id").eq("user_id", userId).maybeSingle();
+  if (!customer) throw new Error("money_customer_not_found");
+
+  let entityId = safeText(customer.method_entity_id, 180);
+  if (!entityId) {
+    const compact = userId.replace(/-/g, "");
+    const entity = await methodRequest("/entities", {
+      method: "POST",
+      body: JSON.stringify({
+        type: "individual",
+        individual: {
+          first_name: "Thisweek",
+          last_name: "Sandbox",
+          phone: "+1512" + deterministicDigits(compact, 7),
+          email: "method+" + compact.slice(0, 12) + "@example.com",
+          dob: "1997-03-18",
+        },
+        address: {
+          line1: "3300 N Interstate 35",
+          city: "Austin",
+          state: "TX",
+          zip: "78705",
+        },
+        metadata: { thisweek_user_id: userId, environment: "dev" },
+      }),
+    });
+    entityId = safeText(entity.id, 180);
+    if (!entityId) throw new Error("method_entity_invalid");
+    const saved = await admin.from("tw_money_customers").update({
+      method_entity_id: entityId,
+      updated_at: new Date().toISOString(),
+    }).eq("user_id", userId);
+    if (saved.error) throw new Error("method_entity_store_failed");
+  }
+
+  let connectId = safeText(customer.method_connect_id, 180);
+  let liabilityIds: string[] = [];
+  if (!connectId) {
+    const connect = await methodRequest("/entities/" + encodeURIComponent(entityId) + "/connect", {
+      method: "POST",
+      body: JSON.stringify({}),
+    });
+    connectId = safeText(connect.id, 180);
+    liabilityIds = Array.isArray(connect.accounts)
+      ? connect.accounts.map((x) => safeText(x, 180)).filter(Boolean)
+      : [];
+    if (connectId) {
+      await admin.from("tw_money_customers").update({
+        method_connect_id: connectId,
+        updated_at: new Date().toISOString(),
+      }).eq("user_id", userId);
+    }
+  } else {
+    const connect = await methodRequest(
+      "/entities/" + encodeURIComponent(entityId) + "/connect/" + encodeURIComponent(connectId),
+    );
+    liabilityIds = Array.isArray(connect.accounts)
+      ? connect.accounts.map((x) => safeText(x, 180)).filter(Boolean)
+      : [];
+  }
+
+  const billers: AnyRecord[] = [];
+  for (const accountId of liabilityIds.slice(0, 20)) {
+    try {
+      const account = await methodRequest("/accounts/" + encodeURIComponent(accountId));
+      if (safeText(account.type, 30) !== "liability") continue;
+      const liability = account.liability && typeof account.liability === "object"
+        ? account.liability as AnyRecord : {};
+      const products = Array.isArray(account.products) ? account.products.map(String) : [];
+      if (!products.includes("payment")) continue;
+      billers.push({
+        user_id: userId,
+        discovery_provider: "method",
+        provider_biller_id: accountId,
+        display_name: safeText(liability.name, 120) || "Method Sandbox Liability",
+        bill_type: safeText(liability.type, 60) || "liability",
+        account_mask: safeText(liability.mask, 8) || null,
+        status: "active",
+        autopay_state: "unknown",
+        safe_metadata: {
+          merchant_id: safeText(liability.mch_id, 120) || null,
+          products: products.slice(0, 20),
+          sandbox: true,
+        },
+        updated_at: new Date().toISOString(),
+      });
+    } catch {
+      // Skip an account that cannot be expanded in this team's Method configuration.
+    }
+  }
+  if (billers.length) {
+    const upsert = await admin.from("tw_money_billers")
+      .upsert(billers, { onConflict: "user_id,discovery_provider,provider_biller_id" })
+      .select("id,display_name,bill_type,account_mask,provider_biller_id,status");
+    if (upsert.error) throw new Error("method_biller_store_failed");
+  }
+
+  let { data: source } = await admin.from("tw_money_funding_accounts")
+    .select("*").eq("user_id", userId)
+    .eq("processor_provider", "method")
+    .eq("provider_link_kind", "method_source")
+    .eq("status", "verified")
+    .maybeSingle();
+
+  if (!source) {
+    const compact = userId.replace(/-/g, "");
+    const accountNumber = "57" + deterministicDigits(compact, 6);
+    const account = await methodRequest("/accounts", {
+      method: "POST",
+      body: JSON.stringify({
+        holder_id: entityId,
+        ach: {
+          routing: "367537407",
+          number: accountNumber,
+          type: "checking",
+        },
+        metadata: { thisweek_user_id: userId, environment: "dev", role: "bill_pay_source" },
+      }),
+    });
+    const accountId = safeText(account.id, 180);
+    if (!accountId) throw new Error("method_source_account_invalid");
+
+    let verificationId = safeText(account.latest_verification_session, 180);
+    if (!verificationId) {
+      const verification = await methodRequest(
+        "/accounts/" + encodeURIComponent(accountId) + "/verification_sessions",
+        {
+          method: "POST",
+          body: JSON.stringify({ type: "micro_deposits" }),
+        },
+      );
+      verificationId = safeText(verification.id, 180);
+    }
+    if (!verificationId) throw new Error("method_verification_session_invalid");
+
+    const amountsResponse = await methodRequest(
+      "/simulate/accounts/" + encodeURIComponent(accountId) +
+      "/verification_sessions/" + encodeURIComponent(verificationId) + "/amounts",
+    );
+    const amounts = Array.isArray(amountsResponse.amounts)
+      ? amountsResponse.amounts.map(Number).filter((n) => Number.isSafeInteger(n) && n > 0)
+      : [];
+    if (amounts.length !== 2) throw new Error("method_microdeposit_amounts_unavailable");
+
+    const verified = await methodRequest(
+      "/accounts/" + encodeURIComponent(accountId) +
+      "/verification_sessions/" + encodeURIComponent(verificationId),
+      {
+        method: "PUT",
+        body: JSON.stringify({ micro_deposits: { amounts } }),
+      },
+    );
+    if (safeText(verified.status, 40).toLowerCase() !== "verified") {
+      throw new Error("method_source_verification_failed");
+    }
+
+    const stored = await admin.from("tw_money_funding_accounts").insert({
+      user_id: userId,
+      verification_provider: "method",
+      processor_provider: "method",
+      processor_reference: accountId,
+      account_kind: "checking",
+      account_last4: accountNumber.slice(-4),
+      routing_last4: "7407",
+      status: "verified",
+      supported_rails: ["method_bill_pay"],
+      provider_link_kind: "method_source",
+      provider_status: "verified",
+    }).select("id,status,processor_provider,processor_reference,account_kind,account_last4,routing_last4,supported_rails")
+      .single();
+    if (stored.error || !stored.data) throw new Error("method_source_store_failed");
+    source = stored.data;
+  }
+
+  const { data: storedBillers } = await admin.from("tw_money_billers")
+    .select("id,display_name,bill_type,account_mask,provider_biller_id,status")
+    .eq("user_id", userId).eq("discovery_provider", "method")
+    .eq("status", "active").order("display_name").limit(25);
+
+  return {
+    entityId,
+    connectId: connectId || null,
+    sourceFundingAccount: source,
+    billers: storedBillers || [],
+    mode: MONEY_EXECUTION_MODE,
+  };
+}
+
+async function methodSandboxPayment(
+  admin: ReturnType<typeof createClient>,
+  userId: string,
+  body: AnyRecord,
+) {
+  if (MONEY_EXECUTION_MODE !== "sandbox") throw new Error("sandbox_action_disabled");
+  const sourceFundingAccountId = safeText(body.fundingAccountId, 80);
+  const billerId = safeText(body.billerId, 80);
+  const envelopeId = safeText(body.envelopeId, 80);
+  const amount = moneyInt(body.amountCents, 1, 1_000_000);
+  const requestId = safeText(body.clientRequestId, 120);
+  if (!sourceFundingAccountId || !billerId || !envelopeId || !requestId) {
+    throw new Error("method_payment_request_incomplete");
+  }
+
+  const consentTextHash = safeText(body.consentTextHash, 180) || "sandbox-method-payment";
+  const termsVersion = safeText(body.termsVersion, 80) || "sandbox-2026-09";
+  const authorized = await authorizeBillPayment(admin, userId, {
+    billerId,
+    fundingAccountId: sourceFundingAccountId,
+    envelopeId,
+    amountCents: amount,
+    clientRequestId: requestId,
+    termsVersion,
+    consentTextHash,
+  });
+
+  return submitMethodBillPayment(admin, userId, String(authorized.id));
 }
 
 async function authorizeBillPayment(
@@ -1161,6 +1406,17 @@ Deno.serve(async (req: Request) => {
     if (action === "unit_sandbox_authorization") {
       const result = await simulateUnitAuthorization(admin, user.id, body);
       return json(origin, 200, { ok: true, simulation: result });
+    }
+
+
+    if (action === "method_sandbox_setup") {
+      const result = await methodSandboxSetup(admin, user.id);
+      return json(origin, 200, { ok: true, method: result });
+    }
+
+    if (action === "method_sandbox_payment") {
+      const result = await methodSandboxPayment(admin, user.id, body);
+      return json(origin, 200, { ok: true, payment: result });
     }
 
     if (action === "direct_deposit_link") {
