@@ -110,7 +110,7 @@ function updateUi(){
   $('aalState').textContent=p.aal||'—';
   $('userState').textContent=currentUser?.email||p.sub?.slice(0,8)||'—';
   const signed=!!session?.access_token;
-  for(const id of ['signOut','enrollMfa','verifyMfa','gatewayStatus','gatewayBootstrap','gatewaySummary','sandboxCredit','allocate','providerPreflight','riskStatus','chainRefresh','unitApplication','unitApplicationStatus','unitDeposit','unitDirectFund','plaidConsent','plaidStart','plaidFinalize','plaidAccounts','plaidUnitLink','externalFund','createCard','simulateAuth','directDepositToken','methodSetup','methodPay','registerWebhooks'])$(id).disabled=!signed;
+  for(const id of ['signOut','enrollMfa','verifyMfa','gatewayStatus','gatewayBootstrap','gatewaySummary','sandboxCredit','allocate','providerPreflight','riskStatus','opsStatus','chainRefresh','unitApplication','unitApplicationStatus','unitDeposit','unitDirectFund','plaidConsent','plaidStart','plaidFinalize','plaidAccounts','plaidUnitLink','externalFund','createCard','simulateAuth','createDispute','advanceDispute','directDepositToken','methodSetup','methodPay','registerWebhooks'])$(id).disabled=!signed;
 }
 async function signIn(){
   const email=$('email').value.trim(),password=$('password').value;
@@ -211,7 +211,7 @@ function applyProviderControlState(status){
   if(!session?.access_token)return;
   const exec=status?.providerExecution||{};
   const unit=!!exec.unit,plaid=!!exec.plaid,pinwheel=!!exec.pinwheel,method=!!exec.method;
-  for(const id of ['unitApplication','unitApplicationStatus','unitDeposit','unitDirectFund','createCard','simulateAuth'])$(id).disabled=!unit;
+  for(const id of ['unitApplication','unitApplicationStatus','unitDeposit','unitDirectFund','createCard','simulateAuth','createDispute','advanceDispute'])$(id).disabled=!unit;
   $('plaidConsent').disabled=false;
   for(const id of ['plaidStart','plaidFinalize','plaidAccounts'])$(id).disabled=!plaid;
   for(const id of ['plaidUnitLink','externalFund'])$(id).disabled=!(plaid&&unit);
@@ -251,6 +251,7 @@ async function refreshChain(){
   fillSelect('methodBillerSelect',money.bills?.filter(x=>x.discovery_provider==='method'&&x.status==='active'),x=>x.id,x=>x.display_name+(x.account_mask?' •••• '+x.account_mask:''),'No Method liabilities');
   fillSelect('plaidAccountSelect',providerAccounts,x=>x.id,x=>(x.displayName||x.name||'Plaid account')+(x.mask?' •••• '+x.mask:''),'Load Plaid accounts');
   try{renderRiskStatus(await gateway('risk_status'));}catch(e){log('Risk status warning',e.message);}
+  try{renderOpsStatus(await gateway('ops_status'));}catch(e){log('Operations status warning',e.message);}
   log('Sandbox chain refreshed',{money,provider});
   return {money,provider};
 }
@@ -278,6 +279,44 @@ async function riskStatus(){
   renderRiskStatus(body);
   log('Risk policy status',body);
   return body;
+}
+
+function renderOpsStatus(body){
+  const ops=body?.operations||{};
+  const el=$('opsChecks');
+  const cases=Array.isArray(ops.cases)?ops.cases:[];
+  const open=Number(ops.openCaseCount||0);
+  const control=ops.userControl?.state||'normal';
+  const cash=Number(ops.cashBalanceCents||0)/100;
+  el.innerHTML='<strong>Operations:</strong> '+open+' open case'+(open===1?'':'s')+
+    ' · cloud cash '+new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(cash)+
+    ' · user '+control;
+  el.className='notice '+(open===0&&control==='normal'?'good':'warn');
+  fillSelect('disputeAuthSelect',ops.eligibleDisputes,x=>x.id,x=>(x.merchant_name||'Settled card')+' · '+((Number(x.final_amount_cents||x.amount_cents||0))/100).toLocaleString('en-US',{style:'currency',currency:'USD'}),'No settled Unit card transaction');
+  fillSelect('disputeCaseSelect',cases.filter(x=>x.case_type==='card_dispute'&&x.provider==='unit'&&x.provider_case_id&& !['resolved','closed'].includes(x.state)),x=>x.provider_case_id,x=>(x.provider_case_id||'dispute')+' · '+x.state,'No open Unit dispute case');
+}
+async function opsStatus(){
+  const body=await gateway('ops_status');
+  renderOpsStatus(body);
+  log('Returns & dispute operations',body);
+  return body;
+}
+async function createDispute(){
+  const cardAuthorizationId=$('disputeAuthSelect').value;
+  if(!cardAuthorizationId)throw new Error('Select a settled Unit card transaction.');
+  const raw=$('disputeAmount').value.trim();
+  const extra={cardAuthorizationId};
+  if(raw)extra.amountCents=cents(raw);
+  const body=await gateway('unit_sandbox_create_dispute',extra);
+  log('Unit Sandbox dispute created',body);
+  await refreshChain();
+}
+async function advanceDispute(){
+  const providerCaseId=$('disputeCaseSelect').value;
+  if(!providerCaseId)throw new Error('Select an open Unit dispute.');
+  const body=await gateway('unit_sandbox_dispute_action',{providerCaseId,disputeAction:$('disputeActionSelect').value});
+  log('Unit Sandbox dispute advanced',body);
+  await refreshChain();
 }
 
 async function providerPreflight(){
@@ -425,5 +464,5 @@ async function gatewaySummary(){log('Ledger summary',await gateway('summary'));}
 async function sandboxCredit(){log('Sandbox credit',await gateway('sandbox_credit',{amountCents:cents($('sandboxAmount').value),clientRequestId:requestId('lab_credit')}));}
 async function allocate(){log('Envelope allocation',await gateway('allocate',{amountCents:cents($('allocateAmount').value),envelopeKey:$('envelope').value,clientRequestId:requestId('lab_allocate')}));}
 function bind(id,fn){$(id).addEventListener('click',()=>fn().catch(e=>log('Error',e.message)));}
-bind('signIn',signIn);bind('signUp',signUp);bind('signOut',signOut);bind('enrollMfa',enrollMfa);bind('verifyMfa',verifyMfa);bind('providerPreflight',providerPreflight);bind('riskStatus',riskStatus);bind('gatewayStatus',gatewayStatus);bind('gatewayBootstrap',gatewayBootstrap);bind('gatewaySummary',gatewaySummary);bind('sandboxCredit',sandboxCredit);bind('allocate',allocate);bind('chainRefresh',refreshChain);bind('unitApplication',unitApplication);bind('unitApplicationStatus',unitApplicationStatus);bind('unitDeposit',unitDeposit);bind('unitDirectFund',unitDirectFund);bind('plaidConsent',plaidConsent);bind('plaidStart',plaidStart);bind('plaidFinalize',plaidFinalize);bind('plaidAccounts',plaidAccounts);bind('plaidUnitLink',plaidUnitLink);bind('externalFund',externalFund);bind('createCard',createCard);bind('simulateAuth',simulateAuth);bind('directDepositToken',directDepositToken);bind('methodSetup',methodSetup);bind('methodPay',methodPay);bind('registerWebhooks',registerWebhooks);
+bind('signIn',signIn);bind('signUp',signUp);bind('signOut',signOut);bind('enrollMfa',enrollMfa);bind('verifyMfa',verifyMfa);bind('providerPreflight',providerPreflight);bind('riskStatus',riskStatus);bind('opsStatus',opsStatus);bind('gatewayStatus',gatewayStatus);bind('gatewayBootstrap',gatewayBootstrap);bind('gatewaySummary',gatewaySummary);bind('sandboxCredit',sandboxCredit);bind('allocate',allocate);bind('chainRefresh',refreshChain);bind('unitApplication',unitApplication);bind('unitApplicationStatus',unitApplicationStatus);bind('unitDeposit',unitDeposit);bind('unitDirectFund',unitDirectFund);bind('plaidConsent',plaidConsent);bind('plaidStart',plaidStart);bind('plaidFinalize',plaidFinalize);bind('plaidAccounts',plaidAccounts);bind('plaidUnitLink',plaidUnitLink);bind('externalFund',externalFund);bind('createCard',createCard);bind('simulateAuth',simulateAuth);bind('createDispute',createDispute);bind('advanceDispute',advanceDispute);bind('directDepositToken',directDepositToken);bind('methodSetup',methodSetup);bind('methodPay',methodPay);bind('registerWebhooks',registerWebhooks);
 updateUi();renderFactors();if(session?.access_token)getUser().then(()=>fillConfigurationStatus()).then(()=>refreshChain()).catch(e=>{log('Session restore failed',e.message);writeSession(null);});
