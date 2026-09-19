@@ -28,6 +28,8 @@
     "destinationEmail": "prodbybundlez@gmail.com",
     "publicReplyTo": "prodbybundles@yahoo.com",
     "backendConnected": false,
-    "note": "Authoritative routing values for future backend form submission. Current preview must not claim email delivery until backendConnected is true."
+    "note": "The final request-wizard action opens a pre-addressed email to the internal delivery address. The site must not claim submission or delivery until the user sends the message. Replace with server-side delivery when a mail/backend provider is connected.",
+    "deliveryMode": "device_mailto_handoff",
+    "deliveryState": "user_must_send_from_mail_client"
   }
 }
