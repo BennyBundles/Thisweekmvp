@@ -57,6 +57,10 @@ const opsNotifierUrl=new URL('./supabase/functions/thisweek-ops-notifier/index.t
 const opsNotifierRuntimeUrl=new URL('./supabase/functions/thisweek-ops-notifier/deno.json', import.meta.url);
 const phase31SchemaUrl=new URL('./supabase/phase31/production_activation_interlock.sql', import.meta.url);
 const phase31DocUrl=new URL('./PHASE_31_IMPLEMENTATION.md', import.meta.url);
+const phase32SchemaUrl=new URL('./supabase/phase32/legal_retention.sql', import.meta.url);
+const phase32DocUrl=new URL('./PHASE_32_IMPLEMENTATION.md', import.meta.url);
+const legalSandboxUrl=new URL('./legal/sandbox/index.html', import.meta.url);
+const legalCheckUrl=new URL('./legal-check.mjs', import.meta.url);
 const supportGatewayUrl=new URL('./supabase/functions/thisweek-support-gateway/index.ts', import.meta.url);
 const supportHtmlUrl=new URL('./support/index.html', import.meta.url);
 const supportJsUrl=new URL('./support/app.js', import.meta.url);
@@ -117,6 +121,10 @@ for(const [label,url] of [
   ['Phase 30 Ops notifier runtime',opsNotifierRuntimeUrl],
   ['Phase 31 production interlock schema',phase31SchemaUrl],
   ['Phase 31 implementation document',phase31DocUrl],
+  ['Phase 32 legal retention schema',phase32SchemaUrl],
+  ['Phase 32 implementation document',phase32DocUrl],
+  ['Sandbox legal fixture',legalSandboxUrl],
+  ['Sandbox legal fixture checker',legalCheckUrl],
   ['Support Gateway',supportGatewayUrl],
   ['Support Center HTML',supportHtmlUrl],
   ['Support Center client',supportJsUrl],
@@ -180,6 +188,10 @@ const requirePhase30FileText=(label,content,text)=>{if(!content.includes(text))f
 const phase31Schema=fs.existsSync(phase31SchemaUrl)?fs.readFileSync(phase31SchemaUrl,'utf8'):'';
 const phase31Doc=fs.existsSync(phase31DocUrl)?fs.readFileSync(phase31DocUrl,'utf8'):'';
 const requirePhase31FileText=(label,content,text)=>{if(!content.includes(text))failures.push(label);};
+const phase32Schema=fs.existsSync(phase32SchemaUrl)?fs.readFileSync(phase32SchemaUrl,'utf8'):'';
+const phase32Doc=fs.existsSync(phase32DocUrl)?fs.readFileSync(phase32DocUrl,'utf8'):'';
+const legalSandbox=fs.existsSync(legalSandboxUrl)?fs.readFileSync(legalSandboxUrl,'utf8'):'';
+const requirePhase32FileText=(label,content,text)=>{if(!content.includes(text))failures.push(label);};
 
 const requireText=(label,text)=>{if(!html.includes(text))failures.push(label);};
 const forbidText=(label,text)=>{if(html.includes(text))failures.push(label);};
@@ -612,6 +624,32 @@ requirePhase27FileText('Phase 31 Ops gate action',opsGateway,'set_release_gate')
 requirePhase27FileText('Phase 31 Ops release UI',opsHtml,'id="releaseStatus"');
 requirePhase27FileText('Phase 31 Ops release renderer',opsJs,'renderReleaseStatus');
 requirePhase31FileText('Phase 31 current state locked',phase31Doc,'live money ready: false');
+
+requirePhase32FileText('Phase 32 legal document registry',phase32Schema,'tw_legal_documents');
+requirePhase32FileText('Phase 32 acceptance receipts',phase32Schema,'tw_legal_acceptances');
+requirePhase32FileText('Phase 32 retention registry',phase32Schema,'tw_retention_policies');
+requirePhase32FileText('Phase 32 sensitive access audit',phase32Schema,'tw_sensitive_access_events');
+requirePhase32FileText('Phase 32 immutable acceptance receipts',phase32Schema,'tw_legal_acceptances_immutable');
+requirePhase32FileText('Phase 32 immutable access audit',phase32Schema,'tw_sensitive_access_events_immutable');
+requirePhase32FileText('Phase 32 browser roles revoked',phase32Schema,'from public,anon,authenticated');
+requirePhase32FileText('Phase 32 per-user production legal RPC',phase32Schema,'tw_user_production_legal_ready');
+requirePhase32FileText('Phase 32 production legal release gate',phase32Schema,'productionLegalSetActive');
+requirePhase32FileText('Phase 32 production retention release gate',phase32Schema,'productionRetentionPolicyActive');
+requirePhase32FileText('Phase 32 access-audit release gate',phase32Schema,'sensitiveAccessAuditActive');
+requirePhase32FileText('Phase 32 account legal action',accountGateway,'accept_legal');
+requirePhase32FileText('Phase 32 account legal status',accountGateway,'tw_legal_status');
+requirePhase32FileText('Phase 32 Account Center disclosure list',accountHtml,'id="legalList"');
+requirePhase32FileText('Phase 32 Account Center legal renderer',accountJs,'renderLegal');
+requirePhase32FileText('Phase 32 Money Gateway user legal gate',phase20Gateway,'production_legal_acceptance_required');
+requirePhase32FileText('Phase 32 Provider Gateway user legal gate',phase19Gateway,'production_legal_acceptance_required');
+requirePhase32FileText('Phase 32 card authorization legal gate',phase21CardAuth,'tw_user_production_legal_ready');
+requirePhase32FileText('Phase 32 Ops sensitive access audit',opsGateway,'tw_sensitive_access_record');
+requirePhase32FileText('Phase 32 Ops legal administration',opsGateway,'set_legal_document_state');
+requirePhase32FileText('Phase 32 Ops retention administration',opsGateway,'set_retention_policy_state');
+requirePhase32FileText('Phase 32 Ops legal retention surface',opsHtml,'id="legalRetention"');
+requirePhase32FileText('Phase 32 Ops legal retention renderer',opsJs,'renderLegalRetention');
+requirePhase32FileText('Phase 32 Sandbox-only fixture',legalSandbox,'SANDBOX TEST ONLY.');
+requirePhase32FileText('Phase 32 production templates remain inactive',phase32Doc,'inactive/unapproved');
 
 requirePhase28FileText('Phase 28 Support Center gateway',supportJs,'/functions/v1/thisweek-support-gateway');
 if(/service_role|sb_secret_/i.test(supportHtml+supportJs))failures.push('Phase 28 Support Center contains server-secret pattern');
