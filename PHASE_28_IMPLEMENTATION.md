@@ -197,3 +197,25 @@ Unchanged:
 - complete provider/sponsor-bank escalation procedures;
 - configure provider Sandbox credentials and execute end-to-end tests;
 - complete production provider/program approval and explicit cost approval.
+
+
+## Post-Phase-33 regression audit — 2026-09-19
+
+Phase 28 was revalidated against the later Phase 33 production baseline to make sure subsequent privacy/legal/operations work did not regress customer support or incident controls.
+
+Live verification results:
+
+- `tw_support_requests`, `tw_support_messages`, `tw_ops_incidents`, `tw_ops_incident_events`, and `tw_ops_sla_policies` all exist.
+- all five Phase 28 tables have RLS enabled;
+- direct `anon` and normal `authenticated` execution of `tw_support_create_request` is denied;
+- `service_role` retains the intended RPC execution path;
+- one active internal SLA policy remains present;
+- `thisweek-support-gateway` is ACTIVE at v2;
+- `thisweek-ops-gateway` is ACTIVE at v6 after later operations phases;
+- no Phase 28-specific Supabase security-advisor findings were returned;
+- no Phase 28-specific Supabase performance-advisor findings were returned;
+- there were no active incidents or open support requests at the time of audit.
+
+The earlier Phase 28 manifest reference to Ops Gateway v2 was historical and has been corrected to the current live v6.
+
+The public-money activation boundary is unchanged.
