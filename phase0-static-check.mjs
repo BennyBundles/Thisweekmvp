@@ -51,6 +51,10 @@ const phase28SchemaUrl=new URL('./supabase/phase28/support_incident_ops.sql', im
 const phase28DocUrl=new URL('./PHASE_28_IMPLEMENTATION.md', import.meta.url);
 const phase29SchemaUrl=new URL('./supabase/phase29/automated_monitoring.sql', import.meta.url);
 const phase29DocUrl=new URL('./PHASE_29_IMPLEMENTATION.md', import.meta.url);
+const phase30SchemaUrl=new URL('./supabase/phase30/notification_dispatcher.sql', import.meta.url);
+const phase30DocUrl=new URL('./PHASE_30_IMPLEMENTATION.md', import.meta.url);
+const opsNotifierUrl=new URL('./supabase/functions/thisweek-ops-notifier/index.ts', import.meta.url);
+const opsNotifierRuntimeUrl=new URL('./supabase/functions/thisweek-ops-notifier/deno.json', import.meta.url);
 const supportGatewayUrl=new URL('./supabase/functions/thisweek-support-gateway/index.ts', import.meta.url);
 const supportHtmlUrl=new URL('./support/index.html', import.meta.url);
 const supportJsUrl=new URL('./support/app.js', import.meta.url);
@@ -105,6 +109,10 @@ for(const [label,url] of [
   ['Phase 28 implementation document',phase28DocUrl],
   ['Phase 29 monitoring schema',phase29SchemaUrl],
   ['Phase 29 implementation document',phase29DocUrl],
+  ['Phase 30 notification dispatcher schema',phase30SchemaUrl],
+  ['Phase 30 implementation document',phase30DocUrl],
+  ['Phase 30 Ops notifier',opsNotifierUrl],
+  ['Phase 30 Ops notifier runtime',opsNotifierRuntimeUrl],
   ['Support Gateway',supportGatewayUrl],
   ['Support Center HTML',supportHtmlUrl],
   ['Support Center client',supportJsUrl],
@@ -160,6 +168,11 @@ const requirePhase28FileText=(label,content,text)=>{if(!content.includes(text))f
 const phase29Schema=fs.existsSync(phase29SchemaUrl)?fs.readFileSync(phase29SchemaUrl,'utf8'):'';
 const phase29Doc=fs.existsSync(phase29DocUrl)?fs.readFileSync(phase29DocUrl,'utf8'):'';
 const requirePhase29FileText=(label,content,text)=>{if(!content.includes(text))failures.push(label);};
+const phase30Schema=fs.existsSync(phase30SchemaUrl)?fs.readFileSync(phase30SchemaUrl,'utf8'):'';
+const phase30Doc=fs.existsSync(phase30DocUrl)?fs.readFileSync(phase30DocUrl,'utf8'):'';
+const opsNotifier=fs.existsSync(opsNotifierUrl)?fs.readFileSync(opsNotifierUrl,'utf8'):'';
+const opsNotifierRuntime=fs.existsSync(opsNotifierRuntimeUrl)?fs.readFileSync(opsNotifierRuntimeUrl,'utf8'):'';
+const requirePhase30FileText=(label,content,text)=>{if(!content.includes(text))failures.push(label);};
 
 const requireText=(label,text)=>{if(!html.includes(text))failures.push(label);};
 const forbidText=(label,text)=>{if(html.includes(text))failures.push(label);};
@@ -558,6 +571,23 @@ requirePhase27FileText('Phase 29 manual monitor staff action',opsGateway,'run_mo
 requirePhase27FileText('Phase 29 notification suppression',opsGateway,'suppress_notification');
 requirePhase27FileText('Phase 29 automation renderer',opsJs,'renderAutomation');
 requirePhase29FileText('Phase 29 external channel disclosure',phase29Doc,'external paging channel still intentionally unconfigured');
+
+requirePhase30FileText('Phase 30 dispatch nonce table',phase30Schema,'tw_ops_dispatch_nonces');
+requirePhase30FileText('Phase 30 channel status table',phase30Schema,'tw_ops_notification_channel_status');
+requirePhase30FileText('Phase 30 notification claim RPC',phase30Schema,'tw_ops_claim_notifications');
+requirePhase30FileText('Phase 30 notification completion RPC',phase30Schema,'tw_ops_complete_notification');
+requirePhase30FileText('Phase 30 one-time nonce consume RPC',phase30Schema,'tw_ops_consume_dispatch_nonce');
+requirePhase30FileText('Phase 30 cron dispatcher',phase30Schema,'thisweek-phase30-notification-dispatcher');
+requirePhase30FileText('Phase 30 browser roles revoked',phase30Schema,'from public,anon,authenticated');
+requirePhase30FileText('Phase 30 notifier destination env',opsNotifier,'THISWEEK_OPS_NOTIFICATION_WEBHOOK_URL');
+requirePhase30FileText('Phase 30 notifier nonce auth',opsNotifier,'tw_ops_consume_dispatch_nonce');
+requirePhase30FileText('Phase 30 notifier claim lease',opsNotifier,'tw_ops_claim_notifications');
+requirePhase30FileText('Phase 30 notifier completion',opsNotifier,'tw_ops_complete_notification');
+requirePhase30FileText('Phase 30 notifier fail closed',opsNotifier,'notification_webhook_not_configured');
+requirePhase30FileText('Phase 30 notifier HTTPS-only destination',opsNotifier,'u.protocol!=="https:"');
+requirePhase27FileText('Phase 30 Ops channel status',opsGateway,'tw_ops_notification_channel_status');
+requirePhase30FileText('Phase 30 no false paging claim',phase30Doc,'delivery channel remains unconfigured and fail-closed');
+if(/service_role|SUPABASE_SERVICE_ROLE_KEY|sb_secret_/i.test(opsNotifierRuntime))failures.push('Phase 30 notifier runtime config contains a server secret pattern');
 
 requirePhase28FileText('Phase 28 Support Center gateway',supportJs,'/functions/v1/thisweek-support-gateway');
 if(/service_role|sb_secret_/i.test(supportHtml+supportJs))failures.push('Phase 28 Support Center contains server-secret pattern');
