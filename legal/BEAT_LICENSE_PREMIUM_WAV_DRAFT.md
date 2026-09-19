@@ -1,7 +1,8 @@
 # TAGJ Premium WAV Beat License — Non-Exclusive
 
 **Status:** DRAFT FOR LEGAL REVIEW — NOT ACTIVE CHECKOUT TERMS  
-**Licensor:** Thats A Good Jawn LLC / rights controlled by Bundles (Benny Bundles)  
+**Licensor:** Thats A Good Jawn LLC, a Wyoming limited liability company registered to do business in Pennsylvania, acting by Benjamin Alexander, Authorized Representative  
+**Producer Credit:** Bundles (Benny Bundles)  
 **Beat:** {{BEAT_TITLE}} ({{BEAT_ID}})  
 **Licensee:** {{LICENSEE_LEGAL_NAME}}  
 **Effective Date:** {{EFFECTIVE_DATE}}  
@@ -88,8 +89,8 @@ Licensee may not assign this Beat license to another artist or buyer without Lic
 ## 16. Electronic Acceptance and Records
 The final checkout/e-signature flow may record the agreement version, Beat ID, license tier, price, timestamp, transaction ID, and electronic assent. An exclusive agreement must be retained in a signed writing.
 
-## 17. Governing Law
-**GOVERNING LAW AND VENUE ARE NOT YET CONFIGURED.** Before paid checkout is enabled, the final agreement must identify the governing U.S. state and venue approved for Thats A Good Jawn LLC.
+## 17. Governing Law and Forum
+This Agreement is governed by the laws of the **State of Wyoming**, without regard to conflict-of-laws principles, except to the extent mandatory applicable law requires otherwise. Any action concerning this Agreement may be brought in a state or federal court of competent jurisdiction in Wyoming. This provision does not waive any jurisdictional, venue, consumer-protection, or other rule that cannot lawfully be waived.
 
 ## 18. Entire Agreement
 The executed agreement, Beat-specific Schedule A, any signed split sheet, and any signed amendment are the entire agreement for this Beat license. Conflicting marketing text does not override the executed terms.
@@ -114,9 +115,9 @@ After 5 years, continued new exploitation requires renewal or upgrade.
 
 ## Acceptance
 
-**LICENSOR:** Thats A Good Jawn LLC / authorized rights controller  
+**LICENSOR:** Thats A Good Jawn LLC, Wyoming LLC  
+By: **Benjamin Alexander, Authorized Representative**  
 Signature: ______________________________  
-Name / Title: ___________________________  
 Date: __________________________________
 
 **LICENSEE:** {{LICENSEE_LEGAL_NAME}}  
