@@ -937,7 +937,6 @@
   "phase34ReleaseEvidenceCertification": {
     "status": "backend_and_staff_console_implemented_live_money_locked",
     "activation": false,
-    "migration": "20260919184231_phase34_release_evidence_sandbox_certification",
     "releaseGateway": "thisweek-release-gateway:v1",
     "releaseGatewayVerifyJwt": true,
     "releaseConsolePath": "/ops/release/",
@@ -999,6 +998,10 @@
       "external_notification_delivery",
       "approved_legal_retention_risk_runbooks",
       "explicit_production_cost_approval"
+    ],
+    "migrations": [
+      "20260919184231_phase34_release_evidence_sandbox_certification",
+      "phase34_release_evidence_service_role_policies"
     ]
   }
 }
