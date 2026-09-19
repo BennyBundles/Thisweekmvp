@@ -2,6 +2,32 @@
 
 Production changes for **This Week** are recorded here.
 
+## Phase 22 — Provider Sandbox Chain — 2026-09-19
+
+### End-to-end provider orchestration
+- Upgraded Plaid Hosted Link to request Auth + Transactions and reject anonymous Supabase users.
+- Added server-side Plaid processor-token creation for Unit without persisting the processor token.
+- Added Unit Sandbox application, KYC/application refresh, checking-account creation, Sandbox ACH funding and external ACH Debit funding.
+- Added Unit counterparty creation from Plaid processor tokens with only provider refs/masked account metadata persisted.
+- Added Unit Sandbox purchase-authorization simulation into the Phase 21 envelope authorization controller.
+- Extended signed Unit webhooks to update applications/customers/accounts/transfers and post idempotent settled ACH credits to the cash ledger.
+- Added Pinwheel Web SDK v4 launch in the isolated Money Lab using a short-lived in-memory Link token.
+- Added Method dev Entity creation, Connect liability discovery, ACH source creation, simulated micro-deposit verification and Method Payment submission.
+- Expanded Money Lab into a guided 0–14 provider Sandbox chain.
+- Added Phase 22 release checks for Plaid Auth, Unit processor-token flow, Method dev setup/payment, Pinwheel SDK, credential gating and continued production network denial.
+
+### Activation state
+- Provider orchestration code: deployed.
+- Money execution: still disabled by default.
+- Provider credentials: not stored in the repository/client and cannot be invented by the implementation.
+- Production planner: still `connect-src 'none'`.
+- No claim of live money movement.
+
+### Rollback
+- Pre-Phase-22 commit: `49898501c6587805380b20a8f135fb22629f064c`
+- Rollback branch: `rollback/phase22-pre-provider-sandbox-chain-2026-09-19`
+
+
 ## Phase 21 — Signed Events & Realtime Authorization — 2026-09-19
 
 ### Provider event security
