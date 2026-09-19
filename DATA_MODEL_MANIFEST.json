@@ -1006,7 +1006,8 @@
     "migrations": [
       "20260919184231_phase34_release_evidence_sandbox_certification",
       "phase34_release_evidence_service_role_policies",
-      "phase34_release_candidate_binding"
+      "phase34_release_candidate_binding",
+      "phase34_candidate_change_gate_invalidation"
     ],
     "releaseCandidateBinding": {
       "activeCandidateSelectionAppendOnly": true,
@@ -1014,7 +1015,12 @@
       "certificationMustMatchActiveCandidate": true,
       "drillsMustMatchActiveCandidate": true,
       "derivedCertificationEvidenceCandidateScoped": true,
-      "deploymentAutoSelection": false
+      "deploymentAutoSelection": false,
+      "candidateChangeInvalidatesVerifiedGates": [
+        "provider_sandbox_e2e_passed",
+        "incident_escalation_runbook_approved"
+      ],
+      "invalidationAudit": "tw_release_gate_events"
     }
   }
 }
