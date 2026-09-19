@@ -521,3 +521,124 @@ This is explicitly not presented as a guarantee that every operating system or b
 `9d9210505cbf853a88a3dbb2b94da38a25df24f0`
 
 Phase 14 is complete at the source level. The remaining gate is live browser verification of the CSP, import path, export path, privacy route, and inactive-view behavior.
+
+
+## Continued Phase 14 hardening — fail-closed imports and verified data control
+
+Phase 14 was extended again to make the local-data boundary stricter when input is malformed or a destructive/export action leaves app-controlled storage.
+
+### Import file allowlist
+
+Local transaction imports now require a supported text export type:
+
+- CSV;
+- TSV;
+- TXT/plain text.
+
+The browser file picker already filters for these formats, and the runtime now validates the chosen file as well.
+
+Files outside the supported extension/MIME boundary are rejected before parsing.
+
+### Invalid transaction dates no longer silently become “now”
+
+Earlier parser behavior could fall back to the current time when a transaction date was missing or invalid.
+
+That behavior was removed.
+
+Imported rows must now contain a valid transaction date within the supported date range. A malformed row causes the preview step to fail with the row number instead of silently assigning the current date.
+
+This avoids placing an unknown-date transaction into the wrong weekly planning cycle.
+
+### Integer-cent amount safety
+
+Imported amounts must resolve to a safe integer number of cents.
+
+Rows whose parsed values cannot be represented safely as integer cents are rejected.
+
+This protects:
+
+- duplicate fingerprints;
+- reconciliation math;
+- weekly category arithmetic;
+- portable serialization
+
+from unsafe numeric values.
+
+### Sensitive export acknowledgement
+
+Financial-data downloads now require an explicit acknowledgement that the exported file:
+
+- may contain sensitive financial information;
+- is leaving browser-local app storage;
+- is outside This Week's control after download.
+
+This applies to:
+
+- normalized financial-data export;
+- raw local This Week storage export.
+
+Schema-only exports remain non-financial developer artifacts and do not require the same warning.
+
+### Verified delete-local-data result
+
+The delete-local-data function no longer assumes browser storage removal succeeded.
+
+After attempting to remove all `thisweek.*` keys, it checks both:
+
+- localStorage;
+- sessionStorage.
+
+The app only reloads into fresh setup when no This Week keys remain.
+
+If browser storage refuses deletion, the remaining key names are surfaced instead of reporting success.
+
+### Security/privacy trust document
+
+The repository now includes:
+
+`SECURITY_PRIVACY.md`
+
+It documents:
+
+- where data lives;
+- hosting/network boundaries;
+- absence of app-level localStorage encryption;
+- data-minimization rules;
+- provider-secret boundaries;
+- imported-file protections;
+- source/provenance semantics;
+- Content Security Policy;
+- export/delete behavior;
+- threat-model limitations;
+- future backend security requirements.
+
+### CSP hash synchronization utility
+
+The repository now includes:
+
+`update-csp-hashes.mjs`
+
+It supports:
+
+`node update-csp-hashes.mjs`
+
+to refresh inline-script SHA-256 hashes in the CSP, and:
+
+`node update-csp-hashes.mjs --check`
+
+to verify that the current hashes match the two production script blocks.
+
+The Phase 0 regression checker also continues to calculate and validate the hashes independently.
+
+### Latest Phase 14 application commit
+
+`78a178b68d59192e03b6f409567e30992bfb3941`
+
+GitHub Pages deployment for this application commit completed successfully.
+
+### Continued support commits
+
+- Phase 14 regression checks for fail-closed imports and verified deletion: `76c03a229ba3f45ff606ea32fc8956d266cfc20a`
+- Security/privacy trust model: `eee21474e34e3208052dda4ba92600e76e6acd79`
+- CSP hash synchronization utility: `a58f620dab03b49598076ecde6999da37adf24ef`
+- Regression check requirement for Phase 14 support files: `2a9754aa74f2bcc226a06863259b23ba8246e33c`
