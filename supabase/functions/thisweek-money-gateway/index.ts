@@ -1038,17 +1038,14 @@ async function methodSandboxSetup(
     const accountId = safeText(account.id, 180);
     if (!accountId) throw new Error("method_source_account_invalid");
 
-    let verificationId = safeText(account.latest_verification_session, 180);
-    if (!verificationId) {
-      const verification = await methodRequest(
-        "/accounts/" + encodeURIComponent(accountId) + "/verification_sessions",
-        {
-          method: "POST",
-          body: JSON.stringify({ type: "micro_deposits" }),
-        },
-      );
-      verificationId = safeText(verification.id, 180);
-    }
+    const verification = await methodRequest(
+      "/accounts/" + encodeURIComponent(accountId) + "/verification_sessions",
+      {
+        method: "POST",
+        body: JSON.stringify({ type: "micro_deposits" }),
+      },
+    );
+    const verificationId = safeText(verification.id, 180);
     if (!verificationId) throw new Error("method_verification_session_invalid");
 
     const amountsResponse = await methodRequest(
