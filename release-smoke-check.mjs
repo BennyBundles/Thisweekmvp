@@ -70,7 +70,7 @@ if(phase19Gateway){
 }
 if(phase19Runtime)requireText('Phase 19 runtime should be strict',phase19Runtime,'"strict": true');
 if(phase19Readme)requireText('Phase 19 README must record shared project isolation',phase19Readme,'BennyBundles’s Project');
-if(phase19Doc)requireText('Phase 19 doc must state live provider is not active',phase19Doc,'No live financial institution is connected by this release.');
+if(phase19Doc)requireText('Phase 19 doc must state live provider is not active',phase19Doc,'No live financial institution is connected.');
 
 
 if(workflow){
