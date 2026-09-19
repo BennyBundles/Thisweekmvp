@@ -41,6 +41,16 @@ need('legal environment mode',js,'LEGAL_ENVIRONMENT');
 need('legal disclosure renderer',js,'renderLegal');
 need('immutable acceptance action',js,"accountGateway('accept_legal'");
 need('Sandbox legal mode',js,"PARAMS.get('legal')==='sandbox'");
+need('cloud privacy inventory surface',html,'id="privacyInventoryList"');
+need('cloud export control',html,'id="downloadCloudExport"');
+need('privacy inventory action',js,"accountGateway('privacy_inventory')");
+need('privacy export start',js,"accountGateway('privacy_export_start')");
+need('privacy export page',js,"accountGateway('privacy_export_page'");
+need('privacy export completion',js,"accountGateway('privacy_export_complete'");
+need('client-side export assembly',js,'thisweek.cloud-export.v1');
+need('privacy exclusion disclosure',js,'excludedFromSelfService');
+need('local Plan export separation',html,'Export local Plan data');
+
 
 
 if(!config)failures.push('Auth release config unavailable');
