@@ -1,0 +1,312 @@
+{
+  "schemaVersion": "tagj.catalog.v1",
+  "generatedFor": "TAGJ × Benny Bundles V14.4 preview",
+  "products": [
+    {
+      "id": "shadow",
+      "name": "Shadow Step V1.1",
+      "world": "tagj",
+      "category": "footwear",
+      "developmentStatus": "development",
+      "inventoryStatus": "unconfirmed",
+      "commerce": {
+        "enabled": false,
+        "displayPrice": null,
+        "salePrice": null,
+        "stripePriceId": null
+      },
+      "route": "#tagj-product-shadow-v144"
+    },
+    {
+      "id": "modular",
+      "name": "Modular X-Spine",
+      "world": "tagj",
+      "category": "footwear",
+      "developmentStatus": "development",
+      "inventoryStatus": "unconfirmed",
+      "commerce": {
+        "enabled": false,
+        "displayPrice": null,
+        "salePrice": null,
+        "stripePriceId": null
+      },
+      "route": "#tagj-product-modular-v144"
+    },
+    {
+      "id": "studio",
+      "name": "Studio Mid 808",
+      "world": "tagj",
+      "category": "footwear",
+      "developmentStatus": "development",
+      "inventoryStatus": "unconfirmed",
+      "commerce": {
+        "enabled": false,
+        "displayPrice": null,
+        "salePrice": null,
+        "stripePriceId": null
+      },
+      "route": "#tagj-product-studio-v144"
+    },
+    {
+      "id": "vaultboot",
+      "name": "Vault Boot",
+      "world": "tagj",
+      "category": "footwear",
+      "developmentStatus": "concept",
+      "inventoryStatus": "unconfirmed",
+      "commerce": {
+        "enabled": false,
+        "displayPrice": null,
+        "salePrice": null,
+        "stripePriceId": null
+      },
+      "route": "#tagj-product-vaultboot-v144"
+    },
+    {
+      "id": "vaultbloom",
+      "name": "Vault Bloom",
+      "world": "tagj",
+      "category": "apparel",
+      "developmentStatus": "concept",
+      "inventoryStatus": "unconfirmed",
+      "commerce": {
+        "enabled": false,
+        "displayPrice": null,
+        "salePrice": null,
+        "stripePriceId": null
+      },
+      "route": "#tagj-product-vaultbloom-v144"
+    },
+    {
+      "id": "pressure",
+      "name": "Pressure Gold Runner",
+      "world": "tagj",
+      "category": "footwear",
+      "developmentStatus": "concept",
+      "inventoryStatus": "unconfirmed",
+      "commerce": {
+        "enabled": false,
+        "displayPrice": null,
+        "salePrice": null,
+        "stripePriceId": null
+      },
+      "route": "#tagj-product-pressure-v144"
+    },
+    {
+      "id": "concrete",
+      "name": "Concrete Bloom Wrap",
+      "world": "tagj",
+      "category": "footwear",
+      "developmentStatus": "concept",
+      "inventoryStatus": "unconfirmed",
+      "commerce": {
+        "enabled": false,
+        "displayPrice": null,
+        "salePrice": null,
+        "stripePriceId": null
+      },
+      "route": "#tagj-product-concrete-v144"
+    },
+    {
+      "id": "houseouterwear",
+      "name": "House Outerwear System",
+      "world": "tagj",
+      "category": "apparel",
+      "developmentStatus": "house_study",
+      "inventoryStatus": "unconfirmed",
+      "commerce": {
+        "enabled": false,
+        "displayPrice": null,
+        "salePrice": null,
+        "stripePriceId": null
+      },
+      "route": "#tagj-product-houseouterwear-v144"
+    },
+    {
+      "id": "grill",
+      "name": "Jewelry + Grill Concepts",
+      "world": "tagj",
+      "category": "accessories",
+      "developmentStatus": "concept_lab",
+      "inventoryStatus": "unconfirmed",
+      "commerce": {
+        "enabled": false,
+        "displayPrice": null,
+        "salePrice": null,
+        "stripePriceId": null
+      },
+      "route": "#tagj-product-grill-v144"
+    }
+  ],
+  "releases": [
+    {
+      "id": "reached",
+      "name": "Reached Into the Fire",
+      "type": "project_campaign",
+      "releaseDate": null,
+      "route": "#artist-release-reached-v144",
+      "linksRef": "release:reached"
+    },
+    {
+      "id": "oh",
+      "name": "Oh Lord!",
+      "type": "release",
+      "releaseDate": null,
+      "route": "#artist-release-oh-v144",
+      "linksRef": "release:oh"
+    },
+    {
+      "id": "ndr",
+      "name": "N.D.R",
+      "type": "release",
+      "releaseDate": null,
+      "route": "#artist-release-ndr-v144",
+      "linksRef": "release:ndr"
+    },
+    {
+      "id": "dont",
+      "name": "Don’t Judge Off…",
+      "type": "release_video_campaign",
+      "releaseDate": null,
+      "route": "#artist-release-dont-v144",
+      "linksRef": "release:dont"
+    },
+    {
+      "id": "hold",
+      "name": "Hold Something",
+      "type": "release",
+      "releaseDate": null,
+      "route": "#artist-release-hold-v144",
+      "linksRef": "release:hold"
+    },
+    {
+      "id": "stuck",
+      "name": "Still Stuck / Still Stuck Pt. 2",
+      "type": "campaign_record",
+      "releaseDate": null,
+      "route": "#artist-release-stuck-v144",
+      "linksRef": "release:stuck"
+    },
+    {
+      "id": "cold",
+      "name": "Cold Winter",
+      "type": "catalogue_title",
+      "releaseDate": null,
+      "route": "#artist-release-cold-v144",
+      "linksRef": "release:cold",
+      "introSourceStatus": "unverified"
+    },
+    {
+      "id": "freestyle",
+      "name": "FREESTYLE",
+      "type": "campaign_video",
+      "releaseDate": null,
+      "route": "#artist-release-freestyle-v144",
+      "linksRef": "release:freestyle"
+    }
+  ],
+  "creativeServices": [
+    {
+      "id": "cover",
+      "name": "Cover Art",
+      "requestType": "Cover Art Request",
+      "startingPrice": {
+        "amount": 35,
+        "currency": "USD",
+        "qualifier": "+"
+      },
+      "stripePriceId": null,
+      "route": "#creative-service-cover-v144"
+    },
+    {
+      "id": "visualizer",
+      "name": "Lyric Visualizer",
+      "requestType": "Visualizer Request",
+      "startingPrice": {
+        "amount": 95,
+        "currency": "USD",
+        "qualifier": null
+      },
+      "stripePriceId": null,
+      "route": "#creative-service-visualizer-v144"
+    },
+    {
+      "id": "video",
+      "name": "Music Video Editing",
+      "requestType": "Music Video Request",
+      "startingPrice": {
+        "amount": 150,
+        "currency": "USD",
+        "qualifier": "+"
+      },
+      "stripePriceId": null,
+      "route": "#creative-service-video-v144"
+    },
+    {
+      "id": "youtube",
+      "name": "YouTube SEO Review",
+      "requestType": "Custom Creative Request",
+      "startingPrice": {
+        "amount": 25,
+        "currency": "USD",
+        "qualifier": null
+      },
+      "stripePriceId": null,
+      "route": "#creative-service-youtube-v144"
+    },
+    {
+      "id": "shorts",
+      "name": "3 Shorts",
+      "requestType": "Custom Creative Request",
+      "startingPrice": {
+        "amount": 45,
+        "currency": "USD",
+        "qualifier": null
+      },
+      "stripePriceId": null,
+      "route": "#creative-service-shorts-v144"
+    }
+  ],
+  "producerServices": [
+    {
+      "id": "production",
+      "name": "Production",
+      "requestType": "Beat Inquiry",
+      "displayPrice": null,
+      "stripePriceId": null,
+      "route": "#producer-service-production-v144"
+    },
+    {
+      "id": "recording",
+      "name": "Recording",
+      "requestType": "Recording Request",
+      "displayPrice": null,
+      "stripePriceId": null,
+      "route": "#producer-service-recording-v144"
+    },
+    {
+      "id": "mixing",
+      "name": "Mixing",
+      "requestType": "Mix Request",
+      "displayPrice": null,
+      "stripePriceId": null,
+      "route": "#producer-service-mixing-v144"
+    },
+    {
+      "id": "mastering",
+      "name": "Mastering",
+      "requestType": "Mastering Request",
+      "displayPrice": null,
+      "stripePriceId": null,
+      "route": "#producer-service-mastering-v144"
+    },
+    {
+      "id": "engineering",
+      "name": "Engineering",
+      "requestType": "General Contact",
+      "displayPrice": null,
+      "stripePriceId": null,
+      "route": "#producer-service-engineering-v144"
+    }
+  ]
+}
