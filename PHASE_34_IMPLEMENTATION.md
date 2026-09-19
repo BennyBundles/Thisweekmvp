@@ -96,3 +96,33 @@ When the active candidate SHA changes, any previously verified candidate-bound g
 - `incident_escalation_runbook_approved`.
 
 This prevents a historical certification/drill assertion from remaining verified after the release candidate changes.
+
+
+## Controlled staff bootstrap
+
+Phase 34 continuation adds a supported server-side path for assigning `app_metadata.thisweek_role` without writing directly to the managed `auth.users` table.
+
+Components:
+
+- `tw_ops_staff_role_events` — append-only staff-role change audit ledger;
+- `tw_staff_role_summary()` — service-role-only role coverage summary;
+- `tw_staff_user_role(uuid)` — service-role-only authoritative role lookup;
+- `thisweek-staff-gateway` — JWT-protected staff provisioning Edge Function;
+- `/ops/bootstrap/` — restricted staff bootstrap/provisioning surface.
+
+First-admin bootstrap fails closed unless all of the following are true:
+
+- a real Supabase Auth user exists;
+- that user's email is confirmed;
+- the user's current Auth session still exists;
+- MFA assurance is AAL2;
+- no existing This Week staff role exists;
+- the user's email exactly matches server secret `THISWEEK_BOOTSTRAP_ADMIN_EMAIL`.
+
+The allowlisted email is never returned to the browser. The browser contains no service-role credential.
+
+After an admin exists, role changes require a current AAL2 `admin`. New staff targets must be real confirmed Auth users. The last admin cannot be revoked or downgraded.
+
+Role changes use Supabase's supported server-side `auth.admin.updateUserById` API and preserve unrelated app metadata. Every successful change writes an immutable role-event receipt. Staff users should refresh/re-authenticate after role changes.
+
+At implementation time there are zero Supabase Auth users, so bootstrap remains intentionally unexecuted and no staff coverage is claimed.
