@@ -1327,10 +1327,10 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
  }
  addEventListener('hashchange',syncHashRoutes);addEventListener('popstate',()=>setTimeout(syncHashRoutes,0));setTimeout(syncHashRoutes,40);
 
- q('#v143ProductSelect')?.addEventListener('change',e=>{const key=e.currentTarget.value;markStrip('#v144ProductRoutes',key);if(!syncing&&productRoutes[key])history.replaceState(null,'','#'+productRoutes[key])});
- q('#v143ReleaseSelect')?.addEventListener('change',e=>{const key=e.currentTarget.value;markStrip('#v144ReleaseRoutes',key);if(!syncing&&releaseRoutes[key])history.replaceState(null,'','#'+releaseRoutes[key]);renderLinks(key)});
- qa('#v143ServiceList [data-service]').forEach(b=>b.addEventListener('click',()=>{const key=b.dataset.service;markStrip('#v144ServiceRoutes',key);if(!syncing&&serviceRoutes[key])history.replaceState(null,'','#'+serviceRoutes[key])}));
- qa('#v142StudioMatrix [data-studio-service]').forEach(b=>b.addEventListener('click',()=>{const id=producerRoutes[b.dataset.studioService];if(!syncing&&id)history.replaceState(null,'','#'+id)}));
+ q('#v143ProductSelect')?.addEventListener('change',e=>{const key=e.currentTarget.value;markStrip('#v144ProductRoutes',key);if(!syncing&&productRoutes[key])history.pushState(null,'','#'+productRoutes[key])});
+ q('#v143ReleaseSelect')?.addEventListener('change',e=>{const key=e.currentTarget.value;markStrip('#v144ReleaseRoutes',key);if(!syncing&&releaseRoutes[key])history.pushState(null,'','#'+releaseRoutes[key]);renderLinks(key)});
+ qa('#v143ServiceList [data-service]').forEach(b=>b.addEventListener('click',()=>{const key=b.dataset.service;markStrip('#v144ServiceRoutes',key);if(!syncing&&serviceRoutes[key])history.pushState(null,'','#'+serviceRoutes[key])}));
+ qa('#v142StudioMatrix [data-studio-service]').forEach(b=>b.addEventListener('click',()=>{const id=producerRoutes[b.dataset.studioService];if(!syncing&&id)history.pushState(null,'','#'+id)}));
 
  // Progressive TAGJ registry keeps the first tap compact, but its detail CTA gets a stable item route.
  qa('#v142TagjRecords .v142-record').forEach(card=>card.addEventListener('click',()=>setTimeout(()=>{
@@ -1431,6 +1431,18 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
    ['input','creativeDimensions','Format / dimensions','Optional'],
    ['input','creativeQuantity','Number of deliverables','Optional']
   ],
+  'Custom Creative Request:youtube':[
+   ['input','youtubeChannelUrl','YouTube channel URL','Paste the exact channel URL'],
+   ['select','youtubeNeed','Primary YouTube need',['SEO diagnosis','Channel / page setup','Metadata architecture','Thumbnail system','Content planning','Campaign management']],
+   ['input','youtubeAudience','Target audience / search intent','Who should find the channel?'],
+   ['input','youtubePriority','Priority videos / release','Links or titles']
+  ],
+  'Custom Creative Request:shorts':[
+   ['input','shortsSource','Source content','Video / song / campaign source'],
+   ['select','shortsPlatform','Primary platform',['YouTube Shorts','Instagram Reels','TikTok','Multi-platform']],
+   ['input','shortsHook','Preferred hook / moment','Timestamp, lyric or concept'],
+   ['input','shortsCount','Requested quantity','3, 5, custom…']
+  ],
   'General Contact':[]
  };
  const commonNames=new Set(['schemaVersion','requestId','sourceWorld','sourceRoute','entityId','serviceId','releaseId','clientTimestamp','requestType','projectTitle','artistBrand','concept','mood','platforms','references','deadline','releaseDate','budget','explicitLabel','notes','contactName','email','phone','preferred']);
@@ -1442,7 +1454,7 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
    return '<div class="v143-field"><label for="v144_'+name+'">'+label+'</label><input id="v144_'+name+'" name="'+name+'" placeholder="'+String(opt||'').replace(/"/g,'&quot;')+'"></div>'
  }
  function renderSpecial(){
-   if(!specialMount||!type)return;const schema=fieldSchemas[type.value]||[];
+   if(!specialMount||!type)return;const ctx=currentContext(),schema=fieldSchemas[type.value+':'+ctx.service]||fieldSchemas[type.value]||[];
    specialMount.innerHTML=schema.length?'<div class="v144-special-head"><b>'+type.value+' specifics</b><span>Only fields relevant to this request are shown. These values are emitted separately in the backend-ready payload.</span></div>'+schema.map(fieldHtml).join(''):'';
    const saved=getDraft();if(saved&&saved.special)Object.entries(saved.special).forEach(([k,v])=>{const el=form?.elements.namedItem(k);if(el&&v!=null)el.value=v});
  }
@@ -1473,9 +1485,10 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
  window.TAGJRequestContractV1={schemaVersion:'tagj.request.v1',build:payload};
  window.TAGJBuildRequestPayload=payload;
 
- function getDraft(){try{return JSON.parse(localStorage.getItem('tagjBennyRequestDraftV143')||'null')}catch(_){return null}}
+ function getDraft(){try{const v144=JSON.parse(localStorage.getItem('tagjBennyRequestDraftV144')||'null');if(v144&&v144.request&&v144.request.type===type?.value)return {special:v144.special||{}};const old=JSON.parse(localStorage.getItem('tagjBennyRequestDraftV143')||'null');return old}catch(_){return null}}
  function refreshJson(){const pre=q('#v144JsonReview');if(pre)pre.textContent=JSON.stringify(payload(),null,2)}
  form?.addEventListener('input',refreshJson);form?.addEventListener('change',refreshJson);
+ q('#v143SaveDraft')?.addEventListener('click',()=>{try{localStorage.setItem('tagjBennyRequestDraftV144',JSON.stringify(payload()))}catch(_){}});
 
  // Capture wizard-opening context before the V14.3 click handler opens the modal.
  document.addEventListener('click',e=>{
