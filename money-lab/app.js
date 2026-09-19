@@ -110,7 +110,7 @@ function updateUi(){
   $('aalState').textContent=p.aal||'—';
   $('userState').textContent=currentUser?.email||p.sub?.slice(0,8)||'—';
   const signed=!!session?.access_token;
-  for(const id of ['signOut','enrollMfa','verifyMfa','gatewayStatus','gatewayBootstrap','gatewaySummary','sandboxCredit','allocate','providerPreflight','chainRefresh','unitApplication','unitApplicationStatus','unitDeposit','unitDirectFund','plaidConsent','plaidStart','plaidFinalize','plaidAccounts','plaidUnitLink','externalFund','createCard','simulateAuth','directDepositToken','methodSetup','methodPay','registerWebhooks'])$(id).disabled=!signed;
+  for(const id of ['signOut','enrollMfa','verifyMfa','gatewayStatus','gatewayBootstrap','gatewaySummary','sandboxCredit','allocate','providerPreflight','riskStatus','chainRefresh','unitApplication','unitApplicationStatus','unitDeposit','unitDirectFund','plaidConsent','plaidStart','plaidFinalize','plaidAccounts','plaidUnitLink','externalFund','createCard','simulateAuth','directDepositToken','methodSetup','methodPay','registerWebhooks'])$(id).disabled=!signed;
 }
 async function signIn(){
   const email=$('email').value.trim(),password=$('password').value;
@@ -250,6 +250,7 @@ async function refreshChain(){
   fillSelect('methodSourceSelect',money.fundingAccounts?.filter(x=>x.processor_provider==='method'&&x.status==='verified'),x=>x.id,x=>'Method ACH •••• '+(x.account_last4||'----'),'No verified Method source');
   fillSelect('methodBillerSelect',money.bills?.filter(x=>x.discovery_provider==='method'&&x.status==='active'),x=>x.id,x=>x.display_name+(x.account_mask?' •••• '+x.account_mask:''),'No Method liabilities');
   fillSelect('plaidAccountSelect',providerAccounts,x=>x.id,x=>(x.displayName||x.name||'Plaid account')+(x.mask?' •••• '+x.mask:''),'Load Plaid accounts');
+  try{renderRiskStatus(await gateway('risk_status'));}catch(e){log('Risk status warning',e.message);}
   log('Sandbox chain refreshed',{money,provider});
   return {money,provider};
 }
@@ -258,6 +259,26 @@ function cents(input){
   return Math.round(n*100);
 }
 function requestId(prefix){return prefix+'_'+crypto.randomUUID();}
+
+function renderRiskStatus(body){
+  const risk=body?.risk||{};
+  const el=$('riskChecks');
+  const control=risk.userControl?.state||'normal';
+  const policies=Array.isArray(risk.activePolicies)?risk.activePolicies:[];
+  const current=policies.find(x=>x.environment===risk.environment);
+  const recent=Array.isArray(risk.recentDecisions)?risk.recentDecisions:[];
+  el.innerHTML='<strong>Risk layer:</strong> '+(current?'active '+risk.environment+' policy '+current.policy_version:'no active '+(risk.environment||'current')+' policy')+
+    ' · user '+control+
+    ' · recent decisions '+recent.length+
+    (risk.productionPolicyActive?' · production policy active':' · production remains fail-closed');
+  el.className='notice '+(current&&control==='normal'?'good':'warn');
+}
+async function riskStatus(){
+  const body=await gateway('risk_status');
+  renderRiskStatus(body);
+  log('Risk policy status',body);
+  return body;
+}
 
 async function providerPreflight(){
   const body=await gateway('provider_preflight');
@@ -361,7 +382,7 @@ async function simulateAuth(){
 async function directDepositToken(){
   const depositAccountId=$('unitDepositSelect').value;
   if(!depositAccountId)throw new Error('Select a Unit deposit account.');
-  const body=await gateway('direct_deposit_link',{depositAccountId});
+  const body=await gateway('direct_deposit_link',{depositAccountId,clientRequestId:requestId('pinwheel_dd')});
   pinwheelToken=body.linkToken||null;
   log('Pinwheel Deposit Switch token created',{switch:body.switch,expires:body.expires,mode:body.mode,linkToken:'[kept in memory only]'});
   if(!pinwheelToken)throw new Error('Pinwheel did not return a Link token.');
@@ -404,5 +425,5 @@ async function gatewaySummary(){log('Ledger summary',await gateway('summary'));}
 async function sandboxCredit(){log('Sandbox credit',await gateway('sandbox_credit',{amountCents:cents($('sandboxAmount').value),clientRequestId:requestId('lab_credit')}));}
 async function allocate(){log('Envelope allocation',await gateway('allocate',{amountCents:cents($('allocateAmount').value),envelopeKey:$('envelope').value,clientRequestId:requestId('lab_allocate')}));}
 function bind(id,fn){$(id).addEventListener('click',()=>fn().catch(e=>log('Error',e.message)));}
-bind('signIn',signIn);bind('signUp',signUp);bind('signOut',signOut);bind('enrollMfa',enrollMfa);bind('verifyMfa',verifyMfa);bind('providerPreflight',providerPreflight);bind('gatewayStatus',gatewayStatus);bind('gatewayBootstrap',gatewayBootstrap);bind('gatewaySummary',gatewaySummary);bind('sandboxCredit',sandboxCredit);bind('allocate',allocate);bind('chainRefresh',refreshChain);bind('unitApplication',unitApplication);bind('unitApplicationStatus',unitApplicationStatus);bind('unitDeposit',unitDeposit);bind('unitDirectFund',unitDirectFund);bind('plaidConsent',plaidConsent);bind('plaidStart',plaidStart);bind('plaidFinalize',plaidFinalize);bind('plaidAccounts',plaidAccounts);bind('plaidUnitLink',plaidUnitLink);bind('externalFund',externalFund);bind('createCard',createCard);bind('simulateAuth',simulateAuth);bind('directDepositToken',directDepositToken);bind('methodSetup',methodSetup);bind('methodPay',methodPay);bind('registerWebhooks',registerWebhooks);
+bind('signIn',signIn);bind('signUp',signUp);bind('signOut',signOut);bind('enrollMfa',enrollMfa);bind('verifyMfa',verifyMfa);bind('providerPreflight',providerPreflight);bind('riskStatus',riskStatus);bind('gatewayStatus',gatewayStatus);bind('gatewayBootstrap',gatewayBootstrap);bind('gatewaySummary',gatewaySummary);bind('sandboxCredit',sandboxCredit);bind('allocate',allocate);bind('chainRefresh',refreshChain);bind('unitApplication',unitApplication);bind('unitApplicationStatus',unitApplicationStatus);bind('unitDeposit',unitDeposit);bind('unitDirectFund',unitDirectFund);bind('plaidConsent',plaidConsent);bind('plaidStart',plaidStart);bind('plaidFinalize',plaidFinalize);bind('plaidAccounts',plaidAccounts);bind('plaidUnitLink',plaidUnitLink);bind('externalFund',externalFund);bind('createCard',createCard);bind('simulateAuth',simulateAuth);bind('directDepositToken',directDepositToken);bind('methodSetup',methodSetup);bind('methodPay',methodPay);bind('registerWebhooks',registerWebhooks);
 updateUi();renderFactors();if(session?.access_token)getUser().then(()=>fillConfigurationStatus()).then(()=>refreshChain()).catch(e=>{log('Session restore failed',e.message);writeSession(null);});
