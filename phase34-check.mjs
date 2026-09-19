@@ -2,6 +2,7 @@ import fs from 'node:fs';
 
 const read=p=>fs.readFileSync(p,'utf8');
 const schema=read('supabase/phase34/release_evidence_certification.sql');
+const policies=read('supabase/phase34/release_evidence_service_role_policies.sql');
 const gateway=read('supabase/functions/thisweek-release-gateway/index.ts');
 const html=read('ops/release/index.html');
 const app=read('ops/release/app.js');
@@ -21,6 +22,9 @@ need('evidence-backed gate verification',schema,'release_gate_supporting_evidenc
 need('release interlock preserved',schema,'tw_release_set_gate');
 need('browser table access revoked',schema,'from public,anon,authenticated');
 need('service-only RPC grants',schema,'to service_role');
+need('explicit service-role RLS policies',policies,'to service_role');
+need('certification run service insert policy',policies,'tw_release_cert_runs_service_insert');
+need('gate evidence service insert policy',policies,'tw_release_gate_evidence_service_insert');
 
 need('release gateway active-session enforcement',gateway,'tw_auth_session_active');
 need('release gateway AAL2 enforcement',gateway,'mfa_aal2_required');
