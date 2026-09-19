@@ -644,6 +644,42 @@
       "profilePriority": "primary",
       "suppliedAssetStatus": "received_in_conversation_pending_repository_ingest",
       "publicBioSafetyNote": "Exact custodial-location details are not included in public profile metadata."
+    },
+    {
+      "id": "t311y-demon-life",
+      "name": "T311Y Demon Life",
+      "role": "secondary_affiliate_profile",
+      "relationshipStart": "mid 2022",
+      "introducedBy": "A00 Rico",
+      "relationshipSummary": "Benny Bundles met T311Y Demon Life in mid 2022 through A00 Rico. Rico and Benny were recording together when Rico brought T311Y to Benny's home studio, where they recorded the track “Ha-Ha.” Benny recognized T311Y's rapping talent and stayed connected, later accompanying T311Y to studio sessions and contributing cover-art work to multiple projects.",
+      "history": [
+        "Met Benny Bundles through A00 Rico in mid 2022.",
+        "First home-studio session with Benny and Rico produced the track “Ha-Ha,” which Benny says remains available on his SoundCloud.",
+        "That early session made Benny recognize that T311Y's performance ability was ahead of Benny's then-developing engineering setup.",
+        "Benny remained involved through later studio sessions and visual/cover-art work."
+      ],
+      "creativeConnections": [
+        {
+          "project": "Chapter III",
+          "contribution": "Cover art designed by Benny Bundles"
+        },
+        {
+          "project": "Chapter 3: The Light Pack",
+          "contribution": "Cover art designed by Benny Bundles"
+        },
+        {
+          "project": "Jimmy Boy onna Blast Off Again",
+          "contribution": "Cover art designed by Benny Bundles"
+        },
+        {
+          "project": "Devil’s Playground",
+          "contribution": "Cover art designed by Benny Bundles"
+        }
+      ],
+      "linksRef": "network:t311yDemonLife",
+      "route": "#artist-t311y",
+      "profilePriority": "secondary",
+      "suppliedAssetStatus": "received_in_conversation_pending_repository_ingest"
     }
   ]
 }
