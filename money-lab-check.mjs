@@ -14,6 +14,8 @@ need('MFA challenge',js,"/challenge");
 need('MFA verify',js,"/verify");
 need('money gateway',js,"/functions/v1/thisweek-money-gateway");
 need('sessionStorage sandbox',js,'sessionStorage');
+need('shared production auth session',js,'thisweek.auth.session.v1');
+need('legacy lab session migration',js,'thisweek.moneyLab.session.v1');
 need('gateway bootstrap',js,"gateway('bootstrap')");
 need('ledger summary',js,"gateway('summary')");
 need('Pinwheel v4 SDK',html,'https://cdn.getpinwheel.com/pinwheel-v4.js');
