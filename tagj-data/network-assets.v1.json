@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "tagj.network-assets.v1",
+  "profiles": {
+    "billyen": {
+      "status": "source_assets_received",
+      "repositoryIngestStatus": "pending_binary_asset_copy",
+      "assets": [
+        {
+          "id": "billyen-purple-fentanyl-pt4",
+          "type": "campaign_artwork",
+          "intendedUse": [
+            "collaborator archive",
+            "campaign context",
+            "release/campaign visual"
+          ],
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "billyen-portrait-phone",
+          "type": "portrait",
+          "intendedUse": [
+            "profile gallery",
+            "collaborator dossier"
+          ],
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "billyen-portrait-city",
+          "type": "portrait",
+          "intendedUse": [
+            "primary profile portrait",
+            "artist network spotlight"
+          ],
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "billyen-portrait-fullbody-red",
+          "type": "portrait",
+          "intendedUse": [
+            "profile gallery",
+            "archive"
+          ],
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "billyen-family-photo",
+          "type": "personal_photo",
+          "intendedUse": [
+            "private source/reference only unless explicitly approved"
+          ],
+          "publicUse": "hold_for_explicit_confirmation",
+          "note": "Contains a child; do not place on the public website by default."
+        }
+      ]
+    }
+  }
+}
