@@ -681,6 +681,35 @@
       "route": "#artist-t311y",
       "profilePriority": "secondary",
       "suppliedAssetStatus": "received_in_conversation_pending_repository_ingest"
+    },
+    {
+      "id": "bsf-tone-066",
+      "name": "BSF Tone 066",
+      "role": "secondary_affiliate_profile",
+      "relationshipStart": "online via Instagram",
+      "relationshipSummary": "Benny Bundles first connected with BSF Tone 066 on Instagram after seeing that Benny the Butcher had signed a new artist. Bundles sent Tone beats; Tone liked one and asked to use it, beginning an ongoing collaboration. Benny later helped as an early informal videographer/visual director and designed cover art and merchandise around Tone’s debut album, Bloxx and Robbers.",
+      "history": [
+        "Initial connection happened through Instagram.",
+        "Bundles sent beats after discovering Tone through Benny the Butcher’s signing announcement.",
+        "Tone selected one of the beats and asked to use it, beginning the working relationship.",
+        "Benny helped with early visual direction and informal videography.",
+        "One early visual project was the lyric video for “Mud Thicka Than Blood.”",
+        "Benny designed cover art and merchandise for Tone’s debut album “Bloxx and Robbers.”"
+      ],
+      "creativeConnections": [
+        {
+          "project": "Mud Thicka Than Blood",
+          "contribution": "Early lyric-video / visual-direction work by Benny Bundles"
+        },
+        {
+          "project": "Bloxx and Robbers",
+          "contribution": "Debut-album cover art and merchandise design by Benny Bundles"
+        }
+      ],
+      "linksRef": "network:bsfTone066",
+      "route": "#artist-bsf-tone-066",
+      "profilePriority": "secondary",
+      "suppliedAssetStatus": "received_in_conversation_pending_repository_ingest"
     }
   ],
   "producerBeatCatalog": {
