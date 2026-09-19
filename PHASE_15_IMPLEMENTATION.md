@@ -89,3 +89,107 @@ Every release now has a defined path to:
 - cache-busted verification URL
 
 Physical iPhone Safari QA remains a human release gate where source inspection cannot prove hardware/browser behavior.
+
+
+## Continued release hardening
+
+Phase 15 was extended after the first validated release to remove one recurring deployment failure mode: stale CSP hashes after editing `index.html`.
+
+### Deterministic CSP staging
+
+New utility:
+
+`prepare-site.mjs`
+
+The production workflow now generates the exact deployed HTML from source before validation and before deployment.
+
+The script:
+
+- reads the current inline application scripts;
+- calculates SHA-256 CSP tokens;
+- rewrites the production CSP `script-src`;
+- rejects `unsafe-inline`;
+- verifies the staged CSP includes the generated hashes.
+
+This means a later phase can change application JavaScript without requiring a separate manual CSP-refresh commit before Pages can deploy.
+
+### Validation matches production construction
+
+The validation job now runs:
+
+`node prepare-site.mjs index.html index.production.html`
+
+and validates that prepared HTML with the normal Phase 0 checker and release smoke test.
+
+The deployment job independently runs:
+
+`node prepare-site.mjs index.html _site/index.html`
+
+so validation and deployment share the same construction path.
+
+### Stale deployment cancellation
+
+The production workflow now uses:
+
+`cancel-in-progress: true`
+
+for one Pages production concurrency group.
+
+A newer `main` push can therefore cancel an older in-progress release rather than allowing a stale queued commit to publish after a newer one.
+
+### Stable milestone
+
+Validated Phase 15 milestone:
+
+`8caca1c864c0608ce808210605a0b03eb1779655`
+
+Stable branch:
+
+`stable/v0.15.0-phase15`
+
+Successful GitHub Actions run:
+
+`35410845516`
+
+The connected repository write surface did not expose Git tag creation, so no immutable Git tag is claimed. The exact commit plus dedicated stable branch and release record preserve the milestone without inventing unsupported metadata.
+
+### Durable release record
+
+Added:
+
+`RELEASES/v0.15.0-phase15.md`
+
+The release record contains:
+
+- validated commit;
+- workflow run;
+- automated smoke result;
+- cache-busted production URL;
+- rollback commit;
+- rollback branch;
+- schema/migration state;
+- stable milestone reference.
+
+### Release configuration
+
+`release.config.json` now also records:
+
+- `stableBranch`
+- `releaseRecord`
+
+The release smoke test verifies that the release-record path exists and the stable milestone follows the `stable/` naming convention.
+
+### Phase 15 completion status
+
+The source-level completion criteria are now covered:
+
+- known release commit — recorded;
+- automated smoke result — recorded;
+- rollback point — preserved;
+- release notes — recorded;
+- migration note — recorded;
+- stable milestone — preserved;
+- cache-busted post-deploy verification — automated;
+- deterministic production artifact construction — automated.
+
+Physical iPhone Safari testing remains a hands-on release gate and is intentionally not represented as an automated guarantee.
