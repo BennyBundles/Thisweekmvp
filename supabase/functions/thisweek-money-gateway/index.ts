@@ -443,6 +443,11 @@ async function createUnitFundingAccountFromPlaid(
     .eq("processor_provider", "unit").maybeSingle();
   if (existing) return { fundingAccount: existing, reused: true };
 
+  await riskEvaluate(
+    admin,userId,"provider_link",0,requestId,providerAccountRowId,
+    { provider: "plaid", processor: "unit" }
+  );
+
   const accessToken = await vaultRead(admin, connection.vault_secret_id);
   const processor = await plaidPost("/processor/token/create", {
     access_token: accessToken,
@@ -542,6 +547,11 @@ async function fundUnitFromExternal(
   if (!deposit.data || deposit.data.provider !== "unit" || deposit.data.status !== "open") {
     throw new Error("deposit_account_not_ready");
   }
+
+  await riskEvaluate(
+    admin,userId,"external_ach_pull",amount,requestId,fundingAccountId,
+    { destination_deposit_account_id: depositAccountId }
+  );
 
   const auth = await admin.from("tw_money_authorizations").insert({
     user_id: userId,
@@ -1012,14 +1022,75 @@ async function requireAal2ForProduction(userClient: ReturnType<typeof createClie
   if (error || data?.currentLevel !== "aal2") throw new Error("mfa_aal2_required");
 }
 
+function riskEnvironment(): "sandbox" | "production" {
+  return MONEY_EXECUTION_MODE === "production" ? "production" : "sandbox";
+}
+
+async function riskEvaluate(
+  admin: ReturnType<typeof createClient>,
+  userId: string,
+  action: string,
+  amountCents: number,
+  idempotencyKey: string,
+  resourceRef: string | null = null,
+  safeContext: AnyRecord = {},
+) {
+  const { data, error } = await admin.rpc("tw_risk_evaluate_action", {
+    p_user_id: userId,
+    p_environment: riskEnvironment(),
+    p_action: action,
+    p_amount_cents: amountCents,
+    p_idempotency_key: idempotencyKey,
+    p_resource_ref: resourceRef,
+    p_safe_context: safeContext,
+  });
+  if (error || !Array.isArray(data) || !data.length) throw new Error("risk_evaluation_failed");
+  const row = data[0] as AnyRecord;
+  const decision = safeText(row.decision, 20);
+  const reason = safeText(row.reason_code, 80);
+  if (decision === "review") throw new Error("risk_review_required");
+  if (decision !== "allow") throw new Error("risk_denied_" + (reason || "policy"));
+  return {
+    eventId: Number(row.risk_event_id || 0),
+    decision,
+    reason,
+    policyVersion: safeText(row.policy_version, 80),
+  };
+}
+
+async function riskStatus(admin: ReturnType<typeof createClient>, userId: string) {
+  const [policies, control, events] = await Promise.all([
+    admin.from("tw_risk_policies")
+      .select("environment,policy_version,active,rules,created_at")
+      .eq("active", true)
+      .order("created_at", { ascending: false }),
+    admin.from("tw_risk_user_controls")
+      .select("state,reason_code,expires_at,updated_at")
+      .eq("user_id", userId).maybeSingle(),
+    admin.from("tw_risk_events")
+      .select("id,environment,action,amount_cents,decision,reason_code,created_at")
+      .eq("user_id", userId).order("created_at", { ascending: false }).limit(25),
+  ]);
+  if (policies.error || control.error || events.error) throw new Error("risk_status_read_failed");
+  return {
+    environment: riskEnvironment(),
+    userControl: control.data || { state: "normal" },
+    activePolicies: policies.data || [],
+    recentDecisions: events.data || [],
+    productionPolicyActive: (policies.data || []).some((p: AnyRecord) => p.environment === "production" && p.active === true),
+  };
+}
+
 async function directDepositLink(
   admin: ReturnType<typeof createClient>,
   userId: string,
   depositAccountId: string,
+  requestId: string,
 ) {
   if (!canExecuteProvider("unit") || !canExecuteProvider("pinwheel")) {
     throw new Error("direct_deposit_providers_not_configured");
   }
+  await riskEvaluate(admin, userId, "direct_deposit_switch", 0, requestId, depositAccountId);
   const { data: account, error } = await admin.from("tw_money_deposit_accounts")
     .select("id,provider,provider_account_id,account_kind,status")
     .eq("id", depositAccountId).eq("user_id", userId).maybeSingle();
@@ -1108,6 +1179,11 @@ async function createUnitVirtualCard(
       .select("id").eq("id", billerId).eq("user_id", userId).maybeSingle();
     if (!biller) throw new Error("biller_not_found");
   }
+
+  await riskEvaluate(
+    admin,userId,"virtual_card_issue",spendLimit || 0,clientRequestId,
+    depositAccountId,{ envelope_id: envelopeId, card_mode: mode, biller_id: billerId }
+  );
 
   const unit = await unitRequest("/cards", {
     method: "POST",
@@ -1418,6 +1494,10 @@ async function methodSandboxPayment(
 
   const consentTextHash = safeText(body.consentTextHash, 180) || "sandbox-method-payment";
   const termsVersion = safeText(body.termsVersion, 80) || "sandbox-2026-09";
+  await riskEvaluate(
+    admin,userId,"bill_payment",amount,requestId,billerId,
+    { source_funding_account_id: sourceFundingAccountId, envelope_id: envelopeId }
+  );
   const authorized = await authorizeBillPayment(admin, userId, {
     billerId,
     fundingAccountId: sourceFundingAccountId,
@@ -1614,6 +1694,11 @@ Deno.serve(async (req: Request) => {
       return json(origin, 200, { ok: true, preflight: result });
     }
 
+    if (action === "risk_status") {
+      const result = await riskStatus(admin, user.id);
+      return json(origin, 200, { ok: true, risk: result });
+    }
+
     if (action === "bootstrap") {
       const result = await bootstrapMoney(admin, user.id);
       return json(origin, 200, { ok: true, ...result });
@@ -1747,8 +1832,9 @@ Deno.serve(async (req: Request) => {
     if (action === "direct_deposit_link") {
       await requireAal2ForProduction(userClient);
       const depositAccountId = safeText(body.depositAccountId, 80);
-      if (!depositAccountId) throw new Error("deposit_account_id_required");
-      const result = await directDepositLink(admin, user.id, depositAccountId);
+      const requestId = safeText(body.clientRequestId, 120);
+      if (!depositAccountId || !requestId) throw new Error("deposit_account_and_request_id_required");
+      const result = await directDepositLink(admin, user.id, depositAccountId, requestId);
       return json(origin, 200, { ok: true, ...result });
     }
 
@@ -1775,6 +1861,7 @@ Deno.serve(async (req: Request) => {
   } catch (error) {
     const code = safeText((error as Error)?.message || "money_gateway_error", 120) || "money_gateway_error";
     const status = code.endsWith("_not_configured") || code.includes("providers_not_configured") ? 503
+      : code.startsWith("risk_") ? 403
       : code.includes("required") || code.includes("invalid") || code.includes("not_ready") || code.includes("not_found") || code.includes("not_available") ? 400
       : code.includes("mfa_") || code.includes("disabled") ? 403
       : 500;
