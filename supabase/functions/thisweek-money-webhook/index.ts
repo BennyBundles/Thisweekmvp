@@ -8,6 +8,8 @@ const UNIT_WEBHOOK_SECRET = Deno.env.get("UNIT_WEBHOOK_SECRET") || "";
 const PINWHEEL_API_SECRET = Deno.env.get("PINWHEEL_API_SECRET") || "";
 const METHOD_WEBHOOK_AUTH_TOKEN = Deno.env.get("METHOD_WEBHOOK_AUTH_TOKEN") || "";
 const METHOD_WEBHOOK_HMAC_SECRET = Deno.env.get("METHOD_WEBHOOK_HMAC_SECRET") || "";
+const MONEY_EXECUTION_MODE = Deno.env.get("THISWEEK_MONEY_EXECUTION_MODE") || "disabled";
+const LIVE_MONEY_ENABLED = Deno.env.get("THISWEEK_LIVE_MONEY_ENABLED") === "true";
 
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
@@ -667,6 +669,14 @@ Deno.serve(async (req: Request) => {
   const admin = createClient(SUPABASE_URL, SERVICE_KEY, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
+
+  if (MONEY_EXECUTION_MODE === "production") {
+    if (!LIVE_MONEY_ENABLED) return json(503, { error: "live_money_disabled" });
+    const release = await admin.rpc("tw_release_money_enabled");
+    if (release.error || release.data !== true) {
+      return json(503, { error: "production_release_gates_incomplete" });
+    }
+  }
 
   try {
     if (provider === "unit") await processUnit(admin, payload, payloadHash);
