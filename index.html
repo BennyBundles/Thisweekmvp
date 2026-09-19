@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-2bGHUpstRNOxy1dT7FKMEIbY27tGDqZL2CpM+QbkwQ8=' 'sha256-Jpm8VyQzWX8d080HyH3qtPnjBd+3ZQyJGglwmBRG/B4='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'none'; media-src 'self' data: blob:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; child-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests"><meta name="theme-color" content="#081221"><title>This Week</title><style>:root {
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-2bGHUpstRNOxy1dT7FKMEIbY27tGDqZL2CpM+QbkwQ8=' 'sha256-dqobwQFXFBfHkIW76NX7vc/bQUOyvUxHjv8xVZqP7Co='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'none'; media-src 'self' data: blob:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; child-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests"><meta name="theme-color" content="#081221"><title>This Week</title><style>:root {
   --bg: #07111f;
   --bg-alt: #0b1730;
   --panel: rgba(11, 25, 48, 0.82);
@@ -6031,7 +6031,9 @@ const IMPORT_SECURITY_LIMITS=Object.freeze({
   maxColumns:64,
   maxCellChars:1000,
   maxDescriptionChars:240,
-  maxSourceNameChars:120
+  maxSourceNameChars:120,
+  allowedExtensions:['csv','tsv','txt'],
+  maxSafeAmountCents:Number.MAX_SAFE_INTEGER
 });
 function sanitizeImportedText(value,maxChars=IMPORT_SECURITY_LIMITS.maxCellChars){
   let s=String(value??'');
@@ -6049,7 +6051,10 @@ function sanitizeImportSourceName(value){
 function assertImportFileSafe(file){
   if(!file)throw new Error('Choose a transaction file.');
   if(Number(file.size||0)>IMPORT_SECURITY_LIMITS.maxFileBytes)throw new Error('Import file is too large. Maximum size is 5 MB.');
-  return {name:sanitizeImportSourceName(file.name||'Local import')};
+  const name=sanitizeImportSourceName(file.name||'Local import'),ext=(name.split('.').pop()||'').toLowerCase(),type=String(file.type||'').toLowerCase();
+  const extensionAllowed=IMPORT_SECURITY_LIMITS.allowedExtensions.includes(ext),mimeAllowed=!type||type.startsWith('text/')||type==='application/csv'||type==='application/vnd.ms-excel';
+  if(!extensionAllowed||!mimeAllowed)throw new Error('Unsupported import file. Use a CSV, TSV, or plain-text transaction export.');
+  return {name};
 }
 function confirmHighImpactMutation(message){return window.confirm(message);}
 function appStorageKeys(storage){
@@ -6107,12 +6112,17 @@ function runPhase14TrustAudit(){
     {name:'Provider credential boundary',pass:PROVIDER_ADAPTER_CONTRACT.secretPolicy.includes('must never be stored')&&BACKEND_SYNC_CONTRACT.providerSecrets.storage==='server_only',detail:'Provider tokens/secrets are explicitly outside the browser-local data contract.'},
     {name:'Inactive-view privacy curtain',pass:!!document.getElementById('privacyCurtain')&&typeof bindPrivacyCurtain==='function',detail:'The financial view is masked when the document becomes inactive; operating-system snapshot behavior can still vary.'},
     {name:'Portable restore boundary',pass:typeof deserializePortableData==='function'&&typeof downloadPortableDataExport==='function',detail:'Portable data can be validated/exported but is not automatically applied back into live state.'},
-    {name:'High-impact confirmation path',pass:typeof confirmHighImpactMutation==='function',detail:'Destructive/reversal paths use an explicit confirmation helper.'}
+    {name:'High-impact confirmation path',pass:typeof confirmHighImpactMutation==='function',detail:'Destructive/reversal paths use an explicit confirmation helper.'},
+    {name:'Verified local deletion path',pass:typeof clearAllThisWeekLocalData==='function',detail:'Delete-local-data verifies whether any thisweek.* keys remain before reporting success.'},
+    {name:'Sensitive export acknowledgement',pass:typeof confirmSensitiveExport==='function',detail:'Financial-data downloads require an explicit acknowledgement that the file leaves app-controlled storage.'}
   ];
   const passed=tests.filter(t=>t.pass).length;
   return {pass:passed===tests.length,passed,total:tests.length,tests};
 }
 
+function confirmSensitiveExport(label){
+  return confirmHighImpactMutation(label+' can contain sensitive financial information and will be saved outside This Week. Continue?');
+}
 function downloadRawLocalDataExport(){
   const inventory=localDataInventory(),payload={
     schema:'thisweek.local-data-export',
@@ -6127,11 +6137,18 @@ function downloadRawLocalDataExport(){
   setTimeout(()=>URL.revokeObjectURL(url),1500);return json.length;
 }
 function clearAllThisWeekLocalData(){
-  for(const key of appStorageKeys(localStorage))safeLocalStorageRemove(key);
-  for(const key of appStorageKeys(sessionStorage)){try{sessionStorage.removeItem(key);}catch{}}
+  const beforeLocal=appStorageKeys(localStorage),beforeSession=appStorageKeys(sessionStorage);
+  for(const key of beforeLocal)safeLocalStorageRemove(key);
+  for(const key of beforeSession){try{sessionStorage.removeItem(key);}catch{}}
+  const remainingLocal=appStorageKeys(localStorage),remainingSession=appStorageKeys(sessionStorage);
   volatileUserId=null;volatileState=null;volatileStateSerialized=null;lastPersistedStateSerialized=null;
   uiPrefsCache=null;connectedDataCache=null;savingsGoalsCache=null;savingsGoalsCacheRevision=-1;
   historySummaryCache={revision:-1,data:null};connectionImportPreview=null;runtimePerf.revision++;
+  return {
+    success:remainingLocal.length===0&&remainingSession.length===0,
+    removed:beforeLocal.length+beforeSession.length-remainingLocal.length-remainingSession.length,
+    remaining:[...remainingLocal,...remainingSession]
+  };
 }
 function normalizeConnectedRecord(r={}){
   const reconciled=!!r.reconciled;
@@ -6781,17 +6798,28 @@ function parseMoneyRaw(v){
   const n=Number(s);return Number.isFinite(n)?(neg?-Math.abs(n):n):0;
 }
 function parseImportedDate(v){
-  const raw=String(v??'').trim();if(!raw)return nowIso();
+  const raw=sanitizeImportedText(v,120);if(!raw)return null;
+  let d=null;
   const num=Number(raw);
-  if(Number.isFinite(num)&&num>20000&&num<80000){const d=new Date(Date.UTC(1899,11,30)+num*86400000);return d.toISOString();}
-  const mdY=raw.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})(?:\s+(.+))?$/);
-  if(mdY){let y=Number(mdY[3]);if(y<100)y+=y<70?2000:1900;const d=new Date(y,Number(mdY[1])-1,Number(mdY[2]));if(!Number.isNaN(d.getTime()))return d.toISOString();}
-  const d=new Date(raw);return Number.isNaN(d.getTime())?nowIso():d.toISOString();
+  if(Number.isFinite(num)&&num>20000&&num<80000)d=new Date(Date.UTC(1899,11,30)+num*86400000);
+  if(!d){
+    const mdY=raw.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})(?:\s+(.+))?$/);
+    if(mdY){
+      let y=Number(mdY[3]);if(y<100)y+=y<70?2000:1900;
+      const candidate=new Date(y,Number(mdY[1])-1,Number(mdY[2]));
+      if(candidate.getFullYear()===y&&candidate.getMonth()===Number(mdY[1])-1&&candidate.getDate()===Number(mdY[2]))d=candidate;
+    }
+  }
+  if(!d){const candidate=new Date(raw);if(!Number.isNaN(candidate.getTime()))d=candidate;}
+  if(!d||Number.isNaN(d.getTime()))return null;
+  const year=d.getFullYear(),maxYear=new Date().getFullYear()+2;
+  if(year<1900||year>maxYear)return null;
+  return d.toISOString();
 }
 function normalizeImportedRows(rows,signMode='negativePurchase',sourceName='CSV Import'){
   sourceName=sanitizeImportSourceName(sourceName);
   const occurrence=new Map();
-  return rows.map((row)=>{
+  return rows.map((row,rowIndex)=>{
     const dk=importField(row,['transaction date','posted date','post date','date','effective date']);
     const descK=importField(row,['description','merchant','merchant name','payee','memo','name','details','original description']);
     const debitK=importField(row,['debit','withdrawal','withdrawals','charge','charges','money out']);
@@ -6808,10 +6836,12 @@ function normalizeImportedRows(rows,signMode='negativePurchase',sourceName='CSV 
       direction=signMode==='positivePurchase'?(raw>=0?'outflow':'inflow'):(raw<=0?'outflow':'inflow');
     }
     const date=parseImportedDate(dk?row[dk]:'');
+    if(!date)throw new Error('Import row '+(rowIndex+2)+' is missing a valid transaction date.');
     const description=sanitizeImportedText(String(descK?row[descK]:'Transaction').replace(/\s+/g,' ').trim(),IMPORT_SECURITY_LIMITS.maxDescriptionChars)||'Transaction';
     const statusText=String(statusK?row[statusK]:'').toLowerCase(),pendingText=String(pendingK?row[pendingK]:'').toLowerCase();
     const status=(statusText.includes('pend')||['true','yes','y','1'].includes(pendingText))?'pending':'posted';
     const amountCents=Math.round(amount*100);
+    if(!Number.isSafeInteger(amountCents)||Math.abs(amountCents)>IMPORT_SECURITY_LIMITS.maxSafeAmountCents)throw new Error('Import row '+(rowIndex+2)+' contains an amount outside the supported integer-cent range.');
     const dateKey=date.slice(0,10),descKey=description.toLowerCase().replace(/\s+/g,' ').trim();
     const matchKey=[dateKey,descKey,amountCents,direction].join('|');
     const n=(occurrence.get(matchKey)||0)+1;occurrence.set(matchKey,n);
@@ -7817,7 +7847,7 @@ function renderPrivacy(){
         <div class="privacy-inventory">${all.length?all.map(x=>`<div class="privacy-key"><div><strong>${escapeHtml(x.description)}</strong><span>${escapeHtml(x.scope)} browser storage · ${(x.bytes/1024).toFixed(1)} KB</span></div><code>${escapeHtml(x.key)}</code></div>`).join(''):'<div class="empty">No This Week browser data is currently stored.</div>'}</div>
       </section>
 
-      <section class="section"><div class="section-head"><div><span class="section-kicker">Export</span><h2>Take a copy before changing devices or deleting data</h2><div class="section-caption">Downloaded files can contain sensitive financial information. Store them accordingly.</div></div></div>
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Export</span><h2>Take a copy before changing devices or deleting data</h2><div class="section-caption">Downloaded files can contain sensitive financial information and are no longer controlled by This Week after download. Store or delete them accordingly.</div></div></div>
         <div class="action-row">${hasPlan?'<button class="btn btn-primary" id="privacyPortableExport">Export normalized financial data</button>':''}<button class="btn btn-secondary" id="privacyRawExport">Export all local This Week keys</button><a class="btn btn-secondary" href="#data-model">Open Data Model</a></div>
         <div class="world-note">Exports are created locally when requested. The app does not automatically upload the resulting file.</div>
       </section>
@@ -7832,8 +7862,8 @@ function renderPrivacy(){
       </section>
     </div>`;
 
-    document.getElementById('privacyPortableExport')?.addEventListener('click',()=>{const bytes=downloadPortableDataExport();toast('Normalized data exported · '+(bytes/1024).toFixed(1)+' KB');});
-    document.getElementById('privacyRawExport')?.addEventListener('click',()=>{const bytes=downloadRawLocalDataExport();toast('Local data export created · '+(bytes/1024).toFixed(1)+' KB');});
+    document.getElementById('privacyPortableExport')?.addEventListener('click',()=>{if(!confirmSensitiveExport('Normalized financial-data export'))return;const bytes=downloadPortableDataExport();toast('Normalized data exported · '+(bytes/1024).toFixed(1)+' KB');});
+    document.getElementById('privacyRawExport')?.addEventListener('click',()=>{if(!confirmSensitiveExport('Raw local-data export'))return;const bytes=downloadRawLocalDataExport();toast('Local data export created · '+(bytes/1024).toFixed(1)+' KB');});
     document.getElementById('runTrustAudit')?.addEventListener('click',()=>{
       const box=document.getElementById('trustAuditResults'),audit=runPhase14TrustAudit();
       if(box)box.innerHTML=audit.tests.map(t=>`<div class="schema-row"><div><strong>${escapeHtml(t.name)}</strong><span>${escapeHtml(t.detail)}</span></div><span class="schema-badge">${t.pass?'pass':'review'}</span></div>`).join('');
@@ -7846,7 +7876,8 @@ function renderPrivacy(){
     confirmBtn?.addEventListener('click',()=>{
       if(phrase?.value.trim()!=='DELETE')return;
       if(!confirmHighImpactMutation('Permanently remove all This Week local app data from this browser now?'))return;
-      clearAllThisWeekLocalData();
+      const result=clearAllThisWeekLocalData();
+      if(!result.success){toast('Some local data could not be removed. Remaining: '+result.remaining.join(', '));return;}
       location.hash='setup';
       location.reload();
     });
@@ -7917,7 +7948,7 @@ function renderDataModel(){
 
       <div class="world-note">Export is read-only. It does not upload data, create an account, change your plan, or enable multi-device sync. Future sync still requires a backend, authentication, conflict handling, and security/privacy work.</div>
     </div>`;
-    document.getElementById('downloadPortableExport')?.addEventListener('click',()=>{const bytes=downloadPortableDataExport();toast('Portable JSON export created · '+(bytes/1024).toFixed(1)+' KB');});
+    document.getElementById('downloadPortableExport')?.addEventListener('click',()=>{if(!confirmSensitiveExport('Portable financial-data export'))return;const bytes=downloadPortableDataExport();toast('Portable JSON export created · '+(bytes/1024).toFixed(1)+' KB');});
     document.getElementById('downloadSchemaManifest')?.addEventListener('click',()=>{const bytes=downloadSchemaManifest();toast('Schema manifest exported · '+(bytes/1024).toFixed(1)+' KB');});
     document.getElementById('downloadPortableJsonSchema')?.addEventListener('click',()=>{const bytes=downloadPortableJsonSchema();toast('Portable JSON Schema exported · '+(bytes/1024).toFixed(1)+' KB');});
     document.getElementById('computeSnapshotFingerprint')?.addEventListener('click',async()=>{
