@@ -2,6 +2,43 @@
 
 Production changes for **This Week** are recorded here.
 
+## Phase 26 — Returns, Negative Balances & Dispute Operations — 2026-09-19
+
+### Operational lifecycle
+- Added server-only `tw_ops_cases` and append-only `tw_ops_case_events`.
+- Added idempotent operational case tracking for ACH returns, payment returns/reversals, negative balances, card refunds/reversals, card disputes and provider failures.
+- Direct browser table access is revoked; operations data is exposed only through authenticated safe summaries.
+
+### ACH returns and negative balances
+- Signed Unit `payment.returned` events now mark the matching transfer returned and reverse a previously posted This Week ACH cash credit with a compensating journal.
+- No reversal journal is posted if This Week cannot prove that the original cash credit existed.
+- Negative cloud cash opens a critical case and restricts guarded money actions.
+- Negative-balance controls never downgrade frozen/closed states or overwrite unrelated restrictions.
+- Balance-related restrictions clear only when the matching balance source recovers.
+
+### Card refunds and disputes
+- Signed Unit dispute events now create/update durable operational cases.
+- Credit card-reversal/dispute transactions can post money back to the bound This Week envelope.
+- Unmappable provider credits become `action_required` cases instead of being guessed into an envelope.
+- Card settlements now persist the provider transaction relationship ID when supplied, improving dispute correlation.
+- Added Unit Sandbox dispute creation and lifecycle simulation controls.
+
+### Method adverse payments
+- Returned/reversed/failed Method bill payments now create operational cases alongside their provider payment state.
+
+### Money Lab
+- Added operational status, cloud cash balance, open case count, eligible settled Unit card transactions, dispute case selection and Sandbox dispute progression controls.
+
+### Provider state
+- Money gateway: **v10**
+- Signed money webhook: **v5**
+- Production money execution remains disabled.
+
+### Rollback
+- Pre-Phase-26 commit: `7d3f509cf2abcc88b698d2f03da5eae86d2f5800`
+- Rollback branch: `rollback/phase26-pre-return-dispute-operations-2026-09-19`
+
+
 ## Phase 25 — Risk & Velocity Controls — 2026-09-19
 
 - Added server-only application risk policies, user controls, risk-event audit trail, and review queue.
