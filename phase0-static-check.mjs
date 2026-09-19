@@ -20,6 +20,13 @@ const phase20GatewayUrl=new URL('./supabase/functions/thisweek-money-gateway/ind
 const phase20RuntimeUrl=new URL('./supabase/functions/thisweek-money-gateway/deno.json', import.meta.url);
 const phase20ReadmeUrl=new URL('./supabase/phase20/README.md', import.meta.url);
 const phase20DocUrl=new URL('./PHASE_20_IMPLEMENTATION.md', import.meta.url);
+const phase21SchemaUrl=new URL('./supabase/phase21/card_event_schema.sql', import.meta.url);
+const phase21DocUrl=new URL('./PHASE_21_IMPLEMENTATION.md', import.meta.url);
+const phase21WebhookUrl=new URL('./supabase/functions/thisweek-money-webhook/index.ts', import.meta.url);
+const phase21CardAuthUrl=new URL('./supabase/functions/thisweek-unit-card-authorization/index.ts', import.meta.url);
+const moneyLabHtmlUrl=new URL('./money-lab/index.html', import.meta.url);
+const moneyLabJsUrl=new URL('./money-lab/app.js', import.meta.url);
+const moneyLabCheckUrl=new URL('./money-lab-check.mjs', import.meta.url);
 
 const releaseFiles=['prepare-site.mjs','release-smoke-check.mjs','RELEASE_CHECKLIST.md','RELEASE_POLICY.md','release.config.json','CHANGELOG.md','RELEASES/v0.15.0-phase15.md'];
 for(const name of releaseFiles){
@@ -38,7 +45,14 @@ for(const [label,url] of [
   ['Phase 20 money gateway',phase20GatewayUrl],
   ['Phase 20 money runtime config',phase20RuntimeUrl],
   ['Phase 20 money README',phase20ReadmeUrl],
-  ['Phase 20 implementation document',phase20DocUrl]
+  ['Phase 20 implementation document',phase20DocUrl],
+  ['Phase 21 card event schema',phase21SchemaUrl],
+  ['Phase 21 implementation document',phase21DocUrl],
+  ['Phase 21 signed money webhook',phase21WebhookUrl],
+  ['Phase 21 Unit card authorization controller',phase21CardAuthUrl],
+  ['Money Lab HTML',moneyLabHtmlUrl],
+  ['Money Lab client',moneyLabJsUrl],
+  ['Money Lab checker',moneyLabCheckUrl]
 ]){
   if(!fs.existsSync(url))failures.push('Missing '+label);
 }
@@ -52,6 +66,13 @@ const phase20Runtime=fs.existsSync(phase20RuntimeUrl)?fs.readFileSync(phase20Run
 const phase20Readme=fs.existsSync(phase20ReadmeUrl)?fs.readFileSync(phase20ReadmeUrl,'utf8'):'';
 const phase20Doc=fs.existsSync(phase20DocUrl)?fs.readFileSync(phase20DocUrl,'utf8'):'';
 const requirePhase20FileText=(label,content,text)=>{if(!content.includes(text))failures.push(label);};
+const phase21Schema=fs.existsSync(phase21SchemaUrl)?fs.readFileSync(phase21SchemaUrl,'utf8'):'';
+const phase21Doc=fs.existsSync(phase21DocUrl)?fs.readFileSync(phase21DocUrl,'utf8'):'';
+const phase21Webhook=fs.existsSync(phase21WebhookUrl)?fs.readFileSync(phase21WebhookUrl,'utf8'):'';
+const phase21CardAuth=fs.existsSync(phase21CardAuthUrl)?fs.readFileSync(phase21CardAuthUrl,'utf8'):'';
+const moneyLabHtml=fs.existsSync(moneyLabHtmlUrl)?fs.readFileSync(moneyLabHtmlUrl,'utf8'):'';
+const moneyLabJs=fs.existsSync(moneyLabJsUrl)?fs.readFileSync(moneyLabJsUrl,'utf8'):'';
+const requirePhase21FileText=(label,content,text)=>{if(!content.includes(text))failures.push(label);};
 
 const requireText=(label,text)=>{if(!html.includes(text))failures.push(label);};
 const forbidText=(label,text)=>{if(html.includes(text))failures.push(label);};
@@ -276,6 +297,36 @@ requirePhase20FileText('Phase 20 gateway MFA production gate',phase20Gateway,'mf
 requirePhase20FileText('Phase 20 runtime strict mode',phase20Runtime,'"strict": true');
 requirePhase20FileText('Phase 20 README no live money',phase20Readme,'No live money is currently moved.');
 requirePhase20FileText('Phase 20 implementation Plan authority',phase20Doc,'Available Now` remains plan-derived.');
+
+// Phase 21 signed external events + isolated recoverable Auth lab.
+requireText('Phase 21 money state',"state:'event_controllers_deployed'");
+requireText('Phase 21 signed webhook readiness',"webhookMode:'signed_receivers_deployed'");
+requireText('Phase 21 card controller readiness',"cardAuthorizationMode:'controller_deployed_execution_locked'");
+requireText('Phase 21 Money Lab link','href="./money-lab/"');
+requirePhase21FileText('Phase 21 reserve card RPC',phase21Schema,'tw_money_reserve_card_authorization');
+requirePhase21FileText('Phase 21 release card RPC',phase21Schema,'tw_money_release_card_authorization');
+requirePhase21FileText('Phase 21 settle card RPC',phase21Schema,'tw_money_settle_card_authorization');
+requirePhase21FileText('Phase 21 partial approval',phase21Schema,'partial_approval');
+requirePhase21FileText('Phase 21 atomic card hold',phase21Schema,'card_authorization_hold');
+requirePhase21FileText('Phase 21 signed event flag',phase21Schema,'signature_verified');
+requirePhase21FileText('Phase 21 RPC browser revocation',phase21Schema,'from public,anon,authenticated');
+requirePhase21FileText('Phase 21 Unit raw HMAC SHA1',phase21Webhook,'"SHA-1"');
+requirePhase21FileText('Phase 21 Pinwheel v2 signature',phase21Webhook,'"v2:" + timestamp + ":"');
+requirePhase21FileText('Phase 21 Method HMAC signature',phase21Webhook,'method-webhook-signature');
+requirePhase21FileText('Phase 21 Method timestamp freshness',phase21Webhook,'> 300');
+requirePhase21FileText('Phase 21 webhook payload hash',phase21Webhook,'sha256Hex');
+requirePhase21FileText('Phase 21 Unit controller signature required',phase21CardAuth,'x-unit-signature');
+requirePhase21FileText('Phase 21 Unit controller fail closed',phase21CardAuth,'return decline("RestrictedCard")');
+requirePhase21FileText('Phase 21 Unit approval response',phase21CardAuth,'approveAuthorizationRequest');
+requirePhase21FileText('Phase 21 Unit decline response',phase21CardAuth,'declineAuthorizationRequest');
+requirePhase21FileText('Phase 21 Money Lab exact allowlist',moneyLabHtml,'connect-src https://xjtvawmppzwzrooairyx.supabase.co');
+requirePhase21FileText('Phase 21 Money Lab publishable key',moneyLabJs,'sb_publishable_');
+requirePhase21FileText('Phase 21 Money Lab signup',moneyLabJs,"/auth/v1/signup");
+requirePhase21FileText('Phase 21 Money Lab MFA enroll',moneyLabJs,"/auth/v1/factors");
+requirePhase21FileText('Phase 21 Money Lab gateway call',moneyLabJs,'/functions/v1/thisweek-money-gateway');
+requirePhase21FileText('Phase 21 Money Lab tab scoped session',moneyLabJs,'sessionStorage');
+if(/service_role|sb_secret_/i.test(moneyLabHtml+moneyLabJs))failures.push('Phase 21 Money Lab contains a server secret pattern');
+if(/localStorage/.test(moneyLabJs))failures.push('Phase 21 Money Lab persists auth state to localStorage');
 
 
 
