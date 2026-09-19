@@ -641,5 +641,66 @@
       "retention_access_log_policy_approval",
       "provider_bank_escalation_procedures"
     ]
+  },
+  "phase29AutomatedMonitoring": {
+    "status": "scheduled_monitor_active_external_paging_unconfigured",
+    "activation": true,
+    "cronJob": {
+      "name": "thisweek-phase29-health-monitor",
+      "schedule": "*/5 * * * *",
+      "active": true
+    },
+    "tables": [
+      "tw_ops_health_snapshots",
+      "tw_ops_monitor_runs",
+      "tw_ops_notification_outbox"
+    ],
+    "monitorRpc": "tw_ops_monitor_tick",
+    "browserTableAccess": false,
+    "signals": [
+      "ledger_unbalanced",
+      "provider_failures_15m",
+      "stuck_provider_events",
+      "stale_transfers_24h",
+      "stale_bill_payments_24h",
+      "sla_overdue",
+      "active_major_critical_incidents"
+    ],
+    "healthStates": [
+      "healthy",
+      "degraded",
+      "critical"
+    ],
+    "notificationOutbox": {
+      "durable": true,
+      "externalChannelConfigured": false,
+      "states": [
+        "pending",
+        "sent",
+        "failed",
+        "suppressed"
+      ]
+    },
+    "staffActions": [
+      "run_monitor",
+      "suppress_notification"
+    ],
+    "initialVerification": {
+      "healthState": "healthy",
+      "unbalancedJournals": 0,
+      "stuckProviderEvents": 0,
+      "staleTransfers24h": 0,
+      "staleBillPayments24h": 0,
+      "providerFailures15m": 0
+    },
+    "remainingGates": [
+      "configure_external_paging_channel",
+      "build_notification_dispatcher",
+      "named_staff_provisioning",
+      "sandbox_adverse_event_end_to_end_validation",
+      "formal_support_sla_approval",
+      "retention_access_log_policy_approval",
+      "provider_bank_escalation_procedures"
+    ]
   }
 }
