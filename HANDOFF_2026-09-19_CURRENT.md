@@ -1126,6 +1126,26 @@ Do not set/claim production provider execution until Phase 31 release interlock 
 
 ---
 
+## Phase 34 continuation — MFA session-elevation fix
+
+A production Account Center bug was found during first-admin bootstrap: `verifyMfa()` only selected unverified TOTP factors, so an already-verified authenticator could not elevate an AAL1 browser session to AAL2 and the UI incorrectly returned `Enter the current authenticator code.`
+
+Fixed in functional commit:
+
+- `6d60234ccd86716dfefcbc65f210c532958b3305`
+
+Verified Pages workflow:
+
+- `35469107717`
+
+The handler now prefers an unverified TOTP during enrollment, falls back to the in-progress enrollment object, and otherwise uses an already-verified TOTP factor for a fresh challenge/verify cycle. Missing-factor and invalid-code errors are now distinct. Regression coverage was added to `account-check.mjs`.
+
+Rollback branch:
+
+- `rollback/phase34d-pre-mfa-session-elevation-fix-2026-09-19` → `23abbf3774b38da1ea5bc0900398c7b75ce40676`
+
+---
+
 ## 23. One-line continuation instruction for the next chat
 
 > Continue managing and implementing **This Week** from verified functional production commit `6e3b141fa41e4aff519bc142fa77007613b8678c`. Read `HANDOFF_2026-09-19_CURRENT.md`, inspect the live repo/Supabase state, and continue **Phase 34 evidence execution / Sandbox certification** unless I explicitly redirect you. Preserve all release interlocks, plan-vs-money semantics, RLS, append-only financial history, and the zero-budget constraint. Do not verify a release gate without supporting Phase 34 evidence, and do not claim live money readiness until the actual server release interlock says `liveMoneyReady=true`.
