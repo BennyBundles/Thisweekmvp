@@ -180,6 +180,9 @@ requireText('Phase 14 integer-cent range guard','Number.isSafeInteger(amountCent
 requireText('Phase 14 sensitive export acknowledgement','confirmSensitiveExport');
 requireText('Phase 14 verified local deletion','remainingLocal.length===0&&remainingSession.length===0');
 requireText('Phase 14 deletion result handling','Some local data could not be removed');
+requireText('Phase 14 storage namespace inspection','inspectAppStorageNamespace');
+requireText('Phase 14 verified storage accessibility','storageAccessible');
+requireText('Phase 14 delete verification failure state','Local-data deletion not verified');
 requireText('CSV import','normalizeImportedRows');
 requireText('Transaction import endpoint','/transaction/import');
 requireText('Bill contribution endpoint','/bill/contribute');
