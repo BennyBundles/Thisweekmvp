@@ -266,5 +266,64 @@
       "fraud_rate_limits",
       "provider_program_approval"
     ]
+  },
+  "phase22ProviderSandboxChain": {
+    "status": "deployed_credentials_required",
+    "activation": false,
+    "executionMode": "disabled",
+    "productionPlannerNetworkPolicy": "connect-src none",
+    "sequence": [
+      "recoverable_auth",
+      "plaid_auth_hosted_link",
+      "unit_sandbox_application",
+      "unit_deposit_account",
+      "plaid_unit_processor_token",
+      "unit_ach_counterparty",
+      "authorized_ach_funding",
+      "unit_virtual_card",
+      "unit_programmatic_authorization",
+      "pinwheel_direct_deposit_switch",
+      "method_dev_bill_payment"
+    ],
+    "deployedFunctions": {
+      "providerGateway": "thisweek-provider-gateway:v3",
+      "moneyGateway": "thisweek-money-gateway:v5",
+      "signedWebhook": "thisweek-money-webhook:v3",
+      "unitCardAuthorization": "thisweek-unit-card-authorization:v1"
+    },
+    "requiredServerCredentials": [
+      "PLAID_CLIENT_ID",
+      "PLAID_SECRET",
+      "UNIT_API_TOKEN",
+      "PINWHEEL_API_SECRET",
+      "METHOD_API_KEY"
+    ],
+    "secretPolicy": "server_only_never_repository_or_browser",
+    "plaidProducts": [
+      "auth",
+      "transactions"
+    ],
+    "providerTokenPersistence": {
+      "plaidAccessToken": "supabase_vault",
+      "plaidUnitProcessorToken": "not_persisted",
+      "pinwheelLinkToken": "memory_only"
+    },
+    "methodDev": {
+      "entity": true,
+      "connectLiabilities": true,
+      "achSource": true,
+      "microdepositVerification": true,
+      "payment": true
+    },
+    "remainingGates": [
+      "configure_provider_sandbox_credentials",
+      "set_money_execution_mode_sandbox",
+      "register_provider_webhook_urls",
+      "unit_programmatic_authorization_program_enablement",
+      "run_end_to_end_sandbox_transactions",
+      "fraud_limits_and_ach_return_controls",
+      "production_provider_approvals",
+      "explicit_cost_approval"
+    ]
   }
 }
