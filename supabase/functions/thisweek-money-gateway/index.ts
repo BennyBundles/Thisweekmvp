@@ -32,6 +32,24 @@ const DEFAULT_ENVELOPES = Object.freeze([
   { envelope_key: "savings", label: "Savings", envelope_type: "savings" },
 ]);
 
+function decodeJwtPayload(token: string): AnyRecord {
+  try {
+    const part=token.split(".")[1].replace(/-/g,"+").replace(/_/g,"/");
+    return JSON.parse(atob(part.padEnd(Math.ceil(part.length/4)*4,"=")));
+  } catch { return {}; }
+}
+function validSessionUuid(value: unknown): string | null {
+  const s=String(value??"").trim();
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(s)?s:null;
+}
+async function requireActiveSession(admin: ReturnType<typeof createClient>, userId: string, token: string): Promise<string> {
+  const sessionId=validSessionUuid(decodeJwtPayload(token).session_id);
+  if(!sessionId) throw new Error("active_session_required");
+  const {data,error}=await admin.rpc("tw_auth_session_active",{p_user_id:userId,p_session_id:sessionId});
+  if(error||data!==true) throw new Error("session_revoked");
+  return sessionId;
+}
+
 function safeText(value: unknown, max = 200): string {
   return String(value ?? "").normalize("NFC")
     .replace(/[\u0000-\u001F\u007F]/g, "")
@@ -1541,6 +1559,8 @@ Deno.serve(async (req: Request) => {
   const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
+  try { await requireActiveSession(admin, user.id, token); }
+  catch { return json(origin, 401, { error: "session_revoked" }); }
 
   let body: AnyRecord = {};
   try { body = await req.json() as AnyRecord; }
