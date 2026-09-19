@@ -5119,6 +5119,106 @@ body[data-motion="reduced"] .state-spinner{
   :where(.section,.form-card,.summary-card-full,.warning-card,.empty-card,.studio-hero,.precheck-stage,.scenario-stage){border-radius:var(--tw-radius-lg)}
 }
 
+
+/* PHASE 18 — POWER-USER EFFICIENCY v30 */
+.power-dock{
+  display:grid;gap:8px;padding:10px;border:1px solid var(--tw-border-subtle);
+  border-radius:var(--tw-radius-lg);
+  background:linear-gradient(145deg,rgba(103,232,249,.035),rgba(255,255,255,.012));
+  box-shadow:var(--tw-elevation-1);
+}
+.power-dock-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:2px 2px 4px}
+.power-dock-head span:first-child{font-size:var(--tw-type-label);letter-spacing:var(--tw-tracking-label);text-transform:uppercase;color:#9cc3cd;font-weight:850}
+.power-dock-head span:last-child{color:var(--text-faint);font-size:var(--tw-type-micro)}
+.power-dock-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.power-shortcut-card{
+  min-width:0;display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:8px;align-items:center;
+  padding:9px;border:1px solid var(--tw-border-subtle);border-radius:var(--tw-radius-md);
+  background:var(--tw-surface-inset);color:inherit;text-decoration:none;
+}
+.power-shortcut-icon{
+  width:32px;height:32px;border-radius:var(--tw-radius-sm);display:grid;place-items:center;
+  background:color-mix(in srgb,var(--route-accent) 8%,rgba(255,255,255,.02));
+  border:1px solid color-mix(in srgb,var(--route-accent) 15%,var(--tw-border-subtle));
+  color:var(--route-accent);font-weight:900
+}
+.power-shortcut-copy{min-width:0}
+.power-shortcut-copy small{display:block;color:var(--text-faint);font-size:.43rem;text-transform:uppercase;letter-spacing:.08em}
+.power-shortcut-copy strong{display:block;margin-top:3px;font-size:.61rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.power-shortcut-card>span:last-child{color:var(--text-faint);font-size:.72rem}
+.power-pref-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.power-pref-card{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;
+  padding:11px;border:1px solid var(--tw-border-subtle);border-radius:var(--tw-radius-md);background:var(--tw-surface-inset)
+}
+.power-pref-copy strong{display:block;font-size:.62rem}
+.power-pref-copy span{display:block;margin-top:4px;color:var(--text-soft);font-size:.49rem;line-height:1.4}
+.power-toggle{
+  min-width:58px;min-height:34px;padding:6px 8px;border-radius:var(--tw-radius-pill);
+  border:1px solid var(--tw-border-default);background:rgba(255,255,255,.03);color:var(--text-soft);font-size:.47rem
+}
+.power-toggle.active{border-color:rgba(110,231,183,.20);background:rgba(110,231,183,.07);color:#bcebd1}
+.power-config{display:grid;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--tw-border-subtle)}
+.power-config-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(138px,42%);gap:10px;align-items:center}
+.power-config-row strong{display:block;font-size:.59rem}
+.power-config-row span{display:block;margin-top:3px;color:var(--text-soft);font-size:.47rem;line-height:1.4}
+.power-select{
+  width:100%;min-height:40px;padding:8px 10px;border-radius:var(--tw-radius-sm);
+  border:1px solid var(--tw-border-default);background:#081725;color:var(--text);font:inherit;font-size:.56rem
+}
+.power-order-list{display:grid;gap:5px}
+.power-order-row{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;
+  padding:8px 9px;border:1px solid var(--tw-border-subtle);border-radius:var(--tw-radius-sm);background:var(--tw-surface-inset)
+}
+.power-order-row strong{font-size:.56rem}
+.power-order-actions{display:flex;gap:4px}
+.power-order-actions button{
+  min-width:34px;min-height:32px;padding:4px 7px;border-radius:10px;
+  border:1px solid var(--tw-border-default);background:rgba(255,255,255,.025);color:var(--text-soft);font-size:.56rem
+}
+.power-order-actions button:disabled{opacity:.28}
+.power-studio-switcher{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;
+  padding:5px;border:1px solid var(--tw-border-subtle);border-radius:var(--tw-radius-md);background:rgba(5,16,27,.72)
+}
+.power-studio-switcher a{
+  min-width:0;padding:8px 5px;border-radius:var(--tw-radius-sm);color:var(--text-soft);
+  text-decoration:none;text-align:center;font-size:.48rem;font-weight:800;border:1px solid transparent
+}
+.power-studio-switcher a.active{
+  color:var(--text);border-color:color-mix(in srgb,var(--studio-switch-accent) 24%,var(--tw-border-subtle));
+  background:color-mix(in srgb,var(--studio-switch-accent) 7%,rgba(255,255,255,.015))
+}
+.power-studio-switcher a[data-studio="bills"]{--studio-switch-accent:var(--tw-cat-bills)}
+.power-studio-switcher a[data-studio="essentials"]{--studio-switch-accent:var(--tw-cat-essentials)}
+.power-studio-switcher a[data-studio="lifestyle"]{--studio-switch-accent:var(--tw-cat-lifestyle)}
+.power-studio-switcher a[data-studio="savings"]{--studio-switch-accent:var(--tw-cat-savings)}
+.power-quick-add{
+  display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:12px;padding:9px;
+  border:1px solid var(--tw-border-subtle);border-radius:var(--tw-radius-md);background:var(--tw-surface-inset)
+}
+.power-quick-add>small{width:100%;color:var(--text-faint);font-size:.44rem;letter-spacing:.08em;text-transform:uppercase;font-weight:800}
+.power-amount-chip{
+  min-height:34px;padding:6px 9px;border-radius:var(--tw-radius-pill);
+  border:1px solid var(--tw-border-default);background:rgba(255,255,255,.025);color:var(--text-soft);font-size:.52rem
+}
+.power-amount-chip.repeat{border-color:rgba(103,232,249,.12);color:#a9dbe5}
+.power-keyboard-hint{
+  padding:7px 9px;border-radius:var(--tw-radius-sm);border:1px solid var(--tw-border-subtle);
+  color:var(--text-faint);font-size:.46rem;line-height:1.4;background:rgba(255,255,255,.012)
+}
+.power-keyboard-hint kbd{
+  display:inline-block;min-width:20px;padding:2px 5px;margin:0 1px;border:1px solid var(--tw-border-default);
+  border-radius:6px;background:#071421;color:#b9cbd2;font:700 .44rem/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;text-align:center
+}
+@media(max-width:390px){
+  .power-dock-grid,.power-pref-grid{grid-template-columns:1fr}
+  .power-config-row{grid-template-columns:1fr}
+  .power-studio-switcher a{font-size:.44rem;padding-inline:3px}
+}
+@media(max-width:330px){.power-studio-switcher{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
 </style></head><body><a class="skip-link" href="#app">Skip to main content</a><div class="sr-only" id="routeAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div><div class="privacy-curtain" id="privacyCurtain" aria-hidden="true"><div><div class="privacy-curtain-mark">TW</div><strong>Financial view hidden</strong><span>This Week masks the page while it is inactive. This is a best-effort browser privacy layer, not a guarantee about operating-system snapshots.</span></div></div><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app" tabindex="-1">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="zen-home">
@@ -6115,7 +6215,101 @@ function detailBudgetStats(p){
 
 
 const UI_PREFS_KEY='thisweek.uiPrefs.v1';
+const POWER_PREFS_KEY='thisweek.powerPrefs.v1';
 const SAVINGS_GOALS_KEY='thisweek.savingsGoals.v1';
+const POWER_DETAILS_DEFAULT_ORDER=Object.freeze(['current','planning','data','settings']);
+const POWER_ROUTE_OPTIONS=Object.freeze([
+  {route:'log',label:'Add Spending',kicker:'Transaction'},
+  {route:'precheck',label:'Can I Spend This?',kicker:'Decision'},
+  {route:'bills',label:'Bills Studio',kicker:'Protection'},
+  {route:'essentials',label:'Essentials Runway',kicker:'Runway'},
+  {route:'lifestyle',label:'Lifestyle Flex',kicker:'Flex'},
+  {route:'savings',label:'Savings Goals',kicker:'Goals'},
+  {route:'scenario',label:'Scenario Sandbox',kicker:'What-if'},
+  {route:'history',label:'Weekly Memory',kicker:'History'},
+  {route:'connections',label:'Connected Data',kicker:'Data'},
+  {route:'insights',label:'Advanced Insights',kicker:'Analysis'},
+  {route:'privacy',label:'Privacy & Local Data',kicker:'Trust'}
+]);
+let powerPrefsCache=null;
+function normalizePowerPrefs(raw){
+  const input=raw&&typeof raw==='object'?raw:{};
+  const allowedRoutes=new Set(POWER_ROUTE_OPTIONS.map(x=>x.route));
+  const order=Array.isArray(input.detailsOrder)?input.detailsOrder.filter(x=>POWER_DETAILS_DEFAULT_ORDER.includes(x)):[];
+  for(const id of POWER_DETAILS_DEFAULT_ORDER)if(!order.includes(id))order.push(id);
+  return {
+    directCategoryOpen:input.directCategoryOpen===true,
+    quickAdd:input.quickAdd===true,
+    favoriteRoute:allowedRoutes.has(input.favoriteRoute)?input.favoriteRoute:'',
+    recentShortcut:input.recentShortcut===true,
+    recentRoute:allowedRoutes.has(input.recentRoute)?input.recentRoute:'',
+    keyboard:input.keyboard===true,
+    rapidSwitcher:input.rapidSwitcher===true,
+    detailsOrder:order.slice(0,POWER_DETAILS_DEFAULT_ORDER.length)
+  };
+}
+function readPowerPrefs(){
+  if(powerPrefsCache)return {...powerPrefsCache,detailsOrder:[...powerPrefsCache.detailsOrder]};
+  try{powerPrefsCache=normalizePowerPrefs(JSON.parse(safeLocalStorageGet(POWER_PREFS_KEY)||'{}'));}
+  catch{powerPrefsCache=normalizePowerPrefs({});}
+  return {...powerPrefsCache,detailsOrder:[...powerPrefsCache.detailsOrder]};
+}
+function writePowerPrefs(next){
+  const current=readPowerPrefs(),merged=normalizePowerPrefs({...current,...next});
+  powerPrefsCache=merged;
+  safeLocalStorageSet(POWER_PREFS_KEY,JSON.stringify(merged));
+  return {...merged,detailsOrder:[...merged.detailsOrder]};
+}
+function powerRouteMeta(routeName){return POWER_ROUTE_OPTIONS.find(x=>x.route===routeName)||null;}
+function movePowerDetailsGroup(id,delta){
+  const p=readPowerPrefs(),order=[...p.detailsOrder],from=order.indexOf(id),to=from+delta;
+  if(from<0||to<0||to>=order.length)return p;
+  [order[from],order[to]]=[order[to],order[from]];
+  return writePowerPrefs({detailsOrder:order});
+}
+function rememberRecentTool(routeName){
+  const p=readPowerPrefs(),meta=powerRouteMeta(routeName);
+  if(!p.recentShortcut||!meta||p.recentRoute===routeName)return;
+  writePowerPrefs({recentRoute:routeName});
+}
+function powerStudioSwitcher(active){
+  if(!readPowerPrefs().rapidSwitcher)return '';
+  const items=[
+    {route:'bills',label:'Bills'},{route:'essentials',label:'Essentials'},
+    {route:'lifestyle',label:'Lifestyle'},{route:'savings',label:'Savings'}
+  ];
+  return '<nav class="power-studio-switcher" aria-label="Money studio switcher">'+items.map(x=>'<a data-studio="'+x.route+'" class="'+(x.route===active?'active':'')+'" href="#'+x.route+'" '+(x.route===active?'aria-current="page"':'')+'>'+x.label+'</a>').join('')+'</nav>';
+}
+function injectPowerStudioSwitcher(active){
+  if(!readPowerPrefs().rapidSwitcher)return;
+  const host=root.querySelector('.studio-stack');if(!host||host.querySelector('.power-studio-switcher'))return;
+  host.insertAdjacentHTML('afterbegin',powerStudioSwitcher(active));
+}
+let powerChordKey='',powerChordTimer=null;
+function bindPowerKeyboard(){
+  if(window.__thisWeekPowerKeyboardBound)return;
+  window.__thisWeekPowerKeyboardBound=true;
+  document.addEventListener('keydown',e=>{
+    const p=readPowerPrefs();
+    if(!p.keyboard||e.defaultPrevented||e.metaKey||e.ctrlKey||e.altKey)return;
+    const tag=e.target?.tagName?.toLowerCase();
+    if(tag==='input'||tag==='textarea'||tag==='select'||e.target?.isContentEditable)return;
+    const key=String(e.key||'').toLowerCase();
+    if(key==='/'&&route()==='details'){
+      const search=document.getElementById('systemToolSearch');
+      if(search){e.preventDefault();search.focus();return;}
+    }
+    if(key==='g'){
+      powerChordKey='g';clearTimeout(powerChordTimer);powerChordTimer=setTimeout(()=>powerChordKey='',900);return;
+    }
+    if(powerChordKey!=='g')return;
+    const routes={h:'home',a:'log',d:'details',p:'setup',b:'bills',e:'essentials',l:'lifestyle',s:'savings'};
+    const next=routes[key];
+    powerChordKey='';clearTimeout(powerChordTimer);
+    if(!next)return;
+    e.preventDefault();location.hash=next;
+  });
+}
 let uiPrefsCache=null;
 function readUiPrefs(){
   const base={motion:'system',density:'compact',contrast:'system',textSize:'standard',touch:'comfortable',haptics:'on'};
@@ -6495,6 +6689,7 @@ function localDataInventory(){
     if(key===CONNECTED_DATA_KEY)return 'Imported transaction metadata, provenance, reconciliation and audit history';
     if(key===SAVINGS_GOALS_KEY)return 'Locally configured savings goals';
     if(key===UI_PREFS_KEY)return 'Presentation and accessibility preferences';
+    if(key===POWER_PREFS_KEY)return 'Optional power-user navigation and efficiency preferences; no financial amounts';
     if(key===FLEX_CAPS_KEY)return 'Lifestyle soft-cap preferences';
     if(key===RECOMMENDATION_PREFS_KEY)return 'Temporary recommendation presentation state';
     if(key===LOCAL_ANALYTICS_KEY)return 'Optional local-only aggregate usage counters; no financial amounts or merchant/category names';
@@ -7172,6 +7367,7 @@ if(!window.__thisWeekStorageSyncBound){
       if(typeof historySummaryCache!=='undefined')historySummaryCache={revision:-1,data:null};
     }
     if(e.key===UI_PREFS_KEY){uiPrefsCache=null;applyUiPrefs();}
+    if(e.key===POWER_PREFS_KEY)powerPrefsCache=null;
     if(e.key===SAVINGS_GOALS_KEY){savingsGoalsCache=null;savingsGoalsCacheRevision=-1;}
     if(e.key===CONNECTED_DATA_KEY)connectedDataCache=null;
   });
@@ -7516,7 +7712,7 @@ function phase3CommandSheetModel(p,d,command){
 function initZenDisclosure(p,d,worlds,attentionOverride,command){
   const scene=document.getElementById('zenScene'),peek=document.getElementById('zenPeek'),more=document.getElementById('zenMoreMenu'),core=document.getElementById('zenCore'),attention=document.getElementById('zenAttention'),commandEl=document.getElementById('zenCommand');
   if(!scene||!peek)return;
-  const zones=[...scene.querySelectorAll('.zen-zone')],prefs=readUiPrefs();
+  const zones=[...scene.querySelectorAll('.zen-zone')],prefs=readUiPrefs(),power=readPowerPrefs();
   let active=null,selectedChild=null,collapseTimer=null;
 
   const visibleLimit=()=>matchMedia('(max-width:390px)').matches?2:(prefs.density==='rich'?3:prefs.density==='balanced'?3:2);
@@ -7585,10 +7781,12 @@ function initZenDisclosure(p,d,worlds,attentionOverride,command){
   };
 
   zones.forEach(z=>{
-    z.setAttribute('aria-expanded','false');z.setAttribute('aria-controls','zenPeek');
+    if(power.directCategoryOpen){z.removeAttribute('aria-expanded');z.removeAttribute('aria-controls');}
+    else{z.setAttribute('aria-expanded','false');z.setAttribute('aria-controls','zenPeek');}
     z.addEventListener('click',e=>{
       e.preventDefault();
       const world=z.dataset.world;
+      if(power.directCategoryOpen){navigateWithChoreography(worlds[world].route,z,world);return;}
       if(active===world){navigateWithChoreography(worlds[world].route,z,world);return;}
       focus(world);
     });
@@ -7615,6 +7813,7 @@ async function renderHome(){
   try{
     const p=await apiRequest('/week/current',{method:'POST',body:JSON.stringify({userId})});
     const d=simpleDecision(p),time=weekTimeState(p),command=compactHomeCommand(p,d),state=readState(),connected=connectedDataSummary();
+    const power=readPowerPrefs(),categoryTapHint=power.directCategoryOpen?'Open studio.':'${categoryTapHint}';
     const savingsTarget=state?.config?.savingsRule?.active?Math.max(0,state.config.savingsRule.weeklyAmount||0):0;
     const savingsActual=Math.max(0,p.savingsThisWeek||0),savingsGap=Math.max(0,savingsTarget-savingsActual);
     const essentialDanger=(p.essentials||[]).some(x=>(x.remaining||0)<0),lifestyleDanger=(p.forYou||[]).some(x=>(x.remaining||0)<0);
@@ -7640,16 +7839,16 @@ async function renderHome(){
           <path class="line bills" d="M180 210 C140 165 103 120 62 72"/><path class="line essentials" d="M180 210 C220 165 257 120 298 72"/><path class="line lifestyle" d="M180 210 C140 255 103 300 62 348"/><path class="line savings" d="M180 210 C220 255 257 300 298 348"/>
         </svg>
 
-        <a class="zen-zone bills" href="#bills" data-world="bills" aria-label="Bills, ${formatCents(p.protected)}, ${escapeHtml(billsStatus)}. Tap once to peek.">
+        <a class="zen-zone bills" href="#bills" data-world="bills" aria-label="Bills, ${formatCents(p.protected)}, ${escapeHtml(billsStatus)}. ${categoryTapHint}">
           <span class="zen-emblem">${sceneIcon('bills')}</span><span class="zen-zone-copy"><small>Bills</small><strong>${formatCents(p.protected)}</strong><span><i class="zen-signal ${d.behind.length?'warn':''}"></i>${escapeHtml(billsStatus)}</span></span>
         </a>
-        <a class="zen-zone essentials" href="#essentials" data-world="essentials" aria-label="Essentials, ${formatCents(d.essentialsLeft)}, ${essentialsStatus}. Tap once to peek.">
+        <a class="zen-zone essentials" href="#essentials" data-world="essentials" aria-label="Essentials, ${formatCents(d.essentialsLeft)}, ${essentialsStatus}. ${categoryTapHint}">
           <span class="zen-emblem">${sceneIcon('essentials')}</span><span class="zen-zone-copy"><small>Essentials</small><strong>${formatCents(d.essentialsLeft)}</strong><span><i class="zen-signal ${essentialDanger?'danger':''}"></i>${essentialsStatus}</span></span>
         </a>
-        <a class="zen-zone lifestyle" href="#lifestyle" data-world="lifestyle" aria-label="Lifestyle, ${formatCents(d.lifestyleLeft)}, ${lifestyleStatus}. Tap once to peek.">
+        <a class="zen-zone lifestyle" href="#lifestyle" data-world="lifestyle" aria-label="Lifestyle, ${formatCents(d.lifestyleLeft)}, ${lifestyleStatus}. ${categoryTapHint}">
           <span class="zen-emblem">${sceneIcon('lifestyle')}</span><span class="zen-zone-copy"><small>Lifestyle</small><strong>${formatCents(d.lifestyleLeft)}</strong><span><i class="zen-signal ${lifestyleDanger?'danger':''}"></i>${lifestyleStatus}</span></span>
         </a>
-        <a class="zen-zone savings" href="#savings" data-world="savings" aria-label="Savings, ${formatCents(savingsActual)}, ${escapeHtml(savingsStatus)}. Tap once to peek.">
+        <a class="zen-zone savings" href="#savings" data-world="savings" aria-label="Savings, ${formatCents(savingsActual)}, ${escapeHtml(savingsStatus)}. ${categoryTapHint}">
           <span class="zen-emblem">${sceneIcon('savings')}</span><span class="zen-zone-copy"><small>Savings</small><strong>${formatCents(savingsActual)}</strong><span><i class="zen-signal"></i>${escapeHtml(savingsStatus)}</span></span>
         </a>
 
@@ -7689,6 +7888,7 @@ async function renderDetails(){
     const st=detailBudgetStats(p),signals=homeSignals(p),connected=connectedDataSummary(),time=weekTimeState(p);
     const savings=readSavingsGoals(),attentionBills=(p.bills||[]).filter(b=>b.status!=='ON_TRACK'||(b.requiredByToday||0)>(b.contributed||0)).length;
     const overspent=[...(p.essentials||[]),...(p.forYou||[])].filter(x=>(x.remaining||0)<0).length;
+    const power=readPowerPrefs();
 
     const tool=(route,kicker,title,copy,badge,accent,icon)=>`<a class="system-tool" href="#${route}" data-tool-search="${escapeHtml((kicker+' '+title+' '+copy+' '+badge).toLowerCase())}" style="--tool-accent:${accent}"><span class="system-tool-icon">${icon}</span><span class="system-tool-copy"><small>${escapeHtml(kicker)}</small><strong>${escapeHtml(title)}</strong><span>${escapeHtml(copy)}</span></span><span class="system-tool-arrow">›</span></a>`;
 
@@ -7733,6 +7933,17 @@ async function renderDetails(){
         ].join('')
       }
     ];
+    const rank=new Map(power.detailsOrder.map((id,i)=>[id,i]));
+    groups.sort((a,b)=>(rank.get(a.id)??99)-(rank.get(b.id)??99));
+    const favoriteMeta=powerRouteMeta(power.favoriteRoute),recentMeta=power.recentShortcut?powerRouteMeta(power.recentRoute):null;
+    const shortcutCards=[];
+    if(favoriteMeta)shortcutCards.push({kind:'Pinned',meta:favoriteMeta,icon:'★'});
+    if(recentMeta&&recentMeta.route!==favoriteMeta?.route)shortcutCards.push({kind:'Recent',meta:recentMeta,icon:'↺'});
+    const powerDock=(shortcutCards.length||power.keyboard)?`<section class="power-dock" aria-label="Power-user shortcuts">
+      <div class="power-dock-head"><span>Power shortcuts</span><span><a href="#preferences" style="color:inherit">Configure</a></span></div>
+      ${shortcutCards.length?`<div class="power-dock-grid">${shortcutCards.map(x=>`<a class="power-shortcut-card" href="#${x.meta.route}"><span class="power-shortcut-icon">${x.icon}</span><span class="power-shortcut-copy"><small>${x.kind} · ${x.meta.kicker}</small><strong>${escapeHtml(x.meta.label)}</strong></span><span>›</span></a>`).join('')}</div>`:''}
+      ${power.keyboard?'<div class="power-keyboard-hint">Keyboard: <kbd>G</kbd> then <kbd>H</kbd>/<kbd>A</kbd>/<kbd>D</kbd>/<kbd>P</kbd> for primary routes; <kbd>G</kbd> then <kbd>B</kbd>/<kbd>E</kbd>/<kbd>L</kbd>/<kbd>S</kbd> for money studios; <kbd>/</kbd> focuses Details search.</div>':''}
+    </section>`:'';
 
     root.innerHTML=`<div class="system-map-shell">
       <section class="system-map-hero">
@@ -7751,6 +7962,7 @@ async function renderDetails(){
           <span id="systemSearchCount">All tools</span>
         </label>
       </section>
+      ${powerDock}
 
       <div class="system-map-groups">
         ${groups.map(g=>`<details class="system-group" data-system-group="${g.id}" ${g.open?'open':''}><summary><span class="system-group-summary"><small>${escapeHtml(g.eyebrow)}</small><strong>${escapeHtml(g.title)}</strong><span>${escapeHtml(g.copy)}</span></span><span class="system-group-toggle">+</span></summary><div class="system-group-body"><div class="system-tool-grid">${g.html}</div></div></details>`).join('')}
@@ -8049,7 +8261,7 @@ async function renderScenario(){
 
 function renderPreferences(){
   shellMeta('Preferences','Presentation & Accessibility','Make the interface fit you without changing the calculations','<a class="text-action" href="#setup">Plan</a>');nav('preferences');
-  const p=readUiPrefs(),effective=effectiveUiPrefs();
+  const p=readUiPrefs(),effective=effectiveUiPrefs(),power=readPowerPrefs();
   const isProfile=(name)=>{
     if(name==='focused')return p.density==='compact'&&p.motion==='system'&&p.textSize==='standard'&&p.touch==='comfortable'&&p.contrast==='system';
     if(name==='accessible')return p.density==='compact'&&p.motion==='reduced'&&p.textSize==='large'&&p.touch==='comfortable'&&p.contrast==='high';
@@ -8087,6 +8299,25 @@ function renderPreferences(){
     </details>
 
     <section class="section">
+      <div class="section-head"><div><span class="section-kicker">Power-user efficiency</span><h2>Faster paths, only when you choose them</h2><div class="section-caption">Every shortcut below is off by default. Enabling one changes navigation or prefill behavior only; it never submits a financial action automatically.</div></div></div>
+      <div class="power-pref-grid">
+        ${[
+          ['directCategoryOpen','Direct-open categories','First Home category tap opens its Studio instead of Peek.'],
+          ['quickAdd','Quick amount prefill','Add Spending shows amount chips and can surface the latest category first.'],
+          ['recentShortcut','Recent tool shortcut','Details can show one shortcut to the most recently opened deep tool.'],
+          ['keyboard','Desktop keyboard chords','Enable G-then-key navigation and slash-to-search on Details.'],
+          ['rapidSwitcher','Rapid studio switcher','Bills, Essentials, Lifestyle, and Savings Studios show a compact switch strip.']
+        ].map(([key,title,copy])=>`<div class="power-pref-card"><span class="power-pref-copy"><strong>${title}</strong><span>${copy}</span></span><button type="button" class="power-toggle ${power[key]?'active':''}" data-power-toggle="${key}" aria-pressed="${power[key]?'true':'false'}">${power[key]?'On':'Off'}</button></div>`).join('')}
+      </div>
+      <div class="power-config">
+        <div class="power-config-row"><span><strong>Pinned Details tool</strong><span>Optional. Lives in Details—not Home.</span></span><select class="power-select" id="powerFavoriteRoute"><option value="">None</option>${POWER_ROUTE_OPTIONS.map(x=>`<option value="${x.route}" ${power.favoriteRoute===x.route?'selected':''}>${escapeHtml(x.label)}</option>`).join('')}</select></div>
+        <div><strong style="font-size:.59rem">Details group order</strong><span style="display:block;margin-top:3px;color:var(--text-soft);font-size:.47rem;line-height:1.4">Reorder the four existing groups without adding new sections.</span></div>
+        <div class="power-order-list">${power.detailsOrder.map((id,i)=>{const names={current:'Current week',planning:'Planning tools',data:'Data & history',settings:'System & settings'};return`<div class="power-order-row"><strong>${names[id]}</strong><span class="power-order-actions"><button type="button" data-order-id="${id}" data-order-shift="-1" ${i===0?'disabled':''} aria-label="Move ${names[id]} up">↑</button><button type="button" data-order-id="${id}" data-order-shift="1" ${i===power.detailsOrder.length-1?'disabled':''} aria-label="Move ${names[id]} down">↓</button></span></div>`}).join('')}</div>
+        <button class="btn btn-ghost" type="button" id="resetPowerOrder">Reset Details order</button>
+      </div>
+    </section>
+
+    <section class="section">
       <div class="section-head"><div><span class="section-kicker">Automatic accessibility</span><h2>Built into every profile</h2><div class="section-caption">These behaviors do not require a separate setting.</div></div></div>
       <div class="accessibility-status">
         <div><small>Keyboard</small><strong>Visible focus rings + Skip to Content</strong></div>
@@ -8104,6 +8335,15 @@ function renderPreferences(){
   };
   document.querySelectorAll('[data-profile]').forEach(b=>b.onclick=()=>{writeUiPrefs(profiles[b.dataset.profile]);successToast('Presentation profile updated.');renderPreferences();});
   document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{writeUiPrefs({[b.dataset.key]:b.dataset.value});renderPreferences();});
+  document.querySelectorAll('[data-power-toggle]').forEach(b=>b.onclick=()=>{
+    const key=b.dataset.powerToggle,current=readPowerPrefs(),next=!current[key];
+    writePowerPrefs(key==='recentShortcut'&&!next?{recentShortcut:false,recentRoute:''}:{[key]:next});
+    successToast(next?'Shortcut enabled.':'Shortcut disabled.');
+    renderPreferences();
+  });
+  document.getElementById('powerFavoriteRoute')?.addEventListener('change',e=>{writePowerPrefs({favoriteRoute:e.target.value});successToast(e.target.value?'Favorite tool pinned in Details.':'Favorite tool cleared.');renderPreferences();});
+  document.querySelectorAll('[data-order-shift]').forEach(b=>b.onclick=()=>{movePowerDetailsGroup(b.dataset.orderId,Number(b.dataset.orderShift));renderPreferences();});
+  document.getElementById('resetPowerOrder')?.addEventListener('click',()=>{writePowerPrefs({detailsOrder:[...POWER_DETAILS_DEFAULT_ORDER]});successToast('Details order reset.');renderPreferences();});
 }
 
 async function renderLifestyleStudio(){
@@ -8568,7 +8808,9 @@ async function renderLog(){
   if(!userId){ root.innerHTML='<div class="center"><div class="error">Build a plan first.</div><a class="btn btn-primary" href="#setup">Build My Plan</a></div>'; return; }
   try{
     const p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);
-    const cats=[...p.essentials.map(c=>({...c,type:'LIVING'})),...p.forYou.map(c=>({...c,type:'DISCRETIONARY'}))].slice(0,4);
+    const power=readPowerPrefs(),recent=power.quickAdd?recentWeekTransaction(p.week.id):null;
+    const allCats=[...p.essentials.map(c=>({...c,type:'LIVING'})),...p.forYou.map(c=>({...c,type:'DISCRETIONARY'}))];
+    const cats=[...allCats].sort((a,b)=>recent?.categoryId===a.id?-1:recent?.categoryId===b.id?1:0).slice(0,4);
     let selected=null;
     const iconFor=(i)=>[
       '<svg viewBox="0 0 24 24"><rect x="4.5" y="9.6" width="15" height="8.8" rx="2.2"/><path d="M8.2 9.6c.5-2.1 1.8-3.7 3.8-4.7 2 1 3.3 2.6 3.8 4.7"/></svg>',
@@ -8592,6 +8834,7 @@ async function renderLog(){
 
       <section class="form-card tx-form">
         <div id="formErr"></div>
+        ${power.quickAdd?`<div class="power-quick-add"><small>Quick amount · prefill only</small>${[500,1000,2000,5000].map(v=>`<button type="button" class="power-amount-chip" data-cents="${v}">${formatCents(v)}</button>`).join('')}${recent&&Number(recent.amount)>0?`<button type="button" class="power-amount-chip repeat" data-cents="${Number(recent.amount)}" data-category-id="${escapeHtml(recent.categoryId||'')}">Repeat ${formatCents(Number(recent.amount))}</button>`:''}</div>`:''}
         <div class="field-group"><label class="field-label">Amount</label><div class="amount-row"><span class="dollar">$</span><input type="text" inputmode="decimal" id="amountInput" placeholder="0.00"></div></div>
         <div class="field-group"><label class="field-label">Note</label><input type="text" id="noteInput" placeholder="What was this for?" maxlength="500"></div>
         <div class="stack-actions"><button class="btn-primary" id="submitSpend" disabled>Add Spending</button><a class="btn btn-secondary" href="#home">Back to dashboard</a></div>
@@ -8621,6 +8864,14 @@ async function renderLog(){
     amountInput.addEventListener('input',()=>{
       const n=Number(amountInput.value);
       coreAmount.textContent=Number.isFinite(n)&&n>0?formatCents(Math.round(n*100)):'$0.00';
+    });
+    document.querySelectorAll('.power-amount-chip').forEach(btn=>btn.onclick=()=>{
+      const cents=Number(btn.dataset.cents)||0;
+      amountInput.value=(cents/100).toFixed(2);
+      amountInput.dispatchEvent(new Event('input',{bubbles:true}));
+      const catId=btn.dataset.categoryId;
+      if(catId){const receiver=receivers.find(x=>x.dataset.id===catId);if(receiver)choose(receiver);}
+      amountInput.focus();
     });
 
     submit.onclick=async()=>{
@@ -8819,7 +9070,7 @@ async function render(){
   closeAppSheet({restore:false});
   if(zenDisclosureVisibilityCleanup){zenDisclosureVisibilityCleanup();zenDisclosureVisibilityCleanup=null;}
   if(sceneMotionObserver){try{sceneMotionObserver.disconnect();}catch{}sceneMotionObserver=null;}
-  applyUiPrefs();applyRuntimePerformanceTier();bindSystemPreferenceListeners();bindMobileViewportController();bindLongTaskObserver();bindPrivacyCurtain();
+  applyUiPrefs();applyRuntimePerformanceTier();bindSystemPreferenceListeners();bindMobileViewportController();bindLongTaskObserver();bindPrivacyCurtain();bindPowerKeyboard();
   const r=route(),routeChanged=lastRenderedRoute!==null&&lastRenderedRoute!==r;
   document.body.dataset.view=r;
   root.setAttribute('aria-busy','true');
@@ -8855,6 +9106,8 @@ async function render(){
     clearTimeout(phase17LoadingTimer);
     root.removeAttribute('aria-busy');
   }
+  if(['bills','essentials','lifestyle','savings'].includes(r))injectPowerStudioSwitcher(r);
+  rememberRecentTool(r);
   requestAnimationFrame(()=>{
     applyRouteEntryTransition(r);
     window.scrollTo({top:restoreScroll,behavior:'auto'});
