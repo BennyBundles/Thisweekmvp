@@ -364,5 +364,23 @@
         "url": null
       }
     }
+  },
+  "network": {
+    "billYen": {
+      "youtubeChannel": {
+        "status": "verified",
+        "url": "https://youtube.com/@billyenthebuilder",
+        "label": "BillYen YouTube channel",
+        "note": "Official channel URL supplied by Benny."
+      },
+      "musicLinks": [
+        {
+          "status": "verified",
+          "url": "https://youtu.be/oDa5fa3Zet8",
+          "label": "BillYen music link",
+          "note": "Official music URL supplied by Benny; duplicate submission deduplicated."
+        }
+      ]
+    }
   }
 }
