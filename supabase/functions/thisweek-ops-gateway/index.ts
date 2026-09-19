@@ -92,7 +92,7 @@ function buildHealth(
 }
 async function dashboard(admin:ReturnType<typeof createClient>){
   const failureSince=new Date(Date.now()-15*60*1000).toISOString();
-  const [alerts,cases,reviews,riskEvents,staffActions,supportRequests,supportMessages,incidents,slaPolicy,providerFailures,healthSnapshots,monitorRuns,notifications]=await Promise.all([
+  const [alerts,cases,reviews,riskEvents,staffActions,supportRequests,supportMessages,incidents,slaPolicy,providerFailures,healthSnapshots,monitorRuns,notifications,notificationChannel]=await Promise.all([
     admin.from("tw_ops_alerts")
       .select("id,user_id,case_id,risk_review_id,alert_type,severity,state,safe_detail,created_at,updated_at,acknowledged_at")
       .neq("state","resolved").order("created_at",{ascending:false}).limit(100),
@@ -132,8 +132,11 @@ async function dashboard(admin:ReturnType<typeof createClient>){
     admin.from("tw_ops_notification_outbox")
       .select("id,notification_key,channel,event_type,severity,subject,safe_body,alert_id,incident_id,state,attempt_count,next_attempt_at,last_error_code,created_at,sent_at")
       .in("state",["pending","failed"]).order("created_at",{ascending:false}).limit(100),
+    admin.from("tw_ops_notification_channel_status")
+      .select("channel_key,configured,state,last_check_at,last_success_at,last_error_code,updated_at")
+      .eq("channel_key","external_webhook").maybeSingle(),
   ]);
-  if(alerts.error||cases.error||reviews.error||riskEvents.error||staffActions.error||supportRequests.error||supportMessages.error||incidents.error||slaPolicy.error||providerFailures.error||healthSnapshots.error||monitorRuns.error||notifications.error)throw new Error("ops_dashboard_read_failed");
+  if(alerts.error||cases.error||reviews.error||riskEvents.error||staffActions.error||supportRequests.error||supportMessages.error||incidents.error||slaPolicy.error||providerFailures.error||healthSnapshots.error||monitorRuns.error||notifications.error||notificationChannel.error)throw new Error("ops_dashboard_read_failed");
   const eventById=new Map((riskEvents.data||[]).map((e:AnyRecord)=>[String(e.id),e]));
   const supportRows=supportRequests.data||[];
   const supportIds=new Set(supportRows.map((x:AnyRecord)=>String(x.id)));
@@ -155,7 +158,8 @@ async function dashboard(admin:ReturnType<typeof createClient>){
     recentSnapshots:healthSnapshots.data||[],
     recentRuns:monitorRuns.data||[],
     pendingNotifications:notifications.data||[],
-    externalChannelConfigured:false
+    externalChannelConfigured:notificationChannel.data?.configured===true,
+    notificationChannel:notificationChannel.data||{channel_key:"external_webhook",configured:false,state:"unconfigured"}
   };
   return {
     alerts:alerts.data||[],
@@ -227,7 +231,8 @@ Deno.serve(async(req)=>{
         automatedMonitor:{
           schedulerState:data.automatedMonitor?.schedulerState||"unknown",
           heartbeatAgeMinutes:data.automatedMonitor?.heartbeatAgeMinutes??null,
-          externalChannelConfigured:false
+          externalChannelConfigured:data.automatedMonitor?.externalChannelConfigured===true,
+          notificationChannel:data.automatedMonitor?.notificationChannel||null
         }
       });
     }
