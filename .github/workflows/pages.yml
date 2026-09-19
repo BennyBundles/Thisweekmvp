@@ -49,6 +49,9 @@ jobs:
       - name: Validate Money Sandbox Lab
         run: node money-lab-check.mjs money-lab/index.html money-lab/app.js
 
+      - name: Validate Account Center
+        run: node account-check.mjs account/index.html account/app.js
+
   deploy:
     needs: validate
     environment:
@@ -90,6 +93,11 @@ jobs:
           cp money-lab/index.html _site/money-lab/index.html
           cp money-lab/app.js _site/money-lab/app.js
           node money-lab-check.mjs _site/money-lab/index.html _site/money-lab/app.js
+
+          mkdir -p _site/account
+          cp account/index.html _site/account/index.html
+          cp account/app.js _site/account/app.js
+          node account-check.mjs _site/account/index.html _site/account/app.js
 
           node <<'NODE'
           const fs = require('fs');
@@ -141,13 +149,17 @@ jobs:
             public_preview="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/public-preview/?mode=demo&v=${SHORT}" || true)"
             money_lab="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/money-lab/?v=${SHORT}" || true)"
             money_lab_js="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/money-lab/app.js?v=${SHORT}" || true)"
+            account_center="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/account/?v=${SHORT}" || true)"
+            account_js="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/account/app.js?v=${SHORT}" || true)"
 
             if grep -Fq 'This Week' <<< "$html" \
               && grep -Fq -- "$RELEASE_SHA" <<< "$manifest" \
               && grep -Fq 'Public Release Preview' <<< "$preview" \
               && grep -Fq 'thisweek.publicPreview.state.v2' <<< "$public_preview" \
               && grep -Fq 'Money Sandbox Lab' <<< "$money_lab" \
-              && grep -Fq '/functions/v1/thisweek-money-gateway' <<< "$money_lab_js"; then
+              && grep -Fq '/functions/v1/thisweek-money-gateway' <<< "$money_lab_js" \
+              && grep -Fq 'Account & Security' <<< "$account_center" \
+              && grep -Fq '/functions/v1/thisweek-account-gateway' <<< "$account_js"; then
               success=1
               break
             fi
@@ -170,4 +182,5 @@ jobs:
             echo "- Public release preview: `${BASE}/preview.html?v=${SHORT}`"
             echo "- Standalone preview app: `${BASE}/public-preview/?mode=demo&v=${SHORT}`"
             echo "- Money Sandbox Lab: `${BASE}/money-lab/?v=${SHORT}`"
+            echo "- Account & Security: `${BASE}/account/?v=${SHORT}`"
           } >> "$GITHUB_STEP_SUMMARY"
