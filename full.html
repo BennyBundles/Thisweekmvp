@@ -813,7 +813,7 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
 </script>
 <script id="v13-expansion-script">
 (()=> {
-  // Pointer-reactive art cards: a restrained highlight follows the user's movement.
+  const dollar=String.fromCharCode(36);
   document.querySelectorAll('.motion-card').forEach(card=>{
     card.addEventListener('pointermove',e=>{
       const r=card.getBoundingClientRect();
@@ -821,7 +821,6 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
       card.style.setProperty('--my',((e.clientY-r.top)/r.height).toFixed(3));
     },{passive:true});
   });
-  // World-specific visual sequencers.
   document.querySelectorAll('[data-sequencer]').forEach(seq=>{
     const buttons=[...seq.querySelectorAll('[data-seq]')],panels=[...seq.querySelectorAll('[data-panel]')];
     buttons.forEach(btn=>btn.addEventListener('click',()=>{
@@ -830,42 +829,35 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
       panels.forEach(p=>p.classList.toggle('active',p.dataset.panel===i));
     }));
   });
-  // Producer A/B visual state. Audio files can be attached later without changing the control.
   document.querySelectorAll('[data-ab-v13]').forEach(btn=>btn.addEventListener('click',()=>{
     const wrap=btn.closest('[data-ab-demo]'); if(!wrap)return;
     wrap.querySelectorAll('[data-ab-v13]').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    wrap.dataset.mode=btn.dataset.abV13;
+    btn.classList.add('active'); wrap.dataset.mode=btn.dataset.abV13;
   }));
-  // Stripe-ready service buttons currently open a scoped request preview.
   const modal=document.getElementById('v12Request'),txt=document.getElementById('v12RequestText'),status=document.getElementById('v12RequestStatus');
-  function openPrepared(label,meta=''){
+  function openPrepared(label,meta){
     if(!modal||!txt)return;
-    txt.textContent=['TAGJ × BENNY BUNDLES — SERVICE REQUEST','',label,meta,'','Payment status: request first / Stripe checkout not connected yet.'].filter(Boolean).join('\n');
-    status.textContent='';
-    modal.classList.add('open');
+    txt.textContent=['TAGJ × BENNY BUNDLES — SERVICE REQUEST','',label,meta||'','','Payment status: request first / Stripe checkout not connected yet.'].filter(Boolean).join('\n');
+    if(status)status.textContent=''; modal.classList.add('open');
   }
   document.querySelectorAll('[data-request]').forEach(btn=>btn.addEventListener('click',e=>{
     if(btn.tagName==='A') return;
     e.preventDefault();
-    const meta=[btn.dataset.sku?('SKU: '+btn.dataset.sku):'',btn.dataset.priceCents?('Planned Stripe amount: </html>+(Number(btn.dataset.priceCents)/100).toFixed(2)):''].filter(Boolean).join('\n');
+    const meta=[btn.dataset.sku?('SKU: '+btn.dataset.sku):'',btn.dataset.priceCents?('Planned Stripe amount: '+dollar+(Number(btn.dataset.priceCents)/100).toFixed(2)):''].filter(Boolean).join('\n');
     openPrepared(btn.dataset.request,meta);
   }));
-  // Custom visual-services bundle calculator.
-  const scopeChecks=[...document.querySelectorAll('[data-scope-price]')];
-  const totalEl=document.querySelector('[data-scope-total]');
-  const scopeBtn=document.querySelector('[data-scope-request]');
+  const scopeChecks=[...document.querySelectorAll('[data-scope-price]')],totalEl=document.querySelector('[data-scope-total]'),scopeBtn=document.querySelector('[data-scope-request]');
   function scopeState(){
     const picked=scopeChecks.filter(x=>x.checked);
     const total=picked.reduce((s,x)=>s+Number(x.dataset.scopePrice||0),0);
-    if(totalEl) totalEl.textContent='</html>+total;
+    if(totalEl) totalEl.textContent=dollar+total;
     return {picked,total};
   }
   scopeChecks.forEach(x=>x.addEventListener('change',scopeState));
   scopeBtn?.addEventListener('click',e=>{
-    e.preventDefault(); const {picked,total}=scopeState();
-    const list=picked.length?picked.map(x=>'• '+x.dataset.scopeName+' — </html>+x.dataset.scopePrice).join('\n'):'No services selected yet.';
-    openPrepared('Custom Release Bundle','Selected:\n'+list+'\nStarting total: </html>+total+'\nBundle discount / final scope confirmed during inquiry.');
+    e.preventDefault(); const state=scopeState();
+    const list=state.picked.length?state.picked.map(x=>'• '+x.dataset.scopeName+' — '+dollar+x.dataset.scopePrice).join('\n'):'No services selected yet.';
+    openPrepared('Custom Release Bundle','Selected:\n'+list+'\nStarting subtotal: '+dollar+state.total+'\nBundle savings are not applied until a real package price is configured.');
   });
   scopeState();
 })();
@@ -873,7 +865,7 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
 
 <script id="v13-expansion-script-2">
 (()=> {
-  // Producer rack: arm channel on first tap, navigate on second tap.
+  const dollar=String.fromCharCode(36);
   document.querySelectorAll('.v13-rack button[data-route]').forEach(btn=>{
     btn.addEventListener('click',()=>{
       const was=btn.classList.contains('armed');
@@ -882,53 +874,44 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
       if(was){ location.hash=btn.dataset.route; }
     });
   });
-
-  // Artist interactive release poster.
   const stage=document.getElementById('v13ReleaseStage'),name=document.getElementById('v13ReleaseName');
   document.querySelectorAll('.v13-release-select').forEach(btn=>btn.addEventListener('click',()=>{
     document.querySelectorAll('.v13-release-select').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
-    if(stage) stage.style.setProperty('--active-poster',`var(${btn.dataset.poster})`);
+    if(stage) stage.style.setProperty('--active-poster','var('+btn.dataset.poster+')');
     if(name) name.textContent=btn.dataset.title||'SELECTED RELEASE';
   }));
-
-  // Producer A/B visual intensity control; real audio slots can be attached later.
   const ab=document.getElementById('v13AB');
   ab?.querySelectorAll('[data-ab]').forEach(btn=>btn.addEventListener('click',()=>{
     ab.querySelectorAll('[data-ab]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
     ab.classList.toggle('after',btn.dataset.ab==='after');
   }));
-
-  // Creative live bundle estimator.
   const builder=document.getElementById('v13Builder');
   function updateV13Bundle(){
     if(!builder)return;
     const chosen=[...builder.querySelectorAll('input[type=checkbox]:checked')];
-    const base=chosen.reduce((s,x)=>s+Number(x.dataset.price||0),0);
-    const discount=chosen.length>=3?.15:chosen.length>=2?.10:0;
-    const total=Math.round(base*(1-discount));
-    builder.querySelector('[data-v13-total]').textContent='</html>+total;
+    const total=chosen.reduce((s,x)=>s+Number(x.dataset.price||0),0);
+    const totalNode=builder.querySelector('[data-v13-total]');
+    if(totalNode) totalNode.textContent=dollar+total;
     builder.dataset.total=String(total);
     builder.dataset.services=chosen.map(x=>x.dataset.label).join(', ');
     const summary=builder.querySelector('[data-v13-summary]');
-    summary.textContent=chosen.length
-      ? `${chosen.length} service${chosen.length===1?'':'s'} selected · ${Math.round(discount*100)}% bundle discount · estimated launch total ${total}. Final scope is confirmed before payment.`
-      : 'Select services. Bundle estimates automatically apply 10% off at 2 items and 15% off at 3+ items. Final scope is confirmed before payment.';
+    if(summary) summary.textContent=chosen.length
+      ? chosen.length+' service'+(chosen.length===1?'':'s')+' selected · starting subtotal '+dollar+total+'. Bundle savings are applied only when a configured package price exists.'
+      : 'Select services. The builder shows the starting subtotal only; no unconfigured discount is applied.';
   }
   builder?.querySelectorAll('input[type=checkbox]').forEach(x=>x.addEventListener('change',updateV13Bundle));
   updateV13Bundle();
-
   function openPrepared(service){
     const modal=document.getElementById('v12Request'),txt=document.getElementById('v12RequestText'),status=document.getElementById('v12RequestStatus');
     if(!modal||!txt)return;
     txt.textContent=['TAGJ × BENNY BUNDLES — PROJECT INQUIRY','','Selected service: '+service,'','Free inquiry / consultation requested.','Final scope and price must be confirmed before payment.','Source: '+(location.hash||'#site')].join('\n');
-    if(status)status.textContent='';
-    modal.classList.add('open');
+    if(status)status.textContent='';modal.classList.add('open');
   }
   document.querySelectorAll('.v13-inquire').forEach(btn=>btn.addEventListener('click',()=>openPrepared(btn.dataset.service||'Custom service inquiry')));
   document.getElementById('v13BundleInquiry')?.addEventListener('click',()=>{
     const services=builder?.dataset.services||'No services selected';
     const total=builder?.dataset.total||'0';
-    openPrepared(`Custom Release Bundle — ${services} — estimated launch total ${total}`);
+    openPrepared('Custom Release Bundle — '+services+' — starting subtotal '+dollar+total);
   });
 })();
 </script>
@@ -967,17 +950,12 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
 
 <script id="v14-2-deeper-systems-js">
 (()=>{
- const q=(s,r=document)=>r.querySelector(s), qa=(s,r=document)=>[...r.querySelectorAll(s)];
- // TAGJ concept registry
+ const dollar=String.fromCharCode(36),q=(s,r=document)=>r.querySelector(s),qa=(s,r=document)=>[...r.querySelectorAll(s)];
  const tagjData={
-  shadow:['Shadow Step V1.1','Footwear','Development','Not confirmed'],
-  modular:['Modular X-Spine','Footwear','Development','Not confirmed'],
-  studio:['Studio Mid 808','Footwear','Development','Not confirmed'],
-  vaultboot:['Vault Boot','Footwear','Concept','Not confirmed'],
-  pressure:['Pressure Gold Runner','Footwear','Concept','Not confirmed'],
-  concrete:['Concrete Bloom Wrap','Footwear','Concept','Not confirmed'],
-  vaultbloom:['Vault Bloom','Apparel','Concept','Not confirmed'],
-  houseouterwear:['House Outerwear System','Apparel','House study','Not confirmed'],
+  shadow:['Shadow Step V1.1','Footwear','Development','Not confirmed'],modular:['Modular X-Spine','Footwear','Development','Not confirmed'],
+  studio:['Studio Mid 808','Footwear','Development','Not confirmed'],vaultboot:['Vault Boot','Footwear','Concept','Not confirmed'],
+  pressure:['Pressure Gold Runner','Footwear','Concept','Not confirmed'],concrete:['Concrete Bloom Wrap','Footwear','Concept','Not confirmed'],
+  vaultbloom:['Vault Bloom','Apparel','Concept','Not confirmed'],houseouterwear:['House Outerwear System','Apparel','House study','Not confirmed'],
   grill:['Jewelry + Grill Concepts','Accessories','Concept lab','Not confirmed']
  };
  qa('[data-v142-filter="tagj"] button').forEach(btn=>btn.addEventListener('click',()=>{
@@ -985,12 +963,9 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
    const k=btn.dataset.kind;qa('#v142TagjRecords .v142-record').forEach(card=>card.classList.toggle('is-hidden',k!=='all'&&card.dataset.kind!==k));
  }));
  qa('#v142TagjRecords .v142-record').forEach(card=>card.addEventListener('click',()=>{
-   const d=tagjData[card.dataset.record]; if(!d)return;
-   const p=q('#v142TagjPanel'); if(!p)return;
+   const d=tagjData[card.dataset.record],p=q('#v142TagjPanel'); if(!d||!p)return;
    p.innerHTML='<div><div class="v142-kicker">'+d[1].toUpperCase()+' / RECORD</div><h3>'+d[0]+'</h3><p>This record exposes deeper development information only after selection. No physical availability or checkout state is implied.</p><div class="v142-actions"><a href="#tagj-product-lab">Open Product Lab</a><a href="#tagj-custom">Start custom request</a></div></div><div class="v142-specs"><div><b>Category</b><span>'+d[1]+'</span></div><div><b>Status</b><span>'+d[2]+'</span></div><div><b>Inventory</b><span>'+d[3]+'</span></div><div><b>Commerce</b><span>Inquiry only</span></div></div>';
-   p.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});
  }));
- // Artist release vault
  const releaseData={
   reached:['Reached Into the Fire','PROJECT / CAMPAIGN','var(--asset-cover-reached-fire)','Campaign artwork and release-world record. Verified streaming/video destinations can attach here without redesigning the archive.'],
   oh:['Oh Lord!','RELEASE','var(--asset-cover-big-difference)','Known Benny Bundles release record. Platform destinations remain pending verified URLs.'],
@@ -1006,7 +981,6 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
    const d=releaseData[btn.dataset.release]; if(!d)return;
    q('#v142ReleaseTitle').textContent=d[0];q('#v142ReleaseType').textContent=d[1];q('#v142ReleaseCopy').textContent=d[3];q('#v142ReleaseStage').style.setProperty('--v142-art',d[2]);
  }));
- // Producer signal matrix
  const studioSelected=new Set();
  qa('#v142StudioMatrix .v142-channel').forEach(btn=>btn.addEventListener('click',()=>{
    const s=btn.dataset.studioService;btn.classList.toggle('armed');
@@ -1016,25 +990,21 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
    q('#v142StudioCopy').textContent=studioSelected.size?'This signal path is staged locally. Prepare a brief when the service combination is correct.':'Tap one or more service channels. The selected signal path will be carried into the request workflow as a prepared brief only.';
  }));
  function openPrepared(title,lines){
-   const modal=q('#v12Request')||q('#requestPreview'), pre=q('#v12RequestText')||q('#requestPreviewText');
-   if(!modal||!pre)return;
-   pre.textContent=[title,'',...lines,'','Prepared locally — no backend submission or payment has occurred.'].join('\n');
-   modal.classList.add('open');modal.setAttribute('aria-hidden','false');
+   const modal=q('#v12Request')||q('#requestPreview'),pre=q('#v12RequestText')||q('#requestPreviewText'); if(!modal||!pre)return;
+   pre.textContent=[title,'',...lines,'','Prepared locally — no backend submission or payment has occurred.'].join('\n');modal.classList.add('open');modal.setAttribute('aria-hidden','false');
  }
  q('#v142PrepareStudio')?.addEventListener('click',()=>openPrepared('BENNY BUNDLES — STUDIO REQUEST',['Selected services: '+([...studioSelected].join(', ')||'None selected'),'Route: '+location.hash]));
- // Creative scope builder
  const scopeChecks=()=>qa('#v142ScopeList input:checked');
  function updateScope(){
-   const checked=scopeChecks(), total=checked.reduce((n,x)=>n+Number(x.value||0),0), labels=checked.map(x=>x.dataset.label);
-   q('#v142ScopeTotal').textContent='
+   const checked=scopeChecks(),total=checked.reduce((n,x)=>n+Number(x.value||0),0),labels=checked.map(x=>x.dataset.label);
+   q('#v142ScopeTotal').textContent=dollar+total+(checked.some(x=>x.value==='35'||x.value==='150')?'+':'');
    q('#v142ScopeSummary').textContent=checked.length?labels.join(' + ')+' — starting subtotal only; final scope and any bundle savings require configuration.':'Choose services to create a release scope. Bundle savings are intentionally not applied until a real package price is configured.';
  }
  qa('#v142ScopeList input').forEach(x=>x.addEventListener('change',updateScope));updateScope();
  q('#v142PrepareCreative')?.addEventListener('click',()=>{
-   const checked=scopeChecks(),total=checked.reduce((n,x)=>n+Number(x.value||0),0);
-   openPrepared('TAGJ CREATIVE — RELEASE SCOPE',['Selected services: '+(checked.map(x=>x.dataset.label).join(', ')||'None selected'),'Starting subtotal reference: ,'Bundle discount: not configured']);
+   const checked=scopeChecks(),total=checked.reduce((n,x)=>n+Number(x.value||0),0),plus=checked.some(x=>x.value==='35'||x.value==='150')?'+':'';
+   openPrepared('TAGJ CREATIVE — RELEASE SCOPE',['Selected services: '+(checked.map(x=>x.dataset.label).join(', ')||'None selected'),'Starting subtotal reference: '+dollar+total+plus,'Bundle discount: not configured']);
  });
- // V14.2 mobile depth dock
  const dock=document.createElement('nav');dock.className='v142-depth-dock';dock.id='v142DepthDock';document.body.appendChild(dock);
  const dockMap={
   tagj:[['House','#tagj-house-map'],['Lab','#tagj-product-lab'],['Registry','#tagj-concept-registry-v142'],['Custom','#tagj-custom']],
