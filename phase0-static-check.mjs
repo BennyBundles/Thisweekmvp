@@ -29,6 +29,12 @@ const moneyLabJsUrl=new URL('./money-lab/app.js', import.meta.url);
 const moneyLabCheckUrl=new URL('./money-lab-check.mjs', import.meta.url);
 const phase22SchemaUrl=new URL('./supabase/phase22/provider_sandbox_chain.sql', import.meta.url);
 const phase22DocUrl=new URL('./PHASE_22_IMPLEMENTATION.md', import.meta.url);
+const phase23SchemaUrl=new URL('./supabase/phase23/account_security.sql', import.meta.url);
+const phase23DocUrl=new URL('./PHASE_23_IMPLEMENTATION.md', import.meta.url);
+const accountGatewayUrl=new URL('./supabase/functions/thisweek-account-gateway/index.ts', import.meta.url);
+const accountHtmlUrl=new URL('./account/index.html', import.meta.url);
+const accountJsUrl=new URL('./account/app.js', import.meta.url);
+const accountCheckUrl=new URL('./account-check.mjs', import.meta.url);
 
 const releaseFiles=['prepare-site.mjs','release-smoke-check.mjs','RELEASE_CHECKLIST.md','RELEASE_POLICY.md','release.config.json','CHANGELOG.md','RELEASES/v0.15.0-phase15.md'];
 for(const name of releaseFiles){
@@ -56,7 +62,13 @@ for(const [label,url] of [
   ['Money Lab client',moneyLabJsUrl],
   ['Money Lab checker',moneyLabCheckUrl],
   ['Phase 22 provider sandbox schema',phase22SchemaUrl],
-  ['Phase 22 implementation document',phase22DocUrl]
+  ['Phase 22 implementation document',phase22DocUrl],
+  ['Phase 23 account security schema',phase23SchemaUrl],
+  ['Phase 23 implementation document',phase23DocUrl],
+  ['Account Gateway',accountGatewayUrl],
+  ['Account Center HTML',accountHtmlUrl],
+  ['Account Center client',accountJsUrl],
+  ['Account Center checker',accountCheckUrl]
 ]){
   if(!fs.existsSync(url))failures.push('Missing '+label);
 }
@@ -80,6 +92,12 @@ const requirePhase21FileText=(label,content,text)=>{if(!content.includes(text))f
 const phase22Schema=fs.existsSync(phase22SchemaUrl)?fs.readFileSync(phase22SchemaUrl,'utf8'):'';
 const phase22Doc=fs.existsSync(phase22DocUrl)?fs.readFileSync(phase22DocUrl,'utf8'):'';
 const requirePhase22FileText=(label,content,text)=>{if(!content.includes(text))failures.push(label);};
+const phase23Schema=fs.existsSync(phase23SchemaUrl)?fs.readFileSync(phase23SchemaUrl,'utf8'):'';
+const phase23Doc=fs.existsSync(phase23DocUrl)?fs.readFileSync(phase23DocUrl,'utf8'):'';
+const accountGateway=fs.existsSync(accountGatewayUrl)?fs.readFileSync(accountGatewayUrl,'utf8'):'';
+const accountHtml=fs.existsSync(accountHtmlUrl)?fs.readFileSync(accountHtmlUrl,'utf8'):'';
+const accountJs=fs.existsSync(accountJsUrl)?fs.readFileSync(accountJsUrl,'utf8'):'';
+const requirePhase23FileText=(label,content,text)=>{if(!content.includes(text))failures.push(label);};
 
 const requireText=(label,text)=>{if(!html.includes(text))failures.push(label);};
 const forbidText=(label,text)=>{if(html.includes(text))failures.push(label);};
@@ -381,6 +399,25 @@ requirePhase21FileText('Phase 22 Lab preflight control',moneyLabHtml,'id="provid
 requirePhase21FileText('Phase 22 Lab preflight renderer',moneyLabJs,'renderProviderChecks');
 requirePhase21FileText('Phase 22 Lab provider-aware controls',moneyLabJs,'applyProviderControlState');
 requirePhase21FileText('Phase 22 Lab preflight action',moneyLabJs,"gateway('provider_preflight')");
+
+requireText('Phase 23 Account Center link','href="./account/"');
+requirePhase23FileText('Phase 23 session boolean RPC',phase23Schema,'tw_auth_session_active');
+requirePhase23FileText('Phase 23 closure request table',phase23Schema,'tw_account_closure_requests');
+requirePhase23FileText('Phase 23 session RPC browser revocation',phase23Schema,'from public, anon, authenticated');
+requirePhase23FileText('Phase 23 Account Gateway session validation',accountGateway,'tw_auth_session_active');
+requirePhase23FileText('Phase 23 Account Gateway hard delete',accountGateway,'auth.admin.deleteUser');
+requirePhase23FileText('Phase 23 Account Gateway retention review',accountGateway,'retention_review_required');
+requirePhase23FileText('Phase 23 Account Gateway Vault cleanup',accountGateway,'tw_vault_delete');
+requirePhase23FileText('Phase 23 Account Center exact allowlist',accountHtml,'connect-src https://xjtvawmppzwzrooairyx.supabase.co');
+requirePhase23FileText('Phase 23 Account Center recovery',accountJs,'/auth/v1/recover');
+requirePhase23FileText('Phase 23 Account Center global signout',accountJs,'/auth/v1/logout?scope=global');
+requirePhase23FileText('Phase 23 Account Center shared auth key',accountJs,'thisweek.auth.session.v1');
+requirePhase23FileText('Phase 23 Account Center deletion action',accountJs,"accountGateway('delete_account'");
+requirePhase20FileText('Phase 23 money gateway active-session check',phase20Gateway,'tw_auth_session_active');
+requirePhase19FileText('Phase 23 provider gateway active-session check',phase19Gateway,'tw_auth_session_active');
+requirePhase21FileText('Phase 23 Money Lab shared auth key',moneyLabJs,'thisweek.auth.session.v1');
+if(/service_role|sb_secret_/i.test(accountHtml+accountJs))failures.push('Phase 23 Account Center contains a server secret pattern');
+if(/localStorage/.test(accountJs))failures.push('Phase 23 Account Center persists auth state to localStorage');
 
 
 
