@@ -1,5 +1,5 @@
 const SUPABASE_URL='https://xjtvawmppzwzrooairyx.supabase.co';
-const PUBLISHABLE_KEY='__PUBLIC_KEY_FROM_ACCOUNT_CONFIG__';
+const PUBLISHABLE_KEY='sb_publishable_OcmV-NiXzSy7mqg3TUKxnA_74l8fq87';
 const SESSION_KEY='thisweek.auth.session.v1';
 const $=id=>document.getElementById(id);
 let state=null;
