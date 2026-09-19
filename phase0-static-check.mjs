@@ -400,7 +400,7 @@ requirePhase21FileText('Phase 22 Lab preflight renderer',moneyLabJs,'renderProvi
 requirePhase21FileText('Phase 22 Lab provider-aware controls',moneyLabJs,'applyProviderControlState');
 requirePhase21FileText('Phase 22 Lab preflight action',moneyLabJs,"gateway('provider_preflight')");
 
-requireText('Phase 23 Account Center link','href="./account/"');
+requireText('Phase 23 Account Center link',"externalTool('./account/'");
 requirePhase23FileText('Phase 23 session boolean RPC',phase23Schema,'tw_auth_session_active');
 requirePhase23FileText('Phase 23 closure request table',phase23Schema,'tw_account_closure_requests');
 requirePhase23FileText('Phase 23 session RPC browser revocation',phase23Schema,'from public, anon, authenticated');
