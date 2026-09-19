@@ -13,6 +13,12 @@ const phase0=requireFile('phase0-static-check.mjs');
 const policy=requireFile('RELEASE_POLICY.md');
 const checklist=requireFile('RELEASE_CHECKLIST.md');
 const prep=requireFile('prepare-site.mjs');
+const phase19Doc=requireFile('PHASE_19_IMPLEMENTATION.md');
+const phase19Schema=requireFile('supabase/phase19/provider_schema.sql');
+const phase19Gateway=requireFile('supabase/functions/thisweek-provider-gateway/index.ts');
+const phase19Runtime=requireFile('supabase/functions/thisweek-provider-gateway/deno.json');
+const phase19Readme=requireFile('supabase/phase19/README.md');
+
 
 let config=null;
 if(configText){
@@ -36,7 +42,11 @@ if(html){
     ['Core schema v3','CORE_SCHEMA_VERSION = 3'],
     ['Portable export','downloadPortableDataExport'],
     ['Import preview','buildConnectedImportPreview'],
-    ['Local state key','thisweek.state.v2']
+    ['Local state key','thisweek.state.v2'],
+    ['Phase 19 secure provider staging','PHASE 19 — SECURE PROVIDER GATEWAY v31'],
+    ['Phase 19 disabled client provider','enabled:false'],
+    ['Phase 19 deny-until-dedicated-backend',"networkPolicy:'deny_until_dedicated_backend'"],
+    ['Phase 19 disabled connect control','id="connectFinancialProvider"']
   ];
   for(const [label,text] of critical)requireText('missing '+label,html,text);
 
@@ -45,6 +55,23 @@ if(html){
   if(/<script\s+src=/i.test(html))failures.push('external runtime script dependency detected');
   if(/<link[^>]+rel=["']stylesheet["'][^>]+href=/i.test(html))failures.push('external runtime stylesheet dependency detected');
 }
+
+if(phase19Schema){
+  requireText('Phase 19 schema missing provider connections',phase19Schema,'tw_provider_connections');
+  requireText('Phase 19 schema missing provider transactions',phase19Schema,'tw_provider_transactions');
+  requireText('Phase 19 schema must enable RLS',phase19Schema,'enable row level security');
+}
+if(phase19Gateway){
+  requireText('Phase 19 gateway must validate authenticated user',phase19Gateway,'auth.getUser(token)');
+  requireText('Phase 19 gateway must use Vault',phase19Gateway,'vault.create_secret');
+  requireText('Phase 19 gateway must support transaction sync',phase19Gateway,'/transactions/sync');
+  requireText('Phase 19 gateway must support disconnect',phase19Gateway,'/item/remove');
+  requireText('Phase 19 gateway must parse current Hosted Link results',phase19Gateway,'item_add_results');
+}
+if(phase19Runtime)requireText('Phase 19 runtime should be strict',phase19Runtime,'"strict": true');
+if(phase19Readme)requireText('Phase 19 README must require dedicated project',phase19Readme,'Use a **dedicated Supabase project**');
+if(phase19Doc)requireText('Phase 19 doc must state live provider is not active',phase19Doc,'No live financial institution is connected by this release.');
+
 
 if(workflow){
   requireText('Pages workflow must deploy only main',workflow,'branches: ["main"]');
