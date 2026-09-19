@@ -34,6 +34,7 @@ need('Phase 21 card authorization status',"cardAuthorizationMode:'controller_dep
 need('Phase 21 Money Lab link','href="./money-lab/"');
 need('Phase 22 sandbox chain',"sandboxChain:'plaid_unit_pinwheel_method'");
 need('Phase 22 chain credential gate',"sandboxChainMode:'deployed_credentials_required'");
+need('Phase 23 Account Center link','href="./account/"');
 forbid('production state key leaked','"thisweek.state.v2"');
 forbid('production user key leaked','"thisweek.userId"');
 
