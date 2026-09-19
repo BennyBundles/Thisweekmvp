@@ -1,4 +1,4 @@
-# TAGJ Trackout Pro — Derived 3-Stem Beat License — Non-Exclusive
+# TAGJ Derived Trackout — 3-Stem Beat License — Non-Exclusive
 
 **Status:** DRAFT FOR LEGAL REVIEW — NOT ACTIVE CHECKOUT TERMS  
 **Licensor:** Thats A Good Jawn LLC, a Wyoming limited liability company registered to do business in Pennsylvania, acting by Benjamin Alexander, Authorized Representative  
@@ -113,10 +113,10 @@ This Agreement is governed by the laws of the **State of Wyoming**, without rega
 ## 18. Entire Agreement
 The executed agreement, Beat-specific Schedule A, any signed split sheet, and any signed amendment are the entire agreement for this Beat license. Conflicting marketing text does not override the executed terms.
 
-## 19. Trackout Handling
+## 19. Derived Trackout Handling
 Original DAW stems/trackouts, when available, are provided solely to mix and produce the New Song. Isolated stems may not be sampled, resold, redistributed, or reused in another song.
 
-**Derived Mix-Control Stems:** If Schedule A identifies a package as derived stems, those files were algorithmically separated from a stereo master into mix-control components and are not original session multitracks. Their presence does not imply access to the original production session, individual instrument tracks, MIDI, plugin settings, or lossless pre-master elements.
+**Derived Mix-Control Stems:** The standard $99 delivery under this form consists of algorithmically separated stereo-master components (drums/percussion, bass, music/harmonic) and is not original session multitrack material. Their presence does not imply access to the original production session, individual instrument tracks, MIDI, plugin settings, or lossless pre-master elements.
 
 ---
 
