@@ -1,6 +1,6 @@
 {
   "schemaVersion": "tagj.catalog.v1",
-  "generatedFor": "TAGJ × Benny Bundles V14.4 preview",
+  "generatedFor": "TAGJ × Benny Bundles V14.5 preview",
   "products": [
     {
       "id": "shadow",
@@ -308,5 +308,21 @@
       "stripePriceId": null,
       "route": "#producer-service-engineering-v144"
     }
-  ]
+  ],
+  "executionRoutes": {
+    "tagj": {
+      "technicalBoard": "#tagj-technical-board-v145"
+    },
+    "artist": {
+      "releaseScene": "#artist-release-scene-v145"
+    },
+    "producer": {
+      "beatWorkspace": "#producer-beat-workspace-v145",
+      "sessionBuilder": "#producer-session-builder-v145",
+      "abLab": "#producer-ab-lab-v143"
+    },
+    "creative": {
+      "campaignWorkflow": "#creative-campaign-workflow-v145"
+    }
+  }
 }
