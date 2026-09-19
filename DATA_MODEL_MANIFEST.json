@@ -486,5 +486,64 @@
       "provider_sandbox_end_to_end_tests",
       "production_program_approval"
     ]
+  },
+  "phase26ReturnDisputeOperations": {
+    "status": "backend_deployed_sandbox_controls_wired_production_money_disabled",
+    "activation": true,
+    "tables": [
+      "tw_ops_cases",
+      "tw_ops_case_events"
+    ],
+    "appendOnlyCaseEvents": true,
+    "serviceRoleRpcs": [
+      "tw_ops_open_case",
+      "tw_ops_reconcile_cash_control",
+      "tw_money_apply_unit_ach_return",
+      "tw_money_apply_unit_card_credit",
+      "tw_ops_record_unit_dispute"
+    ],
+    "signedEventHandling": {
+      "unitAchReturn": "payment.returned",
+      "unitDisputes": [
+        "dispute.created",
+        "dispute.statusChanged"
+      ],
+      "unitCardCredits": [
+        "cardReversalTransaction",
+        "disputeTransaction"
+      ],
+      "methodAdversePayments": [
+        "returned",
+        "reversed",
+        "failed"
+      ]
+    },
+    "negativeBalancePolicy": {
+      "restrictGuardedActions": true,
+      "neverDowngrade": [
+        "frozen",
+        "closed",
+        "unrelated_restricted_reason"
+      ],
+      "localCashRecoveryCanClear": "negative_cash_balance_only",
+      "providerBalanceRecoveryCanClear": "negative_provider_balance_only"
+    },
+    "sandboxActions": [
+      "ops_status",
+      "unit_sandbox_create_dispute",
+      "unit_sandbox_dispute_action"
+    ],
+    "gatewayVersion": 10,
+    "webhookVersion": 5,
+    "productionMoneyEnabled": false,
+    "remainingGates": [
+      "sandbox_return_dispute_end_to_end_tests",
+      "production_negative_balance_policy_approval",
+      "staff_manual_review_rbac",
+      "customer_dispute_support_workflow",
+      "ach_return_threshold_reporting",
+      "production_incident_alerting",
+      "provider_bank_operations_approval"
+    ]
   }
 }
