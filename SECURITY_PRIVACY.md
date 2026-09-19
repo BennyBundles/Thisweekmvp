@@ -781,3 +781,38 @@ The Account Center checker rejects an inconsistent ready state.
 The client adds signup/recovery cooldowns matching the default 60-second Supabase request window as a usability and abuse-backpressure layer.
 
 These client controls are not security authority and do not replace hosted Auth rate limits or CAPTCHA.
+
+
+## 25. Phase 25 risk and velocity controls
+
+Application-level money risk now executes before guarded provider actions.
+
+The risk plane is server-only. Browser roles cannot read/write risk tables or execute the risk decision RPCs.
+
+### Sandbox
+
+A conservative Sandbox policy is active so limit, review, and denial behavior can be tested.
+
+These values are not production customer limits.
+
+### Production
+
+There is deliberately no active production risk policy.
+
+If the system were switched to production execution without an approved production policy, guarded actions fail with `risk_policy_unavailable`.
+
+This preserves fail-closed behavior.
+
+### Ordering
+
+A provider call must not execute until the corresponding risk decision is `allow`.
+
+A `review` decision also blocks provider execution until future operational tooling resolves it.
+
+Realtime card authorizations evaluate risk before any envelope hold is posted.
+
+### Authority
+
+Unit/program/sponsor-bank, Method, Pinwheel, Plaid, ACH-network, and card-network controls remain authoritative and may impose stricter limits or declines.
+
+This Week's application policy is an additional control layer, not a substitute for provider/compliance controls.
