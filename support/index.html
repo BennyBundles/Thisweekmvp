@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src https://xjtvawmppzwzrooairyx.supabase.co; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; object-src 'none'; frame-src 'none'; child-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none';">
+<meta name="theme-color" content="#07131e">
+<title>This Week — Support & Disputes</title>
+<style>
+:root{--bg:#040b13;--panel:#091722;--text:#eef8fb;--muted:#8fa8b4;--line:rgba(180,215,230,.14);--mint:#6ee7b7;--aqua:#67e8f9;--gold:#f6d784;--danger:#fda4af}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:linear-gradient(180deg,#040a12,#07131e 58%,#050d16);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}body{min-height:100dvh}.shell{width:min(900px,100%);margin:auto;padding:max(18px,env(safe-area-inset-top)) 16px max(32px,env(safe-area-inset-bottom))}.top{display:flex;justify-content:space-between;gap:18px;align-items:flex-start}.top small,.kicker{color:#8fd5c6;font-size:.65rem;font-weight:850;text-transform:uppercase;letter-spacing:.12em}.top h1{font-size:clamp(1.65rem,5vw,2.55rem);letter-spacing:-.05em;margin:4px 0 6px}.top p{margin:0;color:var(--muted);font-size:.8rem;line-height:1.5;max-width:640px}.back{color:#d9f7ff;text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:8px 10px;font-size:.7rem;font-weight:800;white-space:nowrap}.statebar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}.state{border:1px solid var(--line);background:rgba(255,255,255,.025);border-radius:14px;padding:10px}.state small{display:block;color:var(--muted);font-size:.58rem;text-transform:uppercase;letter-spacing:.08em}.state strong{display:block;margin-top:3px;font-size:.78rem}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card{border:1px solid var(--line);background:linear-gradient(145deg,rgba(11,28,41,.95),rgba(7,18,29,.96));border-radius:20px;padding:16px}.card.wide{grid-column:1/-1}.card h2{margin:4px 0 5px;font-size:1.05rem}.card p{margin:0 0 12px;color:var(--muted);font-size:.76rem;line-height:1.5}.field{display:grid;gap:5px;margin-top:8px}.field label{font-size:.66rem;font-weight:800;color:#acc5cf}.field input,.field select,.field textarea{border:1px solid var(--line);background:#06121d;color:var(--text);border-radius:12px;padding:11px;font:inherit;font-size:.82rem;outline:none}.field textarea{min-height:110px;resize:vertical}.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}button{appearance:none;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.04);color:var(--text);padding:9px 11px;font:inherit;font-size:.72rem;font-weight:850;cursor:pointer}button.primary{border-color:rgba(110,231,183,.25);background:rgba(110,231,183,.08)}button:disabled{opacity:.4;cursor:not-allowed}.notice{border:1px solid var(--line);border-radius:14px;padding:11px;color:#aac2cc;font-size:.72rem;line-height:1.48;background:rgba(103,232,249,.035)}.notice strong{color:#e0f8fd}.result{margin-top:10px;font-size:.72rem;color:var(--muted);line-height:1.5}.good{color:#baf7dc!important}.warn{color:#f6d784!important}.bad{color:#fecdd3!important}.requests{display:grid;gap:10px}.request{border:1px solid var(--line);border-radius:16px;padding:12px;background:rgba(255,255,255,.025)}.request-head{display:flex;justify-content:space-between;gap:12px}.request-head small{color:var(--muted);font-size:.62rem;text-transform:uppercase;letter-spacing:.08em}.request-head strong{display:block;margin-top:3px;font-size:.86rem}.badge{border:1px solid var(--line);border-radius:999px;padding:5px 8px;font-size:.62rem;font-weight:800;height:max-content}.badge.high{color:#fecdd3}.messages{display:grid;gap:6px;margin-top:10px}.message{border-left:2px solid rgba(103,232,249,.22);padding:7px 9px;background:rgba(255,255,255,.018);border-radius:0 10px 10px 0}.message small{display:block;color:var(--muted);font-size:.6rem}.message p{margin:3px 0 0;color:#d9e9ef;font-size:.74rem;white-space:pre-wrap;overflow-wrap:anywhere}.empty{color:var(--muted);font-size:.75rem;padding:12px;border:1px dashed var(--line);border-radius:12px}.check{display:flex;gap:8px;align-items:flex-start;margin-top:9px;color:#b7cbd3;font-size:.72rem}.check input{margin-top:2px}
+@media(max-width:680px){.grid{grid-template-columns:1fr}.card.wide{grid-column:auto}.statebar{grid-template-columns:1fr}.top{display:block}.back{display:inline-block;margin-top:10px}.request-head{display:block}.badge{display:inline-block;margin-top:6px}}
+</style>
+</head>
+<body>
+<main class="shell">
+<header class="top"><div><small>This Week help</small><h1>Support & Disputes</h1><p>Report account, transfer, bill-pay, card, direct-deposit, or dispute concerns. Support intake never directly changes or refunds money.</p></div><a class="back" href="../#details">Back to This Week</a></header>
+<div class="statebar"><div class="state"><small>Session</small><strong id="sessionState">Signed out</strong></div><div class="state"><small>Account</small><strong id="userState">—</strong></div><div class="state"><small>Open requests</small><strong id="openCount">—</strong></div></div>
+
+<div class="grid">
+<section class="card"><span class="kicker">Identity</span><h2>Sign in first</h2><p>Support requests are tied to the recoverable cloud account used by connected-data and money features.</p><div class="notice" id="identityNotice">Use Account & Security to sign in, recover access, or verify MFA.</div><div class="actions"><a class="back" href="../account/">Open Account & Security</a><button id="refresh" disabled>Refresh support</button></div><div id="statusResult" class="result"></div></section>
+
+<section class="card"><span class="kicker">Privacy boundary</span><h2>Do not send secrets</h2><p>Support staff do not need passwords, OTP codes, provider tokens, CVV/CVC, full card numbers, full bank-account numbers, or SSNs.</p><div class="notice"><strong>Allowed:</strong> last four digits, merchant/biller name, approximate date, amount, and the in-app reference selected below.<br><strong>Rejected:</strong> obvious credential/token patterns, SSNs, and 12–19 digit account/card-number strings.</div></section>
+
+<section class="card wide"><span class="kicker">New request</span><h2>Tell us what happened</h2>
+<div class="grid">
+  <div>
+    <div class="field"><label>Issue type</label><select id="requestType"><option value="general">General support</option><option value="account_access">Account access</option><option value="ach_transfer">ACH / transfer</option><option value="bill_payment">Bill payment</option><option value="card_purchase">Card purchase</option><option value="direct_deposit">Direct deposit</option><option value="card_dispute">Card dispute</option></select></div>
+    <div class="field"><label>Related in-app item</label><select id="resource"><option value="">None / not available</option></select></div>
+    <div class="field"><label>Subject</label><input id="subject" maxlength="160" placeholder="Short description"></div>
+  </div>
+  <div>
+    <div class="field"><label>Message</label><textarea id="message" maxlength="4000" placeholder="What happened, when, and what outcome are you expecting?"></textarea></div>
+    <label class="check"><input id="priority" type="checkbox"><span>Mark urgent. Server accepts high priority only for account-access and card-dispute requests.</span></label>
+  </div>
+</div>
+<div class="actions"><button class="primary" id="createRequest" disabled>Create support request</button></div><div id="createResult" class="result"></div>
+</section>
+
+<section class="card wide"><span class="kicker">History</span><h2>Your support requests</h2><div id="requests" class="requests"><div class="empty">Sign in to load support history.</div></div></section>
+</div>
+</main>
+<script src="./app.js"></script>
+</body>
+</html>
