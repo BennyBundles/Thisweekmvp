@@ -2,6 +2,34 @@
 
 Production changes for **This Week** are recorded here.
 
+## Phase 21 — Signed Events & Realtime Authorization — 2026-09-19
+
+### Provider event security
+- Deployed `thisweek-money-webhook` as an external-provider endpoint with provider signature verification rather than Supabase user JWT authentication.
+- Added raw-body Unit HMAC-SHA1 verification, Pinwheel v2 HMAC-SHA256 verification, and Method auth-token + HMAC-SHA256 verification with timestamp freshness.
+- Added payload hashing and bounded safe event summaries instead of persisting full webhook payloads.
+- Added idempotent provider-event storage and initial Unit, Pinwheel Direct Deposit Switch, and Method payment-state handlers.
+
+### Category-card authorization
+- Deployed `thisweek-unit-card-authorization` as the fail-closed programmatic authorization endpoint.
+- Added service-role-only atomic card authorization, reversal, and settlement RPCs.
+- Category-card authorization can enforce envelope balance, optional MCC controls, merchant lock, amount caps and provider-permitted partial approval.
+- Approved requests reserve money from the bound envelope into a card hold before the approval response is returned.
+- Reversals release the hold; settlement consumes the hold and records settlement differences without rewriting authorization history.
+- Provider execution remains disabled, so this controller does not currently approve real spending.
+
+### Recoverable Auth sandbox
+- Added the isolated `/money-lab/` integration surface.
+- Added real Supabase email/password Auth, TOTP enrollment/challenge/verification, AAL display, authenticated money-gateway calls, profile bootstrap and ledger summary.
+- Money Lab tokens use tab-scoped `sessionStorage`.
+- Money Lab CSP allows only the exact Supabase origin; the production planner remains `connect-src 'none'`.
+- Added deterministic Money Lab validation and deployment verification.
+
+### Rollback
+- Pre-Phase-21 commit: `d2fe86acb23a776529ea3a15b2886bae5ef6248e`
+- Rollback branch: `rollback/phase21-pre-webhooks-2026-09-19`
+
+
 ## Phase 20 — Money Layer Foundation — 2026-09-19
 
 ### Real-money architecture
