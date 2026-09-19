@@ -500,13 +500,22 @@ html.intro-resume-v151 .home-footer{opacity:1!important;animation:none!important
   if(!force&&(resume||deep||seen||recentSeen||fromWorld))document.documentElement.classList.add('intro-resume-v151');
 }catch(_){}})();
 </script>
+<style id="intro-session-persistence">html.intro-session-done #introGate{display:none!important}</style>
+<script id="intro-session-bootstrap">
+(()=>{try{
+  const h=location.hash||'';
+  const deep=!!h && h!=='#home' && h!=='#entered';
+  if(deep||sessionStorage.getItem('tagjIntroEnteredV156')==='1') document.documentElement.classList.add('intro-session-done');
+}catch(_){}})();
+</script>
 </head>
 <body class="home-v11 intro-pending">
 
 <!-- Audio requires a user gesture on iPhone/Safari. -->
 <section class="intro-gate" id="introGate" aria-label="TAGJ intro">
-  <video id="introVideo" class="intro-video" data-cut-start="0" data-cut-end="6.93" data-cut-label="exact-drive-intro-clip-v151" playsinline webkit-playsinline preload="auto" poster="tagj-assets/intro/intro-poster-v149.jpg">
-    <source src="tagj-assets/intro/intro-clip-for-website-v152.mp4" type="video/mp4">
+  <video id="introVideo" class="intro-video" data-cut-start="0" data-cut-end="6.93" data-cut-label="drive-intro-clip-for-website" playsinline webkit-playsinline preload="auto" poster="tagj-assets/intro/intro-poster-v149.jpg">
+    <source src="tagj-assets/intro/intro-clip.mov" type="video/quicktime">
+  <source src="tagj-assets/intro/intro-clip-for-website-v152.mp4" type="video/mp4">
     <source src="tagj-assets/intro/intro-clip-for-website-v151.mov" type="video/quicktime">
   </video>
   <div class="intro-shade"></div>
