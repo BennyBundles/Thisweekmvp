@@ -29,6 +29,8 @@ const PLAID_BASE_URL = (Deno.env.get("PLAID_BASE_URL") || "https://sandbox.plaid
 const APP_URL = Deno.env.get("THISWEEK_APP_URL") || DEFAULT_APP_URL;
 const PLAID_OAUTH_REDIRECT_URI = Deno.env.get("PLAID_OAUTH_REDIRECT_URI") || "";
 const PLAID_WEBHOOK_URL = Deno.env.get("PLAID_WEBHOOK_URL") || "";
+const PROVIDER_EXECUTION_MODE = Deno.env.get("THISWEEK_PROVIDER_EXECUTION_MODE") || Deno.env.get("THISWEEK_MONEY_EXECUTION_MODE") || "sandbox";
+const LIVE_MONEY_ENABLED = Deno.env.get("THISWEEK_LIVE_MONEY_ENABLED") === "true";
 const ALLOWED_ORIGINS = (Deno.env.get("THISWEEK_ALLOWED_ORIGINS") || "https://bennybundles.github.io")
   .split(",").map((v) => v.trim()).filter(Boolean);
 
@@ -79,7 +81,19 @@ function providerConfigured(): boolean {
   return !!(SUPABASE_URL && PUBLISHABLE_KEY && SECRET_KEY && PLAID_CLIENT_ID && PLAID_SECRET);
 }
 
+async function requireProviderProductionInterlock(): Promise<void> {
+  if (PROVIDER_EXECUTION_MODE !== "production") return;
+  if (!LIVE_MONEY_ENABLED) throw new Error("live_money_disabled");
+  const releaseAdmin = createClient(SUPABASE_URL, SECRET_KEY, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+  const { data, error } = await releaseAdmin.rpc("tw_release_money_enabled");
+  if (error || data !== true) throw new Error("production_release_gates_incomplete");
+}
+
+
 async function plaidPost(path: string, payload: AnyRecord): Promise<AnyRecord> {
+  await requireProviderProductionInterlock();
   if (!PLAID_CLIENT_ID || !PLAID_SECRET) throw new Error("provider_not_configured");
   const response = await fetch(PLAID_BASE_URL + path, {
     method: "POST",
@@ -373,11 +387,17 @@ Deno.serve(async (req: Request) => {
 
   try {
     if (action === "status") {
-      const { data: connections } = await admin.from("tw_provider_connections")
-        .select("id,provider,institution_name,status,last_success_at,last_error_code")
-        .eq("user_id", user.id).order("created_at", { ascending: false });
+      const [{ data: connections }, releaseStatus] = await Promise.all([
+        admin.from("tw_provider_connections")
+          .select("id,provider,institution_name,status,last_success_at,last_error_code")
+          .eq("user_id", user.id).order("created_at", { ascending: false }),
+        admin.rpc("tw_release_status"),
+      ]);
       return json(origin, 200, {
         ok: true, provider: PROVIDER, configured: providerConfigured(),
+        executionMode: PROVIDER_EXECUTION_MODE,
+        liveMoneyEnabled: LIVE_MONEY_ENABLED,
+        productionInterlock: releaseStatus.error ? null : releaseStatus.data,
         consentVersion: CONSENT_VERSION, connections: connections || [],
       });
     }
