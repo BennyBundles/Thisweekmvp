@@ -105,7 +105,7 @@ function updateUi(){
   $('aalState').textContent=p.aal||'—';
   $('userState').textContent=currentUser?.email||p.sub?.slice(0,8)||'—';
   const signed=!!session?.access_token;
-  for(const id of ['signOut','enrollMfa','verifyMfa','gatewayStatus','gatewayBootstrap','gatewaySummary','sandboxCredit','allocate','chainRefresh','unitApplication','unitApplicationStatus','unitDeposit','unitDirectFund','plaidConsent','plaidStart','plaidFinalize','plaidAccounts','plaidUnitLink','externalFund','createCard','simulateAuth','directDepositToken','methodSetup','methodPay','registerWebhooks'])$(id).disabled=!signed;
+  for(const id of ['signOut','enrollMfa','verifyMfa','gatewayStatus','gatewayBootstrap','gatewaySummary','sandboxCredit','allocate','providerPreflight','chainRefresh','unitApplication','unitApplicationStatus','unitDeposit','unitDirectFund','plaidConsent','plaidStart','plaidFinalize','plaidAccounts','plaidUnitLink','externalFund','createCard','simulateAuth','directDepositToken','methodSetup','methodPay','registerWebhooks'])$(id).disabled=!signed;
 }
 async function signIn(){
   const email=$('email').value.trim(),password=$('password').value;
@@ -179,6 +179,52 @@ async function sha256Text(text){
   const hash=new Uint8Array(await crypto.subtle.digest('SHA-256',bytes));
   return Array.from(hash).map(x=>x.toString(16).padStart(2,'0')).join('');
 }
+function renderProviderChecks(preflight){
+  const root=$('providerChecks');
+  const providers=preflight?.providers||{};
+  const labels={plaid:'Plaid',unit:'Unit',pinwheel:'Pinwheel',method:'Method'};
+  const descriptions={plaid:'Auth + processor token path',unit:'Banking + cards',pinwheel:'Deposit switch',method:'Liability bill pay'};
+  root.textContent='';
+  for(const key of ['plaid','unit','pinwheel','method']){
+    const row=providers[key]||{};
+    const box=document.createElement('div');
+    const state=row.status||'not_checked';
+    box.className='provider-check '+(state==='credential_valid'?'ready':state==='credential_rejected'?'fail':'warn');
+    const small=document.createElement('small');small.textContent=labels[key];
+    const strong=document.createElement('strong');
+    strong.textContent=state==='credential_valid'?'Credential valid'
+      :state==='credential_rejected'?'Credential rejected'
+      :state==='execution_locked'?'Configured · execution locked'
+      :state==='missing_credentials'?'Missing credential'
+      :'Not checked';
+    const span=document.createElement('span');
+    span.textContent=(row.error?row.error+' · ':'')+descriptions[key];
+    box.append(small,strong,span);root.appendChild(box);
+  }
+}
+function applyProviderControlState(status){
+  if(!session?.access_token)return;
+  const exec=status?.providerExecution||{};
+  const unit=!!exec.unit,plaid=!!exec.plaid,pinwheel=!!exec.pinwheel,method=!!exec.method;
+  for(const id of ['unitApplication','unitApplicationStatus','unitDeposit','unitDirectFund','createCard','simulateAuth'])$(id).disabled=!unit;
+  $('plaidConsent').disabled=false;
+  for(const id of ['plaidStart','plaidFinalize','plaidAccounts'])$(id).disabled=!plaid;
+  for(const id of ['plaidUnitLink','externalFund'])$(id).disabled=!(plaid&&unit);
+  $('directDepositToken').disabled=!(unit&&pinwheel);
+  for(const id of ['methodSetup','methodPay'])$(id).disabled=!method;
+  $('registerWebhooks').disabled=status?.executionMode!=='sandbox';
+}
+async function fillConfigurationStatus(){
+  const status=await gateway('status');
+  $('moneyMode').textContent=status.executionMode||'unknown';
+  const p=status.providers||{},e=status.providerExecution||{};
+  renderProviderChecks({providers:Object.fromEntries(['plaid','unit','pinwheel','method'].map(k=>[k,{
+    configured:!!p[k],executable:!!e[k],
+    status:!p[k]?'missing_credentials':!e[k]?'execution_locked':'not_checked'
+  }]))});
+  applyProviderControlState(status);
+  return status;
+}
 function fillSelect(id,items,valueFn,labelFn,placeholder){
   const el=$(id),current=el.value;el.textContent='';
   const p=document.createElement('option');p.value='';p.textContent=placeholder;el.appendChild(p);
@@ -188,9 +234,10 @@ function fillSelect(id,items,valueFn,labelFn,placeholder){
   if([...el.options].some(o=>o.value===current))el.value=current;
 }
 async function refreshChain(){
-  const [money,provider]=await Promise.all([gateway('summary'),providerGateway('status')]);
+  const [money,provider,status]=await Promise.all([gateway('summary'),providerGateway('status'),gateway('status')]);
   moneySummary=money;
-  $('moneyMode').textContent=(await gateway('status')).executionMode||'unknown';
+  $('moneyMode').textContent=status.executionMode||'unknown';
+  applyProviderControlState(status);
   fillSelect('unitDepositSelect',money.depositAccounts?.filter(x=>x.provider==='unit'&&x.status==='open'),x=>x.id,x=>'Unit •••• '+(x.account_last4||'----'),'No open Unit account');
   fillSelect('cardEnvelopeSelect',money.envelopes,x=>x.id,x=>x.label,'No envelopes');
   fillSelect('methodEnvelopeSelect',money.envelopes,x=>x.id,x=>x.label,'No envelopes');
@@ -206,6 +253,14 @@ function cents(input){
   return Math.round(n*100);
 }
 function requestId(prefix){return prefix+'_'+crypto.randomUUID();}
+
+async function providerPreflight(){
+  const body=await gateway('provider_preflight');
+  renderProviderChecks(body.preflight);
+  applyProviderControlState(await gateway('status'));
+  log('Provider Sandbox preflight',body);
+  return body;
+}
 
 async function unitApplication(){
   const body=await gateway('unit_sandbox_application');
@@ -338,11 +393,11 @@ async function registerWebhooks(){
   return body;
 }
 
-async function gatewayStatus(){const body=await gateway('status');$('moneyMode').textContent=body.executionMode||'unknown';log('Gateway status',body);}
+async function gatewayStatus(){const body=await gateway('status');$('moneyMode').textContent=body.executionMode||'unknown';applyProviderControlState(body);log('Gateway status',body);}
 async function gatewayBootstrap(){log('Money profile bootstrap',await gateway('bootstrap'));}
 async function gatewaySummary(){log('Ledger summary',await gateway('summary'));}
 async function sandboxCredit(){log('Sandbox credit',await gateway('sandbox_credit',{amountCents:cents($('sandboxAmount').value),clientRequestId:requestId('lab_credit')}));}
 async function allocate(){log('Envelope allocation',await gateway('allocate',{amountCents:cents($('allocateAmount').value),envelopeKey:$('envelope').value,clientRequestId:requestId('lab_allocate')}));}
 function bind(id,fn){$(id).addEventListener('click',()=>fn().catch(e=>log('Error',e.message)));}
-bind('signIn',signIn);bind('signUp',signUp);bind('signOut',signOut);bind('enrollMfa',enrollMfa);bind('verifyMfa',verifyMfa);bind('gatewayStatus',gatewayStatus);bind('gatewayBootstrap',gatewayBootstrap);bind('gatewaySummary',gatewaySummary);bind('sandboxCredit',sandboxCredit);bind('allocate',allocate);bind('chainRefresh',refreshChain);bind('unitApplication',unitApplication);bind('unitApplicationStatus',unitApplicationStatus);bind('unitDeposit',unitDeposit);bind('unitDirectFund',unitDirectFund);bind('plaidConsent',plaidConsent);bind('plaidStart',plaidStart);bind('plaidFinalize',plaidFinalize);bind('plaidAccounts',plaidAccounts);bind('plaidUnitLink',plaidUnitLink);bind('externalFund',externalFund);bind('createCard',createCard);bind('simulateAuth',simulateAuth);bind('directDepositToken',directDepositToken);bind('methodSetup',methodSetup);bind('methodPay',methodPay);bind('registerWebhooks',registerWebhooks);
-updateUi();renderFactors();if(session?.access_token)getUser().then(()=>refreshChain()).catch(e=>{log('Session restore failed',e.message);writeSession(null);});
+bind('signIn',signIn);bind('signUp',signUp);bind('signOut',signOut);bind('enrollMfa',enrollMfa);bind('verifyMfa',verifyMfa);bind('providerPreflight',providerPreflight);bind('gatewayStatus',gatewayStatus);bind('gatewayBootstrap',gatewayBootstrap);bind('gatewaySummary',gatewaySummary);bind('sandboxCredit',sandboxCredit);bind('allocate',allocate);bind('chainRefresh',refreshChain);bind('unitApplication',unitApplication);bind('unitApplicationStatus',unitApplicationStatus);bind('unitDeposit',unitDeposit);bind('unitDirectFund',unitDirectFund);bind('plaidConsent',plaidConsent);bind('plaidStart',plaidStart);bind('plaidFinalize',plaidFinalize);bind('plaidAccounts',plaidAccounts);bind('plaidUnitLink',plaidUnitLink);bind('externalFund',externalFund);bind('createCard',createCard);bind('simulateAuth',simulateAuth);bind('directDepositToken',directDepositToken);bind('methodSetup',methodSetup);bind('methodPay',methodPay);bind('registerWebhooks',registerWebhooks);
+updateUi();renderFactors();if(session?.access_token)getUser().then(()=>fillConfigurationStatus()).then(()=>refreshChain()).catch(e=>{log('Session restore failed',e.message);writeSession(null);});
