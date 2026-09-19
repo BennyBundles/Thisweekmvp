@@ -390,13 +390,21 @@ async function processUnit(
       userId && eventType === "transaction.created" &&
       Number.isSafeInteger(Number(attrs.balance)) && Number(attrs.balance) < 0
     ) {
-      await admin.from("tw_risk_user_controls").upsert({
-        user_id: userId,
-        state: "restricted",
-        reason_code: "negative_provider_balance",
-        expires_at: null,
-        updated_at: new Date().toISOString(),
-      }, { onConflict: "user_id" });
+      const { data: existingControl } = await admin.from("tw_risk_user_controls")
+        .select("state,reason_code").eq("user_id", userId).maybeSingle();
+      if (
+        !existingControl ||
+        existingControl.state === "normal" ||
+        (existingControl.state === "restricted" && ["negative_cash_balance","negative_provider_balance"].includes(String(existingControl.reason_code || "")))
+      ) {
+        await admin.from("tw_risk_user_controls").upsert({
+          user_id: userId,
+          state: "restricted",
+          reason_code: "negative_provider_balance",
+          expires_at: null,
+          updated_at: new Date().toISOString(),
+        }, { onConflict: "user_id" });
+      }
       const negative = await admin.rpc("tw_ops_open_case", {
         p_user_id: userId,
         p_case_key: "unit:negative-provider-balance:" + accountId,
@@ -415,6 +423,37 @@ async function processUnit(
         p_event_type: "negative_provider_balance_detected",
       });
       if (negative.error) state = "failed";
+    }
+
+    if (
+      userId && accountId && eventType === "transaction.created" &&
+      Number.isSafeInteger(Number(attrs.balance)) && Number(attrs.balance) >= 0
+    ) {
+      const { data: control } = await admin.from("tw_risk_user_controls")
+        .select("state,reason_code").eq("user_id", userId).maybeSingle();
+      if (control?.state === "restricted" && control.reason_code === "negative_provider_balance") {
+        await admin.from("tw_risk_user_controls").update({
+          state: "normal", reason_code: null, expires_at: null, updated_at: new Date().toISOString(),
+        }).eq("user_id", userId).eq("reason_code", "negative_provider_balance");
+        const recovered = await admin.rpc("tw_ops_open_case", {
+          p_user_id: userId,
+          p_case_key: "unit:negative-provider-balance:" + accountId,
+          p_case_type: "negative_balance",
+          p_provider: "unit",
+          p_provider_case_id: null,
+          p_resource_ref: accountId,
+          p_related_transfer_id: null,
+          p_related_card_authorization_id: null,
+          p_amount_cents: 0,
+          p_severity: "medium",
+          p_state: "resolved",
+          p_reason_code: "provider_balance_recovered",
+          p_safe_detail: { provider_balance_cents: Number(attrs.balance), transaction_type: transactionType },
+          p_event_key: "unit:event:" + eventId,
+          p_event_type: "negative_provider_balance_resolved",
+        });
+        if (recovered.error) state = "failed";
+      }
     }
 
     if (userId && authRequestId && (
