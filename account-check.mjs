@@ -24,6 +24,8 @@ need('password recovery',js,'/auth/v1/recover');
 need('password update',js,"method:'PUT',auth:true");
 need('MFA enrollment',js,'/auth/v1/factors');
 need('MFA challenge',js,'/challenge');
+need('MFA verified-factor session elevation',js,"x.factor_type==='totp'&&x.status==='verified'");
+need('MFA distinct missing-factor error',js,'No authenticator factor is available. Enroll one first.');
 need('global logout',js,'/auth/v1/logout?scope=global');
 need('shared auth session key',js,"thisweek.auth.session.v1");
 need('sessionStorage only',js,'sessionStorage');
