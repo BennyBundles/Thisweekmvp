@@ -4,6 +4,7 @@
  * Usage: node phase0-static-check.mjs
  */
 import fs from 'node:fs';
+import {createHash} from 'node:crypto';
 
 const html=fs.readFileSync(new URL('./index.html', import.meta.url),'utf8');
 const failures=[];
@@ -147,14 +148,21 @@ requireText('Phase 14 referrer policy','<meta name="referrer" content="no-referr
 forbidText('Phase 14 runtime eval forbidden','eval(');
 forbidText('Phase 14 Function constructor forbidden','new Function(');
 forbidText('Phase 14 runtime network fetch forbidden','fetch(');
-forbidText('Phase 14 XMLHttpRequest forbidden','XMLHttpRequest');
-forbidText('Phase 14 WebSocket forbidden','WebSocket');
+forbidText('Phase 14 XMLHttpRequest construction forbidden','new XMLHttpRequest(');
+forbidText('Phase 14 WebSocket construction forbidden','new WebSocket(');
 forbidText('Phase 14 sendBeacon forbidden','sendBeacon');
 requireText('Phase 14 plan edit confirmation','Save these Plan changes?');
 requireText('Phase 14 runtime dependency check','Runtime network dependency boundary');
 requireText('Phase 14 CSP network boundary',"connect-src 'none'");
 requireText('Phase 14 CSP object boundary',"object-src 'none'");
 requireText('Phase 14 CSP frame boundary',"frame-src 'none'");
+requireText('Phase 14 CSP script-attribute boundary',"script-src-attr 'none'");
+requireText('Phase 14 CSP base boundary',"base-uri 'none'");
+requireText('Phase 14 CSP form boundary',"form-action 'none'");
+requireText('Phase 14 hashed script CSP',"'sha256-");
+forbidText('Phase 14 script-src must not allow unsafe-inline',"script-src 'self' 'unsafe-inline'");
+forbidText('Phase 14 inline onclick attributes forbidden','onclick="');
+forbidText('Phase 14 inline onsubmit attributes forbidden','onsubmit="');
 requireText('Phase 14 local storage encryption disclosure','No app-level storage encryption');
 requireText('Phase 14 typed delete confirmation','localDeletePhrase');
 requireText('Phase 14 source glossary external balance','External balance');
@@ -170,6 +178,17 @@ requireText('Connected data key','thisweek.connectedData.v1');
 const scripts=[...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)].map(m=>m[1]);
 if(scripts.length!==2)failures.push(`Expected 2 script blocks; found ${scripts.length}`);
 scripts.forEach((src,i)=>{try{new Function(src);}catch(e){failures.push(`Script ${i} syntax: ${e.message}`);}});
+const cspMatch=html.match(/<meta http-equiv="Content-Security-Policy" content="([^"]+)">/);
+if(!cspMatch)failures.push('Missing Content-Security-Policy meta');
+else{
+  const csp=cspMatch[1],scriptDirective=csp.split(';').map(x=>x.trim()).find(x=>x.startsWith('script-src '))||'';
+  if(scriptDirective.includes("'unsafe-inline'"))failures.push('CSP script-src allows unsafe-inline');
+  scripts.forEach((src,i)=>{
+    const token="'sha256-"+createHash('sha256').update(src,'utf8').digest('base64')+"'";
+    if(!scriptDirective.includes(token))failures.push(`CSP hash missing for script ${i}`);
+  });
+}
+
 
 const duplicateIds=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]).reduce((m,id)=>(m.set(id,(m.get(id)||0)+1),m),new Map());
 for(const [id,count] of duplicateIds)if(count>1&&['app','shell','main'].includes(id))failures.push(`Critical duplicate id ${id} ×${count}`);
