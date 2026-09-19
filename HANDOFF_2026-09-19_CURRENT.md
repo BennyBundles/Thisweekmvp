@@ -3,8 +3,8 @@
 **Handoff date:** 2026-09-19  
 **Canonical repository:** `BennyBundles/Thisweekmvp`  
 **Production branch:** `main`  
-**Verified functional production head:** `c09a2c4a00c97b45059a4aa3c311d311f38a7796`  
-**Successful GitHub Pages workflow:** `35463647568`  
+**Verified functional production head:** `6e3b141fa41e4aff519bc142fa77007613b8678c`  
+**Successful GitHub Pages workflow:** `35464262907`  
 **Production hosting:** GitHub Pages  
 **Primary production URL:** `https://bennybundles.github.io/Thisweekmvp/`
 
@@ -176,6 +176,7 @@ Verified 2026-09-19:
 - `thisweek-support-gateway` — ACTIVE, **v2**, JWT required
 - `thisweek-ops-notifier` — ACTIVE, **v1**, database nonce authentication
 - `thisweek-release-gateway` — ACTIVE, **v2**, JWT + active session + staff RBAC + AAL2
+- `thisweek-staff-gateway` — ACTIVE, **v1**, JWT + active session + AAL2 + server-side Auth Admin role provisioning
 
 Phase 34 security re-audit returned no Phase 34 findings after explicit service-role-only RLS policies were added. The performance advisor reports expected unused-index notices on the new empty Phase 34 tables and also surfaces pre-existing This Week performance notices elsewhere; do not claim the entire project currently has zero advisor findings.
 
@@ -695,11 +696,11 @@ Phase 34 is implemented and the web release was verified on 2026-09-19.
 
 Verified functional production commit:
 
-- `c09a2c4a00c97b45059a4aa3c311d311f38a7796`
+- `6e3b141fa41e4aff519bc142fa77007613b8678c`
 
 Verified GitHub Pages workflow:
 
-- `35463647568`
+- `35464262907`
 
 Rollback branch:
 
@@ -716,6 +717,7 @@ Added service-only tables:
 - `tw_release_gate_evidence_requirements`
 - `tw_release_gate_evidence`
 - `tw_release_candidate_selections`
+- `tw_ops_staff_role_events`
 
 Evidence/drill history is append-only. Browser roles have no direct table grants or RLS policies; explicit RLS policies are scoped only to `service_role`.
 
@@ -771,6 +773,7 @@ Added staff gateway:
 Added staff surface:
 
 - `/ops/release/`
+- `/ops/bootstrap/`
 
 The Pages workflow now validates, stages, deploys, and post-deployment verifies this surface.
 
@@ -811,6 +814,50 @@ Continuation rollback branch:
 - `rollback/phase34b-pre-candidate-binding-2026-09-19`
 - anchored to `1a4d4824e029baf927311ce24d68cfeb9b352114`
 
+### Phase 34 continuation — controlled staff provisioning
+
+Added:
+
+- `tw_ops_staff_role_events` — append-only staff role-assignment/revocation receipts;
+- `tw_staff_role_summary()` — service-role-only role coverage summary;
+- `tw_staff_user_role(uuid)` — service-role-only authoritative role lookup;
+- `thisweek-staff-gateway` — ACTIVE v1, JWT required;
+- `/ops/bootstrap/` — controlled staff bootstrap/provisioning surface.
+
+Staff role changes now use Supabase's supported server-side `auth.admin.updateUserById` path rather than direct `auth.users` mutation.
+
+First-admin bootstrap fails closed unless:
+
+- a real Supabase Auth user exists;
+- email is confirmed;
+- the current session is active;
+- MFA is AAL2;
+- zero This Week staff users currently exist;
+- the account email exactly matches server secret `THISWEEK_BOOTSTRAP_ADMIN_EMAIL`.
+
+After bootstrap, later role changes require an AAL2 `admin`, target confirmed Auth users, and bounded reason/evidence references. The last remaining admin cannot be revoked or downgraded.
+
+At the verified checkpoint:
+
+- Supabase Auth users: **0**;
+- confirmed users: **0**;
+- admins: **0**;
+- risk_ops: **0**;
+- support_ops: **0**;
+- staff role events: **0**;
+- bootstrap executed: **no**;
+- `THISWEEK_BOOTSTRAP_ADMIN_EMAIL`: not configured through this session;
+- verified release gates: **0 / 11**;
+- `liveMoneyReady=false`.
+
+The new role-event table has RLS, browser grants revoked, and no Phase 34c security advisor finding. Performance advisor notices are expected unused indexes on the empty audit table.
+
+Continuation rollback branch:
+
+- `rollback/phase34c-pre-staff-bootstrap-2026-09-19`
+- anchored to `43c59442c0a5a3c7af07a3899694a38617674e45`
+
+
 ---
 
 ## 17. Production release pipeline
@@ -825,6 +872,7 @@ GitHub Pages workflow validates before deployment:
 - Account Center
 - Operations Console
 - Release Evidence & Sandbox Certification Console
+- Staff Bootstrap
 - Support Center
 - Sandbox legal fixtures
 
@@ -832,8 +880,8 @@ Then deploys and performs exact post-deployment verification.
 
 Latest verified workflow:
 
-- Run: `35463647568`
-- Head: `c09a2c4a00c97b45059a4aa3c311d311f38a7796`
+- Run: `35464262907`
+- Head: `6e3b141fa41e4aff519bc142fa77007613b8678c`
 - Validation: SUCCESS
 - Deployment: SUCCESS
 - Verify deployed release: SUCCESS
@@ -902,6 +950,16 @@ Then explicitly run the existing Sandbox chain:
 Do not mark the E2E gate true from code existence alone.
 
 ### C. Staff provisioning
+
+Infrastructure is now deployed, but there are currently zero Auth users. Next real-world steps are:
+
+1. create a real account through `/account/`;
+2. confirm email;
+3. enroll and verify TOTP to AAL2;
+4. configure server secret `THISWEEK_BOOTSTRAP_ADMIN_EMAIL` to the intended initial admin email;
+5. open `/ops/bootstrap/` and bootstrap the first admin;
+6. create/provision least-privilege risk/support staff as real accounts;
+7. refresh/re-authenticate after role changes.
 
 Need named real staff users with least privilege:
 
@@ -983,7 +1041,7 @@ Use the Phase 34 machinery to collect real evidence and close only gates that ca
 4. Execute the complete provider/money chain and record pass/fail receipts for every requirement.
 5. Run and record a synthetic incident drill.
 6. Run and record rollback validation.
-7. Provision named least-privilege admin, risk_ops, and support_ops coverage.
+7. Create a real Auth account, confirm email, reach AAL2, configure `THISWEEK_BOOTSTRAP_ADMIN_EMAIL`, bootstrap the first admin through `/ops/bootstrap/`, then provision least-privilege risk_ops and support_ops coverage.
 8. Configure and test an approved external critical-notification destination.
 9. Collect actual provider/program, legal, retention, risk, runbook, webhook, and cost approvals.
 10. Verify a release gate only after `tw_release_gate_evidence_status(...).ready=true`.
@@ -1005,12 +1063,13 @@ Important known rollback anchors:
 
 Current verified functional production head:
 
-`c09a2c4a00c97b45059a4aa3c311d311f38a7796`
+`6e3b141fa41e4aff519bc142fa77007613b8678c`
 
 Phase 34 rollback branches:
 
 - `rollback/phase34-pre-certification-2026-09-19` → `ff3c8cd98d6e03f16cc1aa223e75ab553a2cc3d6`
 - `rollback/phase34b-pre-candidate-binding-2026-09-19` → `1a4d4824e029baf927311ce24d68cfeb9b352114`
+- `rollback/phase34c-pre-staff-bootstrap-2026-09-19` → `43c59442c0a5a3c7af07a3899694a38617674e45`
 
 Before any major new phase, create a fresh rollback branch from the exact current verified head.
 
@@ -1069,4 +1128,4 @@ Do not set/claim production provider execution until Phase 31 release interlock 
 
 ## 23. One-line continuation instruction for the next chat
 
-> Continue managing and implementing **This Week** from verified functional production commit `c09a2c4a00c97b45059a4aa3c311d311f38a7796`. Read `HANDOFF_2026-09-19_CURRENT.md`, inspect the live repo/Supabase state, and continue **Phase 34 evidence execution / Sandbox certification** unless I explicitly redirect you. Preserve all release interlocks, plan-vs-money semantics, RLS, append-only financial history, and the zero-budget constraint. Do not verify a release gate without supporting Phase 34 evidence, and do not claim live money readiness until the actual server release interlock says `liveMoneyReady=true`.
+> Continue managing and implementing **This Week** from verified functional production commit `6e3b141fa41e4aff519bc142fa77007613b8678c`. Read `HANDOFF_2026-09-19_CURRENT.md`, inspect the live repo/Supabase state, and continue **Phase 34 evidence execution / Sandbox certification** unless I explicitly redirect you. Preserve all release interlocks, plan-vs-money semantics, RLS, append-only financial history, and the zero-budget constraint. Do not verify a release gate without supporting Phase 34 evidence, and do not claim live money readiness until the actual server release interlock says `liveMoneyReady=true`.
