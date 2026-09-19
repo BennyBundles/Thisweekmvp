@@ -287,7 +287,7 @@ requireText('Phase 14 inactive-view curtain','PHASE 14 — INACTIVE VIEW PRIVACY
 requireText('Phase 14 privacy curtain controller','bindPrivacyCurtain');
 requireText('Phase 14 privacy curtain disclosure','Financial screen masks when hidden');
 requireText('Phase 14 source glossary external balance','External balance');
-requireText('Phase 14 local-only connected label','Stored in this browser');
+requireText('Phase 14 no-active-live-provider label','Provider gateway staged · no live institution connection is active.');
 requireText('Phase 14 import extension allowlist',"allowedExtensions:['csv','tsv','txt']");
 requireText('Phase 14 invalid date rejection','missing a valid transaction date');
 requireText('Phase 14 integer-cent range guard','Number.isSafeInteger(amountCents)');
