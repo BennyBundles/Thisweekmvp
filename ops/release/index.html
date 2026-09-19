@@ -47,6 +47,14 @@
 
   <section class="grid two" style="margin-top:14px">
     <div class="card">
+      <h2>Select active release candidate</h2>
+      <p class="muted">Selection is append-only. Certification and drills can only run against the currently selected full commit SHA.</p>
+      <label for="candidateSha">Full 40-character commit SHA</label><input id="candidateSha" autocomplete="off" maxlength="40">
+      <label for="candidateSource">Source reference</label><input id="candidateSource" autocomplete="off" maxlength="500" placeholder="github-pages:run:123456789">
+      <label for="candidateNote">Bounded note</label><textarea id="candidateNote" maxlength="1000"></textarea>
+      <div class="actions"><button id="selectCandidate" class="primary">Select active candidate</button></div><div id="candidateResult" class="result"></div>
+    </div>
+    <div class="card">
       <h2>Start certification run</h2>
       <label for="certSha">Release-candidate commit SHA</label><input id="certSha" autocomplete="off" placeholder="7–64 lowercase hex characters">
       <label for="certNote">Bounded note</label><textarea id="certNote" maxlength="1000"></textarea>
