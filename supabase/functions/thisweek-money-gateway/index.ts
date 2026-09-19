@@ -1787,8 +1787,16 @@ Deno.serve(async (req: Request) => {
   const action = safeText(body.action, 80);
 
   try {
+    const productionReadOnlyActions = new Set(["status","provider_preflight","risk_status","summary","ops_status"]);
+    if (MONEY_EXECUTION_MODE === "production" && !productionReadOnlyActions.has(action)) {
+      const legal = await admin.rpc("tw_user_production_legal_ready",{p_user_id:user.id});
+      if (legal.error || legal.data !== true) {
+        return json(origin,403,{error:"production_legal_acceptance_required"});
+      }
+    }
+
     if (action === "status") {
-      const [customer, deposits, transfers, cards, bills, rewards, releaseStatus] = await Promise.all([
+      const [customer, deposits, transfers, cards, bills, rewards, releaseStatus, legalReady] = await Promise.all([
         admin.from("tw_money_customers").select("id,onboarding_state,kyc_state,banking_provider")
           .eq("user_id", user.id).maybeSingle(),
         admin.from("tw_money_deposit_accounts").select("id,status,provider,account_last4")
@@ -1799,6 +1807,7 @@ Deno.serve(async (req: Request) => {
         admin.from("tw_money_reward_offers").select("id,offer_code,title,reward_amount_cents,minimum_qualifying_deposit_cents,active")
           .eq("active", true),
         admin.rpc("tw_release_status"),
+        admin.rpc("tw_user_production_legal_ready",{p_user_id:user.id}),
       ]);
       return json(origin, 200, {
         ok: true,
@@ -1822,6 +1831,7 @@ Deno.serve(async (req: Request) => {
         },
         activeRewards: rewards.data || [],
         productionInterlock: releaseStatus.error ? null : releaseStatus.data,
+        productionLegalReady: legalReady.error ? false : legalReady.data === true,
         safety: {
           planAuthority: "browser_local",
           moneyLedgerAuthority: "server_double_entry",
