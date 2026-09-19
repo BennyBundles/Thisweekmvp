@@ -4,6 +4,15 @@ Production changes for **This Week** are recorded here.
 
 ## Phase 34 — Release Evidence & Sandbox Certification — 2026-09-19
 
+### Phase 34 continuation — verified TOTP session elevation
+
+- Fixed Account Center MFA verification so an already-verified TOTP factor can elevate an AAL1 session to AAL2.
+- Split invalid-code vs missing-factor errors instead of reporting both as `Enter the current authenticator code`.
+- Added regression coverage to `account-check.mjs`.
+- Functional commit: `6d60234ccd86716dfefcbc65f210c532958b3305`.
+- Verified Pages workflow: `35469107717`.
+
+
 ### Phase 34 continuation — controlled staff provisioning
 
 - Added append-only `tw_ops_staff_role_events` receipts for staff-role assignments and revocations.
