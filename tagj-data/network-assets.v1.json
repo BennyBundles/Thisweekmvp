@@ -52,6 +52,97 @@
           "note": "Contains a child; do not place on the public website by default."
         }
       ]
+    },
+    "t311y-demon-life": {
+      "status": "source_assets_received",
+      "repositoryIngestStatus": "pending_binary_asset_copy",
+      "assets": [
+        {
+          "id": "t311y-green-varsity-portrait",
+          "sourceUploadName": "05E78E71-F6E2-4CBE-A91D-17FF2C53A61A.jpeg",
+          "type": "portrait",
+          "intendedUse": [
+            "affiliate profile hero candidate",
+            "network profile gallery"
+          ],
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "t311y-pool-session-social",
+          "sourceUploadName": "346CBA5B-14D4-43EA-AEA2-5D6F6E78E43F.jpeg",
+          "type": "social_archive_screenshot",
+          "intendedUse": [
+            "artist archive",
+            "studio/social context"
+          ],
+          "publicUse": "approved_from_supplied_source",
+          "note": "Prefer cropped/clean source later if available; current asset contains social-app UI."
+        },
+        {
+          "id": "t311y-chapter-3-social",
+          "sourceUploadName": "A11EA615-9D2A-4D58-BFC5-7D566E32805F.jpeg",
+          "type": "campaign_social_screenshot",
+          "intendedUse": [
+            "Chapter III / Chapter 3 archive",
+            "creative case-study context"
+          ],
+          "publicUse": "approved_from_supplied_source",
+          "note": "Current asset contains social-app UI."
+        },
+        {
+          "id": "t311y-devils-playground-art",
+          "sourceUploadName": "C43AFDB5-D901-4ABA-8C6A-D85F169CF81F.jpeg",
+          "type": "cover_art",
+          "intendedUse": [
+            "project artwork",
+            "creative services case study",
+            "affiliate profile gallery"
+          ],
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "t311y-home-recording-still",
+          "sourceUploadName": "51331BE4-55C5-4903-A64F-07B95D6AE366.jpeg",
+          "type": "recording_still",
+          "intendedUse": [
+            "studio-history timeline",
+            "Ha-Ha/home-studio context"
+          ],
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "t311y-jimmy-blastoff-art",
+          "sourceUploadName": "1A8A54D3-28C6-4BDC-ACCB-6199E7979E39.jpeg",
+          "type": "cover_art",
+          "intendedUse": [
+            "Jimmy Boy onna Blast Off Again project artwork",
+            "creative services case study",
+            "affiliate profile gallery"
+          ],
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "t311y-broken-bonds-social",
+          "sourceUploadName": "2D3B7F37-2B7C-457C-A7CD-4C53F31A3DF2.jpeg",
+          "type": "social_archive_screenshot",
+          "intendedUse": [
+            "artist archive",
+            "profile gallery"
+          ],
+          "publicUse": "approved_from_supplied_source",
+          "note": "Current asset contains social-app UI."
+        },
+        {
+          "id": "t311y-demonlife-shirt-art",
+          "sourceUploadName": "A0299644-1A6A-4754-9FA1-EC5C9205BD54.jpeg",
+          "type": "merch_visual",
+          "intendedUse": [
+            "visual identity archive",
+            "creative/culture context"
+          ],
+          "publicUse": "approved_from_supplied_source"
+        }
+      ]
     }
   }
 }
