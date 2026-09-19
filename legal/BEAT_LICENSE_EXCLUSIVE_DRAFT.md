@@ -17,7 +17,7 @@ Upon full payment and signature, Licensor grants Licensee a **perpetual exclusiv
 The license is worldwide. It applies to one New Song only. Licensee may edit, arrange, shorten, loop, mix, master, and combine the Beat with original vocals and other lawfully controlled material as reasonably necessary to create the New Song, but may not exploit the Beat by itself.
 
 ## 2. Files Delivered
-MP3, genuine lossless WAV, and any stems/trackouts that actually exist and are listed in Schedule A.
+MP3, a genuine lossless WAV only when a genuine lossless source exists, and original DAW stems/trackouts only when they actually exist and are listed in Schedule A. Any WAV decoded from MP3 and any stereo-derived separation stems must be expressly labeled as derivatives rather than original lossless/session assets.
 
 A file format is promised only if that source is actually available for the selected Beat. Converting an MP3 source into WAV does not create a true lossless master and will not be represented as such.
 
@@ -68,6 +68,21 @@ Beat-specific sample information belongs in **Schedule A**. Unless Schedule A ex
 
 If a third-party claim affects the Beat, the parties will reasonably cooperate to identify the affected material and determine whether clearance, replacement, takedown, or another remedy is appropriate.
 
+## 9A. Rights-Activation Condition
+Paid licensing of this Beat is conditioned on Licensor completing a Beat-specific Producer Rights / Sample Declaration or equivalent provenance record. Audio analysis by itself is not a representation that a Beat is sample-free. If third-party sound-recording material, composition material, loops, interpolations, collaborator contributions, prior exclusive promises, commissions, assignments, or other conflicting rights are identified, the applicable permission, release, ownership agreement, or other written resolution must be documented before the affected rights are licensed.
+
+The following Beat-specific rights statuses are acceptable for normal activation only when accurately documented:
+- original material / no third-party material, attested;
+- licensed production-library material with commercial-use rights documented; or
+- third-party material cleared with the necessary rights documented.
+
+A Beat-specific hold in Schedule A overrides general storefront availability.
+
+## 9B. Publishing, Mechanical and Performance Administration
+The ownership split stated in this Agreement allocates the parties’ composition interests but does not waive royalties that may be administered separately under applicable law, DSP licenses, performing-rights organizations, The Mechanical Licensing Collective, publishers, administrators, distributors, or similar systems. Each party may register and collect its own lawful share subject to the executed split and applicable rules.
+
+Licensee will preserve accurate writer, publisher, producer, ownership and identifying metadata reasonably supplied by Licensor and will not knowingly register conflicting ownership percentages.
+
 ## 10. No Standalone Trademark or Endorsement Rights
 This agreement does not authorize use of TAGJ, Thats A Good Jawn LLC, Benny Bundles, Bundles, or associated marks as a sponsor or endorsement beyond accurate production credit.
 
@@ -76,6 +91,9 @@ A material breach may be noticed in writing. Except for fraud, intentional infri
 
 ## 12. Representations
 Each party represents that it has authority to enter the agreement and that its own contributions will not knowingly infringe third-party rights. Except for express promises in this agreement and Schedule A, the Beat is licensed as provided and no commercial-success guarantee is made.
+
+## 12A. Authority / Capacity
+Each individual signing personally represents that the individual is at least 18 years old or otherwise has legal capacity and authority to bind the named party. A person signing for a company, label, management company, publisher, or other entity represents that the person is authorized to bind that entity.
 
 ## 13. Indemnity
 Each party will be responsible for third-party claims arising from that party’s breach, fraud, or material it independently contributed. Neither party assumes liability for rights or materials it did not supply or control.
@@ -116,6 +134,8 @@ Any transfer or assignment of the Beat copyright itself requires a separate writ
 - Estimated tempo: {{TEMPO_DISPLAY}}
 - Estimated key: {{KEY_ESTIMATE}}
 - Sample / third-party-rights status: {{SAMPLE_STATUS}}
+- Rights / sample declaration status: {{RIGHTS_DECLARATION_STATUS}}
+- Stem / trackout status: {{STEM_STATUS}}
 - Delivery-readiness notes: {{DELIVERY_NOTES}}
 - Additional negotiated terms: {{ADDITIONAL_TERMS}}
 
