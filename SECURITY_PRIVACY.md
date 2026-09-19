@@ -730,3 +730,54 @@ If retention-sensitive financial history exists, the request becomes `review_req
 If hard deletion is eligible, provider Vault secrets are destroyed before the Supabase Auth user is deleted.
 
 Cloud identity deletion remains separate from browser-local Plan deletion.
+
+
+## 24. Auth production hardening
+
+The Account Center has a separate public release assertion file at `account/release-config.js`.
+
+This file may contain only public configuration and manually verified release-state booleans.
+
+It must never contain:
+
+- Supabase service-role/secret keys;
+- CAPTCHA secret keys;
+- SMTP passwords;
+- provider API secrets;
+- refresh/access tokens.
+
+### Canonical redirects
+
+Account confirmation and recovery use fixed production URLs rather than reflecting the current page URL.
+
+This prevents a modified hosting path or query string from becoming an unintended Auth redirect.
+
+### CAPTCHA boundary
+
+The Account Center supports Cloudflare Turnstile when a public site key is configured.
+
+The Turnstile secret remains server-side in hosted Supabase Auth configuration.
+
+CAPTCHA tokens are sent only to Supabase Auth using the current `gotrue_meta_security.captcha_token` field.
+
+The main planner does not load CAPTCHA resources.
+
+### Public readiness
+
+The public Auth surface is deliberately fail-closed.
+
+The release config cannot truthfully set `publicAuthReady=true` until:
+
+- Site URL is verified;
+- exact redirect allowlist is verified;
+- email confirmation is verified;
+- CAPTCHA site key and hosted protection are verified;
+- custom SMTP is verified.
+
+The Account Center checker rejects an inconsistent ready state.
+
+### Rate limits
+
+The client adds signup/recovery cooldowns matching the default 60-second Supabase request window as a usability and abuse-backpressure layer.
+
+These client controls are not security authority and do not replace hosted Auth rate limits or CAPTCHA.
