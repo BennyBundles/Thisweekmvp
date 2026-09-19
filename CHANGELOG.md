@@ -2,6 +2,22 @@
 
 Production changes for **This Week** are recorded here.
 
+## Phase 29 — Automated Monitoring & Reconciliation — 2026-09-19
+
+- Added a database-only health/reconciliation monitor scheduled every 5 minutes with Supabase Cron/pg_cron.
+- Added service-layer-only health snapshots, monitor-run history, and durable high/critical notification outbox.
+- Monitor checks ledger balance invariants, stuck provider events, stale transfers/bill payments, provider failures, overdue support/risk/cases, and major/critical incidents.
+- Added stable monitor alerts that resolve when the condition clears instead of creating duplicate alerts every run.
+- Added Ops Console scheduler heartbeat, reconciliation counters, notification outbox, guarded manual monitor execution, and audited suppression.
+- Initial monitor verification returned healthy with zero ledger mismatches, stuck provider events, stale money operations, provider failures, or major/critical incidents.
+- External paging remains intentionally unconfigured; critical transitions stay durable in the outbox until an approved channel/dispatcher is configured.
+- Production money remains disabled.
+
+### Rollback
+- Pre-Phase-29 commit: `b5bccb2e23701a631c3d9f190e931f0cdf855f34`
+- Rollback branch: `rollback/phase29-pre-automated-monitoring-2026-09-19`
+
+
 ## Phase 28 — Customer Support & Incident Monitoring — 2026-09-19
 
 - Added authenticated customer Support & Disputes Center at `/support/`.
