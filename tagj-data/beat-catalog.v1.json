@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "tagj.beat-catalog.v1",
+  "schemaVersion": "tagj.beat-catalog.v1.1",
   "generatedFor": "TAGJ × Benny Bundles Producer / Engineer world",
   "producer": "Bundles (Benny Bundles)",
   "sourcePolicy": "All records originate from Google Drive audio files supplied by Benny. BPM, key, licensing, pricing and availability remain null/unconfirmed until explicitly supplied or separately verified.",
@@ -8,7 +8,7 @@
   "beats": [
     {
       "id": "beat-001",
-      "title": "B3 V.1 T.01",
+      "title": "Pressure Glass",
       "fileName": "B3 V.1 T.01.wav",
       "producer": "Bundles (Benny Bundles)",
       "source": {
@@ -36,11 +36,66 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser"
+      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "originalWorkingTitle": "B3 V.1 T.01",
+      "titleStatus": "audio-analysis-assigned_v159",
+      "analysis": {
+        "method": "automated_audio_feature_analysis_plus_editorial_naming",
+        "tempoBpmEstimate": 156.2,
+        "tempoFeel": "78.1 halftime / 156.2 double-time",
+        "keyEstimate": "B major / B minor ambiguous",
+        "keyConfidence": 0.538,
+        "creativeTags": [
+          "hard",
+          "bass-heavy",
+          "fast/double-time",
+          "bright-edge"
+        ],
+        "sourcePeakDbfs": -0.35,
+        "nearSilencePercent": 11.23,
+        "previewNormalizationRequired": false,
+        "sourceReviewNote": null
+      },
+      "pricing": {
+        "currency": "USD",
+        "basicMp3": 29,
+        "premiumWav": 49,
+        "trackoutPro": 99,
+        "unlimited": 149,
+        "exclusiveMinimumOffer": 499
+      },
+      "licenseAvailability": {
+        "basicMp3": {
+          "status": "available_after_preview_render"
+        },
+        "premiumWav": {
+          "status": "available_after_delivery_qc"
+        },
+        "trackoutPro": {
+          "status": "requires_stems_trackouts"
+        },
+        "unlimited": {
+          "status": "available_after_delivery_qc"
+        },
+        "exclusive": {
+          "status": "manual_rights_review_required"
+        }
+      },
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "legalAgreementRefs": {
+        "basicMp3": "legal:basic-mp3-v1",
+        "premiumWav": "legal:premium-wav-v1",
+        "trackoutPro": "legal:trackout-pro-v1",
+        "unlimited": "legal:unlimited-v1",
+        "exclusive": "legal:exclusive-v1"
+      }
     },
     {
       "id": "beat-002",
-      "title": "dopbeat2",
+      "title": "Low Light",
       "fileName": "dopbeat2.wav",
       "producer": "Bundles (Benny Bundles)",
       "source": {
@@ -68,11 +123,66 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser"
+      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "originalWorkingTitle": "dopbeat2",
+      "titleStatus": "audio-analysis-assigned_v159",
+      "analysis": {
+        "method": "automated_audio_feature_analysis_plus_editorial_naming",
+        "tempoBpmEstimate": 81.5,
+        "tempoFeel": "81.5 BPM",
+        "keyEstimate": "D# minor",
+        "keyConfidence": 0.657,
+        "creativeTags": [
+          "dark",
+          "sub-heavy",
+          "halftime",
+          "moody"
+        ],
+        "sourcePeakDbfs": 0,
+        "nearSilencePercent": 10.99,
+        "previewNormalizationRequired": false,
+        "sourceReviewNote": null
+      },
+      "pricing": {
+        "currency": "USD",
+        "basicMp3": 29,
+        "premiumWav": 49,
+        "trackoutPro": 99,
+        "unlimited": 149,
+        "exclusiveMinimumOffer": 499
+      },
+      "licenseAvailability": {
+        "basicMp3": {
+          "status": "available_after_preview_render"
+        },
+        "premiumWav": {
+          "status": "available_after_delivery_qc"
+        },
+        "trackoutPro": {
+          "status": "requires_stems_trackouts"
+        },
+        "unlimited": {
+          "status": "available_after_delivery_qc"
+        },
+        "exclusive": {
+          "status": "manual_rights_review_required"
+        }
+      },
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "legalAgreementRefs": {
+        "basicMp3": "legal:basic-mp3-v1",
+        "premiumWav": "legal:premium-wav-v1",
+        "trackoutPro": "legal:trackout-pro-v1",
+        "unlimited": "legal:unlimited-v1",
+        "exclusive": "legal:exclusive-v1"
+      }
     },
     {
       "id": "beat-003",
-      "title": "slams",
+      "title": "Heavy Weather",
       "fileName": "slams.wav",
       "producer": "Bundles (Benny Bundles)",
       "source": {
@@ -100,11 +210,66 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser"
+      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "originalWorkingTitle": "slams",
+      "titleStatus": "audio-analysis-assigned_v159",
+      "analysis": {
+        "method": "automated_audio_feature_analysis_plus_editorial_naming",
+        "tempoBpmEstimate": 156.2,
+        "tempoFeel": "78.1 halftime / 156.2 double-time",
+        "keyEstimate": "B minor",
+        "keyConfidence": 0.432,
+        "creativeTags": [
+          "bass-heavy",
+          "minor",
+          "fast/double-time",
+          "spacious"
+        ],
+        "sourcePeakDbfs": 0.05,
+        "nearSilencePercent": 13.73,
+        "previewNormalizationRequired": false,
+        "sourceReviewNote": null
+      },
+      "pricing": {
+        "currency": "USD",
+        "basicMp3": 29,
+        "premiumWav": 49,
+        "trackoutPro": 99,
+        "unlimited": 149,
+        "exclusiveMinimumOffer": 499
+      },
+      "licenseAvailability": {
+        "basicMp3": {
+          "status": "available_after_preview_render"
+        },
+        "premiumWav": {
+          "status": "available_after_delivery_qc"
+        },
+        "trackoutPro": {
+          "status": "requires_stems_trackouts"
+        },
+        "unlimited": {
+          "status": "available_after_delivery_qc"
+        },
+        "exclusive": {
+          "status": "manual_rights_review_required"
+        }
+      },
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "legalAgreementRefs": {
+        "basicMp3": "legal:basic-mp3-v1",
+        "premiumWav": "legal:premium-wav-v1",
+        "trackoutPro": "legal:trackout-pro-v1",
+        "unlimited": "legal:unlimited-v1",
+        "exclusive": "legal:exclusive-v1"
+      }
     },
     {
       "id": "beat-004",
-      "title": "doperthanthelast1",
+      "title": "Last One Better",
       "fileName": "doperthanthelast1.wav",
       "producer": "Bundles (Benny Bundles)",
       "source": {
@@ -132,11 +297,66 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser"
+      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "originalWorkingTitle": "doperthanthelast1",
+      "titleStatus": "audio-analysis-assigned_v159",
+      "analysis": {
+        "method": "automated_audio_feature_analysis_plus_editorial_naming",
+        "tempoBpmEstimate": 81.5,
+        "tempoFeel": "81.5 BPM",
+        "keyEstimate": "G major / C minor ambiguous",
+        "keyConfidence": 0.638,
+        "creativeTags": [
+          "sub-heavy",
+          "halftime",
+          "warm",
+          "melodic"
+        ],
+        "sourcePeakDbfs": 5.16,
+        "nearSilencePercent": 0.62,
+        "previewNormalizationRequired": true,
+        "sourceReviewNote": null
+      },
+      "pricing": {
+        "currency": "USD",
+        "basicMp3": 29,
+        "premiumWav": 49,
+        "trackoutPro": 99,
+        "unlimited": 149,
+        "exclusiveMinimumOffer": 499
+      },
+      "licenseAvailability": {
+        "basicMp3": {
+          "status": "available_after_preview_render"
+        },
+        "premiumWav": {
+          "status": "available_after_delivery_qc"
+        },
+        "trackoutPro": {
+          "status": "requires_stems_trackouts"
+        },
+        "unlimited": {
+          "status": "available_after_delivery_qc"
+        },
+        "exclusive": {
+          "status": "manual_rights_review_required"
+        }
+      },
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "legalAgreementRefs": {
+        "basicMp3": "legal:basic-mp3-v1",
+        "premiumWav": "legal:premium-wav-v1",
+        "trackoutPro": "legal:trackout-pro-v1",
+        "unlimited": "legal:unlimited-v1",
+        "exclusive": "legal:exclusive-v1"
+      }
     },
     {
       "id": "beat-005",
-      "title": "dope metal type b3at",
+      "title": "Iron Gospel",
       "fileName": "dope metal type b3at.wav",
       "producer": "Bundles (Benny Bundles)",
       "source": {
@@ -164,11 +384,66 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser"
+      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "originalWorkingTitle": "dope metal type b3at",
+      "titleStatus": "audio-analysis-assigned_v159",
+      "analysis": {
+        "method": "automated_audio_feature_analysis_plus_editorial_naming",
+        "tempoBpmEstimate": 81.5,
+        "tempoFeel": "81.5 BPM",
+        "keyEstimate": "B minor",
+        "keyConfidence": 0.452,
+        "creativeTags": [
+          "metal-trap",
+          "aggressive",
+          "dark",
+          "halftime"
+        ],
+        "sourcePeakDbfs": 10.37,
+        "nearSilencePercent": 1.11,
+        "previewNormalizationRequired": true,
+        "sourceReviewNote": null
+      },
+      "pricing": {
+        "currency": "USD",
+        "basicMp3": 29,
+        "premiumWav": 49,
+        "trackoutPro": 99,
+        "unlimited": 149,
+        "exclusiveMinimumOffer": 499
+      },
+      "licenseAvailability": {
+        "basicMp3": {
+          "status": "available_after_preview_render"
+        },
+        "premiumWav": {
+          "status": "available_after_delivery_qc"
+        },
+        "trackoutPro": {
+          "status": "requires_stems_trackouts"
+        },
+        "unlimited": {
+          "status": "available_after_delivery_qc"
+        },
+        "exclusive": {
+          "status": "manual_rights_review_required"
+        }
+      },
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "legalAgreementRefs": {
+        "basicMp3": "legal:basic-mp3-v1",
+        "premiumWav": "legal:premium-wav-v1",
+        "trackoutPro": "legal:trackout-pro-v1",
+        "unlimited": "legal:unlimited-v1",
+        "exclusive": "legal:exclusive-v1"
+      }
     },
     {
       "id": "beat-006",
-      "title": "beat for dt",
+      "title": "Cold Receiver",
       "fileName": "beat for dt.wav",
       "producer": "Bundles (Benny Bundles)",
       "source": {
@@ -196,11 +471,66 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser"
+      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "originalWorkingTitle": "beat for dt",
+      "titleStatus": "audio-analysis-assigned_v159",
+      "analysis": {
+        "method": "automated_audio_feature_analysis_plus_editorial_naming",
+        "tempoBpmEstimate": 156.2,
+        "tempoFeel": "78.1 halftime / 156.2 double-time",
+        "keyEstimate": "C tonal center; mode ambiguous",
+        "keyConfidence": 0.523,
+        "creativeTags": [
+          "bass-heavy",
+          "minimal",
+          "fast/double-time",
+          "cold"
+        ],
+        "sourcePeakDbfs": -0.22,
+        "nearSilencePercent": 1.08,
+        "previewNormalizationRequired": false,
+        "sourceReviewNote": null
+      },
+      "pricing": {
+        "currency": "USD",
+        "basicMp3": 29,
+        "premiumWav": 49,
+        "trackoutPro": 99,
+        "unlimited": 149,
+        "exclusiveMinimumOffer": 499
+      },
+      "licenseAvailability": {
+        "basicMp3": {
+          "status": "available_after_preview_render"
+        },
+        "premiumWav": {
+          "status": "available_after_delivery_qc"
+        },
+        "trackoutPro": {
+          "status": "requires_stems_trackouts"
+        },
+        "unlimited": {
+          "status": "available_after_delivery_qc"
+        },
+        "exclusive": {
+          "status": "manual_rights_review_required"
+        }
+      },
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "legalAgreementRefs": {
+        "basicMp3": "legal:basic-mp3-v1",
+        "premiumWav": "legal:premium-wav-v1",
+        "trackoutPro": "legal:trackout-pro-v1",
+        "unlimited": "legal:unlimited-v1",
+        "exclusive": "legal:exclusive-v1"
+      }
     },
     {
       "id": "beat-007",
-      "title": "1_2023",
+      "title": "Night Ledger",
       "fileName": "1_2023.wav",
       "producer": "Bundles (Benny Bundles)",
       "source": {
@@ -228,11 +558,66 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser"
+      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "originalWorkingTitle": "1_2023",
+      "titleStatus": "audio-analysis-assigned_v159",
+      "analysis": {
+        "method": "automated_audio_feature_analysis_plus_editorial_naming",
+        "tempoBpmEstimate": 133.9,
+        "tempoFeel": "67.0 halftime / 133.9 double-time",
+        "keyEstimate": "G# minor",
+        "keyConfidence": 0.474,
+        "creativeTags": [
+          "minor",
+          "tense",
+          "trap",
+          "night"
+        ],
+        "sourcePeakDbfs": 0.61,
+        "nearSilencePercent": 10.61,
+        "previewNormalizationRequired": true,
+        "sourceReviewNote": null
+      },
+      "pricing": {
+        "currency": "USD",
+        "basicMp3": 29,
+        "premiumWav": 49,
+        "trackoutPro": 99,
+        "unlimited": 149,
+        "exclusiveMinimumOffer": 499
+      },
+      "licenseAvailability": {
+        "basicMp3": {
+          "status": "available_after_preview_render"
+        },
+        "premiumWav": {
+          "status": "available_after_delivery_qc"
+        },
+        "trackoutPro": {
+          "status": "requires_stems_trackouts"
+        },
+        "unlimited": {
+          "status": "available_after_delivery_qc"
+        },
+        "exclusive": {
+          "status": "manual_rights_review_required"
+        }
+      },
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "legalAgreementRefs": {
+        "basicMp3": "legal:basic-mp3-v1",
+        "premiumWav": "legal:premium-wav-v1",
+        "trackoutPro": "legal:trackout-pro-v1",
+        "unlimited": "legal:unlimited-v1",
+        "exclusive": "legal:exclusive-v1"
+      }
     },
     {
       "id": "beat-008",
-      "title": "DARK Trap No Samples BEAT 2024 #1,077",
+      "title": "No Witnesses",
       "fileName": "[DARK Trap] No Samples BEAT 2024 #1,077 (prod. Benny Bundles).wav",
       "producer": "Bundles (Benny Bundles)",
       "source": {
@@ -260,11 +645,66 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser"
+      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "originalWorkingTitle": "DARK Trap No Samples BEAT 2024 #1,077",
+      "titleStatus": "audio-analysis-assigned_v159",
+      "analysis": {
+        "method": "automated_audio_feature_analysis_plus_editorial_naming",
+        "tempoBpmEstimate": 133.9,
+        "tempoFeel": "67.0 halftime / 133.9 double-time",
+        "keyEstimate": "G# minor",
+        "keyConfidence": 0.915,
+        "creativeTags": [
+          "dark-trap",
+          "minor",
+          "nocturnal",
+          "cinematic"
+        ],
+        "sourcePeakDbfs": -0.17,
+        "nearSilencePercent": 3.03,
+        "previewNormalizationRequired": false,
+        "sourceReviewNote": null
+      },
+      "pricing": {
+        "currency": "USD",
+        "basicMp3": 29,
+        "premiumWav": 49,
+        "trackoutPro": 99,
+        "unlimited": 149,
+        "exclusiveMinimumOffer": 499
+      },
+      "licenseAvailability": {
+        "basicMp3": {
+          "status": "available_after_preview_render"
+        },
+        "premiumWav": {
+          "status": "available_after_delivery_qc"
+        },
+        "trackoutPro": {
+          "status": "requires_stems_trackouts"
+        },
+        "unlimited": {
+          "status": "available_after_delivery_qc"
+        },
+        "exclusive": {
+          "status": "manual_rights_review_required"
+        }
+      },
+      "sampleStatus": {
+        "status": "filename_states_no_samples_unverified",
+        "note": "Original filename includes “No Samples”; sample status still requires rights review before legal activation."
+      },
+      "legalAgreementRefs": {
+        "basicMp3": "legal:basic-mp3-v1",
+        "premiumWav": "legal:premium-wav-v1",
+        "trackoutPro": "legal:trackout-pro-v1",
+        "unlimited": "legal:unlimited-v1",
+        "exclusive": "legal:exclusive-v1"
+      }
     },
     {
       "id": "beat-009",
-      "title": "8888",
+      "title": "Four Eights",
       "fileName": "8888.mp3",
       "producer": "Bundles (Benny Bundles)",
       "source": {
@@ -292,11 +732,66 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser"
+      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "originalWorkingTitle": "8888",
+      "titleStatus": "audio-analysis-assigned_v159",
+      "analysis": {
+        "method": "automated_audio_feature_analysis_plus_editorial_naming",
+        "tempoBpmEstimate": 110.3,
+        "tempoFeel": "110.3 BPM",
+        "keyEstimate": "D minor",
+        "keyConfidence": 0.738,
+        "creativeTags": [
+          "driving",
+          "minor",
+          "hard",
+          "midtempo"
+        ],
+        "sourcePeakDbfs": 1.9,
+        "nearSilencePercent": 0.68,
+        "previewNormalizationRequired": true,
+        "sourceReviewNote": null
+      },
+      "pricing": {
+        "currency": "USD",
+        "basicMp3": 29,
+        "premiumWav": 49,
+        "trackoutPro": 99,
+        "unlimited": 149,
+        "exclusiveMinimumOffer": 499
+      },
+      "licenseAvailability": {
+        "basicMp3": {
+          "status": "available_after_preview_render"
+        },
+        "premiumWav": {
+          "status": "requires_lossless_master"
+        },
+        "trackoutPro": {
+          "status": "requires_stems_trackouts"
+        },
+        "unlimited": {
+          "status": "requires_lossless_master"
+        },
+        "exclusive": {
+          "status": "requires_lossless_master_and_manual_rights_review"
+        }
+      },
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "legalAgreementRefs": {
+        "basicMp3": "legal:basic-mp3-v1",
+        "premiumWav": "legal:premium-wav-v1",
+        "trackoutPro": "legal:trackout-pro-v1",
+        "unlimited": "legal:unlimited-v1",
+        "exclusive": "legal:exclusive-v1"
+      }
     },
     {
       "id": "beat-010",
-      "title": "Benjamin Unfinished Symphony",
+      "title": "Unfinished Marble",
       "fileName": "Benjamin Unfinished Symphony.wav",
       "producer": "Bundles (Benny Bundles)",
       "source": {
@@ -324,11 +819,66 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser"
+      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "originalWorkingTitle": "Benjamin Unfinished Symphony",
+      "titleStatus": "audio-analysis-assigned_v159",
+      "analysis": {
+        "method": "automated_audio_feature_analysis_plus_editorial_naming",
+        "tempoBpmEstimate": 156.2,
+        "tempoFeel": "78.1 halftime / 156.2 double-time",
+        "keyEstimate": "D# minor",
+        "keyConfidence": 0.578,
+        "creativeTags": [
+          "cinematic",
+          "minor",
+          "melodic",
+          "fast/double-time"
+        ],
+        "sourcePeakDbfs": 0,
+        "nearSilencePercent": 0.59,
+        "previewNormalizationRequired": false,
+        "sourceReviewNote": null
+      },
+      "pricing": {
+        "currency": "USD",
+        "basicMp3": 29,
+        "premiumWav": 49,
+        "trackoutPro": 99,
+        "unlimited": 149,
+        "exclusiveMinimumOffer": 499
+      },
+      "licenseAvailability": {
+        "basicMp3": {
+          "status": "available_after_preview_render"
+        },
+        "premiumWav": {
+          "status": "available_after_delivery_qc"
+        },
+        "trackoutPro": {
+          "status": "requires_stems_trackouts"
+        },
+        "unlimited": {
+          "status": "available_after_delivery_qc"
+        },
+        "exclusive": {
+          "status": "manual_rights_review_required"
+        }
+      },
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "legalAgreementRefs": {
+        "basicMp3": "legal:basic-mp3-v1",
+        "premiumWav": "legal:premium-wav-v1",
+        "trackoutPro": "legal:trackout-pro-v1",
+        "unlimited": "legal:unlimited-v1",
+        "exclusive": "legal:exclusive-v1"
+      }
     },
     {
       "id": "beat-011",
-      "title": "West Coast Beat Prod by Bundles",
+      "title": "Pacific Pressure",
       "fileName": "West Coast Beat Prod by Bundles.wav",
       "producer": "Bundles (Benny Bundles)",
       "source": {
@@ -356,11 +906,66 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser"
+      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "originalWorkingTitle": "West Coast Beat Prod by Bundles",
+      "titleStatus": "audio-analysis-assigned_v159",
+      "analysis": {
+        "method": "automated_audio_feature_analysis_plus_editorial_naming",
+        "tempoBpmEstimate": 93.8,
+        "tempoFeel": "93.8 BPM",
+        "keyEstimate": "A# minor",
+        "keyConfidence": 0.831,
+        "creativeTags": [
+          "west-coast",
+          "minor",
+          "spacious",
+          "midtempo"
+        ],
+        "sourcePeakDbfs": 0,
+        "nearSilencePercent": 5.46,
+        "previewNormalizationRequired": false,
+        "sourceReviewNote": null
+      },
+      "pricing": {
+        "currency": "USD",
+        "basicMp3": 29,
+        "premiumWav": 49,
+        "trackoutPro": 99,
+        "unlimited": 149,
+        "exclusiveMinimumOffer": 499
+      },
+      "licenseAvailability": {
+        "basicMp3": {
+          "status": "available_after_preview_render"
+        },
+        "premiumWav": {
+          "status": "available_after_delivery_qc"
+        },
+        "trackoutPro": {
+          "status": "requires_stems_trackouts"
+        },
+        "unlimited": {
+          "status": "available_after_delivery_qc"
+        },
+        "exclusive": {
+          "status": "manual_rights_review_required"
+        }
+      },
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "legalAgreementRefs": {
+        "basicMp3": "legal:basic-mp3-v1",
+        "premiumWav": "legal:premium-wav-v1",
+        "trackoutPro": "legal:trackout-pro-v1",
+        "unlimited": "legal:unlimited-v1",
+        "exclusive": "legal:exclusive-v1"
+      }
     },
     {
       "id": "beat-012",
-      "title": "EDMM",
+      "title": "Neon Circuit",
       "fileName": "EDMM.wav",
       "producer": "Bundles (Benny Bundles)",
       "source": {
@@ -388,11 +993,66 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser"
+      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "originalWorkingTitle": "EDMM",
+      "titleStatus": "audio-analysis-assigned_v159",
+      "analysis": {
+        "method": "automated_audio_feature_analysis_plus_editorial_naming",
+        "tempoBpmEstimate": 98.7,
+        "tempoFeel": "98.7 BPM",
+        "keyEstimate": "F# tonal center; mode ambiguous",
+        "keyConfidence": 0.712,
+        "creativeTags": [
+          "electronic",
+          "atmospheric",
+          "midtempo",
+          "sparse"
+        ],
+        "sourcePeakDbfs": 10.95,
+        "nearSilencePercent": 45.63,
+        "previewNormalizationRequired": true,
+        "sourceReviewNote": "High near-silence percentage; manual arrangement/export review recommended before sale."
+      },
+      "pricing": {
+        "currency": "USD",
+        "basicMp3": 29,
+        "premiumWav": 49,
+        "trackoutPro": 99,
+        "unlimited": 149,
+        "exclusiveMinimumOffer": 499
+      },
+      "licenseAvailability": {
+        "basicMp3": {
+          "status": "available_after_preview_render"
+        },
+        "premiumWav": {
+          "status": "available_after_delivery_qc"
+        },
+        "trackoutPro": {
+          "status": "requires_stems_trackouts"
+        },
+        "unlimited": {
+          "status": "available_after_delivery_qc"
+        },
+        "exclusive": {
+          "status": "manual_rights_review_required"
+        }
+      },
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "legalAgreementRefs": {
+        "basicMp3": "legal:basic-mp3-v1",
+        "premiumWav": "legal:premium-wav-v1",
+        "trackoutPro": "legal:trackout-pro-v1",
+        "unlimited": "legal:unlimited-v1",
+        "exclusive": "legal:exclusive-v1"
+      }
     },
     {
       "id": "beat-013",
-      "title": "intense",
+      "title": "Redline",
       "fileName": "intense.wav",
       "producer": "Bundles (Benny Bundles)",
       "source": {
@@ -420,11 +1080,66 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser"
+      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "originalWorkingTitle": "intense",
+      "titleStatus": "audio-analysis-assigned_v159",
+      "analysis": {
+        "method": "automated_audio_feature_analysis_plus_editorial_naming",
+        "tempoBpmEstimate": 117.2,
+        "tempoFeel": "117.2 BPM",
+        "keyEstimate": "A minor",
+        "keyConfidence": 0.719,
+        "creativeTags": [
+          "high-energy",
+          "minor",
+          "urgent",
+          "hard"
+        ],
+        "sourcePeakDbfs": 11.77,
+        "nearSilencePercent": 15.73,
+        "previewNormalizationRequired": true,
+        "sourceReviewNote": null
+      },
+      "pricing": {
+        "currency": "USD",
+        "basicMp3": 29,
+        "premiumWav": 49,
+        "trackoutPro": 99,
+        "unlimited": 149,
+        "exclusiveMinimumOffer": 499
+      },
+      "licenseAvailability": {
+        "basicMp3": {
+          "status": "available_after_preview_render"
+        },
+        "premiumWav": {
+          "status": "available_after_delivery_qc"
+        },
+        "trackoutPro": {
+          "status": "requires_stems_trackouts"
+        },
+        "unlimited": {
+          "status": "available_after_delivery_qc"
+        },
+        "exclusive": {
+          "status": "manual_rights_review_required"
+        }
+      },
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "legalAgreementRefs": {
+        "basicMp3": "legal:basic-mp3-v1",
+        "premiumWav": "legal:premium-wav-v1",
+        "trackoutPro": "legal:trackout-pro-v1",
+        "unlimited": "legal:unlimited-v1",
+        "exclusive": "legal:exclusive-v1"
+      }
     },
     {
       "id": "beat-014",
-      "title": "sarahs beat 3",
+      "title": "Soft Armor",
       "fileName": "sarahs beat 3.wav",
       "producer": "Bundles (Benny Bundles)",
       "source": {
@@ -452,11 +1167,66 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser"
+      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "originalWorkingTitle": "sarahs beat 3",
+      "titleStatus": "audio-analysis-assigned_v159",
+      "analysis": {
+        "method": "automated_audio_feature_analysis_plus_editorial_naming",
+        "tempoBpmEstimate": 144.2,
+        "tempoFeel": "72.1 halftime / 144.2 double-time",
+        "keyEstimate": "C# tonal center; mode ambiguous",
+        "keyConfidence": 0.411,
+        "creativeTags": [
+          "melodic",
+          "bass-heavy",
+          "emotional",
+          "fast"
+        ],
+        "sourcePeakDbfs": 1.3,
+        "nearSilencePercent": 0.79,
+        "previewNormalizationRequired": true,
+        "sourceReviewNote": null
+      },
+      "pricing": {
+        "currency": "USD",
+        "basicMp3": 29,
+        "premiumWav": 49,
+        "trackoutPro": 99,
+        "unlimited": 149,
+        "exclusiveMinimumOffer": 499
+      },
+      "licenseAvailability": {
+        "basicMp3": {
+          "status": "available_after_preview_render"
+        },
+        "premiumWav": {
+          "status": "available_after_delivery_qc"
+        },
+        "trackoutPro": {
+          "status": "requires_stems_trackouts"
+        },
+        "unlimited": {
+          "status": "available_after_delivery_qc"
+        },
+        "exclusive": {
+          "status": "manual_rights_review_required"
+        }
+      },
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "legalAgreementRefs": {
+        "basicMp3": "legal:basic-mp3-v1",
+        "premiumWav": "legal:premium-wav-v1",
+        "trackoutPro": "legal:trackout-pro-v1",
+        "unlimited": "legal:unlimited-v1",
+        "exclusive": "legal:exclusive-v1"
+      }
     },
     {
       "id": "beat-015",
-      "title": "hts beat remix 23",
+      "title": "Half Truths",
       "fileName": "hts beat remix 23.wav",
       "producer": "Bundles (Benny Bundles)",
       "source": {
@@ -484,11 +1254,66 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser"
+      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "originalWorkingTitle": "hts beat remix 23",
+      "titleStatus": "audio-analysis-assigned_v159",
+      "analysis": {
+        "method": "automated_audio_feature_analysis_plus_editorial_naming",
+        "tempoBpmEstimate": 93.8,
+        "tempoFeel": "93.8 BPM",
+        "keyEstimate": "F minor",
+        "keyConfidence": 0.821,
+        "creativeTags": [
+          "dark",
+          "minor",
+          "midtempo",
+          "remix-feel"
+        ],
+        "sourcePeakDbfs": -0.02,
+        "nearSilencePercent": 3.75,
+        "previewNormalizationRequired": false,
+        "sourceReviewNote": null
+      },
+      "pricing": {
+        "currency": "USD",
+        "basicMp3": 29,
+        "premiumWav": 49,
+        "trackoutPro": 99,
+        "unlimited": 149,
+        "exclusiveMinimumOffer": 499
+      },
+      "licenseAvailability": {
+        "basicMp3": {
+          "status": "available_after_preview_render"
+        },
+        "premiumWav": {
+          "status": "available_after_delivery_qc"
+        },
+        "trackoutPro": {
+          "status": "requires_stems_trackouts"
+        },
+        "unlimited": {
+          "status": "available_after_delivery_qc"
+        },
+        "exclusive": {
+          "status": "manual_rights_review_required"
+        }
+      },
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "legalAgreementRefs": {
+        "basicMp3": "legal:basic-mp3-v1",
+        "premiumWav": "legal:premium-wav-v1",
+        "trackoutPro": "legal:trackout-pro-v1",
+        "unlimited": "legal:unlimited-v1",
+        "exclusive": "legal:exclusive-v1"
+      }
     },
     {
       "id": "beat-016",
-      "title": "darktrap",
+      "title": "Black Ledger",
       "fileName": "darktrap.wav",
       "producer": "Bundles (Benny Bundles)",
       "source": {
@@ -516,11 +1341,66 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser"
+      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "originalWorkingTitle": "darktrap",
+      "titleStatus": "audio-analysis-assigned_v159",
+      "analysis": {
+        "method": "automated_audio_feature_analysis_plus_editorial_naming",
+        "tempoBpmEstimate": 104.2,
+        "tempoFeel": "104.2 BPM",
+        "keyEstimate": "B minor",
+        "keyConfidence": 0.402,
+        "creativeTags": [
+          "dark-trap",
+          "minor",
+          "heavy",
+          "midtempo"
+        ],
+        "sourcePeakDbfs": 1.01,
+        "nearSilencePercent": 2.8,
+        "previewNormalizationRequired": true,
+        "sourceReviewNote": null
+      },
+      "pricing": {
+        "currency": "USD",
+        "basicMp3": 29,
+        "premiumWav": 49,
+        "trackoutPro": 99,
+        "unlimited": 149,
+        "exclusiveMinimumOffer": 499
+      },
+      "licenseAvailability": {
+        "basicMp3": {
+          "status": "available_after_preview_render"
+        },
+        "premiumWav": {
+          "status": "available_after_delivery_qc"
+        },
+        "trackoutPro": {
+          "status": "requires_stems_trackouts"
+        },
+        "unlimited": {
+          "status": "available_after_delivery_qc"
+        },
+        "exclusive": {
+          "status": "manual_rights_review_required"
+        }
+      },
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "legalAgreementRefs": {
+        "basicMp3": "legal:basic-mp3-v1",
+        "premiumWav": "legal:premium-wav-v1",
+        "trackoutPro": "legal:trackout-pro-v1",
+        "unlimited": "legal:unlimited-v1",
+        "exclusive": "legal:exclusive-v1"
+      }
     },
     {
       "id": "beat-017",
-      "title": "tghhhhgfdd",
+      "title": "Basement Gold",
       "fileName": "tghhhhgfdd.mp3",
       "producer": "Bundles (Benny Bundles)",
       "source": {
@@ -548,11 +1428,66 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser"
+      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "originalWorkingTitle": "tghhhhgfdd",
+      "titleStatus": "audio-analysis-assigned_v159",
+      "analysis": {
+        "method": "automated_audio_feature_analysis_plus_editorial_naming",
+        "tempoBpmEstimate": 81.5,
+        "tempoFeel": "81.5 BPM",
+        "keyEstimate": "C tonal center",
+        "keyConfidence": 0.578,
+        "creativeTags": [
+          "sub-heavy",
+          "dark",
+          "minimal",
+          "halftime"
+        ],
+        "sourcePeakDbfs": 2.63,
+        "nearSilencePercent": 12.02,
+        "previewNormalizationRequired": true,
+        "sourceReviewNote": null
+      },
+      "pricing": {
+        "currency": "USD",
+        "basicMp3": 29,
+        "premiumWav": 49,
+        "trackoutPro": 99,
+        "unlimited": 149,
+        "exclusiveMinimumOffer": 499
+      },
+      "licenseAvailability": {
+        "basicMp3": {
+          "status": "available_after_preview_render"
+        },
+        "premiumWav": {
+          "status": "requires_lossless_master"
+        },
+        "trackoutPro": {
+          "status": "requires_stems_trackouts"
+        },
+        "unlimited": {
+          "status": "requires_lossless_master"
+        },
+        "exclusive": {
+          "status": "requires_lossless_master_and_manual_rights_review"
+        }
+      },
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "legalAgreementRefs": {
+        "basicMp3": "legal:basic-mp3-v1",
+        "premiumWav": "legal:premium-wav-v1",
+        "trackoutPro": "legal:trackout-pro-v1",
+        "unlimited": "legal:unlimited-v1",
+        "exclusive": "legal:exclusive-v1"
+      }
     },
     {
       "id": "beat-018",
-      "title": "untitled722",
+      "title": "Long Way Home",
       "fileName": "untitled722.mp3",
       "producer": "Bundles (Benny Bundles)",
       "source": {
@@ -580,11 +1515,66 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser"
+      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "originalWorkingTitle": "untitled722",
+      "titleStatus": "audio-analysis-assigned_v159",
+      "analysis": {
+        "method": "automated_audio_feature_analysis_plus_editorial_naming",
+        "tempoBpmEstimate": 89.3,
+        "tempoFeel": "89.3 BPM",
+        "keyEstimate": "F major / A minor ambiguous",
+        "keyConfidence": 0.52,
+        "creativeTags": [
+          "long-form",
+          "bass-heavy",
+          "atmospheric",
+          "slow-burn"
+        ],
+        "sourcePeakDbfs": 2.32,
+        "nearSilencePercent": 2.95,
+        "previewNormalizationRequired": true,
+        "sourceReviewNote": null
+      },
+      "pricing": {
+        "currency": "USD",
+        "basicMp3": 29,
+        "premiumWav": 49,
+        "trackoutPro": 99,
+        "unlimited": 149,
+        "exclusiveMinimumOffer": 499
+      },
+      "licenseAvailability": {
+        "basicMp3": {
+          "status": "available_after_preview_render"
+        },
+        "premiumWav": {
+          "status": "requires_lossless_master"
+        },
+        "trackoutPro": {
+          "status": "requires_stems_trackouts"
+        },
+        "unlimited": {
+          "status": "requires_lossless_master"
+        },
+        "exclusive": {
+          "status": "requires_lossless_master_and_manual_rights_review"
+        }
+      },
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "legalAgreementRefs": {
+        "basicMp3": "legal:basic-mp3-v1",
+        "premiumWav": "legal:premium-wav-v1",
+        "trackoutPro": "legal:trackout-pro-v1",
+        "unlimited": "legal:unlimited-v1",
+        "exclusive": "legal:exclusive-v1"
+      }
     },
     {
       "id": "beat-019",
-      "title": "juice",
+      "title": "Daylight Run",
       "fileName": "juice.mp3",
       "producer": "Bundles (Benny Bundles)",
       "source": {
@@ -612,11 +1602,66 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser"
+      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "originalWorkingTitle": "juice",
+      "titleStatus": "audio-analysis-assigned_v159",
+      "analysis": {
+        "method": "automated_audio_feature_analysis_plus_editorial_naming",
+        "tempoBpmEstimate": 156.2,
+        "tempoFeel": "78.1 halftime / 156.2 double-time",
+        "keyEstimate": "G major",
+        "keyConfidence": 0.807,
+        "creativeTags": [
+          "bright",
+          "percussive",
+          "up-tempo",
+          "energetic"
+        ],
+        "sourcePeakDbfs": 1.68,
+        "nearSilencePercent": 3.31,
+        "previewNormalizationRequired": true,
+        "sourceReviewNote": null
+      },
+      "pricing": {
+        "currency": "USD",
+        "basicMp3": 29,
+        "premiumWav": 49,
+        "trackoutPro": 99,
+        "unlimited": 149,
+        "exclusiveMinimumOffer": 499
+      },
+      "licenseAvailability": {
+        "basicMp3": {
+          "status": "available_after_preview_render"
+        },
+        "premiumWav": {
+          "status": "requires_lossless_master"
+        },
+        "trackoutPro": {
+          "status": "requires_stems_trackouts"
+        },
+        "unlimited": {
+          "status": "requires_lossless_master"
+        },
+        "exclusive": {
+          "status": "requires_lossless_master_and_manual_rights_review"
+        }
+      },
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "legalAgreementRefs": {
+        "basicMp3": "legal:basic-mp3-v1",
+        "premiumWav": "legal:premium-wav-v1",
+        "trackoutPro": "legal:trackout-pro-v1",
+        "unlimited": "legal:unlimited-v1",
+        "exclusive": "legal:exclusive-v1"
+      }
     },
     {
       "id": "beat-020",
-      "title": "2_2023",
+      "title": "Clean Money",
       "fileName": "2_2023.wav",
       "producer": "Bundles (Benny Bundles)",
       "source": {
@@ -644,11 +1689,66 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser"
+      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "originalWorkingTitle": "2_2023",
+      "titleStatus": "audio-analysis-assigned_v159",
+      "analysis": {
+        "method": "automated_audio_feature_analysis_plus_editorial_naming",
+        "tempoBpmEstimate": 89.3,
+        "tempoFeel": "89.3 BPM",
+        "keyEstimate": "E major",
+        "keyConfidence": 0.809,
+        "creativeTags": [
+          "warm",
+          "major",
+          "bass-heavy",
+          "midtempo"
+        ],
+        "sourcePeakDbfs": 9.59,
+        "nearSilencePercent": 3.28,
+        "previewNormalizationRequired": true,
+        "sourceReviewNote": null
+      },
+      "pricing": {
+        "currency": "USD",
+        "basicMp3": 29,
+        "premiumWav": 49,
+        "trackoutPro": 99,
+        "unlimited": 149,
+        "exclusiveMinimumOffer": 499
+      },
+      "licenseAvailability": {
+        "basicMp3": {
+          "status": "available_after_preview_render"
+        },
+        "premiumWav": {
+          "status": "available_after_delivery_qc"
+        },
+        "trackoutPro": {
+          "status": "requires_stems_trackouts"
+        },
+        "unlimited": {
+          "status": "available_after_delivery_qc"
+        },
+        "exclusive": {
+          "status": "manual_rights_review_required"
+        }
+      },
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "legalAgreementRefs": {
+        "basicMp3": "legal:basic-mp3-v1",
+        "premiumWav": "legal:premium-wav-v1",
+        "trackoutPro": "legal:trackout-pro-v1",
+        "unlimited": "legal:unlimited-v1",
+        "exclusive": "legal:exclusive-v1"
+      }
     },
     {
       "id": "beat-021",
-      "title": "4_2023",
+      "title": "Pressure Point",
       "fileName": "4_2023.wav",
       "producer": "Bundles (Benny Bundles)",
       "source": {
@@ -676,11 +1776,66 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser"
+      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "originalWorkingTitle": "4_2023",
+      "titleStatus": "audio-analysis-assigned_v159",
+      "analysis": {
+        "method": "automated_audio_feature_analysis_plus_editorial_naming",
+        "tempoBpmEstimate": 117.2,
+        "tempoFeel": "117.2 BPM",
+        "keyEstimate": "A# minor",
+        "keyConfidence": 0.643,
+        "creativeTags": [
+          "driving",
+          "minor",
+          "tense",
+          "midtempo"
+        ],
+        "sourcePeakDbfs": 3.2,
+        "nearSilencePercent": 4.27,
+        "previewNormalizationRequired": true,
+        "sourceReviewNote": null
+      },
+      "pricing": {
+        "currency": "USD",
+        "basicMp3": 29,
+        "premiumWav": 49,
+        "trackoutPro": 99,
+        "unlimited": 149,
+        "exclusiveMinimumOffer": 499
+      },
+      "licenseAvailability": {
+        "basicMp3": {
+          "status": "available_after_preview_render"
+        },
+        "premiumWav": {
+          "status": "available_after_delivery_qc"
+        },
+        "trackoutPro": {
+          "status": "requires_stems_trackouts"
+        },
+        "unlimited": {
+          "status": "available_after_delivery_qc"
+        },
+        "exclusive": {
+          "status": "manual_rights_review_required"
+        }
+      },
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "legalAgreementRefs": {
+        "basicMp3": "legal:basic-mp3-v1",
+        "premiumWav": "legal:premium-wav-v1",
+        "trackoutPro": "legal:trackout-pro-v1",
+        "unlimited": "legal:unlimited-v1",
+        "exclusive": "legal:exclusive-v1"
+      }
     },
     {
       "id": "beat-022",
-      "title": "3_2023",
+      "title": "Slow Motion Gold",
       "fileName": "3_2023.wav",
       "producer": "Bundles (Benny Bundles)",
       "source": {
@@ -708,7 +1863,65 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser"
+      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "originalWorkingTitle": "3_2023",
+      "titleStatus": "audio-analysis-assigned_v159",
+      "analysis": {
+        "method": "automated_audio_feature_analysis_plus_editorial_naming",
+        "tempoBpmEstimate": 81.5,
+        "tempoFeel": "81.5 BPM",
+        "keyEstimate": "B major",
+        "keyConfidence": 0.605,
+        "creativeTags": [
+          "percussive",
+          "halftime",
+          "major",
+          "spacious"
+        ],
+        "sourcePeakDbfs": 3.47,
+        "nearSilencePercent": 21.83,
+        "previewNormalizationRequired": true,
+        "sourceReviewNote": "Elevated near-silence percentage; manual arrangement/export review recommended."
+      },
+      "pricing": {
+        "currency": "USD",
+        "basicMp3": 29,
+        "premiumWav": 49,
+        "trackoutPro": 99,
+        "unlimited": 149,
+        "exclusiveMinimumOffer": 499
+      },
+      "licenseAvailability": {
+        "basicMp3": {
+          "status": "available_after_preview_render"
+        },
+        "premiumWav": {
+          "status": "available_after_delivery_qc"
+        },
+        "trackoutPro": {
+          "status": "requires_stems_trackouts"
+        },
+        "unlimited": {
+          "status": "available_after_delivery_qc"
+        },
+        "exclusive": {
+          "status": "manual_rights_review_required"
+        }
+      },
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "legalAgreementRefs": {
+        "basicMp3": "legal:basic-mp3-v1",
+        "premiumWav": "legal:premium-wav-v1",
+        "trackoutPro": "legal:trackout-pro-v1",
+        "unlimited": "legal:unlimited-v1",
+        "exclusive": "legal:exclusive-v1"
+      }
     }
-  ]
+  ],
+  "analysisVersion": "v15.9",
+  "pricingModelNote": "Competitive launch ladder informed by current beat-market norms: $29 Basic MP3 / $49 Premium WAV / $99 Trackout Pro / $149 Unlimited / Exclusive minimum offer $499 with manual approval.",
+  "legalStatus": "Draft agreements attached by reference; checkout activation blocked pending governing-law confirmation, rights/sample review, and final legal review."
 }
