@@ -1,8 +1,8 @@
 {
-  "schemaVersion": "tagj.beat-license-matrix.v1",
+  "schemaVersion": "tagj.beat-license-matrix.v1.1",
   "generatedFrom": "tagj-data/beat-catalog.v1.json",
   "legalSystemRef": "tagj-data/license-system.v1.json",
-  "status": "draft_agreements_attached_per_beat",
+  "status": "draft_agreements_attached_rights_attestation_required",
   "beats": [
     {
       "beatId": "beat-001",
@@ -16,7 +16,10 @@
         "previewNormalizationRequired": false,
         "sourcePeakDbfs": -0.35,
         "sourceFormat": "wav",
-        "sourceReviewNote": null
+        "sourceReviewNote": null,
+        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
+        "decodedWavDerivativeStatus": null,
+        "originalSourceFormat": "wav"
       },
       "licenses": {
         "basicMp3": {
@@ -31,8 +34,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "requires_stems_trackouts",
-          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
+          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
         },
         "unlimited": {
           "priceUsd": 149,
@@ -44,7 +48,9 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      }
+      },
+      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-001",
+      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
     },
     {
       "beatId": "beat-002",
@@ -58,7 +64,10 @@
         "previewNormalizationRequired": false,
         "sourcePeakDbfs": 0,
         "sourceFormat": "wav",
-        "sourceReviewNote": null
+        "sourceReviewNote": null,
+        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
+        "decodedWavDerivativeStatus": null,
+        "originalSourceFormat": "wav"
       },
       "licenses": {
         "basicMp3": {
@@ -73,8 +82,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "requires_stems_trackouts",
-          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
+          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
         },
         "unlimited": {
           "priceUsd": 149,
@@ -86,7 +96,9 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      }
+      },
+      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-002",
+      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
     },
     {
       "beatId": "beat-003",
@@ -100,7 +112,10 @@
         "previewNormalizationRequired": false,
         "sourcePeakDbfs": 0.05,
         "sourceFormat": "wav",
-        "sourceReviewNote": null
+        "sourceReviewNote": null,
+        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
+        "decodedWavDerivativeStatus": null,
+        "originalSourceFormat": "wav"
       },
       "licenses": {
         "basicMp3": {
@@ -115,8 +130,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "requires_stems_trackouts",
-          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
+          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
         },
         "unlimited": {
           "priceUsd": 149,
@@ -128,7 +144,9 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      }
+      },
+      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-003",
+      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
     },
     {
       "beatId": "beat-004",
@@ -142,7 +160,10 @@
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 5.16,
         "sourceFormat": "wav",
-        "sourceReviewNote": null
+        "sourceReviewNote": null,
+        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
+        "decodedWavDerivativeStatus": null,
+        "originalSourceFormat": "wav"
       },
       "licenses": {
         "basicMp3": {
@@ -157,8 +178,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "requires_stems_trackouts",
-          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
+          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
         },
         "unlimited": {
           "priceUsd": 149,
@@ -170,7 +192,9 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      }
+      },
+      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-004",
+      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
     },
     {
       "beatId": "beat-005",
@@ -184,7 +208,10 @@
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 10.37,
         "sourceFormat": "wav",
-        "sourceReviewNote": null
+        "sourceReviewNote": null,
+        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
+        "decodedWavDerivativeStatus": null,
+        "originalSourceFormat": "wav"
       },
       "licenses": {
         "basicMp3": {
@@ -199,8 +226,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "requires_stems_trackouts",
-          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
+          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
         },
         "unlimited": {
           "priceUsd": 149,
@@ -212,7 +240,9 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      }
+      },
+      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-005",
+      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
     },
     {
       "beatId": "beat-006",
@@ -226,7 +256,10 @@
         "previewNormalizationRequired": false,
         "sourcePeakDbfs": -0.22,
         "sourceFormat": "wav",
-        "sourceReviewNote": null
+        "sourceReviewNote": null,
+        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
+        "decodedWavDerivativeStatus": null,
+        "originalSourceFormat": "wav"
       },
       "licenses": {
         "basicMp3": {
@@ -241,8 +274,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "requires_stems_trackouts",
-          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
+          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
         },
         "unlimited": {
           "priceUsd": 149,
@@ -254,7 +288,9 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      }
+      },
+      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-006",
+      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
     },
     {
       "beatId": "beat-007",
@@ -268,7 +304,10 @@
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 0.61,
         "sourceFormat": "wav",
-        "sourceReviewNote": null
+        "sourceReviewNote": null,
+        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
+        "decodedWavDerivativeStatus": null,
+        "originalSourceFormat": "wav"
       },
       "licenses": {
         "basicMp3": {
@@ -283,8 +322,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "requires_stems_trackouts",
-          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
+          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
         },
         "unlimited": {
           "priceUsd": 149,
@@ -296,7 +336,9 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      }
+      },
+      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-007",
+      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
     },
     {
       "beatId": "beat-008",
@@ -310,7 +352,10 @@
         "previewNormalizationRequired": false,
         "sourcePeakDbfs": -0.17,
         "sourceFormat": "wav",
-        "sourceReviewNote": null
+        "sourceReviewNote": null,
+        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
+        "decodedWavDerivativeStatus": null,
+        "originalSourceFormat": "wav"
       },
       "licenses": {
         "basicMp3": {
@@ -325,8 +370,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "requires_stems_trackouts",
-          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
+          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
         },
         "unlimited": {
           "priceUsd": 149,
@@ -338,7 +384,9 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      }
+      },
+      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-008",
+      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
     },
     {
       "beatId": "beat-009",
@@ -352,7 +400,10 @@
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 1.9,
         "sourceFormat": "mp3",
-        "sourceReviewNote": null
+        "sourceReviewNote": null,
+        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
+        "decodedWavDerivativeStatus": "lossy_origin_wav_container",
+        "originalSourceFormat": "mp3"
       },
       "licenses": {
         "basicMp3": {
@@ -362,25 +413,28 @@
         },
         "premiumWav": {
           "priceUsd": 49,
-          "status": "requires_lossless_master",
+          "status": "genuine_lossless_master_required_decoded_wav_derivative_available",
           "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "requires_stems_trackouts",
-          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
+          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
         },
         "unlimited": {
           "priceUsd": 149,
-          "status": "requires_lossless_master",
+          "status": "genuine_lossless_master_required_decoded_wav_derivative_available",
           "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "requires_lossless_master_and_manual_rights_review",
+          "status": "genuine_lossless_master_and_manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      }
+      },
+      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-009",
+      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
     },
     {
       "beatId": "beat-010",
@@ -394,7 +448,10 @@
         "previewNormalizationRequired": false,
         "sourcePeakDbfs": 0,
         "sourceFormat": "wav",
-        "sourceReviewNote": null
+        "sourceReviewNote": null,
+        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
+        "decodedWavDerivativeStatus": null,
+        "originalSourceFormat": "wav"
       },
       "licenses": {
         "basicMp3": {
@@ -409,8 +466,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "requires_stems_trackouts",
-          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
+          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
         },
         "unlimited": {
           "priceUsd": 149,
@@ -422,7 +480,9 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      }
+      },
+      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-010",
+      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
     },
     {
       "beatId": "beat-011",
@@ -436,7 +496,10 @@
         "previewNormalizationRequired": false,
         "sourcePeakDbfs": 0,
         "sourceFormat": "wav",
-        "sourceReviewNote": null
+        "sourceReviewNote": null,
+        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
+        "decodedWavDerivativeStatus": null,
+        "originalSourceFormat": "wav"
       },
       "licenses": {
         "basicMp3": {
@@ -451,8 +514,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "requires_stems_trackouts",
-          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
+          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
         },
         "unlimited": {
           "priceUsd": 149,
@@ -464,7 +528,9 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      }
+      },
+      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-011",
+      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
     },
     {
       "beatId": "beat-012",
@@ -478,7 +544,10 @@
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 10.95,
         "sourceFormat": "wav",
-        "sourceReviewNote": "High near-silence percentage; manual arrangement/export review recommended before sale."
+        "sourceReviewNote": "High near-silence percentage; manual arrangement/export review recommended before sale.",
+        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
+        "decodedWavDerivativeStatus": null,
+        "originalSourceFormat": "wav"
       },
       "licenses": {
         "basicMp3": {
@@ -493,8 +562,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "requires_stems_trackouts",
-          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
+          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
         },
         "unlimited": {
           "priceUsd": 149,
@@ -506,7 +576,9 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      }
+      },
+      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-012",
+      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
     },
     {
       "beatId": "beat-013",
@@ -520,7 +592,10 @@
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 11.77,
         "sourceFormat": "wav",
-        "sourceReviewNote": null
+        "sourceReviewNote": null,
+        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
+        "decodedWavDerivativeStatus": null,
+        "originalSourceFormat": "wav"
       },
       "licenses": {
         "basicMp3": {
@@ -535,8 +610,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "requires_stems_trackouts",
-          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
+          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
         },
         "unlimited": {
           "priceUsd": 149,
@@ -548,7 +624,9 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      }
+      },
+      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-013",
+      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
     },
     {
       "beatId": "beat-014",
@@ -562,7 +640,10 @@
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 1.3,
         "sourceFormat": "wav",
-        "sourceReviewNote": null
+        "sourceReviewNote": null,
+        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
+        "decodedWavDerivativeStatus": null,
+        "originalSourceFormat": "wav"
       },
       "licenses": {
         "basicMp3": {
@@ -577,8 +658,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "requires_stems_trackouts",
-          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
+          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
         },
         "unlimited": {
           "priceUsd": 149,
@@ -590,7 +672,9 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      }
+      },
+      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-014",
+      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
     },
     {
       "beatId": "beat-015",
@@ -604,35 +688,41 @@
         "previewNormalizationRequired": false,
         "sourcePeakDbfs": -0.02,
         "sourceFormat": "wav",
-        "sourceReviewNote": null
+        "sourceReviewNote": null,
+        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
+        "decodedWavDerivativeStatus": null,
+        "originalSourceFormat": "wav"
       },
       "licenses": {
         "basicMp3": {
           "priceUsd": 29,
-          "status": "available_after_preview_render",
+          "status": "hold_remix_provenance_review",
           "agreement": "legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md"
         },
         "premiumWav": {
           "priceUsd": 49,
-          "status": "available_after_delivery_qc",
+          "status": "hold_remix_provenance_review",
           "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "requires_stems_trackouts",
-          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+          "status": "hold_remix_provenance_review_and_original_trackouts_missing",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
+          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
         },
         "unlimited": {
           "priceUsd": 149,
-          "status": "available_after_delivery_qc",
+          "status": "hold_remix_provenance_review",
           "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "manual_rights_review_required",
+          "status": "hold_remix_provenance_review",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      }
+      },
+      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-015",
+      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
     },
     {
       "beatId": "beat-016",
@@ -646,7 +736,10 @@
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 1.01,
         "sourceFormat": "wav",
-        "sourceReviewNote": null
+        "sourceReviewNote": null,
+        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
+        "decodedWavDerivativeStatus": null,
+        "originalSourceFormat": "wav"
       },
       "licenses": {
         "basicMp3": {
@@ -661,8 +754,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "requires_stems_trackouts",
-          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
+          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
         },
         "unlimited": {
           "priceUsd": 149,
@@ -674,7 +768,9 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      }
+      },
+      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-016",
+      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
     },
     {
       "beatId": "beat-017",
@@ -688,7 +784,10 @@
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 2.63,
         "sourceFormat": "mp3",
-        "sourceReviewNote": null
+        "sourceReviewNote": null,
+        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
+        "decodedWavDerivativeStatus": "lossy_origin_wav_container",
+        "originalSourceFormat": "mp3"
       },
       "licenses": {
         "basicMp3": {
@@ -698,25 +797,28 @@
         },
         "premiumWav": {
           "priceUsd": 49,
-          "status": "requires_lossless_master",
+          "status": "genuine_lossless_master_required_decoded_wav_derivative_available",
           "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "requires_stems_trackouts",
-          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
+          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
         },
         "unlimited": {
           "priceUsd": 149,
-          "status": "requires_lossless_master",
+          "status": "genuine_lossless_master_required_decoded_wav_derivative_available",
           "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "requires_lossless_master_and_manual_rights_review",
+          "status": "genuine_lossless_master_and_manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      }
+      },
+      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-017",
+      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
     },
     {
       "beatId": "beat-018",
@@ -730,7 +832,10 @@
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 2.32,
         "sourceFormat": "mp3",
-        "sourceReviewNote": null
+        "sourceReviewNote": null,
+        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
+        "decodedWavDerivativeStatus": "lossy_origin_wav_container",
+        "originalSourceFormat": "mp3"
       },
       "licenses": {
         "basicMp3": {
@@ -740,25 +845,28 @@
         },
         "premiumWav": {
           "priceUsd": 49,
-          "status": "requires_lossless_master",
+          "status": "genuine_lossless_master_required_decoded_wav_derivative_available",
           "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "requires_stems_trackouts",
-          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
+          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
         },
         "unlimited": {
           "priceUsd": 149,
-          "status": "requires_lossless_master",
+          "status": "genuine_lossless_master_required_decoded_wav_derivative_available",
           "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "requires_lossless_master_and_manual_rights_review",
+          "status": "genuine_lossless_master_and_manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      }
+      },
+      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-018",
+      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
     },
     {
       "beatId": "beat-019",
@@ -772,7 +880,10 @@
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 1.68,
         "sourceFormat": "mp3",
-        "sourceReviewNote": null
+        "sourceReviewNote": null,
+        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
+        "decodedWavDerivativeStatus": "lossy_origin_wav_container",
+        "originalSourceFormat": "mp3"
       },
       "licenses": {
         "basicMp3": {
@@ -782,25 +893,28 @@
         },
         "premiumWav": {
           "priceUsd": 49,
-          "status": "requires_lossless_master",
+          "status": "genuine_lossless_master_required_decoded_wav_derivative_available",
           "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "requires_stems_trackouts",
-          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
+          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
         },
         "unlimited": {
           "priceUsd": 149,
-          "status": "requires_lossless_master",
+          "status": "genuine_lossless_master_required_decoded_wav_derivative_available",
           "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "requires_lossless_master_and_manual_rights_review",
+          "status": "genuine_lossless_master_and_manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      }
+      },
+      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-019",
+      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
     },
     {
       "beatId": "beat-020",
@@ -814,7 +928,10 @@
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 9.59,
         "sourceFormat": "wav",
-        "sourceReviewNote": null
+        "sourceReviewNote": null,
+        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
+        "decodedWavDerivativeStatus": null,
+        "originalSourceFormat": "wav"
       },
       "licenses": {
         "basicMp3": {
@@ -829,8 +946,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "requires_stems_trackouts",
-          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
+          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
         },
         "unlimited": {
           "priceUsd": 149,
@@ -842,7 +960,9 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      }
+      },
+      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-020",
+      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
     },
     {
       "beatId": "beat-021",
@@ -856,7 +976,10 @@
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 3.2,
         "sourceFormat": "wav",
-        "sourceReviewNote": null
+        "sourceReviewNote": null,
+        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
+        "decodedWavDerivativeStatus": null,
+        "originalSourceFormat": "wav"
       },
       "licenses": {
         "basicMp3": {
@@ -871,8 +994,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "requires_stems_trackouts",
-          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
+          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
         },
         "unlimited": {
           "priceUsd": 149,
@@ -884,7 +1008,9 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      }
+      },
+      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-021",
+      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
     },
     {
       "beatId": "beat-022",
@@ -898,7 +1024,10 @@
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 3.47,
         "sourceFormat": "wav",
-        "sourceReviewNote": "Elevated near-silence percentage; manual arrangement/export review recommended."
+        "sourceReviewNote": "Elevated near-silence percentage; manual arrangement/export review recommended.",
+        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
+        "decodedWavDerivativeStatus": null,
+        "originalSourceFormat": "wav"
       },
       "licenses": {
         "basicMp3": {
@@ -913,8 +1042,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "requires_stems_trackouts",
-          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
+          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
         },
         "unlimited": {
           "priceUsd": 149,
@@ -926,7 +1056,9 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      }
+      },
+      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-022",
+      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
     }
   ]
 }
