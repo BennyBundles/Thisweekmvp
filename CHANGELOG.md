@@ -2,6 +2,33 @@
 
 Production changes for **This Week** are recorded here.
 
+## Phase 24 — Auth Production Hardening — 2026-09-19
+
+### Canonical Auth redirects
+- Added an explicit public Auth release config at `account/release-config.js`.
+- Signup confirmation now targets the canonical Account Center URL instead of deriving a redirect from the current browser location.
+- Password recovery now targets the exact canonical `/account/?mode=recovery` URL.
+- Public Auth readiness defaults to **false** until hosted Supabase settings are manually verified.
+
+### CAPTCHA and abuse protection
+- Added optional Cloudflare Turnstile support to the isolated Account Center.
+- Added Supabase-compatible `gotrue_meta_security.captcha_token` payloads for password sign-in, signup and recovery.
+- Added 60-second client cooldowns for signup/recovery and a 2-second sign-in cooldown as UX abuse backpressure.
+- Client cooldowns remain supplemental to Supabase server-side Auth rate limits.
+- The Turnstile secret is explicitly prohibited from repository/browser configuration.
+
+### Release readiness
+- Added visible hosted Auth release gates for Site URL, redirect allowlist, email confirmation, CAPTCHA and production mail.
+- Added `AUTH_PRODUCTION_SETUP.md` with exact operator configuration steps.
+- Account Center deployment now includes and verifies `release-config.js`.
+- Account checker rejects inconsistent `publicAuthReady` claims, mismatched canonical URLs, CAPTCHA marked verified without a site key, localStorage token persistence and secret-shaped public config.
+- Main planner remains `connect-src 'none'`.
+
+### Rollback
+- Pre-Phase-24 commit: `0f1fb9df2cbcfbba40bd0232035d6ffa121d42a0`
+- Rollback branch: `rollback/phase24-pre-auth-production-hardening-2026-09-19`
+
+
 ## Phase 23 — Account & Session Security — 2026-09-19
 
 - Added production-facing **Account & Security** Center under Details.
