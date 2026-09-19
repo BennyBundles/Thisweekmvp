@@ -15,6 +15,7 @@ need('summary RPC browser revoke',summary,'from public,anon,authenticated');
 need('server admin API',gateway,'auth.admin.updateUserById');
 need('bootstrap allowlist secret',gateway,'THISWEEK_BOOTSTRAP_ADMIN_EMAIL');
 need('bootstrap requires AAL2',gateway,'mfa_aal2_required');
+need('server MFA AAL checks the presented JWT',gateway,'getAuthenticatorAssuranceLevel(token)');
 need('bootstrap requires confirmed email',gateway,'confirmed_email_required');
 need('bootstrap closes after staff exists',gateway,'staff_bootstrap_closed');
 need('last admin protection',gateway,'last_admin_protected');
