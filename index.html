@@ -6921,6 +6921,7 @@ const LIVE_MONEY_CONFIG=Object.freeze({
   sandboxChainMode:'deployed_credentials_required',
   riskMode:'sandbox_policy_active_production_fail_closed',
   operationsMode:'returns_disputes_negative_balance_deployed',
+  staffOpsMode:'aal2_app_metadata_rbac_deployed',
   executionMode:'disabled',
   authMode:'recoverable_user_required',
   ledgerMode:'server_double_entry',
@@ -6938,6 +6939,7 @@ function liveMoneyReadiness(){
     {label:'Sandbox orchestration',ready:c.sandboxChainMode==='deployed_credentials_required',detail:'Plaid → Unit funding, Unit account/card simulation, Pinwheel payroll switching, and Method dev bill pay are wired in the isolated Money Lab.'},
     {label:'Risk & velocity controls',ready:c.riskMode==='sandbox_policy_active_production_fail_closed',detail:'Sandbox actions have per-transaction/daily velocity controls; production has no active policy and therefore stays fail-closed.'},
     {label:'Returns & dispute operations',ready:c.operationsMode==='returns_disputes_negative_balance_deployed',detail:'Signed provider returns, negative balances, card credits and dispute states create append-only operational cases instead of silently rewriting money history.'},
+    {label:'Staff review operations',ready:c.staffOpsMode==='aal2_app_metadata_rbac_deployed',detail:'Manual case review, risk decisions, alerts and user controls are deployed behind AAL2 plus server-managed staff roles; no browser role escalation exists.'},
     {label:'Production identity',ready:c.authMode==='recoverable_user_active',detail:'The isolated Money Sandbox Lab now exercises recoverable Auth and TOTP MFA; the production planner is not network-enabled.'},
     {label:'Provider sandboxes',ready:c.executionMode==='sandbox',detail:'Unit, Pinwheel, Method and Plaid credentials must be configured server-side before sandbox execution is unlocked.'},
     {label:'Production browser network',ready:c.enabled===true,detail:'The production CSP remains deny-by-default until sandbox security testing passes.'}
