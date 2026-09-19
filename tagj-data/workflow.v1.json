@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "tagj.workflow.v1",
+  "generatedFor": "TAGJ × Benny Bundles V14.5 preview",
+  "workflows": {
+    "tagjProductDevelopment": {
+      "route": "#tagj-technical-board-v145",
+      "stages": [
+        "concept",
+        "materials",
+        "construction",
+        "branding",
+        "campaign",
+        "status"
+      ],
+      "persistedClientSide": false,
+      "backendConnected": false,
+      "notes": "Technical-media mapping is independent from inventory and commerce status."
+    },
+    "artistReleaseCampaign": {
+      "route": "#artist-release-scene-v145",
+      "stages": [
+        "artwork",
+        "video",
+        "streaming_links",
+        "short_form",
+        "metadata_seo"
+      ],
+      "persistedClientSide": true,
+      "backendConnected": false,
+      "notes": "Readiness checks are local planning state and do not publish content."
+    },
+    "producerBeatInquiry": {
+      "route": "#producer-beat-workspace-v145",
+      "stages": [
+        "local_preview",
+        "metadata",
+        "mood_tags",
+        "license_intent",
+        "request"
+      ],
+      "persistedClientSide": false,
+      "backendConnected": false,
+      "notes": "Local audio uses temporary browser object URLs and is not uploaded."
+    },
+    "producerSession": {
+      "route": "#producer-session-builder-v145",
+      "stages": [
+        "service_chain",
+        "project_context",
+        "deadline",
+        "notes",
+        "request"
+      ],
+      "persistedClientSide": false,
+      "backendConnected": false,
+      "notes": "No booking, calendar reservation or payment occurs in preview."
+    },
+    "creativeCampaign": {
+      "route": "#creative-campaign-workflow-v145",
+      "stages": [
+        "brief",
+        "concept",
+        "build",
+        "review",
+        "delivery"
+      ],
+      "persistedClientSide": true,
+      "backendConnected": false,
+      "notes": "Deliverables and workflow completion are local planning state only."
+    }
+  }
+}
