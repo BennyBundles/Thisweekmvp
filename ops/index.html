@@ -15,7 +15,7 @@
 </head>
 <body>
 <main class="shell">
-<header class="top"><div class="brand"><small>Restricted staff surface</small><h1>Operations Console</h1><p>Manual review, operational cases, user controls, and alerts. Access requires a server-managed staff role plus AAL2 MFA.</p></div><div class="actions"><a class="back" href="./release/">Release Certification</a><a class="back" href="../account/">Account & Security</a></div></header>
+<header class="top"><div class="brand"><small>Restricted staff surface</small><h1>Operations Console</h1><p>Manual review, operational cases, user controls, and alerts. Access requires a server-managed staff role plus AAL2 MFA.</p></div><div class="actions"><a class="back" href="./release/">Release Certification</a><a class="back" href="./bootstrap/">Staff Bootstrap</a><a class="back" href="../account/">Account & Security</a></div></header>
 <div class="notice warn"><strong>Fail-closed authorization:</strong> ordinary This Week users cannot use this console. Staff access is granted only through Supabase <code>app_metadata.thisweek_role</code>; no role-assignment control exists here.</div>
 <div class="statebar">
   <div class="stat"><small>Session</small><strong id="sessionState">Signed out</strong></div>
@@ -53,7 +53,7 @@
 
 <section class="card"><span class="kicker">Risk control</span><h2>Restrict / freeze user</h2><p>Only <code>risk_ops</code> or <code>admin</code> may change guarded-money controls.</p><div class="fields"><div class="field"><label>User ID</label><input id="controlUserId" placeholder="UUID"></div><div class="field"><label>State</label><select id="controlState"><option value="restricted">Restricted</option><option value="frozen">Frozen</option><option value="normal">Clear control</option></select></div><div class="field"><label>Reason</label><input id="controlReason" placeholder="required unless clearing"></div></div><div class="actions"><button id="applyControl" disabled>Apply control</button></div><div id="controlResult" class="result"></div></section>
 
-<section class="card"><span class="kicker">Access doctrine</span><h2>No browser role escalation</h2><p>Role assignment is not implemented in this console. An authorized administrator must set <code>app_metadata.thisweek_role</code> through a trusted server/admin process, then the staff member must refresh their session.</p><div class="result">Allowed roles: <strong>support_ops</strong>, <strong>risk_ops</strong>, <strong>admin</strong>.</div></section>
+<section class="card"><span class="kicker">Access doctrine</span><h2>Controlled staff provisioning</h2><p>Role assignment is not implemented directly in this console. Use the separate <a class="back" href="./bootstrap/">Staff Bootstrap</a> surface, which requires real Auth users, confirmed email, active session, AAL2, server-side bootstrap allowlisting for the first admin, and existing admin authorization thereafter.</p><div class="result">Allowed roles: <strong>support_ops</strong>, <strong>risk_ops</strong>, <strong>admin</strong>. The last admin is protected from revocation/downgrade.</div></section>
 
 <section class="card wide"><span class="kicker">Audit</span><h2>Recent staff actions</h2><p>The staff audit table is append-only. It records who acted, their server-managed role, the target, action, reason, and safe detail.</p><div id="audit" class="audit"><div class="empty">No audit data loaded.</div></div></section>
 </div>
