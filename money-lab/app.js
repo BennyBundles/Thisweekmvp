@@ -230,7 +230,7 @@ async function unitDirectFund(){
   await refreshChain();
 }
 async function plaidConsent(){
-  log('Plaid consent',await providerGateway('consent',{accepted:true,scopes:['transactions','balances']}));
+  log('Plaid consent',await providerGateway('consent',{accepted:true,scopes:['auth','transactions','balances']}));
 }
 async function plaidStart(){
   const body=await providerGateway('begin_connect');
