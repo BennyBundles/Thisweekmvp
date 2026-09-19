@@ -266,7 +266,7 @@ async function processUnit(
       Number.isSafeInteger(amount) &&
       amount > 0 &&
       safeText(attrs.direction, 20).toLowerCase() === "credit" &&
-      /achtransaction/i.test(transactionType)
+      /ach.*transaction/i.test(transactionType)
     ) {
       const { data: ledgerAccounts } = await admin.from("tw_money_ledger_accounts")
         .select("id,account_code").eq("user_id", userId)
