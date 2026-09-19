@@ -131,7 +131,7 @@
   "backendSyncContract": {
     "version": 1,
     "currentClientMode": "snapshot_only",
-    "transport": "future_https_json",
+    "transport": "staged_https_json",
     "idempotency": "client-generated idempotency key required",
     "futureRequirements": [
       "server revision",
@@ -140,14 +140,14 @@
       "delete tombstones"
     ],
     "conflictPolicy": "never silently merge conflicting financial mutations",
-    "authentication": "future authenticated user-scoped server session",
+    "authentication": "recoverable authenticated user-scoped server session required before browser activation",
     "providerSecrets": "server_only"
   },
   "phase19ProviderPlane": {
     "status": "backend_provisioned_shared_isolated",
     "activation": false,
     "provider": "plaid",
-    "clientNetworkPolicy": "deny_until_dedicated_backend",
+    "clientNetworkPolicy": "deny_until_auth_and_provider",
     "planAuthority": "browser_local",
     "schemaPath": "supabase/phase19/provider_schema.sql",
     "gatewayPath": "supabase/functions/thisweek-provider-gateway/index.ts",
@@ -179,6 +179,53 @@
       "provider_sandbox_verification",
       "exact_csp_allowlist",
       "client_transport"
+    ]
+  },
+  "phase20MoneyPlane": {
+    "status": "backend_foundation_deployed_execution_disabled",
+    "activation": false,
+    "projectName": "BennyBundles’s Project",
+    "projectRef": "xjtvawmppzwzrooairyx",
+    "backendOrigin": "https://xjtvawmppzwzrooairyx.supabase.co",
+    "gatewayFunction": "thisweek-money-gateway",
+    "gatewayJwtVerification": true,
+    "tableCount": 20,
+    "rlsTableCount": 20,
+    "directBrowserTableAccess": false,
+    "planAuthority": "browser_local",
+    "moneyAuthority": "server_double_entry_when_activated",
+    "currency": "USD",
+    "amountUnit": "cent",
+    "ledger": {
+      "appendOnly": true,
+      "balancedJournals": true,
+      "idempotentJournals": true,
+      "correctionRule": "compensating_journal",
+      "insufficientBalanceRule": "reject_move"
+    },
+    "providers": {
+      "bankLink": "plaid",
+      "bankingAndCards": "unit",
+      "payrollAndBillSwitch": "pinwheel",
+      "liabilityPayments": "method"
+    },
+    "executionMode": "disabled",
+    "liveMoneyEnabled": false,
+    "rewardTemplate": {
+      "offerCode": "TW_DD_SWITCH_25_SANDBOX",
+      "active": false
+    },
+    "clientNetworkPolicy": "connect-src none",
+    "remainingGates": [
+      "recoverable_auth",
+      "mfa_aal2",
+      "provider_sandbox_credentials",
+      "provider_webhooks",
+      "card_authorization_controller",
+      "sandbox_end_to_end_tests",
+      "exact_csp_allowlist",
+      "production_provider_approval",
+      "cost_approval"
     ]
   }
 }
