@@ -1,0 +1,932 @@
+{
+  "schemaVersion": "tagj.beat-license-matrix.v1",
+  "generatedFrom": "tagj-data/beat-catalog.v1.json",
+  "legalSystemRef": "tagj-data/license-system.v1.json",
+  "status": "draft_agreements_attached_per_beat",
+  "beats": [
+    {
+      "beatId": "beat-001",
+      "title": "Pressure Glass",
+      "sourceFilename": "B3 V.1 T.01.wav",
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "deliveryReadiness": {
+        "previewNormalizationRequired": false,
+        "sourcePeakDbfs": -0.35,
+        "sourceFormat": "wav",
+        "sourceReviewNote": null
+      },
+      "licenses": {
+        "basicMp3": {
+          "priceUsd": 29,
+          "status": "available_after_preview_render",
+          "agreement": "legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md"
+        },
+        "premiumWav": {
+          "priceUsd": 49,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
+        },
+        "trackoutPro": {
+          "priceUsd": 99,
+          "status": "requires_stems_trackouts",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+        },
+        "unlimited": {
+          "priceUsd": 149,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
+        },
+        "exclusive": {
+          "minimumOfferUsd": 499,
+          "status": "manual_rights_review_required",
+          "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
+        }
+      }
+    },
+    {
+      "beatId": "beat-002",
+      "title": "Low Light",
+      "sourceFilename": "dopbeat2.wav",
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "deliveryReadiness": {
+        "previewNormalizationRequired": false,
+        "sourcePeakDbfs": 0,
+        "sourceFormat": "wav",
+        "sourceReviewNote": null
+      },
+      "licenses": {
+        "basicMp3": {
+          "priceUsd": 29,
+          "status": "available_after_preview_render",
+          "agreement": "legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md"
+        },
+        "premiumWav": {
+          "priceUsd": 49,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
+        },
+        "trackoutPro": {
+          "priceUsd": 99,
+          "status": "requires_stems_trackouts",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+        },
+        "unlimited": {
+          "priceUsd": 149,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
+        },
+        "exclusive": {
+          "minimumOfferUsd": 499,
+          "status": "manual_rights_review_required",
+          "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
+        }
+      }
+    },
+    {
+      "beatId": "beat-003",
+      "title": "Heavy Weather",
+      "sourceFilename": "slams.wav",
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "deliveryReadiness": {
+        "previewNormalizationRequired": false,
+        "sourcePeakDbfs": 0.05,
+        "sourceFormat": "wav",
+        "sourceReviewNote": null
+      },
+      "licenses": {
+        "basicMp3": {
+          "priceUsd": 29,
+          "status": "available_after_preview_render",
+          "agreement": "legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md"
+        },
+        "premiumWav": {
+          "priceUsd": 49,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
+        },
+        "trackoutPro": {
+          "priceUsd": 99,
+          "status": "requires_stems_trackouts",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+        },
+        "unlimited": {
+          "priceUsd": 149,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
+        },
+        "exclusive": {
+          "minimumOfferUsd": 499,
+          "status": "manual_rights_review_required",
+          "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
+        }
+      }
+    },
+    {
+      "beatId": "beat-004",
+      "title": "Last One Better",
+      "sourceFilename": "doperthanthelast1.wav",
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "deliveryReadiness": {
+        "previewNormalizationRequired": true,
+        "sourcePeakDbfs": 5.16,
+        "sourceFormat": "wav",
+        "sourceReviewNote": null
+      },
+      "licenses": {
+        "basicMp3": {
+          "priceUsd": 29,
+          "status": "available_after_preview_render",
+          "agreement": "legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md"
+        },
+        "premiumWav": {
+          "priceUsd": 49,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
+        },
+        "trackoutPro": {
+          "priceUsd": 99,
+          "status": "requires_stems_trackouts",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+        },
+        "unlimited": {
+          "priceUsd": 149,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
+        },
+        "exclusive": {
+          "minimumOfferUsd": 499,
+          "status": "manual_rights_review_required",
+          "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
+        }
+      }
+    },
+    {
+      "beatId": "beat-005",
+      "title": "Iron Gospel",
+      "sourceFilename": "dope metal type b3at.wav",
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "deliveryReadiness": {
+        "previewNormalizationRequired": true,
+        "sourcePeakDbfs": 10.37,
+        "sourceFormat": "wav",
+        "sourceReviewNote": null
+      },
+      "licenses": {
+        "basicMp3": {
+          "priceUsd": 29,
+          "status": "available_after_preview_render",
+          "agreement": "legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md"
+        },
+        "premiumWav": {
+          "priceUsd": 49,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
+        },
+        "trackoutPro": {
+          "priceUsd": 99,
+          "status": "requires_stems_trackouts",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+        },
+        "unlimited": {
+          "priceUsd": 149,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
+        },
+        "exclusive": {
+          "minimumOfferUsd": 499,
+          "status": "manual_rights_review_required",
+          "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
+        }
+      }
+    },
+    {
+      "beatId": "beat-006",
+      "title": "Cold Receiver",
+      "sourceFilename": "beat for dt.wav",
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "deliveryReadiness": {
+        "previewNormalizationRequired": false,
+        "sourcePeakDbfs": -0.22,
+        "sourceFormat": "wav",
+        "sourceReviewNote": null
+      },
+      "licenses": {
+        "basicMp3": {
+          "priceUsd": 29,
+          "status": "available_after_preview_render",
+          "agreement": "legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md"
+        },
+        "premiumWav": {
+          "priceUsd": 49,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
+        },
+        "trackoutPro": {
+          "priceUsd": 99,
+          "status": "requires_stems_trackouts",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+        },
+        "unlimited": {
+          "priceUsd": 149,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
+        },
+        "exclusive": {
+          "minimumOfferUsd": 499,
+          "status": "manual_rights_review_required",
+          "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
+        }
+      }
+    },
+    {
+      "beatId": "beat-007",
+      "title": "Night Ledger",
+      "sourceFilename": "1_2023.wav",
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "deliveryReadiness": {
+        "previewNormalizationRequired": true,
+        "sourcePeakDbfs": 0.61,
+        "sourceFormat": "wav",
+        "sourceReviewNote": null
+      },
+      "licenses": {
+        "basicMp3": {
+          "priceUsd": 29,
+          "status": "available_after_preview_render",
+          "agreement": "legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md"
+        },
+        "premiumWav": {
+          "priceUsd": 49,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
+        },
+        "trackoutPro": {
+          "priceUsd": 99,
+          "status": "requires_stems_trackouts",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+        },
+        "unlimited": {
+          "priceUsd": 149,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
+        },
+        "exclusive": {
+          "minimumOfferUsd": 499,
+          "status": "manual_rights_review_required",
+          "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
+        }
+      }
+    },
+    {
+      "beatId": "beat-008",
+      "title": "No Witnesses",
+      "sourceFilename": "[DARK Trap] No Samples BEAT 2024 #1,077 (prod. Benny Bundles).wav",
+      "sampleStatus": {
+        "status": "filename_states_no_samples_unverified",
+        "note": "Original filename includes “No Samples”; sample status still requires rights review before legal activation."
+      },
+      "deliveryReadiness": {
+        "previewNormalizationRequired": false,
+        "sourcePeakDbfs": -0.17,
+        "sourceFormat": "wav",
+        "sourceReviewNote": null
+      },
+      "licenses": {
+        "basicMp3": {
+          "priceUsd": 29,
+          "status": "available_after_preview_render",
+          "agreement": "legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md"
+        },
+        "premiumWav": {
+          "priceUsd": 49,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
+        },
+        "trackoutPro": {
+          "priceUsd": 99,
+          "status": "requires_stems_trackouts",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+        },
+        "unlimited": {
+          "priceUsd": 149,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
+        },
+        "exclusive": {
+          "minimumOfferUsd": 499,
+          "status": "manual_rights_review_required",
+          "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
+        }
+      }
+    },
+    {
+      "beatId": "beat-009",
+      "title": "Four Eights",
+      "sourceFilename": "8888.mp3",
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "deliveryReadiness": {
+        "previewNormalizationRequired": true,
+        "sourcePeakDbfs": 1.9,
+        "sourceFormat": "mp3",
+        "sourceReviewNote": null
+      },
+      "licenses": {
+        "basicMp3": {
+          "priceUsd": 29,
+          "status": "available_after_preview_render",
+          "agreement": "legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md"
+        },
+        "premiumWav": {
+          "priceUsd": 49,
+          "status": "requires_lossless_master",
+          "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
+        },
+        "trackoutPro": {
+          "priceUsd": 99,
+          "status": "requires_stems_trackouts",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+        },
+        "unlimited": {
+          "priceUsd": 149,
+          "status": "requires_lossless_master",
+          "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
+        },
+        "exclusive": {
+          "minimumOfferUsd": 499,
+          "status": "requires_lossless_master_and_manual_rights_review",
+          "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
+        }
+      }
+    },
+    {
+      "beatId": "beat-010",
+      "title": "Unfinished Marble",
+      "sourceFilename": "Benjamin Unfinished Symphony.wav",
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "deliveryReadiness": {
+        "previewNormalizationRequired": false,
+        "sourcePeakDbfs": 0,
+        "sourceFormat": "wav",
+        "sourceReviewNote": null
+      },
+      "licenses": {
+        "basicMp3": {
+          "priceUsd": 29,
+          "status": "available_after_preview_render",
+          "agreement": "legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md"
+        },
+        "premiumWav": {
+          "priceUsd": 49,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
+        },
+        "trackoutPro": {
+          "priceUsd": 99,
+          "status": "requires_stems_trackouts",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+        },
+        "unlimited": {
+          "priceUsd": 149,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
+        },
+        "exclusive": {
+          "minimumOfferUsd": 499,
+          "status": "manual_rights_review_required",
+          "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
+        }
+      }
+    },
+    {
+      "beatId": "beat-011",
+      "title": "Pacific Pressure",
+      "sourceFilename": "West Coast Beat Prod by Bundles.wav",
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "deliveryReadiness": {
+        "previewNormalizationRequired": false,
+        "sourcePeakDbfs": 0,
+        "sourceFormat": "wav",
+        "sourceReviewNote": null
+      },
+      "licenses": {
+        "basicMp3": {
+          "priceUsd": 29,
+          "status": "available_after_preview_render",
+          "agreement": "legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md"
+        },
+        "premiumWav": {
+          "priceUsd": 49,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
+        },
+        "trackoutPro": {
+          "priceUsd": 99,
+          "status": "requires_stems_trackouts",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+        },
+        "unlimited": {
+          "priceUsd": 149,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
+        },
+        "exclusive": {
+          "minimumOfferUsd": 499,
+          "status": "manual_rights_review_required",
+          "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
+        }
+      }
+    },
+    {
+      "beatId": "beat-012",
+      "title": "Neon Circuit",
+      "sourceFilename": "EDMM.wav",
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "deliveryReadiness": {
+        "previewNormalizationRequired": true,
+        "sourcePeakDbfs": 10.95,
+        "sourceFormat": "wav",
+        "sourceReviewNote": "High near-silence percentage; manual arrangement/export review recommended before sale."
+      },
+      "licenses": {
+        "basicMp3": {
+          "priceUsd": 29,
+          "status": "available_after_preview_render",
+          "agreement": "legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md"
+        },
+        "premiumWav": {
+          "priceUsd": 49,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
+        },
+        "trackoutPro": {
+          "priceUsd": 99,
+          "status": "requires_stems_trackouts",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+        },
+        "unlimited": {
+          "priceUsd": 149,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
+        },
+        "exclusive": {
+          "minimumOfferUsd": 499,
+          "status": "manual_rights_review_required",
+          "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
+        }
+      }
+    },
+    {
+      "beatId": "beat-013",
+      "title": "Redline",
+      "sourceFilename": "intense.wav",
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "deliveryReadiness": {
+        "previewNormalizationRequired": true,
+        "sourcePeakDbfs": 11.77,
+        "sourceFormat": "wav",
+        "sourceReviewNote": null
+      },
+      "licenses": {
+        "basicMp3": {
+          "priceUsd": 29,
+          "status": "available_after_preview_render",
+          "agreement": "legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md"
+        },
+        "premiumWav": {
+          "priceUsd": 49,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
+        },
+        "trackoutPro": {
+          "priceUsd": 99,
+          "status": "requires_stems_trackouts",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+        },
+        "unlimited": {
+          "priceUsd": 149,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
+        },
+        "exclusive": {
+          "minimumOfferUsd": 499,
+          "status": "manual_rights_review_required",
+          "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
+        }
+      }
+    },
+    {
+      "beatId": "beat-014",
+      "title": "Soft Armor",
+      "sourceFilename": "sarahs beat 3.wav",
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "deliveryReadiness": {
+        "previewNormalizationRequired": true,
+        "sourcePeakDbfs": 1.3,
+        "sourceFormat": "wav",
+        "sourceReviewNote": null
+      },
+      "licenses": {
+        "basicMp3": {
+          "priceUsd": 29,
+          "status": "available_after_preview_render",
+          "agreement": "legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md"
+        },
+        "premiumWav": {
+          "priceUsd": 49,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
+        },
+        "trackoutPro": {
+          "priceUsd": 99,
+          "status": "requires_stems_trackouts",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+        },
+        "unlimited": {
+          "priceUsd": 149,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
+        },
+        "exclusive": {
+          "minimumOfferUsd": 499,
+          "status": "manual_rights_review_required",
+          "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
+        }
+      }
+    },
+    {
+      "beatId": "beat-015",
+      "title": "Half Truths",
+      "sourceFilename": "hts beat remix 23.wav",
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "deliveryReadiness": {
+        "previewNormalizationRequired": false,
+        "sourcePeakDbfs": -0.02,
+        "sourceFormat": "wav",
+        "sourceReviewNote": null
+      },
+      "licenses": {
+        "basicMp3": {
+          "priceUsd": 29,
+          "status": "available_after_preview_render",
+          "agreement": "legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md"
+        },
+        "premiumWav": {
+          "priceUsd": 49,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
+        },
+        "trackoutPro": {
+          "priceUsd": 99,
+          "status": "requires_stems_trackouts",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+        },
+        "unlimited": {
+          "priceUsd": 149,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
+        },
+        "exclusive": {
+          "minimumOfferUsd": 499,
+          "status": "manual_rights_review_required",
+          "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
+        }
+      }
+    },
+    {
+      "beatId": "beat-016",
+      "title": "Black Ledger",
+      "sourceFilename": "darktrap.wav",
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "deliveryReadiness": {
+        "previewNormalizationRequired": true,
+        "sourcePeakDbfs": 1.01,
+        "sourceFormat": "wav",
+        "sourceReviewNote": null
+      },
+      "licenses": {
+        "basicMp3": {
+          "priceUsd": 29,
+          "status": "available_after_preview_render",
+          "agreement": "legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md"
+        },
+        "premiumWav": {
+          "priceUsd": 49,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
+        },
+        "trackoutPro": {
+          "priceUsd": 99,
+          "status": "requires_stems_trackouts",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+        },
+        "unlimited": {
+          "priceUsd": 149,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
+        },
+        "exclusive": {
+          "minimumOfferUsd": 499,
+          "status": "manual_rights_review_required",
+          "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
+        }
+      }
+    },
+    {
+      "beatId": "beat-017",
+      "title": "Basement Gold",
+      "sourceFilename": "tghhhhgfdd.mp3",
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "deliveryReadiness": {
+        "previewNormalizationRequired": true,
+        "sourcePeakDbfs": 2.63,
+        "sourceFormat": "mp3",
+        "sourceReviewNote": null
+      },
+      "licenses": {
+        "basicMp3": {
+          "priceUsd": 29,
+          "status": "available_after_preview_render",
+          "agreement": "legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md"
+        },
+        "premiumWav": {
+          "priceUsd": 49,
+          "status": "requires_lossless_master",
+          "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
+        },
+        "trackoutPro": {
+          "priceUsd": 99,
+          "status": "requires_stems_trackouts",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+        },
+        "unlimited": {
+          "priceUsd": 149,
+          "status": "requires_lossless_master",
+          "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
+        },
+        "exclusive": {
+          "minimumOfferUsd": 499,
+          "status": "requires_lossless_master_and_manual_rights_review",
+          "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
+        }
+      }
+    },
+    {
+      "beatId": "beat-018",
+      "title": "Long Way Home",
+      "sourceFilename": "untitled722.mp3",
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "deliveryReadiness": {
+        "previewNormalizationRequired": true,
+        "sourcePeakDbfs": 2.32,
+        "sourceFormat": "mp3",
+        "sourceReviewNote": null
+      },
+      "licenses": {
+        "basicMp3": {
+          "priceUsd": 29,
+          "status": "available_after_preview_render",
+          "agreement": "legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md"
+        },
+        "premiumWav": {
+          "priceUsd": 49,
+          "status": "requires_lossless_master",
+          "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
+        },
+        "trackoutPro": {
+          "priceUsd": 99,
+          "status": "requires_stems_trackouts",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+        },
+        "unlimited": {
+          "priceUsd": 149,
+          "status": "requires_lossless_master",
+          "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
+        },
+        "exclusive": {
+          "minimumOfferUsd": 499,
+          "status": "requires_lossless_master_and_manual_rights_review",
+          "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
+        }
+      }
+    },
+    {
+      "beatId": "beat-019",
+      "title": "Daylight Run",
+      "sourceFilename": "juice.mp3",
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "deliveryReadiness": {
+        "previewNormalizationRequired": true,
+        "sourcePeakDbfs": 1.68,
+        "sourceFormat": "mp3",
+        "sourceReviewNote": null
+      },
+      "licenses": {
+        "basicMp3": {
+          "priceUsd": 29,
+          "status": "available_after_preview_render",
+          "agreement": "legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md"
+        },
+        "premiumWav": {
+          "priceUsd": 49,
+          "status": "requires_lossless_master",
+          "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
+        },
+        "trackoutPro": {
+          "priceUsd": 99,
+          "status": "requires_stems_trackouts",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+        },
+        "unlimited": {
+          "priceUsd": 149,
+          "status": "requires_lossless_master",
+          "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
+        },
+        "exclusive": {
+          "minimumOfferUsd": 499,
+          "status": "requires_lossless_master_and_manual_rights_review",
+          "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
+        }
+      }
+    },
+    {
+      "beatId": "beat-020",
+      "title": "Clean Money",
+      "sourceFilename": "2_2023.wav",
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "deliveryReadiness": {
+        "previewNormalizationRequired": true,
+        "sourcePeakDbfs": 9.59,
+        "sourceFormat": "wav",
+        "sourceReviewNote": null
+      },
+      "licenses": {
+        "basicMp3": {
+          "priceUsd": 29,
+          "status": "available_after_preview_render",
+          "agreement": "legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md"
+        },
+        "premiumWav": {
+          "priceUsd": 49,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
+        },
+        "trackoutPro": {
+          "priceUsd": 99,
+          "status": "requires_stems_trackouts",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+        },
+        "unlimited": {
+          "priceUsd": 149,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
+        },
+        "exclusive": {
+          "minimumOfferUsd": 499,
+          "status": "manual_rights_review_required",
+          "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
+        }
+      }
+    },
+    {
+      "beatId": "beat-021",
+      "title": "Pressure Point",
+      "sourceFilename": "4_2023.wav",
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "deliveryReadiness": {
+        "previewNormalizationRequired": true,
+        "sourcePeakDbfs": 3.2,
+        "sourceFormat": "wav",
+        "sourceReviewNote": null
+      },
+      "licenses": {
+        "basicMp3": {
+          "priceUsd": 29,
+          "status": "available_after_preview_render",
+          "agreement": "legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md"
+        },
+        "premiumWav": {
+          "priceUsd": 49,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
+        },
+        "trackoutPro": {
+          "priceUsd": 99,
+          "status": "requires_stems_trackouts",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+        },
+        "unlimited": {
+          "priceUsd": 149,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
+        },
+        "exclusive": {
+          "minimumOfferUsd": 499,
+          "status": "manual_rights_review_required",
+          "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
+        }
+      }
+    },
+    {
+      "beatId": "beat-022",
+      "title": "Slow Motion Gold",
+      "sourceFilename": "3_2023.wav",
+      "sampleStatus": {
+        "status": "not_reviewed",
+        "note": "No sample-clearance representation has been made."
+      },
+      "deliveryReadiness": {
+        "previewNormalizationRequired": true,
+        "sourcePeakDbfs": 3.47,
+        "sourceFormat": "wav",
+        "sourceReviewNote": "Elevated near-silence percentage; manual arrangement/export review recommended."
+      },
+      "licenses": {
+        "basicMp3": {
+          "priceUsd": 29,
+          "status": "available_after_preview_render",
+          "agreement": "legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md"
+        },
+        "premiumWav": {
+          "priceUsd": 49,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
+        },
+        "trackoutPro": {
+          "priceUsd": 99,
+          "status": "requires_stems_trackouts",
+          "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+        },
+        "unlimited": {
+          "priceUsd": 149,
+          "status": "available_after_delivery_qc",
+          "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
+        },
+        "exclusive": {
+          "minimumOfferUsd": 499,
+          "status": "manual_rights_review_required",
+          "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
+        }
+      }
+    }
+  ]
+}
