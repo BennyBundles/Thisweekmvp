@@ -799,13 +799,21 @@ body.intro-pending .home-shell{filter:blur(5px);transform:scale(1.015)}.home-she
   const exitAngles={north:'-90deg',east:'0deg',south:'90deg',west:'180deg'};
   routes.forEach(route=>route.addEventListener('click',e=>{
     if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||route.target==='_blank') return;
+    const w=worlds[route.dataset.world], href=route.getAttribute('href');
+    // Native anchor remains the no-JS/iPhone fallback. Only intercept if the
+    // visual transition system is complete, so a missing layer cannot trap taps.
+    if(!w||!href||!transition||!transitionLabel) return;
     e.preventDefault();
-    const w=worlds[route.dataset.world];
-    transition.style.setProperty('--exit-accent',w.accent);
-    transition.style.setProperty('--exit-angle',exitAngles[route.dataset.direction]);
-    transitionLabel.textContent='OPENING '+w.title.toUpperCase();
-    transition.classList.add('go');
-    setTimeout(()=>location.href=route.href, reduce?40:470);
+    let navigated=false;
+    const go=()=>{if(navigated)return;navigated=true;location.assign(href)};
+    try{
+      transition.style.setProperty('--exit-accent',w.accent);
+      transition.style.setProperty('--exit-angle',exitAngles[route.dataset.direction]);
+      transitionLabel.textContent='OPENING '+w.title.toUpperCase();
+      transition.classList.add('go');
+      setTimeout(go, reduce?20:360);
+      setTimeout(go, 900);
+    }catch(_){go()}
   }));
 
   // Intro gate + Safari-friendly sound choice.
