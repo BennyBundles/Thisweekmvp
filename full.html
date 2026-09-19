@@ -2176,14 +2176,14 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
  function renderAnalysis(b){
    const a=b.analysis||{};
    const tags=(a.creativeTags||[]).map(x=>'<span>'+x+'</span>').join('');
-   analysis.innerHTML='<span>Tempo: '+(a.tempoFeel||'Unconfirmed')+'</span><span>Key: '+(a.keyEstimate||'Unconfirmed')+'</span>'+tags+(a.previewNormalizationRequired?'<span>Delivery QC: normalize/limit</span>':'<span>Delivery QC: standard</span>');
+   analysis.innerHTML='<span>Tempo: '+(a.tempoFeel||'Unconfirmed')+'</span><span>Key: '+(a.keyEstimate||'Unconfirmed')+'</span>'+tags+(a.previewNormalizationRequired?'<span>Delivery QC: normalize/limit</span>':'<span>Delivery QC: standard</span>')+(b.delivery?.derivedStemPack?'<span>Derived mix-control stems: prepared</span>':'')+(b.rightsReview?.declarationStatus?'<span>Rights declaration: pending</span>':'');
  }
  function renderLicenses(b){
    if(!system){grid.innerHTML='<div class="v159-license-card"><small>Loading license system…</small></div>';return}
    grid.innerHTML='';
    system.tiers.forEach(t=>{
      const k=reverse[t.id], av=b.licenseAvailability?.[k]?.status||'unconfirmed';
-     const blocked=av==='requires_stems_trackouts';
+     const blocked=/hold_|original_trackouts_missing|requires_stems_trackouts/.test(av);
      const card=document.createElement('article');card.className='v159-license-card';
      card.innerHTML='<h4></h4><div class="price"></div><small></small><div class="actions"><button type="button" class="terms">View draft terms</button><button type="button" class="primary request">Request</button></div>';
      card.querySelector('h4').textContent=t.label;
@@ -2191,7 +2191,7 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
      card.querySelector('small').textContent=humanStatus(av);
      const terms=card.querySelector('.terms'),req=card.querySelector('.request');
      terms.addEventListener('click',()=>openLegal(b,t));
-     if(blocked){req.disabled=true;req.textContent='Needs stems'} else req.addEventListener('click',()=>requestTier(b,t));
+     if(blocked){req.disabled=true;req.textContent=/hold_/.test(av)?'Rights review hold':'Needs original stems'} else req.addEventListener('click',()=>requestTier(b,t));
      grid.appendChild(card);
    });
  }
@@ -2207,7 +2207,7 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
      const vals={
        BEAT_TITLE:b.title,BEAT_ID:b.id,LICENSEE_LEGAL_NAME:'[LICENSEE LEGAL NAME]',EFFECTIVE_DATE:'[EFFECTIVE DATE]',TRANSACTION_ID:'[TRANSACTION ID]',
        LICENSE_PRICE_USD:price(t),SOURCE_FILENAME:b.fileName,SOURCE_FORMAT:String(b.audio?.format||'').toUpperCase(),TEMPO_DISPLAY:b.analysis?.tempoFeel||'Estimate unavailable',
-       KEY_ESTIMATE:b.analysis?.keyEstimate||'Estimate unavailable',SAMPLE_STATUS:sample,DELIVERY_NOTES:notes||'Standard delivery QC required.',ADDITIONAL_TERMS:'None unless added in writing.'
+       KEY_ESTIMATE:b.analysis?.keyEstimate||'Estimate unavailable',SAMPLE_STATUS:sample,RIGHTS_DECLARATION_STATUS:b.rightsReview?.declarationStatus||'Pending',STEM_STATUS:b.delivery?.derivedStemPack?.status||'No stem pack recorded',DELIVERY_NOTES:notes||'Standard delivery QC required.',ADDITIONAL_TERMS:'None unless added in writing.'
      };
      legalText.textContent=txt.replace(/\{\{([A-Z0-9_]+)\}\}/g,(_,k)=>vals[k]??('['+k+']'));
    }catch(_){legalText.textContent='Draft agreement could not be loaded. Use the business contact route for the current terms.'}
@@ -2217,7 +2217,7 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
    try{sessionStorage.setItem('tagjBeatLicenseInquiryV159',JSON.stringify({beatId:b.id,beatTitle:b.title,licenseId:t.id,licenseLabel:t.label,price:price(t)}))}catch(_){}
    closeLegal();
    const trigger=document.querySelector('[data-v143-wizard="Beat Inquiry"]');
-   if(trigger){trigger.click();setTimeout(()=>{const title=q('#v143ProjectTitle');if(title)title.value=b.title;const notes=q('#v143Notes');if(notes)notes.value='Beat: '+b.title+' ('+b.id+')\\nRequested license: '+t.label+' — '+price(t)+'\\nFinal sale subject to availability, rights review, and executed agreement.';},80)}
+   if(trigger){trigger.click();setTimeout(()=>{const title=q('#v143ProjectTitle');if(title)title.value=b.title;const notes=q('#v143Notes');if(notes)notes.value='Beat: '+b.title+' ('+b.id+')\\nRequested license: '+t.label+' — '+price(t)+'\\nRights declaration: '+(b.rightsReview?.declarationStatus||'pending')+'\\nStem status: '+(b.delivery?.derivedStemPack?.status||'none')+'\\nFinal sale subject to availability, rights review, and executed agreement.';},80)}
  }
  q('#v159LegalClose')?.addEventListener('click',closeLegal);
  backdrop?.addEventListener('click',e=>{if(e.target===backdrop)closeLegal()});
