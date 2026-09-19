@@ -76,6 +76,39 @@ function providerFlags() {
   };
 }
 
+function webhookSecretFlags() {
+  return {
+    unit: !!UNIT_WEBHOOK_SECRET,
+    unitCardAuthorization: !!UNIT_WEBHOOK_SECRET,
+    pinwheel: !!PINWHEEL_API_SECRET,
+    methodAuth: !!METHOD_WEBHOOK_AUTH_TOKEN,
+    methodHmac: !!METHOD_WEBHOOK_HMAC_SECRET,
+  };
+}
+
+function providerConfigurationStatus() {
+  const providers = providerFlags();
+  const webhookSecrets = webhookSecretFlags();
+  return {
+    executionMode: MONEY_EXECUTION_MODE,
+    liveMoneyEnabled: LIVE_MONEY_ENABLED,
+    providers,
+    webhookSecrets,
+    requiredForSandbox: {
+      plaid: ["PLAID_CLIENT_ID", "PLAID_SECRET"],
+      unit: ["UNIT_API_TOKEN"],
+      pinwheel: ["PINWHEEL_API_SECRET"],
+      method: ["METHOD_API_KEY"],
+      webhookUnit: ["UNIT_WEBHOOK_SECRET"],
+      webhookMethod: ["METHOD_WEBHOOK_AUTH_TOKEN", "METHOD_WEBHOOK_HMAC_SECRET"],
+    },
+    targets: {
+      signedWebhook: SUPABASE_URL ? SUPABASE_URL + "/functions/v1/thisweek-money-webhook" : null,
+      unitAuthorization: SUPABASE_URL ? SUPABASE_URL + "/functions/v1/thisweek-unit-card-authorization" : null,
+    },
+  };
+}
+
 function canExecuteProvider(name: "unit" | "pinwheel" | "method" | "plaid"): boolean {
   const flags = providerFlags();
   if (!flags[name]) return false;
@@ -609,18 +642,25 @@ async function unitRequest(path: string, init: RequestInit = {}): Promise<AnyRec
   return parseResponse(res);
 }
 
-async function pinwheelLinkToken(payload: AnyRecord): Promise<AnyRecord> {
+async function pinwheelRequest(path: string, init: RequestInit = {}): Promise<AnyRecord> {
   if (!canExecuteProvider("pinwheel")) throw new Error("pinwheel_not_configured");
-  const res = await fetch(PINWHEEL_BASE_URL + "/v1/link_tokens", {
-    method: "POST",
+  const res = await fetch(PINWHEEL_BASE_URL + path, {
+    ...init,
     headers: {
-      "Content-Type": "application/json",
       "Pinwheel-Version": "2025-07-08",
       "X-API-SECRET": PINWHEEL_API_SECRET,
+      ...(init.body ? { "Content-Type": "application/json" } : {}),
+      ...(init.headers || {}),
     },
-    body: JSON.stringify(payload),
   });
   return parseResponse(res);
+}
+
+async function pinwheelLinkToken(payload: AnyRecord): Promise<AnyRecord> {
+  return pinwheelRequest("/v1/link_tokens", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
 }
 
 async function methodRequest(path: string, init: RequestInit = {}): Promise<AnyRecord> {
@@ -1097,6 +1137,58 @@ function deterministicDigits(source: string, count: number): string {
   return out.padEnd(count, "7").slice(0, count);
 }
 
+
+async function providerSandboxPreflight(): Promise<AnyRecord> {
+  const config = providerConfigurationStatus();
+  const result: AnyRecord = {
+    mode: MONEY_EXECUTION_MODE,
+    liveMoneyEnabled: LIVE_MONEY_ENABLED,
+    configuration: config,
+    providers: {},
+  };
+
+  for (const name of ["plaid", "unit", "pinwheel", "method"] as const) {
+    const configured = providerFlags()[name];
+    const executable = canExecuteProvider(name);
+    (result.providers as AnyRecord)[name] = {
+      configured,
+      executable,
+      reachable: null,
+      status: !configured ? "missing_credentials"
+        : !executable ? "execution_locked"
+        : "checking",
+    };
+  }
+
+  if (MONEY_EXECUTION_MODE !== "sandbox") return result;
+
+  const checks: Array<[string, () => Promise<unknown>]> = [
+    ["plaid", async () => plaidPost("/institutions/get", {
+      count: 1,
+      offset: 0,
+      country_codes: ["US"],
+    })],
+    ["unit", async () => unitRequest("/applications?page[limit]=1")],
+    ["pinwheel", async () => pinwheelRequest("/v1/platforms?limit=1")],
+    ["method", async () => methodRequest("/entities?page=1&page_limit=1")],
+  ];
+
+  for (const [name, fn] of checks) {
+    const entry = (result.providers as AnyRecord)[name] as AnyRecord;
+    if (!entry?.executable) continue;
+    try {
+      await fn();
+      entry.reachable = true;
+      entry.status = "credential_valid";
+    } catch (error) {
+      entry.reachable = false;
+      entry.status = "credential_rejected";
+      entry.error = safeText((error as Error)?.message || "provider_preflight_failed", 100);
+    }
+  }
+  return result;
+}
+
 async function methodSandboxSetup(
   admin: ReturnType<typeof createClient>,
   userId: string,
@@ -1473,6 +1565,8 @@ Deno.serve(async (req: Request) => {
         executionMode: MONEY_EXECUTION_MODE,
         liveMoneyEnabled: LIVE_MONEY_ENABLED,
         providers: providerFlags(),
+        webhookSecrets: webhookSecretFlags(),
+        configuration: providerConfigurationStatus(),
         providerExecution: {
           unit: canExecuteProvider("unit"),
           pinwheel: canExecuteProvider("pinwheel"),
@@ -1493,6 +1587,11 @@ Deno.serve(async (req: Request) => {
           providerCallsLockedByDefault: true,
         },
       });
+    }
+
+    if (action === "provider_preflight") {
+      const result = await providerSandboxPreflight();
+      return json(origin, 200, { ok: true, preflight: result });
     }
 
     if (action === "bootstrap") {
