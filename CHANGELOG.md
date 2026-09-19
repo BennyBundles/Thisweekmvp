@@ -2,6 +2,24 @@
 
 Production changes for **This Week** are recorded here.
 
+## Phase 33 — Cloud Data Export & Privacy Inventory — 2026-09-19
+
+- Added append-only `tw_privacy_export_events` with RLS and direct browser access revoked.
+- Added authenticated cloud-data inventory and paginated self-service export through Account Gateway v3.
+- Export pages are capped at 500 records and selected from a fixed server allowlist rather than arbitrary client table names.
+- Account Center assembles `thisweek.cloud-export.v1` locally and downloads it as JSON; the server does not persist a duplicate export payload.
+- Cloud export covers masked/provider/money/ledger/legal/support/customer-visible access history and account-closure records.
+- Provider credentials, Vault secrets, full financial credentials, raw webhook payloads, internal fraud/risk logic, and non-customer-visible staff notes are explicitly excluded from the self-service artifact.
+- Browser-local weekly Plan data remains separate and is linked to the existing local Data Model & Export surface.
+- Account deletion remains retention-gated when financial history exists.
+- This self-service export is not claimed to satisfy every statutory data-access request in every jurisdiction.
+- Production money remains disabled.
+
+### Rollback
+- Pre-Phase-33 commit: `fe449f5f3d632c4d17600b380512e4112450c049`
+- Rollback branch: `rollback/phase33-pre-cloud-data-rights-2026-09-19`
+
+
 ## Phase 32 — Legal Consent, Retention & Sensitive-Access Audit — 2026-09-19
 
 - Added service-layer-only versioned legal-document registry, immutable customer acceptance receipts, retention-policy registry, and append-only sensitive staff-access audit.
