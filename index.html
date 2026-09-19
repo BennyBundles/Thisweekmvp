@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-2bGHUpstRNOxy1dT7FKMEIbY27tGDqZL2CpM+QbkwQ8=' 'sha256-dqobwQFXFBfHkIW76NX7vc/bQUOyvUxHjv8xVZqP7Co='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'none'; media-src 'self' data: blob:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; child-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests"><meta name="theme-color" content="#081221"><title>This Week</title><style>:root {
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-nu37ntf2BF7lNqDdDcU8IiTc5uGun9rVKbP2MGHGIZg=' 'sha256-31HXb70eTx1TiHeko+UQ8BiePyCs41XB7R/jDP5ArJo='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'none'; media-src 'self' data: blob:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; child-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests"><meta name="theme-color" content="#081221"><title>This Week</title><style>:root {
   --bg: #07111f;
   --bg-alt: #0b1730;
   --panel: rgba(11, 25, 48, 0.82);
@@ -6057,13 +6057,19 @@ function assertImportFileSafe(file){
   return {name};
 }
 function confirmHighImpactMutation(message){return window.confirm(message);}
-function appStorageKeys(storage){
+function inspectAppStorageNamespace(storage){
   const keys=[];
-  try{for(let i=0;i<storage.length;i++){const key=storage.key(i);if(key&&key.startsWith('thisweek.'))keys.push(key);}}catch{}
-  return keys.sort();
+  try{
+    for(let i=0;i<storage.length;i++){const key=storage.key(i);if(key&&key.startsWith('thisweek.'))keys.push(key);}
+    return {available:true,keys:keys.sort(),error:null};
+  }catch(e){
+    return {available:false,keys:[],error:e?.message||'Browser storage is unavailable.'};
+  }
 }
+function appStorageKeys(storage){return inspectAppStorageNamespace(storage).keys;}
 function localDataInventory(){
-  const localKeys=appStorageKeys(localStorage),sessionKeys=appStorageKeys(sessionStorage);
+  const localCheck=inspectAppStorageNamespace(localStorage),sessionCheck=inspectAppStorageNamespace(sessionStorage);
+  const localKeys=localCheck.keys,sessionKeys=sessionCheck.keys;
   const sizeOf=(storage,key)=>{try{const value=storage.getItem(key)||'';return typeof TextEncoder==='function'?new TextEncoder().encode(value).length:value.length*2;}catch{return 0;}};
   const describe=(key)=>{
     if(key===STATE_KEY)return 'Core plan, weeks, transactions, bill protection and history';
@@ -6077,6 +6083,10 @@ function localDataInventory(){
     return 'This Week browser-local application state';
   };
   return {
+    localAvailable:localCheck.available,
+    sessionAvailable:sessionCheck.available,
+    localError:localCheck.error,
+    sessionError:sessionCheck.error,
     local:localKeys.map(key=>({key,bytes:sizeOf(localStorage,key),description:describe(key)})),
     session:sessionKeys.map(key=>({key,bytes:sizeOf(sessionStorage,key),description:describe(key)}))
   };
@@ -6102,7 +6112,7 @@ function clientSecretAudit(){
 function runPhase14TrustAudit(){
   const secretAudit=clientSecretAudit(),sample='\u0000<img src=x onerror=alert(1)>\u202E',sanitized=sanitizeImportedText(sample,240),escaped=escapeHtml(sanitized);
   const tests=[
-    {name:'Browser-local storage scope',pass:appStorageKeys(localStorage).every(k=>k.startsWith('thisweek.')),detail:'Data inventory and deletion are constrained to thisweek.* keys on this site.'},
+    {name:'Browser-local storage scope',pass:inspectAppStorageNamespace(localStorage).available&&appStorageKeys(localStorage).every(k=>k.startsWith('thisweek.')),detail:inspectAppStorageNamespace(localStorage).available?'Data inventory and deletion are constrained to thisweek.* keys on this site.':'Persistent browser storage cannot be inspected in this session.'},
     {name:'Provider-secret audit',pass:secretAudit.pass,detail:secretAudit.pass?'No token/password/secret-shaped fields detected in This Week local JSON.':secretAudit.findings.join(' | ')},
     {name:'Runtime network dependency boundary',pass:!document.querySelector('script[src],link[rel="stylesheet"][href]'),detail:'No external runtime script or stylesheet dependency is present after the static document loads.'},
     {name:'Network exfiltration boundary',pass:document.querySelector('meta[http-equiv="Content-Security-Policy"]')?.content?.includes("connect-src 'none'"),detail:'Current static build blocks application fetch/XHR/WebSocket connections and disallows object/frame content through CSP.'},
@@ -6137,17 +6147,19 @@ function downloadRawLocalDataExport(){
   setTimeout(()=>URL.revokeObjectURL(url),1500);return json.length;
 }
 function clearAllThisWeekLocalData(){
-  const beforeLocal=appStorageKeys(localStorage),beforeSession=appStorageKeys(sessionStorage);
-  for(const key of beforeLocal)safeLocalStorageRemove(key);
-  for(const key of beforeSession){try{sessionStorage.removeItem(key);}catch{}}
-  const remainingLocal=appStorageKeys(localStorage),remainingSession=appStorageKeys(sessionStorage);
+  const beforeLocal=inspectAppStorageNamespace(localStorage),beforeSession=inspectAppStorageNamespace(sessionStorage);
+  for(const key of beforeLocal.keys)safeLocalStorageRemove(key);
+  for(const key of beforeSession.keys){try{sessionStorage.removeItem(key);}catch{}}
+  const afterLocal=inspectAppStorageNamespace(localStorage),afterSession=inspectAppStorageNamespace(sessionStorage);
   volatileUserId=null;volatileState=null;volatileStateSerialized=null;lastPersistedStateSerialized=null;
   uiPrefsCache=null;connectedDataCache=null;savingsGoalsCache=null;savingsGoalsCacheRevision=-1;
   historySummaryCache={revision:-1,data:null};connectionImportPreview=null;runtimePerf.revision++;
   return {
-    success:remainingLocal.length===0&&remainingSession.length===0,
-    removed:beforeLocal.length+beforeSession.length-remainingLocal.length-remainingSession.length,
-    remaining:[...remainingLocal,...remainingSession]
+    success:beforeLocal.available&&beforeSession.available&&afterLocal.available&&afterSession.available&&afterLocal.keys.length===0&&afterSession.keys.length===0,
+    storageAccessible:beforeLocal.available&&beforeSession.available&&afterLocal.available&&afterSession.available,
+    removed:beforeLocal.keys.length+beforeSession.keys.length-afterLocal.keys.length-afterSession.keys.length,
+    remaining:[...afterLocal.keys,...afterSession.keys],
+    errors:[beforeLocal.error,beforeSession.error,afterLocal.error,afterSession.error].filter(Boolean)
   };
 }
 function normalizeConnectedRecord(r={}){
@@ -7818,7 +7830,7 @@ function renderPrivacy(){
   const draw=()=>{
     const inventory=localDataInventory(),audit=clientSecretAudit();
     const all=[...inventory.local.map(x=>({...x,scope:'Persistent'})),...inventory.session.map(x=>({...x,scope:'Session'}))];
-    const totalBytes=all.reduce((n,x)=>n+x.bytes,0),hasPlan=!!readState();
+    const totalBytes=all.reduce((n,x)=>n+x.bytes,0),hasPlan=!!readState(),storageInspectable=inventory.localAvailable&&inventory.sessionAvailable;
     root.innerHTML=`<div class="studio-stack">
       <section class="trust-hero"><span class="studio-kicker">Phase 14 trust boundary</span><h2>Your financial planning data is local to this browser in the current build.</h2><p>This Week has no active application backend, account login, or live bank-token connection. Financial data is not uploaded by the app. The site host still receives ordinary web requests needed to deliver the static page.</p><div class="trust-badges"><span class="trust-badge good">Browser-local storage</span><span class="trust-badge good">No provider secrets</span><span class="trust-badge">No cloud sync</span><span class="trust-badge">No background financial upload</span></div></section>
 
@@ -7843,7 +7855,7 @@ function renderPrivacy(){
         </div>
       </section>
 
-      <section class="section"><div class="section-head"><div><span class="section-kicker">Browser storage inventory</span><h2>${all.length} This Week key${all.length===1?'':'s'} · ${(totalBytes/1024).toFixed(1)} KB</h2><div class="section-caption">Values are not shown here; only key names, purpose, scope, and serialized size.</div></div></div>
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Browser storage inventory</span><h2>${all.length} This Week key${all.length===1?'':'s'} · ${(totalBytes/1024).toFixed(1)} KB</h2><div class="section-caption">Values are not shown here; only key names, purpose, scope, and serialized size. ${storageInspectable?'Storage inspection is available.':'One or more browser storage areas cannot be inspected in this session.'}</div></div></div>
         <div class="privacy-inventory">${all.length?all.map(x=>`<div class="privacy-key"><div><strong>${escapeHtml(x.description)}</strong><span>${escapeHtml(x.scope)} browser storage · ${(x.bytes/1024).toFixed(1)} KB</span></div><code>${escapeHtml(x.key)}</code></div>`).join(''):'<div class="empty">No This Week browser data is currently stored.</div>'}</div>
       </section>
 
@@ -7877,7 +7889,7 @@ function renderPrivacy(){
       if(phrase?.value.trim()!=='DELETE')return;
       if(!confirmHighImpactMutation('Permanently remove all This Week local app data from this browser now?'))return;
       const result=clearAllThisWeekLocalData();
-      if(!result.success){toast('Some local data could not be removed. Remaining: '+result.remaining.join(', '));return;}
+      if(!result.success){const detail=!result.storageAccessible?'Browser storage could not be fully inspected.':result.remaining.length?'Remaining: '+result.remaining.join(', '):'Deletion could not be verified.';toast('Local-data deletion not verified. '+detail);return;}
       location.hash='setup';
       location.reload();
     });
