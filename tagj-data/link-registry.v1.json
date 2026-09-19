@@ -1,0 +1,222 @@
+{
+  "schemaVersion": "tagj.link-registry.v1",
+  "policy": "Only verified destinations may render as clickable external links.",
+  "global": {
+    "youtubeChannel": {
+      "status": "verified",
+      "url": "https://www.youtube.com/@bennybundles",
+      "label": "Benny Bundles YouTube channel",
+      "note": "Existing channel route already used in project source."
+    }
+  },
+  "releases": {
+    "reached": {
+      "youtubeVideo": {
+        "status": "pending",
+        "url": null
+      },
+      "appleMusic": {
+        "status": "pending",
+        "url": null
+      },
+      "spotify": {
+        "status": "pending",
+        "url": null
+      },
+      "soundCloud": {
+        "status": "pending",
+        "url": null
+      },
+      "unitedMasters": {
+        "status": "pending",
+        "url": null
+      },
+      "youtubeMusic": {
+        "status": "pending",
+        "url": null
+      }
+    },
+    "oh": {
+      "youtubeVideo": {
+        "status": "pending",
+        "url": null
+      },
+      "appleMusic": {
+        "status": "pending",
+        "url": null
+      },
+      "spotify": {
+        "status": "pending",
+        "url": null
+      },
+      "soundCloud": {
+        "status": "pending",
+        "url": null
+      },
+      "unitedMasters": {
+        "status": "pending",
+        "url": null
+      },
+      "youtubeMusic": {
+        "status": "pending",
+        "url": null
+      }
+    },
+    "ndr": {
+      "youtubeVideo": {
+        "status": "pending",
+        "url": null
+      },
+      "appleMusic": {
+        "status": "pending",
+        "url": null
+      },
+      "spotify": {
+        "status": "pending",
+        "url": null
+      },
+      "soundCloud": {
+        "status": "pending",
+        "url": null
+      },
+      "unitedMasters": {
+        "status": "pending",
+        "url": null
+      },
+      "youtubeMusic": {
+        "status": "pending",
+        "url": null
+      }
+    },
+    "dont": {
+      "youtubeVideo": {
+        "status": "pending",
+        "url": null
+      },
+      "appleMusic": {
+        "status": "pending",
+        "url": null
+      },
+      "spotify": {
+        "status": "pending",
+        "url": null
+      },
+      "soundCloud": {
+        "status": "pending",
+        "url": null
+      },
+      "unitedMasters": {
+        "status": "pending",
+        "url": null
+      },
+      "youtubeMusic": {
+        "status": "pending",
+        "url": null
+      }
+    },
+    "hold": {
+      "youtubeVideo": {
+        "status": "pending",
+        "url": null
+      },
+      "appleMusic": {
+        "status": "pending",
+        "url": null
+      },
+      "spotify": {
+        "status": "pending",
+        "url": null
+      },
+      "soundCloud": {
+        "status": "pending",
+        "url": null
+      },
+      "unitedMasters": {
+        "status": "pending",
+        "url": null
+      },
+      "youtubeMusic": {
+        "status": "pending",
+        "url": null
+      }
+    },
+    "stuck": {
+      "youtubeVideo": {
+        "status": "pending",
+        "url": null
+      },
+      "appleMusic": {
+        "status": "pending",
+        "url": null
+      },
+      "spotify": {
+        "status": "pending",
+        "url": null
+      },
+      "soundCloud": {
+        "status": "pending",
+        "url": null
+      },
+      "unitedMasters": {
+        "status": "pending",
+        "url": null
+      },
+      "youtubeMusic": {
+        "status": "pending",
+        "url": null
+      }
+    },
+    "cold": {
+      "youtubeVideo": {
+        "status": "pending",
+        "url": null
+      },
+      "appleMusic": {
+        "status": "pending",
+        "url": null
+      },
+      "spotify": {
+        "status": "pending",
+        "url": null
+      },
+      "soundCloud": {
+        "status": "pending",
+        "url": null
+      },
+      "unitedMasters": {
+        "status": "pending",
+        "url": null
+      },
+      "youtubeMusic": {
+        "status": "pending",
+        "url": null
+      }
+    },
+    "freestyle": {
+      "youtubeVideo": {
+        "status": "pending",
+        "url": null
+      },
+      "appleMusic": {
+        "status": "pending",
+        "url": null
+      },
+      "spotify": {
+        "status": "pending",
+        "url": null
+      },
+      "soundCloud": {
+        "status": "pending",
+        "url": null
+      },
+      "unitedMasters": {
+        "status": "pending",
+        "url": null
+      },
+      "youtubeMusic": {
+        "status": "pending",
+        "url": null
+      }
+    }
+  }
+}
