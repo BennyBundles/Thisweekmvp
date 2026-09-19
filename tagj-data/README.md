@@ -29,3 +29,10 @@ The producer A/B lab uses temporary browser object URLs for user-selected local 
 ## Link verification
 
 Only the existing Benny Bundles YouTube channel route is marked verified in the current registry. Per-release streaming/video destinations remain pending until exact URLs are supplied or verified.
+
+
+## V14.5 execution workflow
+
+- `workflow.v1.json` — Level 06 client-side execution architecture for product development, artist release campaigns, beat inquiries, studio sessions and creative campaigns.
+
+Workflow state in this preview is planning state only. It does not book sessions, publish releases, upload audio, change inventory, or create payments.
