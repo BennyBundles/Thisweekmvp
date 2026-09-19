@@ -36,6 +36,15 @@ async function moneyHistory(admin:ReturnType<typeof createClient>,userId:string)
     cardAuthorizations:counts[3],payrollDeposits:counts[4],rewards:counts[5]
   }};
 }
+async function legalStatuses(admin:ReturnType<typeof createClient>,userId:string){
+  const [sandbox,production]=await Promise.all([
+    admin.rpc("tw_legal_status",{p_user_id:userId,p_environment:"sandbox"}),
+    admin.rpc("tw_legal_status",{p_user_id:userId,p_environment:"production"}),
+  ]);
+  if(sandbox.error||production.error)throw new Error("legal_status_read_failed");
+  return {sandbox:sandbox.data||null,production:production.data||null};
+}
+
 async function deleteVaultSecrets(admin:ReturnType<typeof createClient>,userId:string){
   const {data,error}=await admin.from("tw_provider_connections").select("vault_secret_id").eq("user_id",userId);
   if(error) throw new Error("provider_secret_lookup_failed");
@@ -71,8 +80,29 @@ Deno.serve(async(req)=>{
     const aal={currentLevel:aalData?.currentLevel||null,nextLevel:aalData?.nextLevel||null};
 
     if(action==="status"){
-      const hist=await moneyHistory(admin,user.id);
-      return json(origin,200,{ok:true,user:{id:user.id,email:user.email||null,emailConfirmedAt:(user as AnyRecord).email_confirmed_at||null},session:{id:sessionId,aal},closure:{hardDeleteEligible:!hist.hasFinancialHistory,...hist}});
+      const [hist,legal]=await Promise.all([moneyHistory(admin,user.id),legalStatuses(admin,user.id)]);
+      return json(origin,200,{
+        ok:true,
+        user:{id:user.id,email:user.email||null,emailConfirmedAt:(user as AnyRecord).email_confirmed_at||null},
+        session:{id:sessionId,aal},
+        closure:{hardDeleteEligible:!hist.hasFinancialHistory,...hist},
+        legal
+      });
+    }
+    if(action==="legal_status"){
+      return json(origin,200,{ok:true,legal:await legalStatuses(admin,user.id)});
+    }
+    if(action==="accept_legal"){
+      const documentId=validUuid(body.documentId);
+      if(!documentId)return json(origin,400,{error:"legal_document_id_required"});
+      const accepted=await admin.rpc("tw_legal_accept_document",{
+        p_user_id:user.id,
+        p_document_id:documentId,
+        p_session_id:sessionId,
+        p_affirmation:"accept_v1"
+      });
+      if(accepted.error)throw new Error(safeText(accepted.error.message,120)||"legal_acceptance_failed");
+      return json(origin,200,{ok:true,acceptance:accepted.data,legal:await legalStatuses(admin,user.id)});
     }
     if(action==="delete_account"){
       if(safeText(body.confirmation,20)!=="DELETE")return json(origin,400,{error:"typed_confirmation_required"});
