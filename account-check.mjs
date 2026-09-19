@@ -36,6 +36,12 @@ need('recovery cooldown',js,"assertCooldown('recover',60000");
 need('release readiness renderer',js,'renderReleaseReadiness');
 need('typed deletion confirmation',html,'Type DELETE');
 need('financial-history retention copy',html,'Financial history exists');
+need('legal disclosure list',html,'id="legalList"');
+need('legal environment mode',js,'LEGAL_ENVIRONMENT');
+need('legal disclosure renderer',js,'renderLegal');
+need('immutable acceptance action',js,"accountGateway('accept_legal'");
+need('Sandbox legal mode',js,"PARAMS.get('legal')==='sandbox'");
+
 
 if(!config)failures.push('Auth release config unavailable');
 else{
