@@ -132,6 +132,8 @@ requireText('Phase 13 canonical snapshot','canonicalPortableSnapshotPayload');
 requireText('Phase 13 stable snapshot JSON','stablePortableSnapshotJson');
 requireText('Phase 13 snapshot fingerprint','computePortableSnapshotFingerprint');
 requireText('Phase 13 fingerprint UI','Compute snapshot fingerprint');
+requireText('Phase 15 release discipline','v0.15.0-phase15');
+requireText('Phase 15 privacy baseline','PHASE 14 — SECURITY + PRIVACY + TRUST HARDENING v26');
 requireText('Phase 13 model integrity','validateNormalizedDataModel');
 requireText('Phase 13 integrity summary','normalizedIntegritySummary');
 requireText('Phase 13 historical category preservation','Archived category');
