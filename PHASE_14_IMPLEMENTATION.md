@@ -416,3 +416,48 @@ The Privacy & Local Data screen now states the current local-retention behavior.
 `f7fef825dfd19ade72376a99705ed526a0385ea1`
 
 This is the latest Phase 14 app-source refinement.
+
+
+## Continued Phase 14 completion — CSP and storage transparency
+
+Phase 14 was extended with two additional trust boundaries.
+
+### Static Content Security Policy
+
+The document now declares a static Content Security Policy that currently includes:
+
+- `connect-src 'none'`
+- `object-src 'none'`
+- `frame-src 'none'`
+- `base-uri 'none'`
+- `form-action 'self'`
+- local/data/blob-only image/media sources
+
+This matches the current zero-backend architecture by preventing application fetch/XHR/WebSocket traffic unless the policy is deliberately changed in a future reviewed backend phase.
+
+Because This Week is still a monolithic single HTML document, the policy currently requires inline JavaScript and inline CSS. It is therefore an additional network/embedding boundary rather than a complete XSS defense.
+
+### App-level encryption disclosure
+
+Privacy & Local Data now states explicitly:
+
+**No app-level storage encryption**
+
+The app does not present browser localStorage as an encrypted financial vault. A person with access to the unlocked device/browser profile may be able to access stored local data.
+
+### Phase 14 regression protection
+
+The static checker now requires:
+
+- CSP network restriction;
+- object/frame restriction;
+- local-storage encryption disclosure;
+- typed DELETE confirmation;
+- source-boundary glossary;
+- local-only Connected Data labeling.
+
+### Latest Phase 14 application commit
+
+`f2b4c9cb8f697a392d702d131be3d3e541a98aad`
+
+GitHub Pages deployment for this app commit completed successfully.
