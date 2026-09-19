@@ -1,4 +1,5 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#081221"><title>This Week</title><style>:root {
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="referrer" content="no-referrer"><meta name="theme-color" content="#081221"><title>This Week</title><style>:root {
   --bg: #07111f;
   --bg-alt: #0b1730;
   --panel: rgba(11, 25, 48, 0.82);
@@ -5983,6 +5984,95 @@ if(!window.__thisWeekMotionVisibilityBound){
 const CONNECTED_DATA_KEY='thisweek.connectedData.v1';
 let connectionImportPreview=null;
 let connectedDataCache=null;
+const IMPORT_SECURITY_LIMITS=Object.freeze({
+  maxFileBytes:5*1024*1024,
+  maxRows:10000,
+  maxColumns:64,
+  maxCellChars:1000,
+  maxDescriptionChars:240,
+  maxSourceNameChars:120
+});
+function sanitizeImportedText(value,maxChars=IMPORT_SECURITY_LIMITS.maxCellChars){
+  let s=String(value??'');
+  try{s=s.normalize('NFC');}catch{}
+  s=s.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g,'')
+     .replace(/[\u202A-\u202E\u2066-\u2069]/g,'')
+     .trim();
+  if(s.length>maxChars)s=s.slice(0,maxChars);
+  return s;
+}
+function sanitizeImportSourceName(value){
+  const s=sanitizeImportedText(value,IMPORT_SECURITY_LIMITS.maxSourceNameChars).replace(/[\\/]+/g,'_');
+  return s||'Local import';
+}
+function assertImportFileSafe(file){
+  if(!file)throw new Error('Choose a transaction file.');
+  if(Number(file.size||0)>IMPORT_SECURITY_LIMITS.maxFileBytes)throw new Error('Import file is too large. Maximum size is 5 MB.');
+  return {name:sanitizeImportSourceName(file.name||'Local import')};
+}
+function confirmHighImpactMutation(message){return window.confirm(message);}
+function appStorageKeys(storage){
+  const keys=[];
+  try{for(let i=0;i<storage.length;i++){const key=storage.key(i);if(key&&key.startsWith('thisweek.'))keys.push(key);}}catch{}
+  return keys.sort();
+}
+function localDataInventory(){
+  const localKeys=appStorageKeys(localStorage),sessionKeys=appStorageKeys(sessionStorage);
+  const sizeOf=(storage,key)=>{try{const value=storage.getItem(key)||'';return typeof TextEncoder==='function'?new TextEncoder().encode(value).length:value.length*2;}catch{return 0;}};
+  const describe=(key)=>{
+    if(key===STATE_KEY)return 'Core plan, weeks, transactions, bill protection and history';
+    if(key===USER_ID_KEY)return 'Random local app identifier; not an authentication credential';
+    if(key===CONNECTED_DATA_KEY)return 'Imported transaction metadata, provenance, reconciliation and audit history';
+    if(key===SAVINGS_GOALS_KEY)return 'Locally configured savings goals';
+    if(key===UI_PREFS_KEY)return 'Presentation and accessibility preferences';
+    if(key===FLEX_CAPS_KEY)return 'Lifestyle soft-cap preferences';
+    if(key===RECOMMENDATION_PREFS_KEY)return 'Temporary recommendation presentation state';
+    if(key===SCENARIO_DRAFT_KEY)return 'Temporary Scenario Sandbox assumptions';
+    return 'This Week browser-local application state';
+  };
+  return {
+    local:localKeys.map(key=>({key,bytes:sizeOf(localStorage,key),description:describe(key)})),
+    session:sessionKeys.map(key=>({key,bytes:sizeOf(sessionStorage,key),description:describe(key)}))
+  };
+}
+function scanObjectForSensitiveFieldNames(value,path='root',findings=[]){
+  if(Array.isArray(value)){value.forEach((v,i)=>scanObjectForSensitiveFieldNames(v,path+'['+i+']',findings));return findings;}
+  if(!value||typeof value!=='object')return findings;
+  const risky=/^(access.?token|refresh.?token|client.?secret|api.?key|password|authorization|bearer|private.?key)$/i;
+  for(const [key,val] of Object.entries(value)){
+    if(risky.test(key))findings.push(path+'.'+key);
+    if(val&&typeof val==='object')scanObjectForSensitiveFieldNames(val,path+'.'+key,findings);
+  }
+  return findings;
+}
+function clientSecretAudit(){
+  const findings=[];
+  for(const key of appStorageKeys(localStorage)){
+    const raw=safeLocalStorageGet(key);if(!raw)continue;
+    try{scanObjectForSensitiveFieldNames(JSON.parse(raw),key,findings);}catch{}
+  }
+  return {pass:findings.length===0,findings};
+}
+function downloadRawLocalDataExport(){
+  const inventory=localDataInventory(),payload={
+    schema:'thisweek.local-data-export',
+    schemaVersion:1,
+    exportedAt:nowIso(),
+    warning:'Sensitive financial data. This export is not uploaded by This Week.',
+    localStorage:Object.fromEntries(inventory.local.map(x=>[x.key,safeLocalStorageGet(x.key)])),
+    sessionStorage:Object.fromEntries(inventory.session.map(x=>{let v=null;try{v=sessionStorage.getItem(x.key);}catch{}return [x.key,v];}))
+  };
+  const json=JSON.stringify(payload,null,2),blob=new Blob([json],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='this-week-local-data-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);return json.length;
+}
+function clearAllThisWeekLocalData(){
+  for(const key of appStorageKeys(localStorage))safeLocalStorageRemove(key);
+  for(const key of appStorageKeys(sessionStorage)){try{sessionStorage.removeItem(key);}catch{}}
+  volatileUserId=null;volatileState=null;volatileStateSerialized=null;lastPersistedStateSerialized=null;
+  uiPrefsCache=null;connectedDataCache=null;savingsGoalsCache=null;savingsGoalsCacheRevision=-1;
+  historySummaryCache={revision:-1,data:null};connectionImportPreview=null;runtimePerf.revision++;
+}
 function normalizeConnectedRecord(r={}){
   const reconciled=!!r.reconciled;
   const direction=r.direction||'outflow',status=r.status||'posted';
@@ -5991,7 +6081,13 @@ function normalizeConnectedRecord(r={}){
   else if(status==='pending')reviewState='pending';
   else if(direction==='inflow')reviewState='reference';
   else if(!['unmatched','deferred'].includes(reviewState))reviewState='unmatched';
-  return {...r,reviewState,reconciled};
+  return {
+    ...r,
+    description:sanitizeImportedText(r.description||'Transaction',IMPORT_SECURITY_LIMITS.maxDescriptionChars)||'Transaction',
+    source:sanitizeImportSourceName(r.source||'Local import'),
+    categoryName:r.categoryName==null?null:sanitizeImportedText(r.categoryName,120),
+    reviewState,reconciled
+  };
 }
 function readConnectedData(){
   const base={version:2,sourceName:null,importedAt:null,records:[],batches:[],sources:[],audit:[]};
@@ -6584,24 +6680,32 @@ function detectDelimiter(text){
 }
 function parseDelimitedText(text){
   const src=String(text||'').replace(/^\uFEFF/,'');
+  if(src.length>IMPORT_SECURITY_LIMITS.maxFileBytes*2)throw new Error('Import text exceeds the local parser safety limit.');
   const delimiter=detectDelimiter(src),rows=[];let row=[],cell='',q=false;
+  const pushRow=()=>{
+    if(row.some(x=>String(x).trim().length)){
+      if(rows.length>=IMPORT_SECURITY_LIMITS.maxRows+1)throw new Error('Import has too many rows. Maximum is '+IMPORT_SECURITY_LIMITS.maxRows.toLocaleString()+'.');
+      if(row.length>IMPORT_SECURITY_LIMITS.maxColumns)throw new Error('Import has too many columns. Maximum is '+IMPORT_SECURITY_LIMITS.maxColumns+'.');
+      rows.push(row.map(v=>sanitizeImportedText(v)));
+    }
+    row=[];
+  };
   for(let i=0;i<src.length;i++){
     const ch=src[i];
     if(ch==='"'){if(q&&src[i+1]==='"'){cell+='"';i++;}else q=!q;continue;}
     if(!q&&ch===delimiter){row.push(cell);cell='';continue;}
     if(!q&&(ch==='\n'||ch==='\r')){
       if(ch==='\r'&&src[i+1]==='\n')i++;
-      row.push(cell);cell='';
-      if(row.some(x=>String(x).trim().length))rows.push(row);
-      row=[];continue;
+      row.push(cell);cell='';pushRow();continue;
     }
-    cell+=ch;
+    if(cell.length<IMPORT_SECURITY_LIMITS.maxCellChars*2)cell+=ch;
   }
-  row.push(cell);if(row.some(x=>String(x).trim().length))rows.push(row);
+  if(q)throw new Error('Import contains an unterminated quoted field.');
+  row.push(cell);pushRow();
   if(rows.length<2)throw new Error('Transaction file needs a header row and at least one data row.');
   const seen=new Map();
-  const headers=rows[0].map((h,i)=>{let name=String(h||'').trim()||`Column ${i+1}`;const k=name.toLowerCase();const n=(seen.get(k)||0)+1;seen.set(k,n);if(n>1)name+=` ${n}`;return name;});
-  return {delimiter,headers,rows:rows.slice(1).map(vals=>{const o={};headers.forEach((h,i)=>o[h]=vals[i]??'');return o;})};
+  const headers=rows[0].map((h,i)=>{let name=sanitizeImportedText(h,120)||`Column ${i+1}`;const k=name.toLowerCase();const n=(seen.get(k)||0)+1;seen.set(k,n);if(n>1)name+=` ${n}`;return name;});
+  return {delimiter,headers,rows:rows.slice(1).map(vals=>{const o={};headers.forEach((h,i)=>o[h]=sanitizeImportedText(vals[i]??''));return o;})};
 }
 function parseCsvText(text){return parseDelimitedText(text).rows;}
 function simpleHash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0).toString(36);}
@@ -6625,6 +6729,7 @@ function parseImportedDate(v){
   const d=new Date(raw);return Number.isNaN(d.getTime())?nowIso():d.toISOString();
 }
 function normalizeImportedRows(rows,signMode='negativePurchase',sourceName='CSV Import'){
+  sourceName=sanitizeImportSourceName(sourceName);
   const occurrence=new Map();
   return rows.map((row)=>{
     const dk=importField(row,['transaction date','posted date','post date','date','effective date']);
@@ -6643,7 +6748,7 @@ function normalizeImportedRows(rows,signMode='negativePurchase',sourceName='CSV 
       direction=signMode==='positivePurchase'?(raw>=0?'outflow':'inflow'):(raw<=0?'outflow':'inflow');
     }
     const date=parseImportedDate(dk?row[dk]:'');
-    const description=String(descK?row[descK]:'Transaction').replace(/\s+/g,' ').trim()||'Transaction';
+    const description=sanitizeImportedText(String(descK?row[descK]:'Transaction').replace(/\s+/g,' ').trim(),IMPORT_SECURITY_LIMITS.maxDescriptionChars)||'Transaction';
     const statusText=String(statusK?row[statusK]:'').toLowerCase(),pendingText=String(pendingK?row[pendingK]:'').toLowerCase();
     const status=(statusText.includes('pend')||['true','yes','y','1'].includes(pendingText))?'pending':'posted';
     const amountCents=Math.round(amount*100);
@@ -7546,7 +7651,7 @@ async function renderConnections(){
       document.querySelectorAll('.data-filter').forEach(btn=>btn.onclick=()=>{activeFilter=btn.dataset.filter;draw();});
 
       const file=document.getElementById('bankFile');
-      file.onchange=()=>{const chosen=file.files?.[0];if(!chosen)return;const reader=new FileReader();reader.onload=()=>{try{const parsed=parseDelimitedText(reader.result),records=normalizeImportedRows(parsed.rows,document.getElementById('signMode').value,chosen.name);connectionImportPreview=buildConnectedImportPreview(records,chosen.name);toast(`Previewed ${records.length} records.`);draw();}catch(e){toast(e.message);}};reader.readAsText(chosen);};
+      file.onchange=()=>{const chosen=file.files?.[0];if(!chosen)return;try{const safe=assertImportFileSafe(chosen),reader=new FileReader();reader.onload=()=>{try{const parsed=parseDelimitedText(reader.result),records=normalizeImportedRows(parsed.rows,document.getElementById('signMode').value,safe.name);connectionImportPreview=buildConnectedImportPreview(records,safe.name);toast(`Previewed ${records.length} records locally.`);draw();}catch(e){toast(e.message);}};reader.onerror=()=>toast('Could not read that local file.');reader.readAsText(chosen);}catch(e){toast(e.message);file.value='';}};
 
       document.getElementById('demoImport').onclick=()=>{const demo=[{Date:new Date().toISOString().slice(0,10),Description:'Neighborhood Grocery Market',Amount:'-42.17',Status:'Posted'},{Date:new Date().toISOString().slice(0,10),Description:'City Fuel Station',Amount:'-36.80',Status:'Posted'},{Date:new Date().toISOString().slice(0,10),Description:'Local Pizza',Amount:'-28.55',Status:'Pending'},{Date:new Date().toISOString().slice(0,10),Description:'Payroll Deposit',Amount:'1800.00',Status:'Posted'}];const records=normalizeImportedRows(demo,'negativePurchase','Demo connection');connectionImportPreview=buildConnectedImportPreview(records,'Demo connection');draw();};
 
@@ -7562,7 +7667,7 @@ async function renderConnections(){
       });
 
       document.getElementById('clearImport').onclick=()=>{
-        if(!confirm('Clear imported review metadata from this browser? Reconciled transactions already applied to the weekly plan will remain in the plan.'))return;
+        if(!confirmHighImpactMutation('Clear imported review metadata from this browser? Reconciled transactions already applied to the weekly plan will remain in the plan.'))return;
         const previous=readConnectedData(),next={version:2,sourceName:null,importedAt:null,records:[],batches:[],sources:[],audit:[]};appendConnectedAudit(next,'clear',null,`Cleared ${previous.records.length} imported metadata records`);writeConnectedData(next);connectionImportPreview=null;toast('Import metadata cleared.');draw();
       };
 
@@ -7570,7 +7675,7 @@ async function renderConnections(){
         const d=readConnectedData(),batch=(d.batches||[])[d.batches.length-1];if(!batch)return;
         const batchRecords=d.records.filter(r=>r.batchId===batch.id),applied=batchRecords.filter(r=>r.reconciled);
         const msg=applied.length?`Undo the last import? This will also reverse ${applied.length} reconciled transaction${applied.length===1?'':'s'} from the weekly plan.`:'Undo the last import and remove its review records?';
-        if(!confirm(msg))return;
+        if(!confirmHighImpactMutation(msg))return;
         try{
           if(applied.length)await apiRequest('/transaction/import/reverse-batch',{method:'POST',body:JSON.stringify({userId,externalIds:applied.map(r=>r.externalId)})});
           d.records=d.records.filter(r=>r.batchId!==batch.id);d.batches=d.batches.filter(b=>b.id!==batch.id);appendConnectedAudit(d,'undoBatch',null,batch.sourceName||'Import');writeConnectedData(d);p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);toast('Last import undone.');draw();
@@ -7594,7 +7699,7 @@ async function renderConnections(){
 
       document.querySelectorAll('.unreconcile-btn').forEach(btn=>btn.onclick=async()=>{
         const d=readConnectedData(),rec=d.records.find(x=>x.id===btn.dataset.id);if(!rec)return;
-        if(!confirm('Undo this reconciliation and return the imported purchase to the review queue?'))return;
+        if(!confirmHighImpactMutation('Undo this reconciliation and return the imported purchase to the review queue?'))return;
         btn.disabled=true;try{
           await apiRequest('/transaction/import/reverse',{method:'POST',body:JSON.stringify({userId,externalId:rec.externalId})});
           const prior=rec.categoryName||connectedCategoryName(rec,p);rec.reconciled=false;rec.reviewState='unmatched';delete rec.categoryId;delete rec.categoryType;delete rec.categoryName;delete rec.reconciledAt;
@@ -7891,6 +7996,7 @@ async function renderReset(){
       <section class="form-card"><div class="stack-actions"><button class="btn-primary" id="confirmReset">Start New Week</button><a class="btn btn-secondary" href="#home">Cancel</a></div></section>
     </div>`;
     document.getElementById('confirmReset').onclick=async()=>{
+      if(!confirmHighImpactMutation('Start a new week? This closes the current weekly cycle and creates a new one from the existing Plan.'))return;
       const b=document.getElementById('confirmReset'), portal=document.getElementById('cyclePortal');
       b.disabled=true;b.textContent='Opening next week...';portal.classList.add('transitioning');
       try{
