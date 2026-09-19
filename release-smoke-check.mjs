@@ -146,7 +146,8 @@ if(phase21Webhook){
 if(phase21CardAuth){
   requireText('Phase 21 card auth has execution lock',phase21CardAuth,'THISWEEK_MONEY_EXECUTION_MODE');
   requireText('Phase 21 card auth fail closed',phase21CardAuth,'RestrictedCard');
-  requireText('Phase 21 card auth calls reserve RPC',phase21CardAuth,'tw_money_reserve_card_authorization');
+  requireText('Phase 24 card auth calls risk-aware reserve RPC',phase21CardAuth,'tw_money_risk_reserve_card_authorization');
+  requireText('Phase 24 card auth risk declines fail closed',phase21CardAuth,'reason.startsWith("risk_")');
 }
 if(phase21Doc)requireText('Phase 21 doc production boundary',phase21Doc,'no live money movement');
 if(moneyLabHtml)requireText('Money Lab exact Supabase origin',moneyLabHtml,'connect-src https://xjtvawmppzwzrooairyx.supabase.co');
