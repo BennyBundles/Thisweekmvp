@@ -2,6 +2,34 @@
 
 Production changes for **This Week** are recorded here.
 
+## Phase 28 — Customer Support & Incident Monitoring — 2026-09-19
+
+- Added authenticated customer Support & Disputes Center at `/support/`.
+- Added service-layer-only support requests/messages and append-only support conversation history.
+- Support intake creates reviewable Ops cases and never directly mutates money.
+- Added sensitive-input rejection for secret/token patterns, SSNs, and full-length account/card-number strings.
+- Added staff support assignment, customer-visible reply, and support lifecycle controls to Ops Console.
+- Added staff-only incidents and append-only incident timeline.
+- Added internal beta SLA policy and health computation across alerts, support, reviews, stale cases, provider failures, and incidents.
+- Marked internal SLA targets as `public_commitment=false`.
+- Fixed Pages deployment so `/ops/` is now validated/staged/verified; added the same release treatment for `/support/`.
+- Production money remains disabled and production risk remains fail-closed.
+
+### Rollback
+- Pre-Phase-28 commit: `99d75d268ddaf9111998b4ca84765fc2c2d46254`
+- Rollback branch: `rollback/phase28-pre-support-incident-2026-09-19`
+
+## Phase 27 — Staff Operations, Manual Review & RBAC — 2026-09-19
+
+- Added server-managed staff roles: `support_ops`, `risk_ops`, and `admin`.
+- Staff authorization uses `auth.app_metadata.thisweek_role`, active-session verification, and mandatory AAL2.
+- Added append-only staff action audit and operational alerts.
+- Added staff case assignment/resolution, alert acknowledgment, manual risk review decisions, and guarded user controls.
+- Added Ops Console source at `/ops/`; Phase 28 corrected the Pages artifact so this surface is now actually deployed.
+- No browser role-assignment or escalation control exists.
+- Production money remains disabled.
+
+
 ## Phase 26 — Returns, Negative Balances & Dispute Operations — 2026-09-19
 
 ### Operational lifecycle
