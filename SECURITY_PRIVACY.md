@@ -816,3 +816,52 @@ Realtime card authorizations evaluate risk before any envelope hold is posted.
 Unit/program/sponsor-bank, Method, Pinwheel, Plaid, ACH-network, and card-network controls remain authoritative and may impose stricter limits or declines.
 
 This Week's application policy is an additional control layer, not a substitute for provider/compliance controls.
+
+
+## 26. Return, negative-balance, and dispute operations
+
+Real financial events may reverse after an apparently successful transaction. Phase 26 treats returns and disputes as explicit lifecycle state.
+
+### Append-only corrections
+
+A returned ACH or card credit never rewrites a prior journal.
+
+The server posts a new compensating journal with a unique provider-event idempotency key.
+
+Before reversing a Unit ACH cash credit, the server verifies that a matching prior `unit_ach_credit_settlement` journal exists for that Unit payment. If it cannot prove the credit exists, it opens/updates the operational case without inventing a reversal.
+
+### Negative balances
+
+A negative cash or provider balance can restrict further guarded money actions.
+
+The restriction logic may not:
+
+- downgrade a `frozen` user;
+- downgrade a `closed` user;
+- replace an unrelated restricted reason.
+
+Only a balance-related restriction can be automatically released, and only when the corresponding balance source is observed recovered.
+
+### Operational cases
+
+`tw_ops_cases` is mutable lifecycle state.
+
+`tw_ops_case_events` is append-only evidence.
+
+Both are server-only with RLS and revoked browser-role grants.
+
+Provider payloads continue to be reduced to bounded safe details; full signed webhook payloads are not stored as an operations shortcut.
+
+### Disputes and refunds
+
+Signed Unit dispute webhooks create/update cases.
+
+A provider credit is posted to a category envelope only when the server can resolve the Unit card to an active This Week envelope. Otherwise the event becomes `action_required` and no allocation is guessed.
+
+Sandbox dispute mutation endpoints are available only when money execution is explicitly Sandbox and Unit credentials are configured.
+
+### Production boundary
+
+Phase 26 does not activate live money, a production dispute program, or customer-facing dispute submission.
+
+Those require provider/program procedures, support operations, role-based staff tooling, monitoring and approved production risk policies.
