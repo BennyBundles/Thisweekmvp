@@ -20,7 +20,7 @@ The Phase 34 migration adds:
 - a generated release-candidate readiness report;
 - evidence enforcement inside the existing Phase 31 gate setter.
 
-Direct browser table access is revoked. The release console reaches the data only through an authenticated Edge Function using service-role RPC/table access.
+Direct browser table access is revoked. Explicit RLS policies are scoped only to `service_role`; `anon` and `authenticated` receive no table policy or grant. The release console reaches the data only through an authenticated Edge Function using service-role RPC/table access.
 
 ## Sandbox certification checklist
 
