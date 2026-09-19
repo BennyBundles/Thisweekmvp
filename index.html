@@ -5897,7 +5897,7 @@ function obligationTimeline(p){
 }
 function route(){ return (location.hash.replace('#','')||'home').split('?')[0]; }
 function nav(routeName){
-  const detailRoutes=['insights','reset','bills','essentials','lifestyle','savings','history','scenario','connections','future','qa','performance','data-model','privacy','analytics'];
+  const detailRoutes=['insights','reset','bills','essentials','lifestyle','savings','history','scenario','connections','money','direct-deposit','bill-pay','cards','future','qa','performance','data-model','privacy','analytics'];
   const activeRoute=detailRoutes.includes(routeName)?'details':routeName==='setup'||routeName==='preferences'?'plan':routeName==='precheck'?'log':routeName;
   document.body.dataset.route=activeRoute;
   const index={home:0,log:1,details:2,plan:3}[activeRoute]??0;
@@ -5932,7 +5932,7 @@ function emptyState(title,message='',actionHtml=''){return systemState('empty',t
 function loadingState(title='Loading…',message='Preparing this view.'){return '<div class="state-page-wrap">'+systemState('loading',title,message,'','page')+'</div>';}
 function pageState(kind,title,message='',actionHtml=''){return '<div class="state-page-wrap">'+systemState(kind,title,message,actionHtml,'page')+'</div>';}
 function routeDisplayName(r){
-  return ({home:'Home',log:'Add Spending',details:'Details',insights:'Advanced Insights',bills:'Bills Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex',savings:'Savings Goal Studio',precheck:'Can I Spend This?',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data',preferences:'Presentation',qa:'Device QA',performance:'Performance','data-model':'Data Model',privacy:'Privacy',analytics:'Usage Insights',future:'System Architecture',reset:'New Week',setup:'Plan'})[r]||'This Week';
+  return ({home:'Home',log:'Add Spending',details:'Details',insights:'Advanced Insights',bills:'Bills Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex',savings:'Savings Goal Studio',precheck:'Can I Spend This?',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data',money:'Money Center','direct-deposit':'Direct Deposit','bill-pay':'Bill Pay',cards:'Category Cards',preferences:'Presentation',qa:'Device QA',performance:'Performance','data-model':'Data Model',privacy:'Privacy',analytics:'Usage Insights',future:'System Architecture',reset:'New Week',setup:'Plan'})[r]||'This Week';
 }
 function errBox(msg){ return msg?inlineState('error','Needs attention',msg):''; }
 
@@ -6274,7 +6274,7 @@ function detailBudgetStats(p){
 const UI_PREFS_KEY='thisweek.uiPrefs.v1';
 const POWER_PREFS_KEY='thisweek.powerPrefs.v1';
 const SAVINGS_GOALS_KEY='thisweek.savingsGoals.v1';
-const POWER_DETAILS_DEFAULT_ORDER=Object.freeze(['current','planning','data','settings']);
+const POWER_DETAILS_DEFAULT_ORDER=Object.freeze(['current','money','planning','data','settings']);
 const POWER_ROUTE_OPTIONS=Object.freeze([
   {route:'log',label:'Add Spending',kicker:'Transaction'},
   {route:'precheck',label:'Can I Spend This?',kicker:'Decision'},
@@ -6285,6 +6285,10 @@ const POWER_ROUTE_OPTIONS=Object.freeze([
   {route:'scenario',label:'Scenario Sandbox',kicker:'What-if'},
   {route:'history',label:'Weekly Memory',kicker:'History'},
   {route:'connections',label:'Connected Data',kicker:'Data'},
+  {route:'money',label:'Money Center',kicker:'Money'},
+  {route:'direct-deposit',label:'Direct Deposit',kicker:'Payroll'},
+  {route:'bill-pay',label:'Bill Pay',kicker:'Payments'},
+  {route:'cards',label:'Category Cards',kicker:'Cards'},
   {route:'insights',label:'Advanced Insights',kicker:'Analysis'},
   {route:'privacy',label:'Privacy & Local Data',kicker:'Trust'}
 ]);
@@ -6902,6 +6906,31 @@ const LIVE_PROVIDER_CONFIG=Object.freeze({
   tokenStorage:'server_vault_only',
   networkPolicy:'deny_until_auth_and_provider'
 });
+const LIVE_MONEY_CONFIG=Object.freeze({
+  version:1,
+  state:'backend_foundation_deployed',
+  enabled:false,
+  projectRef:'xjtvawmppzwzrooairyx',
+  backendOrigin:'https://xjtvawmppzwzrooairyx.supabase.co',
+  gatewayFunction:'thisweek-money-gateway',
+  executionMode:'disabled',
+  authMode:'recoverable_user_required',
+  ledgerMode:'server_double_entry',
+  providers:Object.freeze({bankLink:'plaid_credentials_required',banking:'unit_credentials_required',payroll:'pinwheel_credentials_required',billPay:'method_credentials_required'}),
+  rewardMode:'sandbox_template_inactive',
+  networkPolicy:'deny_until_sandbox_auth_and_credentials'
+});
+function liveMoneyReadiness(){
+  const c=LIVE_MONEY_CONFIG;
+  return {ready:false,checks:[
+    {label:'Money ledger',ready:c.ledgerMode==='server_double_entry',detail:'20 server-side money tables and append-only double-entry journals are deployed.'},
+    {label:'Authenticated gateway',ready:!!c.gatewayFunction,detail:'thisweek-money-gateway is deployed with JWT verification.'},
+    {label:'Recoverable identity',ready:c.authMode==='recoverable_user_active',detail:'Real money requires a recoverable signed-in user and stronger authentication for sensitive actions.'},
+    {label:'Provider sandboxes',ready:c.executionMode==='sandbox',detail:'Unit, Pinwheel, Method and Plaid credentials must be configured server-side before sandbox execution is unlocked.'},
+    {label:'Browser network',ready:c.enabled===true,detail:'The production CSP remains deny-by-default until sandbox security testing passes.'}
+  ]};
+}
+
 function liveProviderReadiness(){
   const cfg=LIVE_PROVIDER_CONFIG;
   const checks=[
@@ -8006,6 +8035,15 @@ async function renderDetails(){
         ].join('')
       },
       {
+        id:'money',eyebrow:'Money layer',title:'Move and control real money',copy:'Bank accounts, payroll, bill payment, rewards, and category cards live here without crowding Home.',
+        html:[
+          tool('money','Money','Money Center','See the server ledger, account layer, provider readiness, and safety boundaries.','Foundation','#67e8f9',semanticIcon('link')),
+          tool('direct-deposit','Payroll','Direct Deposit','Switch all or part of a paycheck into a future This Week deposit account.','Payroll','#6ee7b7',semanticIcon('goal')),
+          tool('bill-pay','Payments','Bill Pay','Authorize and route liability payments without treating a planned bill as already paid.','Payments','#60a5fa',semanticIcon('purchase')),
+          tool('cards','Cards','Category Cards','Issue category- or bill-scoped virtual cards after the banking program is approved.','Cards','#f6d784',semanticIcon('shopping'))
+        ].join('')
+      },
+      {
         id:'planning',eyebrow:'Planning tools',title:'Decide before you act',copy:'Use simulations and focused studios when a decision needs more than a glance.',
         html:[
           tool('precheck','Purchase pre-check','Can I Spend This?','Preview a purchase without recording it.','Simulate','#67e8f9',semanticIcon('shopping')),
@@ -8466,6 +8504,30 @@ async function renderLifestyleStudio(){
     document.querySelectorAll('.precheck-flex').forEach(btn=>btn.onclick=()=>{setPrecheckHint(btn.dataset.id);location.hash='precheck';});
     document.querySelectorAll('.flex-cap-select').forEach(sel=>sel.onchange=()=>{const next=readFlexCaps();next[sel.dataset.id]=Number(sel.value);writeFlexCaps(next);successToast('Soft cap updated.');renderLifestyleStudio();});
   }catch(e){root.innerHTML=pageState('error','Unable to open this view',e.message);}
+}
+
+function moneyGateRows(){
+  return liveMoneyReadiness().checks.map((x,i)=>'<div class="provider-gate-row"><span class="provider-gate-icon">'+(i+1)+'</span><span class="provider-gate-copy"><strong>'+escapeHtml(x.label)+'</strong><span>'+escapeHtml(x.detail)+'</span></span><span class="provider-gate-state">'+(x.ready?'Ready':'Required')+'</span></div>').join('');
+}
+async function renderMoneyCenter(){
+  shellMeta('Money','Money Center','Real-money infrastructure underneath the weekly planning layer','<a class="text-action" href="#details">Back</a>');nav('money');
+  root.innerHTML='<div class="studio-stack">'+
+    '<section class="provider-readiness"><div class="provider-readiness-head"><div><small>Phase 20 · money foundation</small><h3>The server money layer is deployed. Live money movement is still locked.</h3></div><span class="provider-gate-badge">Ledger ready · execution off</span></div><p class="provider-readiness-copy">This Week now has a server-side double-entry ledger, account/envelope model, transfer state machine, payroll-switch records, rewards controls, bill payments, virtual cards and provider-event infrastructure. None of these records redefine the browser-local weekly Plan.</p><div class="provider-readiness-grid">'+moneyGateRows()+'</div></section>'+
+    '<section class="section"><div class="section-head"><div><small>Two-layer model</small><h3>Planning stays separate from custody.</h3></div></div><div class="trust-grid"><div class="trust-card"><small>Planning plane</small><strong>Available Now</strong><span>Still calculated from the weekly Plan. It is not a bank balance.</span></div><div class="trust-card"><small>Money plane</small><strong>This Week Cash</strong><span>Will represent actual server/provider-backed funds only after banking activation.</span></div><div class="trust-card"><small>Ledger</small><strong>Append-only</strong><span>Posted history is corrected with reversing entries rather than silent edits.</span></div><div class="trust-card"><small>Controls</small><strong>Envelope-first</strong><span>Bills, Essentials, Lifestyle and Savings can become enforceable money controls without changing the Plan.</span></div></div></section>'+
+    '<section class="section"><div class="section-head"><div><small>Money tools</small><h3>Next executable surfaces</h3></div></div><div class="system-tool-grid"><a class="system-tool" href="#direct-deposit"><span class="system-tool-copy"><small>Payroll</small><strong>Direct Deposit</strong><span>Unit account target + Pinwheel Deposit Switch.</span></span><span class="system-tool-arrow">›</span></a><a class="system-tool" href="#bill-pay"><span class="system-tool-copy"><small>Payments</small><strong>Bill Pay</strong><span>Method liability payment with explicit user authorization.</span></span><span class="system-tool-arrow">›</span></a><a class="system-tool" href="#cards"><span class="system-tool-copy"><small>Cards</small><strong>Category Cards</strong><span>Unit virtual debit cards bound to a This Week envelope.</span></span><span class="system-tool-arrow">›</span></a><a class="system-tool" href="#connections"><span class="system-tool-copy"><small>Bank link</small><strong>Connected Data</strong><span>Plaid remains the verified external-bank connection plane.</span></span><span class="system-tool-arrow">›</span></a></div></section>'+
+  '</div>';
+}
+async function renderDirectDeposit(){
+  shellMeta('Payroll','Direct Deposit','Route a paycheck into a future This Week Cash account','<a class="text-action" href="#money">Money</a>');nav('direct-deposit');
+  root.innerHTML='<div class="studio-stack"><section class="hero-card"><span class="studio-kicker">Unit + Pinwheel</span><h2 class="hero-title">Switch pay without turning a request into a promise.</h2><p class="hero-subtitle">The backend can create a Pinwheel Deposit Switch token from server-retrieved Unit routing/account details once sandbox credentials and an approved deposit account exist.</p></section><section class="section"><div class="provider-flow" data-flow="Account → Switch → Payroll → Posted Deposit → Reward Review"><div class="provider-flow-step"><small>1</small><strong>Cash account</strong></div><div class="provider-flow-step"><small>2</small><strong>Switch</strong></div><div class="provider-flow-step"><small>3</small><strong>Payroll</strong></div><div class="provider-flow-step"><small>4</small><strong>Deposit</strong></div><div class="provider-flow-step"><small>5</small><strong>Reward review</strong></div></div></section><section class="section"><div class="trust-grid"><div class="trust-card"><small>Switch provider</small><strong>Pinwheel</strong><span>Deposit Switch with direct_deposit_switch.</span></div><div class="trust-card"><small>Target account</small><strong>Unit</strong><span>Full routing/account details stay server/provider-side.</span></div><div class="trust-card"><small>Reward</small><strong>Inactive sandbox template</strong><span>$25 / $500 test qualification exists only as a disabled template, not a public offer.</span></div><div class="trust-card"><small>Release gate</small><strong>Credentials required</strong><span>Provider execution remains disabled.</span></div></div></section><section class="section"><button class="btn btn-primary" type="button" disabled>Start Direct Deposit Switch</button><span class="data-badge">Sandbox credentials + secure Auth required</span></section></div>';
+}
+async function renderBillPay(){
+  shellMeta('Payments','Bill Pay','Authorize, schedule, and reconcile a real bill payment','<a class="text-action" href="#money">Money</a>');nav('bill-pay');
+  root.innerHTML='<div class="studio-stack"><section class="hero-card"><span class="studio-kicker">Method payment rail</span><h2 class="hero-title">A bill is not paid until the payment rail says it is.</h2><p class="hero-subtitle">The money gateway stores explicit payment authorization, an idempotent payment intent, provider state, failures/returns, and final settlement separately from Bill Protection.</p></section><section class="section"><div class="provider-flow" data-flow="Protected Plan → User Authorization → Provider → Processing → Paid"><div class="provider-flow-step"><small>1</small><strong>Plan</strong></div><div class="provider-flow-step"><small>2</small><strong>Authorize</strong></div><div class="provider-flow-step"><small>3</small><strong>Submit</strong></div><div class="provider-flow-step"><small>4</small><strong>Process</strong></div><div class="provider-flow-step"><small>5</small><strong>Settle</strong></div></div></section><section class="section"><div class="trust-grid"><div class="trust-card"><small>Primary liability rail</small><strong>Method</strong><span>Designed for payments from a verified source bank account to supported liabilities.</span></div><div class="trust-card"><small>Authorization</small><strong>Explicit</strong><span>Every submitted payment requires stored consent and a unique idempotency key.</span></div><div class="trust-card"><small>Returns</small><strong>First-class state</strong><span>Failed, returned, cancelled and reversed are separate states.</span></div><div class="trust-card"><small>Plan boundary</small><strong>Protected ≠ paid</strong><span>Bill Protection remains planning status until money settles.</span></div></div></section><section class="section"><button class="btn btn-primary" type="button" disabled>Pay a Bill</button><span class="data-badge">Method sandbox + verified funding account required</span></section></div>';
+}
+async function renderCategoryCards(){
+  shellMeta('Cards','Category Cards','Spend from the category you meant to use','<a class="text-action" href="#money">Money</a>');nav('cards');
+  root.innerHTML='<div class="studio-stack"><section class="hero-card"><span class="studio-kicker">Unit virtual debit cards</span><h2 class="hero-title">Make the envelope enforceable at purchase time.</h2><p class="hero-subtitle">The backend can issue category- or bill-bound virtual cards after the banking customer/account is approved. PAN/CVV are never stored in the This Week database.</p></section><section class="section"><div class="trust-grid"><div class="trust-card"><small>Bills</small><strong>Bills Card</strong><span>Future authorizations reserve from the Bills envelope before settlement.</span></div><div class="trust-card"><small>Essentials</small><strong>Essentials Card</strong><span>Designed for category-controlled daily spending.</span></div><div class="trust-card"><small>Lifestyle</small><strong>Lifestyle Card</strong><span>Flexible spending can stop when its envelope is exhausted.</span></div><div class="trust-card"><small>One-time cards</small><strong>Controller required</strong><span>Single-use and merchant-locked modes stay disabled until realtime authorization webhooks are deployed.</span></div></div></section><section class="section"><div class="provider-boundary-note"><strong>Card holds are accounting events.</strong> Authorization, settlement, reversal, tip adjustment and refund each produce separate ledger events.</div></section><section class="section"><button class="btn btn-primary" type="button" disabled>Create Category Card</button><span class="data-badge">Unit sandbox + account approval required</span></section></div>';
 }
 
 async function renderConnections(){
@@ -9176,7 +9238,7 @@ let historyTraversalPending=false;
 try{history.scrollRestoration='manual';}catch{}
 
 function routeAccessibleName(routeName){
-  return ({home:'Home',log:'Add Spending',details:'Details',insights:'Advanced Insights',bills:'Bill Protection Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex Studio',savings:'Savings Goal Studio',precheck:'Purchase Pre-check',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data Center',preferences:'Presentation and Accessibility',future:'System Architecture',qa:'Device QA',performance:'Performance and Resilience','data-model':'Data Model and Export',privacy:'Privacy and Local Data',analytics:'Local Usage Insights',reset:'New Week',setup:'Plan'})[routeName]||'Home';
+  return ({home:'Home',log:'Add Spending',details:'Details',insights:'Advanced Insights',bills:'Bill Protection Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex Studio',savings:'Savings Goal Studio',precheck:'Purchase Pre-check',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data Center',money:'Money Center','direct-deposit':'Direct Deposit','bill-pay':'Bill Pay',cards:'Category Cards',preferences:'Presentation and Accessibility',future:'System Architecture',qa:'Device QA',performance:'Performance and Resilience','data-model':'Data Model and Export',privacy:'Privacy and Local Data',analytics:'Local Usage Insights',reset:'New Week',setup:'Plan'})[routeName]||'Home';
 }
 function announceRoute(routeName,focusMain=true){
   const announcer=document.getElementById('routeAnnouncer'),main=document.getElementById('app');
@@ -9208,6 +9270,10 @@ async function render(){
   else if(r==='history')await renderHistory();
   else if(r==='scenario')await renderScenario();
   else if(r==='connections')await renderConnections();
+  else if(r==='money')await renderMoneyCenter();
+  else if(r==='direct-deposit')await renderDirectDeposit();
+  else if(r==='bill-pay')await renderBillPay();
+  else if(r==='cards')await renderCategoryCards();
   else if(r==='preferences')await renderPreferences();
   else if(r==='qa')await renderDeviceQA();
   else if(r==='performance')await renderPerformance();
