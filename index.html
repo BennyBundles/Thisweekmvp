@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-2bGHUpstRNOxy1dT7FKMEIbY27tGDqZL2CpM+QbkwQ8=' 'sha256-9DkisqumG3bDi9OvlAykwb/GbApk/tU1uDnigfGv8xI='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'none'; media-src 'self' data: blob:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; child-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests"><meta name="theme-color" content="#081221"><title>This Week</title><style>:root {
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-2bGHUpstRNOxy1dT7FKMEIbY27tGDqZL2CpM+QbkwQ8=' 'sha256-Jpm8VyQzWX8d080HyH3qtPnjBd+3ZQyJGglwmBRG/B4='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'none'; media-src 'self' data: blob:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; child-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests"><meta name="theme-color" content="#081221"><title>This Week</title><style>:root {
   --bg: #07111f;
   --bg-alt: #0b1730;
   --panel: rgba(11, 25, 48, 0.82);
@@ -4739,7 +4739,25 @@ body[data-performance="lite"] .fin-event-token:nth-child(n+3){display:none!impor
 @media(max-width:430px){.trust-grid{grid-template-columns:1fr}.source-row{grid-template-columns:78px minmax(0,1fr)}}
 @media(max-width:330px){.source-row,.privacy-key{grid-template-columns:1fr}.privacy-key code{white-space:normal}}
 
-</style></head><body><a class="skip-link" href="#app">Skip to main content</a><div class="sr-only" id="routeAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app" tabindex="-1">
+
+/* PHASE 14 — INACTIVE VIEW PRIVACY CURTAIN */
+.privacy-curtain{
+  position:fixed;inset:0;z-index:5000;display:none;place-items:center;
+  padding:24px;background:
+    radial-gradient(circle at 50% 34%,rgba(103,232,249,.08),transparent 28%),
+    linear-gradient(180deg,#06101d,#081321 62%,#07101c);
+  color:#dcecf1;text-align:center
+}
+body[data-privacy-curtain="on"] .privacy-curtain{display:grid}
+.privacy-curtain-mark{
+  width:54px;height:54px;margin:0 auto 12px;border-radius:18px;display:grid;place-items:center;
+  border:1px solid rgba(103,232,249,.13);background:rgba(103,232,249,.035);
+  font-size:1rem;font-weight:950;letter-spacing:-.05em
+}
+.privacy-curtain strong{display:block;font-size:.86rem}
+.privacy-curtain span{display:block;margin-top:5px;color:#76919c;font-size:.52rem;line-height:1.4}
+
+</style></head><body><a class="skip-link" href="#app">Skip to main content</a><div class="sr-only" id="routeAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div><div class="privacy-curtain" id="privacyCurtain" aria-hidden="true"><div><div class="privacy-curtain-mark">TW</div><strong>Financial view hidden</strong><span>This Week masks the page while it is inactive. This is a best-effort browser privacy layer, not a guarantee about operating-system snapshots.</span></div></div><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app" tabindex="-1">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="zen-home">
       <div class="zen-topline"><span class="zen-week">Current budgeting week</span></div>
@@ -6087,6 +6105,7 @@ function runPhase14TrustAudit(){
     {name:'Control-character sanitization',pass:!sanitized.includes('\u0000')&&!sanitized.includes('\u202E'),detail:'Unsafe control and bidirectional override characters are removed from imported text.'},
     {name:'Imported text rendering',pass:!escaped.includes('<img')&&escaped.includes('&lt;img'),detail:'Imported text is escaped for HTML display rather than executed.'},
     {name:'Provider credential boundary',pass:PROVIDER_ADAPTER_CONTRACT.secretPolicy.includes('must never be stored')&&BACKEND_SYNC_CONTRACT.providerSecrets.storage==='server_only',detail:'Provider tokens/secrets are explicitly outside the browser-local data contract.'},
+    {name:'Inactive-view privacy curtain',pass:!!document.getElementById('privacyCurtain')&&typeof bindPrivacyCurtain==='function',detail:'The financial view is masked when the document becomes inactive; operating-system snapshot behavior can still vary.'},
     {name:'Portable restore boundary',pass:typeof deserializePortableData==='function'&&typeof downloadPortableDataExport==='function',detail:'Portable data can be validated/exported but is not automatically applied back into live state.'},
     {name:'High-impact confirmation path',pass:typeof confirmHighImpactMutation==='function',detail:'Destructive/reversal paths use an explicit confirmation helper.'}
   ];
@@ -7789,6 +7808,7 @@ function renderPrivacy(){
           <div class="trust-card"><small>Imports</small><strong>Text-only local parsing</strong><span>Files are capped at 5 MB and 10,000 data rows. Imported strings are normalized, control characters are removed, lengths are capped, and UI output is escaped.</span></div>
           <div class="trust-card"><small>Retention</small><strong>Local until you clear or delete it</strong><span>Core plan/history remains in browser storage until changed or deleted. Connected Data limits audit history to the most recent 120 actions and import batches to the most recent 40.</span></div>
           <div class="trust-card"><small>At-rest protection</small><strong>No app-level storage encryption</strong><span>This Week does not encrypt localStorage itself. Anyone with access to this browser profile or an unlocked device may be able to access the stored app data.</span></div>
+          <div class="trust-card"><small>Inactive view</small><strong>Financial screen masks when hidden</strong><span>A best-effort privacy curtain covers the app when the browser marks the page inactive. It cannot guarantee how every operating system captures app-switcher previews.</span></div>
           <div class="trust-card"><small>Execution</small><strong>Imported text is not code</strong><span>Merchant names, file names, notes, and audit descriptions are treated as text. Import processing does not evaluate scripts or HTML from transaction files.</span></div>
         </div>
       </section>
@@ -8237,6 +8257,17 @@ function runDeviceQa(){
 function qaSummary(results){
   return {pass:results.filter(x=>x.status==='pass').length,warn:results.filter(x=>x.status==='warn').length,fail:results.filter(x=>x.status==='fail').length};
 }
+function setPrivacyCurtain(hidden){
+  document.body.dataset.privacyCurtain=hidden?'on':'off';
+}
+function bindPrivacyCurtain(){
+  if(window.__thisWeekPrivacyCurtainBound)return;
+  window.__thisWeekPrivacyCurtainBound=true;
+  document.addEventListener('visibilitychange',()=>setPrivacyCurtain(document.hidden),{passive:true});
+  window.addEventListener('pagehide',()=>setPrivacyCurtain(true),{passive:true});
+  window.addEventListener('pageshow',()=>setPrivacyCurtain(false),{passive:true});
+  setPrivacyCurtain(document.hidden);
+}
 let lastRenderedRoute=null;
 const routeScrollPositions=new Map();
 let historyTraversalPending=false;
@@ -8255,7 +8286,7 @@ async function render(){
   closeAppSheet({restore:false});
   if(zenDisclosureVisibilityCleanup){zenDisclosureVisibilityCleanup();zenDisclosureVisibilityCleanup=null;}
   if(sceneMotionObserver){try{sceneMotionObserver.disconnect();}catch{}sceneMotionObserver=null;}
-  applyUiPrefs();applyRuntimePerformanceTier();bindSystemPreferenceListeners();bindMobileViewportController();bindLongTaskObserver();
+  applyUiPrefs();applyRuntimePerformanceTier();bindSystemPreferenceListeners();bindMobileViewportController();bindLongTaskObserver();bindPrivacyCurtain();
   const r=route(),routeChanged=lastRenderedRoute!==null&&lastRenderedRoute!==r;
   const restoreScroll=historyTraversalPending?(routeScrollPositions.get(r)||0):0;
   if(r==='log')await renderLog();
