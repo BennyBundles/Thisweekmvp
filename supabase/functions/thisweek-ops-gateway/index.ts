@@ -92,7 +92,7 @@ function buildHealth(
 }
 async function dashboard(admin:ReturnType<typeof createClient>){
   const failureSince=new Date(Date.now()-15*60*1000).toISOString();
-  const [alerts,cases,reviews,riskEvents,staffActions,supportRequests,supportMessages,incidents,slaPolicy,providerFailures,healthSnapshots,monitorRuns,notifications,notificationChannel]=await Promise.all([
+  const [alerts,cases,reviews,riskEvents,staffActions,supportRequests,supportMessages,incidents,slaPolicy,providerFailures,healthSnapshots,monitorRuns,notifications,notificationChannel,releaseStatus]=await Promise.all([
     admin.from("tw_ops_alerts")
       .select("id,user_id,case_id,risk_review_id,alert_type,severity,state,safe_detail,created_at,updated_at,acknowledged_at")
       .neq("state","resolved").order("created_at",{ascending:false}).limit(100),
@@ -135,8 +135,9 @@ async function dashboard(admin:ReturnType<typeof createClient>){
     admin.from("tw_ops_notification_channel_status")
       .select("channel_key,configured,state,last_check_at,last_success_at,last_error_code,updated_at")
       .eq("channel_key","external_webhook").maybeSingle(),
+    admin.rpc("tw_release_status"),
   ]);
-  if(alerts.error||cases.error||reviews.error||riskEvents.error||staffActions.error||supportRequests.error||supportMessages.error||incidents.error||slaPolicy.error||providerFailures.error||healthSnapshots.error||monitorRuns.error||notifications.error||notificationChannel.error)throw new Error("ops_dashboard_read_failed");
+  if(alerts.error||cases.error||reviews.error||riskEvents.error||staffActions.error||supportRequests.error||supportMessages.error||incidents.error||slaPolicy.error||providerFailures.error||healthSnapshots.error||monitorRuns.error||notifications.error||notificationChannel.error||releaseStatus.error)throw new Error("ops_dashboard_read_failed");
   const eventById=new Map((riskEvents.data||[]).map((e:AnyRecord)=>[String(e.id),e]));
   const supportRows=supportRequests.data||[];
   const supportIds=new Set(supportRows.map((x:AnyRecord)=>String(x.id)));
@@ -170,6 +171,7 @@ async function dashboard(admin:ReturnType<typeof createClient>){
     incidents:incidentRows,
     health,
     automatedMonitor,
+    releaseStatus:releaseStatus.data||null,
     recentProviderFailures:providerFailures.data||[],
     recentStaffActions:staffActions.data||[],
   };
@@ -233,12 +235,35 @@ Deno.serve(async(req)=>{
           heartbeatAgeMinutes:data.automatedMonitor?.heartbeatAgeMinutes??null,
           externalChannelConfigured:data.automatedMonitor?.externalChannelConfigured===true,
           notificationChannel:data.automatedMonitor?.notificationChannel||null
-        }
+        },
+        releaseStatus:data.releaseStatus||null
       });
     }
     if(action==="dashboard"){
       const data=await dashboard(admin);
       return json(origin,200,{ok:true,staff:{userId:String(user.id),email:safeText(user.email,320)||null,role},...data});
+    }
+    if(action==="set_release_gate"){
+      if(role!=="admin")return json(origin,403,{error:"admin_role_required"});
+      const gateKey=safeText(body.gateKey,120);
+      const evidenceRef=safeText(body.evidenceRef,500);
+      const note=safeText(body.note,1000);
+      if(!gateKey||typeof body.verified!=="boolean"||evidenceRef.length<3)throw new Error("release_gate_fields_required");
+      const {data,error}=await admin.rpc("tw_release_set_gate",{
+        p_staff_user_id:String(user.id),
+        p_gate_key:gateKey,
+        p_verified:body.verified,
+        p_evidence_ref:evidenceRef,
+        p_note:note||null
+      });
+      if(error)throw new Error(safeText(error.message,120)||"release_gate_update_failed");
+      await admin.from("tw_ops_staff_actions").insert({
+        staff_user_id:String(user.id),staff_role:role,action:"release_gate_update",
+        target_type:"release_gate",target_ref:gateKey,
+        reason_code:body.verified?"verified":"revoked",
+        safe_detail:{evidenceRef,note:note||null}
+      });
+      return json(origin,200,{ok:true,result:data,releaseStatus:(await admin.rpc("tw_release_status")).data||null});
     }
     if(action==="run_monitor"){
       if(!RISK_ROLES.has(role))return json(origin,403,{error:"risk_role_required"});
