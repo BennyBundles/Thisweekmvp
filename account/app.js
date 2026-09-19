@@ -107,7 +107,25 @@ async function signUp(){assertCooldown('signup',60000,'Account creation');const 
 async function forgot(){assertCooldown('recover',60000,'Password recovery');const email=$('email').value.trim();if(!email)throw new Error('Enter your email first.');try{await api('/auth/v1/recover?redirect_to='+encodeURIComponent(RECOVERY_REDIRECT),{method:'POST',body:JSON.stringify({email,...captchaMeta()})});setResult('authResult','If that account exists, a password-recovery email has been sent.','good');}finally{resetCaptcha();}}
 async function updatePassword(){const password=$('newPassword').value;if(password.length<12)throw new Error('Use at least 12 characters for the new password.');await ensureFresh();await api('/auth/v1/user',{method:'PUT',auth:true,body:JSON.stringify({password})});$('newPassword').value='';recoveryMode=false;history.replaceState(null,'',location.pathname);updateUi();setResult('recoveryResult','Password updated.','good');}
 async function enroll(){await ensureFresh();const body=await api('/auth/v1/factors',{method:'POST',auth:true,body:JSON.stringify({factor_type:'totp',friendly_name:'This Week'})});lastEnroll=body;if(body.totp?.qr_code){$('qr').src=body.totp.qr_code.startsWith('data:')?body.totp.qr_code:'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(body.totp.qr_code);$('qr').style.display='block';}$('secret').textContent=body.totp?.secret?'Manual setup secret: '+body.totp.secret:'';$('secret').style.display=body.totp?.secret?'block':'none';await getUser();setResult('mfaResult','Authenticator enrolled. Enter the current code to verify it.','warn');}
-async function verifyMfa(){await ensureFresh();const code=$('totpCode').value.trim();const factor=(user?.factors||[]).find(x=>x.status==='unverified')||lastEnroll;if(!factor||!/^[0-9]{6,8}$/.test(code))throw new Error('Enter the current authenticator code.');const challenge=await api('/auth/v1/factors/'+encodeURIComponent(factor.id)+'/challenge',{method:'POST',auth:true,body:'{}'});const verified=await api('/auth/v1/factors/'+encodeURIComponent(factor.id)+'/verify',{method:'POST',auth:true,body:JSON.stringify({challenge_id:challenge.id,code})});if(verified.access_token)writeSession(verified);$('totpCode').value='';lastEnroll=null;await getUser();await accountStatus();setResult('mfaResult','Authenticator verified.','good');}
+async function verifyMfa(){
+  await ensureFresh();
+  const code=$('totpCode').value.trim();
+  if(!/^[0-9]{6,8}$/.test(code))throw new Error('Enter the current 6-digit authenticator code.');
+  const factors=Array.isArray(user?.factors)?user.factors:[];
+  const factor=
+    factors.find(x=>x.factor_type==='totp'&&x.status==='unverified')||
+    lastEnroll||
+    factors.find(x=>x.factor_type==='totp'&&x.status==='verified');
+  if(!factor)throw new Error('No authenticator factor is available. Enroll one first.');
+  const challenge=await api('/auth/v1/factors/'+encodeURIComponent(factor.id)+'/challenge',{method:'POST',auth:true,body:'{}'});
+  const verified=await api('/auth/v1/factors/'+encodeURIComponent(factor.id)+'/verify',{method:'POST',auth:true,body:JSON.stringify({challenge_id:challenge.id,code})});
+  if(verified.access_token)writeSession(verified);
+  $('totpCode').value='';
+  lastEnroll=null;
+  await getUser();
+  await accountStatus();
+  setResult('mfaResult','Authenticator verified. This session is now eligible for AAL2-protected actions.','good');
+}
 async function unenroll(id){await ensureFresh();await api('/auth/v1/factors/'+encodeURIComponent(id),{method:'DELETE',auth:true});lastEnroll=null;await getUser();setResult('mfaResult','Authenticator factor removed.','warn');}
 async function accountGateway(action,extra={}){await ensureFresh();const res=await fetch(SUPABASE_URL+'/functions/v1/thisweek-account-gateway',{method:'POST',headers:{apikey:PUBLISHABLE_KEY,Authorization:'Bearer '+session.access_token,'Content-Type':'application/json'},body:JSON.stringify({action,...extra})});const text=await res.text();let body={};try{body=JSON.parse(text);}catch{}if(!res.ok){const e=new Error(body.error||('Account gateway HTTP '+res.status));e.body=body;throw e;}return body;}
 
