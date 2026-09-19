@@ -67,7 +67,7 @@ The signed Unit webhook now also processes:
 
 Card authorization/reversal/settlement behavior from Phase 21 remains in force.
 
-Actual provider webhooks must still be registered with the Unit Sandbox program before event-driven state can complete.
+Provider webhook registration is implemented as an idempotent Sandbox action that lists existing registrations and creates only missing subscriptions. It still requires valid provider Sandbox credentials and signing secrets.
 
 ## Pinwheel Deposit Switch
 
@@ -127,6 +127,21 @@ The webhook-registration action lists/reuses existing registrations before creat
 Unit's webhook token and Method's webhook auth/HMAC secrets are read from server environment only and are never returned to the Lab.
 
 The Lab loads Pinwheel Web SDK v4 from the official Pinwheel CDN. Its CSP still restricts application API traffic to the exact Supabase project origin; only Pinwheel script/frame origins are additionally allowed for the Link modal.
+
+## Provider credential preflight
+
+The authenticated money gateway exposes `provider_preflight`.
+
+It never bypasses the execution lock. When execution mode is not `sandbox`, it reports only configuration/lock state.
+
+When execution mode is `sandbox`, it performs read-only credential checks against current provider APIs:
+
+- Plaid: `/institutions/get`
+- Unit: list `/applications`
+- Pinwheel: `GET /v1/platforms?limit=1`
+- Method: list `/entities`
+
+The Lab renders: missing credential, configured/execution locked, credential valid, or credential rejected. Secret values are never returned.
 
 ## Execution gates
 
