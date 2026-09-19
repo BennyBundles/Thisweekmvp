@@ -595,3 +595,58 @@ Before real money is enabled:
 13. security and release review.
 
 No live money currently moves.
+
+
+## 23. Phase 21 signed provider events and card authorization
+
+Phase 21 adds two externally callable Edge Functions:
+
+- `thisweek-money-webhook`
+- `thisweek-unit-card-authorization`
+
+These functions intentionally do not use Supabase platform JWT verification because external providers do not send Supabase user JWTs. They authenticate providers using provider-specific request signatures before parsing or acting on a request.
+
+### Signature rules
+
+Unit requests require `X-Unit-Signature` and HMAC-SHA1/Base64 verification over the raw body.
+
+Pinwheel requests require the v2 `x-pinwheel-signature` format over `v2:{timestamp}:{raw_body}` using HMAC-SHA256.
+
+Method requests require the configured webhook auth token plus HMAC-SHA256 over `{timestamp}:{raw_body}`; the implementation also rejects timestamps outside a five-minute window.
+
+Unsigned or invalid webhook requests are rejected.
+
+Full webhook payloads are not persisted. The provider-event inbox stores a SHA-256 payload hash and a bounded safe summary.
+
+### Realtime card authorization
+
+The Unit authorization endpoint remains fail-closed unless the server money execution mode is explicitly enabled.
+
+Once enabled, it can:
+
+- enforce card active state;
+- enforce optional MCC controls;
+- enforce optional merchant lock;
+- enforce per-card amount limits;
+- check the selected money-envelope ledger balance;
+- support partial approval when the provider indicates it is allowed;
+- post an atomic envelope-to-card-hold journal before approval;
+- decline when the envelope cannot cover the request.
+
+Authorization, reversal, and settlement are separate accounting events.
+
+The corresponding database RPCs are executable only by `service_role`.
+
+### Money Sandbox Lab
+
+`/money-lab/` is an isolated integration test surface.
+
+Its CSP permits network access only to the exact Supabase project origin.
+
+It uses only the browser-safe Supabase publishable key.
+
+It supports recoverable email/password Auth, TOTP MFA, tab-scoped session storage, and authenticated calls to `thisweek-money-gateway`.
+
+The main planner keeps `connect-src 'none'` and does not adopt these network permissions.
+
+No live provider credentials or live-money flag are enabled by this phase.
