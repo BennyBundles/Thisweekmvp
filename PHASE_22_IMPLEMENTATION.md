@@ -114,7 +114,17 @@ The Lab now provides ordered controls for:
 11. Unit purchase authorization simulation;
 12. Pinwheel Deposit Switch;
 13. Method dev setup;
-14. Method dev bill payment.
+14. Method dev bill payment;
+15. idempotent provider webhook registration.
+
+The webhook-registration action lists/reuses existing registrations before creating missing ones:
+
+- Unit `NotAuthorizationRequest` → `thisweek-money-webhook`;
+- Unit `OnlyAuthorizationRequest` → `thisweek-unit-card-authorization`;
+- Pinwheel direct-deposit switch/allocation events → `thisweek-money-webhook`;
+- Method `payment.update` → `thisweek-money-webhook`.
+
+Unit's webhook token and Method's webhook auth/HMAC secrets are read from server environment only and are never returned to the Lab.
 
 The Lab loads Pinwheel Web SDK v4 from the official Pinwheel CDN. Its CSP still restricts application API traffic to the exact Supabase project origin; only Pinwheel script/frame origins are additionally allowed for the Link modal.
 
