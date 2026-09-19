@@ -10,11 +10,12 @@ const html=fs.readFileSync(new URL('./index.html', import.meta.url),'utf8');
 const failures=[];
 const cspUpdaterUrl=new URL('./update-csp-hashes.mjs', import.meta.url);
 const securityPrivacyUrl=new URL('./SECURITY_PRIVACY.md', import.meta.url);
-const releaseFiles=['release-smoke-check.mjs','RELEASE_CHECKLIST.md','RELEASE_POLICY.md','release.config.json','CHANGELOG.md'];
+const releaseFiles=['prepare-site.mjs','release-smoke-check.mjs','RELEASE_CHECKLIST.md','RELEASE_POLICY.md','release.config.json','CHANGELOG.md','RELEASES/v0.15.0-phase15.md'];
 for(const name of releaseFiles){
   if(!fs.existsSync(new URL('./'+name, import.meta.url)))failures.push('Missing Phase 15 release file: '+name);
 }
 if(!fs.existsSync(cspUpdaterUrl))failures.push('Missing CSP hash updater utility');
+if(!fs.existsSync(new URL('./prepare-site.mjs', import.meta.url)))failures.push('Missing deterministic production staging utility');
 if(!fs.existsSync(securityPrivacyUrl))failures.push('Missing security/privacy trust document');
 const requireText=(label,text)=>{if(!html.includes(text))failures.push(label);};
 const forbidText=(label,text)=>{if(html.includes(text))failures.push(label);};
