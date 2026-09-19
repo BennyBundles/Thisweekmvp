@@ -23,6 +23,13 @@ const phase20Schema=requireFile('supabase/phase20/money_layer_schema.sql');
 const phase20Gateway=requireFile('supabase/functions/thisweek-money-gateway/index.ts');
 const phase20Runtime=requireFile('supabase/functions/thisweek-money-gateway/deno.json');
 const phase20Readme=requireFile('supabase/phase20/README.md');
+const phase21Doc=requireFile('PHASE_21_IMPLEMENTATION.md');
+const phase21Schema=requireFile('supabase/phase21/card_event_schema.sql');
+const phase21Webhook=requireFile('supabase/functions/thisweek-money-webhook/index.ts');
+const phase21CardAuth=requireFile('supabase/functions/thisweek-unit-card-authorization/index.ts');
+const moneyLabHtml=requireFile('money-lab/index.html');
+const moneyLabJs=requireFile('money-lab/app.js');
+const moneyLabCheck=requireFile('money-lab-check.mjs');
 
 
 let config=null;
@@ -58,7 +65,10 @@ if(html){
     ['Phase 20 money route','async function renderMoneyCenter()'],
     ['Phase 20 direct deposit route','async function renderDirectDeposit()'],
     ['Phase 20 bill pay route','async function renderBillPay()'],
-    ['Phase 20 cards route','async function renderCategoryCards()']
+    ['Phase 20 cards route','async function renderCategoryCards()'],
+    ['Phase 21 signed webhooks',"webhookMode:'signed_receivers_deployed'"],
+    ['Phase 21 card authorization controller',"cardAuthorizationMode:'controller_deployed_execution_locked'"],
+    ['Phase 21 Money Lab link','href="./money-lab/"']
   ];
   for(const [label,text] of critical)requireText('missing '+label,html,text);
 
@@ -106,6 +116,33 @@ if(phase20Gateway){
 if(phase20Runtime)requireText('Phase 20 runtime should be strict',phase20Runtime,'"strict": true');
 if(phase20Readme)requireText('Phase 20 README must say execution is disabled',phase20Readme,'Money execution: disabled.');
 if(phase20Doc)requireText('Phase 20 doc must preserve Plan authority',phase20Doc,'Available Now` remains plan-derived.');
+
+if(phase21Schema){
+  requireText('Phase 21 schema reserve controller',phase21Schema,'tw_money_reserve_card_authorization');
+  requireText('Phase 21 schema release controller',phase21Schema,'tw_money_release_card_authorization');
+  requireText('Phase 21 schema settlement controller',phase21Schema,'tw_money_settle_card_authorization');
+  requireText('Phase 21 schema service-only controllers',phase21Schema,'from public,anon,authenticated');
+}
+if(phase21Webhook){
+  requireText('Phase 21 webhook verifies Unit signature',phase21Webhook,'x-unit-signature');
+  requireText('Phase 21 webhook verifies Pinwheel signature',phase21Webhook,'x-pinwheel-signature');
+  requireText('Phase 21 webhook verifies Method signature',phase21Webhook,'method-webhook-signature');
+  requireText('Phase 21 webhook stores only safe event summary',phase21Webhook,'safe_summary');
+}
+if(phase21CardAuth){
+  requireText('Phase 21 card auth has execution lock',phase21CardAuth,'THISWEEK_MONEY_EXECUTION_MODE');
+  requireText('Phase 21 card auth fail closed',phase21CardAuth,'RestrictedCard');
+  requireText('Phase 21 card auth calls reserve RPC',phase21CardAuth,'tw_money_reserve_card_authorization');
+}
+if(phase21Doc)requireText('Phase 21 doc production boundary',phase21Doc,'no live money movement');
+if(moneyLabHtml)requireText('Money Lab exact Supabase origin',moneyLabHtml,'connect-src https://xjtvawmppzwzrooairyx.supabase.co');
+if(moneyLabJs){
+  requireText('Money Lab uses publishable key',moneyLabJs,'sb_publishable_');
+  requireText('Money Lab supports TOTP',moneyLabJs,'/challenge');
+  requireText('Money Lab invokes authenticated gateway',moneyLabJs,'/functions/v1/thisweek-money-gateway');
+  if(/service_role|sb_secret_/i.test(moneyLabJs))failures.push('Money Lab contains server-secret pattern');
+}
+if(!moneyLabCheck)failures.push('Money Lab checker unavailable');
 
 
 if(workflow){
