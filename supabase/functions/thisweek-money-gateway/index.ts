@@ -1588,6 +1588,11 @@ async function submitMethodBillPayment(
     throw new Error("method_source_missing");
   }
 
+  await riskEvaluate(
+    admin,userId,"bill_payment",Number(payment.amount_cents),payment.idempotency_key,
+    String(payment.biller_id),{ payment_id: payment.id, submit_path: "method" }
+  );
+
   const result = await methodPayment({
     amount: payment.amount_cents,
     source: funding.data.processor_reference,
