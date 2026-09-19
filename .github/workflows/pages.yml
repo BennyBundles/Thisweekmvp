@@ -50,7 +50,7 @@ jobs:
         run: node money-lab-check.mjs money-lab/index.html money-lab/app.js
 
       - name: Validate Account Center
-        run: node account-check.mjs account/index.html account/app.js
+        run: node account-check.mjs account/index.html account/app.js account/release-config.js
 
   deploy:
     needs: validate
@@ -97,7 +97,8 @@ jobs:
           mkdir -p _site/account
           cp account/index.html _site/account/index.html
           cp account/app.js _site/account/app.js
-          node account-check.mjs _site/account/index.html _site/account/app.js
+          cp account/release-config.js _site/account/release-config.js
+          node account-check.mjs _site/account/index.html _site/account/app.js _site/account/release-config.js
 
           node <<'NODE'
           const fs = require('fs');
@@ -151,6 +152,7 @@ jobs:
             money_lab_js="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/money-lab/app.js?v=${SHORT}" || true)"
             account_center="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/account/?v=${SHORT}" || true)"
             account_js="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/account/app.js?v=${SHORT}" || true)"
+            account_release_config="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/account/release-config.js?v=${SHORT}" || true)"
 
             if grep -Fq 'This Week' <<< "$html" \
               && grep -Fq -- "$RELEASE_SHA" <<< "$manifest" \
@@ -159,7 +161,8 @@ jobs:
               && grep -Fq 'Money Sandbox Lab' <<< "$money_lab" \
               && grep -Fq '/functions/v1/thisweek-money-gateway' <<< "$money_lab_js" \
               && grep -Fq 'Account & Security' <<< "$account_center" \
-              && grep -Fq '/functions/v1/thisweek-account-gateway' <<< "$account_js"; then
+              && grep -Fq '/functions/v1/thisweek-account-gateway' <<< "$account_js" \
+              && grep -Fq 'THISWEEK_AUTH_RELEASE_CONFIG' <<< "$account_release_config"; then
               success=1
               break
             fi
