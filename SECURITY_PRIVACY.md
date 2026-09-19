@@ -650,3 +650,54 @@ It supports recoverable email/password Auth, TOTP MFA, tab-scoped session storag
 The main planner keeps `connect-src 'none'` and does not adopt these network permissions.
 
 No live provider credentials or live-money flag are enabled by this phase.
+
+
+## 24. Phase 22 provider Sandbox chain
+
+Phase 22 wires the real provider Sandbox/dev contracts into one credential-gated flow.
+
+The chain is:
+
+`Supabase Auth -> Plaid Auth/Hosted Link -> Unit application/customer/account -> Plaid processor token -> Unit ACH counterparty -> authorized ACH funding -> Unit virtual card -> signed realtime authorization -> Pinwheel Deposit Switch -> Method dev liability payment`.
+
+### Credential rule
+
+Provider credentials remain server-only and are not available through the connected Supabase management tool used for this implementation.
+
+No credential is invented, copied to the repository, exposed to GitHub Pages, or put into browser storage.
+
+Provider actions fail closed when their server credential is absent.
+
+### Plaid / Unit
+
+Plaid Hosted Link now requests `auth` plus transactions.
+
+The Plaid access token remains in Supabase Vault.
+
+A Unit processor token is generated server-to-server and immediately exchanged into a Unit counterparty; This Week does not persist the processor token.
+
+External ACH funding requires an explicit authorization record before an ACH Debit is originated.
+
+Only masked funding-account data and provider references are stored.
+
+### Unit Sandbox identity
+
+The isolated Sandbox flow can create a synthetic Unit application using test identity data derived from the authenticated user ID.
+
+Raw synthetic SSN, full routing number and full account number are not persisted in This Week.
+
+The production customer onboarding path must not reuse synthetic Sandbox identity generation.
+
+### Method dev
+
+The Method path creates a development Entity, discovers supported liabilities using Connect, creates a development ACH source, verifies it with Method's simulated micro-deposit flow, then submits a Method Payment after explicit This Week authorization.
+
+Full ACH account numbers used during the dev call are not persisted; only masked values and provider IDs are stored.
+
+### Browser boundaries
+
+The normal planner remains `connect-src 'none'`.
+
+The isolated Money Lab may call only the exact Supabase project API. It additionally permits the official Pinwheel Web SDK script/frame origins solely to launch the user-facing Link modal.
+
+No live-money execution flag is enabled by this phase.
