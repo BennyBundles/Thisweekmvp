@@ -39,7 +39,9 @@ async function activeSession(admin:ReturnType<typeof createClient>,userId:string
   if(error||data!==true)throw new Error("session_revoked");
 }
 function containsSensitivePattern(value:string):boolean{
-  return /\b(?:sk_live_|sk_test_|access[-_ ]?token|refresh[-_ ]?token|api[-_ ]?secret|password\s*[:=]|cvv\s*[:=]|cvc\s*[:=])\b/i.test(value);
+  return /\b(?:sk_live_|sk_test_|access[-_ ]?token|refresh[-_ ]?token|api[-_ ]?secret|password\s*[:=]|cvv\s*[:=]|cvc\s*[:=])\b/i.test(value)
+    || /\b\d{12,19}\b/.test(value)
+    || /\b\d{3}-\d{2}-\d{4}\b/.test(value);
 }
 async function supportStatus(admin:ReturnType<typeof createClient>,userId:string){
   const [requests,messages,transfers,bills,cards,switches]=await Promise.all([
