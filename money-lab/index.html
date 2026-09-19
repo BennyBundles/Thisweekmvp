@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src https://xjtvawmppzwzrooairyx.supabase.co; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; object-src 'none'; frame-src 'none'; child-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none';">
+<meta name="theme-color" content="#06111a">
+<title>This Week — Money Sandbox Lab</title>
+<style>
+:root{--bg:#040a12;--panel:#081521;--panel2:#0b1c29;--text:#edf7fb;--muted:#8da8b5;--line:rgba(180,215,230,.14);--mint:#6ee7b7;--aqua:#67e8f9;--gold:#f6d784;--danger:#fda4af}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(circle at 15% 0%,rgba(103,232,249,.08),transparent 25%),linear-gradient(180deg,#040a12,#07131e 55%,#050d16);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{min-height:100dvh}.shell{width:min(980px,100%);margin:auto;padding:max(18px,env(safe-area-inset-top)) 16px max(32px,env(safe-area-inset-bottom))}
+header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:16px}.brand small,.kicker{display:block;color:#86cfc1;font-size:.66rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase}.brand h1{font-size:clamp(1.7rem,5vw,2.8rem);margin:4px 0 7px;letter-spacing:-.05em}.brand p{margin:0;color:var(--muted);max-width:640px;line-height:1.5}.pill{border:1px solid rgba(246,215,132,.22);color:#f6d784;background:rgba(246,215,132,.06);padding:8px 10px;border-radius:999px;font-size:.68rem;font-weight:800;white-space:nowrap}
+.notice{padding:12px 14px;border-radius:16px;border:1px solid var(--line);background:rgba(103,232,249,.045);color:#a9c5cf;font-size:.78rem;line-height:1.5;margin-bottom:14px}.notice strong{color:#dff9ff}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card{border:1px solid var(--line);background:linear-gradient(145deg,rgba(11,28,41,.94),rgba(7,18,29,.94));border-radius:22px;padding:16px;box-shadow:0 18px 48px rgba(0,0,0,.2)}.card.wide{grid-column:1/-1}.card h2{margin:4px 0 4px;font-size:1.08rem}.card p{margin:0 0 12px;color:var(--muted);font-size:.78rem;line-height:1.48}.fields{display:grid;gap:8px}.field{display:grid;gap:5px}.field label{font-size:.68rem;color:#a8c1cc;font-weight:750}.field input,.field select{width:100%;border:1px solid var(--line);background:#06121d;color:var(--text);border-radius:12px;padding:11px;font:inherit;font-size:.82rem;outline:none}.field input:focus,.field select:focus{border-color:rgba(103,232,249,.45);box-shadow:0 0 0 3px rgba(103,232,249,.07)}.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}button{appearance:none;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text);padding:9px 11px;border-radius:12px;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}button.primary{background:linear-gradient(145deg,rgba(110,231,183,.16),rgba(103,232,249,.09));border-color:rgba(110,231,183,.24)}button.warn{border-color:rgba(253,164,175,.22);color:#fecdd3}button:disabled{opacity:.42;cursor:not-allowed}.status{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0}.stat{padding:10px;border-radius:14px;background:rgba(255,255,255,.025);border:1px solid var(--line)}.stat small{display:block;color:var(--muted);font-size:.6rem;text-transform:uppercase;letter-spacing:.08em}.stat strong{display:block;margin-top:3px;font-size:.82rem;overflow-wrap:anywhere}.log{height:260px;overflow:auto;border:1px solid var(--line);background:#030a10;border-radius:14px;padding:11px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.68rem;white-space:pre-wrap;color:#bad1da}.qr{display:none;width:min(220px,100%);background:#fff;border-radius:14px;padding:8px;margin-top:10px}.secret{display:none;overflow-wrap:anywhere;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.67rem;color:#d4e8ef;padding:8px;border:1px solid var(--line);border-radius:10px;margin-top:8px}.money-row{display:grid;grid-template-columns:1.3fr .8fr .8fr;gap:7px;align-items:end}.muted{color:var(--muted);font-size:.72rem}.good{color:#b7f7d9}.bad{color:#fecdd3}
+@media(max-width:720px){.grid{grid-template-columns:1fr}.card.wide{grid-column:auto}.status{grid-template-columns:repeat(2,1fr)}header{display:block}.pill{display:inline-block;margin-top:10px}.money-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="shell">
+<header><div class="brand"><small>Isolated sandbox</small><h1>Money Sandbox Lab</h1><p>Real Supabase Auth + TOTP MFA + authenticated money-gateway testing. This lab is separate from the browser-local production Plan.</p></div><span class="pill">No live money</span></header>
+<div class="notice"><strong>Network boundary:</strong> this page can connect only to <code>xjtvawmppzwzrooairyx.supabase.co</code>. Provider execution is still disabled unless server-side Sandbox credentials and execution flags are deliberately configured.</div>
+
+<div class="status">
+  <div class="stat"><small>Session</small><strong id="sessionState">Signed out</strong></div>
+  <div class="stat"><small>Assurance</small><strong id="aalState">—</strong></div>
+  <div class="stat"><small>User</small><strong id="userState">—</strong></div>
+  <div class="stat"><small>Money mode</small><strong id="moneyMode">Unknown</strong></div>
+</div>
+
+<div class="grid">
+<section class="card">
+  <span class="kicker">Recoverable identity</span><h2>Create / sign in</h2>
+  <p>Email + password is the first recoverable-auth step. Hosted projects normally require email confirmation for new signups.</p>
+  <div class="fields">
+    <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="email"></div>
+    <div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" minlength="10"></div>
+  </div>
+  <div class="actions"><button class="primary" id="signIn">Sign in</button><button id="signUp">Create account</button><button class="warn" id="signOut" disabled>Sign out</button></div>
+</section>
+
+<section class="card">
+  <span class="kicker">Second factor</span><h2>TOTP MFA</h2>
+  <p>Money actions will require an AAL2 session in production. Enroll an authenticator factor, then challenge it with the current six-digit code.</p>
+  <div class="field"><label for="factorSelect">Verified / enrolled factor</label><select id="factorSelect"><option value="">Sign in first</option></select></div>
+  <img id="qr" class="qr" alt="Authenticator enrollment QR code">
+  <div id="secret" class="secret"></div>
+  <div class="field" style="margin-top:8px"><label for="totpCode">Authenticator code</label><input id="totpCode" inputmode="numeric" autocomplete="one-time-code" maxlength="8"></div>
+  <div class="actions"><button id="enrollMfa" disabled>Enroll TOTP</button><button class="primary" id="verifyMfa" disabled>Challenge + verify</button></div>
+</section>
+
+<section class="card wide">
+  <span class="kicker">Authenticated server boundary</span><h2>Money Gateway</h2>
+  <p>These calls use the signed-in user's real JWT. They can bootstrap server envelopes and inspect money-layer status without enabling external money movement.</p>
+  <div class="actions"><button class="primary" id="gatewayStatus" disabled>Gateway status</button><button id="gatewayBootstrap" disabled>Bootstrap money profile</button><button id="gatewaySummary" disabled>Ledger summary</button></div>
+  <div class="money-row" style="margin-top:12px">
+    <div class="field"><label for="sandboxAmount">Sandbox ledger credit</label><input id="sandboxAmount" type="number" min="1" step=".01" value="500"></div>
+    <div class="field"><label for="envelope">Allocate to</label><select id="envelope"><option value="bills">Bills</option><option value="essentials">Essentials</option><option value="lifestyle">Lifestyle</option><option value="savings">Savings</option></select></div>
+    <div class="field"><label>&nbsp;</label><button id="sandboxCredit" disabled>Credit sandbox</button></div>
+  </div>
+  <div class="money-row" style="margin-top:8px">
+    <div class="field"><label for="allocateAmount">Allocate amount</label><input id="allocateAmount" type="number" min="1" step=".01" value="50"></div>
+    <div class="field"><label>&nbsp;</label><span class="muted">Uses atomic ledger move; insufficient balance is rejected.</span></div>
+    <div class="field"><label>&nbsp;</label><button id="allocate" disabled>Allocate</button></div>
+  </div>
+</section>
+
+<section class="card wide">
+  <span class="kicker">Audit console</span><h2>Sandbox output</h2>
+  <p>No password is logged. Tokens are held only in this tab's sessionStorage for the sandbox lab.</p>
+  <div id="log" class="log" aria-live="polite">Ready.</div>
+</section>
+</div>
+</main>
+<script src="./app.js"></script>
+</body>
+</html>
