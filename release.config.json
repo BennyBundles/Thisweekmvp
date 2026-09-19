@@ -6,5 +6,7 @@
   "stateSchema": 3,
   "portableSchema": 1,
   "migrationNotes": "No new persistent financial-state migration in Phase 15. Core schema remains v3; Phase 13 migration contract remains authoritative.",
-  "productionUrl": "https://bennybundles.github.io/Thisweekmvp/"
+  "productionUrl": "https://bennybundles.github.io/Thisweekmvp/",
+  "stableBranch": "stable/v0.15.0-phase15",
+  "releaseRecord": "RELEASES/v0.15.0-phase15.md"
 }
