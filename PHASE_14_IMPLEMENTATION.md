@@ -461,3 +461,63 @@ The static checker now requires:
 `f2b4c9cb8f697a392d702d131be3d3e541a98aad`
 
 GitHub Pages deployment for this app commit completed successfully.
+
+
+## Final Phase 14 hardening — hashed CSP and inactive-view privacy
+
+Phase 14 was completed with two additional controls.
+
+### Hashed inline-script CSP
+
+The application no longer relies on `script-src 'unsafe-inline'`.
+
+The current Content Security Policy authorizes the two inline application scripts by exact SHA-256 hashes and also declares:
+
+- `script-src-attr 'none'`
+- `connect-src 'none'`
+- `object-src 'none'`
+- `base-uri 'none'`
+- `form-action 'none'`
+- `frame-src 'none'`
+- `child-src 'none'`
+- `worker-src 'none'`
+
+This narrows the static browser-only attack surface while preserving the monolithic single-file architecture.
+
+Inline styles remain allowed because the current visual system depends on runtime inline style values.
+
+The static regression checker now recalculates the SHA-256 hash of both inline script blocks and verifies that the active CSP contains those exact hashes. If a script changes without a matching CSP update, the checker should fail.
+
+### Inline event-attribute removal
+
+The remaining inline Retry handler was replaced with an ordinary event listener.
+
+This allows the CSP to enforce:
+
+`script-src-attr 'none'`
+
+without breaking that recovery path.
+
+### Inactive-view privacy curtain
+
+A best-effort privacy curtain now covers the financial interface when the browser reports the page as hidden or moves through a page-hide lifecycle.
+
+It is intended to reduce accidental exposure in:
+
+- tab previews;
+- app switching;
+- temporarily backgrounded browser views.
+
+The curtain is removed when the page becomes visible again.
+
+This is explicitly not presented as a guarantee that every operating system or browser will suppress all captured preview frames.
+
+### Latest Phase 14 application commit
+
+`a39f440edd8385fb22c7d90b2e913a84873d22c6`
+
+### Latest Phase 14 regression-checker commit
+
+`9d9210505cbf853a88a3dbb2b94da38a25df24f0`
+
+Phase 14 is complete at the source level. The remaining gate is live browser verification of the CSP, import path, export path, privacy route, and inactive-view behavior.
