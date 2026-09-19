@@ -2,6 +2,24 @@
 
 Production changes for **This Week** are recorded here.
 
+## Phase 34 — Release Evidence & Sandbox Certification — 2026-09-19
+
+- Added immutable Sandbox certification runs with append-only per-requirement pass/fail receipts.
+- Added append-only synthetic-incident and rollback drill records.
+- Added explicit manual/derived evidence requirements for every Phase 31 production release gate.
+- Strengthened `tw_release_set_gate` so a gate cannot be verified while required supporting evidence is absent.
+- Added `tw_release_readiness_report()` for machine-readable release-candidate blockers.
+- Added JWT + active-session + AAL2 + staff-RBAC `thisweek-release-gateway`.
+- Added staff-only `/ops/release/` certification and evidence console.
+- Added Phase 34 CI validation and exact Pages post-deployment verification for the new console.
+- No gate was auto-verified; all production money controls remain fail-closed and `liveMoneyReady=false`.
+- No paid dependency or production provider execution was activated.
+
+### Rollback
+- Pre-Phase-34 deployed head: `ff3c8cd98d6e03f16cc1aa223e75ab553a2cc3d6`
+- Rollback branch: `rollback/phase34-pre-certification-2026-09-19`
+
+
 ## Phase 28 regression audit — 2026-09-19
 
 - Revalidated customer support, incident, and internal-SLA infrastructure against the Phase 33 production baseline.

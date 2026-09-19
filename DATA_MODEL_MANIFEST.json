@@ -933,5 +933,75 @@
     "localPlanExportSeparate": true,
     "hardDeletionStillRetentionGated": true,
     "statutoryCompletenessClaim": false
+  },
+  "phase34ReleaseEvidenceCertification": {
+    "status": "backend_and_staff_console_implemented_live_money_locked",
+    "activation": false,
+    "releaseGateway": "thisweek-release-gateway:v1",
+    "releaseGatewayVerifyJwt": true,
+    "releaseConsolePath": "/ops/release/",
+    "tables": [
+      "tw_release_certification_requirements",
+      "tw_release_certification_runs",
+      "tw_release_certification_receipts",
+      "tw_release_drill_runs",
+      "tw_release_drill_events",
+      "tw_release_gate_evidence_requirements",
+      "tw_release_gate_evidence"
+    ],
+    "serviceRoleRpcs": [
+      "tw_release_drill_status",
+      "tw_release_start_drill",
+      "tw_release_finish_drill",
+      "tw_release_start_certification",
+      "tw_release_record_certification_receipt",
+      "tw_release_certification_status",
+      "tw_release_record_gate_evidence",
+      "tw_release_gate_evidence_status",
+      "tw_release_readiness_report",
+      "tw_release_set_gate"
+    ],
+    "sandboxChecklist": [
+      "provider_preflight",
+      "sandbox_webhook_registration",
+      "plaid_bank_connection",
+      "unit_onboarding_account",
+      "ach_funding",
+      "card_issue",
+      "card_authorization_hold",
+      "card_settlement",
+      "card_reversal",
+      "pinwheel_direct_deposit_switch",
+      "method_bill_payment",
+      "ach_return_lifecycle",
+      "card_dispute_refund",
+      "synthetic_incident_drill",
+      "rollback_validation"
+    ],
+    "evidenceHistoryAppendOnly": true,
+    "drillsAppendOnly": true,
+    "gateVerificationRequiresSupportingEvidence": true,
+    "browserTableAccess": false,
+    "staffAuth": {
+      "activeSessionRequired": true,
+      "aal2Required": true,
+      "roleSource": "auth.app_metadata.thisweek_role"
+    },
+    "productionMoneyEnabled": false,
+    "liveMoneyReady": false,
+    "autoVerifiedReleaseGates": false,
+    "remainingEvidence": [
+      "hosted_auth_production_configuration",
+      "provider_sandbox_credentials_and_e2e_receipts",
+      "provider_production_approvals_and_webhooks",
+      "named_least_privilege_staff",
+      "external_notification_delivery",
+      "approved_legal_retention_risk_runbooks",
+      "explicit_production_cost_approval"
+    ],
+    "migrations": [
+      "20260919184231_phase34_release_evidence_sandbox_certification",
+      "phase34_release_evidence_service_role_policies"
+    ]
   }
 }

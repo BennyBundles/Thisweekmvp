@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'unsafe-inline'; connect-src https://xjtvawmppzwzrooairyx.supabase.co; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+  <title>This Week — Release Certification</title>
+  <style>
+    :root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color-scheme:dark;background:#071017;color:#eef6f7}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -20%,#16343e 0,#071017 45%,#03080c 100%);min-height:100vh}
+    main{width:min(1180px,calc(100% - 28px));margin:auto;padding:28px 0 72px}
+    header{display:flex;gap:16px;align-items:flex-start;justify-content:space-between;margin-bottom:20px}.eyebrow{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:#91aeb5}
+    h1{font-size:clamp(1.9rem,5vw,3.4rem);line-height:.94;margin:.35rem 0}.muted{color:#9db0b5}.lock{font-weight:800;letter-spacing:.08em}
+    a{color:#b6f0df}a.button{display:inline-flex;text-decoration:none;border:1px solid #35535a;border-radius:999px;padding:10px 14px}
+    .grid{display:grid;gap:14px}.metrics{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:14px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .card{background:linear-gradient(145deg,rgba(18,35,42,.92),rgba(6,15,20,.96));border:1px solid #263e45;border-radius:20px;padding:17px;box-shadow:0 18px 50px rgba(0,0,0,.18)}
+    .metric strong{display:block;font-size:1.7rem;margin-top:5px}.good{color:#9de0ba}.bad{color:#ffb3a7}.warn{color:#f0d78c}
+    h2{font-size:1rem;margin:0 0 12px}.item{border-top:1px solid #20363d;padding:12px 0}.item:first-child{border-top:0;padding-top:0}.item strong{display:block}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .pill{font-size:.72rem;border:1px solid #36535a;border-radius:999px;padding:4px 8px}.pill.pass{border-color:#376b51}.pill.fail{border-color:#7d463e}.pill.block{border-color:#6e5f32}
+    label{display:block;font-size:.76rem;color:#9db0b5;margin:9px 0 4px}input,select,textarea,button{font:inherit}input,select,textarea{width:100%;background:#061017;color:#eef6f7;border:1px solid #34505a;border-radius:10px;padding:10px}textarea{min-height:72px;resize:vertical}
+    button{border:1px solid #426069;background:#10262d;color:#eef6f7;border-radius:10px;padding:10px 12px;cursor:pointer}button.primary{background:#d8f2e8;color:#071017;border-color:#d8f2e8;font-weight:700}button.danger{border-color:#75463d}button:disabled{opacity:.45;cursor:not-allowed}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.result{margin-top:10px;min-height:1.2em;font-size:.85rem}
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.78em;word-break:break-all}.notice{border:1px solid #614b2d;background:#241d0f;border-radius:12px;padding:11px;color:#f0d78c;margin-bottom:14px}
+    @media(max-width:820px){.metrics,.two{grid-template-columns:1fr 1fr}}@media(max-width:560px){.metrics,.two,.form-grid{grid-template-columns:1fr}header{display:block}header .button{margin-top:10px}}
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div><div class="eyebrow">Staff-only · Phase 34</div><h1>Release Evidence<br>& Sandbox Certification</h1><p class="muted">Turns implemented controls into evidence-backed release gates. This surface cannot bypass the production interlock.</p></div>
+    <a class="button" href="../">Back to Ops Console</a>
+  </header>
+  <div id="sessionNotice" class="notice">Checking staff session…</div>
+  <section class="grid metrics">
+    <div class="card metric"><span class="eyebrow">Live money</span><strong id="liveState">—</strong></div>
+    <div class="card metric"><span class="eyebrow">Blocking gates</span><strong id="blockingCount">—</strong></div>
+    <div class="card metric"><span class="eyebrow">Latest certification</span><strong id="certState">—</strong></div>
+    <div class="card metric"><span class="eyebrow">Staff role</span><strong id="roleState">—</strong></div>
+  </section>
+  <section class="grid two">
+    <div class="card"><h2>Release readiness</h2><div id="gates"></div></div>
+    <div class="card"><h2>Sandbox certification</h2><div id="certifications"></div></div>
+    <div class="card"><h2>Drill history</h2><div id="drills"></div></div>
+    <div class="card"><h2>Evidence ledger</h2><div id="evidenceLedger"></div></div>
+  </section>
+
+  <section class="grid two" style="margin-top:14px">
+    <div class="card">
+      <h2>Start certification run</h2>
+      <label for="certSha">Release-candidate commit SHA</label><input id="certSha" autocomplete="off" placeholder="7–64 lowercase hex characters">
+      <label for="certNote">Bounded note</label><textarea id="certNote" maxlength="1000"></textarea>
+      <div class="actions"><button id="startCert" class="primary">Start certification</button></div><div id="certResult" class="result"></div>
+    </div>
+    <div class="card">
+      <h2>Record certification receipt</h2>
+      <div class="form-grid"><div><label for="receiptRun">Run</label><select id="receiptRun"></select></div><div><label for="receiptReq">Requirement</label><select id="receiptReq"></select></div></div>
+      <div class="form-grid"><div><label for="receiptOutcome">Outcome</label><select id="receiptOutcome"><option value="pass">pass</option><option value="fail">fail</option></select></div><div><label for="receiptDrill">Drill UUID (only when required)</label><input id="receiptDrill" autocomplete="off"></div></div>
+      <label for="receiptEvidence">Evidence reference</label><input id="receiptEvidence" maxlength="500" autocomplete="off" placeholder="ticket, test-run ID, immutable artifact ref">
+      <label for="receiptSummary">Safe summary — never paste secrets</label><textarea id="receiptSummary" maxlength="1000"></textarea>
+      <div class="actions"><button id="recordReceipt" class="primary">Record receipt</button></div><div id="receiptResult" class="result"></div>
+    </div>
+    <div class="card">
+      <h2>Synthetic incident / rollback drill</h2>
+      <div class="form-grid"><div><label for="drillType">Type</label><select id="drillType"><option value="synthetic_incident">synthetic incident</option><option value="rollback">rollback</option></select></div><div><label for="drillSha">Release-candidate SHA</label><input id="drillSha" autocomplete="off"></div></div>
+      <label for="scenarioKey">Scenario key</label><input id="scenarioKey" maxlength="120" placeholder="provider_outage, failed_deploy, rollback_to_anchor">
+      <label for="drillNote">Bounded note</label><textarea id="drillNote" maxlength="1000"></textarea>
+      <div class="actions"><button id="startDrill" class="primary">Start drill</button></div>
+      <hr style="border:0;border-top:1px solid #20363d;margin:16px 0">
+      <label for="finishDrillId">Drill UUID</label><input id="finishDrillId" autocomplete="off">
+      <label for="drillEvidence">Terminal evidence reference</label><input id="drillEvidence" maxlength="500" autocomplete="off">
+      <label for="drillSummary">Safe terminal summary</label><textarea id="drillSummary" maxlength="1000"></textarea>
+      <div class="actions"><button id="passDrill" class="primary">Complete — pass</button><button id="failDrill" class="danger">Complete — fail</button></div><div id="drillResult" class="result"></div>
+    </div>
+    <div class="card">
+      <h2>Release-gate evidence <span class="muted">(admin)</span></h2>
+      <div class="form-grid"><div><label for="gateKey">Gate</label><select id="gateKey"></select></div><div><label for="evidenceKey">Manual evidence requirement</label><select id="evidenceKey"></select></div></div>
+      <div class="form-grid"><div><label for="evidenceEnvironment">Environment</label><select id="evidenceEnvironment"><option value="production">production</option><option value="sandbox">sandbox</option></select></div><div><label for="gateEvidenceOutcome">Outcome</label><select id="gateEvidenceOutcome"><option value="pass">pass</option><option value="fail">fail</option></select></div></div>
+      <label for="gateEvidenceRef">Evidence reference</label><input id="gateEvidenceRef" maxlength="500" autocomplete="off">
+      <label for="gateEvidenceSummary">Safe summary — no credentials or secret material</label><textarea id="gateEvidenceSummary" maxlength="1000"></textarea>
+      <div class="actions"><button id="recordGateEvidence" class="primary">Record gate evidence</button></div><div id="gateEvidenceResult" class="result"></div>
+      <hr style="border:0;border-top:1px solid #20363d;margin:16px 0">
+      <label for="gateVerificationRef">Gate verification reference</label><input id="gateVerificationRef" maxlength="500" autocomplete="off">
+      <label for="gateVerificationNote">Bounded release note</label><textarea id="gateVerificationNote" maxlength="1000"></textarea>
+      <div class="actions"><button id="verifyGate" class="primary">Verify selected gate</button><button id="unverifyGate" class="danger">Mark selected gate unverified</button></div><div id="gateResult" class="result"></div>
+    </div>
+  </section>
+</main>
+<script src="./app.js"></script>
+</body>
+</html>

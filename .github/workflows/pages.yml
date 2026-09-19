@@ -55,6 +55,9 @@ jobs:
       - name: Validate Operations Console
         run: node ops-check.mjs ops/index.html ops/app.js
 
+      - name: Validate Release Certification Console
+        run: node phase34-check.mjs
+
       - name: Validate Support Center
         run: node support-check.mjs support/index.html support/app.js
 
@@ -113,6 +116,11 @@ jobs:
           cp ops/index.html _site/ops/index.html
           cp ops/app.js _site/ops/app.js
           node ops-check.mjs _site/ops/index.html _site/ops/app.js
+
+          mkdir -p _site/ops/release
+          cp ops/release/index.html _site/ops/release/index.html
+          cp ops/release/app.js _site/ops/release/app.js
+          node phase34-check.mjs
 
           mkdir -p _site/support
           cp support/index.html _site/support/index.html
@@ -178,6 +186,8 @@ jobs:
             account_release_config="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/account/release-config.js?v=${SHORT}" || true)"
             ops_console="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/ops/?v=${SHORT}" || true)"
             ops_js="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/ops/app.js?v=${SHORT}" || true)"
+            release_console="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/ops/release/?v=${SHORT}" || true)"
+            release_console_js="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/ops/release/app.js?v=${SHORT}" || true)"
             support_center="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/support/?v=${SHORT}" || true)"
             support_js="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/support/app.js?v=${SHORT}" || true)"
             legal_sandbox="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/legal/sandbox/?v=${SHORT}" || true)"
@@ -193,6 +203,8 @@ jobs:
               && grep -Fq 'THISWEEK_AUTH_RELEASE_CONFIG' <<< "$account_release_config" \
               && grep -Fq 'Operations Console' <<< "$ops_console" \
               && grep -Fq '/functions/v1/thisweek-ops-gateway' <<< "$ops_js" \
+              && grep -Fq 'Release Evidence' <<< "$release_console" \
+              && grep -Fq '/functions/v1/thisweek-release-gateway' <<< "$release_console_js" \
               && grep -Fq 'Support & Disputes' <<< "$support_center" \
               && grep -Fq '/functions/v1/thisweek-support-gateway' <<< "$support_js" \
               && grep -Fq 'accept_legal' <<< "$account_js" \
@@ -223,6 +235,7 @@ jobs:
             echo "- Money Sandbox Lab: `${BASE}/money-lab/?v=${SHORT}`"
             echo "- Account & Security: `${BASE}/account/?v=${SHORT}`"
             echo "- Operations Console: `${BASE}/ops/?v=${SHORT}`"
+            echo "- Release Certification: `${BASE}/ops/release/?v=${SHORT}`"
             echo "- Support & Disputes: `${BASE}/support/?v=${SHORT}`"
             echo "- Sandbox disclosure fixtures: `${BASE}/legal/sandbox/?v=${SHORT}`"
           } >> "$GITHUB_STEP_SUMMARY"
