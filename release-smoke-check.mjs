@@ -18,6 +18,11 @@ const phase19Schema=requireFile('supabase/phase19/provider_schema.sql');
 const phase19Gateway=requireFile('supabase/functions/thisweek-provider-gateway/index.ts');
 const phase19Runtime=requireFile('supabase/functions/thisweek-provider-gateway/deno.json');
 const phase19Readme=requireFile('supabase/phase19/README.md');
+const phase20Doc=requireFile('PHASE_20_IMPLEMENTATION.md');
+const phase20Schema=requireFile('supabase/phase20/money_layer_schema.sql');
+const phase20Gateway=requireFile('supabase/functions/thisweek-money-gateway/index.ts');
+const phase20Runtime=requireFile('supabase/functions/thisweek-money-gateway/deno.json');
+const phase20Readme=requireFile('supabase/phase20/README.md');
 
 
 let config=null;
@@ -46,7 +51,14 @@ if(html){
     ['Phase 19 secure provider staging','PHASE 19 — SECURE PROVIDER GATEWAY v31'],
     ['Phase 19 disabled client provider','enabled:false'],
     ['Phase 19 deny-until-auth-provider',"networkPolicy:'deny_until_auth_and_provider'"],
-    ['Phase 19 disabled connect control','id="connectFinancialProvider"']
+    ['Phase 19 disabled connect control','id="connectFinancialProvider"'],
+    ['Phase 20 money config','const LIVE_MONEY_CONFIG=Object.freeze({'],
+    ['Phase 20 money execution disabled',"executionMode:'disabled'"],
+    ['Phase 20 network locked',"networkPolicy:'deny_until_sandbox_auth_and_credentials'"],
+    ['Phase 20 money route','async function renderMoneyCenter()'],
+    ['Phase 20 direct deposit route','async function renderDirectDeposit()'],
+    ['Phase 20 bill pay route','async function renderBillPay()'],
+    ['Phase 20 cards route','async function renderCategoryCards()']
   ];
   for(const [label,text] of critical)requireText('missing '+label,html,text);
 
@@ -71,6 +83,29 @@ if(phase19Gateway){
 if(phase19Runtime)requireText('Phase 19 runtime should be strict',phase19Runtime,'"strict": true');
 if(phase19Readme)requireText('Phase 19 README must record shared project isolation',phase19Readme,'BennyBundles’s Project');
 if(phase19Doc)requireText('Phase 19 doc must state live provider is not active',phase19Doc,'No live financial institution is connected.');
+
+if(phase20Schema){
+  requireText('Phase 20 schema missing double-entry journal',phase20Schema,'tw_money_journals');
+  requireText('Phase 20 schema missing ledger entries',phase20Schema,'tw_money_ledger_entries');
+  requireText('Phase 20 schema missing bill payments',phase20Schema,'tw_money_bill_payments');
+  requireText('Phase 20 schema missing cards',phase20Schema,'tw_money_virtual_cards');
+  requireText('Phase 20 schema must revoke browser roles',phase20Schema,'from public, anon, authenticated');
+  requireText('Phase 20 schema must be append-only',phase20Schema,'reject_money_history_mutation');
+  requireText('Phase 20 reward template must be inactive',phase20Schema,'active=false');
+}
+if(phase20Gateway){
+  requireText('Phase 20 gateway must validate authenticated user',phase20Gateway,'auth.getUser(token)');
+  requireText('Phase 20 gateway must reject anonymous users',phase20Gateway,'recoverable_auth_required');
+  requireText('Phase 20 gateway must lock provider execution',phase20Gateway,'THISWEEK_MONEY_EXECUTION_MODE');
+  requireText('Phase 20 gateway must lock production money',phase20Gateway,'THISWEEK_LIVE_MONEY_ENABLED');
+  requireText('Phase 20 gateway must use ledger move RPC',phase20Gateway,'tw_money_move_balance');
+  requireText('Phase 20 gateway must expose Unit sandbox adapter',phase20Gateway,'api.s.unit.sh');
+  requireText('Phase 20 gateway must pin Pinwheel version',phase20Gateway,'2025-07-08');
+  requireText('Phase 20 gateway must support Method payments',phase20Gateway,'/payments');
+}
+if(phase20Runtime)requireText('Phase 20 runtime should be strict',phase20Runtime,'"strict": true');
+if(phase20Readme)requireText('Phase 20 README must say execution is disabled',phase20Readme,'Money execution: disabled.');
+if(phase20Doc)requireText('Phase 20 doc must preserve Plan authority',phase20Doc,'Available Now` remains plan-derived.');
 
 
 if(workflow){
