@@ -11,8 +11,8 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: "pages-production"
+  cancel-in-progress: true
 
 jobs:
   validate:
@@ -25,6 +25,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
+
+      - name: Prepare exact production HTML
+        run: |
+          set -euo pipefail
+          node prepare-site.mjs index.html index.production.html
+          mv index.production.html index.html
 
       - name: Phase 0 static regression check
         run: node phase0-static-check.mjs
@@ -42,6 +48,11 @@ jobs:
       - name: Checkout validated production commit
         uses: actions/checkout@v6
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
       - name: Stage production site
         env:
           RELEASE_SHA: ${{ github.sha }}
@@ -50,7 +61,8 @@ jobs:
           set -euo pipefail
           rm -rf _site
           mkdir -p _site
-          cp index.html _site/index.html
+
+          node prepare-site.mjs index.html _site/index.html
           touch _site/.nojekyll
 
           node <<'NODE'
@@ -64,6 +76,7 @@ jobs:
             shortCommit: process.env.RELEASE_SHA.slice(0,8),
             rollbackCommit: cfg.rollbackCommit,
             rollbackBranch: cfg.rollbackBranch || null,
+            stableBranch: cfg.stableBranch || null,
             workflowRunId: process.env.RELEASE_RUN_ID,
             stateSchema: cfg.stateSchema,
             portableSchema: cfg.portableSchema,
@@ -116,7 +129,7 @@ jobs:
           {
             echo "### Production release verified"
             echo ""
-            echo "- Commit: \`$RELEASE_SHA\`"
-            echo "- Cache-busted URL: \`${BASE}/?v=${SHORT}\`"
-            echo "- Manifest: \`${BASE}/release.json?v=${SHORT}\`"
+            echo "- Commit: `$RELEASE_SHA`"
+            echo "- Cache-busted URL: `${BASE}/?v=${SHORT}`"
+            echo "- Manifest: `${BASE}/release.json?v=${SHORT}`"
           } >> "$GITHUB_STEP_SUMMARY"
