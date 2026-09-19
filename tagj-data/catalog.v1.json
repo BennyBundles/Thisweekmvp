@@ -624,5 +624,26 @@
       "status": "curated_source_assets",
       "previewAsset": "tagj-assets/v147/network-creative.webp"
     }
+  ],
+  "networkProfiles": [
+    {
+      "id": "billyen",
+      "name": "BillYen",
+      "handle": "BillYen215",
+      "role": "primary_collaborator_spotlight",
+      "origin": "West Philadelphia",
+      "relationshipStart": "early 2022",
+      "relationshipSummary": "Met Benny Bundles in early 2022 and became Benny's first collaborator and the first artist to rap on beats by Bundles during Benny's early producer period.",
+      "significance": [
+        "First collaborator with Benny Bundles.",
+        "First artist to rap on Benny's beats while Benny was beginning as a producer.",
+        "Originator of the phrase “that’s a good jawn,” which became foundational to the TAGJ identity."
+      ],
+      "linksRef": "network:billyen",
+      "route": "#artist-billyen",
+      "profilePriority": "primary",
+      "suppliedAssetStatus": "received_in_conversation_pending_repository_ingest",
+      "publicBioSafetyNote": "Exact custodial-location details are not included in public profile metadata."
+    }
   ]
 }
