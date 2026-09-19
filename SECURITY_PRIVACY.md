@@ -2,10 +2,10 @@
 
 **Current architecture:** Static browser-local application  
 **Current hosting:** GitHub Pages  
-**Current production application backend:** None active  
+**Current server foundation:** Phase 19 provider plane + Phase 20 money plane provisioned in Supabase; browser execution disabled  
 **Current live bank/provider connection:** None  
-**Staged provider backend source:** Phase 19 package present but not provisioned/activated  
-**Security baseline:** Phase 14 + Phase 19 provider-gateway staging
+**Current live money movement:** None  
+**Security baseline:** Phase 14 browser hardening + Phase 19 provider isolation + Phase 20 fail-closed money layer
 
 This document describes the security and privacy boundary of the current This Week build. It is intentionally specific about what the app does and does not protect.
 
@@ -354,7 +354,7 @@ The current GitHub Pages production client still has:
 
 - no active provider session;
 - no live institution connection;
-- no application backend origin configured;
+- a known Supabase backend origin, but no browser transport to it;
 - no browser provider API key;
 - no browser provider secret;
 - `connect-src 'none'`;
@@ -362,11 +362,9 @@ The current GitHub Pages production client still has:
 
 Therefore the existence of Phase 19 server source does **not** mean the current production app uploads financial data.
 
-### Dedicated backend requirement
+### Shared-project isolation
 
-Provider infrastructure must be deployed into a dedicated This Week backend project.
-
-The existing shared Supabase project contains unrelated applications/services and is not approved for This Week provider data or provider credentials.
+The user selected the existing **BennyBundles’s Project** because the free Supabase organization had reached its active-project limit. This Week therefore uses namespaced provider/money tables, revoked browser grants, RLS, server-only secrets, and JWT-protected Edge Functions inside that shared project.
 
 ### Authentication
 
@@ -434,11 +432,11 @@ Provider disconnect must separately:
 3. mark the server connection disconnected;
 4. clear provider sync credentials/cursors as appropriate.
 
-The current production build has no such live server data because activation remains disabled.
+The server provider/money schemas exist, but there is no live institution connection, provider token for an end user, or live money execution because activation remains disabled.
 
 ### Activation security gate
 
-Before changing the client CSP or enabling browser networking, the dedicated backend must pass:
+Before changing the client CSP or enabling browser networking, the provisioned backend must pass:
 
 - authentication and cross-user isolation tests;
 - RLS / direct-grant review;
@@ -486,3 +484,114 @@ The backend origin is now known, but production CSP still uses `connect-src 'non
 Provider secrets are not present in the browser or GitHub Pages source.
 
 No financial institution is connected until recoverable Auth, provider credentials, provider Sandbox verification, and an explicit CSP allowlist are completed.
+
+
+## 22. Phase 20 money-layer foundation
+
+Phase 20 adds a server-side money data plane while keeping the weekly Plan browser-local.
+
+### Authority separation
+
+The current product has two deliberately separate concepts:
+
+- **Available Now** — plan-derived weekly decision signal;
+- **This Week Cash** — reserved product concept for future provider-backed actual funds.
+
+The money ledger must never silently redefine Available Now.
+
+Bill Protection must never be presented as proof a bill was paid.
+
+### Server accounting
+
+The Phase 20 backend includes 20 `tw_money_*` tables for:
+
+- banking customer/account references;
+- money envelopes;
+- double-entry ledger accounts, journals and entries;
+- user payment/transfer authorizations;
+- external funding accounts;
+- transfers and transfer lifecycle events;
+- direct-deposit switches and posted payroll deposits;
+- reward offers/enrollments;
+- billers, payments and payment-method switches;
+- virtual cards and card authorizations;
+- provider event ingestion.
+
+All 20 tables have RLS enabled.
+
+Direct `public`, `anon`, and normal `authenticated` table access is revoked.
+
+The JWT-protected `thisweek-money-gateway` uses service-role access after verifying the authenticated user.
+
+Anonymous Supabase users are rejected.
+
+### Append-only ledger
+
+`tw_money_journals` and `tw_money_ledger_entries` are append-only.
+
+A posted financial event is not corrected by rewriting history.
+
+A correction posts a compensating journal.
+
+All journal entries use integer cents and must sum to zero.
+
+The money-move RPC locks the selected ledger accounts and rejects a move when the source balance is insufficient.
+
+### Provider execution lock
+
+Money-provider execution defaults to disabled.
+
+Sandbox calls require:
+
+`THISWEEK_MONEY_EXECUTION_MODE=sandbox`
+
+Production calls additionally require:
+
+`THISWEEK_LIVE_MONEY_ENABLED=true`
+
+The current client has neither condition enabled.
+
+The static production client still uses `connect-src 'none'`.
+
+### Provider roles
+
+Initial provider architecture:
+
+- Plaid — external bank linking / transaction plane;
+- Unit — future deposit account and virtual debit card program;
+- Pinwheel — future direct-deposit and bill-switch flows;
+- Method — future supported-liability bill payments.
+
+Provider credentials remain server-only.
+
+No PAN, CVV, full bank account number, provider API key, or provider access token belongs in localStorage, sessionStorage, portable exports, analytics, or public repository configuration.
+
+### Reward safety
+
+The server contains an inactive sandbox reward template named:
+
+`TW_DD_SWITCH_25_SANDBOX`
+
+It is not a public promotion.
+
+It cannot be advertised or paid until offer funding, legal terms, qualification rules, abuse controls, provider/program approval, and release checks are complete.
+
+### Activation requirements
+
+Before real money is enabled:
+
+1. recoverable Auth and account recovery;
+2. MFA/AAL2 for sensitive actions;
+3. provider Sandbox credentials;
+4. KYC/CIP onboarding flow where required by provider/program;
+5. signed/verified provider webhooks;
+6. idempotent event processing and reconciliation;
+7. realtime card-authorization controller;
+8. transfer/ACH return handling;
+9. disputes/refunds/reversals support;
+10. rate limits and abuse/fraud controls;
+11. exact CORS/CSP network allowlist;
+12. provider/program approval and any required commercial agreement;
+13. security and release review.
+
+No live money currently moves.
