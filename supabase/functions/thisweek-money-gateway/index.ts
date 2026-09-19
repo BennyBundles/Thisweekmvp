@@ -135,6 +135,18 @@ function canExecuteProvider(name: "unit" | "pinwheel" | "method" | "plaid"): boo
   return false;
 }
 
+async function requireProductionReleaseInterlock(): Promise<void> {
+  if (MONEY_EXECUTION_MODE !== "production") return;
+  if (!LIVE_MONEY_ENABLED) throw new Error("live_money_disabled");
+  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) throw new Error("production_release_interlock_unavailable");
+  const releaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+  const { data, error } = await releaseAdmin.rpc("tw_release_money_enabled");
+  if (error || data !== true) throw new Error("production_release_gates_incomplete");
+}
+
+
 async function parseResponse(res: Response): Promise<AnyRecord> {
   const body = await res.json().catch(() => ({}));
   if (!res.ok) {
@@ -152,6 +164,7 @@ async function parseResponse(res: Response): Promise<AnyRecord> {
 
 
 async function plaidPost(path: string, payload: AnyRecord): Promise<AnyRecord> {
+  await requireProductionReleaseInterlock();
   if (!canExecuteProvider("plaid")) throw new Error("plaid_not_configured");
   const res = await fetch(PLAID_BASE_URL + path, {
     method: "POST",
@@ -657,6 +670,7 @@ async function simulateUnitAuthorization(
 }
 
 async function unitRequest(path: string, init: RequestInit = {}): Promise<AnyRecord> {
+  await requireProductionReleaseInterlock();
   if (!canExecuteProvider("unit")) throw new Error("unit_not_configured");
   const res = await fetch(UNIT_BASE_URL + path, {
     ...init,
@@ -671,6 +685,7 @@ async function unitRequest(path: string, init: RequestInit = {}): Promise<AnyRec
 }
 
 async function pinwheelRequest(path: string, init: RequestInit = {}): Promise<AnyRecord> {
+  await requireProductionReleaseInterlock();
   if (!canExecuteProvider("pinwheel")) throw new Error("pinwheel_not_configured");
   const res = await fetch(PINWHEEL_BASE_URL + path, {
     ...init,
@@ -692,6 +707,7 @@ async function pinwheelLinkToken(payload: AnyRecord): Promise<AnyRecord> {
 }
 
 async function methodRequest(path: string, init: RequestInit = {}): Promise<AnyRecord> {
+  await requireProductionReleaseInterlock();
   if (!canExecuteProvider("method")) throw new Error("method_not_configured");
   const res = await fetch(METHOD_BASE_URL + path, {
     ...init,
@@ -1772,7 +1788,7 @@ Deno.serve(async (req: Request) => {
 
   try {
     if (action === "status") {
-      const [customer, deposits, transfers, cards, bills, rewards] = await Promise.all([
+      const [customer, deposits, transfers, cards, bills, rewards, releaseStatus] = await Promise.all([
         admin.from("tw_money_customers").select("id,onboarding_state,kyc_state,banking_provider")
           .eq("user_id", user.id).maybeSingle(),
         admin.from("tw_money_deposit_accounts").select("id,status,provider,account_last4")
@@ -1782,6 +1798,7 @@ Deno.serve(async (req: Request) => {
         admin.from("tw_money_billers").select("id,status").eq("user_id", user.id),
         admin.from("tw_money_reward_offers").select("id,offer_code,title,reward_amount_cents,minimum_qualifying_deposit_cents,active")
           .eq("active", true),
+        admin.rpc("tw_release_status"),
       ]);
       return json(origin, 200, {
         ok: true,
@@ -1804,10 +1821,12 @@ Deno.serve(async (req: Request) => {
           bills: bills.data?.length || 0,
         },
         activeRewards: rewards.data || [],
+        productionInterlock: releaseStatus.error ? null : releaseStatus.data,
         safety: {
           planAuthority: "browser_local",
           moneyLedgerAuthority: "server_double_entry",
           providerCallsLockedByDefault: true,
+          productionRequiresDatabaseReleaseInterlock: true,
         },
       });
     }
