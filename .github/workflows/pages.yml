@@ -58,6 +58,9 @@ jobs:
       - name: Validate Support Center
         run: node support-check.mjs support/index.html support/app.js
 
+      - name: Validate Sandbox legal fixtures
+        run: node legal-check.mjs legal/sandbox/index.html
+
   deploy:
     needs: validate
     environment:
@@ -116,6 +119,10 @@ jobs:
           cp support/app.js _site/support/app.js
           node support-check.mjs _site/support/index.html _site/support/app.js
 
+          mkdir -p _site/legal/sandbox
+          cp legal/sandbox/index.html _site/legal/sandbox/index.html
+          node legal-check.mjs _site/legal/sandbox/index.html
+
           node <<'NODE'
           const fs = require('fs');
           const cfg = JSON.parse(fs.readFileSync('release.config.json','utf8'));
@@ -173,6 +180,7 @@ jobs:
             ops_js="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/ops/app.js?v=${SHORT}" || true)"
             support_center="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/support/?v=${SHORT}" || true)"
             support_js="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/support/app.js?v=${SHORT}" || true)"
+            legal_sandbox="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/legal/sandbox/?v=${SHORT}" || true)"
 
             if grep -Fq 'This Week' <<< "$html" \
               && grep -Fq -- "$RELEASE_SHA" <<< "$manifest" \
@@ -186,7 +194,10 @@ jobs:
               && grep -Fq 'Operations Console' <<< "$ops_console" \
               && grep -Fq '/functions/v1/thisweek-ops-gateway' <<< "$ops_js" \
               && grep -Fq 'Support & Disputes' <<< "$support_center" \
-              && grep -Fq '/functions/v1/thisweek-support-gateway' <<< "$support_js"; then
+              && grep -Fq '/functions/v1/thisweek-support-gateway' <<< "$support_js" \
+              && grep -Fq 'accept_legal' <<< "$account_js" \
+              && grep -Fq 'set_legal_document_state' <<< "$ops_js" \
+              && grep -Fq 'SANDBOX TEST ONLY.' <<< "$legal_sandbox"; then
               success=1
               break
             fi
@@ -212,4 +223,5 @@ jobs:
             echo "- Account & Security: `${BASE}/account/?v=${SHORT}`"
             echo "- Operations Console: `${BASE}/ops/?v=${SHORT}`"
             echo "- Support & Disputes: `${BASE}/support/?v=${SHORT}`"
+            echo "- Sandbox disclosure fixtures: `${BASE}/legal/sandbox/?v=${SHORT}`"
           } >> "$GITHUB_STEP_SUMMARY"
