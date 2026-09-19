@@ -6087,7 +6087,6 @@ function runPhase14TrustAudit(){
     {name:'Control-character sanitization',pass:!sanitized.includes('\u0000')&&!sanitized.includes('\u202E'),detail:'Unsafe control and bidirectional override characters are removed from imported text.'},
     {name:'Imported text rendering',pass:!escaped.includes('<img')&&escaped.includes('&lt;img'),detail:'Imported text is escaped for HTML display rather than executed.'},
     {name:'Provider credential boundary',pass:PROVIDER_ADAPTER_CONTRACT.secretPolicy.includes('must never be stored')&&BACKEND_SYNC_CONTRACT.providerSecrets.storage==='server_only',detail:'Provider tokens/secrets are explicitly outside the browser-local data contract.'},
-    {name:'At-rest boundary documented',pass:document.body.textContent.includes('No app-level storage encryption')||true,detail:'Browser-local storage is not presented as encrypted vault storage.'},
     {name:'Portable restore boundary',pass:typeof deserializePortableData==='function'&&typeof downloadPortableDataExport==='function',detail:'Portable data can be validated/exported but is not automatically applied back into live state.'},
     {name:'High-impact confirmation path',pass:typeof confirmHighImpactMutation==='function',detail:'Destructive/reversal paths use an explicit confirmation helper.'}
   ];
