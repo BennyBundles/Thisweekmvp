@@ -116,8 +116,10 @@
     },
     "hold": {
       "youtubeVideo": {
-        "status": "pending",
-        "url": null
+        "status": "verified",
+        "url": "https://youtu.be/f32T_dAEfsA",
+        "label": "Hold Something Official Music Video",
+        "note": "Official URL supplied by Benny."
       },
       "appleMusic": {
         "status": "pending",
@@ -138,6 +140,12 @@
       "youtubeMusic": {
         "status": "pending",
         "url": null
+      },
+      "youtubeLyricVisualizer": {
+        "status": "verified",
+        "url": "https://youtu.be/CJ10tQRxYJM",
+        "label": "Hold Something Official Lyric Visualizer",
+        "note": "Official URL supplied by Benny."
       }
     },
     "stuck": {
@@ -194,8 +202,122 @@
     },
     "freestyle": {
       "youtubeVideo": {
+        "status": "verified",
+        "url": "https://youtu.be/WBwOWkJi8Jg",
+        "label": "FREESTYLE Official Music Video",
+        "note": "Official URL supplied by Benny."
+      },
+      "appleMusic": {
         "status": "pending",
         "url": null
+      },
+      "spotify": {
+        "status": "pending",
+        "url": null
+      },
+      "soundCloud": {
+        "status": "pending",
+        "url": null
+      },
+      "unitedMasters": {
+        "status": "pending",
+        "url": null
+      },
+      "youtubeMusic": {
+        "status": "pending",
+        "url": null
+      }
+    },
+    "cry-dark": {
+      "youtubeVideo": {
+        "status": "verified",
+        "url": "https://youtu.be/tFhwHrSRZl8",
+        "label": "Cries in the Dark Official Music Video",
+        "note": "Official URL supplied by Benny."
+      },
+      "appleMusic": {
+        "status": "pending",
+        "url": null
+      },
+      "spotify": {
+        "status": "pending",
+        "url": null
+      },
+      "soundCloud": {
+        "status": "pending",
+        "url": null
+      },
+      "unitedMasters": {
+        "status": "pending",
+        "url": null
+      },
+      "youtubeMusic": {
+        "status": "pending",
+        "url": null
+      }
+    },
+    "wanted": {
+      "youtubeVideo": {
+        "status": "verified",
+        "url": "https://youtu.be/QyweiAeVUW8",
+        "label": "Wanted Me Gone Official Music Video",
+        "note": "Official URL supplied by Benny."
+      },
+      "appleMusic": {
+        "status": "pending",
+        "url": null
+      },
+      "spotify": {
+        "status": "pending",
+        "url": null
+      },
+      "soundCloud": {
+        "status": "pending",
+        "url": null
+      },
+      "unitedMasters": {
+        "status": "pending",
+        "url": null
+      },
+      "youtubeMusic": {
+        "status": "pending",
+        "url": null
+      }
+    },
+    "karma": {
+      "youtubeVideo": {
+        "status": "verified",
+        "url": "https://youtu.be/taWPe81hAYc",
+        "label": "Can’t Crop Karma Official Music Video",
+        "note": "Official URL supplied by Benny."
+      },
+      "appleMusic": {
+        "status": "pending",
+        "url": null
+      },
+      "spotify": {
+        "status": "pending",
+        "url": null
+      },
+      "soundCloud": {
+        "status": "pending",
+        "url": null
+      },
+      "unitedMasters": {
+        "status": "pending",
+        "url": null
+      },
+      "youtubeMusic": {
+        "status": "pending",
+        "url": null
+      }
+    },
+    "whole-brand": {
+      "youtubeVideo": {
+        "status": "verified",
+        "url": "https://youtu.be/CV7piYg0EK4",
+        "label": "The Whole Brand Official Music Video",
+        "note": "Official URL supplied by Benny."
       },
       "appleMusic": {
         "status": "pending",
