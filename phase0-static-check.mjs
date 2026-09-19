@@ -34,7 +34,10 @@ const phase23DocUrl=new URL('./PHASE_23_IMPLEMENTATION.md', import.meta.url);
 const accountGatewayUrl=new URL('./supabase/functions/thisweek-account-gateway/index.ts', import.meta.url);
 const accountHtmlUrl=new URL('./account/index.html', import.meta.url);
 const accountJsUrl=new URL('./account/app.js', import.meta.url);
+const accountReleaseConfigUrl=new URL('./account/release-config.js', import.meta.url);
 const accountCheckUrl=new URL('./account-check.mjs', import.meta.url);
+const phase24DocUrl=new URL('./PHASE_24_IMPLEMENTATION.md', import.meta.url);
+const authProductionSetupUrl=new URL('./AUTH_PRODUCTION_SETUP.md', import.meta.url);
 
 const releaseFiles=['prepare-site.mjs','release-smoke-check.mjs','RELEASE_CHECKLIST.md','RELEASE_POLICY.md','release.config.json','CHANGELOG.md','RELEASES/v0.15.0-phase15.md'];
 for(const name of releaseFiles){
@@ -68,7 +71,10 @@ for(const [label,url] of [
   ['Account Gateway',accountGatewayUrl],
   ['Account Center HTML',accountHtmlUrl],
   ['Account Center client',accountJsUrl],
-  ['Account Center checker',accountCheckUrl]
+  ['Account Center release config',accountReleaseConfigUrl],
+  ['Account Center checker',accountCheckUrl],
+  ['Phase 24 implementation document',phase24DocUrl],
+  ['Auth production setup guide',authProductionSetupUrl]
 ]){
   if(!fs.existsSync(url))failures.push('Missing '+label);
 }
@@ -97,7 +103,11 @@ const phase23Doc=fs.existsSync(phase23DocUrl)?fs.readFileSync(phase23DocUrl,'utf
 const accountGateway=fs.existsSync(accountGatewayUrl)?fs.readFileSync(accountGatewayUrl,'utf8'):'';
 const accountHtml=fs.existsSync(accountHtmlUrl)?fs.readFileSync(accountHtmlUrl,'utf8'):'';
 const accountJs=fs.existsSync(accountJsUrl)?fs.readFileSync(accountJsUrl,'utf8'):'';
+const accountReleaseConfig=fs.existsSync(accountReleaseConfigUrl)?fs.readFileSync(accountReleaseConfigUrl,'utf8'):'';
+const phase24Doc=fs.existsSync(phase24DocUrl)?fs.readFileSync(phase24DocUrl,'utf8'):'';
+const authProductionSetup=fs.existsSync(authProductionSetupUrl)?fs.readFileSync(authProductionSetupUrl,'utf8'):'';
 const requirePhase23FileText=(label,content,text)=>{if(!content.includes(text))failures.push(label);};
+const requirePhase24FileText=(label,content,text)=>{if(!content.includes(text))failures.push(label);};
 
 const requireText=(label,text)=>{if(!html.includes(text))failures.push(label);};
 const forbidText=(label,text)=>{if(html.includes(text))failures.push(label);};
@@ -418,6 +428,23 @@ requirePhase19FileText('Phase 23 provider gateway active-session check',phase19G
 requirePhase21FileText('Phase 23 Money Lab shared auth key',moneyLabJs,'thisweek.auth.session.v1');
 if(/service_role|sb_secret_/i.test(accountHtml+accountJs))failures.push('Phase 23 Account Center contains a server secret pattern');
 if(/localStorage/.test(accountJs))failures.push('Phase 23 Account Center persists auth state to localStorage');
+
+requirePhase24FileText('Phase 24 canonical account URL',accountReleaseConfig,'https://bennybundles.github.io/Thisweekmvp/account/');
+requirePhase24FileText('Phase 24 recovery redirect',accountReleaseConfig,'?mode=recovery');
+requirePhase24FileText('Phase 24 public readiness declaration',accountReleaseConfig,'publicAuthReady:');
+requirePhase24FileText('Phase 24 Turnstile provider declaration',accountReleaseConfig,"provider:'turnstile'");
+requirePhase23FileText('Phase 24 release config script',accountHtml,'./release-config.js');
+requirePhase23FileText('Phase 24 CAPTCHA CSP',accountHtml,'https://challenges.cloudflare.com');
+requirePhase23FileText('Phase 24 release readiness UI',accountHtml,'authReleaseGates');
+requirePhase23FileText('Phase 24 Supabase CAPTCHA metadata',accountJs,'gotrue_meta_security');
+requirePhase23FileText('Phase 24 canonical confirmation redirect',accountJs,'CONFIRM_REDIRECT');
+requirePhase23FileText('Phase 24 canonical recovery redirect',accountJs,'RECOVERY_REDIRECT');
+requirePhase23FileText('Phase 24 signup cooldown',accountJs,"assertCooldown('signup',60000");
+requirePhase23FileText('Phase 24 recovery cooldown',accountJs,"assertCooldown('recover',60000");
+requirePhase23FileText('Phase 24 readiness renderer',accountJs,'renderReleaseReadiness');
+requirePhase24FileText('Phase 24 doc fail-closed readiness',phase24Doc,'public Auth readiness');
+requirePhase24FileText('Phase 24 setup exact redirect',authProductionSetup,'https://bennybundles.github.io/Thisweekmvp/account/?mode=recovery');
+if(/service_role|sb_secret_/i.test(accountReleaseConfig))failures.push('Phase 24 public Auth config contains a server secret pattern');
 
 
 
