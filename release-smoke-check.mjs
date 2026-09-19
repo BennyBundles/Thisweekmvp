@@ -141,6 +141,9 @@ if(phase21CardAuth){
 if(phase21Doc)requireText('Phase 21 doc production boundary',phase21Doc,'no live money movement');
 if(moneyLabHtml)requireText('Money Lab exact Supabase origin',moneyLabHtml,'connect-src https://xjtvawmppzwzrooairyx.supabase.co');
 if(moneyLabJs){
+  requireText('Money Lab provider preflight',moneyLabJs,"gateway('provider_preflight')");
+  requireText('Money Lab provider readiness renderer',moneyLabJs,'renderProviderChecks');
+  requireText('Money Lab provider control gating',moneyLabJs,'applyProviderControlState');
   requireText('Money Lab uses publishable key',moneyLabJs,'sb_publishable_');
   requireText('Money Lab supports TOTP',moneyLabJs,'/challenge');
   requireText('Money Lab invokes authenticated gateway',moneyLabJs,'/functions/v1/thisweek-money-gateway');
@@ -169,6 +172,8 @@ if(phase20Gateway){
   requireText('Phase 22 gateway Pinwheel DD webhook',phase20Gateway,'direct_deposit_switch.added');
   requireText('Phase 22 gateway Method signed webhook setup',phase20Gateway,'METHOD_WEBHOOK_HMAC_SECRET');
   requireText('Phase 22 gateway webhook registration action',phase20Gateway,'register_sandbox_webhooks');
+  requireText('Phase 22 gateway provider preflight',phase20Gateway,'provider_preflight');
+  requireText('Phase 22 gateway preflight Sandbox lock',phase20Gateway,'if (MONEY_EXECUTION_MODE !== "sandbox") return result');
 }
 if(phase19Gateway)requireText('Phase 22 provider gateway must request Plaid Auth',phase19Gateway,'products: ["auth", "transactions"]');
 
