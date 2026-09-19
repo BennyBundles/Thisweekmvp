@@ -545,5 +545,101 @@
       "production_incident_alerting",
       "provider_bank_operations_approval"
     ]
+  },
+  "phase27StaffOperations": {
+    "status": "staff_backend_and_console_deployed",
+    "activation": true,
+    "opsGateway": "thisweek-ops-gateway:v2",
+    "opsConsolePath": "/ops/",
+    "auth": {
+      "roles": [
+        "support_ops",
+        "risk_ops",
+        "admin"
+      ],
+      "roleSource": "auth.app_metadata.thisweek_role",
+      "aal2Required": true,
+      "activeSessionRequired": true,
+      "browserRoleAssignment": false
+    },
+    "tables": [
+      "tw_ops_alerts",
+      "tw_ops_staff_actions"
+    ],
+    "manualRiskReviews": true,
+    "caseAssignment": true,
+    "userControls": [
+      "normal",
+      "restricted",
+      "frozen",
+      "closed"
+    ],
+    "staffAuditAppendOnly": true,
+    "remainingGates": [
+      "provision_named_staff_users",
+      "least_privilege_role_review",
+      "sandbox_case_alert_validation",
+      "external_incident_notifications",
+      "formal_support_runbooks"
+    ]
+  },
+  "phase28SupportIncidentOperations": {
+    "status": "customer_support_and_incident_monitoring_deployed",
+    "activation": true,
+    "supportGateway": "thisweek-support-gateway:v2",
+    "opsGateway": "thisweek-ops-gateway:v2",
+    "supportCenterPath": "/support/",
+    "opsConsolePath": "/ops/",
+    "tables": [
+      "tw_support_requests",
+      "tw_support_messages",
+      "tw_ops_sla_policies",
+      "tw_ops_incidents",
+      "tw_ops_incident_events"
+    ],
+    "browserTableAccess": false,
+    "supportMessagesAppendOnly": true,
+    "incidentEventsAppendOnly": true,
+    "directMoneyMutationFromSupport": false,
+    "sensitiveInputGuards": [
+      "secret_patterns",
+      "ssn_format",
+      "12_to_19_digit_full_numbers"
+    ],
+    "internalSlaPolicy": {
+      "version": "2026-09-beta-v1",
+      "publicCommitment": false,
+      "criticalAlertAckMinutes": 15,
+      "highAlertAckMinutes": 60,
+      "supportFirstResponseMinutes": 240,
+      "riskReviewMinutes": 240,
+      "caseUpdateMinutes": 1440
+    },
+    "healthSignals": [
+      "critical_alert_overdue",
+      "high_alert_overdue",
+      "support_first_response_overdue",
+      "risk_review_overdue",
+      "stale_case",
+      "recent_provider_event_failures",
+      "active_major_critical_incident"
+    ],
+    "healthStates": [
+      "healthy",
+      "degraded",
+      "critical"
+    ],
+    "pagesDeployment": {
+      "ops": true,
+      "support": true
+    },
+    "remainingGates": [
+      "named_staff_provisioning",
+      "sandbox_support_incident_validation",
+      "external_critical_incident_paging",
+      "formal_customer_support_sla_approval",
+      "retention_access_log_policy_approval",
+      "provider_bank_escalation_procedures"
+    ]
   }
 }
