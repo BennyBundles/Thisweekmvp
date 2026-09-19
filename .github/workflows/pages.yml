@@ -15,20 +15,108 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout production commit
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Phase 0 static regression check
+        run: node phase0-static-check.mjs
+
+      - name: Production release smoke check
+        run: node release-smoke-check.mjs
+
   deploy:
+    needs: validate
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout validated production commit
         uses: actions/checkout@v6
+
+      - name: Stage production site
+        env:
+          RELEASE_SHA: ${{ github.sha }}
+          RELEASE_RUN_ID: ${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site
+          cp index.html _site/index.html
+          touch _site/.nojekyll
+
+          node <<'NODE'
+          const fs = require('fs');
+          const cfg = JSON.parse(fs.readFileSync('release.config.json','utf8'));
+          const manifest = {
+            application: 'This Week',
+            release: cfg.release,
+            channel: cfg.channel,
+            commit: process.env.RELEASE_SHA,
+            shortCommit: process.env.RELEASE_SHA.slice(0,8),
+            rollbackCommit: cfg.rollbackCommit,
+            rollbackBranch: cfg.rollbackBranch || null,
+            workflowRunId: process.env.RELEASE_RUN_ID,
+            stateSchema: cfg.stateSchema,
+            portableSchema: cfg.portableSchema,
+            migrationNotes: cfg.migrationNotes,
+            deployedAt: new Date().toISOString()
+          };
+          fs.writeFileSync('_site/release.json', JSON.stringify(manifest,null,2) + '\n');
+          NODE
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      - name: Upload site
+
+      - name: Upload validated site
         uses: actions/upload-pages-artifact@v4
         with:
-          path: "."
+          path: "_site"
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Verify deployed release
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+          RELEASE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          BASE="${PAGE_URL%/}"
+          SHORT="${RELEASE_SHA:0:8}"
+          success=0
+
+          for attempt in $(seq 1 12); do
+            html="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/?v=${SHORT}" || true)"
+            manifest="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/release.json?v=${SHORT}" || true)"
+
+            if printf '%s' "$html" | grep -q 'This Week' && printf '%s' "$manifest" | grep -q "$RELEASE_SHA"; then
+              success=1
+              break
+            fi
+
+            echo "Deployment verification attempt ${attempt}/12 not ready yet."
+            sleep 5
+          done
+
+          if [ "$success" -ne 1 ]; then
+            echo "Production verification failed for commit $RELEASE_SHA"
+            exit 1
+          fi
+
+          {
+            echo "### Production release verified"
+            echo ""
+            echo "- Commit: \`$RELEASE_SHA\`"
+            echo "- Cache-busted URL: \`${BASE}/?v=${SHORT}\`"
+            echo "- Manifest: \`${BASE}/release.json?v=${SHORT}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
