@@ -15,6 +15,8 @@ Production changes for **This Week** are recorded here.
 - Added Method dev Entity creation, Connect liability discovery, ACH source creation, simulated micro-deposit verification and Method Payment submission.
 - Expanded Money Lab into a guided 0–14 provider Sandbox chain.
 - Added Phase 22 release checks for Plaid Auth, Unit processor-token flow, Method dev setup/payment, Pinwheel SDK, credential gating and continued production network denial.
+- Added credential-gated, list-before-create provider webhook registration for Unit general events, Unit authorization requests, Pinwheel direct-deposit events, and Method payment updates.
+- Money Sandbox Lab now includes step **15 · Register provider webhooks**; signing secrets remain server-only and are never returned to the browser.
 
 ### Activation state
 - Provider orchestration code: deployed.
