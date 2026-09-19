@@ -3,15 +3,18 @@
   "status": "draft_for_legal_review_not_checkout_active",
   "licensor": {
     "businessName": "Thats A Good Jawn LLC",
+    "entityDescription": "Wyoming limited liability company registered to do business in Pennsylvania",
     "brandName": "TAGJ",
+    "authorizedRepresentativeLegalName": "Benjamin Alexander",
     "producerCredit": "Bundles (Benny Bundles)",
     "publicBusinessEmail": "prodbybundles@yahoo.com"
   },
   "legalConfiguration": {
-    "governingLawState": null,
-    "venueCounty": null,
+    "governingLawState": "Wyoming",
+    "venue": "State or federal courts of competent jurisdiction in Wyoming, subject to mandatory applicable law",
+    "formationJurisdiction": "Wyoming",
+    "operatingRegistration": "Pennsylvania foreign registration / authority to do business (user-confirmed)",
     "activationBlockers": [
-      "Confirm governing-law state and venue.",
       "Confirm Thats A Good Jawn LLC owns or is authorized to license each beat's composition and source recording rights.",
       "Complete sample/third-party-rights review for every beat.",
       "For MP3-only sources, supply a lossless master before Premium, Unlimited, or Exclusive delivery.",
