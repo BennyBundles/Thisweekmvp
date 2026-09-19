@@ -371,6 +371,17 @@ requirePhase20FileText('Phase 22 Method webhook HMAC secret',phase20Gateway,'MET
 requirePhase20FileText('Phase 22 webhook action credential gated',phase20Gateway,'register_sandbox_webhooks');
 requirePhase21FileText('Phase 22 Lab webhook action',moneyLabJs,"gateway('register_sandbox_webhooks')");
 
+requirePhase20FileText('Phase 22 provider preflight action',phase20Gateway,'provider_preflight');
+requirePhase20FileText('Phase 22 preflight Plaid endpoint',phase20Gateway,'/institutions/get');
+requirePhase20FileText('Phase 22 preflight Unit endpoint',phase20Gateway,'/applications?page[limit]=1');
+requirePhase20FileText('Phase 22 preflight Pinwheel endpoint',phase20Gateway,'/v1/platforms?limit=1');
+requirePhase20FileText('Phase 22 preflight Method endpoint',phase20Gateway,'/entities?page=1&page_limit=1');
+requirePhase20FileText('Phase 22 preflight execution lock',phase20Gateway,'if (MONEY_EXECUTION_MODE !== "sandbox") return result');
+requirePhase21FileText('Phase 22 Lab preflight control',moneyLabHtml,'id="providerPreflight"');
+requirePhase21FileText('Phase 22 Lab preflight renderer',moneyLabJs,'renderProviderChecks');
+requirePhase21FileText('Phase 22 Lab provider-aware controls',moneyLabJs,'applyProviderControlState');
+requirePhase21FileText('Phase 22 Lab preflight action',moneyLabJs,"gateway('provider_preflight')");
+
 
 
 requireText('Phase 13 normalized data model','PHASE 13 — NORMALIZED DATA MODEL + BACKEND READINESS v25');
