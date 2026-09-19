@@ -29,6 +29,11 @@ need('manual monitor control',html,'id="runMonitor"');
 need('automation renderer',js,'renderAutomation');
 need('manual monitor action',js,"ops('run_monitor'");
 need('notification suppression action',js,"ops('suppress_notification'");
+need('release interlock surface',html,'id="releaseStatus"');
+need('release gate renderer',js,'renderReleaseStatus');
+need('release gate action',js,"ops('set_release_gate'");
+need('release evidence requirement',js,'evidence or approval reference');
+
 need('support renderer',js,'renderSupport');
 need('incident renderer',js,'renderIncidents');
 if(/service_role|sb_secret_/i.test(html+js))failures.push('server secret pattern in Ops Console');
