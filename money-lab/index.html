@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src https://xjtvawmppzwzrooairyx.supabase.co; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; object-src 'none'; frame-src 'none'; child-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src https://xjtvawmppzwzrooairyx.supabase.co; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' https://cdn.getpinwheel.com; object-src 'none'; frame-src https://*.getpinwheel.com https://*.pinwheel.com; child-src https://*.getpinwheel.com https://*.pinwheel.com; worker-src 'none'; base-uri 'none'; form-action 'none';">
 <meta name="theme-color" content="#06111a">
 <title>This Week — Money Sandbox Lab</title>
 <style>
@@ -66,12 +66,74 @@ header{display:flex;justify-content:space-between;gap:16px;align-items:flex-star
 </section>
 
 <section class="card wide">
+  <span class="kicker">Phase 22 · provider sandbox chain</span><h2>Run the money stack in order</h2>
+  <p>These controls call real provider Sandbox/dev contracts when server credentials are configured. A disabled provider returns a configuration error instead of silently simulating success.</p>
+  <div class="actions">
+    <button class="primary" id="chainRefresh" disabled>0 · Refresh chain</button>
+    <button id="unitApplication" disabled>1 · Unit applicant</button>
+    <button id="unitApplicationStatus" disabled>2 · Refresh KYC</button>
+    <button id="unitDeposit" disabled>3 · Unit cash account</button>
+    <button id="unitDirectFund" disabled>4A · Unit test ACH credit</button>
+  </div>
+
+  <div class="money-row" style="margin-top:12px">
+    <div class="field"><label for="unitDepositSelect">Unit deposit account</label><select id="unitDepositSelect"><option value="">Refresh chain first</option></select></div>
+    <div class="field"><label for="unitDirectFundAmount">Test ACH credit</label><input id="unitDirectFundAmount" type="number" min="1" step=".01" value="500"></div>
+    <div class="field"><label>&nbsp;</label><span class="muted">Direct Unit Sandbox funding path.</span></div>
+  </div>
+
+  <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+  <div class="actions">
+    <button id="plaidConsent" disabled>4B · Plaid consent</button>
+    <button id="plaidStart" disabled>5 · Open Plaid Hosted Link</button>
+    <button id="plaidFinalize" disabled>6 · Finalize Plaid</button>
+    <button id="plaidAccounts" disabled>7 · Load linked accounts</button>
+  </div>
+  <div class="money-row" style="margin-top:10px">
+    <div class="field"><label for="plaidAccountSelect">Plaid external account</label><select id="plaidAccountSelect"><option value="">Link a Sandbox bank first</option></select></div>
+    <div class="field"><label for="externalFundAmount">ACH pull amount</label><input id="externalFundAmount" type="number" min="1" step=".01" value="100"></div>
+    <div class="field"><label>&nbsp;</label><button id="plaidUnitLink" disabled>8 · Plaid → Unit link</button></div>
+  </div>
+  <div class="actions"><button id="externalFund" disabled>9 · ACH pull into Unit</button></div>
+
+  <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+  <div class="money-row">
+    <div class="field"><label for="cardEnvelopeSelect">Card envelope</label><select id="cardEnvelopeSelect"><option value="">Refresh chain first</option></select></div>
+    <div class="field"><label for="cardLimit">Card limit</label><input id="cardLimit" type="number" min="1" step=".01" value="150"></div>
+    <div class="field"><label>&nbsp;</label><button id="createCard" disabled>10 · Create category card</button></div>
+  </div>
+  <div class="money-row" style="margin-top:8px">
+    <div class="field"><label for="cardSelect">Virtual card</label><select id="cardSelect"><option value="">Create a card first</option></select></div>
+    <div class="field"><label for="authAmount">Purchase authorization</label><input id="authAmount" type="number" min="1" step=".01" value="24.75"></div>
+    <div class="field"><label>&nbsp;</label><button id="simulateAuth" disabled>11 · Simulate purchase</button></div>
+  </div>
+
+  <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+  <div class="actions"><button id="directDepositToken" disabled>12 · Open Direct Deposit Switch</button></div>
+  <p class="muted" style="margin-top:8px">Uses Pinwheel's current web Link SDK with a short-lived server-generated token. The token is kept in memory only.</p>
+
+  <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+  <div class="actions"><button id="methodSetup" disabled>13 · Set up Method dev bill pay</button></div>
+  <div class="money-row" style="margin-top:10px">
+    <div class="field"><label for="methodSourceSelect">Verified Method source</label><select id="methodSourceSelect"><option value="">Run Method setup first</option></select></div>
+    <div class="field"><label for="methodBillerSelect">Method liability</label><select id="methodBillerSelect"><option value="">Run Method setup first</option></select></div>
+    <div class="field"><label for="methodEnvelopeSelect">Envelope</label><select id="methodEnvelopeSelect"><option value="">Refresh chain first</option></select></div>
+  </div>
+  <div class="money-row" style="margin-top:8px">
+    <div class="field"><label for="methodPayAmount">Bill payment amount</label><input id="methodPayAmount" type="number" min="1" step=".01" value="25"></div>
+    <div class="field"><label>&nbsp;</label><span class="muted">Explicit Sandbox authorization + Method Payment.</span></div>
+    <div class="field"><label>&nbsp;</label><button id="methodPay" disabled>14 · Submit Method payment</button></div>
+  </div>
+</section>
+
+<section class="card wide">
   <span class="kicker">Audit console</span><h2>Sandbox output</h2>
   <p>No password is logged. Tokens are held only in this tab's sessionStorage for the sandbox lab.</p>
   <div id="log" class="log" aria-live="polite">Ready.</div>
 </section>
 </div>
 </main>
+<script src="https://cdn.getpinwheel.com/pinwheel-v4.js"></script>
 <script src="./app.js"></script>
 </body>
 </html>
