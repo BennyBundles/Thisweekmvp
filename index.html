@@ -4757,6 +4757,22 @@ body[data-privacy-curtain="on"] .privacy-curtain{display:grid}
 .privacy-curtain strong{display:block;font-size:.86rem}
 .privacy-curtain span{display:block;margin-top:5px;color:#76919c;font-size:.52rem;line-height:1.4}
 
+/* PHASE 16 — LOCAL USAGE INSIGHTS v28 */
+.analytics-hero{padding:14px;border-radius:22px;border:1px solid rgba(196,181,253,.10);background:linear-gradient(145deg,rgba(196,181,253,.045),rgba(103,232,249,.022),rgba(255,255,255,.01))}
+.analytics-hero h2{margin:5px 0 5px;font-size:1rem}.analytics-hero p{margin:0;color:var(--text-soft);font-size:.62rem;line-height:1.46}
+.analytics-state{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:11px;padding:10px 11px;border-radius:15px;border:1px solid rgba(177,206,221,.06);background:rgba(255,255,255,.014)}
+.analytics-state strong{display:block;font-size:.62rem}.analytics-state span{display:block;margin-top:3px;font-size:.47rem;color:#8099a3;line-height:1.4}
+.analytics-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.analytics-stat{padding:10px;border-radius:15px;border:1px solid rgba(177,206,221,.05);background:rgba(255,255,255,.012)}
+.analytics-stat small{display:block;font-size:.38rem;letter-spacing:.08em;text-transform:uppercase;color:#748d98}.analytics-stat strong{display:block;margin-top:3px;font-size:.76rem}.analytics-stat span{display:block;margin-top:3px;color:#7e97a2;font-size:.44rem;line-height:1.35}
+.analytics-bars{display:grid;gap:7px}.analytics-bar{padding:9px 10px;border-radius:14px;border:1px solid rgba(177,206,221,.05);background:rgba(255,255,255,.012)}
+.analytics-bar-head{display:flex;justify-content:space-between;gap:8px;align-items:center}.analytics-bar-head strong{font-size:.56rem}.analytics-bar-head span{font-size:.48rem;color:#8ba3ad}
+.analytics-bar-track{height:6px;margin-top:7px;border-radius:999px;background:rgba(255,255,255,.035);overflow:hidden}.analytics-bar-track i{display:block;width:var(--pct);height:100%;border-radius:inherit;background:linear-gradient(90deg,#c4b5fd,#67e8f9)}
+.analytics-principles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.analytics-principle{padding:9px 10px;border-radius:14px;border:1px solid rgba(177,206,221,.05);background:rgba(255,255,255,.012)}
+.analytics-principle strong{display:block;font-size:.57rem}.analytics-principle span{display:block;margin-top:3px;color:#8099a3;font-size:.47rem;line-height:1.4}
+.analytics-empty{padding:15px;border-radius:18px;border:1px dashed rgba(196,181,253,.14);background:rgba(196,181,253,.02);text-align:center}.analytics-empty strong{display:block;font-size:.68rem}.analytics-empty span{display:block;margin-top:5px;color:#8199a3;font-size:.5rem;line-height:1.45}
+@media(max-width:430px){.analytics-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.analytics-principles{grid-template-columns:1fr}}
+@media(max-width:320px){.analytics-summary{grid-template-columns:1fr}.analytics-state{align-items:flex-start;flex-direction:column}}
 </style></head><body><a class="skip-link" href="#app">Skip to main content</a><div class="sr-only" id="routeAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div><div class="privacy-curtain" id="privacyCurtain" aria-hidden="true"><div><div class="privacy-curtain-mark">TW</div><strong>Financial view hidden</strong><span>This Week masks the page while it is inactive. This is a best-effort browser privacy layer, not a guarantee about operating-system snapshots.</span></div></div><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app" tabindex="-1">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="zen-home">
@@ -5263,7 +5279,17 @@ function localApi(path, options = {}) {
   throw new Error(`Unsupported action: ${method} ${url.pathname}`);
 }
 
-async function apiRequest(path, options = {}) { return localApi(path, options); }
+async function apiRequest(path, options = {}) {
+  const result=localApi(path,options);
+  const method=(options.method||'GET').toUpperCase(),pathname=new URL(path,'https://local.invalid').pathname;
+  if(method==='POST'&&typeof globalThis.recordLocalUsage==='function'){
+    const taskMap={'/setup':'plan_saved','/bill/contribute':'bill_protected','/transaction':'spend_logged','/transaction/import':'import_reconciled','/week/reset':'week_started','/adjustment':'plan_adjusted'};
+    if(taskMap[pathname])globalThis.recordLocalUsage('task_complete',{task:taskMap[pathname]});
+    if(pathname==='/transaction/import/reverse')globalThis.recordLocalUsage('correction_action',{action:'import_unreconciled'});
+    if(pathname==='/transaction/import/reclassify')globalThis.recordLocalUsage('correction_action',{action:'import_reclassified'});
+  }
+  return result;
+}
 
 const DEMO_PRESET = {
   timezone: "America/New_York",
@@ -5368,7 +5394,7 @@ function obligationTimeline(p){
 }
 function route(){ return (location.hash.replace('#','')||'home').split('?')[0]; }
 function nav(routeName){
-  const detailRoutes=['insights','reset','bills','essentials','lifestyle','savings','history','scenario','connections','future','qa','performance','data-model','privacy'];
+  const detailRoutes=['insights','reset','bills','essentials','lifestyle','savings','history','scenario','connections','future','qa','performance','data-model','privacy','analytics'];
   const activeRoute=detailRoutes.includes(routeName)?'details':routeName==='setup'||routeName==='preferences'?'plan':routeName==='precheck'?'log':routeName;
   document.body.dataset.route=activeRoute;
   const index={home:0,log:1,details:2,plan:3}[activeRoute]??0;
@@ -5421,6 +5447,23 @@ function categoryRow(c){ const spent=Math.max(0,c.allocated-c.remaining), fill=p
 function billRow(b){ const fill=percent(b.contributed,b.weeklyRequired||b.requiredByToday||1), warn=b.status!=='ON_TRACK'; return `<div class="finance-row"><div class="finance-head"><div><div class="finance-name">${escapeHtml(b.name)}</div><div class="finance-sub">Due today ${formatCents(b.requiredByToday)} · Weekly target ${formatCents(b.weeklyRequired)}</div></div><div class="finance-main ${warn?'attention':''}">${formatCents(b.contributed)} funded</div></div><div class="progress-track"><div class="progress-fill ${warn?'warn':''}" style="--fill:${fill}%"></div></div></div>`; }
 
 
+const LOCAL_ANALYTICS_KEY='thisweek.analytics.v1';
+const LOCAL_ANALYTICS_VERSION=1;
+const LOCAL_ANALYTICS_WORLD_KEYS=['bills','essentials','lifestyle','savings'];
+const LOCAL_ANALYTICS_STUDIO_KEYS=['bills','essentials','lifestyle','savings','precheck','scenario','history','connections','insights'];
+const LOCAL_ANALYTICS_TASK_KEYS=['spend_logged','bill_protected','import_reconciled','plan_saved','week_started','plan_adjusted'];
+const LOCAL_ANALYTICS_CORRECTION_KEYS=['import_unreconciled','import_reclassified'];
+function blankLocalAnalytics(enabled=false){return {version:LOCAL_ANALYTICS_VERSION,enabled:!!enabled,counters:{category_focus:0,studio_open:0,recommendation_open:0,task_complete:0,correction_action:0,density_choice:0},worldFocus:Object.fromEntries(LOCAL_ANALYTICS_WORLD_KEYS.map(k=>[k,0])),studioOpens:Object.fromEntries(LOCAL_ANALYTICS_STUDIO_KEYS.map(k=>[k,0])),taskCompletions:Object.fromEntries(LOCAL_ANALYTICS_TASK_KEYS.map(k=>[k,0])),correctionActions:Object.fromEntries(LOCAL_ANALYTICS_CORRECTION_KEYS.map(k=>[k,0])),densityChoices:{compact:0,balanced:0,rich:0}};}
+function safeAnalyticsCount(value){const n=Number(value);return Number.isFinite(n)&&n>0?Math.min(1e9,Math.floor(n)):0;}
+function normalizeLocalAnalytics(raw){const base=blankLocalAnalytics(!!raw?.enabled),next={...base,...(raw&&typeof raw==='object'?raw:{})};next.version=LOCAL_ANALYTICS_VERSION;next.enabled=!!next.enabled;for(const key of Object.keys(base.counters))next.counters[key]=safeAnalyticsCount(raw?.counters?.[key]);for(const key of LOCAL_ANALYTICS_WORLD_KEYS)next.worldFocus[key]=safeAnalyticsCount(raw?.worldFocus?.[key]);for(const key of LOCAL_ANALYTICS_STUDIO_KEYS)next.studioOpens[key]=safeAnalyticsCount(raw?.studioOpens?.[key]);for(const key of LOCAL_ANALYTICS_TASK_KEYS)next.taskCompletions[key]=safeAnalyticsCount(raw?.taskCompletions?.[key]);for(const key of LOCAL_ANALYTICS_CORRECTION_KEYS)next.correctionActions[key]=safeAnalyticsCount(raw?.correctionActions?.[key]);for(const key of ['compact','balanced','rich'])next.densityChoices[key]=safeAnalyticsCount(raw?.densityChoices?.[key]);return next;}
+function readLocalAnalytics(){try{return normalizeLocalAnalytics(JSON.parse(safeLocalStorageGet(LOCAL_ANALYTICS_KEY)||'null'));}catch{return blankLocalAnalytics(false);}}
+function writeLocalAnalytics(value){const next=normalizeLocalAnalytics(value);safeLocalStorageSet(LOCAL_ANALYTICS_KEY,JSON.stringify(next));return next;}
+function setLocalAnalyticsEnabled(enabled){const current=readLocalAnalytics();current.enabled=!!enabled;return writeLocalAnalytics(current);}
+function clearLocalAnalyticsCounters(){const current=readLocalAnalytics();return writeLocalAnalytics(blankLocalAnalytics(current.enabled));}
+function recordLocalUsage(event,meta={}){const data=readLocalAnalytics();if(!data.enabled)return false;if(!(event in data.counters))return false;data.counters[event]=safeAnalyticsCount(data.counters[event])+1;if(event==='category_focus'&&LOCAL_ANALYTICS_WORLD_KEYS.includes(meta.world))data.worldFocus[meta.world]=safeAnalyticsCount(data.worldFocus[meta.world])+1;if(event==='studio_open'&&LOCAL_ANALYTICS_STUDIO_KEYS.includes(meta.studio))data.studioOpens[meta.studio]=safeAnalyticsCount(data.studioOpens[meta.studio])+1;if(event==='task_complete'&&LOCAL_ANALYTICS_TASK_KEYS.includes(meta.task))data.taskCompletions[meta.task]=safeAnalyticsCount(data.taskCompletions[meta.task])+1;if(event==='correction_action'&&LOCAL_ANALYTICS_CORRECTION_KEYS.includes(meta.action))data.correctionActions[meta.action]=safeAnalyticsCount(data.correctionActions[meta.action])+1;if(event==='density_choice'&&['compact','balanced','rich'].includes(meta.density))data.densityChoices[meta.density]=safeAnalyticsCount(data.densityChoices[meta.density])+1;writeLocalAnalytics(data);return true;}
+function localAnalyticsSummary(data=readLocalAnalytics()){const sum=o=>Object.values(o||{}).reduce((n,v)=>n+safeAnalyticsCount(v),0);const categoryFocus=sum(data.worldFocus),studioOpens=sum(data.studioOpens),tasks=sum(data.taskCompletions),corrections=sum(data.correctionActions);const reconciled=safeAnalyticsCount(data.taskCompletions?.import_reconciled);const correctionRate=reconciled?Math.round(corrections/reconciled*100):null;const densityEntries=Object.entries(data.densityChoices||{}).sort((a,b)=>b[1]-a[1]);return {categoryFocus,studioOpens,tasks,corrections,reconciled,correctionRate,recommendationOpens:safeAnalyticsCount(data.counters?.recommendation_open),preferredDensity:densityEntries[0]?.[1]>0?densityEntries[0][0]:null,totalEvents:sum(data.counters)};}
+function downloadLocalAnalyticsExport(){const data=readLocalAnalytics(),payload={schema:'thisweek.local-usage-insights',schemaVersion:LOCAL_ANALYTICS_VERSION,exportedAt:nowIso(),localOnly:true,containsFinancialAmounts:false,containsMerchantOrCategoryNames:false,containsEventTimestamps:false,data};const json=JSON.stringify(payload,null,2),blob=new Blob([json],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='this-week-local-usage-insights.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);return json.length;}
+if(typeof globalThis!=='undefined')globalThis.recordLocalUsage=recordLocalUsage;
 const RECOMMENDATION_PREFS_KEY='thisweek.recommendations.v1';
 function readRecommendationPrefs(){
   const base={suppressed:{},seen:{}};
@@ -5717,8 +5760,9 @@ function readUiPrefs(){
   }catch{uiPrefsCache={...base};return {...base};}
 }
 function writeUiPrefs(next){
-  const v={...readUiPrefs(),...next};uiPrefsCache={...v};
+  const prior=readUiPrefs(),v={...prior,...next};uiPrefsCache={...v};
   safeLocalStorageSet(UI_PREFS_KEY,JSON.stringify(v));
+  if(next?.density&&next.density!==prior.density)recordLocalUsage('density_choice',{density:next.density});
   applyUiPrefs();return v;
 }
 function systemPrefersReducedMotion(){try{return matchMedia('(prefers-reduced-motion: reduce)').matches;}catch{return false;}}
@@ -6079,6 +6123,7 @@ function localDataInventory(){
     if(key===UI_PREFS_KEY)return 'Presentation and accessibility preferences';
     if(key===FLEX_CAPS_KEY)return 'Lifestyle soft-cap preferences';
     if(key===RECOMMENDATION_PREFS_KEY)return 'Temporary recommendation presentation state';
+    if(key===LOCAL_ANALYTICS_KEY)return 'Optional local-only aggregate usage counters; no financial amounts or merchant/category names';
     if(key===SCENARIO_DRAFT_KEY)return 'Temporary Scenario Sandbox assumptions';
     return 'This Week browser-local application state';
   };
@@ -7157,6 +7202,7 @@ function initZenDisclosure(p,d,worlds,attentionOverride,command){
     });
   };
   const focus=(world)=>{
+    recordLocalUsage('category_focus',{world});
     active=world;selectedChild=null;scene.dataset.focus=world;
     zones.forEach(z=>{const on=z.dataset.world===world;z.classList.toggle('focused',on);z.classList.toggle('dim',!on);z.setAttribute('aria-expanded',String(on));});
     core?.classList.add('dim');more.className='zen-more-menu';more.innerHTML='';
@@ -7175,7 +7221,7 @@ function initZenDisclosure(p,d,worlds,attentionOverride,command){
   });
   core?.addEventListener('click',e=>{if(active){e.preventDefault();collapse();}else{e.preventDefault();navigateWithChoreography('precheck',core,'available');}});
   attention?.addEventListener('click',()=>{if(attentionOverride)focus(attentionOverride.world);});
-  commandEl?.addEventListener('click',e=>{e.preventDefault();openAppSheet(phase3CommandSheetModel(p,d,command));});
+  commandEl?.addEventListener('click',e=>{e.preventDefault();recordLocalUsage('recommendation_open');openAppSheet(phase3CommandSheetModel(p,d,command));});
   scene.addEventListener('pointerdown',resetTimer,{passive:true});
   scene.addEventListener('keydown',resetTimer);
   if(zenDisclosureVisibilityCleanup)zenDisclosureVisibilityCleanup();
@@ -7308,7 +7354,8 @@ async function renderDetails(){
           tool('qa','Quality','Device QA','Run mobile viewport, overflow, touch, storage, parser, and static-runtime checks on this device.','QA','#67e8f9',semanticIcon('settings')),
           tool('performance','Runtime','Performance & Resilience','Inspect render timing, storage growth, adaptive tier, and derived-cache behavior.','Health','#72d6aa',semanticIcon('analysis')),
           tool('data-model','Data model','Data Model & Export','Inspect normalized entities, provider contracts, provenance, and portable JSON serialization.','Schema','#9fc8d1',semanticIcon('architecture')),
-          tool('privacy','Trust','Privacy & Local Data','See where financial data lives, what is imported, export it, or delete This Week data from this browser.','Local','#67e8f9',semanticIcon('settings'))
+          tool('privacy','Trust','Privacy & Local Data','See where financial data lives, what is imported, export it, or delete This Week data from this browser.','Local','#67e8f9',semanticIcon('settings')),
+          tool('analytics','Local insights','Usage Insights','Optional aggregate counters that stay in this browser and help evaluate workflow friction without tracking time or financial amounts.','Optional','#c4b5fd',semanticIcon('analysis'))
         ].join('')
       }
     ];
@@ -8317,7 +8364,7 @@ let historyTraversalPending=false;
 try{history.scrollRestoration='manual';}catch{}
 
 function routeAccessibleName(routeName){
-  return ({home:'Home',log:'Add Spending',details:'Details',insights:'Advanced Insights',bills:'Bill Protection Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex Studio',savings:'Savings Goal Studio',precheck:'Purchase Pre-check',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data Center',preferences:'Presentation and Accessibility',future:'System Architecture',qa:'Device QA',performance:'Performance and Resilience','data-model':'Data Model and Export',privacy:'Privacy and Local Data',reset:'New Week',setup:'Plan'})[routeName]||'Home';
+  return ({home:'Home',log:'Add Spending',details:'Details',insights:'Advanced Insights',bills:'Bill Protection Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex Studio',savings:'Savings Goal Studio',precheck:'Purchase Pre-check',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data Center',preferences:'Presentation and Accessibility',future:'System Architecture',qa:'Device QA',performance:'Performance and Resilience','data-model':'Data Model and Export',privacy:'Privacy and Local Data',analytics:'Local Usage Insights',reset:'New Week',setup:'Plan'})[routeName]||'Home';
 }
 function announceRoute(routeName,focusMain=true){
   const announcer=document.getElementById('routeAnnouncer'),main=document.getElementById('app');
@@ -8357,6 +8404,7 @@ async function render(){
     window.scrollTo({top:restoreScroll,behavior:'auto'});
   });
   announceRoute(r,routeChanged);
+  if(lastRenderedRoute!==r&&LOCAL_ANALYTICS_STUDIO_KEYS.includes(r))recordLocalUsage('studio_open',{studio:r});
   lastRenderedRoute=r;
   historyTraversalPending=false;
   recordRouteRender(r,renderStarted);
