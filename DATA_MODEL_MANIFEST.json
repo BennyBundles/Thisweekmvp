@@ -947,7 +947,8 @@
       "tw_release_drill_runs",
       "tw_release_drill_events",
       "tw_release_gate_evidence_requirements",
-      "tw_release_gate_evidence"
+      "tw_release_gate_evidence",
+      "tw_release_candidate_selections"
     ],
     "serviceRoleRpcs": [
       "tw_release_drill_status",
@@ -959,7 +960,10 @@
       "tw_release_record_gate_evidence",
       "tw_release_gate_evidence_status",
       "tw_release_readiness_report",
-      "tw_release_set_gate"
+      "tw_release_set_gate",
+      "tw_release_active_candidate",
+      "tw_release_select_candidate",
+      "tw_release_candidate_report"
     ],
     "sandboxChecklist": [
       "provider_preflight",
@@ -1001,7 +1005,16 @@
     ],
     "migrations": [
       "20260919184231_phase34_release_evidence_sandbox_certification",
-      "phase34_release_evidence_service_role_policies"
-    ]
+      "phase34_release_evidence_service_role_policies",
+      "phase34_release_candidate_binding"
+    ],
+    "releaseCandidateBinding": {
+      "activeCandidateSelectionAppendOnly": true,
+      "fullCommitShaRequired": true,
+      "certificationMustMatchActiveCandidate": true,
+      "drillsMustMatchActiveCandidate": true,
+      "derivedCertificationEvidenceCandidateScoped": true,
+      "deploymentAutoSelection": false
+    }
   }
 }
