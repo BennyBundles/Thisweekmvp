@@ -1,0 +1,10 @@
+{
+  "release": "v0.15.0-phase15",
+  "channel": "production",
+  "rollbackCommit": "351a052ba214d4813b296b4cd3dc7965e695b6e1",
+  "rollbackBranch": "rollback/phase15-pre-release-2026-09-18",
+  "stateSchema": 3,
+  "portableSchema": 1,
+  "migrationNotes": "No new persistent financial-state migration in Phase 15. Core schema remains v3; Phase 13 migration contract remains authoritative.",
+  "productionUrl": "https://bennybundles.github.io/Thisweekmvp/"
+}
