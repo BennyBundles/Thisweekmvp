@@ -59,6 +59,10 @@ const opsNotifier=requireFile('supabase/functions/thisweek-ops-notifier/index.ts
 const opsNotifierRuntime=requireFile('supabase/functions/thisweek-ops-notifier/deno.json');
 const phase31Doc=requireFile('PHASE_31_IMPLEMENTATION.md');
 const phase31Schema=requireFile('supabase/phase31/production_activation_interlock.sql');
+const phase32Doc=requireFile('PHASE_32_IMPLEMENTATION.md');
+const phase32Schema=requireFile('supabase/phase32/legal_retention.sql');
+const legalSandbox=requireFile('legal/sandbox/index.html');
+const legalCheck=requireFile('legal-check.mjs');
 const phase28Schema=requireFile('supabase/phase28/support_incident_ops.sql');
 const supportGateway=requireFile('supabase/functions/thisweek-support-gateway/index.ts');
 const supportHtml=requireFile('support/index.html');
@@ -356,6 +360,38 @@ if(opsGateway){
 if(opsHtml)requireText('Phase 31 Ops release surface',opsHtml,'id="releaseStatus"');
 if(opsJs)requireText('Phase 31 Ops release renderer',opsJs,'renderReleaseStatus');
 if(phase31Doc)requireText('Phase 31 release remains locked',phase31Doc,'live money ready: false');
+if(phase32Schema){
+  requireText('Phase 32 legal document registry',phase32Schema,'tw_legal_documents');
+  requireText('Phase 32 acceptance receipt table',phase32Schema,'tw_legal_acceptances');
+  requireText('Phase 32 retention registry',phase32Schema,'tw_retention_policies');
+  requireText('Phase 32 sensitive access table',phase32Schema,'tw_sensitive_access_events');
+  requireText('Phase 32 immutable acceptance',phase32Schema,'tw_legal_acceptances_immutable');
+  requireText('Phase 32 immutable sensitive access',phase32Schema,'tw_sensitive_access_events_immutable');
+  requireText('Phase 32 browser roles revoked',phase32Schema,'from public,anon,authenticated');
+  requireText('Phase 32 user legal readiness RPC',phase32Schema,'tw_user_production_legal_ready');
+  requireText('Phase 32 legal derived gate',phase32Schema,'productionLegalSetActive');
+  requireText('Phase 32 retention derived gate',phase32Schema,'productionRetentionPolicyActive');
+  requireText('Phase 32 access audit derived gate',phase32Schema,'sensitiveAccessAuditActive');
+}
+if(accountGateway){
+  requireText('Phase 32 Account Gateway legal status',accountGateway,'tw_legal_status');
+  requireText('Phase 32 Account Gateway acceptance action',accountGateway,'accept_legal');
+}
+if(accountHtml)requireText('Phase 32 Account disclosure surface',accountHtml,'id="legalList"');
+if(accountJs)requireText('Phase 32 Account legal renderer',accountJs,'renderLegal');
+if(phase20Gateway)requireText('Phase 32 Money Gateway user legal gate',phase20Gateway,'production_legal_acceptance_required');
+if(phase19Gateway)requireText('Phase 32 Provider Gateway user legal gate',phase19Gateway,'production_legal_acceptance_required');
+if(phase21CardAuth)requireText('Phase 32 card user legal gate',phase21CardAuth,'tw_user_production_legal_ready');
+if(opsGateway){
+  requireText('Phase 32 sensitive staff access audit',opsGateway,'tw_sensitive_access_record');
+  requireText('Phase 32 legal admin action',opsGateway,'set_legal_document_state');
+  requireText('Phase 32 retention admin action',opsGateway,'set_retention_policy_state');
+}
+if(opsHtml)requireText('Phase 32 Ops legal retention surface',opsHtml,'id="legalRetention"');
+if(opsJs)requireText('Phase 32 Ops legal retention renderer',opsJs,'renderLegalRetention');
+if(legalSandbox)requireText('Phase 32 Sandbox legal fixture must be test-only',legalSandbox,'SANDBOX TEST ONLY.');
+if(phase32Doc)requireText('Phase 32 production legal remains unapproved',phase32Doc,'inactive/unapproved');
+if(!legalCheck)failures.push('Phase 32 legal Sandbox checker unavailable');
 if(phase20Gateway)requireText('Money gateway rejects revoked session',phase20Gateway,'tw_auth_session_active');
 if(phase19Gateway)requireText('Provider gateway rejects revoked session',phase19Gateway,'tw_auth_session_active');
 
