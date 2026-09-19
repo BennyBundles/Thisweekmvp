@@ -256,7 +256,7 @@ requirePhase19FileText('Phase 19 shared project isolation rule',phase19Readme,'B
 
 // Phase 20 money-layer foundation must remain fail-closed in the browser.
 requireText('Phase 20 money client config','const LIVE_MONEY_CONFIG=Object.freeze({');
-requireText('Phase 20 client money disabled',"state:'backend_foundation_deployed'");
+requireText('Phase 20+ money backend deployed',"state:'event_controllers_deployed'");
 requireText('Phase 20 client execution disabled',"executionMode:'disabled'");
 requireText('Phase 20 money network deny rule',"networkPolicy:'deny_until_sandbox_auth_and_credentials'");
 requireText('Phase 20 inactive reward disclosure',"rewardMode:'sandbox_template_inactive'");
