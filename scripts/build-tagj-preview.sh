@@ -9,4 +9,4 @@ cp tagj-assets/*.css .tagj-dist/tagj-assets/
 cp tagj-assets/v147/* .tagj-dist/tagj-assets/v147/
 cp tagj-data/* .tagj-dist/tagj-data/
 
-printf 'V14.7' > .tagj-dist/VERSION.txt
+printf 'V14.8' > .tagj-dist/VERSION.txt
