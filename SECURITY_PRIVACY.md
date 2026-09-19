@@ -2,9 +2,10 @@
 
 **Current architecture:** Static browser-local application  
 **Current hosting:** GitHub Pages  
-**Current application backend:** None  
+**Current production application backend:** None active  
 **Current live bank/provider connection:** None  
-**Phase:** 14
+**Staged provider backend source:** Phase 19 package present but not provisioned/activated  
+**Security baseline:** Phase 14 + Phase 19 provider-gateway staging
 
 This document describes the security and privacy boundary of the current This Week build. It is intentionally specific about what the app does and does not protect.
 
@@ -343,3 +344,122 @@ Do not include:
 - private financial data
 
 in a public bug report.
+
+
+## 19. Phase 19 staged provider gateway
+
+Phase 19 adds a repository source package for a future authenticated financial-provider backend.
+
+The current GitHub Pages production client still has:
+
+- no active provider session;
+- no live institution connection;
+- no application backend origin configured;
+- no browser provider API key;
+- no browser provider secret;
+- `connect-src 'none'`;
+- no application `fetch()` path.
+
+Therefore the existence of Phase 19 server source does **not** mean the current production app uploads financial data.
+
+### Dedicated backend requirement
+
+Provider infrastructure must be deployed into a dedicated This Week backend project.
+
+The existing shared Supabase project contains unrelated applications/services and is not approved for This Week provider data or provider credentials.
+
+### Authentication
+
+A random browser-local This Week user ID remains a relationship identifier, not authentication.
+
+Live-provider activation requires a recoverable authenticated user-scoped server session.
+
+### Provider secret boundary
+
+Application/provider client credentials must remain server-side.
+
+End-user provider access tokens must remain server-side and are designed to be stored via Supabase Vault.
+
+Provider tokens must never be written to:
+
+- localStorage;
+- sessionStorage;
+- portable financial exports;
+- raw client provider records;
+- URL query parameters;
+- local analytics.
+
+### Provider data plane
+
+The staged backend separates:
+
+- provider consent;
+- connection metadata;
+- external accounts;
+- external balances;
+- provider transactions;
+- sync cursors;
+- sync-run state;
+- conflicts;
+- provider-token Vault references.
+
+The local weekly Plan is not cloud-migrated by Phase 19.
+
+### External balances
+
+External provider balances are contextual values.
+
+They must remain explicitly labeled as external and must never be substituted for or merged into Available Now.
+
+### Provider reconciliation
+
+Provider activity must follow:
+
+`provider -> server sync -> review -> reconcile -> weekly transaction`
+
+Pending provider activity stays reference-only.
+
+Posted outflows do not affect the Plan until explicit reconciliation.
+
+Inflows do not silently increase Available Now.
+
+### Disconnect and deletion
+
+When a live provider connection is eventually active, deleting local browser data alone will **not** be sufficient to delete server-side provider data or revoke an institution connection.
+
+Provider disconnect must separately:
+
+1. remove/revoke the provider Item when supported;
+2. delete the encrypted provider access token;
+3. mark the server connection disconnected;
+4. clear provider sync credentials/cursors as appropriate.
+
+The current production build has no such live server data because activation remains disabled.
+
+### Activation security gate
+
+Before changing the client CSP or enabling browser networking, the dedicated backend must pass:
+
+- authentication and cross-user isolation tests;
+- RLS / direct-grant review;
+- provider consent checks;
+- provider Sandbox connect/sync/disconnect tests;
+- encrypted token-storage verification;
+- provider-token deletion verification;
+- pending vs posted verification;
+- idempotent provider transaction sync;
+- origin/CORS verification;
+- exact CSP allowlist review;
+- security-advisor review.
+
+The browser network boundary should only then change from `connect-src 'none'` to the exact dedicated backend origin.
+
+## 20. Phase 19 backend source locations
+
+- `supabase/phase19/provider_schema.sql`
+- `supabase/phase19/README.md`
+- `supabase/functions/thisweek-provider-gateway/index.ts`
+- `supabase/functions/thisweek-provider-gateway/deno.json`
+- `PHASE_19_IMPLEMENTATION.md`
+
+These files are activation infrastructure, not proof of an active bank connection.
