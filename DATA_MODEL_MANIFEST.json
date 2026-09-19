@@ -286,10 +286,10 @@
       "method_dev_bill_payment"
     ],
     "deployedFunctions": {
-      "providerGateway": "thisweek-provider-gateway:v3",
-      "moneyGateway": "thisweek-money-gateway:v7",
+      "providerGateway": "thisweek-provider-gateway:v4",
+      "moneyGateway": "thisweek-money-gateway:v9",
       "signedWebhook": "thisweek-money-webhook:v3",
-      "unitCardAuthorization": "thisweek-unit-card-authorization:v1"
+      "unitCardAuthorization": "thisweek-unit-card-authorization:v2"
     },
     "requiredServerCredentials": [
       "PLAID_CLIENT_ID",
@@ -434,6 +434,57 @@
       "create_turnstile_widget_and_configure_supabase_captcha",
       "configure_and_verify_custom_smtp",
       "verify_security_notification_emails"
+    ]
+  },
+  "phase25RiskControls": {
+    "status": "sandbox_active_production_fail_closed",
+    "activation": false,
+    "tables": [
+      "tw_risk_policies",
+      "tw_risk_user_controls",
+      "tw_risk_events",
+      "tw_risk_reviews"
+    ],
+    "serviceRoleRpcs": [
+      "tw_risk_evaluate_action",
+      "tw_money_risk_reserve_card_authorization"
+    ],
+    "browserTableAccess": false,
+    "sandboxPolicy": {
+      "version": "2026-09-sandbox-v1",
+      "active": true,
+      "purpose": "development_guardrails_not_production_customer_limits"
+    },
+    "productionPolicy": {
+      "version": "2026-09-production-template-v1",
+      "active": false,
+      "noActivePolicyDecision": "deny_risk_policy_unavailable"
+    },
+    "guardedActions": [
+      "provider_link",
+      "external_ach_pull",
+      "virtual_card_issue",
+      "card_authorization",
+      "direct_deposit_switch",
+      "bill_payment"
+    ],
+    "idempotency": "user_action_request_key",
+    "concurrencyControl": "per_user_advisory_transaction_lock",
+    "riskDecisions": [
+      "allow",
+      "review",
+      "deny"
+    ],
+    "providerLimitsRemainAuthoritative": true,
+    "moneyLabAction": "risk_status",
+    "remainingGates": [
+      "approved_production_risk_policy",
+      "manual_review_operations",
+      "ach_return_negative_balance_controls",
+      "card_dispute_refund_operations",
+      "fraud_monitoring_alerts",
+      "provider_sandbox_end_to_end_tests",
+      "production_program_approval"
     ]
   }
 }
