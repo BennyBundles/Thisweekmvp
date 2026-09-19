@@ -808,7 +808,7 @@
   "phase32LegalRetention": {
     "status": "enforcement_deployed_production_documents_and_policy_unapproved",
     "activation": false,
-    "accountGateway": "thisweek-account-gateway:v2",
+    "accountGateway": "thisweek-account-gateway:v3",
     "moneyGateway": "thisweek-money-gateway:v12",
     "providerGateway": "thisweek-provider-gateway:v6",
     "cardAuthorizationFunction": "thisweek-unit-card-authorization:v4",
@@ -866,5 +866,58 @@
       "admin_evidence_for_retention_activation",
       "customer_acceptance_validation_in_closed_beta"
     ]
+  },
+  "phase33CloudDataRights": {
+    "status": "self_service_cloud_inventory_and_paginated_export_deployed",
+    "activation": true,
+    "accountGateway": "thisweek-account-gateway:v3",
+    "accountCenterPath": "/account/",
+    "exportSchema": "thisweek.cloud-export.v1",
+    "exportManifestSchema": "thisweek.cloud-export-manifest.v1",
+    "auditTable": "tw_privacy_export_events",
+    "auditAppendOnly": true,
+    "pageLimitMax": 500,
+    "exportPayloadPersistedServerSide": false,
+    "clientAssembly": true,
+    "browserTableAccess": false,
+    "datasets": [
+      "provider_connections",
+      "provider_accounts",
+      "provider_transactions",
+      "money_customers",
+      "deposit_accounts",
+      "envelopes",
+      "ledger_accounts",
+      "journals",
+      "ledger_entries",
+      "authorizations",
+      "funding_accounts",
+      "transfers",
+      "transfer_events",
+      "direct_deposit_switches",
+      "payroll_deposits",
+      "reward_enrollments",
+      "billers",
+      "virtual_cards",
+      "card_authorizations",
+      "bill_payments",
+      "bill_switches",
+      "legal_acceptances",
+      "support_requests",
+      "support_messages",
+      "sensitive_access",
+      "closure_requests",
+      "export_history"
+    ],
+    "selfServiceExclusions": [
+      "provider_credentials_and_vault_secrets",
+      "full_bank_account_and_card_credentials",
+      "raw_provider_webhook_payloads",
+      "internal_fraud_detection_logic_and_risk_model_details",
+      "internal_staff_notes_not_already_customer_visible"
+    ],
+    "localPlanExportSeparate": true,
+    "hardDeletionStillRetentionGated": true,
+    "statutoryCompletenessClaim": false
   }
 }
