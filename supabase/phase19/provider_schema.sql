@@ -38,7 +38,7 @@ create table if not exists public.tw_provider_connections (
   provider_item_id text not null,
   institution_id text,
   institution_name text,
-  vault_secret_id uuid not null,
+  vault_secret_id uuid,
   sync_cursor text,
   status text not null default 'active'
     check (status in ('active','needs_reconnect','disconnected','error')),
@@ -155,7 +155,7 @@ revoke all on table public.tw_provider_sync_runs from public, anon, authenticate
 revoke all on table public.tw_provider_conflicts from public, anon, authenticated;
 
 comment on table public.tw_provider_connections is
-  'This Week provider connection metadata only. Provider access tokens are referenced by Vault UUID and never stored in this table.';
+  'This Week provider connection metadata only. Provider access tokens are referenced by Vault UUID and never stored in this table. vault_secret_id becomes null after disconnect and Vault deletion.';
 comment on table public.tw_provider_transactions is
   'Normalized provider activity. These rows are reference data until the browser user explicitly reconciles them into a This Week weekly transaction.';
 comment on table public.tw_provider_accounts is
