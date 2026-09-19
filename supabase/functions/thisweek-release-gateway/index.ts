@@ -185,7 +185,7 @@ Deno.serve(async(req)=>{
       await audit(admin,String(user.id),role,"release_candidate_select","release_candidate",sha,"phase34_candidate_binding",{
         sourceRef
       });
-      return json(origin,200,{ok:true,activeCandidate:data,readiness:(await admin.rpc("tw_release_readiness_report")).data||null});
+      return json(origin,200,{ok:true,candidateSelection:data,readiness:(await admin.rpc("tw_release_readiness_report")).data||null});
     }
 
     if(action==="start_certification"){
