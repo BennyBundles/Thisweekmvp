@@ -368,6 +368,60 @@ button{cursor:pointer}
 @media(max-width:820px){.v142-grid{grid-template-columns:1fr 1fr}.v142-vault,.v142-scope,.v142-panel{grid-template-columns:1fr}.v142-console{grid-template-columns:1fr 1fr}.v142-estimate{position:static}.v142-release-stage{min-height:470px}}
 @media(max-width:620px){.v142-shell{width:calc(100% - 24px);padding:72px 0 92px}.v142-grid{gap:7px}.v142-record{min-height:190px;padding:14px}.v142-record b{font-size:18px}.v142-console{gap:6px}.v142-channel{min-height:170px}.v142-depth-dock{display:flex}.v142-release-stage{min-height:430px}.v142-release-list{grid-template-columns:1fr 1fr}.v142-scope-item{grid-template-columns:auto 1fr}.v142-scope-item strong{grid-column:2}.v142-title{font-size:clamp(48px,16vw,78px)}}
 @media(prefers-reduced-motion:reduce){.v142-record{transition:none}}
+</style>
+<style id="v14-3-detail-systems">
+:root{--v143-ease:cubic-bezier(.16,1,.3,1)}
+.v143-section{min-height:100svh;position:relative;overflow:hidden}
+.v143-shell{width:min(1180px,92vw);margin:auto;padding:86px 0 110px}
+.v143-kicker{font:800 9px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.18em;text-transform:uppercase;opacity:.66}
+.v143-title{font-size:clamp(54px,9vw,120px);line-height:.82;letter-spacing:-.058em;margin:13px 0 19px}
+.v143-lede{max-width:790px;font-size:14px;line-height:1.75;opacity:.67;margin:0 0 30px}
+.v143-toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:18px 0 24px}
+.v143-toolbar select,.v143-toolbar button{min-height:46px;border:1px solid currentColor;background:rgba(255,255,255,.025);color:inherit;padding:0 13px;font:800 9px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase}
+.v143-tabs{display:flex;gap:6px;overflow:auto;padding:3px 0 10px;scrollbar-width:none}.v143-tabs::-webkit-scrollbar{display:none}
+.v143-tabs button{flex:0 0 auto;min-height:43px;border:1px solid currentColor;background:transparent;color:inherit;padding:0 12px;font:800 8px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.09em;text-transform:uppercase;opacity:.48;cursor:pointer}
+.v143-tabs button.active{opacity:1;background:rgba(255,255,255,.08)}
+.v143-dossier{display:grid;grid-template-columns:1.12fr .88fr;gap:12px}
+.v143-stage{min-height:520px;border:1px solid rgba(255,255,255,.15);position:relative;overflow:hidden;background:
+linear-gradient(180deg,transparent 38%,rgba(0,0,0,.88)),
+var(--v143-art,radial-gradient(circle at 30% 20%,rgba(255,255,255,.14),transparent 26%),linear-gradient(135deg,#171717,#060606));
+background-size:cover;background-position:center}
+.v143-stage:before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.07),transparent 27%,transparent 75%,rgba(255,255,255,.035));pointer-events:none}
+.v143-stage-copy{position:absolute;left:21px;right:21px;bottom:20px;z-index:2}
+.v143-stage-copy small{font:800 8px/1 ui-monospace,Menlo,monospace;letter-spacing:.15em;opacity:.62}.v143-stage-copy h3{font-size:clamp(38px,6vw,74px);line-height:.88;margin:8px 0}.v143-stage-copy p{font-size:11px;line-height:1.55;opacity:.66;max-width:650px}
+.v143-inspector{border:1px solid rgba(255,255,255,.15);padding:20px;background:rgba(0,0,0,.16);min-height:520px}
+.v143-inspector h3{font-size:30px;margin:6px 0 10px}.v143-inspector p{font-size:12px;line-height:1.65;opacity:.66}
+.v143-stat{display:flex;justify-content:space-between;gap:18px;padding:11px 0;border-top:1px solid rgba(255,255,255,.11);font-size:10px}
+.v143-stat b{font:800 8px/1 ui-monospace,Menlo,monospace;letter-spacing:.09em;text-transform:uppercase;opacity:.5}.v143-stat span{text-align:right}
+.v143-chips{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0}.v143-chip{border:1px solid currentColor;border-radius:999px;padding:7px 9px;font:800 7px/1 ui-monospace,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase;opacity:.58}
+.v143-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:16px}.v143-actions a,.v143-actions button{min-height:46px;display:inline-flex;align-items:center;justify-content:center;border:1px solid currentColor;background:transparent;color:inherit;padding:0 13px;text-decoration:none;font:800 8px/1 ui-monospace,Menlo,monospace;letter-spacing:.09em;text-transform:uppercase;cursor:pointer}
+.v143-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:16px}
+.v143-module{border:1px solid rgba(255,255,255,.13);padding:16px;min-height:150px;background:rgba(255,255,255,.022)}.v143-module b{display:block;font-size:16px;margin:8px 0}.v143-module p{font-size:10px;line-height:1.55;opacity:.62;margin:0}
+.v143-status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:7px;background:#8d98a3}.v143-status-dot.ready{background:#63efa8;box-shadow:0 0 12px rgba(99,239,168,.55)}.v143-status-dot.pending{background:#e59b46}
+.v143-ab{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.v143-audio-card{border:1px solid rgba(99,239,168,.22);background:linear-gradient(180deg,#0b1712,#06100c);padding:18px;min-height:260px}
+.v143-audio-card label{display:block;font:800 8px/1 ui-monospace,Menlo,monospace;letter-spacing:.12em;color:#63efa8;margin-bottom:12px}.v143-audio-card input[type=file]{width:100%;font-size:11px}.v143-audio-card audio{width:100%;margin-top:16px}.v143-audio-card p{font-size:10px;line-height:1.55;opacity:.58}
+.v143-ab-switch{display:flex;gap:6px;margin:15px 0}.v143-ab-switch button{flex:1;min-height:48px;border:1px solid #315544;background:#0a1510;color:#dcebe4;font-weight:900}.v143-ab-switch button.active{background:#63efa8;color:#07100b}
+.v143-local-note{border-left:2px solid #63efa8;padding:9px 0 9px 12px;font-size:10px;line-height:1.55;opacity:.68}
+.v143-service-list{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin:18px 0}
+.v143-service-select{min-height:120px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.025);color:inherit;padding:13px;text-align:left;cursor:pointer}.v143-service-select.active{border-color:var(--v143-accent,#fff);background:rgba(255,255,255,.08)}.v143-service-select small{font:800 7px/1 ui-monospace,Menlo,monospace;opacity:.55}.v143-service-select b{display:block;font-size:14px;margin-top:18px}
+.v143-wizard{position:fixed;inset:0;z-index:20000;background:rgba(2,4,7,.86);backdrop-filter:blur(18px);display:none;place-items:center;padding:12px}.v143-wizard.open{display:grid}
+.v143-wizard-card{width:min(760px,100%);max-height:min(900px,94svh);overflow:auto;background:#0b0e12;color:#f4f1e9;border:1px solid rgba(255,255,255,.16);box-shadow:0 30px 100px rgba(0,0,0,.58)}
+.v143-wizard-head{position:sticky;top:0;z-index:3;display:flex;justify-content:space-between;gap:20px;align-items:center;padding:16px 18px;background:rgba(11,14,18,.96);border-bottom:1px solid rgba(255,255,255,.11);backdrop-filter:blur(12px)}
+.v143-wizard-head strong{font-size:14px}.v143-wizard-head small{display:block;font:800 7px/1 ui-monospace,Menlo,monospace;letter-spacing:.12em;opacity:.55;margin-top:5px}.v143-wizard-head button{width:44px;height:44px;border:1px solid rgba(255,255,255,.16);background:transparent;color:#fff;font-size:22px}
+.v143-progress{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:14px 18px 0}.v143-progress i{height:3px;background:#252a31}.v143-progress i.on{background:var(--wizard-accent,#d7bd7e)}
+.v143-step{display:none;padding:22px 18px 16px}.v143-step.active{display:block}.v143-step h3{font-size:32px;margin:0 0 8px}.v143-step>p{font-size:11px;line-height:1.55;opacity:.6;margin:0 0 18px}
+.v143-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}.v143-field{display:grid;gap:7px}.v143-field.full{grid-column:1/-1}.v143-field label{font:800 8px/1 ui-monospace,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase;opacity:.63}.v143-field input,.v143-field select,.v143-field textarea{width:100%;min-height:46px;border:1px solid #2b3139;background:#090c10;color:#fff;padding:11px;border-radius:0}.v143-field textarea{min-height:110px;resize:vertical}
+.v143-review{white-space:pre-wrap;border:1px solid #2b3139;background:#07090c;padding:14px;font:500 10px/1.6 ui-monospace,Menlo,monospace;min-height:180px}
+.v143-wizard-foot{position:sticky;bottom:0;display:flex;justify-content:space-between;gap:8px;padding:13px 18px;background:rgba(11,14,18,.97);border-top:1px solid rgba(255,255,255,.11)}.v143-wizard-foot button{min-height:46px;border:1px solid rgba(255,255,255,.2);background:transparent;color:#fff;padding:0 14px;font:800 8px/1 ui-monospace,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase}.v143-wizard-foot .primary{background:var(--wizard-accent,#d7bd7e);color:#07090b;border-color:transparent}
+.v143-request-fab{position:fixed;z-index:8999;right:14px;bottom:max(72px,calc(env(safe-area-inset-bottom) + 70px));min-height:46px;border:1px solid rgba(255,255,255,.17);background:rgba(8,10,13,.88);backdrop-filter:blur(15px);color:#fff;padding:0 14px;font:800 8px/1 ui-monospace,Menlo,monospace;letter-spacing:.09em;text-transform:uppercase}
+.world-tagj .v143-section{--v143-accent:#d5bd7f;background:radial-gradient(circle at 80% 0,rgba(74,43,92,.17),transparent 33%),#090806;color:#eee4d4}
+.world-artist .v143-section{--v143-accent:#c45147;background:radial-gradient(circle at 18% 0,rgba(196,81,71,.14),transparent 33%),#0b0808;color:#eee3d6}
+.world-producer .v143-section{--v143-accent:#63efa8;background:radial-gradient(circle at 80% 0,rgba(99,239,168,.08),transparent 34%),#06100c;color:#dcebe4}
+.world-creative .v143-section{--v143-accent:#8a6dff;background:radial-gradient(circle at 78% 0,rgba(138,109,255,.15),transparent 34%),#0d0916;color:#f1edff}
+@media(max-width:900px){.v143-dossier,.v143-ab{grid-template-columns:1fr}.v143-grid{grid-template-columns:1fr 1fr}.v143-service-list{grid-template-columns:1fr 1fr}.v143-stage,.v143-inspector{min-height:430px}}
+@media(max-width:620px){.v143-shell{width:calc(100% - 24px);padding:70px 0 105px}.v143-grid{grid-template-columns:1fr}.v143-fields{grid-template-columns:1fr}.v143-field.full{grid-column:auto}.v143-service-list{grid-template-columns:1fr 1fr}.v143-service-select{min-height:105px}.v143-title{font-size:clamp(48px,16vw,80px)}.v143-stage{min-height:400px}.v143-inspector{min-height:0}.v143-wizard{padding:0}.v143-wizard-card{height:100svh;max-height:none;width:100%;border:0}.v143-request-fab{right:10px}}
+@media(prefers-reduced-motion:reduce){.v143-tabs button,.v143-service-select{transition:none}}
 </style></head><body class="preview-shell"><div class="world-view world-home home-v10" data-world="home">
 <section class="screen" id="home"><div class="home-grid"></div><div class="home-noise"></div><div class="home-vignette"></div><div class="home-stage"><div class="compass">
 <div class="home-kicker"><b>TAGJ × BENNY BUNDLES</b> / ONE CENTER — FOUR DISTINCT WORLDS</div><div class="orbit o3"></div><div class="orbit o2"></div><div class="orbit o1"></div><div class="beam n"></div><div class="beam e"></div><div class="beam s"></div><div class="beam w"></div>
@@ -470,6 +524,17 @@ button{cursor:pointer}
 <button class="v142-record" data-kind="accessory" data-record="grill"><small>ACCESSORY / CONCEPT</small><b>Jewelry + Grill Concepts</b><span>Concept-lab route only until a production or retail status is explicitly established.</span><i>↗</i></button>
 </div>
 <div class="v142-panel" id="v142TagjPanel"><div><div class="v142-kicker">SELECT A RECORD</div><h3>Development information stays hidden until requested.</h3><p>This keeps the catalogue compact while allowing deeper technical information to open only when the user selects a concept.</p><div class="v142-actions"><a href="#tagj-product-lab">Open Product Lab</a><a href="#tagj-custom">Custom request</a></div></div><div class="v142-specs"><div><b>Status</b><span>Concept / development</span></div><div><b>Inventory</b><span>Not confirmed</span></div><div><b>Checkout</b><span>Disabled</span></div><div><b>Next depth</b><span>Materials → construction → campaign</span></div></div></div>
+</div></section>
+<section class="deep deep-v10 tagj-deep v143-section" id="tagj-product-detail-v143">
+<header class="deep-top"><a href="#tagj-concept-registry-v142">← Concept registry</a><span class="micro">TAGJ / PRODUCT DOSSIER / V14.3</span><a href="#tagj-custom">Custom request</a></header>
+<div class="v143-shell"><div class="v143-kicker">LEVEL 05 / INDIVIDUAL CONCEPT DOSSIER</div><h1 class="v143-title">Product<br>Dossier.</h1><p class="v143-lede">One concept at a time. Technical depth is progressively disclosed through concept, materials, colorways, construction, branding, campaign and development-status views. Product imagery is never used to imply physical inventory.</p>
+<div class="v143-toolbar"><label class="sr-only" for="v143ProductSelect">Choose concept</label><select id="v143ProductSelect">
+<option value="shadow">Shadow Step V1.1</option><option value="modular">Modular X-Spine</option><option value="studio">Studio Mid 808</option><option value="vaultboot">Vault Boot</option><option value="vaultbloom">Vault Bloom</option><option value="pressure">Pressure Gold Runner</option><option value="concrete">Concrete Bloom Wrap</option><option value="houseouterwear">House Outerwear System</option><option value="grill">Jewelry + Grill Concepts</option>
+</select><span class="v143-chip"><span class="v143-status-dot pending"></span>Concept / development record</span></div>
+<div class="v143-tabs" id="v143ProductTabs"><button class="active" data-tab="concept">Concept</button><button data-tab="materials">Materials</button><button data-tab="colorways">Colorways</button><button data-tab="construction">Construction</button><button data-tab="branding">Branding</button><button data-tab="campaign">Campaign</button><button data-tab="status">Status</button></div>
+<div class="v143-dossier"><div class="v143-stage" id="v143ProductStage"><div class="v143-stage-copy"><small id="v143ProductEyebrow">FOOTWEAR / DEVELOPMENT</small><h3 id="v143ProductName">Shadow Step V1.1</h3><p id="v143ProductStageCopy">Media slot is intentionally separated from inventory status. Technical boards can be attached here when the corresponding source asset is mapped and approved.</p></div></div>
+<aside class="v143-inspector"><div class="v143-kicker" id="v143ProductTabLabel">CONCEPT</div><h3 id="v143ProductPanelTitle">Design intent</h3><p id="v143ProductPanelCopy">A controlled concept record for design direction, development notes and future technical media. No release date, stock count or manufacturing claim is inferred.</p><div id="v143ProductStats"><div class="v143-stat"><b>Development status</b><span>Concept / development</span></div><div class="v143-stat"><b>Inventory</b><span>Not confirmed</span></div><div class="v143-stat"><b>Checkout</b><span>Disabled</span></div><div class="v143-stat"><b>Technical media</b><span>Map approved source boards when available</span></div></div><div class="v143-actions"><button type="button" data-v143-wizard="TAGJ Custom Clothing Request">Start custom inquiry</button><a href="#tagj-product-lab">Product Lab</a></div></aside></div>
+<div class="v143-grid"><div class="v143-module"><div class="v143-kicker">PROGRESSIVE DEPTH</div><b>Exploded construction</b><p>Reserved for approved outsole, upper, hardware, stitching and component-board imagery.</p></div><div class="v143-module"><div class="v143-kicker">COMMERCE BOUNDARY</div><b>Concept ≠ inventory</b><p>Price IDs, stock, sizes and sale state remain separate fields for later Stripe/product integration.</p></div><div class="v143-module"><div class="v143-kicker">NEXT ACTION</div><b>Develop or request</b><p>Users can inspect the concept first, then open a structured custom request only when they want more detail.</p></div></div>
 </div></section></div><div class="world-view world-artist" data-world="artist" hidden><a aria-label="Return to four-world hub" class="v10-home-link" href="#home">⌂</a>
 <section class="subsite" id="artist"><div class="subsite-shell">
 <header class="artist-top-v10"><div class="artist-brand">BENNY BUNDLES</div><nav><a href="#artist-youtube">YouTube</a><a href="#artist-streaming">Streaming</a><a href="#artist-services">Requests</a><a href="#artist-releases">Releases</a><a href="#artist-network">Network</a></nav><button class="artist-scene-button" data-panel-open="artist-scene-menu">Scene Index</button></header>
@@ -541,7 +606,16 @@ button{cursor:pointer}
 <button class="v142-release" data-release="stuck"><b>Still Stuck / Pt. 2</b><span>Campaign record</span></button>
 <button class="v142-release" data-release="cold"><b>Cold Winter</b><span>Catalogue title</span></button>
 <button class="v142-release" data-release="freestyle"><b>FREESTYLE</b><span>Campaign / video</span></button>
-</div></div></div></section></div><div class="world-view world-producer" data-world="producer" hidden><a aria-label="Return to four-world hub" class="v10-home-link" href="#home">⌂</a>
+</div></div></div></section>
+<section class="deep deep-v10 artist-deep v143-section" id="artist-release-detail-v143">
+<header class="deep-top"><a href="#artist-release-vault-v142">← Release vault</a><span class="micro">BENNY / RELEASE DOSSIER / V14.3</span><a href="#artist-request-deep">Artist request</a></header>
+<div class="v143-shell"><div class="v143-kicker">LEVEL 05 / RELEASE DETAIL</div><h1 class="v143-title">Release<br>Dossier.</h1><p class="v143-lede">A selected record opens into visual identity, verified-link status, credits and campaign pathways. Unknown dates and streaming URLs remain explicitly unresolved instead of being fabricated.</p>
+<div class="v143-toolbar"><label class="sr-only" for="v143ReleaseSelect">Choose release</label><select id="v143ReleaseSelect"><option value="reached">Reached Into the Fire</option><option value="oh">Oh Lord!</option><option value="ndr">N.D.R</option><option value="dont">Don’t Judge Off…</option><option value="hold">Hold Something</option><option value="stuck">Still Stuck / Still Stuck Pt. 2</option><option value="cold">Cold Winter</option><option value="freestyle">FREESTYLE</option></select></div>
+<div class="v143-tabs" id="v143ReleaseTabs"><button class="active" data-tab="overview">Overview</button><button data-tab="watch">Watch</button><button data-tab="listen">Listen</button><button data-tab="credits">Credits</button><button data-tab="campaign">Campaign</button><button data-tab="source">Source status</button></div>
+<div class="v143-dossier"><div class="v143-stage" id="v143ReleaseStage" style="--v143-art:var(--asset-cover-reached-fire)"><div class="v143-stage-copy"><small id="v143ReleaseEyebrow">PROJECT / CAMPAIGN</small><h3 id="v143ReleaseName">Reached Into the Fire</h3><p id="v143ReleaseStageCopy">Release-world record with artwork already integrated into the site. Verified media destinations can be connected independently.</p></div></div>
+<aside class="v143-inspector"><div class="v143-kicker" id="v143ReleaseTabLabel">OVERVIEW</div><h3 id="v143ReleasePanelTitle">Release identity</h3><p id="v143ReleasePanelCopy">Artwork, release navigation and campaign continuity live here while platform metadata remains a separate verified layer.</p><div id="v143ReleaseStats"><div class="v143-stat"><b>YouTube channel</b><span><span class="v143-status-dot ready"></span>Known channel route available</span></div><div class="v143-stat"><b>Streaming URLs</b><span><span class="v143-status-dot pending"></span>Pending verification</span></div><div class="v143-stat"><b>Release date</b><span>Not asserted</span></div><div class="v143-stat"><b>Campaign assets</b><span>Integrated where available</span></div></div><div class="v143-actions"><a href="#artist-youtube-deep">Watch hub</a><a href="#artist-streaming-deep">Streaming hub</a><button type="button" data-v143-wizard="Collaboration Request">Collaboration request</button></div></aside></div>
+<div class="v143-grid"><div class="v143-module"><div class="v143-kicker">LINK REGISTRY</div><b>Verified destinations only</b><p>Platform fields remain independent so one confirmed URL can go live without inventing the rest.</p></div><div class="v143-module"><div class="v143-kicker">INTRO MEDIA</div><b>Cold Winter source status</b><p>The requested exact opening clip remains marked unverified until the corresponding source video/audio is actually located.</p></div><div class="v143-module"><div class="v143-kicker">REQUEST PATH</div><b>Feature / appearance / collaboration</b><p>Artist requests use the same structured form engine but retain artist-world styling and context.</p></div></div>
+</div></section></div><div class="world-view world-producer" data-world="producer" hidden><a aria-label="Return to four-world hub" class="v10-home-link" href="#home">⌂</a>
 <section class="subsite" id="producer"><div class="subsite-shell">
 <header class="console-top-v10"><div class="console-brand">BUNDLES // STUDIO</div><div class="console-status"><span>SESSION <b>ONLINE</b></span><span>48K / 24BIT</span><span>ENGINEER: BENNY</span><span>LATENCY: 4.2MS</span></div><button class="patch-button" data-panel-open="patch-drawer">Open Patch Bay</button></header>
 <aside aria-hidden="true" class="patch-drawer" id="patch-drawer"><button aria-label="Close" class="close" data-panel-close="patch-drawer">×</button><div class="micro" style="color:#8df5b5">ROUTING / INTERACTIVE MATRIX</div><h2>PATCH BAY</h2><p>Toggle signal paths as a visual navigation system. The patch interface doubles as the mobile menu for production, beats, mix/master and session requests.</p><div class="patch-matrix"><div></div><div class="label">BEATS</div><div class="label">REC</div><div class="label">MIX</div><div class="label">MASTER</div><div class="label">VOCAL</div><button class="patch-cell on"></button><button class="patch-cell on"></button><button class="patch-cell"></button><button class="patch-cell"></button><div class="label">2-TRACK</div><button class="patch-cell on"></button><button class="patch-cell"></button><button class="patch-cell on"></button><button class="patch-cell on"></button><div class="label">STEMS</div><button class="patch-cell"></button><button class="patch-cell on"></button><button class="patch-cell on"></button><button class="patch-cell on"></button><div class="label">FINAL</div><button class="patch-cell"></button><button class="patch-cell"></button><button class="patch-cell on"></button><button class="patch-cell on"></button></div><div class="deep-grid" style="margin-top:24px"><a class="deep-card" href="#producer-credits"><b>CH 01 / Credits</b><span>Production and collaboration index.</span></a><a class="deep-card" href="#producer-beats"><b>CH 02 / Beat Store</b><span>Available beats and custom production.</span></a><a class="deep-card" href="#producer-services"><b>CH 03 / Mix + Master</b><span>Recording, engineering, mix and master.</span></a><a class="deep-card" href="#producer-request"><b>CH 04 / Open Session</b><span>Start a custom request.</span></a></div></aside>
@@ -597,6 +671,15 @@ button{cursor:pointer}
 <button class="v142-channel" data-studio-service="Engineering"><small>CH 05</small><b>Engineering</b><span>Flexible technical support across the signal chain.</span></button>
 </div>
 <div class="v142-panel"><div><div class="v142-kicker">LIVE LOCAL ROUTING</div><h3 id="v142StudioTitle">No channels armed.</h3><p id="v142StudioCopy">Tap one or more service channels. The selected signal path will be carried into the request workflow as a prepared brief only.</p><div class="v142-actions"><button type="button" id="v142PrepareStudio">Prepare studio brief</button><a href="#producer-audio-services">Audio services</a><a href="#producer-beat-lab-v14">Beat Lab</a></div></div><div class="v142-specs"><div><b>Backend booking</b><span>Not connected</span></div><div><b>Payments</b><span>Not connected</span></div><div><b>A/B audio</b><span>Real sources pending</span></div><div><b>Selected</b><span id="v142StudioCount">0 services</span></div></div></div>
+</div></section>
+<section class="deep deep-v10 producer-deep v143-section" id="producer-ab-lab-v143">
+<header class="deep-top"><a href="#producer-service-matrix-v142">← Signal matrix</a><span class="micro">STUDIO / A-B LAB / V14.3</span><a href="#producer-request">Session request</a></header>
+<div class="v143-shell"><div class="v143-kicker">LEVEL 05 / LOCAL AUDIO COMPARISON</div><h1 class="v143-title">A/B<br>Lab.</h1><p class="v143-lede">The comparison interface is now functional without pretending demo files exist. Load a Before and After audio file from the device; the browser creates temporary local playback URLs. Files stay on the device and are not uploaded.</p>
+<div class="v143-ab"><div class="v143-audio-card"><label for="v143BeforeFile">A / BEFORE — LOCAL FILE</label><input id="v143BeforeFile" type="file" accept="audio/*"><p id="v143BeforeStatus"><span class="v143-status-dot pending"></span>No local source loaded.</p><audio id="v143BeforeAudio" controls preload="metadata"></audio></div>
+<div class="v143-audio-card"><label for="v143AfterFile">B / AFTER — LOCAL FILE</label><input id="v143AfterFile" type="file" accept="audio/*"><p id="v143AfterStatus"><span class="v143-status-dot pending"></span>No local source loaded.</p><audio id="v143AfterAudio" controls preload="metadata"></audio></div></div>
+<div class="v143-ab-switch"><button class="active" id="v143ABefore" type="button">A / BEFORE</button><button id="v143AAfter" type="button">B / AFTER</button></div>
+<div class="v143-dossier"><div class="v143-inspector"><div class="v143-kicker">SYNCED AUDITION</div><h3 id="v143ABTitle">A / Before selected</h3><p>Switching A ↔ B attempts to preserve the current playback position, making level-matched inspection easier once both local files are loaded.</p><div class="v143-stat"><b>Upload</b><span>None — local object URLs only</span></div><div class="v143-stat"><b>Source persistence</b><span>Clears when page/session is closed</span></div><div class="v143-stat"><b>Difference meter</b><span>Not asserted without real analysis</span></div><div class="v143-actions"><button type="button" data-v143-wizard="Mix Request">Request a mix</button><button type="button" data-v143-wizard="Mastering Request">Request mastering</button></div></div>
+<div class="v143-inspector"><div class="v143-kicker">MIX NOTES</div><h3>What to compare</h3><div class="v143-stat"><b>Balance</b><span>Vocal / music relationship</span></div><div class="v143-stat"><b>Dynamics</b><span>Punch, control and movement</span></div><div class="v143-stat"><b>Frequency</b><span>Low-end, mids, presence and air</span></div><div class="v143-stat"><b>Translation</b><span>Headphones, phone, car and speakers</span></div><p class="v143-local-note">This lab demonstrates the real interaction model now. Public portfolio examples can later replace local file selection when approved before/after sources are supplied.</p></div></div>
 </div></section></div><div class="world-view world-creative" data-world="creative" hidden><a aria-label="Return to four-world hub" class="v10-home-link" href="#home">⌂</a>
 <section class="subsite" id="creative"><div class="subsite-shell">
 <header class="creative-top-v10"><div class="creative-brand">TAGJ <i>VISUAL LAB</i></div><nav><a href="#creative-cover">Cover Art</a><a href="#creative-video">Music Video</a><a href="#creative-lyric">Lyric Visualizer</a><a href="#creative-packages">Bundles</a><a href="#creative-inquiry">Free Inquiry</a></nav><button class="creative-index-button" data-panel-open="creative-command">Open Project Index</button></header>
@@ -668,6 +751,19 @@ button{cursor:pointer}
 <label class="v142-scope-item"><input type="checkbox" value="25" data-label="YouTube SEO Review"><span><b>YouTube SEO Review</b><em>Channel/title/metadata diagnosis</em></span><strong>$25</strong></label>
 <label class="v142-scope-item"><input type="checkbox" value="45" data-label="3 Shorts"><span><b>3 Shorts</b><em>Short-form cutdown package</em></span><strong>$45</strong></label>
 </div><aside class="v142-estimate"><div class="v142-kicker">STARTING SUBTOTAL</div><strong id="v142ScopeTotal">$0</strong><p id="v142ScopeSummary">Choose services to create a release scope. Bundle savings are intentionally not applied until a real package price is configured.</p><div class="v142-actions"><button type="button" id="v142PrepareCreative">Prepare brief</button><a href="#creative-builder">Full bundle builder</a></div></aside></div>
+</div></section>
+<section class="deep deep-v10 creative-deep v143-section" id="creative-service-detail-v143">
+<header class="deep-top"><a href="#creative-scope-builder-v142">← Scope builder</a><span class="micro">VISUAL LAB / SERVICE DOSSIER / V14.3</span><a href="#creative-inquiry">Free inquiry</a></header>
+<div class="v143-shell"><div class="v143-kicker">LEVEL 05 / INDIVIDUAL SERVICE DETAIL</div><h1 class="v143-title">Service<br>Dossier.</h1><p class="v143-lede">Each service opens as its own production brief: what it starts at, what information is needed, what the deliverable path looks like and which structured request flow it should open.</p>
+<div class="v143-service-list" id="v143ServiceList">
+<button class="v143-service-select active" data-service="cover"><small>01 / ARTWORK</small><b>Cover Art</b></button>
+<button class="v143-service-select" data-service="visualizer"><small>02 / LYRIC</small><b>Visualizer</b></button>
+<button class="v143-service-select" data-service="video"><small>03 / MOTION</small><b>Music Video</b></button>
+<button class="v143-service-select" data-service="youtube"><small>04 / CHANNEL</small><b>YouTube / SEO</b></button>
+<button class="v143-service-select" data-service="shorts"><small>05 / SHORT FORM</small><b>Shorts</b></button>
+</div>
+<div class="v143-dossier"><div class="v143-stage" id="v143ServiceStage" style="--v143-art:var(--asset-cover-big-difference)"><div class="v143-stage-copy"><small id="v143ServiceEyebrow">COVER ART / STARTING AT</small><h3 id="v143ServiceName">Cover Art · &#36;35+</h3><p id="v143ServiceStageCopy">Single-cover entry route with concept discussion, release-ready square output and structured source-image/reference intake.</p></div></div>
+<aside class="v143-inspector"><div class="v143-kicker">SERVICE SPEC</div><h3 id="v143ServicePanelTitle">Cover Art</h3><p id="v143ServicePanelCopy">Start with the song/project identity, mood, references, source imagery, platform needs and explicit-content-label requirement.</p><div id="v143ServiceStats"><div class="v143-stat"><b>Starting price</b><span>&#36;35+</span></div><div class="v143-stat"><b>Payment</b><span>Not connected</span></div><div class="v143-stat"><b>Inquiry</b><span>Structured brief available</span></div><div class="v143-stat"><b>Uploads</b><span>Reference links in preview</span></div></div><div class="v143-actions"><button id="v143ServiceRequest" type="button" data-v143-wizard="Cover Art Request">Start cover request</button><a href="#creative-cover-store">Catalogue / pricing</a></div></aside></div>
 </div></section></div><script>document.documentElement.classList.add('js');
 (() => {
   const root = document.documentElement;
@@ -775,6 +871,7 @@ button{cursor:pointer}
   }
   function show(world, anchor, behavior='auto'){
     views.forEach(v=>v.hidden=v.dataset.world!==world);
+    document.body.dataset.currentWorld=world;
     const target=anchor ? document.getElementById(anchor) : null;
     requestAnimationFrame(()=>{ if(target) target.scrollIntoView({behavior,block:'start'}); else scrollTo({top:0,behavior}); });
   }
@@ -795,10 +892,10 @@ button{cursor:pointer}
 <nav class="v14-dock" aria-label="World shortcuts"><a href="#home">Home</a><a href="#tagj-house-map" data-v14="tagj">House</a><a href="#artist-deep-map" data-v14="artist">Artist</a><a href="#producer-deep-map" data-v14="producer">Studio</a><a href="#creative-deep-map" data-v14="creative">Visual</a></nav>
 <button class="v12-map-btn" id="v12MapBtn" type="button">◇ WORLD MAP</button>
 <section class="v12-map" id="v12Map" aria-hidden="true"><div class="v12-map-card"><header><div><small>TAGJ × BENNY BUNDLES</small><strong>ECOSYSTEM MAP</strong></div><button id="v12MapClose" type="button">×</button></header><div class="v12-map-grid">
-<section><b>01 · TAGJ / BRAND</b><nav><a href="#tagj">Center</a><a href="#tagj-designs">Designs</a><a href="#tagj-shop">Catalogue</a><a href="#tagj-story">Story</a><a href="#tagj-custom">Custom</a><a href="#tagj-house-map">Deep Directory</a><a href="#tagj-flagship">Flagship</a><a href="#tagj-catalogue-deep">Shop Branches</a></nav></section>
-<section><b>02 · BENNY / ARTIST</b><nav><a href="#artist">Center</a><a href="#artist-youtube">YouTube</a><a href="#artist-streaming">Streaming</a><a href="#artist-services">Requests</a><a href="#artist-network">Network</a><a href="#artist-deep-map">Deep Directory</a><a href="#artist-release-console">Release Console</a></nav></section>
-<section><b>03 · PRODUCER / ENGINEER</b><nav><a href="#producer">Center</a><a href="#producer-credits">Credits</a><a href="#producer-beats">Beat Store</a><a href="#producer-services">Mix / Master</a><a href="#producer-request">Request</a><a href="#producer-deep-map">Deep Directory</a><a href="#producer-audio-services">Audio Rates</a></nav></section>
-<section><b>04 · CREATIVE SERVICES</b><nav><a href="#creative">Center</a><a href="#creative-cover">Cover Art</a><a href="#creative-video">Music Video</a><a href="#creative-lyric">Lyric Visualizer</a><a href="#creative-packages">Bundles</a><a href="#creative-deep-map">Deep Directory</a><a href="#creative-builder">Build A Release</a></nav></section>
+<section><b>01 · TAGJ / BRAND</b><nav><a href="#tagj">Center</a><a href="#tagj-designs">Designs</a><a href="#tagj-shop">Catalogue</a><a href="#tagj-story">Story</a><a href="#tagj-custom">Custom</a><a href="#tagj-house-map">Deep Directory</a><a href="#tagj-flagship">Flagship</a><a href="#tagj-catalogue-deep">Shop Branches</a><a href="#tagj-product-lab">Product Lab</a><a href="#tagj-concept-registry-v142">Concept Registry</a><a href="#tagj-product-detail-v143">Product Dossier</a></nav></section>
+<section><b>02 · BENNY / ARTIST</b><nav><a href="#artist">Center</a><a href="#artist-youtube">YouTube</a><a href="#artist-streaming">Streaming</a><a href="#artist-services">Requests</a><a href="#artist-network">Network</a><a href="#artist-deep-map">Deep Directory</a><a href="#artist-release-console">Release Console</a><a href="#artist-release-vault-v142">Release Vault</a><a href="#artist-release-detail-v143">Release Dossier</a></nav></section>
+<section><b>03 · PRODUCER / ENGINEER</b><nav><a href="#producer">Center</a><a href="#producer-credits">Credits</a><a href="#producer-beats">Beat Store</a><a href="#producer-services">Mix / Master</a><a href="#producer-request">Request</a><a href="#producer-deep-map">Deep Directory</a><a href="#producer-audio-services">Audio Rates</a><a href="#producer-service-matrix-v142">Signal Matrix</a><a href="#producer-ab-lab-v143">A/B Lab</a></nav></section>
+<section><b>04 · CREATIVE SERVICES</b><nav><a href="#creative">Center</a><a href="#creative-cover">Cover Art</a><a href="#creative-video">Music Video</a><a href="#creative-lyric">Lyric Visualizer</a><a href="#creative-packages">Bundles</a><a href="#creative-deep-map">Deep Directory</a><a href="#creative-builder">Build A Release</a><a href="#creative-scope-builder-v142">Scope Builder</a><a href="#creative-service-detail-v143">Service Dossier</a></nav></section>
 </div><footer style="margin-top:16px"><a href="#home">← Four-world home</a></footer></div></section>
 <section class="v12-request" id="v12Request"><div class="v12-request-card"><button id="v12RequestClose" type="button">×</button><small>FREE INQUIRY / PREVIEW</small><h2>Project request prepared.</h2><p>Review the brief below. Copy or share it now; direct submission will be connected when the production intake backend is added.</p><pre id="v12RequestText"></pre><div class="v12-request-actions"><button id="v12Copy" type="button">Copy request</button><button id="v12Share" type="button">Share</button></div><small id="v12RequestStatus"></small></div></section>
 <script id="v12-live-script">
@@ -1015,55 +1112,161 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
  function refreshDock(){const w=document.body.dataset.currentWorld||'';dock.innerHTML=(dockMap[w]||[]).map(x=>'<a href="'+x[1]+'">'+x[0]+'</a>').join('');dock.style.display=(innerWidth<=620&&dockMap[w])?'flex':'none';}
  addEventListener('hashchange',()=>setTimeout(refreshDock,30));addEventListener('resize',refreshDock,{passive:true});setTimeout(refreshDock,80);
 })();
-</script></body></html>+total+(checked.some(x=>['35','150'].includes(x.value))?'+':'');
-   q('#v142ScopeSummary').textContent=checked.length?labels.join(' + ')+' — starting subtotal only; final scope and any bundle savings require configuration.':'Choose services to create a release scope. Bundle savings are intentionally not applied until a real package price is configured.';
+</script>
+<button class="v143-request-fab" id="v143RequestFab" type="button" data-v143-wizard="General Contact">Request brief</button>
+<section class="v143-wizard" id="v143Wizard" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="v143WizardTitle">
+<div class="v143-wizard-card"><header class="v143-wizard-head"><div><strong id="v143WizardTitle">Structured request brief</strong><small id="v143WizardRoute">TAGJ × BENNY BUNDLES / PREVIEW-LOCAL</small></div><button id="v143WizardClose" type="button" aria-label="Close request wizard">×</button></header>
+<div class="v143-progress" id="v143WizardProgress"><i class="on"></i><i></i><i></i><i></i></div>
+<form id="v143WizardForm" novalidate>
+<section class="v143-step active" data-step="0"><h3>Choose the request.</h3><p>One underlying engine supports the four worlds. The fields stay structured so a backend can later consume the same data without rebuilding the interface.</p><div class="v143-fields"><div class="v143-field full"><label for="v143RequestType">Request type</label><select id="v143RequestType" name="requestType">
+<option>Cover Art Request</option><option>Music Video Request</option><option>Visualizer Request</option><option>Custom Creative Request</option><option>Feature Request</option><option>Appearance Request</option><option>Beat Inquiry</option><option>Mix Request</option><option>Mastering Request</option><option>Recording Request</option><option>TAGJ Custom Clothing Request</option><option>Collaboration Request</option><option>General Contact</option>
+</select></div><div class="v143-field"><label for="v143ProjectTitle">Project / song / product title</label><input id="v143ProjectTitle" name="projectTitle" autocomplete="off"></div><div class="v143-field"><label for="v143ArtistBrand">Artist / brand / requester</label><input id="v143ArtistBrand" name="artistBrand" autocomplete="organization"></div></div></section>
+<section class="v143-step" data-step="1"><h3>Define the project.</h3><p>Give enough context to understand the intended result before discussing files or payment.</p><div class="v143-fields"><div class="v143-field full"><label for="v143Concept">Concept / need</label><textarea id="v143Concept" name="concept" placeholder="What are you trying to create, improve or request?"></textarea></div><div class="v143-field"><label for="v143Mood">Mood / references / direction</label><input id="v143Mood" name="mood" placeholder="Dark, cinematic, luxury, gritty…"></div><div class="v143-field"><label for="v143Platforms">Platforms / intended use</label><input id="v143Platforms" name="platforms" placeholder="YouTube, DSPs, Reels, print…"></div><div class="v143-field full"><label for="v143References">Reference links / source-file links</label><textarea id="v143References" name="references" placeholder="Paste Drive, Dropbox, YouTube or other reference links. Files are not uploaded by this preview."></textarea></div></div></section>
+<section class="v143-step" data-step="2"><h3>Set constraints.</h3><p>Dates and budget are planning inputs, not automatic commitments.</p><div class="v143-fields"><div class="v143-field"><label for="v143Deadline">Deadline</label><input id="v143Deadline" name="deadline" type="date"></div><div class="v143-field"><label for="v143ReleaseDate">Release / event date</label><input id="v143ReleaseDate" name="releaseDate" type="date"></div><div class="v143-field"><label for="v143Budget">Budget range</label><input id="v143Budget" name="budget" placeholder="Optional range"></div><div class="v143-field"><label for="v143Explicit">Explicit-content label?</label><select id="v143Explicit" name="explicitLabel"><option value="">Not applicable / unsure</option><option>Required</option><option>Not required</option></select></div><div class="v143-field full"><label for="v143Notes">Delivery / technical notes</label><textarea id="v143Notes" name="notes" placeholder="File format, stems, quantity, size, revisions, event details, or anything else relevant."></textarea></div></div></section>
+<section class="v143-step" data-step="3"><h3>Contact + review.</h3><p>This preview can save, copy or share the brief locally. It does not transmit the request to a production backend yet.</p><div class="v143-fields"><div class="v143-field"><label for="v143ContactName">Contact name</label><input id="v143ContactName" name="contactName" autocomplete="name"></div><div class="v143-field"><label for="v143Email">Email</label><input id="v143Email" name="email" type="email" autocomplete="email"></div><div class="v143-field"><label for="v143Phone">Phone / social handle</label><input id="v143Phone" name="phone" autocomplete="tel"></div><div class="v143-field"><label for="v143Preferred">Preferred contact</label><select id="v143Preferred" name="preferred"><option>Email</option><option>Phone / text</option><option>Social / DM</option></select></div><div class="v143-field full"><label>Prepared brief</label><div class="v143-review" id="v143Review"></div></div></div></section>
+<div class="v143-wizard-foot"><button id="v143WizardBack" type="button">Back</button><div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end"><button id="v143SaveDraft" type="button">Save draft</button><button id="v143ShareBrief" type="button" style="display:none">Share</button><button class="primary" id="v143WizardNext" type="button">Next</button></div></div>
+</form></div></section>
+<script id="v14-3-detail-systems-js">
+(()=>{
+ const dollar=String.fromCharCode(36),q=(s,r=document)=>r.querySelector(s),qa=(s,r=document)=>[...r.querySelectorAll(s)];
+ const safeStore={get(k){try{return localStorage.getItem(k)}catch(_){return null}},set(k,v){try{localStorage.setItem(k,v);return true}catch(_){return false}},del(k){try{localStorage.removeItem(k)}catch(_){}}};
+
+ const productData={
+  shadow:{name:'Shadow Step V1.1',cat:'Footwear',status:'Development',art:'radial-gradient(circle at 35% 25%,rgba(213,189,127,.25),transparent 27%),linear-gradient(135deg,#191712,#070706)'},
+  modular:{name:'Modular X-Spine',cat:'Footwear',status:'Development',art:'radial-gradient(circle at 68% 30%,rgba(123,94,149,.25),transparent 25%),linear-gradient(135deg,#151219,#070609)'},
+  studio:{name:'Studio Mid 808',cat:'Footwear',status:'Development',art:'radial-gradient(circle at 50% 25%,rgba(229,138,67,.20),transparent 25%),linear-gradient(135deg,#17120e,#070605)'},
+  vaultboot:{name:'Vault Boot',cat:'Footwear',status:'Concept',art:'linear-gradient(135deg,#18191a,#070809)'},
+  vaultbloom:{name:'Vault Bloom',cat:'Apparel',status:'Concept',art:'var(--asset-green-set)'},
+  pressure:{name:'Pressure Gold Runner',cat:'Footwear',status:'Concept',art:'radial-gradient(circle at 70% 20%,rgba(214,170,83,.28),transparent 27%),linear-gradient(135deg,#1c1710,#080705)'},
+  concrete:{name:'Concrete Bloom Wrap',cat:'Footwear',status:'Concept',art:'linear-gradient(135deg,#242424,#0b0b0b)'},
+  houseouterwear:{name:'House Outerwear System',cat:'Apparel',status:'House study',art:'var(--asset-black-gold-jacket)'},
+  grill:{name:'Jewelry + Grill Concepts',cat:'Accessories',status:'Concept lab',art:'radial-gradient(circle at 40% 22%,rgba(235,231,216,.22),transparent 24%),linear-gradient(135deg,#181818,#060606)'}
+ };
+ const productTabs={
+  concept:['Design intent','A controlled concept record for design direction, development notes and future technical media. No release date, stock count or manufacturing claim is inferred.'],
+  materials:['Materials registry','Material selections remain design-stage data until a technical board or production specification is mapped to this exact concept.'],
+  colorways:['Colorway studies','Color directions can be explored independently from availability. A color study does not create a sellable SKU.'],
+  construction:['Construction / exploded view','This layer is reserved for approved component, stitching, hardware, outsole, upper and construction information.'],
+  branding:['Branding system','Logo placement, TAGJ marks, typography, hardware and finishing treatments live as development attributes.'],
+  campaign:['Campaign translation','When campaign imagery exists, it can connect the concept to lookbooks and editorials without changing the product record.'],
+  status:['Development status','Prototype, sample, production, inventory and commerce are separate states. This prevents a concept render from being mistaken for confirmed merchandise.']
+ };
+ function renderProduct(){
+   const key=q('#v143ProductSelect')?.value||'shadow',d=productData[key];if(!d)return;
+   safeStore.set('tagjSelectedConceptV143',key);
+   q('#v143ProductName').textContent=d.name;q('#v143ProductEyebrow').textContent=d.cat.toUpperCase()+' / '+d.status.toUpperCase();q('#v143ProductStage').style.setProperty('--v143-art',d.art);
+   const tab=q('#v143ProductTabs .active')?.dataset.tab||'concept',copy=productTabs[tab];
+   q('#v143ProductTabLabel').textContent=tab.toUpperCase();q('#v143ProductPanelTitle').textContent=copy[0];q('#v143ProductPanelCopy').textContent=copy[1];
+   q('#v143ProductStats').innerHTML='<div class="v143-stat"><b>Concept</b><span>'+d.name+'</span></div><div class="v143-stat"><b>Category</b><span>'+d.cat+'</span></div><div class="v143-stat"><b>Development status</b><span>'+d.status+'</span></div><div class="v143-stat"><b>Inventory</b><span>Not confirmed</span></div><div class="v143-stat"><b>Checkout</b><span>Disabled</span></div>';
  }
- qa('#v142ScopeList input').forEach(x=>x.addEventListener('change',updateScope));updateScope();
- q('#v142PrepareCreative')?.addEventListener('click',()=>{
-   const checked=scopeChecks(),total=checked.reduce((n,x)=>n+Number(x.value||0),0);
-   openPrepared('TAGJ CREATIVE — RELEASE SCOPE',['Selected services: '+(checked.map(x=>x.dataset.label).join(', ')||'None selected'),'Starting subtotal reference: </html>+total+(checked.some(x=>['35','150'].includes(x.value))?'+':''),'Bundle discount: not configured']);
- });
- // V14.2 mobile depth dock
- const dock=document.createElement('nav');dock.className='v142-depth-dock';dock.id='v142DepthDock';document.body.appendChild(dock);
- const dockMap={
-  tagj:[['House','#tagj-house-map'],['Lab','#tagj-product-lab'],['Registry','#tagj-concept-registry-v142'],['Custom','#tagj-custom']],
-  artist:[['Artist','#artist'],['Archive','#artist-release-console'],['Vault','#artist-release-vault-v142'],['Request','#artist-request-deep']],
-  producer:[['Console','#producer'],['Beat Lab','#producer-beat-lab-v14'],['Matrix','#producer-service-matrix-v142'],['Request','#producer-request']],
-  creative:[['Visual Lab','#creative'],['Campaign','#creative-campaign-lab-v14'],['Scope','#creative-scope-builder-v142'],['Inquiry','#creative-inquiry']]
+ q('#v143ProductSelect')?.addEventListener('change',renderProduct);
+ qa('#v143ProductTabs button').forEach(btn=>btn.addEventListener('click',()=>{qa('#v143ProductTabs button').forEach(b=>b.classList.toggle('active',b===btn));renderProduct()}));
+ qa('#v142TagjRecords .v142-record').forEach(card=>card.addEventListener('click',()=>{const key=card.dataset.record;if(productData[key]){safeStore.set('tagjSelectedConceptV143',key);setTimeout(()=>{const actions=q('#v142TagjPanel .v142-actions');if(actions&&!actions.querySelector('[data-v143-dossier-link]')){const a=document.createElement('a');a.href='#tagj-product-detail-v143';a.dataset.v143DossierLink='1';a.textContent='Open product dossier';actions.appendChild(a)}},0)}}));
+ const storedProduct=safeStore.get('tagjSelectedConceptV143');if(storedProduct&&productData[storedProduct]&&q('#v143ProductSelect'))q('#v143ProductSelect').value=storedProduct;renderProduct();
+
+ const releaseData={
+  reached:{name:'Reached Into the Fire',type:'Project / campaign',art:'var(--asset-cover-reached-fire)',overview:'Release-world record with artwork already integrated into the site.'},
+  oh:{name:'Oh Lord!',type:'Release',art:'var(--asset-cover-big-difference)',overview:'Known Benny Bundles release record. Platform destinations remain independently verified fields.'},
+  ndr:{name:'N.D.R',type:'Release',art:'var(--asset-cover-hold-gold)',overview:'Known release record with producer credit direction retained.'},
+  dont:{name:'Don’t Judge Off…',type:'Release / video campaign',art:'var(--asset-cover-dont-judge-street)',overview:'Known campaign record with integrated artwork and multi-part video direction.'},
+  hold:{name:'Hold Something',type:'Release',art:'var(--asset-cover-hold-night)',overview:'Known release visual record.'},
+  stuck:{name:'Still Stuck / Still Stuck Pt. 2',type:'Campaign record',art:'linear-gradient(135deg,#251518,#0b0809)',overview:'Campaign title retained without inventing dates or external platform metadata.'},
+  cold:{name:'Cold Winter',type:'Catalogue title',art:'linear-gradient(135deg,#162331,#06090d)',overview:'Known catalogue title. The exact requested intro source segment remains unverified.'},
+  freestyle:{name:'FREESTYLE',type:'Campaign / video',art:'var(--asset-cover-cant-crop)',overview:'Known campaign/video reference.'}
  };
- function refreshDock(){const w=document.body.dataset.currentWorld||'';dock.innerHTML=(dockMap[w]||[]).map(x=>'<a href="'+x[1]+'">'+x[0]+'</a>').join('');dock.style.display=(innerWidth<=620&&dockMap[w])?'flex':'none';}
- addEventListener('hashchange',()=>setTimeout(refreshDock,30));addEventListener('resize',refreshDock,{passive:true});setTimeout(refreshDock,80);
-})();
-</script></body></html>+total+(checked.some(x=>['35','150'].includes(x.value))?'+':''),'Bundle discount: not configured']);
- });
- // V14.2 mobile depth dock
- const dock=document.createElement('nav');dock.className='v142-depth-dock';dock.id='v142DepthDock';document.body.appendChild(dock);
- const dockMap={
-  tagj:[['House','#tagj-house-map'],['Lab','#tagj-product-lab'],['Registry','#tagj-concept-registry-v142'],['Custom','#tagj-custom']],
-  artist:[['Artist','#artist'],['Archive','#artist-release-console'],['Vault','#artist-release-vault-v142'],['Request','#artist-request-deep']],
-  producer:[['Console','#producer'],['Beat Lab','#producer-beat-lab-v14'],['Matrix','#producer-service-matrix-v142'],['Request','#producer-request']],
-  creative:[['Visual Lab','#creative'],['Campaign','#creative-campaign-lab-v14'],['Scope','#creative-scope-builder-v142'],['Inquiry','#creative-inquiry']]
+ const releaseTabs={
+  overview:['Release identity','Artwork, release navigation and campaign continuity live here while platform metadata remains a separate verified layer.'],
+  watch:['Watch status','The known Benny Bundles YouTube channel route is available. Individual video URLs are only attached when confirmed.'],
+  listen:['Streaming status','Apple Music, Spotify, SoundCloud, UnitedMasters and YouTube Music remain link-pending until exact profile/release URLs are verified.'],
+  credits:['Credits','Only supplied or verified artist / producer / collaborator information should be displayed here. Unverified personnel are not inferred.'],
+  campaign:['Campaign system','Cover art, thumbnails, Shorts, video, lyric motion and release visuals can be linked as one campaign without flattening them into one page.'],
+  source:['Source verification','Media-source status is explicit. For Cold Winter, the requested exact intro clip remains unresolved until the real source file is located and checked.']
  };
- function refreshDock(){const w=document.body.dataset.currentWorld||'';dock.innerHTML=(dockMap[w]||[]).map(x=>'<a href="'+x[1]+'">'+x[0]+'</a>').join('');dock.style.display=(innerWidth<=620&&dockMap[w])?'flex':'none';}
- addEventListener('hashchange',()=>setTimeout(refreshDock,30));addEventListener('resize',refreshDock,{passive:true});setTimeout(refreshDock,80);
-})();
-</script></body></html>+total+(checked.some(x=>['35','150'].includes(x.value))?'+':'');
-   q('#v142ScopeSummary').textContent=checked.length?labels.join(' + ')+' — starting subtotal only; final scope and any bundle savings require configuration.':'Choose services to create a release scope. Bundle savings are intentionally not applied until a real package price is configured.';
+ function renderRelease(){
+   const key=q('#v143ReleaseSelect')?.value||'reached',d=releaseData[key];if(!d)return;
+   safeStore.set('bennySelectedReleaseV143',key);q('#v143ReleaseName').textContent=d.name;q('#v143ReleaseEyebrow').textContent=d.type.toUpperCase();q('#v143ReleaseStageCopy').textContent=d.overview;q('#v143ReleaseStage').style.setProperty('--v143-art',d.art);
+   const tab=q('#v143ReleaseTabs .active')?.dataset.tab||'overview',copy=releaseTabs[tab];q('#v143ReleaseTabLabel').textContent=tab.toUpperCase();q('#v143ReleasePanelTitle').textContent=copy[0];q('#v143ReleasePanelCopy').textContent=copy[1];
+   const sourceStatus=key==='cold'?'Exact intro source not verified':'Release media links partially / not yet verified';
+   q('#v143ReleaseStats').innerHTML='<div class="v143-stat"><b>Selected record</b><span>'+d.name+'</span></div><div class="v143-stat"><b>YouTube channel</b><span><span class="v143-status-dot ready"></span>Known channel route</span></div><div class="v143-stat"><b>Streaming URLs</b><span><span class="v143-status-dot pending"></span>Pending exact links</span></div><div class="v143-stat"><b>Source status</b><span>'+sourceStatus+'</span></div>';
  }
- qa('#v142ScopeList input').forEach(x=>x.addEventListener('change',updateScope));updateScope();
- q('#v142PrepareCreative')?.addEventListener('click',()=>{
-   const checked=scopeChecks(),total=checked.reduce((n,x)=>n+Number(x.value||0),0);
-   openPrepared('TAGJ CREATIVE — RELEASE SCOPE',['Selected services: '+(checked.map(x=>x.dataset.label).join(', ')||'None selected'),'Starting subtotal reference: </html>+total+(checked.some(x=>['35','150'].includes(x.value))?'+':''),'Bundle discount: not configured']);
- });
- // V14.2 mobile depth dock
- const dock=document.createElement('nav');dock.className='v142-depth-dock';dock.id='v142DepthDock';document.body.appendChild(dock);
- const dockMap={
-  tagj:[['House','#tagj-house-map'],['Lab','#tagj-product-lab'],['Registry','#tagj-concept-registry-v142'],['Custom','#tagj-custom']],
-  artist:[['Artist','#artist'],['Archive','#artist-release-console'],['Vault','#artist-release-vault-v142'],['Request','#artist-request-deep']],
-  producer:[['Console','#producer'],['Beat Lab','#producer-beat-lab-v14'],['Matrix','#producer-service-matrix-v142'],['Request','#producer-request']],
-  creative:[['Visual Lab','#creative'],['Campaign','#creative-campaign-lab-v14'],['Scope','#creative-scope-builder-v142'],['Inquiry','#creative-inquiry']]
+ q('#v143ReleaseSelect')?.addEventListener('change',renderRelease);qa('#v143ReleaseTabs button').forEach(btn=>btn.addEventListener('click',()=>{qa('#v143ReleaseTabs button').forEach(b=>b.classList.toggle('active',b===btn));renderRelease()}));
+ qa('#v142ReleaseList .v142-release').forEach(btn=>btn.addEventListener('click',()=>{const key=btn.dataset.release;if(releaseData[key])safeStore.set('bennySelectedReleaseV143',key)}));
+ const storedRelease=safeStore.get('bennySelectedReleaseV143');if(storedRelease&&releaseData[storedRelease]&&q('#v143ReleaseSelect'))q('#v143ReleaseSelect').value=storedRelease;renderRelease();
+
+ let beforeUrl='',afterUrl='',activeAB='before';
+ const before=q('#v143BeforeAudio'),after=q('#v143AfterAudio');
+ function loadLocal(input,audio,statusEl,kind){
+   const f=input.files&&input.files[0];if(!f)return;
+   if(kind==='before'&&beforeUrl)URL.revokeObjectURL(beforeUrl);if(kind==='after'&&afterUrl)URL.revokeObjectURL(afterUrl);
+   const u=URL.createObjectURL(f);if(kind==='before')beforeUrl=u;else afterUrl=u;audio.src=u;audio.load();
+   statusEl.innerHTML='<span class="v143-status-dot ready"></span>'+f.name+' · local only / not uploaded';
+ }
+ q('#v143BeforeFile')?.addEventListener('change',e=>loadLocal(e.currentTarget,before,q('#v143BeforeStatus'),'before'));
+ q('#v143AfterFile')?.addEventListener('change',e=>loadLocal(e.currentTarget,after,q('#v143AfterStatus'),'after'));
+ function switchAB(next){
+   const old=activeAB==='before'?before:after,nw=next==='before'?before:after;if(!old||!nw)return;
+   const wasPlaying=!old.paused,time=Number.isFinite(old.currentTime)?old.currentTime:0;old.pause();activeAB=next;
+   qa('.v143-ab-switch button').forEach(b=>b.classList.remove('active'));q(next==='before'?'#v143ABefore':'#v143AAfter')?.classList.add('active');q('#v143ABTitle').textContent=(next==='before'?'A / Before':'B / After')+' selected';
+   if(nw.src){try{nw.currentTime=Math.min(time,Number.isFinite(nw.duration)?Math.max(0,nw.duration-.05):time)}catch(_){}if(wasPlaying)nw.play().catch(()=>{})}
+ }
+ q('#v143ABefore')?.addEventListener('click',()=>switchAB('before'));q('#v143AAfter')?.addEventListener('click',()=>switchAB('after'));
+ addEventListener('pagehide',()=>{if(beforeUrl)URL.revokeObjectURL(beforeUrl);if(afterUrl)URL.revokeObjectURL(afterUrl)});
+
+ const serviceData={
+  cover:{name:'Cover Art',price:dollar+'35+',eyebrow:'COVER ART / STARTING AT',art:'var(--asset-cover-big-difference)',request:'Cover Art Request',copy:'Single-cover entry route with concept discussion, release-ready square output and structured source-image/reference intake.',need:'Song/project identity, mood, references, source imagery, platforms and explicit-content-label requirement.'},
+  visualizer:{name:'Lyric Visualizer',price:dollar+'95',eyebrow:'LYRIC VISUALIZER / STARTING AT',art:'var(--asset-cover-reached-fire)',request:'Visualizer Request',copy:'Typography-led motion route designed around the record, lyric timing and a consistent visual environment.',need:'Final audio, lyrics, cover/key art, references, delivery platform and deadline.'},
+  video:{name:'Music Video Editing',price:dollar+'150+',eyebrow:'MUSIC VIDEO / STARTING AT',art:'var(--asset-cover-dont-judge-street)',request:'Music Video Request',copy:'Editing and visual-treatment route that can expand into campaign cutdowns and supporting assets.',need:'Footage/source links, song file, references, intended story/tone, platform outputs and deadline.'},
+  youtube:{name:'YouTube SEO Review',price:dollar+'25',eyebrow:'YOUTUBE / STARTING AT',art:'var(--asset-cover-cant-crop)',request:'Custom Creative Request',copy:'Channel/title/description and metadata diagnosis with recommendations rather than fabricated ranking guarantees.',need:'Channel URL, target audience, recent videos, release priorities and known keywords.'},
+  shorts:{name:'3 Shorts',price:dollar+'45',eyebrow:'SHORT FORM / STARTING AT',art:'var(--asset-cover-hold-rooftop)',request:'Custom Creative Request',copy:'Short-form repurposing route for vertical hooks and campaign support.',need:'Source video/audio, preferred moments, platform targets, captions/branding needs and deadline.'}
  };
- function refreshDock(){const w=document.body.dataset.currentWorld||'';dock.innerHTML=(dockMap[w]||[]).map(x=>'<a href="'+x[1]+'">'+x[0]+'</a>').join('');dock.style.display=(innerWidth<=620&&dockMap[w])?'flex':'none';}
- addEventListener('hashchange',()=>setTimeout(refreshDock,30));addEventListener('resize',refreshDock,{passive:true});setTimeout(refreshDock,80);
+ function renderService(key){
+   const d=serviceData[key]||serviceData.cover;
+   qa('#v143ServiceList .v143-service-select').forEach(b=>b.classList.toggle('active',b.dataset.service===key));
+   q('#v143ServiceName').textContent=d.name+' · '+d.price;q('#v143ServiceEyebrow').textContent=d.eyebrow;q('#v143ServiceStageCopy').textContent=d.copy;q('#v143ServiceStage').style.setProperty('--v143-art',d.art);q('#v143ServicePanelTitle').textContent=d.name;q('#v143ServicePanelCopy').textContent=d.need;
+   q('#v143ServiceStats').innerHTML='<div class="v143-stat"><b>Starting price</b><span>'+d.price+'</span></div><div class="v143-stat"><b>Payment</b><span>Not connected</span></div><div class="v143-stat"><b>Inquiry</b><span>Structured brief available</span></div><div class="v143-stat"><b>Files</b><span>Reference links in preview</span></div>';
+   const btn=q('#v143ServiceRequest');if(btn){btn.dataset.v143Wizard=d.request;btn.textContent='Start '+d.name+' request'}
+ }
+ qa('#v143ServiceList .v143-service-select').forEach(btn=>btn.addEventListener('click',()=>renderService(btn.dataset.service)));renderService('cover');
+
+ const wiz=q('#v143Wizard'),form=q('#v143WizardForm'),type=q('#v143RequestType'),review=q('#v143Review'),progress=qa('#v143WizardProgress i'),steps=qa('#v143Wizard .v143-step');let step=0;
+ function worldFromRequest(v){if(v.includes('TAGJ Custom'))return ['TAGJ / CUSTOM','#d5bd7f'];if(v.includes('Feature')||v.includes('Appearance')||v.includes('Collaboration'))return ['BENNY / ARTIST','#c45147'];if(v.includes('Beat')||v.includes('Mix')||v.includes('Mastering')||v.includes('Recording'))return ['BUNDLES / STUDIO','#63efa8'];if(v.includes('Cover')||v.includes('Video')||v.includes('Visualizer')||v.includes('Creative'))return ['TAGJ / VISUAL LAB','#8a6dff'];return ['TAGJ × BENNY','#d7bd7e']}
+ function formObject(){return Object.fromEntries(new FormData(form).entries())}
+ function briefText(){
+   const d=formObject();return ['TAGJ × BENNY BUNDLES — REQUEST BRIEF','Request: '+(d.requestType||''),'Project / title: '+(d.projectTitle||''),'Artist / brand: '+(d.artistBrand||''),'','Concept / need: '+(d.concept||''),'Mood / direction: '+(d.mood||''),'Platforms / use: '+(d.platforms||''),'Reference / source links: '+(d.references||''),'','Deadline: '+(d.deadline||''),'Release / event date: '+(d.releaseDate||''),'Budget range: '+(d.budget||''),'Explicit label: '+(d.explicitLabel||''),'Technical notes: '+(d.notes||''),'','Contact: '+(d.contactName||''),'Email: '+(d.email||''),'Phone / handle: '+(d.phone||''),'Preferred contact: '+(d.preferred||''),'','PREVIEW STATUS: prepared locally; no backend submission or payment has occurred.'].join('\n')
+ }
+ function refreshWizard(){
+   steps.forEach((s,i)=>s.classList.toggle('active',i===step));progress.forEach((x,i)=>x.classList.toggle('on',i<=step));
+   q('#v143WizardBack').style.visibility=step===0?'hidden':'visible';q('#v143WizardNext').textContent=step===steps.length-1?'Copy brief':'Next';q('#v143ShareBrief').style.display=step===steps.length-1?'inline-block':'none';if(step===steps.length-1)review.textContent=briefText()
+ }
+ function openWizard(preset){
+   if(preset&&[...type.options].some(o=>o.value===preset||o.text===preset))type.value=preset;
+   const meta=worldFromRequest(type.value);q('#v143WizardRoute').textContent=meta[0]+' / PREVIEW-LOCAL';wiz.style.setProperty('--wizard-accent',meta[1]);step=0;refreshWizard();wiz.classList.add('open');wiz.setAttribute('aria-hidden','false');document.body.classList.add('nav-lock');setTimeout(()=>type.focus(),80)
+ }
+ function closeWizard(){wiz.classList.remove('open');wiz.setAttribute('aria-hidden','true');document.body.classList.remove('nav-lock')}
+ document.addEventListener('click',e=>{const btn=e.target.closest('[data-v143-wizard]');if(btn){e.preventDefault();openWizard(btn.dataset.v143Wizard||'General Contact')}});
+ q('#v143WizardClose')?.addEventListener('click',closeWizard);wiz?.addEventListener('click',e=>{if(e.target===wiz)closeWizard()});addEventListener('keydown',e=>{if(e.key==='Escape'&&wiz?.classList.contains('open'))closeWizard()});
+ type?.addEventListener('change',()=>{const meta=worldFromRequest(type.value);q('#v143WizardRoute').textContent=meta[0]+' / PREVIEW-LOCAL';wiz.style.setProperty('--wizard-accent',meta[1])});
+ q('#v143WizardBack')?.addEventListener('click',()=>{if(step>0){step--;refreshWizard()}});
+ async function copyText(txt){try{await navigator.clipboard.writeText(txt);return true}catch(_){const ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy')}catch(__){}ta.remove();return ok}}
+ q('#v143WizardNext')?.addEventListener('click',async()=>{if(step<steps.length-1){step++;refreshWizard();return}const ok=await copyText(briefText());q('#v143WizardNext').textContent=ok?'Copied':'Copy failed'});
+ q('#v143SaveDraft')?.addEventListener('click',()=>{safeStore.set('tagjBennyRequestDraftV143',JSON.stringify(formObject()));q('#v143SaveDraft').textContent='Draft saved';setTimeout(()=>q('#v143SaveDraft').textContent='Save draft',1300)});
+ q('#v143ShareBrief')?.addEventListener('click',async()=>{const txt=briefText();if(navigator.share){try{await navigator.share({title:'TAGJ × Benny Bundles request brief',text:txt});return}catch(_){}}const ok=await copyText(txt);q('#v143ShareBrief').textContent=ok?'Copied':'Share unavailable'});
+ const draft=safeStore.get('tagjBennyRequestDraftV143');if(draft){try{const d=JSON.parse(draft);Object.entries(d).forEach(([k,v])=>{const el=form.elements.namedItem(k);if(el)el.value=v})}catch(_){}}
+ form?.addEventListener('input',()=>{if(step===steps.length-1)review.textContent=briefText()});
+ refreshWizard();
+
+ // Expand existing V14.2 dock with the new fifth-depth destinations.
+ const dock=q('#v142DepthDock');
+ function upgradeDock(){
+   if(!dock)return;const id=(location.hash||'#home').slice(1);let w='home';if(id.startsWith('tagj'))w='tagj';else if(id.startsWith('artist'))w='artist';else if(id.startsWith('producer'))w='producer';else if(id.startsWith('creative'))w='creative';
+   const links={
+    tagj:[['House','#tagj-house-map'],['Lab','#tagj-product-lab'],['Dossier','#tagj-product-detail-v143'],['Custom','#tagj-custom']],
+    artist:[['Artist','#artist'],['Vault','#artist-release-vault-v142'],['Dossier','#artist-release-detail-v143'],['Request','#artist-request-deep']],
+    producer:[['Studio','#producer'],['A/B Lab','#producer-ab-lab-v143'],['Matrix','#producer-service-matrix-v142'],['Request','#producer-request']],
+    creative:[['Visual','#creative'],['Scope','#creative-scope-builder-v142'],['Dossier','#creative-service-detail-v143'],['Inquiry','#creative-inquiry']]
+   };
+   if(links[w])dock.innerHTML=links[w].map(x=>'<a href="'+x[1]+'">'+x[0]+'</a>').join('');
+ }
+ addEventListener('hashchange',()=>setTimeout(upgradeDock,35));setTimeout(upgradeDock,120);
 })();
 </script></body></html>
