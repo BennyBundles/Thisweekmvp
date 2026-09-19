@@ -61,6 +61,8 @@ const phase31Doc=requireFile('PHASE_31_IMPLEMENTATION.md');
 const phase31Schema=requireFile('supabase/phase31/production_activation_interlock.sql');
 const phase32Doc=requireFile('PHASE_32_IMPLEMENTATION.md');
 const phase32Schema=requireFile('supabase/phase32/legal_retention.sql');
+const phase33Doc=requireFile('PHASE_33_IMPLEMENTATION.md');
+const phase33Schema=requireFile('supabase/phase33/privacy_export.sql');
 const legalSandbox=requireFile('legal/sandbox/index.html');
 const legalCheck=requireFile('legal-check.mjs');
 const phase28Schema=requireFile('supabase/phase28/support_incident_ops.sql');
@@ -391,6 +393,30 @@ if(opsHtml)requireText('Phase 32 Ops legal retention surface',opsHtml,'id="legal
 if(opsJs)requireText('Phase 32 Ops legal retention renderer',opsJs,'renderLegalRetention');
 if(legalSandbox)requireText('Phase 32 Sandbox legal fixture must be test-only',legalSandbox,'SANDBOX TEST ONLY.');
 if(phase32Doc)requireText('Phase 32 production legal remains unapproved',phase32Doc,'inactive/unapproved');
+if(phase33Schema){
+  requireText('Phase 33 privacy export audit table',phase33Schema,'tw_privacy_export_events');
+  requireText('Phase 33 privacy audit immutable',phase33Schema,'tw_privacy_export_events_immutable');
+  requireText('Phase 33 browser roles revoked',phase33Schema,'from public,anon,authenticated');
+}
+if(accountGateway){
+  requireText('Phase 33 privacy inventory action',accountGateway,'privacy_inventory');
+  requireText('Phase 33 export start action',accountGateway,'privacy_export_start');
+  requireText('Phase 33 export page action',accountGateway,'privacy_export_page');
+  requireText('Phase 33 export complete action',accountGateway,'privacy_export_complete');
+  requireText('Phase 33 fixed export allowlist',accountGateway,'PRIVACY_DATASETS');
+  requireText('Phase 33 page size bounded',accountGateway,'Math.min(500');
+  requireText('Phase 33 provider secrets excluded',accountGateway,'provider_credentials_and_vault_secrets');
+}
+if(accountHtml){
+  requireText('Phase 33 cloud export control',accountHtml,'id="downloadCloudExport"');
+  requireText('Phase 33 local Plan export separation',accountHtml,'Export local Plan data');
+}
+if(accountJs){
+  requireText('Phase 33 client export schema',accountJs,'thisweek.cloud-export.v1');
+  requireText('Phase 33 client pagination',accountJs,"accountGateway('privacy_export_page'");
+  requireText('Phase 33 completion audit',accountJs,"accountGateway('privacy_export_complete'");
+}
+if(phase33Doc)requireText('Phase 33 no statutory completeness claim',phase33Doc,'not represented as a guarantee');
 if(!legalCheck)failures.push('Phase 32 legal Sandbox checker unavailable');
 if(phase20Gateway)requireText('Money gateway rejects revoked session',phase20Gateway,'tw_auth_session_active');
 if(phase19Gateway)requireText('Provider gateway rejects revoked session',phase19Gateway,'tw_auth_session_active');
