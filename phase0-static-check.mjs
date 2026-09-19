@@ -27,6 +27,8 @@ const phase21CardAuthUrl=new URL('./supabase/functions/thisweek-unit-card-author
 const moneyLabHtmlUrl=new URL('./money-lab/index.html', import.meta.url);
 const moneyLabJsUrl=new URL('./money-lab/app.js', import.meta.url);
 const moneyLabCheckUrl=new URL('./money-lab-check.mjs', import.meta.url);
+const phase22SchemaUrl=new URL('./supabase/phase22/provider_sandbox_chain.sql', import.meta.url);
+const phase22DocUrl=new URL('./PHASE_22_IMPLEMENTATION.md', import.meta.url);
 
 const releaseFiles=['prepare-site.mjs','release-smoke-check.mjs','RELEASE_CHECKLIST.md','RELEASE_POLICY.md','release.config.json','CHANGELOG.md','RELEASES/v0.15.0-phase15.md'];
 for(const name of releaseFiles){
@@ -52,7 +54,9 @@ for(const [label,url] of [
   ['Phase 21 Unit card authorization controller',phase21CardAuthUrl],
   ['Money Lab HTML',moneyLabHtmlUrl],
   ['Money Lab client',moneyLabJsUrl],
-  ['Money Lab checker',moneyLabCheckUrl]
+  ['Money Lab checker',moneyLabCheckUrl],
+  ['Phase 22 provider sandbox schema',phase22SchemaUrl],
+  ['Phase 22 implementation document',phase22DocUrl]
 ]){
   if(!fs.existsSync(url))failures.push('Missing '+label);
 }
@@ -73,6 +77,9 @@ const phase21CardAuth=fs.existsSync(phase21CardAuthUrl)?fs.readFileSync(phase21C
 const moneyLabHtml=fs.existsSync(moneyLabHtmlUrl)?fs.readFileSync(moneyLabHtmlUrl,'utf8'):'';
 const moneyLabJs=fs.existsSync(moneyLabJsUrl)?fs.readFileSync(moneyLabJsUrl,'utf8'):'';
 const requirePhase21FileText=(label,content,text)=>{if(!content.includes(text))failures.push(label);};
+const phase22Schema=fs.existsSync(phase22SchemaUrl)?fs.readFileSync(phase22SchemaUrl,'utf8'):'';
+const phase22Doc=fs.existsSync(phase22DocUrl)?fs.readFileSync(phase22DocUrl,'utf8'):'';
+const requirePhase22FileText=(label,content,text)=>{if(!content.includes(text))failures.push(label);};
 
 const requireText=(label,text)=>{if(!html.includes(text))failures.push(label);};
 const forbidText=(label,text)=>{if(html.includes(text))failures.push(label);};
@@ -256,7 +263,7 @@ requirePhase19FileText('Phase 19 shared project isolation rule',phase19Readme,'B
 
 // Phase 20 money-layer foundation must remain fail-closed in the browser.
 requireText('Phase 20 money client config','const LIVE_MONEY_CONFIG=Object.freeze({');
-requireText('Phase 20+ money backend deployed',"state:'event_controllers_deployed'");
+requireText('Phase 20+ money backend deployed',"state:'sandbox_chain_deployed_credential_gated'");
 requireText('Phase 20 client execution disabled',"executionMode:'disabled'");
 requireText('Phase 20 money network deny rule',"networkPolicy:'deny_until_sandbox_auth_and_credentials'");
 requireText('Phase 20 inactive reward disclosure',"rewardMode:'sandbox_template_inactive'");
@@ -299,7 +306,7 @@ requirePhase20FileText('Phase 20 README no live money',phase20Readme,'No live mo
 requirePhase20FileText('Phase 20 implementation Plan authority',phase20Doc,'Available Now` remains plan-derived.');
 
 // Phase 21 signed external events + isolated recoverable Auth lab.
-requireText('Phase 21 money state',"state:'event_controllers_deployed'");
+requireText('Phase 21 money state',"state:'sandbox_chain_deployed_credential_gated'");
 requireText('Phase 21 signed webhook readiness',"webhookMode:'signed_receivers_deployed'");
 requireText('Phase 21 card controller readiness',"cardAuthorizationMode:'controller_deployed_execution_locked'");
 requireText('Phase 21 Money Lab link','href="./money-lab/"');
@@ -327,6 +334,35 @@ requirePhase21FileText('Phase 21 Money Lab gateway call',moneyLabJs,'/functions/
 requirePhase21FileText('Phase 21 Money Lab tab scoped session',moneyLabJs,'sessionStorage');
 if(/service_role|sb_secret_/i.test(moneyLabHtml+moneyLabJs))failures.push('Phase 21 Money Lab contains a server secret pattern');
 if(/localStorage/.test(moneyLabJs))failures.push('Phase 21 Money Lab persists auth state to localStorage');
+
+// Phase 22 credential-gated provider Sandbox orchestration.
+requireText('Phase 22 sandbox chain marker',"sandboxChain:'plaid_unit_pinwheel_method'");
+requireText('Phase 22 sandbox chain credential gate',"sandboxChainMode:'deployed_credentials_required'");
+requirePhase22FileText('Phase 22 Unit application schema',phase22Schema,'provider_application_id');
+requirePhase22FileText('Phase 22 Method entity schema',phase22Schema,'method_entity_id');
+requirePhase22FileText('Phase 22 funding link kind',phase22Schema,'unit_counterparty');
+requirePhase22FileText('Phase 22 Method source kind',phase22Schema,'method_source');
+requirePhase22FileText('Phase 22 no secret persistence statement',phase22Doc,'does not invent or commit credentials');
+requirePhase20FileText('Phase 22 gateway Plaid processor token',phase20Gateway,'/processor/token/create');
+requirePhase20FileText('Phase 22 gateway Unit processor selector',phase20Gateway,'processor: "unit"');
+requirePhase20FileText('Phase 22 gateway Unit application',phase20Gateway,'unit_sandbox_application');
+requirePhase20FileText('Phase 22 gateway Unit deposit account',phase20Gateway,'unit_create_deposit_account');
+requirePhase20FileText('Phase 22 gateway external ACH funding',phase20Gateway,'unit_fund_from_external');
+requirePhase20FileText('Phase 22 gateway Unit authorization simulation',phase20Gateway,'unit_sandbox_authorization');
+requirePhase20FileText('Phase 22 gateway Method dev setup',phase20Gateway,'method_sandbox_setup');
+requirePhase20FileText('Phase 22 gateway Method payment',phase20Gateway,'method_sandbox_payment');
+requirePhase19FileText('Phase 22 provider gateway Plaid Auth',phase19Gateway,'products: ["auth", "transactions"]');
+requirePhase19FileText('Phase 22 provider gateway rejects anonymous',phase19Gateway,'recoverable_auth_required');
+requirePhase21FileText('Phase 22 Unit webhook application state',phase21Webhook,'unitApplicationState');
+requirePhase21FileText('Phase 22 Unit webhook ACH cash credit',phase21Webhook,'unit_ach_credit_settlement');
+requirePhase21FileText('Phase 22 Unit webhook transfer state',phase21Webhook,'unitPaymentState');
+requirePhase21FileText('Phase 22 Money Lab Pinwheel v4',moneyLabHtml,'https://cdn.getpinwheel.com/pinwheel-v4.js');
+requirePhase21FileText('Phase 22 Money Lab provider gateway',moneyLabJs,'/functions/v1/thisweek-provider-gateway');
+requirePhase21FileText('Phase 22 Money Lab Plaid Unit action',moneyLabJs,"gateway('plaid_unit_funding_link'");
+requirePhase21FileText('Phase 22 Money Lab card simulation',moneyLabJs,"gateway('unit_sandbox_authorization'");
+requirePhase21FileText('Phase 22 Money Lab Pinwheel open',moneyLabJs,'window.Pinwheel.open');
+requirePhase21FileText('Phase 22 Money Lab Method setup',moneyLabJs,"gateway('method_sandbox_setup'");
+requirePhase21FileText('Phase 22 Money Lab Method pay',moneyLabJs,"gateway('method_sandbox_payment'");
 
 
 
