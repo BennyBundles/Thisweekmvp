@@ -898,7 +898,7 @@ body:not([data-current-world]) .v143-request-fab,body[data-current-world="home"]
     <section class="v158-beat-player-panel">
       <div class="v145-kicker">SELECTED SOURCE</div>
       <h2 id="v158BeatTitle">Choose a beat.</h2>
-      <div id="v158BeatMeta" class="v158-beat-meta">22 verified source records are available.</div>
+      <div id="v158BeatMeta" class="v158-beat-meta">22 verified source records are available.</div><div id="v159BeatAnalysis" class="v159-beat-analysis"></div><div id="v159LicenseGrid" class="v159-license-grid" aria-label="License options"></div>
       <audio id="v158BeatAudio" controls preload="metadata"></audio>
       <div class="v158-beat-status" id="v158BeatStatus">Select a beat to prepare its Drive-backed audition source.</div>
       <div class="v158-beat-wave" id="v158BeatWave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
@@ -2120,7 +2120,7 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
    source.href=b.source.viewerUrl;source.removeAttribute('aria-disabled');
    request.disabled=false;
    try{localStorage.setItem('tagjSelectedBeatV158',JSON.stringify({id:b.id,title:b.title,driveId:b.source.driveId}))}catch(_){}
-   const t=q('#v145BeatTitle');if(t)t.value=b.title;
+   const t=q('#v145BeatTitle');if(t)t.value=b.title;document.dispatchEvent(new CustomEvent('tagj:beat-selected',{detail:{beat:b}}));
  }
  audio?.addEventListener('play',()=>wave?.classList.add('playing'));
  audio?.addEventListener('pause',()=>wave?.classList.remove('playing'));
@@ -2133,6 +2133,98 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
    status.textContent=beats.length+' verified source records loaded. Select a beat to prepare playback.';
    try{const saved=JSON.parse(localStorage.getItem('tagjSelectedBeatV158')||'null');const hit=saved&&beats.find(b=>b.id===saved.id);if(hit)selectBeat(hit)}catch(_){}
  }).catch(()=>{status.textContent='Beat catalogue data could not be loaded. The source records remain available in the project data layer.'});
+})();
+</script>
+
+
+<style id="v15-9-license-ui-css">
+.v159-beat-analysis{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 4px}
+.v159-beat-analysis span{font-size:9px;padding:6px 8px;border:1px solid #293740;border-radius:999px;color:#9cabb4;background:#0a0f12}
+.v159-license-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:14px 0 4px}
+.v159-license-card{border:1px solid #26343d;background:#0b1115;border-radius:9px;padding:12px;display:grid;gap:7px}
+.v159-license-card h4{margin:0;font-size:12px;color:#eef4f7}.v159-license-card .price{font-size:20px;font-weight:900;color:#ff934b}
+.v159-license-card small{font-size:8px;line-height:1.45;color:#778791;text-transform:uppercase;letter-spacing:.05em}
+.v159-license-card .actions{display:flex;gap:6px;flex-wrap:wrap}
+.v159-license-card button{min-height:38px;border:1px solid #465862;background:#10181d;color:#dce6eb;border-radius:6px;padding:7px 9px;font-size:9px;font-weight:800}
+.v159-license-card button.primary{background:#ff934b;color:#111;border-color:#ff934b}
+.v159-license-card button[disabled]{opacity:.42;cursor:not-allowed}
+.v159-legal-backdrop{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.86);display:none;align-items:center;justify-content:center;padding:16px}
+.v159-legal-backdrop.open{display:flex}.v159-legal-panel{width:min(900px,100%);max-height:90svh;background:#080d10;border:1px solid #394951;border-radius:12px;display:grid;grid-template-rows:auto 1fr auto;overflow:hidden}
+.v159-legal-head,.v159-legal-foot{padding:14px 16px;border-bottom:1px solid #26343d;display:flex;gap:10px;justify-content:space-between;align-items:center}.v159-legal-foot{border-bottom:0;border-top:1px solid #26343d}
+.v159-legal-head b{font-size:12px}.v159-legal-head button,.v159-legal-foot button{min-height:42px;border:1px solid #465862;background:#10181d;color:#fff;border-radius:6px;padding:8px 12px}
+.v159-legal-body{overflow:auto;padding:16px}.v159-legal-body pre{margin:0;white-space:pre-wrap;word-break:break-word;font:12px/1.62 ui-monospace,SFMono-Regular,Menlo,monospace;color:#c9d4da}
+.v159-legal-warning{font-size:9px;line-height:1.45;color:#ffbf89}
+@media(max-width:700px){.v159-license-grid{grid-template-columns:1fr}.v159-legal-backdrop{padding:6px}.v159-legal-panel{max-height:96svh}.v159-legal-body{padding:12px}.v159-legal-body pre{font-size:11px}}
+</style>
+<div class="v159-legal-backdrop" id="v159LegalBackdrop" aria-hidden="true">
+  <section class="v159-legal-panel" role="dialog" aria-modal="true" aria-labelledby="v159LegalTitle">
+    <header class="v159-legal-head"><div><small>DRAFT LICENSE / COUNSEL REVIEW PENDING</small><b id="v159LegalTitle">Beat License</b></div><button type="button" id="v159LegalClose">Close</button></header>
+    <div class="v159-legal-body"><pre id="v159LegalText">Select a beat and license.</pre></div>
+    <footer class="v159-legal-foot"><span class="v159-legal-warning">Paid checkout remains disabled until governing law, rights/sample review and final legal review are complete.</span><button type="button" id="v159LegalRequest">Request this license</button></footer>
+  </section>
+</div>
+<script id="v15-9-license-ui-js">
+(()=>{
+ const q=(s,r=document)=>r.querySelector(s);
+ const grid=q('#v159LicenseGrid'), analysis=q('#v159BeatAnalysis'),backdrop=q('#v159LegalBackdrop'),legalText=q('#v159LegalText'),legalTitle=q('#v159LegalTitle'),legalRequest=q('#v159LegalRequest');
+ if(!grid)return;
+ let system=null,currentBeat=null,currentTier=null;
+ const map={basicMp3:'basic-mp3-v1',premiumWav:'premium-wav-v1',trackoutPro:'trackout-pro-v1',unlimited:'unlimited-v1',exclusive:'exclusive-v1'};
+ const reverse=Object.fromEntries(Object.entries(map).map(([k,v])=>[v,k]));
+ const humanStatus=s=>String(s||'').replaceAll('_',' ');
+ const price=t=>t.priceUsd?('</html>+t.priceUsd):(t.priceUsdMinimumOffer?('From </html>+t.priceUsdMinimumOffer):'Quote');
+ function renderAnalysis(b){
+   const a=b.analysis||{};
+   const tags=(a.creativeTags||[]).map(x=>'<span>'+x+'</span>').join('');
+   analysis.innerHTML='<span>Tempo: '+(a.tempoFeel||'Unconfirmed')+'</span><span>Key: '+(a.keyEstimate||'Unconfirmed')+'</span>'+tags+(a.previewNormalizationRequired?'<span>Delivery QC: normalize/limit</span>':'<span>Delivery QC: standard</span>');
+ }
+ function renderLicenses(b){
+   if(!system){grid.innerHTML='<div class="v159-license-card"><small>Loading license system…</small></div>';return}
+   grid.innerHTML='';
+   system.tiers.forEach(t=>{
+     const k=reverse[t.id], av=b.licenseAvailability?.[k]?.status||'unconfirmed';
+     const blocked=av==='requires_stems_trackouts';
+     const card=document.createElement('article');card.className='v159-license-card';
+     card.innerHTML='<h4></h4><div class="price"></div><small></small><div class="actions"><button type="button" class="terms">View draft terms</button><button type="button" class="primary request">Request</button></div>';
+     card.querySelector('h4').textContent=t.label;
+     card.querySelector('.price').textContent=price(t);
+     card.querySelector('small').textContent=humanStatus(av);
+     const terms=card.querySelector('.terms'),req=card.querySelector('.request');
+     terms.addEventListener('click',()=>openLegal(b,t));
+     if(blocked){req.disabled=true;req.textContent='Needs stems'} else req.addEventListener('click',()=>requestTier(b,t));
+     grid.appendChild(card);
+   });
+ }
+ async function openLegal(b,t){
+   currentBeat=b;currentTier=t;
+   legalTitle.textContent=b.title+' — '+t.label;
+   legalText.textContent='Loading draft agreement…';
+   backdrop.classList.add('open');backdrop.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
+   try{
+     const txt=await fetch(t.contractPath,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('agreement');return r.text()});
+     const notes=[b.analysis?.previewNormalizationRequired?'Normalize/limit consumer delivery from float/source master.':null,b.analysis?.sourceReviewNote,b.licenseAvailability?.[reverse[t.id]]?.status].filter(Boolean).join(' ');
+     const sample=b.sampleStatus?.note||b.sampleStatus?.status||'Not reviewed';
+     const vals={
+       BEAT_TITLE:b.title,BEAT_ID:b.id,LICENSEE_LEGAL_NAME:'[LICENSEE LEGAL NAME]',EFFECTIVE_DATE:'[EFFECTIVE DATE]',TRANSACTION_ID:'[TRANSACTION ID]',
+       LICENSE_PRICE_USD:price(t),SOURCE_FILENAME:b.fileName,SOURCE_FORMAT:String(b.audio?.format||'').toUpperCase(),TEMPO_DISPLAY:b.analysis?.tempoFeel||'Estimate unavailable',
+       KEY_ESTIMATE:b.analysis?.keyEstimate||'Estimate unavailable',SAMPLE_STATUS:sample,DELIVERY_NOTES:notes||'Standard delivery QC required.',ADDITIONAL_TERMS:'None unless added in writing.'
+     };
+     legalText.textContent=txt.replace(/\{\{([A-Z0-9_]+)\}\}/g,(_,k)=>vals[k]??('['+k+']'));
+   }catch(_){legalText.textContent='Draft agreement could not be loaded. Use the business contact route for the current terms.'}
+ }
+ function closeLegal(){backdrop.classList.remove('open');backdrop.setAttribute('aria-hidden','true');document.body.style.overflow=''}
+ function requestTier(b,t){
+   try{sessionStorage.setItem('tagjBeatLicenseInquiryV159',JSON.stringify({beatId:b.id,beatTitle:b.title,licenseId:t.id,licenseLabel:t.label,price:price(t)}))}catch(_){}
+   closeLegal();
+   const trigger=document.querySelector('[data-v143-wizard="Beat Inquiry"]');
+   if(trigger){trigger.click();setTimeout(()=>{const title=q('#v143ProjectTitle');if(title)title.value=b.title;const notes=q('#v143Notes');if(notes)notes.value='Beat: '+b.title+' ('+b.id+')\\nRequested license: '+t.label+' — '+price(t)+'\\nFinal sale subject to availability, rights review, and executed agreement.';},80)}
+ }
+ q('#v159LegalClose')?.addEventListener('click',closeLegal);
+ backdrop?.addEventListener('click',e=>{if(e.target===backdrop)closeLegal()});
+ addEventListener('keydown',e=>{if(e.key==='Escape'&&backdrop?.classList.contains('open'))closeLegal()});
+ legalRequest?.addEventListener('click',()=>{if(currentBeat&&currentTier)requestTier(currentBeat,currentTier)});
+ document.addEventListener('tagj:beat-selected',e=>{currentBeat=e.detail.beat;renderAnalysis(currentBeat);renderLicenses(currentBeat)});
+ fetch('tagj-data/license-system.v1.json',{cache:'no-store'}).then(r=>r.json()).then(x=>{system=x;if(currentBeat)renderLicenses(currentBeat)}).catch(()=>{grid.innerHTML='<div class="v159-license-card"><small>License data unavailable.</small></div>'});
 })();
 </script>
 
