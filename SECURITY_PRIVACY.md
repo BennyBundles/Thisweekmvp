@@ -463,3 +463,26 @@ The browser network boundary should only then change from `connect-src 'none'` t
 - `PHASE_19_IMPLEMENTATION.md`
 
 These files are activation infrastructure, not proof of an active bank connection.
+
+
+## 21. Shared-project Phase 19 deployment
+
+The user explicitly selected **BennyBundles’s Project** for Phase 19 after the free Supabase organization reached its active-project limit.
+
+Project ref: `xjtvawmppzwzrooairyx`.
+
+This Week is isolated inside the shared project through:
+
+- dedicated `tw_provider_*` tables;
+- RLS on all provider tables;
+- revoked direct `public`, `anon`, and `authenticated` table privileges;
+- service-role-only `tw_vault_*` RPC functions;
+- JWT-protected `thisweek-provider-gateway`.
+
+The shared project does not change the browser trust rule: the weekly Plan remains browser-local.
+
+The backend origin is now known, but production CSP still uses `connect-src 'none'` and live provider activation remains disabled.
+
+Provider secrets are not present in the browser or GitHub Pages source.
+
+No financial institution is connected until recoverable Auth, provider credentials, provider Sandbox verification, and an explicit CSP allowlist are completed.
