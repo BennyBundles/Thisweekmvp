@@ -55,6 +55,8 @@ const phase30SchemaUrl=new URL('./supabase/phase30/notification_dispatcher.sql',
 const phase30DocUrl=new URL('./PHASE_30_IMPLEMENTATION.md', import.meta.url);
 const opsNotifierUrl=new URL('./supabase/functions/thisweek-ops-notifier/index.ts', import.meta.url);
 const opsNotifierRuntimeUrl=new URL('./supabase/functions/thisweek-ops-notifier/deno.json', import.meta.url);
+const phase31SchemaUrl=new URL('./supabase/phase31/production_activation_interlock.sql', import.meta.url);
+const phase31DocUrl=new URL('./PHASE_31_IMPLEMENTATION.md', import.meta.url);
 const supportGatewayUrl=new URL('./supabase/functions/thisweek-support-gateway/index.ts', import.meta.url);
 const supportHtmlUrl=new URL('./support/index.html', import.meta.url);
 const supportJsUrl=new URL('./support/app.js', import.meta.url);
@@ -113,6 +115,8 @@ for(const [label,url] of [
   ['Phase 30 implementation document',phase30DocUrl],
   ['Phase 30 Ops notifier',opsNotifierUrl],
   ['Phase 30 Ops notifier runtime',opsNotifierRuntimeUrl],
+  ['Phase 31 production interlock schema',phase31SchemaUrl],
+  ['Phase 31 implementation document',phase31DocUrl],
   ['Support Gateway',supportGatewayUrl],
   ['Support Center HTML',supportHtmlUrl],
   ['Support Center client',supportJsUrl],
@@ -173,6 +177,9 @@ const phase30Doc=fs.existsSync(phase30DocUrl)?fs.readFileSync(phase30DocUrl,'utf
 const opsNotifier=fs.existsSync(opsNotifierUrl)?fs.readFileSync(opsNotifierUrl,'utf8'):'';
 const opsNotifierRuntime=fs.existsSync(opsNotifierRuntimeUrl)?fs.readFileSync(opsNotifierRuntimeUrl,'utf8'):'';
 const requirePhase30FileText=(label,content,text)=>{if(!content.includes(text))failures.push(label);};
+const phase31Schema=fs.existsSync(phase31SchemaUrl)?fs.readFileSync(phase31SchemaUrl,'utf8'):'';
+const phase31Doc=fs.existsSync(phase31DocUrl)?fs.readFileSync(phase31DocUrl,'utf8'):'';
+const requirePhase31FileText=(label,content,text)=>{if(!content.includes(text))failures.push(label);};
 
 const requireText=(label,text)=>{if(!html.includes(text))failures.push(label);};
 const forbidText=(label,text)=>{if(html.includes(text))failures.push(label);};
@@ -588,6 +595,23 @@ requirePhase30FileText('Phase 30 notifier HTTPS-only destination',opsNotifier,'u
 requirePhase27FileText('Phase 30 Ops channel status',opsGateway,'tw_ops_notification_channel_status');
 requirePhase30FileText('Phase 30 no false paging claim',phase30Doc,'delivery channel remains unconfigured and fail-closed');
 if(/service_role|SUPABASE_SERVICE_ROLE_KEY|sb_secret_/i.test(opsNotifierRuntime))failures.push('Phase 30 notifier runtime config contains a server secret pattern');
+
+requirePhase31FileText('Phase 31 release gates table',phase31Schema,'tw_release_gates');
+requirePhase31FileText('Phase 31 release events table',phase31Schema,'tw_release_gate_events');
+requirePhase31FileText('Phase 31 release status RPC',phase31Schema,'tw_release_status');
+requirePhase31FileText('Phase 31 live-money interlock RPC',phase31Schema,'tw_release_money_enabled');
+requirePhase31FileText('Phase 31 admin-only gate setter',phase31Schema,'tw_release_set_gate');
+requirePhase31FileText('Phase 31 browser release access revoked',phase31Schema,'from public,anon,authenticated');
+requirePhase31FileText('Phase 31 immutable release evidence',phase31Schema,'tw_release_gate_events_immutable');
+requirePhase20FileText('Phase 31 money gateway provider interlock',phase20Gateway,'requireProductionReleaseInterlock');
+requirePhase19FileText('Phase 31 provider gateway interlock',phase19Gateway,'requireProviderProductionInterlock');
+requirePhase21FileText('Phase 31 signed webhook interlock',phase21Webhook,'production_release_gates_incomplete');
+requirePhase21FileText('Phase 31 card auth interlock',phase21CardAuth,'tw_release_money_enabled');
+requirePhase27FileText('Phase 31 Ops release status',opsGateway,'tw_release_status');
+requirePhase27FileText('Phase 31 Ops gate action',opsGateway,'set_release_gate');
+requirePhase27FileText('Phase 31 Ops release UI',opsHtml,'id="releaseStatus"');
+requirePhase27FileText('Phase 31 Ops release renderer',opsJs,'renderReleaseStatus');
+requirePhase31FileText('Phase 31 current state locked',phase31Doc,'live money ready: false');
 
 requirePhase28FileText('Phase 28 Support Center gateway',supportJs,'/functions/v1/thisweek-support-gateway');
 if(/service_role|sb_secret_/i.test(supportHtml+supportJs))failures.push('Phase 28 Support Center contains server-secret pattern');
