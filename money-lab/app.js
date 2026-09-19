@@ -1,6 +1,7 @@
 const SUPABASE_URL='https://xjtvawmppzwzrooairyx.supabase.co';
 const PUBLISHABLE_KEY='sb_publishable_OcmV-NiXzSy7mqg3TUKxnA_74l8fq87';
-const SESSION_KEY='thisweek.moneyLab.session.v1';
+const SESSION_KEY='thisweek.auth.session.v1';
+const LEGACY_SESSION_KEY='thisweek.moneyLab.session.v1';
 const CHAIN_KEY='thisweek.moneyLab.chain.v1';
 const $=id=>document.getElementById(id);
 const logEl=$('log');
@@ -30,7 +31,11 @@ function redact(value){
   return out;
 }
 function readSession(){
-  try{return JSON.parse(sessionStorage.getItem(SESSION_KEY)||'null');}catch{return null;}
+  try{
+    const next=JSON.parse(sessionStorage.getItem(SESSION_KEY)||sessionStorage.getItem(LEGACY_SESSION_KEY)||'null');
+    if(next?.access_token){sessionStorage.setItem(SESSION_KEY,JSON.stringify(next));sessionStorage.removeItem(LEGACY_SESSION_KEY);}
+    return next;
+  }catch{return null;}
 }
 function readChain(){
   try{return JSON.parse(sessionStorage.getItem(CHAIN_KEY)||'{}')||{};}catch{return {};}
@@ -47,8 +52,8 @@ function writeSession(next){
     expires_at:next.expires_at||Math.floor(Date.now()/1000)+(next.expires_in||3600),
     token_type:next.token_type||'bearer'
   }:null;
-  if(session)sessionStorage.setItem(SESSION_KEY,JSON.stringify(session));
-  else sessionStorage.removeItem(SESSION_KEY);
+  if(session){sessionStorage.setItem(SESSION_KEY,JSON.stringify(session));sessionStorage.removeItem(LEGACY_SESSION_KEY);}
+  else{sessionStorage.removeItem(SESSION_KEY);sessionStorage.removeItem(LEGACY_SESSION_KEY);}
   updateUi();
 }
 function jwtPayload(token){
