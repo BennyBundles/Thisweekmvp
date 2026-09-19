@@ -196,6 +196,7 @@ jobs:
               && grep -Fq 'Support & Disputes' <<< "$support_center" \
               && grep -Fq '/functions/v1/thisweek-support-gateway' <<< "$support_js" \
               && grep -Fq 'accept_legal' <<< "$account_js" \
+              && grep -Fq 'privacy_export_page' <<< "$account_js" \
               && grep -Fq 'set_legal_document_state' <<< "$ops_js" \
               && grep -Fq 'SANDBOX TEST ONLY.' <<< "$legal_sandbox"; then
               success=1
