@@ -1,0 +1,479 @@
+{
+  "schemaVersion": "tagj.sample-review.v1",
+  "reviewDate": "2026-09-19",
+  "reviewer": "ChatGPT technical/legal-source review; not a substitute for counsel or a rights-clearance service",
+  "scope": "22 supplied beat exports",
+  "methodology": [
+    "Inspected filenames and embedded format/encoder metadata.",
+    "Reviewed source provenance signals available in the supplied files.",
+    "Checked for explicit third-party attribution in embedded metadata.",
+    "Applied a heightened flag where the original filename itself suggests remix/preexisting-work risk.",
+    "Did not claim acoustic fingerprint matching against commercial catalogues because no such rights-clearance/fingerprint database is connected."
+  ],
+  "legalPrinciple": "Audio inspection alone cannot establish sample clearance. Copyright can subsist separately in a musical work and a sound recording; use of preexisting material may implicate either or both.",
+  "overallStatus": "provenance_attestation_required_before_final_license",
+  "rows": [
+    {
+      "beatId": "beat-001",
+      "title": "Pressure Glass",
+      "originalSourceFile": "B3 V.1 T.01",
+      "exportMetadata": "FL Studio 2024",
+      "reviewStatus": "standard_provenance_confirmation_required",
+      "riskFlag": null,
+      "findings": [
+        "Supplied file is an FL Studio export or an MP3 encoded from FL Studio.",
+        "No embedded metadata naming a third-party sample, publisher, source recording, or sample-clearance license was found.",
+        "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used."
+      ],
+      "clearanceConclusion": "NOT CLEARED BY THIS SCREEN",
+      "requiredBeforeFinalLicense": [
+        "Benjamin Alexander completes the producer provenance attestation for this beat.",
+        "Identify every third-party sample, interpolation, loop, one-shot, vocal clip, speech clip, or preexisting recording used, if any.",
+        "For commercial sample/loop libraries, retain the applicable license/receipt and confirm redistribution in a beat license is permitted.",
+        "For copyrighted samples/interpolations requiring permission, obtain the necessary rights or replace/remove the material before final licensing.",
+        "If no third-party material was used, attest that the beat was created from original performance/synthesis and/or properly licensed production assets."
+      ]
+    },
+    {
+      "beatId": "beat-002",
+      "title": "Low Light",
+      "originalSourceFile": "dopbeat2",
+      "exportMetadata": "FL Studio 21",
+      "reviewStatus": "standard_provenance_confirmation_required",
+      "riskFlag": null,
+      "findings": [
+        "Supplied file is an FL Studio export or an MP3 encoded from FL Studio.",
+        "No embedded metadata naming a third-party sample, publisher, source recording, or sample-clearance license was found.",
+        "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used."
+      ],
+      "clearanceConclusion": "NOT CLEARED BY THIS SCREEN",
+      "requiredBeforeFinalLicense": [
+        "Benjamin Alexander completes the producer provenance attestation for this beat.",
+        "Identify every third-party sample, interpolation, loop, one-shot, vocal clip, speech clip, or preexisting recording used, if any.",
+        "For commercial sample/loop libraries, retain the applicable license/receipt and confirm redistribution in a beat license is permitted.",
+        "For copyrighted samples/interpolations requiring permission, obtain the necessary rights or replace/remove the material before final licensing.",
+        "If no third-party material was used, attest that the beat was created from original performance/synthesis and/or properly licensed production assets."
+      ]
+    },
+    {
+      "beatId": "beat-003",
+      "title": "Heavy Weather",
+      "originalSourceFile": "slams",
+      "exportMetadata": "FL Studio 2024",
+      "reviewStatus": "standard_provenance_confirmation_required",
+      "riskFlag": null,
+      "findings": [
+        "Supplied file is an FL Studio export or an MP3 encoded from FL Studio.",
+        "No embedded metadata naming a third-party sample, publisher, source recording, or sample-clearance license was found.",
+        "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used."
+      ],
+      "clearanceConclusion": "NOT CLEARED BY THIS SCREEN",
+      "requiredBeforeFinalLicense": [
+        "Benjamin Alexander completes the producer provenance attestation for this beat.",
+        "Identify every third-party sample, interpolation, loop, one-shot, vocal clip, speech clip, or preexisting recording used, if any.",
+        "For commercial sample/loop libraries, retain the applicable license/receipt and confirm redistribution in a beat license is permitted.",
+        "For copyrighted samples/interpolations requiring permission, obtain the necessary rights or replace/remove the material before final licensing.",
+        "If no third-party material was used, attest that the beat was created from original performance/synthesis and/or properly licensed production assets."
+      ]
+    },
+    {
+      "beatId": "beat-004",
+      "title": "Last One Better",
+      "originalSourceFile": "doperthanthelast1",
+      "exportMetadata": "FL Studio 21",
+      "reviewStatus": "standard_provenance_confirmation_required",
+      "riskFlag": null,
+      "findings": [
+        "Supplied file is an FL Studio export or an MP3 encoded from FL Studio.",
+        "No embedded metadata naming a third-party sample, publisher, source recording, or sample-clearance license was found.",
+        "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used."
+      ],
+      "clearanceConclusion": "NOT CLEARED BY THIS SCREEN",
+      "requiredBeforeFinalLicense": [
+        "Benjamin Alexander completes the producer provenance attestation for this beat.",
+        "Identify every third-party sample, interpolation, loop, one-shot, vocal clip, speech clip, or preexisting recording used, if any.",
+        "For commercial sample/loop libraries, retain the applicable license/receipt and confirm redistribution in a beat license is permitted.",
+        "For copyrighted samples/interpolations requiring permission, obtain the necessary rights or replace/remove the material before final licensing.",
+        "If no third-party material was used, attest that the beat was created from original performance/synthesis and/or properly licensed production assets."
+      ]
+    },
+    {
+      "beatId": "beat-005",
+      "title": "Iron Gospel",
+      "originalSourceFile": "dope metal type b3at",
+      "exportMetadata": "FL Studio 21",
+      "reviewStatus": "standard_provenance_confirmation_required",
+      "riskFlag": null,
+      "findings": [
+        "Supplied file is an FL Studio export or an MP3 encoded from FL Studio.",
+        "No embedded metadata naming a third-party sample, publisher, source recording, or sample-clearance license was found.",
+        "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used."
+      ],
+      "clearanceConclusion": "NOT CLEARED BY THIS SCREEN",
+      "requiredBeforeFinalLicense": [
+        "Benjamin Alexander completes the producer provenance attestation for this beat.",
+        "Identify every third-party sample, interpolation, loop, one-shot, vocal clip, speech clip, or preexisting recording used, if any.",
+        "For commercial sample/loop libraries, retain the applicable license/receipt and confirm redistribution in a beat license is permitted.",
+        "For copyrighted samples/interpolations requiring permission, obtain the necessary rights or replace/remove the material before final licensing.",
+        "If no third-party material was used, attest that the beat was created from original performance/synthesis and/or properly licensed production assets."
+      ]
+    },
+    {
+      "beatId": "beat-006",
+      "title": "Cold Receiver",
+      "originalSourceFile": "beat for dt",
+      "exportMetadata": "FL Studio 21",
+      "reviewStatus": "standard_provenance_confirmation_required",
+      "riskFlag": null,
+      "findings": [
+        "Supplied file is an FL Studio export or an MP3 encoded from FL Studio.",
+        "No embedded metadata naming a third-party sample, publisher, source recording, or sample-clearance license was found.",
+        "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used."
+      ],
+      "clearanceConclusion": "NOT CLEARED BY THIS SCREEN",
+      "requiredBeforeFinalLicense": [
+        "Benjamin Alexander completes the producer provenance attestation for this beat.",
+        "Identify every third-party sample, interpolation, loop, one-shot, vocal clip, speech clip, or preexisting recording used, if any.",
+        "For commercial sample/loop libraries, retain the applicable license/receipt and confirm redistribution in a beat license is permitted.",
+        "For copyrighted samples/interpolations requiring permission, obtain the necessary rights or replace/remove the material before final licensing.",
+        "If no third-party material was used, attest that the beat was created from original performance/synthesis and/or properly licensed production assets."
+      ]
+    },
+    {
+      "beatId": "beat-007",
+      "title": "Night Ledger",
+      "originalSourceFile": "1_2023",
+      "exportMetadata": "FL Studio 21",
+      "reviewStatus": "standard_provenance_confirmation_required",
+      "riskFlag": null,
+      "findings": [
+        "Supplied file is an FL Studio export or an MP3 encoded from FL Studio.",
+        "No embedded metadata naming a third-party sample, publisher, source recording, or sample-clearance license was found.",
+        "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used."
+      ],
+      "clearanceConclusion": "NOT CLEARED BY THIS SCREEN",
+      "requiredBeforeFinalLicense": [
+        "Benjamin Alexander completes the producer provenance attestation for this beat.",
+        "Identify every third-party sample, interpolation, loop, one-shot, vocal clip, speech clip, or preexisting recording used, if any.",
+        "For commercial sample/loop libraries, retain the applicable license/receipt and confirm redistribution in a beat license is permitted.",
+        "For copyrighted samples/interpolations requiring permission, obtain the necessary rights or replace/remove the material before final licensing.",
+        "If no third-party material was used, attest that the beat was created from original performance/synthesis and/or properly licensed production assets."
+      ]
+    },
+    {
+      "beatId": "beat-008",
+      "title": "No Witnesses",
+      "originalSourceFile": "DARK Trap No Samples BEAT 2024 #1,077",
+      "exportMetadata": "FL Studio 21",
+      "reviewStatus": "producer_filename_asserts_no_samples_unverified",
+      "riskFlag": "Original filename says “No Samples”; treat as a producer assertion, not independent legal verification.",
+      "findings": [
+        "Supplied file is an FL Studio export or an MP3 encoded from FL Studio.",
+        "No embedded metadata naming a third-party sample, publisher, source recording, or sample-clearance license was found.",
+        "No embedded third-party sample attribution found."
+      ],
+      "clearanceConclusion": "NOT CLEARED BY THIS SCREEN",
+      "requiredBeforeFinalLicense": [
+        "Benjamin Alexander completes the producer provenance attestation for this beat.",
+        "Identify every third-party sample, interpolation, loop, one-shot, vocal clip, speech clip, or preexisting recording used, if any.",
+        "For commercial sample/loop libraries, retain the applicable license/receipt and confirm redistribution in a beat license is permitted.",
+        "For copyrighted samples/interpolations requiring permission, obtain the necessary rights or replace/remove the material before final licensing.",
+        "If no third-party material was used, attest that the beat was created from original performance/synthesis and/or properly licensed production assets."
+      ]
+    },
+    {
+      "beatId": "beat-009",
+      "title": "Four Eights",
+      "originalSourceFile": "8888.mp3",
+      "exportMetadata": "LAME in FL Studio 20 (original MP3; TBPM 110; date 2022)",
+      "reviewStatus": "standard_provenance_confirmation_required",
+      "riskFlag": null,
+      "findings": [
+        "Supplied file is an FL Studio export or an MP3 encoded from FL Studio.",
+        "No embedded metadata naming a third-party sample, publisher, source recording, or sample-clearance license was found.",
+        "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used."
+      ],
+      "clearanceConclusion": "NOT CLEARED BY THIS SCREEN",
+      "requiredBeforeFinalLicense": [
+        "Benjamin Alexander completes the producer provenance attestation for this beat.",
+        "Identify every third-party sample, interpolation, loop, one-shot, vocal clip, speech clip, or preexisting recording used, if any.",
+        "For commercial sample/loop libraries, retain the applicable license/receipt and confirm redistribution in a beat license is permitted.",
+        "For copyrighted samples/interpolations requiring permission, obtain the necessary rights or replace/remove the material before final licensing.",
+        "If no third-party material was used, attest that the beat was created from original performance/synthesis and/or properly licensed production assets."
+      ]
+    },
+    {
+      "beatId": "beat-010",
+      "title": "Unfinished Marble",
+      "originalSourceFile": "Benjamin Unfinished Symphony",
+      "exportMetadata": "FL Studio 2024",
+      "reviewStatus": "standard_provenance_confirmation_required",
+      "riskFlag": null,
+      "findings": [
+        "Supplied file is an FL Studio export or an MP3 encoded from FL Studio.",
+        "No embedded metadata naming a third-party sample, publisher, source recording, or sample-clearance license was found.",
+        "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used."
+      ],
+      "clearanceConclusion": "NOT CLEARED BY THIS SCREEN",
+      "requiredBeforeFinalLicense": [
+        "Benjamin Alexander completes the producer provenance attestation for this beat.",
+        "Identify every third-party sample, interpolation, loop, one-shot, vocal clip, speech clip, or preexisting recording used, if any.",
+        "For commercial sample/loop libraries, retain the applicable license/receipt and confirm redistribution in a beat license is permitted.",
+        "For copyrighted samples/interpolations requiring permission, obtain the necessary rights or replace/remove the material before final licensing.",
+        "If no third-party material was used, attest that the beat was created from original performance/synthesis and/or properly licensed production assets."
+      ]
+    },
+    {
+      "beatId": "beat-011",
+      "title": "Pacific Pressure",
+      "originalSourceFile": "West Coast Beat Prod by Bundles",
+      "exportMetadata": "FL Studio 2024",
+      "reviewStatus": "standard_provenance_confirmation_required",
+      "riskFlag": null,
+      "findings": [
+        "Supplied file is an FL Studio export or an MP3 encoded from FL Studio.",
+        "No embedded metadata naming a third-party sample, publisher, source recording, or sample-clearance license was found.",
+        "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used."
+      ],
+      "clearanceConclusion": "NOT CLEARED BY THIS SCREEN",
+      "requiredBeforeFinalLicense": [
+        "Benjamin Alexander completes the producer provenance attestation for this beat.",
+        "Identify every third-party sample, interpolation, loop, one-shot, vocal clip, speech clip, or preexisting recording used, if any.",
+        "For commercial sample/loop libraries, retain the applicable license/receipt and confirm redistribution in a beat license is permitted.",
+        "For copyrighted samples/interpolations requiring permission, obtain the necessary rights or replace/remove the material before final licensing.",
+        "If no third-party material was used, attest that the beat was created from original performance/synthesis and/or properly licensed production assets."
+      ]
+    },
+    {
+      "beatId": "beat-012",
+      "title": "Neon Circuit",
+      "originalSourceFile": "EDMM",
+      "exportMetadata": "FL Studio 21",
+      "reviewStatus": "standard_provenance_confirmation_required",
+      "riskFlag": null,
+      "findings": [
+        "Supplied file is an FL Studio export or an MP3 encoded from FL Studio.",
+        "No embedded metadata naming a third-party sample, publisher, source recording, or sample-clearance license was found.",
+        "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used."
+      ],
+      "clearanceConclusion": "NOT CLEARED BY THIS SCREEN",
+      "requiredBeforeFinalLicense": [
+        "Benjamin Alexander completes the producer provenance attestation for this beat.",
+        "Identify every third-party sample, interpolation, loop, one-shot, vocal clip, speech clip, or preexisting recording used, if any.",
+        "For commercial sample/loop libraries, retain the applicable license/receipt and confirm redistribution in a beat license is permitted.",
+        "For copyrighted samples/interpolations requiring permission, obtain the necessary rights or replace/remove the material before final licensing.",
+        "If no third-party material was used, attest that the beat was created from original performance/synthesis and/or properly licensed production assets."
+      ]
+    },
+    {
+      "beatId": "beat-013",
+      "title": "Redline",
+      "originalSourceFile": "intense",
+      "exportMetadata": "FL Studio 21",
+      "reviewStatus": "standard_provenance_confirmation_required",
+      "riskFlag": null,
+      "findings": [
+        "Supplied file is an FL Studio export or an MP3 encoded from FL Studio.",
+        "No embedded metadata naming a third-party sample, publisher, source recording, or sample-clearance license was found.",
+        "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used."
+      ],
+      "clearanceConclusion": "NOT CLEARED BY THIS SCREEN",
+      "requiredBeforeFinalLicense": [
+        "Benjamin Alexander completes the producer provenance attestation for this beat.",
+        "Identify every third-party sample, interpolation, loop, one-shot, vocal clip, speech clip, or preexisting recording used, if any.",
+        "For commercial sample/loop libraries, retain the applicable license/receipt and confirm redistribution in a beat license is permitted.",
+        "For copyrighted samples/interpolations requiring permission, obtain the necessary rights or replace/remove the material before final licensing.",
+        "If no third-party material was used, attest that the beat was created from original performance/synthesis and/or properly licensed production assets."
+      ]
+    },
+    {
+      "beatId": "beat-014",
+      "title": "Soft Armor",
+      "originalSourceFile": "sarahs beat 3",
+      "exportMetadata": "FL Studio 21",
+      "reviewStatus": "standard_provenance_confirmation_required",
+      "riskFlag": null,
+      "findings": [
+        "Supplied file is an FL Studio export or an MP3 encoded from FL Studio.",
+        "No embedded metadata naming a third-party sample, publisher, source recording, or sample-clearance license was found.",
+        "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used."
+      ],
+      "clearanceConclusion": "NOT CLEARED BY THIS SCREEN",
+      "requiredBeforeFinalLicense": [
+        "Benjamin Alexander completes the producer provenance attestation for this beat.",
+        "Identify every third-party sample, interpolation, loop, one-shot, vocal clip, speech clip, or preexisting recording used, if any.",
+        "For commercial sample/loop libraries, retain the applicable license/receipt and confirm redistribution in a beat license is permitted.",
+        "For copyrighted samples/interpolations requiring permission, obtain the necessary rights or replace/remove the material before final licensing.",
+        "If no third-party material was used, attest that the beat was created from original performance/synthesis and/or properly licensed production assets."
+      ]
+    },
+    {
+      "beatId": "beat-015",
+      "title": "Half Truths",
+      "originalSourceFile": "hts beat remix 23",
+      "exportMetadata": "FL Studio 2024",
+      "reviewStatus": "heightened_provenance_review_required",
+      "riskFlag": "Original source filename contains “remix”; confirm whether any preexisting musical work or sound recording was used.",
+      "findings": [
+        "Supplied file is an FL Studio export or an MP3 encoded from FL Studio.",
+        "No embedded metadata naming a third-party sample, publisher, source recording, or sample-clearance license was found.",
+        "No file metadata identifies a third-party sample, but audio-only review cannot establish clearance."
+      ],
+      "clearanceConclusion": "NOT CLEARED BY THIS SCREEN",
+      "requiredBeforeFinalLicense": [
+        "Benjamin Alexander completes the producer provenance attestation for this beat.",
+        "Identify every third-party sample, interpolation, loop, one-shot, vocal clip, speech clip, or preexisting recording used, if any.",
+        "For commercial sample/loop libraries, retain the applicable license/receipt and confirm redistribution in a beat license is permitted.",
+        "For copyrighted samples/interpolations requiring permission, obtain the necessary rights or replace/remove the material before final licensing.",
+        "If no third-party material was used, attest that the beat was created from original performance/synthesis and/or properly licensed production assets."
+      ]
+    },
+    {
+      "beatId": "beat-016",
+      "title": "Black Ledger",
+      "originalSourceFile": "darktrap",
+      "exportMetadata": "FL Studio 20",
+      "reviewStatus": "standard_provenance_confirmation_required",
+      "riskFlag": null,
+      "findings": [
+        "Supplied file is an FL Studio export or an MP3 encoded from FL Studio.",
+        "No embedded metadata naming a third-party sample, publisher, source recording, or sample-clearance license was found.",
+        "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used."
+      ],
+      "clearanceConclusion": "NOT CLEARED BY THIS SCREEN",
+      "requiredBeforeFinalLicense": [
+        "Benjamin Alexander completes the producer provenance attestation for this beat.",
+        "Identify every third-party sample, interpolation, loop, one-shot, vocal clip, speech clip, or preexisting recording used, if any.",
+        "For commercial sample/loop libraries, retain the applicable license/receipt and confirm redistribution in a beat license is permitted.",
+        "For copyrighted samples/interpolations requiring permission, obtain the necessary rights or replace/remove the material before final licensing.",
+        "If no third-party material was used, attest that the beat was created from original performance/synthesis and/or properly licensed production assets."
+      ]
+    },
+    {
+      "beatId": "beat-017",
+      "title": "Basement Gold",
+      "originalSourceFile": "tghhhhgfdd.mp3",
+      "exportMetadata": "LAME in FL Studio 20 (original MP3; TBPM 163; date 2022)",
+      "reviewStatus": "standard_provenance_confirmation_required",
+      "riskFlag": null,
+      "findings": [
+        "Supplied file is an FL Studio export or an MP3 encoded from FL Studio.",
+        "No embedded metadata naming a third-party sample, publisher, source recording, or sample-clearance license was found.",
+        "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used."
+      ],
+      "clearanceConclusion": "NOT CLEARED BY THIS SCREEN",
+      "requiredBeforeFinalLicense": [
+        "Benjamin Alexander completes the producer provenance attestation for this beat.",
+        "Identify every third-party sample, interpolation, loop, one-shot, vocal clip, speech clip, or preexisting recording used, if any.",
+        "For commercial sample/loop libraries, retain the applicable license/receipt and confirm redistribution in a beat license is permitted.",
+        "For copyrighted samples/interpolations requiring permission, obtain the necessary rights or replace/remove the material before final licensing.",
+        "If no third-party material was used, attest that the beat was created from original performance/synthesis and/or properly licensed production assets."
+      ]
+    },
+    {
+      "beatId": "beat-018",
+      "title": "Long Way Home",
+      "originalSourceFile": "untitled722.mp3",
+      "exportMetadata": "LAME in FL Studio 20 (original MP3; TBPM 89.000999; date 2022)",
+      "reviewStatus": "standard_provenance_confirmation_required",
+      "riskFlag": null,
+      "findings": [
+        "Supplied file is an FL Studio export or an MP3 encoded from FL Studio.",
+        "No embedded metadata naming a third-party sample, publisher, source recording, or sample-clearance license was found.",
+        "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used."
+      ],
+      "clearanceConclusion": "NOT CLEARED BY THIS SCREEN",
+      "requiredBeforeFinalLicense": [
+        "Benjamin Alexander completes the producer provenance attestation for this beat.",
+        "Identify every third-party sample, interpolation, loop, one-shot, vocal clip, speech clip, or preexisting recording used, if any.",
+        "For commercial sample/loop libraries, retain the applicable license/receipt and confirm redistribution in a beat license is permitted.",
+        "For copyrighted samples/interpolations requiring permission, obtain the necessary rights or replace/remove the material before final licensing.",
+        "If no third-party material was used, attest that the beat was created from original performance/synthesis and/or properly licensed production assets."
+      ]
+    },
+    {
+      "beatId": "beat-019",
+      "title": "Daylight Run",
+      "originalSourceFile": "juice.mp3",
+      "exportMetadata": "LAME in FL Studio 20 (original MP3; TBPM 155; date 2022)",
+      "reviewStatus": "standard_provenance_confirmation_required",
+      "riskFlag": null,
+      "findings": [
+        "Supplied file is an FL Studio export or an MP3 encoded from FL Studio.",
+        "No embedded metadata naming a third-party sample, publisher, source recording, or sample-clearance license was found.",
+        "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used."
+      ],
+      "clearanceConclusion": "NOT CLEARED BY THIS SCREEN",
+      "requiredBeforeFinalLicense": [
+        "Benjamin Alexander completes the producer provenance attestation for this beat.",
+        "Identify every third-party sample, interpolation, loop, one-shot, vocal clip, speech clip, or preexisting recording used, if any.",
+        "For commercial sample/loop libraries, retain the applicable license/receipt and confirm redistribution in a beat license is permitted.",
+        "For copyrighted samples/interpolations requiring permission, obtain the necessary rights or replace/remove the material before final licensing.",
+        "If no third-party material was used, attest that the beat was created from original performance/synthesis and/or properly licensed production assets."
+      ]
+    },
+    {
+      "beatId": "beat-020",
+      "title": "Clean Money",
+      "originalSourceFile": "2_2023",
+      "exportMetadata": "FL Studio 21",
+      "reviewStatus": "standard_provenance_confirmation_required",
+      "riskFlag": null,
+      "findings": [
+        "Supplied file is an FL Studio export or an MP3 encoded from FL Studio.",
+        "No embedded metadata naming a third-party sample, publisher, source recording, or sample-clearance license was found.",
+        "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used."
+      ],
+      "clearanceConclusion": "NOT CLEARED BY THIS SCREEN",
+      "requiredBeforeFinalLicense": [
+        "Benjamin Alexander completes the producer provenance attestation for this beat.",
+        "Identify every third-party sample, interpolation, loop, one-shot, vocal clip, speech clip, or preexisting recording used, if any.",
+        "For commercial sample/loop libraries, retain the applicable license/receipt and confirm redistribution in a beat license is permitted.",
+        "For copyrighted samples/interpolations requiring permission, obtain the necessary rights or replace/remove the material before final licensing.",
+        "If no third-party material was used, attest that the beat was created from original performance/synthesis and/or properly licensed production assets."
+      ]
+    },
+    {
+      "beatId": "beat-021",
+      "title": "Pressure Point",
+      "originalSourceFile": "4_2023",
+      "exportMetadata": "FL Studio 21",
+      "reviewStatus": "standard_provenance_confirmation_required",
+      "riskFlag": null,
+      "findings": [
+        "Supplied file is an FL Studio export or an MP3 encoded from FL Studio.",
+        "No embedded metadata naming a third-party sample, publisher, source recording, or sample-clearance license was found.",
+        "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used."
+      ],
+      "clearanceConclusion": "NOT CLEARED BY THIS SCREEN",
+      "requiredBeforeFinalLicense": [
+        "Benjamin Alexander completes the producer provenance attestation for this beat.",
+        "Identify every third-party sample, interpolation, loop, one-shot, vocal clip, speech clip, or preexisting recording used, if any.",
+        "For commercial sample/loop libraries, retain the applicable license/receipt and confirm redistribution in a beat license is permitted.",
+        "For copyrighted samples/interpolations requiring permission, obtain the necessary rights or replace/remove the material before final licensing.",
+        "If no third-party material was used, attest that the beat was created from original performance/synthesis and/or properly licensed production assets."
+      ]
+    },
+    {
+      "beatId": "beat-022",
+      "title": "Slow Motion Gold",
+      "originalSourceFile": "3_2023",
+      "exportMetadata": "FL Studio 21",
+      "reviewStatus": "standard_provenance_confirmation_required",
+      "riskFlag": null,
+      "findings": [
+        "Supplied file is an FL Studio export or an MP3 encoded from FL Studio.",
+        "No embedded metadata naming a third-party sample, publisher, source recording, or sample-clearance license was found.",
+        "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used."
+      ],
+      "clearanceConclusion": "NOT CLEARED BY THIS SCREEN",
+      "requiredBeforeFinalLicense": [
+        "Benjamin Alexander completes the producer provenance attestation for this beat.",
+        "Identify every third-party sample, interpolation, loop, one-shot, vocal clip, speech clip, or preexisting recording used, if any.",
+        "For commercial sample/loop libraries, retain the applicable license/receipt and confirm redistribution in a beat license is permitted.",
+        "For copyrighted samples/interpolations requiring permission, obtain the necessary rights or replace/remove the material before final licensing.",
+        "If no third-party material was used, attest that the beat was created from original performance/synthesis and/or properly licensed production assets."
+      ]
+    }
+  ]
+}
