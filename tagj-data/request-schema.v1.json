@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tagj.request.v1",
+  "title": "TAGJ × Benny Bundles Request Payload",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "requestId",
+    "meta",
+    "context",
+    "request",
+    "constraints",
+    "contact",
+    "special"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "tagj.request.v1"
+    },
+    "requestId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "meta": {
+      "type": "object",
+      "required": [
+        "createdAt",
+        "sourceWorld",
+        "sourceRoute",
+        "previewOnly",
+        "backendSubmitted",
+        "paymentStatus"
+      ],
+      "properties": {
+        "createdAt": {
+          "type": "string"
+        },
+        "sourceWorld": {
+          "enum": [
+            "home",
+            "tagj",
+            "artist",
+            "producer",
+            "creative"
+          ]
+        },
+        "sourceRoute": {
+          "type": "string"
+        },
+        "previewOnly": {
+          "type": "boolean"
+        },
+        "backendSubmitted": {
+          "type": "boolean"
+        },
+        "paymentStatus": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "context": {
+      "type": "object",
+      "properties": {
+        "entityId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "serviceId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "releaseId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "request": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "projectTitle": {
+          "type": "string"
+        },
+        "artistBrand": {
+          "type": "string"
+        },
+        "concept": {
+          "type": "string"
+        },
+        "mood": {
+          "type": "string"
+        },
+        "platforms": {
+          "type": "string"
+        },
+        "references": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "constraints": {
+      "type": "object",
+      "properties": {
+        "deadline": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "releaseDate": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "budget": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "explicitLabel": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "contact": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phoneOrHandle": {
+          "type": "string"
+        },
+        "preferred": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "special": {
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "string",
+          "number",
+          "boolean",
+          "null"
+        ]
+      }
+    }
+  },
+  "additionalProperties": false
+}
