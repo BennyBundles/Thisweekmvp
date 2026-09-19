@@ -906,6 +906,11 @@
           "provenance": "decoded_from_original_mp3",
           "losslessMaster": false,
           "note": "WAV delivery derivative created from the supplied MP3. This does not restore information discarded by MP3 encoding and must not be marketed as a genuine lossless master."
+        },
+        "embeddedMetadata": {
+          "encoder": "FL Studio 20",
+          "year": 2022,
+          "tempoBpm": 110
         }
       },
       "bpm": null,
@@ -1802,6 +1807,11 @@
           "provenance": "decoded_from_original_mp3",
           "losslessMaster": false,
           "note": "WAV delivery derivative created from the supplied MP3. This does not restore information discarded by MP3 encoding and must not be marketed as a genuine lossless master."
+        },
+        "embeddedMetadata": {
+          "encoder": "FL Studio 20",
+          "year": 2022,
+          "tempoBpm": 163
         }
       },
       "bpm": null,
@@ -1933,6 +1943,11 @@
           "provenance": "decoded_from_original_mp3",
           "losslessMaster": false,
           "note": "WAV delivery derivative created from the supplied MP3. This does not restore information discarded by MP3 encoding and must not be marketed as a genuine lossless master."
+        },
+        "embeddedMetadata": {
+          "encoder": "FL Studio 20",
+          "year": 2022,
+          "tempoBpm": 89.000999
         }
       },
       "bpm": null,
@@ -2064,6 +2079,11 @@
           "provenance": "decoded_from_original_mp3",
           "losslessMaster": false,
           "note": "WAV delivery derivative created from the supplied MP3. This does not restore information discarded by MP3 encoding and must not be marketed as a genuine lossless master."
+        },
+        "embeddedMetadata": {
+          "encoder": "FL Studio 20",
+          "year": 2022,
+          "tempoBpm": 155
         }
       },
       "bpm": null,
