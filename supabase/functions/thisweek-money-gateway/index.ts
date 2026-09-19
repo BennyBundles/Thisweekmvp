@@ -704,7 +704,7 @@ async function bootstrapMoney(admin: ReturnType<typeof createClient>, userId: st
 }
 
 async function moneySummary(admin: ReturnType<typeof createClient>, userId: string) {
-  const [accountsResult, entriesResult, depositsResult, cardsResult, billsResult, transfersResult] = await Promise.all([
+  const [accountsResult, entriesResult, depositsResult, cardsResult, billsResult, transfersResult, envelopesResult, fundingResult, switchesResult] = await Promise.all([
     admin.from("tw_money_ledger_accounts")
       .select("id,account_code,account_kind,currency,status,envelope_id")
       .eq("user_id", userId)
@@ -713,21 +713,30 @@ async function moneySummary(admin: ReturnType<typeof createClient>, userId: stri
       .select("ledger_account_id,amount_cents")
       .eq("user_id", userId),
     admin.from("tw_money_deposit_accounts")
-      .select("id,provider,account_kind,status,currency,account_last4,routing_last4,capabilities")
+      .select("id,provider,provider_account_id,account_kind,status,currency,account_last4,routing_last4,capabilities")
       .eq("user_id", userId),
     admin.from("tw_money_virtual_cards")
       .select("id,label,card_mode,status,last4,spend_limit_cents,envelope_id,biller_id,provider")
       .eq("user_id", userId),
     admin.from("tw_money_billers")
-      .select("id,display_name,bill_type,status,autopay_state,due_day,discovery_provider")
+      .select("id,display_name,bill_type,status,autopay_state,due_day,discovery_provider,provider_biller_id")
       .eq("user_id", userId),
     admin.from("tw_money_transfers")
-      .select("id,transfer_type,rail,amount_cents,currency,state,provider,created_at")
+      .select("id,transfer_type,rail,amount_cents,currency,state,provider,provider_status,created_at")
       .eq("user_id", userId)
       .order("created_at", { ascending: false })
       .limit(20),
+    admin.from("tw_money_envelopes")
+      .select("id,envelope_key,label,envelope_type,status")
+      .eq("user_id", userId).eq("status", "active").order("envelope_key"),
+    admin.from("tw_money_funding_accounts")
+      .select("id,status,verification_provider,processor_provider,processor_reference,account_kind,account_last4,routing_last4,supported_rails,provider_link_kind,provider_status")
+      .eq("user_id", userId).neq("status", "disconnected"),
+    admin.from("tw_money_direct_deposit_switches")
+      .select("id,target_deposit_account_id,provider,provider_link_id,state,created_at,confirmed_at")
+      .eq("user_id", userId).order("created_at", { ascending: false }).limit(10),
   ]);
-  if (accountsResult.error || entriesResult.error || depositsResult.error || cardsResult.error || billsResult.error || transfersResult.error) {
+  if (accountsResult.error || entriesResult.error || depositsResult.error || cardsResult.error || billsResult.error || transfersResult.error || envelopesResult.error || fundingResult.error || switchesResult.error) {
     throw new Error("money_summary_read_failed");
   }
   const sums = new Map<string, number>();
@@ -740,8 +749,11 @@ async function moneySummary(admin: ReturnType<typeof createClient>, userId: stri
       balance_cents: sums.get(a.id) || 0,
     })),
     depositAccounts: depositsResult.data || [],
+    envelopes: envelopesResult.data || [],
+    fundingAccounts: fundingResult.data || [],
     cards: cardsResult.data || [],
     bills: billsResult.data || [],
+    directDepositSwitches: switchesResult.data || [],
     recentTransfers: transfersResult.data || [],
   };
 }
