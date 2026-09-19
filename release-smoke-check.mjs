@@ -45,7 +45,7 @@ if(html){
     ['Local state key','thisweek.state.v2'],
     ['Phase 19 secure provider staging','PHASE 19 — SECURE PROVIDER GATEWAY v31'],
     ['Phase 19 disabled client provider','enabled:false'],
-    ['Phase 19 deny-until-dedicated-backend',"networkPolicy:'deny_until_dedicated_backend'"],
+    ['Phase 19 deny-until-auth-provider',"networkPolicy:'deny_until_auth_and_provider'"],
     ['Phase 19 disabled connect control','id="connectFinancialProvider"']
   ];
   for(const [label,text] of critical)requireText('missing '+label,html,text);
@@ -63,13 +63,13 @@ if(phase19Schema){
 }
 if(phase19Gateway){
   requireText('Phase 19 gateway must validate authenticated user',phase19Gateway,'auth.getUser(token)');
-  requireText('Phase 19 gateway must use Vault',phase19Gateway,'vault.create_secret');
+  requireText('Phase 19 gateway must use Vault bridge',phase19Gateway,'tw_vault_create');
   requireText('Phase 19 gateway must support transaction sync',phase19Gateway,'/transactions/sync');
   requireText('Phase 19 gateway must support disconnect',phase19Gateway,'/item/remove');
   requireText('Phase 19 gateway must parse current Hosted Link results',phase19Gateway,'item_add_results');
 }
 if(phase19Runtime)requireText('Phase 19 runtime should be strict',phase19Runtime,'"strict": true');
-if(phase19Readme)requireText('Phase 19 README must require dedicated project',phase19Readme,'Use a **dedicated Supabase project**');
+if(phase19Readme)requireText('Phase 19 README must record shared project isolation',phase19Readme,'BennyBundles’s Project');
 if(phase19Doc)requireText('Phase 19 doc must state live provider is not active',phase19Doc,'No live financial institution is connected by this release.');
 
 
