@@ -1,0 +1,166 @@
+{
+  "schemaVersion": "tagj.beat-license-system.v1",
+  "status": "draft_for_legal_review_not_checkout_active",
+  "licensor": {
+    "businessName": "Thats A Good Jawn LLC",
+    "brandName": "TAGJ",
+    "producerCredit": "Bundles (Benny Bundles)",
+    "publicBusinessEmail": "prodbybundles@yahoo.com"
+  },
+  "legalConfiguration": {
+    "governingLawState": null,
+    "venueCounty": null,
+    "activationBlockers": [
+      "Confirm governing-law state and venue.",
+      "Confirm Thats A Good Jawn LLC owns or is authorized to license each beat's composition and source recording rights.",
+      "Complete sample/third-party-rights review for every beat.",
+      "For MP3-only sources, supply a lossless master before Premium, Unlimited, or Exclusive delivery.",
+      "Supply stems/trackouts before Trackout Pro can be sold.",
+      "Have final contract language reviewed by a qualified attorney before enabling paid checkout."
+    ]
+  },
+  "commonBusinessTerms": {
+    "territory": "Worldwide",
+    "oneSongPerLicense": true,
+    "requiredCredit": "Produced by Bundles (Benny Bundles)",
+    "publishing": {
+      "defaultProducerCompositionSharePercent": 50,
+      "defaultLicenseeSideCompositionSharePercent": 50,
+      "note": "Default split applies to the new composition unless a signed split sheet or third-party rights schedule states otherwise."
+    },
+    "masterRoyalty": {
+      "defaultPercent": 0,
+      "note": "No separate producer master royalty is charged under these standard templates unless a beat-specific schedule states otherwise."
+    },
+    "thirdPartySync": "Film, television, advertising, games, branded campaigns, and other third-party synchronization require separate written approval unless expressly added to the executed agreement.",
+    "contentIdNonExclusive": "Prohibited without prior written consent because multiple valid non-exclusive users may exist.",
+    "contentIdExclusive": "Permitted only after written confirmation from Licensor addressing prior surviving leases and any required whitelisting.",
+    "prohibitedUses": [
+      "Reselling, sublicensing, or distributing the Beat by itself or substantially by itself.",
+      "Uploading the Beat or stems to sample libraries, stock-music libraries, beat packs, or competing marketplaces.",
+      "Claiming authorship of the Beat itself.",
+      "Training or fine-tuning a generative AI model on the Beat or stems without separate written permission.",
+      "Using the Beat in unlawful, defamatory, or rights-infringing material."
+    ],
+    "priorLeaseRule": "A later exclusive license does not terminate valid non-exclusive licenses granted before the exclusive effective date."
+  },
+  "tiers": [
+    {
+      "id": "basic-mp3-v1",
+      "label": "Basic MP3 Lease",
+      "licenseType": "non-exclusive",
+      "priceUsd": 29,
+      "term": "3 years",
+      "files": [
+        "Tagged or untagged high-quality MP3 as specified at delivery"
+      ],
+      "usage": {
+        "audioStreams": 50000,
+        "paidDownloadsAndPhysicalUnits": 5000,
+        "monetizedMusicVideos": 1,
+        "musicVideoViews": 50000,
+        "paidLivePerformances": 10,
+        "terrestrialRadioStations": 0
+      },
+      "publishingSplit": "50% Bundles / 50% Licensee-side writers by default",
+      "contentId": "Not permitted without prior written consent",
+      "contractPath": "legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md"
+    },
+    {
+      "id": "premium-wav-v1",
+      "label": "Premium WAV Lease",
+      "licenseType": "non-exclusive",
+      "priceUsd": 49,
+      "term": "5 years",
+      "files": [
+        "MP3",
+        "Lossless WAV"
+      ],
+      "usage": {
+        "audioStreams": 250000,
+        "paidDownloadsAndPhysicalUnits": 10000,
+        "monetizedMusicVideos": 1,
+        "musicVideoViews": 250000,
+        "paidLivePerformances": 50,
+        "terrestrialRadioStations": 5
+      },
+      "publishingSplit": "50% Bundles / 50% Licensee-side writers by default",
+      "contentId": "Not permitted without prior written consent",
+      "contractPath": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
+    },
+    {
+      "id": "trackout-pro-v1",
+      "label": "Trackout Pro Lease",
+      "licenseType": "non-exclusive",
+      "priceUsd": 99,
+      "term": "7 years",
+      "files": [
+        "MP3",
+        "Lossless WAV",
+        "Trackouts/stems when supplied for the selected beat"
+      ],
+      "usage": {
+        "audioStreams": 1000000,
+        "paidDownloadsAndPhysicalUnits": 50000,
+        "monetizedMusicVideos": 2,
+        "musicVideoViews": 1000000,
+        "paidLivePerformances": 100,
+        "terrestrialRadioStations": 10
+      },
+      "publishingSplit": "50% Bundles / 50% Licensee-side writers by default",
+      "contentId": "Not permitted without prior written consent",
+      "availabilityRule": "Not saleable for a beat until its actual stems/trackouts are present.",
+      "contractPath": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+    },
+    {
+      "id": "unlimited-v1",
+      "label": "Unlimited Non-Exclusive Lease",
+      "licenseType": "non-exclusive",
+      "priceUsd": 149,
+      "term": "Perpetual",
+      "files": [
+        "MP3",
+        "Lossless WAV",
+        "Trackouts/stems only if specifically listed for the selected beat"
+      ],
+      "usage": {
+        "audioStreams": "unlimited",
+        "paidDownloadsAndPhysicalUnits": "unlimited",
+        "monetizedMusicVideos": "unlimited",
+        "musicVideoViews": "unlimited",
+        "paidLivePerformances": "unlimited",
+        "terrestrialRadioStations": "unlimited"
+      },
+      "publishingSplit": "50% Bundles / 50% Licensee-side writers by default",
+      "contentId": "Not permitted without prior written consent",
+      "contractPath": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
+    },
+    {
+      "id": "exclusive-v1",
+      "label": "Exclusive Beat License",
+      "licenseType": "exclusive",
+      "priceUsdMinimumOffer": 499,
+      "pricingMode": "manual approval / negotiated final price",
+      "term": "Perpetual",
+      "files": [
+        "MP3",
+        "Lossless WAV",
+        "Available stems/trackouts if they exist for the selected beat"
+      ],
+      "usage": {
+        "audioStreams": "unlimited",
+        "paidDownloadsAndPhysicalUnits": "unlimited",
+        "monetizedMusicVideos": "unlimited",
+        "musicVideoViews": "unlimited",
+        "paidLivePerformances": "unlimited",
+        "terrestrialRadioStations": "unlimited"
+      },
+      "publishingSplit": "50% Bundles / 50% Licensee-side writers by default unless signed split sheet changes it",
+      "copyrightStructure": "Exclusive license for use of the Beat in one New Song; not an automatic assignment of the underlying Beat composition or source-recording copyright.",
+      "futureLicenses": "Licensor stops granting new beat licenses after the exclusive effective date.",
+      "priorLicenses": "Existing valid non-exclusive licenses survive.",
+      "contentId": "May be permitted after written clearance/whitelisting confirmation",
+      "contractPath": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
+    }
+  ]
+}
