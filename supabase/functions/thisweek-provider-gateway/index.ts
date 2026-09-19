@@ -1,5 +1,4 @@
 import { createClient } from "npm:@supabase/supabase-js@2.95.0";
-import postgres from "npm:postgres@3.4.7";
 
 type AnyRecord = Record<string, unknown>;
 
@@ -24,7 +23,6 @@ function parseKeySet(name: string): string {
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") || "";
 const PUBLISHABLE_KEY = parseKeySet("SUPABASE_PUBLISHABLE_KEYS") || Deno.env.get("SUPABASE_ANON_KEY") || "";
 const SECRET_KEY = parseKeySet("SUPABASE_SECRET_KEYS") || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
-const DB_URL = Deno.env.get("SUPABASE_DB_URL") || "";
 const PLAID_CLIENT_ID = Deno.env.get("PLAID_CLIENT_ID") || "";
 const PLAID_SECRET = Deno.env.get("PLAID_SECRET") || "";
 const PLAID_BASE_URL = (Deno.env.get("PLAID_BASE_URL") || "https://sandbox.plaid.com").replace(/\/$/, "");
@@ -33,8 +31,6 @@ const PLAID_OAUTH_REDIRECT_URI = Deno.env.get("PLAID_OAUTH_REDIRECT_URI") || "";
 const PLAID_WEBHOOK_URL = Deno.env.get("PLAID_WEBHOOK_URL") || "";
 const ALLOWED_ORIGINS = (Deno.env.get("THISWEEK_ALLOWED_ORIGINS") || "https://bennybundles.github.io")
   .split(",").map((v) => v.trim()).filter(Boolean);
-
-const sql = DB_URL ? postgres(DB_URL, { prepare: false, max: 1 }) : null;
 
 function corsHeaders(origin: string | null): HeadersInit {
   const allowed = origin && ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0] || "";
@@ -62,7 +58,7 @@ function safeText(value: unknown, max = 180): string {
 }
 
 function providerConfigured(): boolean {
-  return !!(SUPABASE_URL && PUBLISHABLE_KEY && SECRET_KEY && DB_URL && PLAID_CLIENT_ID && PLAID_SECRET);
+  return !!(SUPABASE_URL && PUBLISHABLE_KEY && SECRET_KEY && PLAID_CLIENT_ID && PLAID_SECRET);
 }
 
 async function plaidPost(path: string, payload: AnyRecord): Promise<AnyRecord> {
@@ -84,29 +80,26 @@ async function plaidPost(path: string, payload: AnyRecord): Promise<AnyRecord> {
   return data as AnyRecord;
 }
 
-async function vaultCreate(secret: string, name: string, description: string): Promise<string> {
-  if (!sql) throw new Error("vault_unavailable");
-  const rows = await sql.unsafe(
-    "select vault.create_secret($1, $2, $3)::text as id",
-    [secret, name, description],
-  );
-  return String(rows[0]?.id || "");
+async function vaultCreate(admin: ReturnType<typeof createClient>, secret: string, name: string, description: string): Promise<string> {
+  const { data, error } = await admin.rpc("tw_vault_create", {
+    p_secret: secret,
+    p_name: name,
+    p_description: description,
+  });
+  if (error || !data) throw new Error("vault_unavailable");
+  return String(data);
 }
 
-async function vaultRead(id: string): Promise<string> {
-  if (!sql) throw new Error("vault_unavailable");
-  const rows = await sql.unsafe(
-    "select decrypted_secret from vault.decrypted_secrets where id = $1::uuid limit 1",
-    [id],
-  );
-  const value = rows[0]?.decrypted_secret;
-  if (!value) throw new Error("provider_token_missing");
-  return String(value);
+async function vaultRead(admin: ReturnType<typeof createClient>, id: string): Promise<string> {
+  const { data, error } = await admin.rpc("tw_vault_read", { p_secret_id: id });
+  if (error || !data) throw new Error("provider_token_missing");
+  return String(data);
 }
 
-async function vaultDelete(id: string | null | undefined): Promise<void> {
-  if (!id || !sql) return;
-  await sql.unsafe("delete from vault.secrets where id = $1::uuid", [id]);
+async function vaultDelete(admin: ReturnType<typeof createClient>, id: string | null | undefined): Promise<void> {
+  if (!id) return;
+  const { error } = await admin.rpc("tw_vault_delete", { p_secret_id: id });
+  if (error) throw new Error("vault_delete_failed");
 }
 
 function cents(value: unknown): number | null {
@@ -205,7 +198,7 @@ async function syncConnection(admin: ReturnType<typeof createClient>, userId: st
   if (connectionError || !connection) throw new Error("connection_not_found");
   if (connection.status === "disconnected") throw new Error("connection_disconnected");
 
-  const accessToken = await vaultRead(connection.vault_secret_id);
+  const accessToken = await vaultRead(admin, connection.vault_secret_id);
   const runId = crypto.randomUUID();
   await admin.from("tw_provider_sync_runs").insert({
     id: runId, user_id: userId, connection_id: connectionId, status: "running",
@@ -411,7 +404,7 @@ Deno.serve(async (req: Request) => {
       const expiration = safeText(response.expiration, 80);
       if (!linkToken || !hostedLinkUrl || !expiration) throw new Error("link_session_invalid");
 
-      const vaultSecretId = await vaultCreate(linkToken, "thisweek-link-" + sessionId, "Temporary This Week Hosted Link token");
+      const vaultSecretId = await vaultCreate(admin, linkToken, "thisweek-link-" + sessionId, "Temporary This Week Hosted Link token");
       const { error } = await admin.from("tw_provider_link_sessions").insert({
         id: sessionId, user_id: user.id, provider: PROVIDER,
         vault_secret_id: vaultSecretId, status: "created", expires_at: expiration,
@@ -436,11 +429,11 @@ Deno.serve(async (req: Request) => {
       if (new Date(session.expires_at).getTime() < Date.now()) {
         await admin.from("tw_provider_link_sessions").update({ status: "expired" })
           .eq("id", sessionId).eq("user_id", user.id);
-        await vaultDelete(session.vault_secret_id);
+        await vaultDelete(admin, session.vault_secret_id);
         return json(origin, 410, { error: "link_session_expired" });
       }
 
-      const linkToken = await vaultRead(session.vault_secret_id);
+      const linkToken = await vaultRead(admin, session.vault_secret_id);
       const linkStatus = await plaidPost("/link/token/get", { link_token: linkToken });
       const results = linkStatus.results && typeof linkStatus.results === "object"
         ? linkStatus.results as AnyRecord : {};
@@ -462,7 +455,7 @@ Deno.serve(async (req: Request) => {
       if (!accessToken || !itemId) throw new Error("token_exchange_invalid");
 
       const connectionId = crypto.randomUUID();
-      const accessSecretId = await vaultCreate(accessToken, "thisweek-provider-" + connectionId, "This Week Plaid access token");
+      const accessSecretId = await vaultCreate(admin, accessToken, "thisweek-provider-" + connectionId, "This Week Plaid access token");
       const institutionName = safeText(institution.name, 120) || null;
       const institutionId = safeText(institution.institution_id, 120) || null;
       const { data: consent } = await admin.from("tw_provider_consents").select("id")
@@ -476,11 +469,11 @@ Deno.serve(async (req: Request) => {
         status: "active", consent_id: consent?.id || null,
       });
       if (connectionError) {
-        await vaultDelete(accessSecretId);
+        await vaultDelete(admin, accessSecretId);
         throw new Error("connection_store_failed");
       }
 
-      await vaultDelete(session.vault_secret_id);
+      await vaultDelete(admin, session.vault_secret_id);
       await admin.from("tw_provider_link_sessions")
         .update({ status: "completed", completed_at: new Date().toISOString() })
         .eq("id", sessionId).eq("user_id", user.id);
@@ -524,9 +517,9 @@ Deno.serve(async (req: Request) => {
       if (!connection) return json(origin, 404, { error: "connection_not_found" });
 
       if (connection.status !== "disconnected" && connection.vault_secret_id) {
-        const accessToken = await vaultRead(connection.vault_secret_id);
+        const accessToken = await vaultRead(admin, connection.vault_secret_id);
         await plaidPost("/item/remove", { access_token: accessToken });
-        await vaultDelete(connection.vault_secret_id);
+        await vaultDelete(admin, connection.vault_secret_id);
         await admin.from("tw_provider_connections").update({
           status: "disconnected", vault_secret_id: null, sync_cursor: null,
           updated_at: new Date().toISOString(),
