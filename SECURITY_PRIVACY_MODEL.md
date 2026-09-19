@@ -304,3 +304,32 @@ That surface explains:
 - export options;
 - local deletion options;
 - trust checks.
+
+
+## Inactive-view privacy curtain
+
+The application includes a best-effort inactive-view privacy curtain.
+
+When the browser reports that the page is hidden, or when a page-hide lifecycle event occurs, the visible financial interface is covered with a neutral This Week screen.
+
+The curtain is removed when the page becomes visible again.
+
+This is designed to reduce accidental exposure in browser/tab/app-switcher previews.
+
+It is not a guarantee against:
+
+- operating-system screenshots;
+- screen recording;
+- browser extensions;
+- malicious software;
+- physical access to an unlocked device.
+
+## CSP script-hash enforcement
+
+The current static build authorizes its two inline application scripts by SHA-256 hash.
+
+The active policy also blocks inline event attributes with:
+
+`script-src-attr 'none'`
+
+The regression checker recalculates the script hashes from `index.html` and verifies that they are present in the CSP. This creates a direct integrity check between application source and the static security policy.
