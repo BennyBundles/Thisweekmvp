@@ -3,105 +3,48 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#050d16">
-<title>This Week — Full Current Preview</title>
+<meta name="theme-color" content="#040a12">
+<title>This Week — Public Release Preview</title>
 <style>
-:root{
-  --bg:#040a12;--panel:#081421;--line:rgba(177,206,221,.12);
-  --text:#edf7fb;--soft:#91aab5;--mint:#6ee7b7;--aqua:#67e8f9;--gold:#f6d784;
-}
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:
-  radial-gradient(circle at 10% 0%,rgba(103,232,249,.09),transparent 25%),
-  radial-gradient(circle at 90% 10%,rgba(110,231,183,.08),transparent 24%),
-  linear-gradient(180deg,#040a12,#07111c 60%,#050d16);
-  color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
-}
+:root{--bg:#040a12;--panel:#081421;--line:rgba(177,206,221,.14);--text:#edf7fb;--soft:#91aab5;--mint:#6ee7b7;--aqua:#67e8f9;--gold:#f6d784}
+*{box-sizing:border-box} html,body{margin:0;min-height:100%;background:radial-gradient(circle at 10% 0%,rgba(103,232,249,.09),transparent 25%),radial-gradient(circle at 90% 10%,rgba(110,231,183,.08),transparent 24%),linear-gradient(180deg,#040a12,#07111c 60%,#050d16);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 body{min-height:100dvh;display:flex;flex-direction:column}
-.preview-bar{
-  position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:14px;
-  padding:max(10px,env(safe-area-inset-top)) 14px 10px;border-bottom:1px solid var(--line);
-  background:rgba(4,10,18,.86);backdrop-filter:blur(18px)
-}
-.brand{display:flex;align-items:center;gap:10px;min-width:0}
-.mark{
-  width:38px;height:38px;border-radius:13px;display:grid;place-items:center;
-  background:linear-gradient(145deg,rgba(246,215,132,.13),rgba(110,231,183,.12),rgba(103,232,249,.10));
-  border:1px solid rgba(246,215,132,.16);font-weight:900;letter-spacing:-.05em
-}
-.brand-copy{min-width:0}
-.brand-copy small{display:block;color:#96c9c0;font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;font-weight:800}
-.brand-copy strong{display:block;margin-top:2px;font-size:.92rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tools{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end}
-button,a.tool{
-  appearance:none;border:1px solid var(--line);background:rgba(255,255,255,.035);color:var(--text);
-  border-radius:999px;padding:8px 10px;font:inherit;font-size:.68rem;font-weight:760;text-decoration:none;cursor:pointer
-}
-button.active{background:linear-gradient(145deg,rgba(110,231,183,.12),rgba(103,232,249,.07));border-color:rgba(110,231,183,.20)}
-.stage{flex:1;display:grid;place-items:center;padding:16px 12px 22px}
-.device-shell{
-  width:min(430px,100%);height:calc(100dvh - 92px);min-height:640px;max-height:900px;
-  border-radius:36px;padding:8px;background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.018));
-  border:1px solid rgba(255,255,255,.10);box-shadow:0 34px 90px rgba(0,0,0,.46),inset 0 1px 0 rgba(255,255,255,.08);
-  transition:width .4s cubic-bezier(.2,.8,.2,1),height .4s cubic-bezier(.2,.8,.2,1),border-radius .35s ease
-}
-.device-shell.full{width:min(100%,1180px);height:calc(100dvh - 92px);max-height:none;border-radius:24px}
-.frame-wrap{width:100%;height:100%;overflow:hidden;border-radius:29px;background:#050d16;position:relative}
-.device-shell.full .frame-wrap{border-radius:18px}
-iframe{width:100%;height:100%;border:0;background:#050d16;display:block}
-.preview-tag{
-  position:fixed;left:50%;bottom:max(10px,env(safe-area-inset-bottom));transform:translateX(-50%);
-  z-index:30;padding:7px 10px;border-radius:999px;background:rgba(4,10,18,.76);border:1px solid var(--line);
-  color:var(--soft);font-size:.6rem;letter-spacing:.09em;text-transform:uppercase;backdrop-filter:blur(14px);pointer-events:none
-}
-@media(max-width:650px){
-  .preview-bar{align-items:flex-start}
-  .brand-copy small{display:none}
-  .brand-copy strong{font-size:.82rem}
-  .tools{gap:5px}
-  button,a.tool{padding:7px 9px;font-size:.62rem}
-  .stage{padding:8px 0 12px}
-  .device-shell{width:100%;height:calc(100dvh - 76px);min-height:0;max-height:none;border-radius:0;padding:0;border:0;box-shadow:none}
-  .frame-wrap{border-radius:0}
-  .preview-tag{display:none}
-}
+.preview-bar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:max(10px,env(safe-area-inset-top)) 14px 10px;border-bottom:1px solid var(--line);background:rgba(4,10,18,.9);backdrop-filter:blur(18px)}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}.mark{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(145deg,rgba(246,215,132,.13),rgba(110,231,183,.12),rgba(103,232,249,.10));border:1px solid rgba(246,215,132,.16);font-weight:900;letter-spacing:-.05em}.brand-copy{min-width:0}.brand-copy small{display:block;color:#96c9c0;font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;font-weight:800}.brand-copy strong{display:block;margin-top:2px;font-size:.92rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tools{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end}button,a.tool{appearance:none;border:1px solid var(--line);background:rgba(255,255,255,.035);color:var(--text);border-radius:999px;padding:8px 10px;font:inherit;font-size:.68rem;font-weight:760;text-decoration:none;cursor:pointer}button.active{background:linear-gradient(145deg,rgba(110,231,183,.12),rgba(103,232,249,.07));border-color:rgba(110,231,183,.24)}
+.release-strip{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;padding:8px 12px;border-bottom:1px solid var(--line);background:rgba(8,20,33,.7);font-size:.62rem;color:var(--soft);letter-spacing:.03em}.release-strip span{padding:5px 8px;border:1px solid var(--line);border-radius:999px}.release-strip .good{color:#b7f7d9;border-color:rgba(110,231,183,.2)}
+.stage{flex:1;display:grid;place-items:center;padding:16px 12px 22px}.device-shell{width:min(430px,100%);height:calc(100dvh - 128px);min-height:640px;max-height:900px;border-radius:36px;padding:8px;background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.018));border:1px solid rgba(255,255,255,.10);box-shadow:0 34px 90px rgba(0,0,0,.46),inset 0 1px 0 rgba(255,255,255,.08);transition:width .4s cubic-bezier(.2,.8,.2,1),height .4s cubic-bezier(.2,.8,.2,1),border-radius .35s ease}.device-shell.full{width:min(100%,1180px);height:calc(100dvh - 128px);max-height:none;border-radius:24px}.frame-wrap{width:100%;height:100%;overflow:hidden;border-radius:29px;background:#050d16;position:relative}.device-shell.full .frame-wrap{border-radius:18px}iframe{width:100%;height:100%;border:0;background:#050d16;display:block}
+@media(max-width:760px){.preview-bar{align-items:flex-start}.brand-copy small{display:none}.brand-copy strong{font-size:.8rem}.tools{gap:5px}button,a.tool{padding:7px 9px;font-size:.61rem}.release-strip{justify-content:flex-start;overflow:auto;flex-wrap:nowrap}.stage{padding:0}.device-shell,.device-shell.full{width:100%;height:calc(100dvh - 116px);min-height:0;max-height:none;border-radius:0;padding:0;border:0;box-shadow:none}.frame-wrap,.device-shell.full .frame-wrap{border-radius:0}}
 </style>
 </head>
 <body>
-  <header class="preview-bar">
-    <div class="brand">
-      <div class="mark">TW</div>
-      <div class="brand-copy"><small>Current live build</small><strong>This Week — Full Preview</strong></div>
-    </div>
-    <div class="tools">
-      <button id="phoneBtn" class="active" type="button">iPhone</button>
-      <button id="fullBtn" type="button">Full</button>
-      <button id="reloadBtn" type="button">Reload</button>
-      <a class="tool" href="./?v=a4d4f6e5" target="_blank" rel="noopener">Open App</a>
-    </div>
-  </header>
-  <main class="stage">
-    <div class="device-shell" id="shell">
-      <div class="frame-wrap">
-        <iframe id="previewFrame" title="This Week current live application" src="./?v=a4d4f6e5&preview=current" allow="clipboard-write"></iframe>
-      </div>
-    </div>
-  </main>
-  <div class="preview-tag">Current preview · simplified Home · four animated money categories</div>
+<header class="preview-bar">
+  <div class="brand"><div class="mark">TW</div><div class="brand-copy"><small>Public release candidate</small><strong>This Week — Fully Navigable Preview</strong></div></div>
+  <div class="tools">
+    <button id="phoneBtn" class="active" type="button">iPhone</button>
+    <button id="fullBtn" type="button">Full</button>
+    <button id="demoBtn" class="active" type="button">Demo</button>
+    <button id="freshBtn" type="button">Fresh</button>
+    <button id="resetBtn" type="button">Reset</button>
+    <a class="tool" id="openBtn" href="./public-preview/?mode=demo" target="_blank" rel="noopener">Open standalone</a>
+  </div>
+</header>
+<div class="release-strip" aria-label="Release preview status">
+  <span class="good">Full navigation enabled</span>
+  <span class="good">Preview data isolated</span>
+  <span class="good">Installable PWA shell</span>
+  <span>Weekly Plan stays browser-local</span>
+  <span>Live bank connection intentionally off</span>
+</div>
+<main class="stage">
+  <div class="device-shell" id="shell"><div class="frame-wrap"><iframe id="previewFrame" title="This Week public release candidate" src="./public-preview/?mode=demo" allow="clipboard-write"></iframe></div></div>
+</main>
 <script>
-const shell=document.getElementById('shell');
-const phoneBtn=document.getElementById('phoneBtn');
-const fullBtn=document.getElementById('fullBtn');
-const reloadBtn=document.getElementById('reloadBtn');
-const frame=document.getElementById('previewFrame');
-function mode(full){
-  shell.classList.toggle('full',full);
-  phoneBtn.classList.toggle('active',!full);
-  fullBtn.classList.toggle('active',full);
-}
-phoneBtn.onclick=()=>mode(false);
-fullBtn.onclick=()=>mode(true);
-reloadBtn.onclick=()=>{frame.src='./?v=a4d4f6e5&preview=current&reload='+Date.now()};
+const shell=document.getElementById('shell'),phoneBtn=document.getElementById('phoneBtn'),fullBtn=document.getElementById('fullBtn'),demoBtn=document.getElementById('demoBtn'),freshBtn=document.getElementById('freshBtn'),resetBtn=document.getElementById('resetBtn'),frame=document.getElementById('previewFrame'),openBtn=document.getElementById('openBtn');
+let modeName='demo';
+function device(full){shell.classList.toggle('full',full);phoneBtn.classList.toggle('active',!full);fullBtn.classList.toggle('active',full)}
+function load(mode,reset=false){modeName=mode;demoBtn.classList.toggle('active',mode==='demo');freshBtn.classList.toggle('active',mode==='fresh');const url='./public-preview/?mode='+mode+(reset?'&reset=1':'')+'&v='+Date.now();frame.src=url;openBtn.href='./public-preview/?mode='+mode+(reset?'&reset=1':'')}
+phoneBtn.onclick=()=>device(false);fullBtn.onclick=()=>device(true);demoBtn.onclick=()=>load('demo',false);freshBtn.onclick=()=>load('fresh',true);resetBtn.onclick=()=>load(modeName,true);
 </script>
 </body>
 </html>
