@@ -37,7 +37,10 @@ const phase23Schema=requireFile('supabase/phase23/account_security.sql');
 const accountGateway=requireFile('supabase/functions/thisweek-account-gateway/index.ts');
 const accountHtml=requireFile('account/index.html');
 const accountJs=requireFile('account/app.js');
+const accountReleaseConfig=requireFile('account/release-config.js');
 const accountCheck=requireFile('account-check.mjs');
+const phase24Doc=requireFile('PHASE_24_IMPLEMENTATION.md');
+const authProductionSetup=requireFile('AUTH_PRODUCTION_SETUP.md');
 
 
 let config=null;
@@ -203,6 +206,25 @@ if(accountJs){
   if(/service_role|sb_secret_/i.test(accountJs))failures.push('Account Center contains server-secret pattern');
 }
 if(!accountCheck)failures.push('Account Center checker unavailable');
+if(accountReleaseConfig){
+  requireText('Phase 24 Auth config canonical URL',accountReleaseConfig,'https://bennybundles.github.io/Thisweekmvp/account/');
+  requireText('Phase 24 Auth config public readiness',accountReleaseConfig,'publicAuthReady:');
+  requireText('Phase 24 Auth config Turnstile provider',accountReleaseConfig,"provider:'turnstile'");
+  if(/service_role|sb_secret_/i.test(accountReleaseConfig))failures.push('Auth release config contains server-secret pattern');
+}
+if(accountHtml){
+  requireText('Phase 24 Account Center release gate UI',accountHtml,'authReleaseGates');
+  requireText('Phase 24 Account Center Turnstile CSP',accountHtml,'https://challenges.cloudflare.com');
+}
+if(accountJs){
+  requireText('Phase 24 Account Center CAPTCHA metadata',accountJs,'gotrue_meta_security');
+  requireText('Phase 24 Account Center canonical confirmation redirect',accountJs,'CONFIRM_REDIRECT');
+  requireText('Phase 24 Account Center canonical recovery redirect',accountJs,'RECOVERY_REDIRECT');
+  requireText('Phase 24 Account Center signup cooldown',accountJs,"assertCooldown('signup',60000");
+  requireText('Phase 24 Account Center recovery cooldown',accountJs,"assertCooldown('recover',60000");
+}
+if(phase24Doc)requireText('Phase 24 doc hosted gates remain explicit',phase24Doc,'hosted Supabase');
+if(authProductionSetup)requireText('Auth production setup exact recovery redirect',authProductionSetup,'https://bennybundles.github.io/Thisweekmvp/account/?mode=recovery');
 if(phase20Gateway)requireText('Money gateway rejects revoked session',phase20Gateway,'tw_auth_session_active');
 if(phase19Gateway)requireText('Provider gateway rejects revoked session',phase19Gateway,'tw_auth_session_active');
 
