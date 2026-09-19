@@ -66,26 +66,33 @@
       },
       "licenseAvailability": {
         "basicMp3": {
-          "status": "available_after_preview_render"
+          "status": "available_after_preview_render",
+          "rightsStatus": "producer_attested_available"
         },
         "premiumWav": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "trackoutPro": {
-          "status": "available_derived_3_stem_pack"
+          "status": "available_derived_3_stem_pack",
+          "rightsStatus": "producer_attested_available"
         },
         "unlimited": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "exclusive": {
-          "status": "manual_rights_review_required"
+          "status": "available_for_exclusive_inquiry"
         }
       },
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
-        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "producerAttestation": "Benjamin Alexander states this beat is an original work and has not been sold or exclusively licensed to anyone.",
+        "audioOnlyReview": "No embedded third-party attribution was identified in the supplied export metadata. Automated/audio review is not a substitute for documentary chain-of-title review.",
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -193,26 +200,33 @@
       },
       "licenseAvailability": {
         "basicMp3": {
-          "status": "available_after_preview_render"
+          "status": "available_after_preview_render",
+          "rightsStatus": "producer_attested_available"
         },
         "premiumWav": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "trackoutPro": {
-          "status": "available_derived_3_stem_pack"
+          "status": "available_derived_3_stem_pack",
+          "rightsStatus": "producer_attested_available"
         },
         "unlimited": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "exclusive": {
-          "status": "manual_rights_review_required"
+          "status": "available_for_exclusive_inquiry"
         }
       },
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
-        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "producerAttestation": "Benjamin Alexander states this beat is an original work and has not been sold or exclusively licensed to anyone.",
+        "audioOnlyReview": "No embedded third-party attribution was identified in the supplied export metadata. Automated/audio review is not a substitute for documentary chain-of-title review.",
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -320,26 +334,33 @@
       },
       "licenseAvailability": {
         "basicMp3": {
-          "status": "available_after_preview_render"
+          "status": "available_after_preview_render",
+          "rightsStatus": "producer_attested_available"
         },
         "premiumWav": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "trackoutPro": {
-          "status": "available_derived_3_stem_pack"
+          "status": "available_derived_3_stem_pack",
+          "rightsStatus": "producer_attested_available"
         },
         "unlimited": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "exclusive": {
-          "status": "manual_rights_review_required"
+          "status": "available_for_exclusive_inquiry"
         }
       },
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
-        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "producerAttestation": "Benjamin Alexander states this beat is an original work and has not been sold or exclusively licensed to anyone.",
+        "audioOnlyReview": "No embedded third-party attribution was identified in the supplied export metadata. Automated/audio review is not a substitute for documentary chain-of-title review.",
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -447,26 +468,33 @@
       },
       "licenseAvailability": {
         "basicMp3": {
-          "status": "available_after_preview_render"
+          "status": "available_after_preview_render",
+          "rightsStatus": "producer_attested_available"
         },
         "premiumWav": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "trackoutPro": {
-          "status": "available_derived_3_stem_pack"
+          "status": "available_derived_3_stem_pack",
+          "rightsStatus": "producer_attested_available"
         },
         "unlimited": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "exclusive": {
-          "status": "manual_rights_review_required"
+          "status": "available_for_exclusive_inquiry"
         }
       },
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
-        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "producerAttestation": "Benjamin Alexander states this beat is an original work and has not been sold or exclusively licensed to anyone.",
+        "audioOnlyReview": "No embedded third-party attribution was identified in the supplied export metadata. Automated/audio review is not a substitute for documentary chain-of-title review.",
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -574,26 +602,33 @@
       },
       "licenseAvailability": {
         "basicMp3": {
-          "status": "available_after_preview_render"
+          "status": "available_after_preview_render",
+          "rightsStatus": "producer_attested_available"
         },
         "premiumWav": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "trackoutPro": {
-          "status": "available_derived_3_stem_pack"
+          "status": "available_derived_3_stem_pack",
+          "rightsStatus": "producer_attested_available"
         },
         "unlimited": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "exclusive": {
-          "status": "manual_rights_review_required"
+          "status": "available_for_exclusive_inquiry"
         }
       },
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
-        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "producerAttestation": "Benjamin Alexander states this beat is an original work and has not been sold or exclusively licensed to anyone.",
+        "audioOnlyReview": "No embedded third-party attribution was identified in the supplied export metadata. Automated/audio review is not a substitute for documentary chain-of-title review.",
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -701,26 +736,33 @@
       },
       "licenseAvailability": {
         "basicMp3": {
-          "status": "available_after_preview_render"
+          "status": "available_after_preview_render",
+          "rightsStatus": "producer_attested_available"
         },
         "premiumWav": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "trackoutPro": {
-          "status": "available_derived_3_stem_pack"
+          "status": "available_derived_3_stem_pack",
+          "rightsStatus": "producer_attested_available"
         },
         "unlimited": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "exclusive": {
-          "status": "manual_rights_review_required"
+          "status": "available_for_exclusive_inquiry"
         }
       },
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
-        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "producerAttestation": "Benjamin Alexander states this beat is an original work and has not been sold or exclusively licensed to anyone.",
+        "audioOnlyReview": "No embedded third-party attribution was identified in the supplied export metadata. Automated/audio review is not a substitute for documentary chain-of-title review.",
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -829,26 +871,33 @@
       },
       "licenseAvailability": {
         "basicMp3": {
-          "status": "available_after_preview_render"
+          "status": "available_after_preview_render",
+          "rightsStatus": "producer_attested_available"
         },
         "premiumWav": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "trackoutPro": {
-          "status": "available_derived_3_stem_pack"
+          "status": "available_derived_3_stem_pack",
+          "rightsStatus": "producer_attested_available"
         },
         "unlimited": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "exclusive": {
-          "status": "manual_rights_review_required"
+          "status": "available_for_exclusive_inquiry"
         }
       },
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
-        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "producerAttestation": "Benjamin Alexander states this beat is an original work and has not been sold or exclusively licensed to anyone.",
+        "audioOnlyReview": "No embedded third-party attribution was identified in the supplied export metadata. Automated/audio review is not a substitute for documentary chain-of-title review.",
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -956,26 +1005,33 @@
       },
       "licenseAvailability": {
         "basicMp3": {
-          "status": "available_after_preview_render"
+          "status": "available_after_preview_render",
+          "rightsStatus": "producer_attested_available"
         },
         "premiumWav": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "trackoutPro": {
-          "status": "available_derived_3_stem_pack"
+          "status": "available_derived_3_stem_pack",
+          "rightsStatus": "producer_attested_available"
         },
         "unlimited": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "exclusive": {
-          "status": "manual_rights_review_required"
+          "status": "available_for_exclusive_inquiry"
         }
       },
       "sampleStatus": {
-        "status": "producer_filename_asserts_no_samples_unverified",
-        "riskFlag": "Original filename says “No Samples”; treat as a producer assertion, not independent legal verification.",
-        "audioOnlyReview": "No embedded third-party sample attribution found.",
-        "rightsAttestationRequired": true
+        "status": "producer_attested_original_work",
+        "riskFlag": null,
+        "producerAttestation": "Benjamin Alexander states this beat is an original work and has not been sold or exclusively licensed to anyone.",
+        "audioOnlyReview": "No embedded third-party attribution was identified in the supplied export metadata. Automated/audio review is not a substitute for documentary chain-of-title review.",
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -1097,26 +1153,33 @@
       },
       "licenseAvailability": {
         "basicMp3": {
-          "status": "available_after_preview_render"
+          "status": "available_after_preview_render",
+          "rightsStatus": "producer_attested_available"
         },
         "premiumWav": {
-          "status": "available_with_mp3_origin_wav_disclosure"
+          "status": "available_with_mp3_origin_wav_disclosure",
+          "rightsStatus": "producer_attested_available"
         },
         "trackoutPro": {
-          "status": "available_derived_3_stem_pack"
+          "status": "available_derived_3_stem_pack",
+          "rightsStatus": "producer_attested_available"
         },
         "unlimited": {
-          "status": "available_with_mp3_origin_wav_disclosure"
+          "status": "available_with_mp3_origin_wav_disclosure",
+          "rightsStatus": "producer_attested_available"
         },
         "exclusive": {
-          "status": "manual_rights_review_required_with_mp3_origin_wav_disclosure"
+          "status": "available_for_exclusive_inquiry"
         }
       },
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
-        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "producerAttestation": "Benjamin Alexander states this beat is an original work and has not been sold or exclusively licensed to anyone.",
+        "audioOnlyReview": "No embedded third-party attribution was identified in the supplied export metadata. Automated/audio review is not a substitute for documentary chain-of-title review.",
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -1249,26 +1312,33 @@
       },
       "licenseAvailability": {
         "basicMp3": {
-          "status": "available_after_preview_render"
+          "status": "available_after_preview_render",
+          "rightsStatus": "producer_attested_available"
         },
         "premiumWav": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "trackoutPro": {
-          "status": "available_derived_3_stem_pack"
+          "status": "available_derived_3_stem_pack",
+          "rightsStatus": "producer_attested_available"
         },
         "unlimited": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "exclusive": {
-          "status": "manual_rights_review_required"
+          "status": "available_for_exclusive_inquiry"
         }
       },
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
-        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "producerAttestation": "Benjamin Alexander states this beat is an original work and has not been sold or exclusively licensed to anyone.",
+        "audioOnlyReview": "No embedded third-party attribution was identified in the supplied export metadata. Automated/audio review is not a substitute for documentary chain-of-title review.",
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -1376,26 +1446,33 @@
       },
       "licenseAvailability": {
         "basicMp3": {
-          "status": "available_after_preview_render"
+          "status": "available_after_preview_render",
+          "rightsStatus": "producer_attested_available"
         },
         "premiumWav": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "trackoutPro": {
-          "status": "available_derived_3_stem_pack"
+          "status": "available_derived_3_stem_pack",
+          "rightsStatus": "producer_attested_available"
         },
         "unlimited": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "exclusive": {
-          "status": "manual_rights_review_required"
+          "status": "available_for_exclusive_inquiry"
         }
       },
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
-        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "producerAttestation": "Benjamin Alexander states this beat is an original work and has not been sold or exclusively licensed to anyone.",
+        "audioOnlyReview": "No embedded third-party attribution was identified in the supplied export metadata. Automated/audio review is not a substitute for documentary chain-of-title review.",
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -1503,26 +1580,33 @@
       },
       "licenseAvailability": {
         "basicMp3": {
-          "status": "available_after_preview_render"
+          "status": "available_after_preview_render",
+          "rightsStatus": "producer_attested_available"
         },
         "premiumWav": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "trackoutPro": {
-          "status": "available_derived_3_stem_pack"
+          "status": "available_derived_3_stem_pack",
+          "rightsStatus": "producer_attested_available"
         },
         "unlimited": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "exclusive": {
-          "status": "manual_rights_review_required"
+          "status": "available_for_exclusive_inquiry"
         }
       },
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
-        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "producerAttestation": "Benjamin Alexander states this beat is an original work and has not been sold or exclusively licensed to anyone.",
+        "audioOnlyReview": "No embedded third-party attribution was identified in the supplied export metadata. Automated/audio review is not a substitute for documentary chain-of-title review.",
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -1630,26 +1714,33 @@
       },
       "licenseAvailability": {
         "basicMp3": {
-          "status": "available_after_preview_render"
+          "status": "available_after_preview_render",
+          "rightsStatus": "producer_attested_available"
         },
         "premiumWav": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "trackoutPro": {
-          "status": "available_derived_3_stem_pack"
+          "status": "available_derived_3_stem_pack",
+          "rightsStatus": "producer_attested_available"
         },
         "unlimited": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "exclusive": {
-          "status": "manual_rights_review_required"
+          "status": "available_for_exclusive_inquiry"
         }
       },
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
-        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "producerAttestation": "Benjamin Alexander states this beat is an original work and has not been sold or exclusively licensed to anyone.",
+        "audioOnlyReview": "No embedded third-party attribution was identified in the supplied export metadata. Automated/audio review is not a substitute for documentary chain-of-title review.",
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -1757,26 +1848,33 @@
       },
       "licenseAvailability": {
         "basicMp3": {
-          "status": "available_after_preview_render"
+          "status": "available_after_preview_render",
+          "rightsStatus": "producer_attested_available"
         },
         "premiumWav": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "trackoutPro": {
-          "status": "available_derived_3_stem_pack"
+          "status": "available_derived_3_stem_pack",
+          "rightsStatus": "producer_attested_available"
         },
         "unlimited": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "exclusive": {
-          "status": "manual_rights_review_required"
+          "status": "available_for_exclusive_inquiry"
         }
       },
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
-        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "producerAttestation": "Benjamin Alexander states this beat is an original work and has not been sold or exclusively licensed to anyone.",
+        "audioOnlyReview": "No embedded third-party attribution was identified in the supplied export metadata. Automated/audio review is not a substitute for documentary chain-of-title review.",
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -1885,26 +1983,33 @@
       },
       "licenseAvailability": {
         "basicMp3": {
-          "status": "hold_remix_provenance_review"
+          "status": "hold_remix_provenance_review",
+          "rightsStatus": "producer_attested_available"
         },
         "premiumWav": {
-          "status": "hold_remix_provenance_review"
+          "status": "hold_remix_provenance_review",
+          "rightsStatus": "producer_attested_available"
         },
         "trackoutPro": {
-          "status": "available_derived_3_stem_pack"
+          "status": "available_derived_3_stem_pack",
+          "rightsStatus": "producer_attested_available"
         },
         "unlimited": {
-          "status": "hold_remix_provenance_review"
+          "status": "hold_remix_provenance_review",
+          "rightsStatus": "producer_attested_available"
         },
         "exclusive": {
-          "status": "hold_remix_provenance_review"
+          "status": "available_for_exclusive_inquiry"
         }
       },
       "sampleStatus": {
-        "status": "heightened_provenance_review_required",
-        "riskFlag": "Original source filename contains “remix”; confirm whether any preexisting musical work or sound recording was used.",
-        "audioOnlyReview": "No file metadata identifies a third-party sample, but audio-only review cannot establish clearance.",
-        "rightsAttestationRequired": true
+        "status": "producer_attested_original_work",
+        "riskFlag": null,
+        "producerAttestation": "Benjamin Alexander states this beat is an original work and has not been sold or exclusively licensed to anyone.",
+        "audioOnlyReview": "No embedded third-party attribution was identified in the supplied export metadata. Automated/audio review is not a substitute for documentary chain-of-title review.",
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -2013,26 +2118,33 @@
       },
       "licenseAvailability": {
         "basicMp3": {
-          "status": "available_after_preview_render"
+          "status": "available_after_preview_render",
+          "rightsStatus": "producer_attested_available"
         },
         "premiumWav": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "trackoutPro": {
-          "status": "available_derived_3_stem_pack"
+          "status": "available_derived_3_stem_pack",
+          "rightsStatus": "producer_attested_available"
         },
         "unlimited": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "exclusive": {
-          "status": "manual_rights_review_required"
+          "status": "available_for_exclusive_inquiry"
         }
       },
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
-        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "producerAttestation": "Benjamin Alexander states this beat is an original work and has not been sold or exclusively licensed to anyone.",
+        "audioOnlyReview": "No embedded third-party attribution was identified in the supplied export metadata. Automated/audio review is not a substitute for documentary chain-of-title review.",
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -2154,26 +2266,33 @@
       },
       "licenseAvailability": {
         "basicMp3": {
-          "status": "available_after_preview_render"
+          "status": "available_after_preview_render",
+          "rightsStatus": "producer_attested_available"
         },
         "premiumWav": {
-          "status": "available_with_mp3_origin_wav_disclosure"
+          "status": "available_with_mp3_origin_wav_disclosure",
+          "rightsStatus": "producer_attested_available"
         },
         "trackoutPro": {
-          "status": "available_derived_3_stem_pack"
+          "status": "available_derived_3_stem_pack",
+          "rightsStatus": "producer_attested_available"
         },
         "unlimited": {
-          "status": "available_with_mp3_origin_wav_disclosure"
+          "status": "available_with_mp3_origin_wav_disclosure",
+          "rightsStatus": "producer_attested_available"
         },
         "exclusive": {
-          "status": "manual_rights_review_required_with_mp3_origin_wav_disclosure"
+          "status": "available_for_exclusive_inquiry"
         }
       },
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
-        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "producerAttestation": "Benjamin Alexander states this beat is an original work and has not been sold or exclusively licensed to anyone.",
+        "audioOnlyReview": "No embedded third-party attribution was identified in the supplied export metadata. Automated/audio review is not a substitute for documentary chain-of-title review.",
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -2320,26 +2439,33 @@
       },
       "licenseAvailability": {
         "basicMp3": {
-          "status": "available_after_preview_render"
+          "status": "available_after_preview_render",
+          "rightsStatus": "producer_attested_available"
         },
         "premiumWav": {
-          "status": "available_with_mp3_origin_wav_disclosure"
+          "status": "available_with_mp3_origin_wav_disclosure",
+          "rightsStatus": "producer_attested_available"
         },
         "trackoutPro": {
-          "status": "available_derived_3_stem_pack"
+          "status": "available_derived_3_stem_pack",
+          "rightsStatus": "producer_attested_available"
         },
         "unlimited": {
-          "status": "available_with_mp3_origin_wav_disclosure"
+          "status": "available_with_mp3_origin_wav_disclosure",
+          "rightsStatus": "producer_attested_available"
         },
         "exclusive": {
-          "status": "manual_rights_review_required_with_mp3_origin_wav_disclosure"
+          "status": "available_for_exclusive_inquiry"
         }
       },
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
-        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "producerAttestation": "Benjamin Alexander states this beat is an original work and has not been sold or exclusively licensed to anyone.",
+        "audioOnlyReview": "No embedded third-party attribution was identified in the supplied export metadata. Automated/audio review is not a substitute for documentary chain-of-title review.",
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -2486,26 +2612,33 @@
       },
       "licenseAvailability": {
         "basicMp3": {
-          "status": "available_after_preview_render"
+          "status": "available_after_preview_render",
+          "rightsStatus": "producer_attested_available"
         },
         "premiumWav": {
-          "status": "available_with_mp3_origin_wav_disclosure"
+          "status": "available_with_mp3_origin_wav_disclosure",
+          "rightsStatus": "producer_attested_available"
         },
         "trackoutPro": {
-          "status": "available_derived_3_stem_pack"
+          "status": "available_derived_3_stem_pack",
+          "rightsStatus": "producer_attested_available"
         },
         "unlimited": {
-          "status": "available_with_mp3_origin_wav_disclosure"
+          "status": "available_with_mp3_origin_wav_disclosure",
+          "rightsStatus": "producer_attested_available"
         },
         "exclusive": {
-          "status": "manual_rights_review_required_with_mp3_origin_wav_disclosure"
+          "status": "available_for_exclusive_inquiry"
         }
       },
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
-        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "producerAttestation": "Benjamin Alexander states this beat is an original work and has not been sold or exclusively licensed to anyone.",
+        "audioOnlyReview": "No embedded third-party attribution was identified in the supplied export metadata. Automated/audio review is not a substitute for documentary chain-of-title review.",
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -2638,26 +2771,33 @@
       },
       "licenseAvailability": {
         "basicMp3": {
-          "status": "available_after_preview_render"
+          "status": "available_after_preview_render",
+          "rightsStatus": "producer_attested_available"
         },
         "premiumWav": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "trackoutPro": {
-          "status": "available_derived_3_stem_pack"
+          "status": "available_derived_3_stem_pack",
+          "rightsStatus": "producer_attested_available"
         },
         "unlimited": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "exclusive": {
-          "status": "manual_rights_review_required"
+          "status": "available_for_exclusive_inquiry"
         }
       },
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
-        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "producerAttestation": "Benjamin Alexander states this beat is an original work and has not been sold or exclusively licensed to anyone.",
+        "audioOnlyReview": "No embedded third-party attribution was identified in the supplied export metadata. Automated/audio review is not a substitute for documentary chain-of-title review.",
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -2765,26 +2905,33 @@
       },
       "licenseAvailability": {
         "basicMp3": {
-          "status": "available_after_preview_render"
+          "status": "available_after_preview_render",
+          "rightsStatus": "producer_attested_available"
         },
         "premiumWav": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "trackoutPro": {
-          "status": "available_derived_3_stem_pack"
+          "status": "available_derived_3_stem_pack",
+          "rightsStatus": "producer_attested_available"
         },
         "unlimited": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "exclusive": {
-          "status": "manual_rights_review_required"
+          "status": "available_for_exclusive_inquiry"
         }
       },
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
-        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "producerAttestation": "Benjamin Alexander states this beat is an original work and has not been sold or exclusively licensed to anyone.",
+        "audioOnlyReview": "No embedded third-party attribution was identified in the supplied export metadata. Automated/audio review is not a substitute for documentary chain-of-title review.",
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -2892,26 +3039,33 @@
       },
       "licenseAvailability": {
         "basicMp3": {
-          "status": "available_after_preview_render"
+          "status": "available_after_preview_render",
+          "rightsStatus": "producer_attested_available"
         },
         "premiumWav": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "trackoutPro": {
-          "status": "available_derived_3_stem_pack"
+          "status": "available_derived_3_stem_pack",
+          "rightsStatus": "producer_attested_available"
         },
         "unlimited": {
-          "status": "available_after_delivery_qc"
+          "status": "available_after_delivery_qc",
+          "rightsStatus": "producer_attested_available"
         },
         "exclusive": {
-          "status": "manual_rights_review_required"
+          "status": "available_for_exclusive_inquiry"
         }
       },
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
-        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "producerAttestation": "Benjamin Alexander states this beat is an original work and has not been sold or exclusively licensed to anyone.",
+        "audioOnlyReview": "No embedded third-party attribution was identified in the supplied export metadata. Automated/audio review is not a substitute for documentary chain-of-title review.",
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -2971,5 +3125,18 @@
     "visibility": "private",
     "count": 22
   },
-  "sampleReviewPolicy": "Audio/export metadata screening completed for all beats. This is not sample clearance. Final license execution requires a producer provenance/rights attestation; any identified third-party sample/interpolation must be separately cleared or removed."
+  "sampleReviewPolicy": "Audio/export metadata screening completed for all beats. This is not sample clearance. Final license execution requires a producer provenance/rights attestation; any identified third-party sample/interpolation must be separately cleared or removed.",
+  "rightsAttestation": {
+    "attestedBy": "Benjamin Alexander",
+    "capacity": "Authorized Representative, Thats A Good Jawn LLC / producer rights controller",
+    "attestationDate": "2026-09-19",
+    "scope": "All 22 beats in tagj-data/beat-catalog.v1.json",
+    "statements": [
+      "All 22 beats are original works by the producer.",
+      "None of the 22 beats has been sold to another party.",
+      "None of the 22 beats has been exclusively licensed or otherwise committed to another party.",
+      "All 22 beats remain available for licensing and potential exclusive sale, subject to executed agreement terms."
+    ],
+    "independentVerification": "Not independently verified by a third-party rights database or attorney."
+  }
 }
