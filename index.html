@@ -469,6 +469,9 @@ body.intro-pending .home-shell{filter:blur(5px);transform:scale(1.015)}.home-she
 @keyframes tagjFire{to{filter:saturate(1.45) brightness(1.18);transform:scaleY(1.05)}}
 @keyframes tagjHeat{to{transform:translateX(5px) scale(1.04);filter:blur(1px)}}
 @media(prefers-reduced-motion:reduce){.intro-gate.playing:before,.intro-gate.playing:after{animation:none!important}}
+.intro-replay-link{color:inherit;text-decoration:none;opacity:.55;font-size:10px;font-weight:800;letter-spacing:.15em;white-space:nowrap}
+.intro-replay-link:hover,.intro-replay-link:focus-visible{opacity:1}
+@media(max-width:760px){.intro-replay-link{font-size:9px}}
 </style>
 <style id="intro-state-v151">
 html.intro-resume-v151 #introGate{display:none!important;visibility:hidden!important;pointer-events:none!important}
@@ -494,8 +497,8 @@ html.intro-resume-v151 .home-footer{opacity:1!important;animation:none!important
 <!-- Audio requires a user gesture on iPhone/Safari. -->
 <section class="intro-gate" id="introGate" aria-label="TAGJ intro">
   <video id="introVideo" class="intro-video" data-cut-start="0" data-cut-end="6.93" data-cut-label="exact-drive-intro-clip-v151" playsinline webkit-playsinline preload="auto" poster="tagj-assets/intro/intro-poster-v149.jpg">
+    <source src="tagj-assets/intro/intro-clip-for-website-v152.mp4" type="video/mp4">
     <source src="tagj-assets/intro/intro-clip-for-website-v151.mov" type="video/quicktime">
-    <source src="tagj-assets/intro/intro-clip-for-website-v150.mp4" type="video/mp4">
   </video>
   <div class="intro-shade"></div>
   <div class="intro-frame" aria-hidden="true"></div>
