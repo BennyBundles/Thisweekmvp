@@ -79,7 +79,44 @@ function relationId(item: AnyRecord, name: string): string {
   return safeText(data.id, 180);
 }
 
+function relationType(item: AnyRecord, name: string): string {
+  const relationships = item.relationships && typeof item.relationships === "object"
+    ? item.relationships as AnyRecord : {};
+  const rel = relationships[name] && typeof relationships[name] === "object"
+    ? relationships[name] as AnyRecord : {};
+  const data = rel.data && typeof rel.data === "object" ? rel.data as AnyRecord : {};
+  return safeText(data.type, 120);
+}
+
+function unitApplicationState(eventType: string, providerStatus: string): { onboarding: string; kyc: string } {
+  const e = eventType.toLowerCase();
+  const s = providerStatus.toLowerCase();
+  if (e === "application.approved" || s === "approved") return { onboarding: "approved", kyc: "verified" };
+  if (e === "application.denied" || s === "denied") return { onboarding: "rejected", kyc: "failed" };
+  if (e === "application.canceled" || s === "canceled") return { onboarding: "closed", kyc: "failed" };
+  if (e === "application.awaitingdocuments" || s === "awaitingdocuments") return { onboarding: "identity_required", kyc: "pending" };
+  return { onboarding: "submitted", kyc: "pending" };
+}
+
+function unitPaymentState(eventType: string, providerStatus: string): string | null {
+  const e = eventType.toLowerCase();
+  const s = providerStatus.toLowerCase();
+  if (e === "payment.returned" || s === "returned") return "returned";
+  if (e === "payment.rejected" || s === "rejected" || s === "failed") return "failed";
+  if (e === "payment.canceled" || e === "payment.cancelled" || s === "canceled" || s === "cancelled") return "cancelled";
+  if (e === "payment.sent" || s === "sent" || s === "clearing") return "pending";
+  if (s === "completed" || s === "settled") return "settled";
+  if (e === "payment.created" || s === "pending") return "pending";
+  return null;
+}
+
 async function resolveUnitUser(admin: ReturnType<typeof createClient>, item: AnyRecord): Promise<string | null> {
+  const applicationId = relationId(item, "application");
+  if (applicationId) {
+    const { data } = await admin.from("tw_money_customers")
+      .select("user_id").eq("banking_provider", "unit").eq("provider_application_id", applicationId).maybeSingle();
+    if (data?.user_id) return String(data.user_id);
+  }
   const cardId = relationId(item, "card");
   if (cardId) {
     const { data } = await admin.from("tw_money_virtual_cards")
@@ -153,11 +190,122 @@ async function processUnit(
       card_id: relationId(item, "card") || null,
       account_id: relationId(item, "account") || null,
       authorization_request_id: authRequestId || null,
+      application_id: relationId(item, "application") || null,
+      customer_id: relationId(item, "customer") || null,
+      payment_id: relationId(item, "payment") || null,
+      transaction_type: relationType(item, "transaction") || null,
+      direction: safeText(attrs.direction, 20) || null,
       decision_source: safeText(attrs.cardDecisionSource, 60) || null,
       decline_reason: safeText(attrs.declineReason, 80) || null,
     };
 
     let state = "processed";
+
+    const applicationId = relationId(item, "application");
+    const customerId = relationId(item, "customer");
+    const accountId = relationId(item, "account");
+    const paymentId = relationId(item, "payment");
+    const transactionType = relationType(item, "transaction");
+    const providerStatus = safeText(attrs.status, 80);
+
+    if (userId && applicationId && eventType.startsWith("application.")) {
+      const mapped = unitApplicationState(eventType, providerStatus);
+      await admin.from("tw_money_customers").update({
+        banking_provider: "unit",
+        provider_application_id: applicationId,
+        provider_application_status: providerStatus || eventType.split(".")[1] || null,
+        provider_customer_id: customerId || undefined,
+        onboarding_state: mapped.onboarding,
+        kyc_state: mapped.kyc,
+        updated_at: new Date().toISOString(),
+      }).eq("user_id", userId);
+    }
+
+    if (userId && eventType === "customer.created" && customerId) {
+      await admin.from("tw_money_customers").update({
+        banking_provider: "unit",
+        provider_customer_id: customerId,
+        provider_application_id: applicationId || undefined,
+        provider_application_status: "Approved",
+        onboarding_state: "approved",
+        kyc_state: "verified",
+        updated_at: new Date().toISOString(),
+      }).eq("user_id", userId);
+    }
+
+    if (userId && eventType === "account.created" && accountId) {
+      const accountNumber = safeText(attrs.accountNumber, 40);
+      const routingNumber = safeText(attrs.routingNumber, 20);
+      await admin.from("tw_money_deposit_accounts").update({
+        status: "open",
+        account_last4: accountNumber ? accountNumber.slice(-4) : undefined,
+        routing_last4: routingNumber ? routingNumber.slice(-4) : undefined,
+        updated_at: new Date().toISOString(),
+      }).eq("user_id", userId).eq("provider", "unit").eq("provider_account_id", accountId);
+    }
+
+    if (userId && paymentId && eventType.startsWith("payment.")) {
+      const next = unitPaymentState(eventType, providerStatus);
+      if (next) {
+        await admin.from("tw_money_transfers").update({
+          state: next,
+          provider_status: providerStatus || eventType,
+          updated_at: new Date().toISOString(),
+          settled_at: next === "settled" ? new Date().toISOString() : null,
+          failure_code: next === "failed" || next === "returned"
+            ? (safeText(attrs.reason, 100) || next)
+            : null,
+        }).eq("user_id", userId).eq("provider", "unit").eq("provider_transfer_id", paymentId);
+      }
+    }
+
+    if (
+      userId &&
+      eventType === "transaction.created" &&
+      !authRequestId &&
+      Number.isSafeInteger(amount) &&
+      amount > 0 &&
+      safeText(attrs.direction, 20).toLowerCase() === "credit" &&
+      /achtransaction/i.test(transactionType)
+    ) {
+      const { data: ledgerAccounts } = await admin.from("tw_money_ledger_accounts")
+        .select("id,account_code").eq("user_id", userId)
+        .in("account_code", ["cash:unallocated", "external:offset"]);
+      const byCode = new Map((ledgerAccounts || []).map((a) => [a.account_code, a.id]));
+      const cash = byCode.get("cash:unallocated");
+      const offset = byCode.get("external:offset");
+      if (cash && offset) {
+        const posted = await admin.rpc("tw_money_post_journal", {
+          p_user_id: userId,
+          p_event_type: "unit_ach_credit_settlement",
+          p_idempotency_key: "unit:cashcredit:" + eventId,
+          p_currency: "USD",
+          p_entries: [
+            { ledger_account_id: cash, amount_cents: amount },
+            { ledger_account_id: offset, amount_cents: -amount },
+          ],
+          p_provider: "unit",
+          p_provider_event_id: eventId,
+          p_metadata: {
+            unit_account_id: accountId || null,
+            unit_payment_id: paymentId || null,
+            unit_transaction_type: transactionType || null,
+          },
+        });
+        if (posted.error) state = "failed";
+      } else {
+        state = "failed";
+      }
+
+      if (paymentId) {
+        await admin.from("tw_money_transfers").update({
+          state: "settled",
+          provider_status: "Settled",
+          settled_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        }).eq("user_id", userId).eq("provider", "unit").eq("provider_transfer_id", paymentId);
+      }
+    }
 
     if (userId && authRequestId && (
       eventType === "authorizationRequest.declined" ||
