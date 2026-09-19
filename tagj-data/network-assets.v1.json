@@ -143,6 +143,103 @@
           "publicUse": "approved_from_supplied_source"
         }
       ]
+    },
+    "bsf-tone-066": {
+      "status": "source_assets_received",
+      "repositoryIngestStatus": "pending_binary_asset_copy",
+      "assets": [
+        {
+          "id": "bsf-bloxx-robbers-stone-art",
+          "sourceUploadName": "9366A538-3F27-4ED3-83BD-0F65A3BB971B.jpeg",
+          "type": "cover_art_variant",
+          "intendedUse": [
+            "Bloxx and Robbers archive",
+            "creative case study"
+          ],
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "bsf-066-cap",
+          "sourceUploadName": "D799C441-BF5A-4765-9A62-01ACE2397D73.jpeg",
+          "type": "merch_concept",
+          "intendedUse": [
+            "merch design archive",
+            "creative services proof"
+          ],
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "bsf-066-shirt",
+          "sourceUploadName": "E8EF0DD0-1098-492A-9B2F-27C6FC7236F2.jpeg",
+          "type": "merch_concept",
+          "intendedUse": [
+            "merch design archive",
+            "creative services proof"
+          ],
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "bsf-bloxx-robbers-group-art",
+          "sourceUploadName": "F2F04658-B73C-47B6-8963-3BBE5698C605.jpeg",
+          "type": "cover_art_variant",
+          "intendedUse": [
+            "Bloxx and Robbers archive",
+            "album visual system"
+          ],
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "bsf-tone-portrait-bw",
+          "sourceUploadName": "939B5616-DBD5-431C-8DDA-1030C3D49521.jpeg",
+          "type": "portrait",
+          "intendedUse": [
+            "affiliate profile hero candidate",
+            "network profile gallery"
+          ],
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "bsf-chain-statue-crewneck",
+          "sourceUploadName": "19F1F36E-0AAF-41AC-B4E3-EA982A7E0714.jpeg",
+          "type": "merch_concept",
+          "intendedUse": [
+            "merch design archive",
+            "creative case study"
+          ],
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "bsf-bloxx-robbers-hoodie",
+          "sourceUploadName": "B91B93C0-6959-4C33-9E6A-9903F724E9AF.jpeg",
+          "type": "merch_concept",
+          "intendedUse": [
+            "Bloxx and Robbers merch archive",
+            "creative case study"
+          ],
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "bsf-bloxx-robbers-generator-screen",
+          "sourceUploadName": "AA5B3327-3D7D-4344-99DF-E7B627814A1E.jpeg",
+          "type": "process_screenshot",
+          "intendedUse": [
+            "creative process archive",
+            "case-study process context"
+          ],
+          "publicUse": "approved_from_supplied_source",
+          "note": "Current asset includes generator/browser UI; use as process evidence rather than hero art."
+        },
+        {
+          "id": "bsf-bloxx-robbers-dark-art",
+          "sourceUploadName": "DAFC472F-9BCE-47BF-9587-F64F1F11AD9D.jpeg",
+          "type": "cover_art_variant",
+          "intendedUse": [
+            "Bloxx and Robbers archive",
+            "affiliate profile gallery"
+          ],
+          "publicUse": "approved_from_supplied_source"
+        }
+      ]
     }
   }
 }
