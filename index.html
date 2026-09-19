@@ -7193,7 +7193,8 @@ async function renderHome(){
     const pendingFinancialEvent=consumeFinancialEvent();
     if(pendingFinancialEvent)requestAnimationFrame(()=>playFinancialEventOnHome(pendingFinancialEvent));
   }catch(e){
-    root.innerHTML=`<div class="center">${errBox(e.message)}<button class="btn-primary" onclick="renderHome()">Retry</button></div>`;
+    root.innerHTML=`<div class="center">${errBox(e.message)}<button class="btn-primary" id="retryHomeRender" type="button">Retry</button></div>`;
+    document.getElementById('retryHomeRender')?.addEventListener('click',renderHome);
   }
 }
 
