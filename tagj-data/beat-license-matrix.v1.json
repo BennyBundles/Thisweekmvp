@@ -11,10 +11,12 @@
       "title": "Pressure Glass",
       "sourceFilename": "B3 V.1 T.01.wav",
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
         "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "trackout": {
         "type": "derived_3_stem_separation",
@@ -65,9 +67,17 @@
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "manual_rights_review_required",
+          "status": "available_for_exclusive_inquiry",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
+      },
+      "rightsStatus": {
+        "originality": "producer_attested_original",
+        "priorSale": "none_attested",
+        "priorExclusiveLicense": "none_attested",
+        "exclusiveAvailability": "available_for_inquiry",
+        "attestedBy": "Benjamin Alexander",
+        "attestationDate": "2026-09-19"
       }
     },
     {
@@ -75,10 +85,12 @@
       "title": "Low Light",
       "sourceFilename": "dopbeat2.wav",
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
         "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "trackout": {
         "type": "derived_3_stem_separation",
@@ -129,9 +141,17 @@
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "manual_rights_review_required",
+          "status": "available_for_exclusive_inquiry",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
+      },
+      "rightsStatus": {
+        "originality": "producer_attested_original",
+        "priorSale": "none_attested",
+        "priorExclusiveLicense": "none_attested",
+        "exclusiveAvailability": "available_for_inquiry",
+        "attestedBy": "Benjamin Alexander",
+        "attestationDate": "2026-09-19"
       }
     },
     {
@@ -139,10 +159,12 @@
       "title": "Heavy Weather",
       "sourceFilename": "slams.wav",
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
         "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "trackout": {
         "type": "derived_3_stem_separation",
@@ -193,9 +215,17 @@
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "manual_rights_review_required",
+          "status": "available_for_exclusive_inquiry",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
+      },
+      "rightsStatus": {
+        "originality": "producer_attested_original",
+        "priorSale": "none_attested",
+        "priorExclusiveLicense": "none_attested",
+        "exclusiveAvailability": "available_for_inquiry",
+        "attestedBy": "Benjamin Alexander",
+        "attestationDate": "2026-09-19"
       }
     },
     {
@@ -203,10 +233,12 @@
       "title": "Last One Better",
       "sourceFilename": "doperthanthelast1.wav",
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
         "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "trackout": {
         "type": "derived_3_stem_separation",
@@ -257,9 +289,17 @@
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "manual_rights_review_required",
+          "status": "available_for_exclusive_inquiry",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
+      },
+      "rightsStatus": {
+        "originality": "producer_attested_original",
+        "priorSale": "none_attested",
+        "priorExclusiveLicense": "none_attested",
+        "exclusiveAvailability": "available_for_inquiry",
+        "attestedBy": "Benjamin Alexander",
+        "attestationDate": "2026-09-19"
       }
     },
     {
@@ -267,10 +307,12 @@
       "title": "Iron Gospel",
       "sourceFilename": "dope metal type b3at.wav",
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
         "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "trackout": {
         "type": "derived_3_stem_separation",
@@ -321,9 +363,17 @@
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "manual_rights_review_required",
+          "status": "available_for_exclusive_inquiry",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
+      },
+      "rightsStatus": {
+        "originality": "producer_attested_original",
+        "priorSale": "none_attested",
+        "priorExclusiveLicense": "none_attested",
+        "exclusiveAvailability": "available_for_inquiry",
+        "attestedBy": "Benjamin Alexander",
+        "attestationDate": "2026-09-19"
       }
     },
     {
@@ -331,10 +381,12 @@
       "title": "Cold Receiver",
       "sourceFilename": "beat for dt.wav",
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
         "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "trackout": {
         "type": "derived_3_stem_separation",
@@ -385,9 +437,17 @@
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "manual_rights_review_required",
+          "status": "available_for_exclusive_inquiry",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
+      },
+      "rightsStatus": {
+        "originality": "producer_attested_original",
+        "priorSale": "none_attested",
+        "priorExclusiveLicense": "none_attested",
+        "exclusiveAvailability": "available_for_inquiry",
+        "attestedBy": "Benjamin Alexander",
+        "attestationDate": "2026-09-19"
       }
     },
     {
@@ -395,10 +455,12 @@
       "title": "Night Ledger",
       "sourceFilename": "1_2023.wav",
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
         "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "trackout": {
         "type": "derived_3_stem_separation",
@@ -449,9 +511,17 @@
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "manual_rights_review_required",
+          "status": "available_for_exclusive_inquiry",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
+      },
+      "rightsStatus": {
+        "originality": "producer_attested_original",
+        "priorSale": "none_attested",
+        "priorExclusiveLicense": "none_attested",
+        "exclusiveAvailability": "available_for_inquiry",
+        "attestedBy": "Benjamin Alexander",
+        "attestationDate": "2026-09-19"
       }
     },
     {
@@ -459,10 +529,12 @@
       "title": "No Witnesses",
       "sourceFilename": "[DARK Trap] No Samples BEAT 2024 #1,077 (prod. Benny Bundles).wav",
       "sampleStatus": {
-        "status": "producer_filename_asserts_no_samples_unverified",
-        "riskFlag": "Original filename says “No Samples”; treat as a producer assertion, not independent legal verification.",
+        "status": "producer_attested_original_work",
+        "riskFlag": null,
         "audioOnlyReview": "No embedded third-party sample attribution found.",
-        "rightsAttestationRequired": true
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "trackout": {
         "type": "derived_3_stem_separation",
@@ -513,9 +585,17 @@
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "manual_rights_review_required",
+          "status": "available_for_exclusive_inquiry",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
+      },
+      "rightsStatus": {
+        "originality": "producer_attested_original",
+        "priorSale": "none_attested",
+        "priorExclusiveLicense": "none_attested",
+        "exclusiveAvailability": "available_for_inquiry",
+        "attestedBy": "Benjamin Alexander",
+        "attestationDate": "2026-09-19"
       }
     },
     {
@@ -523,10 +603,12 @@
       "title": "Four Eights",
       "sourceFilename": "Four Eights.wav",
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
         "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "trackout": {
         "type": "derived_3_stem_separation",
@@ -581,9 +663,17 @@
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "manual_rights_review_required_with_mp3_origin_wav_disclosure",
+          "status": "available_for_exclusive_inquiry_with_mp3_origin_delivery_disclosure",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
+      },
+      "rightsStatus": {
+        "originality": "producer_attested_original",
+        "priorSale": "none_attested",
+        "priorExclusiveLicense": "none_attested",
+        "exclusiveAvailability": "available_for_inquiry",
+        "attestedBy": "Benjamin Alexander",
+        "attestationDate": "2026-09-19"
       }
     },
     {
@@ -591,10 +681,12 @@
       "title": "Unfinished Marble",
       "sourceFilename": "Benjamin Unfinished Symphony.wav",
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
         "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "trackout": {
         "type": "derived_3_stem_separation",
@@ -645,9 +737,17 @@
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "manual_rights_review_required",
+          "status": "available_for_exclusive_inquiry",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
+      },
+      "rightsStatus": {
+        "originality": "producer_attested_original",
+        "priorSale": "none_attested",
+        "priorExclusiveLicense": "none_attested",
+        "exclusiveAvailability": "available_for_inquiry",
+        "attestedBy": "Benjamin Alexander",
+        "attestationDate": "2026-09-19"
       }
     },
     {
@@ -655,10 +755,12 @@
       "title": "Pacific Pressure",
       "sourceFilename": "West Coast Beat Prod by Bundles.wav",
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
         "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "trackout": {
         "type": "derived_3_stem_separation",
@@ -709,9 +811,17 @@
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "manual_rights_review_required",
+          "status": "available_for_exclusive_inquiry",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
+      },
+      "rightsStatus": {
+        "originality": "producer_attested_original",
+        "priorSale": "none_attested",
+        "priorExclusiveLicense": "none_attested",
+        "exclusiveAvailability": "available_for_inquiry",
+        "attestedBy": "Benjamin Alexander",
+        "attestationDate": "2026-09-19"
       }
     },
     {
@@ -719,10 +829,12 @@
       "title": "Neon Circuit",
       "sourceFilename": "EDMM.wav",
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
         "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "trackout": {
         "type": "derived_3_stem_separation",
@@ -773,9 +885,17 @@
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "manual_rights_review_required",
+          "status": "available_for_exclusive_inquiry",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
+      },
+      "rightsStatus": {
+        "originality": "producer_attested_original",
+        "priorSale": "none_attested",
+        "priorExclusiveLicense": "none_attested",
+        "exclusiveAvailability": "available_for_inquiry",
+        "attestedBy": "Benjamin Alexander",
+        "attestationDate": "2026-09-19"
       }
     },
     {
@@ -783,10 +903,12 @@
       "title": "Redline",
       "sourceFilename": "intense.wav",
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
         "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "trackout": {
         "type": "derived_3_stem_separation",
@@ -837,9 +959,17 @@
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "manual_rights_review_required",
+          "status": "available_for_exclusive_inquiry",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
+      },
+      "rightsStatus": {
+        "originality": "producer_attested_original",
+        "priorSale": "none_attested",
+        "priorExclusiveLicense": "none_attested",
+        "exclusiveAvailability": "available_for_inquiry",
+        "attestedBy": "Benjamin Alexander",
+        "attestationDate": "2026-09-19"
       }
     },
     {
@@ -847,10 +977,12 @@
       "title": "Soft Armor",
       "sourceFilename": "sarahs beat 3.wav",
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
         "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "trackout": {
         "type": "derived_3_stem_separation",
@@ -901,9 +1033,17 @@
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "manual_rights_review_required",
+          "status": "available_for_exclusive_inquiry",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
+      },
+      "rightsStatus": {
+        "originality": "producer_attested_original",
+        "priorSale": "none_attested",
+        "priorExclusiveLicense": "none_attested",
+        "exclusiveAvailability": "available_for_inquiry",
+        "attestedBy": "Benjamin Alexander",
+        "attestationDate": "2026-09-19"
       }
     },
     {
@@ -911,10 +1051,12 @@
       "title": "Half Truths",
       "sourceFilename": "hts beat remix 23.wav",
       "sampleStatus": {
-        "status": "heightened_provenance_review_required",
-        "riskFlag": "Original source filename contains “remix”; confirm whether any preexisting musical work or sound recording was used.",
+        "status": "producer_attested_original_work",
+        "riskFlag": null,
         "audioOnlyReview": "No file metadata identifies a third-party sample, but audio-only review cannot establish clearance.",
-        "rightsAttestationRequired": true
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "trackout": {
         "type": "derived_3_stem_separation",
@@ -965,9 +1107,17 @@
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "hold_remix_provenance_review",
+          "status": "available_for_exclusive_inquiry",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
+      },
+      "rightsStatus": {
+        "originality": "producer_attested_original",
+        "priorSale": "none_attested",
+        "priorExclusiveLicense": "none_attested",
+        "exclusiveAvailability": "available_for_inquiry",
+        "attestedBy": "Benjamin Alexander",
+        "attestationDate": "2026-09-19"
       }
     },
     {
@@ -975,10 +1125,12 @@
       "title": "Black Ledger",
       "sourceFilename": "darktrap.wav",
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
         "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "trackout": {
         "type": "derived_3_stem_separation",
@@ -1029,9 +1181,17 @@
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "manual_rights_review_required",
+          "status": "available_for_exclusive_inquiry",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
+      },
+      "rightsStatus": {
+        "originality": "producer_attested_original",
+        "priorSale": "none_attested",
+        "priorExclusiveLicense": "none_attested",
+        "exclusiveAvailability": "available_for_inquiry",
+        "attestedBy": "Benjamin Alexander",
+        "attestationDate": "2026-09-19"
       }
     },
     {
@@ -1039,10 +1199,12 @@
       "title": "Basement Gold",
       "sourceFilename": "Basement Gold.wav",
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
         "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "trackout": {
         "type": "derived_3_stem_separation",
@@ -1097,9 +1259,17 @@
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "manual_rights_review_required_with_mp3_origin_wav_disclosure",
+          "status": "available_for_exclusive_inquiry_with_mp3_origin_delivery_disclosure",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
+      },
+      "rightsStatus": {
+        "originality": "producer_attested_original",
+        "priorSale": "none_attested",
+        "priorExclusiveLicense": "none_attested",
+        "exclusiveAvailability": "available_for_inquiry",
+        "attestedBy": "Benjamin Alexander",
+        "attestationDate": "2026-09-19"
       }
     },
     {
@@ -1107,10 +1277,12 @@
       "title": "Long Way Home",
       "sourceFilename": "Long Way Home.wav",
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
         "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "trackout": {
         "type": "derived_3_stem_separation",
@@ -1165,9 +1337,17 @@
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "manual_rights_review_required_with_mp3_origin_wav_disclosure",
+          "status": "available_for_exclusive_inquiry_with_mp3_origin_delivery_disclosure",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
+      },
+      "rightsStatus": {
+        "originality": "producer_attested_original",
+        "priorSale": "none_attested",
+        "priorExclusiveLicense": "none_attested",
+        "exclusiveAvailability": "available_for_inquiry",
+        "attestedBy": "Benjamin Alexander",
+        "attestationDate": "2026-09-19"
       }
     },
     {
@@ -1175,10 +1355,12 @@
       "title": "Daylight Run",
       "sourceFilename": "Daylight Run.wav",
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
         "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "trackout": {
         "type": "derived_3_stem_separation",
@@ -1233,9 +1415,17 @@
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "manual_rights_review_required_with_mp3_origin_wav_disclosure",
+          "status": "available_for_exclusive_inquiry_with_mp3_origin_delivery_disclosure",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
+      },
+      "rightsStatus": {
+        "originality": "producer_attested_original",
+        "priorSale": "none_attested",
+        "priorExclusiveLicense": "none_attested",
+        "exclusiveAvailability": "available_for_inquiry",
+        "attestedBy": "Benjamin Alexander",
+        "attestationDate": "2026-09-19"
       }
     },
     {
@@ -1243,10 +1433,12 @@
       "title": "Clean Money",
       "sourceFilename": "2_2023.wav",
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
         "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "trackout": {
         "type": "derived_3_stem_separation",
@@ -1297,9 +1489,17 @@
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "manual_rights_review_required",
+          "status": "available_for_exclusive_inquiry",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
+      },
+      "rightsStatus": {
+        "originality": "producer_attested_original",
+        "priorSale": "none_attested",
+        "priorExclusiveLicense": "none_attested",
+        "exclusiveAvailability": "available_for_inquiry",
+        "attestedBy": "Benjamin Alexander",
+        "attestationDate": "2026-09-19"
       }
     },
     {
@@ -1307,10 +1507,12 @@
       "title": "Pressure Point",
       "sourceFilename": "4_2023.wav",
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
         "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "trackout": {
         "type": "derived_3_stem_separation",
@@ -1361,9 +1563,17 @@
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "manual_rights_review_required",
+          "status": "available_for_exclusive_inquiry",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
+      },
+      "rightsStatus": {
+        "originality": "producer_attested_original",
+        "priorSale": "none_attested",
+        "priorExclusiveLicense": "none_attested",
+        "exclusiveAvailability": "available_for_inquiry",
+        "attestedBy": "Benjamin Alexander",
+        "attestationDate": "2026-09-19"
       }
     },
     {
@@ -1371,10 +1581,12 @@
       "title": "Slow Motion Gold",
       "sourceFilename": "3_2023.wav",
       "sampleStatus": {
-        "status": "standard_provenance_confirmation_required",
+        "status": "producer_attested_original_work",
         "riskFlag": null,
         "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
-        "rightsAttestationRequired": true
+        "rightsAttestationRequired": false,
+        "priorSaleStatus": "producer_attested_none",
+        "priorExclusiveLicenseStatus": "producer_attested_none"
       },
       "trackout": {
         "type": "derived_3_stem_separation",
@@ -1425,10 +1637,19 @@
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "manual_rights_review_required",
+          "status": "available_for_exclusive_inquiry",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
+      },
+      "rightsStatus": {
+        "originality": "producer_attested_original",
+        "priorSale": "none_attested",
+        "priorExclusiveLicense": "none_attested",
+        "exclusiveAvailability": "available_for_inquiry",
+        "attestedBy": "Benjamin Alexander",
+        "attestationDate": "2026-09-19"
       }
     }
-  ]
+  ],
+  "rightsAttestationRef": "tagj-data/beat-catalog.v1.json#rightsAttestation"
 }
