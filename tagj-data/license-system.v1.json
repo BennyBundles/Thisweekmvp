@@ -15,13 +15,19 @@
     "formationJurisdiction": "Wyoming",
     "operatingRegistration": "Pennsylvania foreign registration / authority to do business (user-confirmed)",
     "activationBlockers": [
-      "Complete and retain a beat-specific sample/source provenance attestation; obtain any necessary third-party clearances before final license execution.",
-      "Complete and sign the beat-specific Producer Rights / Sample Declaration for each beat before paid licensing.",
-      "Resolve any beat-specific provenance hold, including remix/derivative-work questions and prior-client/exclusive commitments.",
       "For the four MP3-origin sources, supply a genuine lossless source master before any tier promises a true lossless master.",
       "Supply original DAW stems/trackouts before Trackout Pro is marketed as original trackouts. Derived stereo-separation packs are not original multitracks.",
       "Have final contract language reviewed by a qualified attorney before enabling paid checkout."
-    ]
+    ],
+    "rightsAttestation": {
+      "status": "producer_attested",
+      "attestedBy": "Benjamin Alexander",
+      "date": "2026-09-19",
+      "originality": "All 22 beats represented as original works",
+      "priorSales": "None represented",
+      "priorExclusiveLicenses": "None represented",
+      "note": "This records the producer/authorized representative's representation and does not constitute independent third-party legal verification."
+    }
   },
   "commonBusinessTerms": {
     "territory": "Worldwide",
