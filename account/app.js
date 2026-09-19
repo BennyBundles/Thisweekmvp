@@ -98,7 +98,7 @@ async function acceptLegal(documentId){
   setResult('legalResult','Disclosure version accepted and receipt recorded.','good');
 }
 
-function updateUi(){const signed=!!session?.access_token,p=session?.access_token?payload(session.access_token):{};$('sessionState').textContent=signed?'Signed in':'Signed out';$('aalState').textContent=p.aal||'—';$('cloudState').textContent=user?.email||'—';for(const id of ['refreshStatus','signOutAll','enrollMfa','verifyMfa','deleteAccount'])$(id).disabled=!signed;$('authCard').classList.toggle('hidden',signed);$('recoveryCard').classList.toggle('hidden',!recoveryMode||!signed);}
+function updateUi(){const signed=!!session?.access_token,p=session?.access_token?payload(session.access_token):{};$('sessionState').textContent=signed?'Signed in':'Signed out';$('aalState').textContent=p.aal||'—';$('cloudState').textContent=user?.email||'—';for(const id of ['refreshStatus','signOutAll','enrollMfa','verifyMfa','deleteAccount','privacyInventory','downloadCloudExport'])$(id).disabled=!signed;$('authCard').classList.toggle('hidden',signed);$('recoveryCard').classList.toggle('hidden',!recoveryMode||!signed);}
 function handleHash(){if(!location.hash.includes('access_token='))return;const q=new URLSearchParams(location.hash.slice(1));const access_token=q.get('access_token'),refresh_token=q.get('refresh_token');if(access_token){writeSession({access_token,refresh_token,expires_in:Number(q.get('expires_in')||3600),token_type:q.get('token_type')||'bearer'});if(q.get('type')==='recovery')recoveryMode=true;history.replaceState(null,'',location.pathname+(recoveryMode?'?mode=recovery':''));}}
 async function getUser(){if(!session?.access_token){user=null;renderFactors();updateUi();return null;}await ensureFresh();user=await api('/auth/v1/user',{method:'GET',auth:true});renderFactors();updateUi();return user;}
 function renderFactors(){const root=$('factorList');root.textContent='';const fs=Array.isArray(user?.factors)?[...user.factors]:[];if(lastEnroll?.id&&!fs.some(x=>x.id===lastEnroll.id))fs.push({id:lastEnroll.id,factor_type:'totp',status:'unverified',friendly_name:'This Week'});if(!fs.length){const p=document.createElement('p');p.textContent='No authenticator factors enrolled.';root.appendChild(p);return;}for(const f of fs){const row=document.createElement('div');row.className='factor';const txt=document.createElement('span');txt.innerHTML='<strong>'+(f.friendly_name||'Authenticator')+'</strong>'+(f.status||'unknown');const btn=document.createElement('button');btn.textContent='Remove';btn.disabled=!session?.access_token;btn.onclick=()=>unenroll(f.id);row.append(txt,btn);root.appendChild(row);}}
@@ -110,9 +110,85 @@ async function enroll(){await ensureFresh();const body=await api('/auth/v1/facto
 async function verifyMfa(){await ensureFresh();const code=$('totpCode').value.trim();const factor=(user?.factors||[]).find(x=>x.status==='unverified')||lastEnroll;if(!factor||!/^[0-9]{6,8}$/.test(code))throw new Error('Enter the current authenticator code.');const challenge=await api('/auth/v1/factors/'+encodeURIComponent(factor.id)+'/challenge',{method:'POST',auth:true,body:'{}'});const verified=await api('/auth/v1/factors/'+encodeURIComponent(factor.id)+'/verify',{method:'POST',auth:true,body:JSON.stringify({challenge_id:challenge.id,code})});if(verified.access_token)writeSession(verified);$('totpCode').value='';lastEnroll=null;await getUser();await accountStatus();setResult('mfaResult','Authenticator verified.','good');}
 async function unenroll(id){await ensureFresh();await api('/auth/v1/factors/'+encodeURIComponent(id),{method:'DELETE',auth:true});lastEnroll=null;await getUser();setResult('mfaResult','Authenticator factor removed.','warn');}
 async function accountGateway(action,extra={}){await ensureFresh();const res=await fetch(SUPABASE_URL+'/functions/v1/thisweek-account-gateway',{method:'POST',headers:{apikey:PUBLISHABLE_KEY,Authorization:'Bearer '+session.access_token,'Content-Type':'application/json'},body:JSON.stringify({action,...extra})});const text=await res.text();let body={};try{body=JSON.parse(text);}catch{}if(!res.ok){const e=new Error(body.error||('Account gateway HTTP '+res.status));e.body=body;throw e;}return body;}
-async function accountStatus(){const body=await accountGateway('status');$('cloudState').textContent=body.user?.email||'—';$('aalState').textContent=body.session?.aal?.currentLevel||payload(session.access_token).aal||'—';const c=body.closure;setResult('sessionResult',(c?.hardDeleteEligible?'Cloud account can currently be hard-deleted.':'Financial history exists; account closure requires retention review.')+' Active session verified server-side.',c?.hardDeleteEligible?'good':'warn');$('deleteEmail').value=body.user?.email||'';renderLegal(body.legal?.[LEGAL_ENVIRONMENT]||null);return body;}
+
+function renderPrivacyInventory(data){
+  const root=$('privacyInventoryList');if(!root)return;root.textContent='';
+  if(!data){const e=document.createElement('div');e.className='notice';e.textContent='Sign in and refresh to inspect cloud data.';root.appendChild(e);return;}
+  const datasets=Array.isArray(data.datasets)?data.datasets:[];
+  const total=datasets.reduce((n,x)=>n+Number(x.count||0),0);
+  const summary=document.createElement('div');summary.className='legal-row accepted';
+  const copy=document.createElement('div');
+  const strong=document.createElement('strong');strong.textContent='Cloud export inventory';
+  const meta=document.createElement('span');meta.textContent=datasets.length+' datasets · '+total+' records · schema '+(data.schema||'—');
+  copy.append(strong,meta);summary.append(copy);root.appendChild(summary);
+  for(const d of datasets){
+    const row=document.createElement('div');row.className='legal-row';
+    const c=document.createElement('div');
+    const s=document.createElement('strong');s.textContent=String(d.key||'dataset').replaceAll('_',' ');
+    const m=document.createElement('span');m.textContent=String(d.count||0)+' records';
+    c.append(s,m);row.appendChild(c);root.appendChild(row);
+  }
+  const excluded=document.createElement('div');excluded.className='notice';
+  excluded.textContent='Excluded from self-service export: '+(data.excludedFromSelfService||[]).join(', ').replaceAll('_',' ')+'.';
+  root.appendChild(excluded);
+  const local=document.createElement('div');local.className='notice';local.textContent=data.localPlanNote||'Browser-local Plan data is exported separately.';root.appendChild(local);
+  const closure=data.closure||{};
+  setResult('privacyResult',
+    'Cloud inventory ready. '+(closure.hardDeleteEligible?'No retained financial history currently blocks hard deletion.':'Financial history exists; account closure remains retention-reviewed.'),
+    closure.hardDeleteEligible?'good':'warn');
+}
+async function refreshPrivacyInventory(){
+  const body=await accountGateway('privacy_inventory');
+  renderPrivacyInventory(body.privacy||null);
+  return body.privacy||null;
+}
+function downloadJsonFile(filename,value){
+  const blob=new Blob([JSON.stringify(value,null,2)+'\n'],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+async function downloadCloudExport(){
+  setResult('privacyResult','Preparing cloud export…','warn');
+  const started=await accountGateway('privacy_export_start');
+  const exportId=started.exportId;
+  const inventory=started.inventory||{};
+  const pageLimit=Math.min(500,Number(started.pageLimitMax)||250);
+  const datasets={};
+  let recordCount=0;
+  for(const d of inventory.datasets||[]){
+    const key=d.key;
+    const rows=[];
+    let offset=0,done=false;
+    while(!done){
+      const response=await accountGateway('privacy_export_page',{exportId,dataset:key,offset,limit:pageLimit});
+      const page=response.page||{};
+      const part=Array.isArray(page.rows)?page.rows:[];
+      rows.push(...part);recordCount+=part.length;
+      done=page.done===true;
+      offset=Number(page.nextOffset)||rows.length;
+      if(!done&&part.length===0)throw new Error('Cloud export stopped because a dataset page made no progress.');
+    }
+    datasets[key]=rows;
+  }
+  const packageData={
+    schema:'thisweek.cloud-export.v1',
+    exportId,
+    generatedAt:new Date().toISOString(),
+    inventory,
+    datasets,
+    notice:'Self-service cloud export. It intentionally excludes secrets, full financial credentials, raw provider webhook payloads, internal fraud/risk model details, and internal staff notes not already customer-visible.'
+  };
+  await accountGateway('privacy_export_complete',{exportId,recordCount});
+  const stamp=new Date().toISOString().slice(0,10);
+  downloadJsonFile('this-week-cloud-export-'+stamp+'.json',packageData);
+  setResult('privacyResult','Cloud export downloaded: '+recordCount+' records across '+Object.keys(datasets).length+' datasets.','good');
+  await refreshPrivacyInventory();
+}
+
+async function accountStatus(){const body=await accountGateway('status');$('cloudState').textContent=body.user?.email||'—';$('aalState').textContent=body.session?.aal?.currentLevel||payload(session.access_token).aal||'—';const c=body.closure;setResult('sessionResult',(c?.hardDeleteEligible?'Cloud account can currently be hard-deleted.':'Financial history exists; account closure requires retention review.')+' Active session verified server-side.',c?.hardDeleteEligible?'good':'warn');$('deleteEmail').value=body.user?.email||'';renderLegal(body.legal?.[LEGAL_ENVIRONMENT]||null);await refreshPrivacyInventory().catch(()=>{});return body;}
 async function signOutAll(){await ensureFresh();try{await api('/auth/v1/logout?scope=global',{method:'POST',auth:true,body:'{}'});}finally{writeSession(null);user=null;renderFactors();setResult('sessionResult','Signed out across refresh sessions.','good');}}
 async function deleteAccount(){const email=$('deleteEmail').value.trim(),confirmation=$('deletePhrase').value.trim();if(!email||confirmation!=='DELETE')throw new Error('Enter your email and type DELETE exactly.');try{const body=await accountGateway('delete_account',{email,confirmation});if(body.deleted){writeSession(null);user=null;renderFactors();$('deletePhrase').value='';setResult('deleteResult','Cloud account deleted. Local Plan data remains on this browser until you delete it from Privacy & Local Data.','good');}}catch(e){if(e.body?.error==='retention_review_required'){setResult('deleteResult','Account closure request recorded. Financial history requires retention review instead of immediate hard deletion.','warn');return;}throw e;}}
 function bind(id,fn){$(id).addEventListener('click',()=>fn().catch(e=>setResult(id==='deleteAccount'?'deleteResult':id==='updatePassword'?'recoveryResult':id.includes('Mfa')?'mfaResult':'authResult',e.message,'bad')));}
-bind('signIn',signIn);bind('signUp',signUp);bind('forgot',forgot);bind('updatePassword',updatePassword);bind('enrollMfa',enroll);bind('verifyMfa',verifyMfa);bind('refreshStatus',accountStatus);bind('signOutAll',signOutAll);bind('deleteAccount',deleteAccount);
-handleHash();updateUi();renderFactors();renderReleaseReadiness();renderLegal(null);initCaptcha().catch(e=>setResult('authReleaseResult',e.message,'bad'));if(session?.access_token)getUser().then(()=>accountStatus()).catch(e=>{writeSession(null);setResult('authResult','Session expired. Sign in again.','warn');});
+bind('signIn',signIn);bind('signUp',signUp);bind('forgot',forgot);bind('updatePassword',updatePassword);bind('enrollMfa',enroll);bind('verifyMfa',verifyMfa);bind('refreshStatus',accountStatus);bind('signOutAll',signOutAll);bind('privacyInventory',refreshPrivacyInventory);bind('downloadCloudExport',downloadCloudExport);bind('deleteAccount',deleteAccount);
+handleHash();updateUi();renderFactors();renderReleaseReadiness();renderLegal(null);renderPrivacyInventory(null);initCaptcha().catch(e=>setResult('authReleaseResult',e.message,'bad'));if(session?.access_token)getUser().then(()=>accountStatus()).catch(e=>{writeSession(null);setResult('authResult','Session expired. Sign in again.','warn');});
