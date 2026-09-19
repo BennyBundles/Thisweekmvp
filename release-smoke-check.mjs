@@ -57,6 +57,8 @@ const phase30Doc=requireFile('PHASE_30_IMPLEMENTATION.md');
 const phase30Schema=requireFile('supabase/phase30/notification_dispatcher.sql');
 const opsNotifier=requireFile('supabase/functions/thisweek-ops-notifier/index.ts');
 const opsNotifierRuntime=requireFile('supabase/functions/thisweek-ops-notifier/deno.json');
+const phase31Doc=requireFile('PHASE_31_IMPLEMENTATION.md');
+const phase31Schema=requireFile('supabase/phase31/production_activation_interlock.sql');
 const phase28Schema=requireFile('supabase/phase28/support_incident_ops.sql');
 const supportGateway=requireFile('supabase/functions/thisweek-support-gateway/index.ts');
 const supportHtml=requireFile('support/index.html');
@@ -337,6 +339,23 @@ if(opsNotifier){
 if(opsGateway)requireText('Phase 30 Ops gateway live channel readiness',opsGateway,'tw_ops_notification_channel_status');
 if(phase30Doc)requireText('Phase 30 external delivery not claimed',phase30Doc,'delivery channel remains unconfigured and fail-closed');
 if(/service_role|SUPABASE_SERVICE_ROLE_KEY|sb_secret_/i.test(opsNotifierRuntime||''))failures.push('Phase 30 notifier runtime contains server-secret pattern');
+if(phase31Schema){
+  requireText('Phase 31 release gates table',phase31Schema,'tw_release_gates');
+  requireText('Phase 31 live-money RPC',phase31Schema,'tw_release_money_enabled');
+  requireText('Phase 31 admin-only gate setter',phase31Schema,'tw_release_set_gate');
+  requireText('Phase 31 browser roles revoked',phase31Schema,'from public,anon,authenticated');
+}
+if(phase20Gateway)requireText('Phase 31 money gateway release interlock',phase20Gateway,'requireProductionReleaseInterlock');
+if(phase19Gateway)requireText('Phase 31 provider gateway release interlock',phase19Gateway,'requireProviderProductionInterlock');
+if(phase21Webhook)requireText('Phase 31 signed webhook release interlock',phase21Webhook,'production_release_gates_incomplete');
+if(phase21CardAuth)requireText('Phase 31 card auth release interlock',phase21CardAuth,'tw_release_money_enabled');
+if(opsGateway){
+  requireText('Phase 31 Ops release status',opsGateway,'tw_release_status');
+  requireText('Phase 31 Ops gate administration',opsGateway,'set_release_gate');
+}
+if(opsHtml)requireText('Phase 31 Ops release surface',opsHtml,'id="releaseStatus"');
+if(opsJs)requireText('Phase 31 Ops release renderer',opsJs,'renderReleaseStatus');
+if(phase31Doc)requireText('Phase 31 release remains locked',phase31Doc,'live money ready: false');
 if(phase20Gateway)requireText('Money gateway rejects revoked session',phase20Gateway,'tw_auth_session_active');
 if(phase19Gateway)requireText('Provider gateway rejects revoked session',phase19Gateway,'tw_auth_session_active');
 
