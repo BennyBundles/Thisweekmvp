@@ -18,7 +18,7 @@ async function signIn(){const email=$('email').value.trim(),password=$('password
 async function signOut(){if(session)try{await api('/auth/v1/logout?scope=local',{method:'POST',auth:true,body:'{}'});}catch{}writeSession(null);user=null;dashboardData=null;renderFactors();clearDashboard();setResult('authResult','Signed out.','good');}
 async function verifyMfa(){await ensureFresh();const factorId=$('factorSelect').value,code=$('totpCode').value.trim();if(!factorId||!/^[0-9]{6,8}$/.test(code))throw new Error('Choose a verified factor and enter its current code.');const ch=await api('/auth/v1/factors/'+encodeURIComponent(factorId)+'/challenge',{method:'POST',auth:true,body:'{}'});const v=await api('/auth/v1/factors/'+encodeURIComponent(factorId)+'/verify',{method:'POST',auth:true,body:JSON.stringify({challenge_id:ch.id,code})});if(v.access_token)writeSession(v);$('totpCode').value='';await getUser();setResult('mfaResult','MFA verified.','good');await refreshDashboard();}
 async function ops(action,extra={}){await ensureFresh();const r=await fetch(SUPABASE_URL+'/functions/v1/thisweek-ops-gateway',{method:'POST',headers:{'apikey':PUBLISHABLE_KEY,'Authorization':'Bearer '+session.access_token,'Content-Type':'application/json'},body:JSON.stringify({action,...extra})});const text=await r.text();let b={};try{b=text?JSON.parse(text):{};}catch{b={raw:text};}if(!r.ok)throw new Error(b.error||('Ops Gateway HTTP '+r.status));return b;}
-function clearDashboard(){$('roleState').textContent='—';$('alertCount').textContent='—';$('reviewCount').textContent='—';$('healthState').textContent='—';for(const id of ['alerts','reviews','cases','support','incidents','health','automation','releaseStatus']){$(id).textContent='';const e=document.createElement('div');e.className='empty';e.textContent='No data loaded.';$(id).appendChild(e);}$('audit').textContent='';const e=document.createElement('div');e.className='empty';e.textContent='No audit data loaded.';$('audit').appendChild(e);setResult('notificationResult','');}
+function clearDashboard(){$('roleState').textContent='—';$('alertCount').textContent='—';$('reviewCount').textContent='—';$('healthState').textContent='—';for(const id of ['alerts','reviews','cases','support','incidents','health','automation','releaseStatus','legalRetention']){$(id).textContent='';const e=document.createElement('div');e.className='empty';e.textContent='No data loaded.';$(id).appendChild(e);}$('audit').textContent='';const e=document.createElement('div');e.className='empty';e.textContent='No audit data loaded.';$('audit').appendChild(e);setResult('notificationResult','');}
 function badge(text,severity='medium'){const s=document.createElement('span');s.className='badge '+severity;s.textContent=text;return s;}
 function money(cents){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(Number(cents||0)/100);}
 function button(label,fn,cls=''){const b=document.createElement('button');b.textContent=label;if(cls)b.className=cls;b.addEventListener('click',()=>fn().catch(e=>setResult('authResult',e.message,'bad')));return b;}
@@ -100,6 +100,9 @@ function renderReleaseStatus(status,role){
   p.textContent='Manual gates '+(status.manualGatesReady?'complete':'incomplete')+
     ' · production risk policy '+(status.productionRiskPolicyActive?'active':'inactive')+
     ' · incident channel '+(status.notificationChannelHealthy?'healthy':'not healthy')+
+    ' · legal set '+(status.productionLegalSetActive?'active':'inactive')+
+    ' · retention '+(status.productionRetentionPolicyActive?'active':'inactive')+
+    ' · access audit '+(status.sensitiveAccessAuditActive?'active':'inactive')+
     ' · staff admin/risk/support '+[staff.admin,staff.risk,staff.support].map(x=>x?'yes':'no').join('/')+'.';
   summary.appendChild(p);
   const warning=document.createElement('p');
@@ -129,6 +132,86 @@ function renderReleaseStatus(status,role){
       row.appendChild(actions);
     }
     root.appendChild(row);
+  }
+}
+
+
+function renderLegalRetention(data,role){
+  const root=$('legalRetention');root.textContent='';
+  if(!data){const e=document.createElement('div');e.className='empty';e.textContent='No legal/retention data.';root.appendChild(e);return;}
+  const retentionReady=data.retentionStatus?.ready===true;
+  const summary=itemBase('production policy',
+    'Retention '+(retentionReady?'READY':'BLOCKING')+' · sensitive access events '+String(data.recentSensitiveAccess?.length||0),
+    retentionReady?'medium':'high');
+  const p=document.createElement('p');
+  p.textContent='Legal documents and retention policies must be active and approved before the server interlock can become ready.';
+  summary.appendChild(p);root.appendChild(summary);
+
+  for(const d of data.documents||[]){
+    const ready=d.active===true&&d.approved_for_use===true;
+    const row=itemBase('legal · '+(d.document_key||'document'),
+      (d.title||d.document_key)+' · '+(ready?'ACTIVE / APPROVED':'BLOCKING'),
+      ready?'medium':'high');
+    const meta=document.createElement('p');
+    meta.textContent='Version '+(d.version||'—')+' · SHA-256 '+String(d.content_sha256||'').slice(0,14)+'…'+
+      (d.evidence_ref?' · evidence '+d.evidence_ref:' · no approval evidence');
+    row.appendChild(meta);
+    const link=document.createElement('a');link.href=d.public_path||'#';link.target='_blank';link.rel='noopener noreferrer';link.textContent='Open document';row.appendChild(link);
+    if(role==='admin'){
+      const controls=document.createElement('div');controls.className='controls';
+      const evidence=document.createElement('input');evidence.placeholder='legal approval / evidence reference';evidence.maxLength=500;evidence.value=d.evidence_ref||'';
+      const note=document.createElement('input');note.placeholder='bounded note';note.maxLength=1000;
+      const spacer=document.createElement('div');controls.append(evidence,note,spacer);row.appendChild(controls);
+      const actions=document.createElement('div');actions.className='actions';
+      const update=async(active,approved)=>{
+        if(evidence.value.trim().length<3)throw new Error('Enter legal approval evidence.');
+        await ops('set_legal_document_state',{documentId:d.id,active,approvedForUse:approved,evidenceRef:evidence.value.trim(),note:note.value.trim()});
+        setResult('legalRetentionResult',active&&approved?'Legal document activated.':'Legal document revoked.','good');
+        await refreshDashboard();
+      };
+      actions.append(button('Activate approved',()=>update(true,true),'primary'),button('Revoke',()=>update(false,false),'danger'));
+      row.appendChild(actions);
+    }
+    root.appendChild(row);
+  }
+
+  for(const pcy of data.policies||[]){
+    const ready=pcy.active===true&&pcy.approved_for_use===true;
+    const row=itemBase('retention · '+(pcy.data_class||'class'),
+      (pcy.policy_version||'policy')+' · '+(ready?'ACTIVE / APPROVED':'BLOCKING'),
+      ready?'medium':'high');
+    const meta=document.createElement('p');
+    meta.textContent='Disposition '+(pcy.disposition||'—')+
+      ' · retention '+(pcy.retention_days==null?'policy/legal review':pcy.retention_days+' days')+
+      (pcy.evidence_ref?' · evidence '+pcy.evidence_ref:' · no approval evidence');
+    row.appendChild(meta);
+    if(role==='admin'){
+      const controls=document.createElement('div');controls.className='controls';
+      const evidence=document.createElement('input');evidence.placeholder='retention approval / evidence reference';evidence.maxLength=500;evidence.value=pcy.evidence_ref||'';
+      const note=document.createElement('input');note.placeholder='bounded note';note.maxLength=1000;note.value=pcy.note||'';
+      const spacer=document.createElement('div');controls.append(evidence,note,spacer);row.appendChild(controls);
+      const actions=document.createElement('div');actions.className='actions';
+      const update=async(active,approved)=>{
+        if(evidence.value.trim().length<3)throw new Error('Enter retention approval evidence.');
+        await ops('set_retention_policy_state',{policyId:pcy.id,active,approvedForUse:approved,evidenceRef:evidence.value.trim(),note:note.value.trim()});
+        setResult('legalRetentionResult',active&&approved?'Retention policy activated.':'Retention policy revoked.','good');
+        await refreshDashboard();
+      };
+      actions.append(button('Activate approved',()=>update(true,true),'primary'),button('Revoke',()=>update(false,false),'danger'));
+      row.appendChild(actions);
+    }
+    root.appendChild(row);
+  }
+
+  const access=(data.recentSensitiveAccess||[]).slice(0,12);
+  if(access.length){
+    const block=itemBase('sensitive access','Recent staff reads · '+access.length,'medium');
+    for(const x of access){
+      const line=document.createElement('p');
+      line.textContent=(x.action||'access')+' · '+(x.staff_role||'role')+' · '+new Date(x.created_at).toLocaleString();
+      block.appendChild(line);
+    }
+    root.appendChild(block);
   }
 }
 
@@ -173,7 +256,7 @@ async function openIncident(){
   $('incidentTitle').value='';$('incidentSummary').value='';setResult('incidentResult','Incident opened: '+d.incidentId,'good');await refreshDashboard();
 }
 function renderAudit(rows){const root=$('audit');root.textContent='';if(!rows.length){const e=document.createElement('div');e.className='empty';e.textContent='No staff actions recorded.';root.appendChild(e);return;}for(const x of rows){const r=document.createElement('div');r.className='audit-row';const strong=document.createElement('strong');strong.textContent=(x.action||'action')+' · '+(x.staff_role||'role');const text=document.createTextNode(' — '+(x.target_type||'target')+' '+(x.target_ref||'')+' · '+new Date(x.created_at).toLocaleString()+(x.reason_code?' · '+x.reason_code:''));r.append(strong,text);root.appendChild(r);}}
-async function refreshDashboard(){const d=await ops('dashboard');dashboardData=d;const role=d.staff?.role||'';$('roleState').textContent=role||'—';$('alertCount').textContent=String(d.alerts?.length||0);$('reviewCount').textContent=String(d.riskReviews?.length||0);$('runMonitor').disabled=!(role==='risk_ops'||role==='admin');renderHealth(d.health);renderAutomation(d.automatedMonitor,role);renderReleaseStatus(d.releaseStatus,role);renderAlerts(d.alerts||[]);renderSupport(d.supportRequests||[],d.supportMessages||[]);renderReviews(d.riskReviews||[],role);renderCases(d.cases||[]);renderIncidents(d.incidents||[]);renderAudit(d.recentStaffActions||[]);setResult('authResult','Operations data refreshed.','good');return d;}
+async function refreshDashboard(){const d=await ops('dashboard');dashboardData=d;const role=d.staff?.role||'';$('roleState').textContent=role||'—';$('alertCount').textContent=String(d.alerts?.length||0);$('reviewCount').textContent=String(d.riskReviews?.length||0);$('runMonitor').disabled=!(role==='risk_ops'||role==='admin');renderHealth(d.health);renderAutomation(d.automatedMonitor,role);renderReleaseStatus(d.releaseStatus,role);renderLegalRetention(d.legalRetention,role);renderAlerts(d.alerts||[]);renderSupport(d.supportRequests||[],d.supportMessages||[]);renderReviews(d.riskReviews||[],role);renderCases(d.cases||[]);renderIncidents(d.incidents||[]);renderAudit(d.recentStaffActions||[]);setResult('authResult','Operations data refreshed.','good');return d;}
 async function applyControl(){const userId=$('controlUserId').value.trim(),state=$('controlState').value,reason=$('controlReason').value.trim();if(!userId)throw new Error('Enter a user ID.');if(state!=='normal'&&!reason)throw new Error('Enter a control reason.');const d=await ops('set_user_control',{userId,state,reasonCode:reason||'control_cleared'});setResult('controlResult','Control updated: '+(d.result?.state||state)+'.','good');await refreshDashboard();}
 function bind(id,fn){$(id).addEventListener('click',()=>fn().catch(e=>setResult(id==='verifyMfa'?'mfaResult':id==='applyControl'?'controlResult':'authResult',e.message,'bad')));}
 bind('signIn',signIn);bind('signOut',signOut);bind('verifyMfa',verifyMfa);bind('refresh',refreshDashboard);bind('runMonitor',runMonitorNow);bind('applyControl',applyControl);bind('openIncident',openIncident);
