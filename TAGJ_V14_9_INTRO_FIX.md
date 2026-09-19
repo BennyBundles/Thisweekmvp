@@ -11,3 +11,5 @@ This build fixes the iPhone/Safari intro reliability issue without changing the 
 - The exact Benny Bundles “Cold Winter” ~4:00 lyric clip is NOT claimed as integrated; repository and connected Drive were checked and no matching video/audio source file was found.
 
 Rollback branch: rollback/tagj-v14.8-intro-pre-fix-2026-09-19
+
+Deployment trigger: standard contents push after intro media/state repair.
