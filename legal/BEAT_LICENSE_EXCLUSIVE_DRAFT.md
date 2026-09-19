@@ -64,7 +64,7 @@ Licensee may not:
 A label, distributor, publisher, administrator, or collection agent may act for Licensee solely to exploit or administer the licensed New Song and does not receive ownership of the Beat unless Licensor separately agrees in writing.
 
 ## 9. Samples and Third-Party Rights
-Beat-specific sample information belongs in **Schedule A**. Unless Schedule A expressly states that a particular third-party element has been cleared, no sample-clearance warranty is implied. Licensor represents only that Licensor has authority to grant the rights Licensor actually owns or controls. Licensee is responsible for Licensee’s own vocals, lyrics, samples, interpolations, featured performances, and other added material.
+Before final license execution, Licensor will retain a beat-specific **Sample / Source Provenance Attestation**. Beat-specific sample information belongs in **Schedule A**. Unless Schedule A expressly states that a particular third-party element has been cleared, no sample-clearance warranty is implied. An audio-only screening, filename, or producer statement is not a substitute for any permission that applicable law requires. Licensor represents only that Licensor has authority to grant the rights Licensor actually owns or controls. Licensee is responsible for Licensee’s own vocals, lyrics, samples, interpolations, featured performances, and other added material.
 
 If a third-party claim affects the Beat, the parties will reasonably cooperate to identify the affected material and determine whether clearance, replacement, takedown, or another remedy is appropriate.
 
