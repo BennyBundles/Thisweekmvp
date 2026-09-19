@@ -30,6 +30,8 @@ const phase21CardAuth=requireFile('supabase/functions/thisweek-unit-card-authori
 const moneyLabHtml=requireFile('money-lab/index.html');
 const moneyLabJs=requireFile('money-lab/app.js');
 const moneyLabCheck=requireFile('money-lab-check.mjs');
+const phase22Doc=requireFile('PHASE_22_IMPLEMENTATION.md');
+const phase22Schema=requireFile('supabase/phase22/provider_sandbox_chain.sql');
 
 
 let config=null;
@@ -68,7 +70,9 @@ if(html){
     ['Phase 20 cards route','async function renderCategoryCards()'],
     ['Phase 21 signed webhooks',"webhookMode:'signed_receivers_deployed'"],
     ['Phase 21 card authorization controller',"cardAuthorizationMode:'controller_deployed_execution_locked'"],
-    ['Phase 21 Money Lab link','href="./money-lab/"']
+    ['Phase 21 Money Lab link','href="./money-lab/"'],
+    ['Phase 22 Sandbox chain',"sandboxChain:'plaid_unit_pinwheel_method'"],
+    ['Phase 22 credential-gated chain',"sandboxChainMode:'deployed_credentials_required'"]
   ];
   for(const [label,text] of critical)requireText('missing '+label,html,text);
 
@@ -143,6 +147,25 @@ if(moneyLabJs){
   if(/service_role|sb_secret_/i.test(moneyLabJs))failures.push('Money Lab contains server-secret pattern');
 }
 if(!moneyLabCheck)failures.push('Money Lab checker unavailable');
+
+if(phase22Schema){
+  requireText('Phase 22 schema Unit application ref',phase22Schema,'provider_application_id');
+  requireText('Phase 22 schema Method entity ref',phase22Schema,'method_entity_id');
+  requireText('Phase 22 schema funding processor link',phase22Schema,'unit_counterparty');
+}
+if(phase22Doc){
+  requireText('Phase 22 doc must keep execution gated',phase22Doc,'provider execution remains credential-gated');
+  requireText('Phase 22 doc must preserve production CSP',phase22Doc,"connect-src 'none'");
+}
+if(phase20Gateway){
+  requireText('Phase 22 gateway processor token',phase20Gateway,'/processor/token/create');
+  requireText('Phase 22 gateway Unit app',phase20Gateway,'unit_sandbox_application');
+  requireText('Phase 22 gateway Unit account',phase20Gateway,'unit_create_deposit_account');
+  requireText('Phase 22 gateway ACH pull',phase20Gateway,'unit_fund_from_external');
+  requireText('Phase 22 gateway Method setup',phase20Gateway,'method_sandbox_setup');
+  requireText('Phase 22 gateway Method pay',phase20Gateway,'method_sandbox_payment');
+}
+if(phase19Gateway)requireText('Phase 22 provider gateway must request Plaid Auth',phase19Gateway,'products: ["auth", "transactions"]');
 
 
 if(workflow){
