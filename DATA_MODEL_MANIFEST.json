@@ -391,9 +391,49 @@
     },
     "localPlanBoundary": "cloud_account_deletion_does_not_silently_delete_browser_plan",
     "remainingGates": [
-      "auth_site_url_and_redirect_allowlist",
-      "production_email_delivery",
-      "captcha_abuse_controls"
+      "phase24_hosted_auth_release_assertions"
+    ]
+  },
+  "phase24AuthProductionHardening": {
+    "status": "client_hardening_deployed_hosted_gates_pending",
+    "activation": true,
+    "canonicalAccountUrl": "https://bennybundles.github.io/Thisweekmvp/account/",
+    "confirmationRedirect": "https://bennybundles.github.io/Thisweekmvp/account/",
+    "recoveryRedirect": "https://bennybundles.github.io/Thisweekmvp/account/?mode=recovery",
+    "releaseConfig": "account/release-config.js",
+    "publicAuthReady": false,
+    "captcha": {
+      "provider": "turnstile",
+      "clientSupport": true,
+      "siteKeyConfigured": false,
+      "supabaseProtectionVerified": false,
+      "secretPolicy": "hosted_supabase_only_never_repository_or_browser",
+      "authPayload": "gotrue_meta_security.captcha_token"
+    },
+    "clientCooldownsSeconds": {
+      "signup": 60,
+      "recovery": 60,
+      "signin": 2
+    },
+    "hostedGates": {
+      "siteUrlVerified": false,
+      "redirectAllowlistVerified": false,
+      "emailConfirmationsVerified": false,
+      "customSmtpVerified": false,
+      "securityNotificationsVerified": false
+    },
+    "plannerNetworkBoundary": "connect-src none",
+    "accountCenterNetworkBoundary": [
+      "https://xjtvawmppzwzrooairyx.supabase.co",
+      "https://challenges.cloudflare.com"
+    ],
+    "remainingGates": [
+      "configure_supabase_site_url",
+      "configure_exact_redirect_allowlist",
+      "verify_email_confirmation_roundtrip",
+      "create_turnstile_widget_and_configure_supabase_captcha",
+      "configure_and_verify_custom_smtp",
+      "verify_security_notification_emails"
     ]
   }
 }
