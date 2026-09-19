@@ -82,8 +82,8 @@
         }
       },
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "forensic_audio_review_complete_rights_clearance_unverified",
+        "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -169,8 +169,8 @@
         }
       },
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "forensic_audio_review_complete_rights_clearance_unverified",
+        "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -256,8 +256,8 @@
         }
       },
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "forensic_audio_review_complete_rights_clearance_unverified",
+        "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -343,8 +343,8 @@
         }
       },
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "forensic_audio_review_complete_rights_clearance_unverified",
+        "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -430,8 +430,8 @@
         }
       },
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "forensic_audio_review_complete_rights_clearance_unverified",
+        "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -517,8 +517,8 @@
         }
       },
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "forensic_audio_review_complete_rights_clearance_unverified",
+        "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -604,8 +604,8 @@
         }
       },
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "forensic_audio_review_complete_rights_clearance_unverified",
+        "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -691,8 +691,8 @@
         }
       },
       "sampleStatus": {
-        "status": "filename_states_no_samples_unverified",
-        "note": "Original filename includes “No Samples”; sample status still requires rights review before legal activation."
+        "status": "forensic_audio_review_complete_rights_clearance_unverified",
+        "note": "Audio/source review completed. Original filename states “No Samples,” but no external reference-catalog fingerprint match or chain-of-title documentation was available; therefore third-party rights clearance is not certified."
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -721,7 +721,15 @@
         "codec": "mp3",
         "sampleRate": 44100,
         "channels": 2,
-        "sha256": "b810d4e6e28af726c17b69aef92a7527ed0c47420f9e529fb6bb009f631f26d8"
+        "sha256": "b810d4e6e28af726c17b69aef92a7527ed0c47420f9e529fb6bb009f631f26d8",
+        "convertedWavDerivative": {
+          "created": true,
+          "sampleRateHz": 48000,
+          "bitDepth": 24,
+          "provenance": "decoded_from_original_mp3",
+          "losslessMaster": false,
+          "note": "WAV delivery derivative created from the supplied MP3. This does not restore information discarded by MP3 encoding and must not be marketed as a genuine lossless master."
+        }
       },
       "bpm": null,
       "key": null,
@@ -778,8 +786,8 @@
         }
       },
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "forensic_audio_review_complete_rights_clearance_unverified",
+        "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -865,8 +873,8 @@
         }
       },
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "forensic_audio_review_complete_rights_clearance_unverified",
+        "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -952,8 +960,8 @@
         }
       },
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "forensic_audio_review_complete_rights_clearance_unverified",
+        "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -1039,8 +1047,8 @@
         }
       },
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "forensic_audio_review_complete_rights_clearance_unverified",
+        "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -1126,8 +1134,8 @@
         }
       },
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "forensic_audio_review_complete_rights_clearance_unverified",
+        "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -1213,8 +1221,8 @@
         }
       },
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "forensic_audio_review_complete_rights_clearance_unverified",
+        "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -1300,8 +1308,8 @@
         }
       },
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "forensic_audio_review_complete_rights_clearance_unverified",
+        "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -1387,8 +1395,8 @@
         }
       },
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "forensic_audio_review_complete_rights_clearance_unverified",
+        "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -1417,7 +1425,15 @@
         "codec": "mp3",
         "sampleRate": 48000,
         "channels": 2,
-        "sha256": "188ae9e9a4cef9030499b678dfa894ad1304dadb5fe1c44bd75526ba85edb72d"
+        "sha256": "188ae9e9a4cef9030499b678dfa894ad1304dadb5fe1c44bd75526ba85edb72d",
+        "convertedWavDerivative": {
+          "created": true,
+          "sampleRateHz": 48000,
+          "bitDepth": 24,
+          "provenance": "decoded_from_original_mp3",
+          "losslessMaster": false,
+          "note": "WAV delivery derivative created from the supplied MP3. This does not restore information discarded by MP3 encoding and must not be marketed as a genuine lossless master."
+        }
       },
       "bpm": null,
       "key": null,
@@ -1474,8 +1490,8 @@
         }
       },
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "forensic_audio_review_complete_rights_clearance_unverified",
+        "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -1504,7 +1520,15 @@
         "codec": "mp3",
         "sampleRate": 44100,
         "channels": 2,
-        "sha256": "785ed702bb0d77dad23e596be27753ffee299c63774cccd3165ffc8b49b00d9a"
+        "sha256": "785ed702bb0d77dad23e596be27753ffee299c63774cccd3165ffc8b49b00d9a",
+        "convertedWavDerivative": {
+          "created": true,
+          "sampleRateHz": 48000,
+          "bitDepth": 24,
+          "provenance": "decoded_from_original_mp3",
+          "losslessMaster": false,
+          "note": "WAV delivery derivative created from the supplied MP3. This does not restore information discarded by MP3 encoding and must not be marketed as a genuine lossless master."
+        }
       },
       "bpm": null,
       "key": null,
@@ -1561,8 +1585,8 @@
         }
       },
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "forensic_audio_review_complete_rights_clearance_unverified",
+        "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -1591,7 +1615,15 @@
         "codec": "mp3",
         "sampleRate": 44100,
         "channels": 2,
-        "sha256": "2c56a5ed0f6b3984bb828a9a0c681a2fc4150ffb7f2b046a3ec0c9317fd13728"
+        "sha256": "2c56a5ed0f6b3984bb828a9a0c681a2fc4150ffb7f2b046a3ec0c9317fd13728",
+        "convertedWavDerivative": {
+          "created": true,
+          "sampleRateHz": 48000,
+          "bitDepth": 24,
+          "provenance": "decoded_from_original_mp3",
+          "losslessMaster": false,
+          "note": "WAV delivery derivative created from the supplied MP3. This does not restore information discarded by MP3 encoding and must not be marketed as a genuine lossless master."
+        }
       },
       "bpm": null,
       "key": null,
@@ -1648,8 +1680,8 @@
         }
       },
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "forensic_audio_review_complete_rights_clearance_unverified",
+        "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -1735,8 +1767,8 @@
         }
       },
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "forensic_audio_review_complete_rights_clearance_unverified",
+        "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -1822,8 +1854,8 @@
         }
       },
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "forensic_audio_review_complete_rights_clearance_unverified",
+        "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
@@ -1909,8 +1941,8 @@
         }
       },
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "forensic_audio_review_complete_rights_clearance_unverified",
+        "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
       },
       "legalAgreementRefs": {
         "basicMp3": "legal:basic-mp3-v1",
