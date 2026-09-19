@@ -1,0 +1,24 @@
+import fs from 'node:fs';
+const html=fs.readFileSync(process.argv[2]||'_site/ops/index.html','utf8');
+const js=fs.readFileSync(process.argv[3]||'_site/ops/app.js','utf8');
+const failures=[];const need=(l,c,t)=>{if(!c.includes(t))failures.push(l);};
+need('exact Supabase connect allowlist',html,'connect-src https://xjtvawmppzwzrooairyx.supabase.co');
+need('staff role doctrine',html,'app_metadata.thisweek_role');
+need('no browser role assignment',html,'No browser role escalation');
+need('Ops Gateway',js,'/functions/v1/thisweek-ops-gateway');
+need('shared session key',js,'thisweek.auth.session.v1');
+need('password sign in',js,'/auth/v1/token?grant_type=password');
+need('MFA challenge',js,'/challenge');
+need('MFA verify',js,'/verify');
+need('alert acknowledgment',js,"ops('ack_alert'");
+need('case assignment',js,"ops('assign_case'");
+need('case resolution',js,"ops('resolve_case'");
+need('risk review resolution',js,"ops('resolve_risk_review'");
+need('user control',js,"ops('set_user_control'");
+need('dashboard',js,"ops('dashboard')");
+if(/service_role|sb_secret_/i.test(html+js))failures.push('server secret pattern in Ops Console');
+if(/localStorage/.test(js))failures.push('Ops Console must not use localStorage');
+if(/updateUserById|app_metadata\s*[:=]/i.test(js))failures.push('Ops Console must not assign staff roles');
+try{new Function(js);}catch(e){failures.push('Ops Console JS syntax: '+e.message);}
+if(failures.length){console.error('Ops Console check FAILED');failures.forEach(x=>console.error('- '+x));process.exit(1);}
+console.log('Ops Console check passed');
