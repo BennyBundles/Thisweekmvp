@@ -1839,4 +1839,117 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
    box.querySelector('[data-request]').addEventListener('click',()=>{const w=data.waves[index];setTimeout(()=>{const el=document.querySelector('#v143WizardForm [name="colorway"]');if(el){el.value=w[0]+' — '+w[1];el.dispatchEvent(new Event('input',{bubbles:true}))}},80)});
  });
 })();
-</script></body></html>
+</script>
+<style id="v15-7-business-contact-ui">
+.v157-business-meta{margin-top:18px;padding-top:16px;border-top:1px solid currentColor;opacity:.82;font-size:10px;line-height:1.7;letter-spacing:.035em}
+.v157-business-meta strong{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+.v157-business-meta a{text-decoration:underline;text-underline-offset:3px}
+.v157-business-inline{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.v157-business-inline a{display:inline-flex;align-items:center;min-height:44px;padding:10px 14px;border:1px solid currentColor;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
+.v157-mail-note{margin-top:12px;font-size:10px;line-height:1.5;opacity:.7}
+@media(max-width:620px){.v157-business-meta{font-size:11px}.v157-business-inline a{width:100%;justify-content:center}}
+</style>
+<script id="v15-7-business-contact-js">
+(()=>{
+  const PUBLIC_USER='prodbybundles',PUBLIC_HOST='yahoo.com';
+  const DELIVERY_USER='prodbybundlez',DELIVERY_HOST='gmail.com';
+  const PUBLIC_EMAIL=PUBLIC_USER+'@'+PUBLIC_HOST;
+  const DELIVERY_EMAIL=DELIVERY_USER+'@'+DELIVERY_HOST;
+  const LEGAL_NAME='Thats A Good Jawn LLC';
+
+  function metaBlock(){
+    const wrap=document.createElement('div');
+    wrap.className='v157-business-meta';
+    wrap.innerHTML='<strong>'+LEGAL_NAME+'</strong><span>Business inquiries: </span><a href="mailto:'+PUBLIC_EMAIL+'">'+PUBLIC_EMAIL+'</a>';
+    return wrap;
+  }
+  function injectBusinessMeta(){
+    ['.tagj-footer','.artist-footer-v10','.producer-footer','.creative-footer'].forEach(sel=>{
+      const host=document.querySelector(sel);
+      if(host&&!host.querySelector('.v157-business-meta')) host.appendChild(metaBlock());
+    });
+    const contact=document.querySelector('#tagj-contact');
+    if(contact&&!contact.querySelector('.v157-business-inline')){
+      const row=document.createElement('div'); row.className='v157-business-inline';
+      row.innerHTML='<a href="mailto:'+PUBLIC_EMAIL+'">Email '+LEGAL_NAME+'</a>';
+      contact.appendChild(row);
+    }
+  }
+
+  function finalWizardStep(){
+    const active=document.querySelector('#v143Wizard .v143-step.active');
+    return !!active&&active.getAttribute('data-step')==='3';
+  }
+  function briefFromForm(){
+    const form=document.querySelector('#v143WizardForm');
+    const d=form?Object.fromEntries(new FormData(form).entries()):{};
+    const lines=[
+      'TAGJ × BENNY BUNDLES — REQUEST BRIEF',
+      '',
+      'Request ID: '+(d.requestId||''),
+      'Request type: '+(d.requestType||''),
+      'Project / title: '+(d.projectTitle||''),
+      'Artist / brand / requester: '+(d.artistBrand||''),
+      '',
+      'CONCEPT / NEED',
+      d.concept||'',
+      '',
+      'Mood / direction: '+(d.mood||''),
+      'Platforms / intended use: '+(d.platforms||''),
+      'References / source links: '+(d.references||''),
+      '',
+      'Deadline: '+(d.deadline||''),
+      'Release / event date: '+(d.releaseDate||''),
+      'Budget range: '+(d.budget||''),
+      'Explicit-content label: '+(d.explicitLabel||''),
+      'Delivery / technical notes: '+(d.notes||''),
+      '',
+      'CONTACT',
+      'Name: '+(d.contactName||''),
+      'Email: '+(d.email||''),
+      'Phone / handle: '+(d.phone||''),
+      'Preferred contact: '+(d.preferred||''),
+      '',
+      'Source world: '+(d.sourceWorld||''),
+      'Source route: '+(d.sourceRoute||''),
+      'Entity: '+(d.entityId||''),
+      'Service: '+(d.serviceId||''),
+      'Release: '+(d.releaseId||''),
+      '',
+      'Prepared through the TAGJ × Benny Bundles website.'
+    ];
+    return {data:d,text:lines.join('\n')};
+  }
+  function updateWizardHandoff(){
+    const btn=document.querySelector('#v143WizardNext');
+    const last=document.querySelector('#v143Wizard .v143-step[data-step="3"] p');
+    if(last) last.textContent='Review the brief, then open a pre-addressed email to send it. The website does not mark a request as submitted until you send the email from your device.';
+    if(btn&&finalWizardStep()) btn.textContent='Email completed brief';
+  }
+
+  document.addEventListener('click',e=>{
+    const btn=e.target.closest&&e.target.closest('#v143WizardNext');
+    if(!btn||!finalWizardStep()) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    const built=briefFromForm();
+    const subject='TAGJ Request — '+(built.data.requestType||'General Contact')+(built.data.projectTitle?' — '+built.data.projectTitle:'');
+    btn.textContent='Opening email…';
+    const href='mailto:'+DELIVERY_EMAIL+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(built.text);
+    window.location.href=href;
+    setTimeout(()=>{if(finalWizardStep())btn.textContent='Email completed brief'},1600);
+  },true);
+
+  const wizard=document.querySelector('#v143Wizard');
+  if(wizard){
+    new MutationObserver(updateWizardHandoff).observe(wizard,{subtree:true,attributes:true,attributeFilter:['class']});
+    wizard.addEventListener('input',updateWizardHandoff,{passive:true});
+    wizard.addEventListener('change',updateWizardHandoff,{passive:true});
+  }
+  injectBusinessMeta();
+  updateWizardHandoff();
+  window.TAGJBusinessV157={legalName:LEGAL_NAME,publicBusinessEmail:PUBLIC_EMAIL,deliveryMode:'device_mailto_handoff',backendConnected:false};
+})();
+</script>
+
+</body></html>
