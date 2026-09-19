@@ -53,6 +53,10 @@ const opsAccessSetup=requireFile('OPS_ACCESS_SETUP.md');
 const phase28Doc=requireFile('PHASE_28_IMPLEMENTATION.md');
 const phase29Doc=requireFile('PHASE_29_IMPLEMENTATION.md');
 const phase29Schema=requireFile('supabase/phase29/automated_monitoring.sql');
+const phase30Doc=requireFile('PHASE_30_IMPLEMENTATION.md');
+const phase30Schema=requireFile('supabase/phase30/notification_dispatcher.sql');
+const opsNotifier=requireFile('supabase/functions/thisweek-ops-notifier/index.ts');
+const opsNotifierRuntime=requireFile('supabase/functions/thisweek-ops-notifier/deno.json');
 const phase28Schema=requireFile('supabase/phase28/support_incident_ops.sql');
 const supportGateway=requireFile('supabase/functions/thisweek-support-gateway/index.ts');
 const supportHtml=requireFile('support/index.html');
@@ -314,6 +318,25 @@ if(opsGateway){
 if(opsHtml)requireText('Phase 29 Ops automation surface',opsHtml,'id="automation"');
 if(opsJs)requireText('Phase 29 Ops automation renderer',opsJs,'renderAutomation');
 if(phase29Doc)requireText('Phase 29 external paging remains gated',phase29Doc,'external paging channel still intentionally unconfigured');
+if(phase30Schema){
+  requireText('Phase 30 dispatcher cron',phase30Schema,'thisweek-phase30-notification-dispatcher');
+  requireText('Phase 30 nonce issuance',phase30Schema,'tw_ops_issue_dispatch_nonce');
+  requireText('Phase 30 nonce consumption',phase30Schema,'tw_ops_consume_dispatch_nonce');
+  requireText('Phase 30 notification claiming',phase30Schema,'tw_ops_claim_notifications');
+  requireText('Phase 30 notification completion',phase30Schema,'tw_ops_complete_notification');
+  requireText('Phase 30 channel status',phase30Schema,'tw_ops_notification_channel_status');
+  requireText('Phase 30 RLS/browser revoke',phase30Schema,'from public,anon,authenticated');
+}
+if(opsNotifier){
+  requireText('Phase 30 notifier destination env',opsNotifier,'THISWEEK_OPS_NOTIFICATION_WEBHOOK_URL');
+  requireText('Phase 30 notifier one-time nonce',opsNotifier,'tw_ops_consume_dispatch_nonce');
+  requireText('Phase 30 notifier duplicate-safe claim',opsNotifier,'tw_ops_claim_notifications');
+  requireText('Phase 30 notifier fail closed',opsNotifier,'notification_webhook_not_configured');
+  requireText('Phase 30 notifier no-cache',opsNotifier,'"Cache-Control":"no-store"');
+}
+if(opsGateway)requireText('Phase 30 Ops gateway live channel readiness',opsGateway,'tw_ops_notification_channel_status');
+if(phase30Doc)requireText('Phase 30 external delivery not claimed',phase30Doc,'delivery channel remains unconfigured and fail-closed');
+if(/service_role|SUPABASE_SERVICE_ROLE_KEY|sb_secret_/i.test(opsNotifierRuntime||''))failures.push('Phase 30 notifier runtime contains server-secret pattern');
 if(phase20Gateway)requireText('Money gateway rejects revoked session',phase20Gateway,'tw_auth_session_active');
 if(phase19Gateway)requireText('Provider gateway rejects revoked session',phase19Gateway,'tw_auth_session_active');
 
