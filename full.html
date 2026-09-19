@@ -502,7 +502,13 @@ body:not([data-current-world]) .v143-request-fab,body[data-current-world="home"]
 .v148-detail{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;padding-top:14px;border-top:1px solid rgba(255,255,255,.09)}.v148-detail h3{margin:0;font-size:clamp(24px,4vw,42px);line-height:1}.v148-detail p{margin:8px 0 0;max-width:720px;font-size:12px;line-height:1.6;opacity:.68}.v148-swatches{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.v148-swatch{width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:var(--sw);box-shadow:inset 0 0 0 4px rgba(0,0,0,.13)}.v148-swatch span{position:absolute;clip:rect(0 0 0 0);width:1px;height:1px;overflow:hidden}
 .v148-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}.v148-meta div{padding:11px 12px;border:1px solid rgba(255,255,255,.09);border-radius:14px}.v148-meta b{display:block;font-size:9px}.v148-meta span{display:block;font-size:8px;line-height:1.45;opacity:.56;margin-top:4px}.v148-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.v148-actions button{min-height:40px;padding:0 13px;border:1px solid rgba(255,255,255,.15);border-radius:999px;background:rgba(255,255,255,.04);color:inherit;font:800 8px/1 ui-monospace,Menlo,monospace;letter-spacing:.07em;text-transform:uppercase}
 @media(max-width:620px){.v148-detail{grid-template-columns:1fr}.v148-swatches{justify-content:flex-start}.v148-meta{grid-template-columns:1fr}.v148-head{align-items:start;flex-direction:column}.v148-wave{min-height:44px}}
-</style><script id="v153-world-resume">try{sessionStorage.setItem('tagjIntroSeenV153','1')}catch(_){}</script>
+</style><script id="v155-world-resume">try{sessionStorage.setItem('tagjIntroSeenV153','1')}catch(_){}try{localStorage.setItem('tagjIntroSeenV155At',String(Date.now()))}catch(_){}</script>
+<style id="v155-mobile-home-hardening">
+@media(max-width:620px){
+  .world-view:not(.world-home)>.v10-home-link{display:none!important}
+  .v14-dock{z-index:82}
+}
+</style>
 </head><body class="preview-shell"><div class="world-view world-home home-v10" data-world="home">
 <section class="screen" id="home"><div class="home-grid"></div><div class="home-noise"></div><div class="home-vignette"></div><div class="home-stage"><div class="compass">
 <div class="home-kicker"><b>TAGJ × BENNY BUNDLES</b> / ONE CENTER — FOUR DISTINCT WORLDS</div><div class="orbit o3"></div><div class="orbit o2"></div><div class="orbit o1"></div><div class="beam n"></div><div class="beam e"></div><div class="beam s"></div><div class="beam w"></div>
@@ -1033,7 +1039,7 @@ body:not([data-current-world]) .v143-request-fab,body[data-current-world="home"]
 })();
 </script>
 
-<nav class="v14-dock" aria-label="World shortcuts"><a href="#home">Home</a><a href="#tagj-house-map" data-v14="tagj">House</a><a href="#artist-deep-map" data-v14="artist">Artist</a><a href="#producer-deep-map" data-v14="producer">Studio</a><a href="#creative-deep-map" data-v14="creative">Visual</a></nav>
+<nav class="v14-dock" aria-label="World shortcuts"><a href="#home">World Map</a><a href="#tagj-house-map" data-v14="tagj">House</a><a href="#artist-deep-map" data-v14="artist">Artist</a><a href="#producer-deep-map" data-v14="producer">Studio</a><a href="#creative-deep-map" data-v14="creative">Visual</a></nav>
 <button class="v12-map-btn" id="v12MapBtn" type="button">◇ WORLD MAP</button>
 <section class="v12-map" id="v12Map" aria-hidden="true"><div class="v12-map-card"><header><div><small>TAGJ × BENNY BUNDLES</small><strong>ECOSYSTEM MAP</strong></div><button id="v12MapClose" type="button">×</button></header><div class="v12-map-grid">
 <section><b>01 · TAGJ / BRAND</b><nav><a href="#tagj">Center</a><a href="#tagj-designs">Designs</a><a href="#tagj-shop">Catalogue</a><a href="#tagj-story">Story</a><a href="#tagj-custom">Custom</a><a href="#tagj-house-map">Deep Directory</a><a href="#tagj-flagship">Flagship</a><a href="#tagj-catalogue-deep">Shop Branches</a><a href="#tagj-product-lab">Product Lab</a><a href="#tagj-concept-registry-v142">Concept Registry</a><a href="#tagj-product-detail-v143">Product Dossier</a><a href="#tagj-technical-board-v145">Atelier Board</a></nav></section>
