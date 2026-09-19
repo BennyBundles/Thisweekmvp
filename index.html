@@ -236,7 +236,7 @@ body.home-v11{background:#03070b;color:#eef2f4;min-height:100svh;overflow:hidden
 .connector{--c:#d9c48d;position:absolute;z-index:3;left:50%;top:50%;height:1px;transform-origin:left center;background:linear-gradient(90deg,rgba(255,255,255,.10),rgba(255,255,255,.035));transition:background .25s,box-shadow .25s,opacity .25s;pointer-events:none}.connector i{position:absolute;right:10%;top:-2px;width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.38);transition:.25s}.conn-north{--c:#d5bd7f;width:165px;transform:rotate(-90deg)}.conn-east{--c:#b85751;width:230px}.conn-south{--c:#e58a43;width:165px;transform:rotate(90deg)}.conn-west{--c:#8166ee;width:230px;transform:rotate(180deg)}body[data-active-world="tagj"] .connector[data-line="tagj"],body[data-active-world="artist"] .connector[data-line="artist"],body[data-active-world="producer"] .connector[data-line="producer"],body[data-active-world="creative"] .connector[data-line="creative"]{background:linear-gradient(90deg,var(--c),color-mix(in srgb,var(--c) 20%,transparent));box-shadow:0 0 16px color-mix(in srgb,var(--c) 45%,transparent)}body[data-active-world] .connector:not([data-line="none"]){opacity:.45}body[data-active-world="tagj"] .connector[data-line="tagj"],body[data-active-world="artist"] .connector[data-line="artist"],body[data-active-world="producer"] .connector[data-line="producer"],body[data-active-world="creative"] .connector[data-line="creative"]{opacity:1}body[data-active-world="tagj"] .connector[data-line="tagj"] i,body[data-active-world="artist"] .connector[data-line="artist"] i,body[data-active-world="producer"] .connector[data-line="producer"] i,body[data-active-world="creative"] .connector[data-line="creative"] i{background:var(--c);box-shadow:0 0 14px var(--c);animation:linePulse .8s ease-in-out infinite alternate}@keyframes linePulse{to{transform:scale(1.8)}}
 .home-footer{position:absolute;z-index:20;left:clamp(16px,3.2vw,48px);right:clamp(16px,3.2vw,48px);bottom:var(--home-safe-bottom);display:flex;justify-content:space-between;font:700 6.5px ui-monospace,Menlo,monospace;letter-spacing:.15em;color:#57626a;pointer-events:none}
 /* intro */
-.intro-gate{position:fixed;z-index:300;inset:0;background:#000;display:grid;place-items:center;overflow:hidden;transition:opacity .75s ease,visibility .75s}.intro-gate.done{opacity:0;visibility:hidden;pointer-events:none}.intro-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000}.intro-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.22),rgba(0,0,0,.05) 45%,rgba(0,0,0,.78))}.intro-frame{position:absolute;inset:18px;border:1px solid rgba(255,255,255,.18);pointer-events:none}.intro-brand{position:absolute;z-index:3;left:50%;bottom:max(64px,calc(env(safe-area-inset-bottom) + 44px));transform:translateX(-50%);text-align:center;width:min(620px,86vw);transition:opacity .35s,transform .5s}.intro-gate.playing .intro-brand{opacity:0;transform:translate(-50%,18px);pointer-events:none}.intro-micro{font:800 8px ui-monospace,Menlo,monospace;letter-spacing:.26em;color:#d1b46f}.intro-brand strong{display:block;font-size:clamp(28px,5vw,58px);letter-spacing:-.045em;margin:10px 0 7px}.intro-brand p{font-size:11px;color:#aab0b4;margin:0 auto 18px}.intro-actions{display:flex;gap:8px;justify-content:center}.intro-enter{border:1px solid rgba(255,255,255,.24);border-radius:999px;background:rgba(3,5,7,.7);color:#e9ecee;padding:12px 16px;font-weight:750;font-size:10px;backdrop-filter:blur(10px)}.intro-enter.primary{background:#ede7d8;color:#07090b;border-color:#ede7d8}.intro-enter span{margin-right:4px}.intro-skip{position:absolute;z-index:5;right:22px;top:max(22px,env(safe-area-inset-top));border:1px solid rgba(255,255,255,.18);background:rgba(0,0,0,.38);color:#d7dadd;border-radius:999px;padding:9px 12px;font-size:9px;opacity:0;pointer-events:none;transition:.3s}.intro-gate.playing .intro-skip{opacity:1;pointer-events:auto}.intro-progress{position:absolute;z-index:4;left:18px;right:18px;bottom:14px;height:2px;background:rgba(255,255,255,.14)}.intro-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#d3b66f,#fff);box-shadow:0 0 10px rgba(255,255,255,.4)}
+.intro-gate{position:fixed;z-index:300;inset:0;background:#000;display:grid;place-items:center;overflow:hidden;transition:opacity .75s ease,visibility .75s}.intro-gate.done{opacity:0!important;visibility:hidden!important;pointer-events:none!important;display:none!important}.intro-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000}.intro-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.22),rgba(0,0,0,.05) 45%,rgba(0,0,0,.78))}.intro-frame{position:absolute;inset:18px;border:1px solid rgba(255,255,255,.18);pointer-events:none}.intro-brand{position:absolute;z-index:3;left:50%;bottom:max(64px,calc(env(safe-area-inset-bottom) + 44px));transform:translateX(-50%);text-align:center;width:min(620px,86vw);transition:opacity .35s,transform .5s}.intro-gate.playing .intro-brand{opacity:0;transform:translate(-50%,18px);pointer-events:none}.intro-micro{font:800 8px ui-monospace,Menlo,monospace;letter-spacing:.26em;color:#d1b46f}.intro-brand strong{display:block;font-size:clamp(28px,5vw,58px);letter-spacing:-.045em;margin:10px 0 7px}.intro-brand p{font-size:11px;color:#aab0b4;margin:0 auto 18px}.intro-actions{display:flex;gap:8px;justify-content:center}.intro-enter{border:1px solid rgba(255,255,255,.24);border-radius:999px;background:rgba(3,5,7,.7);color:#e9ecee;padding:12px 16px;font-weight:750;font-size:10px;backdrop-filter:blur(10px)}.intro-enter.primary{background:#ede7d8;color:#07090b;border-color:#ede7d8}.intro-enter span{margin-right:4px}.intro-skip{position:absolute;z-index:5;right:22px;top:max(22px,env(safe-area-inset-top));border:1px solid rgba(255,255,255,.18);background:rgba(0,0,0,.38);color:#d7dadd;border-radius:999px;padding:9px 12px;font-size:9px;opacity:0;pointer-events:none;transition:.3s}.intro-gate.playing .intro-skip{opacity:1;pointer-events:auto}.intro-progress{position:absolute;z-index:4;left:18px;right:18px;bottom:14px;height:2px;background:rgba(255,255,255,.14)}.intro-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#d3b66f,#fff);box-shadow:0 0 10px rgba(255,255,255,.4)}
 body.intro-pending .home-shell{filter:blur(5px);transform:scale(1.015)}.home-shell{transition:filter .8s,transform 1s cubic-bezier(.16,1,.3,1)}body.intro-complete .home-shell{filter:none;transform:none}.world-route,.center-core,.home-header,.home-footer{opacity:0}.intro-complete .center-core{animation:arriveCore .75s .08s cubic-bezier(.16,1,.3,1) forwards}.intro-complete .world-route{animation:arriveRoute .7s cubic-bezier(.16,1,.3,1) forwards}.intro-complete .route-north{animation-delay:.18s}.intro-complete .route-east{animation-delay:.27s}.intro-complete .route-south{animation-delay:.36s}.intro-complete .route-west{animation-delay:.45s}.intro-complete .home-header{animation:fadeIn .6s .36s forwards}.intro-complete .home-footer{animation:fadeIn .6s .6s forwards}@keyframes arriveCore{from{opacity:0;transform:translate(-50%,-50%) scale(.82)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}@keyframes arriveRoute{from{opacity:0;filter:blur(6px)}to{opacity:1;filter:none}}@keyframes fadeIn{to{opacity:1}}
 /* search */
 .search-layer{position:fixed;z-index:220;inset:0;background:rgba(0,3,6,.83);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);display:grid;place-items:start center;padding-top:clamp(80px,13vh,150px);opacity:0;visibility:hidden;pointer-events:none;transition:.3s}.search-layer.open{opacity:1;visibility:visible;pointer-events:auto}.search-panel{width:min(760px,90vw)}.search-micro{font:800 8px ui-monospace,Menlo,monospace;letter-spacing:.22em;color:#d1b46f}.search-panel label{display:block;font-size:clamp(30px,5vw,58px);letter-spacing:-.045em;font-weight:780;margin:10px 0 20px}.search-input-wrap{height:58px;display:flex;align-items:center;gap:14px;padding:0 18px;border:1px solid rgba(255,255,255,.22);border-radius:14px;background:#081016}.search-input-wrap input{flex:1;border:0;background:transparent;color:#eef3f5;outline:0;font-size:14px;min-width:0}.search-input-wrap input::placeholder{color:#68747c}.search-results{margin-top:10px;display:grid;gap:7px;max-height:42vh;overflow:auto}.search-result{display:grid;grid-template-columns:auto 1fr auto;gap:13px;align-items:center;padding:12px 14px;border:1px solid rgba(255,255,255,.09);border-radius:12px;background:rgba(7,12,16,.75);transition:.25s}.search-result:hover,.search-result:focus-visible{border-color:var(--r-accent);transform:translateX(4px)}.result-no{font:900 9px ui-monospace,Menlo,monospace;color:var(--r-accent)}.search-result b{display:block;font-size:12px}.search-result small{font-size:9px;color:#869199}.result-world{font:800 7px ui-monospace,Menlo,monospace;letter-spacing:.1em;color:#7e8991}.search-empty{padding:22px 3px;color:#78838b;font-size:11px}.search-tip{font-size:8px;color:#657078;margin-top:14px}.search-tip kbd{border:1px solid #3c464e;border-radius:4px;padding:2px 5px}.search-close{position:absolute;right:24px;top:max(24px,env(safe-area-inset-top));width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.17);background:#091016;color:#fff;font-size:22px}
@@ -510,6 +510,7 @@ document.addEventListener('pointerdown',e=>{const b=e.target&&e.target.closest?e
       <button class="intro-enter primary" id="enterSound" type="button"><span>▶</span> Enter with sound</button>
       <button class="intro-enter" id="enterMuted" type="button">Enter muted</button>
     </div>
+    <div class="intro-status" id="introStatus" role="status" aria-live="polite"></div>
   </div>
   <button class="intro-skip" id="skipIntro" type="button">Skip intro</button>
   <div class="intro-progress"><i id="introProgress"></i></div>
@@ -601,7 +602,7 @@ document.addEventListener('pointerdown',e=>{const b=e.target&&e.target.closest?e
 
   <footer class="home-footer">
     <span>MOVE / HOVER / TAP A DIRECTION</span>
-    <span>SEARCH AUTO-HIDES TO KEEP THE CENTER CLEAR</span>
+    <span>SEARCH AUTO-HIDES TO KEEP THE CENTER CLEAR · <a class="intro-replay" href="?intro=1#home">Replay intro</a></span>
   </footer>
 </main>
 
@@ -879,28 +880,42 @@ document.addEventListener('pointerdown',e=>{const b=e.target&&e.target.closest?e
     }catch(_){go()}
   }));
 
-  // Intro gate + Safari-friendly sound choice.
+  // Intro gate + Safari/iPhone-safe one-time entry behavior.
   const gate=document.getElementById('introGate');
   const video=document.getElementById('introVideo');
   const progress=document.getElementById('introProgress');
-  let introDone=false,introFinishing=false,introBlobUrl='',introPrepared=null;
-  const INTRO_START=Number(video?.dataset.cutStart||0), INTRO_END=Number(video?.dataset.cutEnd||7.35);
+  const soundBtn=document.getElementById('enterSound');
+  const muteBtn=document.getElementById('enterMuted');
+  const introStatus=document.getElementById('introStatus');
+  const INTRO_SESSION_KEY='tagjIntroSeenV149';
+  let introDone=false,introFinishing=false,fallbackTimer=0;
+  function hasSeenIntro(){
+    try{return sessionStorage.getItem(INTRO_SESSION_KEY)==='1'}catch(_){return !!window.__TAGJ_INTRO_SEEN}
+  }
+  function markIntroSeen(){
+    window.__TAGJ_INTRO_SEEN=true;
+    try{sessionStorage.setItem(INTRO_SESSION_KEY,'1')}catch(_){}
+  }
+  function clearIntroSeen(){
+    window.__TAGJ_INTRO_SEEN=false;
+    try{sessionStorage.removeItem(INTRO_SESSION_KEY)}catch(_){}
+  }
   function completeIntroState(){
+    markIntroSeen();
     introDone=true;introFinishing=false;
-    try{sessionStorage.setItem(window.__tagjIntroCompleteKey||'tagjIntroCompleteV149','1')}catch(_){}
-    document.documentElement.classList.add('intro-already-seen');
-    gate.classList.remove('settling','v13-running','v13-fire');gate.classList.add('done');
+    gate?.classList.remove('settling','v13-running','v13-fire','playing');gate?.classList.add('done');
     body.classList.remove('intro-pending','intro-settling');body.classList.add('intro-complete');
-    try{video.pause()}catch(_){}
+    try{video?.pause()}catch(_){}
+    clearTimeout(fallbackTimer);
     collapseSearchLater();
   }
   function finishIntro(){
-    if(introDone||introFinishing) return;introFinishing=true;
+    if(introDone||introFinishing)return;introFinishing=true;
     body.classList.remove('intro-pending');body.classList.add('intro-settling');
-    gate.classList.add('playing','settling');
+    gate?.classList.add('playing','settling','v13-fire');
     const core=document.getElementById('centerCore');
     const r=core?.getBoundingClientRect();
-    if(reduce||!r||!gate.animate){completeIntroState();return}
+    if(reduce||!r||!gate?.animate){completeIntroState();return}
     const vw=Math.max(1,innerWidth),vh=Math.max(1,innerHeight);
     const sx=Math.max(.08,r.width/vw),sy=Math.max(.08,r.height/vh);
     const tx=r.left,ty=r.top;
@@ -913,61 +928,63 @@ document.addEventListener('pointerdown',e=>{const b=e.target&&e.target.closest?e
     anim.onfinish=completeIntroState;anim.oncancel=completeIntroState;
     setTimeout(()=>{if(!introDone)completeIntroState()},2050);
   }
-  function prepareIntroMedia(){
-    if(introPrepared) return introPrepared;
-    introPrepared=(async()=>{
-      const srcEl=video?.querySelector('source');
-      const raw=srcEl?.getAttribute('src')||video?.getAttribute('src')||'';
-      if(raw.startsWith('data:video/mp4;base64,')){
-        try{
-          const b64=raw.slice(raw.indexOf(',')+1);
-          const bin=atob(b64),chunk=32768,parts=[];
-          for(let i=0;i<bin.length;i+=chunk){
-            const slice=bin.slice(i,i+chunk),bytes=new Uint8Array(slice.length);
-            for(let j=0;j<slice.length;j++) bytes[j]=slice.charCodeAt(j);
-            parts.push(bytes);
-          }
-          introBlobUrl=URL.createObjectURL(new Blob(parts,{type:'video/mp4'}));
-          srcEl.setAttribute('src',introBlobUrl);video.load();
-        }catch(_){}
-      }
-      return true;
-    })();
-    return introPrepared;
-  }
-  const introPoster=video?.getAttribute('poster')||'';
-  const bg=document.getElementById('homeBrandBg');
-  if(bg&&introPoster) bg.style.backgroundImage=`linear-gradient(180deg,rgba(2,7,12,.20),rgba(2,7,12,.36)),url("${introPoster}")`;
-  document.querySelectorAll('.brand-photo-artist').forEach(el=>{if(introPoster)el.style.backgroundImage=`url("${introPoster}")`});
-  prepareIntroMedia();
-  try{if(sessionStorage.getItem(window.__tagjIntroCompleteKey||'tagjIntroCompleteV149')==='1'){introDone=true;gate.classList.add('done');body.classList.remove('intro-pending','intro-settling');body.classList.add('intro-complete');document.documentElement.classList.add('intro-already-seen')}}catch(_){}
   async function playIntro(muted){
-    if(introDone||introFinishing) return;
-    gate.classList.remove('v13-fire');
-    gate.classList.add('playing','v13-running');
+    if(introDone||introFinishing||!video)return;
+    clearTimeout(fallbackTimer);
+    gate?.classList.remove('v13-fire');
+    gate?.classList.add('playing','v13-running');
+    if(introStatus)introStatus.textContent='';
+    try{video.pause()}catch(_){}
+    try{video.currentTime=0}catch(_){}
+    video.setAttribute('playsinline','');
+    video.setAttribute('webkit-playsinline','');
     video.muted=!!muted;
     video.defaultMuted=!!muted;
     video.volume=1;
     try{
-      if(video.readyState===0) video.load();
-      video.currentTime=INTRO_START;
-      const playPromise=video.play();
-      if(playPromise && typeof playPromise.then==='function') await playPromise;
+      // Keep play() directly in the explicit tap path. The MP4 already contains stereo AAC audio.
+      const p=video.play();
+      if(p&&typeof p.then==='function')await p;
     }catch(err){
-      gate.classList.remove('playing');
-      // Keep the user on the intro instead of silently navigating away.
-      // A second explicit tap can retry; muted entry remains available separately.
-      if(muted){ finishIntro(); }
+      gate?.classList.remove('playing','v13-running');
+      if(muted){
+        if(introStatus)introStatus.textContent='Video playback was blocked. Continuing with the cinematic transition.';
+        fallbackTimer=setTimeout(finishIntro,900);
+      }else{
+        if(introStatus)introStatus.textContent='Sound was blocked by iPhone/Safari. Tap “Enter with sound” again, or choose muted.';
+        if(soundBtn){soundBtn.innerHTML='<span>▶</span> Tap again for sound';soundBtn.classList.add('needs-retry')}
+      }
     }
   }
-  document.getElementById('enterSound')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();playIntro(false)});
-  document.getElementById('enterMuted')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();playIntro(true)});
-  document.getElementById('skipIntro')?.addEventListener('click',finishIntro);
-  video?.addEventListener('timeupdate',()=>{const span=Math.max(.25,INTRO_END-INTRO_START);const t=Math.max(0,video.currentTime-INTRO_START);progress.style.width=Math.min(100,t/span*100).toFixed(2)+'%';if(video.currentTime>=Math.max(INTRO_START,INTRO_END-1.65))gate.classList.add('v13-fire');if(video.currentTime>=INTRO_END){try{video.pause()}catch(_){}finishIntro();}});
+  soundBtn?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();playIntro(false)});
+  muteBtn?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();playIntro(true)});
+  document.getElementById('skipIntro')?.addEventListener('click',e=>{e.preventDefault();finishIntro()});
+  video?.addEventListener('timeupdate',()=>{
+    const span=Math.max(.25,Number(video.duration)||7.55);
+    const pct=Math.min(100,(video.currentTime/span)*100);
+    if(progress)progress.style.width=pct.toFixed(2)+'%';
+    gate?.classList.toggle('v13-fire',pct>=72);
+  });
   video?.addEventListener('ended',finishIntro);
-  video?.addEventListener('error',finishIntro);
-    // Do not trap repeat visitors behind an intro if the page is restored from bfcache.
-  addEventListener('pageshow',e=>{if(e.persisted) finishIntro()});
+  video?.addEventListener('error',()=>{
+    if(gate?.classList.contains('playing')){
+      if(introStatus)introStatus.textContent='Intro media could not load. Continuing into the site.';
+      fallbackTimer=setTimeout(finishIntro,900);
+    }
+  });
+  routes.forEach(route=>route.addEventListener('click',markIntroSeen,{capture:true}));
+
+  // Returning from a world is a resume, not a new visit. Deep links never replay the splash.
+  const params=new URLSearchParams(location.search);
+  const forceReplay=params.get('intro')==='1';
+  const resume=params.get('resume')==='1';
+  const deepRoute=!!location.hash&&location.hash!=='#home'&&location.hash!=='#replay-intro';
+  if(forceReplay)clearIntroSeen();
+  if(!forceReplay&&(resume||deepRoute||hasSeenIntro()))completeIntroState();
+  addEventListener('pageshow',()=>{
+    const deep=!!location.hash&&location.hash!=='#home'&&location.hash!=='#replay-intro';
+    if(deep||hasSeenIntro())completeIntroState();
+  });
 })();
 </script>
 </body>
