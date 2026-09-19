@@ -10,6 +10,12 @@ const html=fs.readFileSync(new URL('./index.html', import.meta.url),'utf8');
 const failures=[];
 const cspUpdaterUrl=new URL('./update-csp-hashes.mjs', import.meta.url);
 const securityPrivacyUrl=new URL('./SECURITY_PRIVACY.md', import.meta.url);
+const phase19SchemaUrl=new URL('./supabase/phase19/provider_schema.sql', import.meta.url);
+const phase19GatewayUrl=new URL('./supabase/functions/thisweek-provider-gateway/index.ts', import.meta.url);
+const phase19RuntimeUrl=new URL('./supabase/functions/thisweek-provider-gateway/deno.json', import.meta.url);
+const phase19ReadmeUrl=new URL('./supabase/phase19/README.md', import.meta.url);
+const phase19DocUrl=new URL('./PHASE_19_IMPLEMENTATION.md', import.meta.url);
+
 const releaseFiles=['prepare-site.mjs','release-smoke-check.mjs','RELEASE_CHECKLIST.md','RELEASE_POLICY.md','release.config.json','CHANGELOG.md','RELEASES/v0.15.0-phase15.md'];
 for(const name of releaseFiles){
   if(!fs.existsSync(new URL('./'+name, import.meta.url)))failures.push('Missing Phase 15 release file: '+name);
@@ -17,6 +23,20 @@ for(const name of releaseFiles){
 if(!fs.existsSync(cspUpdaterUrl))failures.push('Missing CSP hash updater utility');
 if(!fs.existsSync(new URL('./prepare-site.mjs', import.meta.url)))failures.push('Missing deterministic production staging utility');
 if(!fs.existsSync(securityPrivacyUrl))failures.push('Missing security/privacy trust document');
+for(const [label,url] of [
+  ['Phase 19 provider schema',phase19SchemaUrl],
+  ['Phase 19 provider gateway',phase19GatewayUrl],
+  ['Phase 19 provider runtime config',phase19RuntimeUrl],
+  ['Phase 19 provider activation README',phase19ReadmeUrl],
+  ['Phase 19 implementation document',phase19DocUrl]
+]){
+  if(!fs.existsSync(url))failures.push('Missing '+label);
+}
+const phase19Schema=fs.existsSync(phase19SchemaUrl)?fs.readFileSync(phase19SchemaUrl,'utf8'):'';
+const phase19Gateway=fs.existsSync(phase19GatewayUrl)?fs.readFileSync(phase19GatewayUrl,'utf8'):'';
+const phase19Readme=fs.existsSync(phase19ReadmeUrl)?fs.readFileSync(phase19ReadmeUrl,'utf8'):'';
+const requirePhase19FileText=(label,content,text)=>{if(!content.includes(text))failures.push(label);};
+
 const requireText=(label,text)=>{if(!html.includes(text))failures.push(label);};
 const forbidText=(label,text)=>{if(html.includes(text))failures.push(label);};
 
@@ -159,6 +179,43 @@ requireText('Phase 18 power toggle controls','data-power-toggle');
 requireText('Phase 18 power privacy inventory','Optional power-user navigation and efficiency preferences; no financial amounts');
 requireText('Phase 18 cross-tab power invalidation',"if(e.key===POWER_PREFS_KEY)powerPrefsCache=null");
 requireText('Phase 18 no permanent Home power panel','Every shortcut below is off by default.');
+
+requireText('Phase 19 secure provider gateway','PHASE 19 — SECURE PROVIDER GATEWAY v31');
+requireText('Phase 19 client config','const LIVE_PROVIDER_CONFIG=Object.freeze({');
+requireText('Phase 19 default disabled provider','enabled:false');
+requireText('Phase 19 blank backend origin',"backendOrigin:''");
+requireText('Phase 19 dedicated-backend deny rule',"networkPolicy:'deny_until_dedicated_backend'");
+requireText('Phase 19 readiness controller','function liveProviderReadiness()');
+requireText('Phase 19 provider record mapper','function providerTransactionToConnectedRecord(row={})');
+requireText('Phase 19 disabled connect control','id="connectFinancialProvider"');
+requireText('Phase 19 staged status copy','Provider gateway staged · no live institution connection is active.');
+requireText('Phase 19 explicit provider flow','Provider → Server Sync → Review → Reconcile → Weekly Transaction');
+requireText('Phase 19 external balance boundary','External balances stay external.');
+requireText('Phase 19 trust activation test','Phase 19 activation gate');
+requireText('Phase 19 staged transport',"transport:'staged_https_json'");
+requireText('Phase 19 staged auth state',"current:'staged_not_active'");
+requirePhase19FileText('Phase 19 schema consent table',phase19Schema,'tw_provider_consents');
+requirePhase19FileText('Phase 19 schema connections table',phase19Schema,'tw_provider_connections');
+requirePhase19FileText('Phase 19 schema accounts table',phase19Schema,'tw_provider_accounts');
+requirePhase19FileText('Phase 19 schema transaction table',phase19Schema,'tw_provider_transactions');
+requirePhase19FileText('Phase 19 schema conflicts table',phase19Schema,'tw_provider_conflicts');
+requirePhase19FileText('Phase 19 schema RLS',phase19Schema,'enable row level security');
+requirePhase19FileText('Phase 19 schema denies authenticated direct table access',phase19Schema,'from public, anon, authenticated');
+requirePhase19FileText('Phase 19 external balance schema warning',phase19Schema,'must never be substituted for This Week Available Now');
+requirePhase19FileText('Phase 19 gateway pinned Supabase client',phase19Gateway,'npm:@supabase/supabase-js@2.95.0');
+requirePhase19FileText('Phase 19 gateway pinned Postgres client',phase19Gateway,'npm:postgres@3.4.7');
+requirePhase19FileText('Phase 19 gateway authenticated user validation',phase19Gateway,'auth.getUser(token)');
+requirePhase19FileText('Phase 19 gateway Vault create',phase19Gateway,'vault.create_secret');
+requirePhase19FileText('Phase 19 gateway Vault read',phase19Gateway,'vault.decrypted_secrets');
+requirePhase19FileText('Phase 19 gateway Hosted Link',phase19Gateway,'hosted_link');
+requirePhase19FileText('Phase 19 gateway modern Link results',phase19Gateway,'item_add_results');
+requirePhase19FileText('Phase 19 gateway token exchange',phase19Gateway,'/item/public_token/exchange');
+requirePhase19FileText('Phase 19 gateway transactions sync',phase19Gateway,'/transactions/sync');
+requirePhase19FileText('Phase 19 gateway provider disconnect',phase19Gateway,'/item/remove');
+requirePhase19FileText('Phase 19 gateway no-store response',phase19Gateway,'"Cache-Control": "no-store"');
+requirePhase19FileText('Phase 19 activation sequence',phase19Readme,'Required activation order');
+requirePhase19FileText('Phase 19 dedicated project rule',phase19Readme,'Use a **dedicated Supabase project**');
+
 
 
 requireText('Phase 13 normalized data model','PHASE 13 — NORMALIZED DATA MODEL + BACKEND READINESS v25');
