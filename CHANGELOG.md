@@ -4,6 +4,17 @@ Production changes for **This Week** are recorded here.
 
 ## Phase 34 — Release Evidence & Sandbox Certification — 2026-09-19
 
+### Phase 34 continuation — release-candidate binding
+
+- Added append-only active release-candidate selections using a full 40-character commit SHA plus source reference.
+- Certification runs, drill starts/completions, and certification receipts now fail if they do not match the active candidate.
+- Sandbox certification, rollback, and synthetic-incident derived evidence are now candidate-scoped, preventing historical passes from satisfying a newer release.
+- Added candidate report/readiness data and deployed-release manifest prefill in the staff console.
+- Candidate selection does not verify any production release gate and is not performed automatically by deployment.
+- Candidate changes automatically reset previously verified candidate-bound Sandbox-E2E and incident-drill gates, with immutable gate-event audit receipts.
+- Production money remains locked.
+
+
 - Added immutable Sandbox certification runs with append-only per-requirement pass/fail receipts.
 - Added append-only synthetic-incident and rollback drill records.
 - Added explicit manual/derived evidence requirements for every Phase 31 production release gate.

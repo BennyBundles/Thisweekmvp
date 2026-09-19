@@ -72,3 +72,27 @@ The console shares the existing tab-scoped `thisweek.auth.session.v1` session an
 At implementation time all required Phase 31 manual gates remain false and `liveMoneyReady=false`. Phase 34 must not auto-create passing receipts or auto-verify any gate.
 
 Hosted Supabase Auth production settings, provider credentials/approvals, named staff, external notification destination, legal/retention approvals, production risk limits, and commercial approvals remain real-world release work.
+
+
+## Release-candidate binding
+
+Phase 34 continuation adds an append-only active-candidate selection stream. A risk/admin staff member must explicitly select the full 40-character commit SHA and a bounded source reference before starting certification or drills.
+
+The latest selection is the active candidate. Starting or finishing a drill, starting a certification run, or adding a certification receipt for a different SHA fails with `release_candidate_mismatch`.
+
+Candidate-bound derived evidence now requires the active SHA:
+
+- Sandbox certification pass;
+- rollback drill pass;
+- synthetic incident drill pass.
+
+A pass from an older commit therefore cannot satisfy a newer release candidate. The staff console pre-fills the currently deployed Pages commit and workflow run from `release.json`, but selection remains an explicit authenticated AAL2 staff action.
+
+No candidate is auto-selected by deployment, and selecting a candidate does not verify a production release gate.
+
+When the active candidate SHA changes, any previously verified candidate-bound gates are automatically reset to unverified with immutable `tw_release_gate_events` receipts. The currently candidate-bound gates are:
+
+- `provider_sandbox_e2e_passed`;
+- `incident_escalation_runbook_approved`.
+
+This prevents a historical certification/drill assertion from remaining verified after the release candidate changes.

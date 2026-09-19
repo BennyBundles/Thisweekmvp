@@ -24,6 +24,10 @@ function validSha(v:unknown):string|null{
   const s=safeText(v,64).toLowerCase();
   return /^[0-9a-f]{7,64}$/.test(s)?s:null;
 }
+function validFullSha(v:unknown):string|null{
+  const s=safeText(v,40).toLowerCase();
+  return /^[0-9a-f]{40}$/.test(s)?s:null;
+}
 function decodePayload(token:string):AnyRecord{
   try{
     const p=token.split(".")[1].replace(/-/g,"+").replace(/_/g,"/");
@@ -73,8 +77,11 @@ async function audit(
   if(error)throw new Error("staff_audit_failed");
 }
 async function loadStatus(admin:ReturnType<typeof createClient>){
-  const [readiness,requirements,runs,receipts,drills,drillEvents,gateEvidence]=await Promise.all([
+  const [readiness,candidateSelections,requirements,runs,receipts,drills,drillEvents,gateEvidence]=await Promise.all([
     admin.rpc("tw_release_readiness_report"),
+    admin.from("tw_release_candidate_selections")
+      .select("id,release_candidate_sha,source_ref,note,staff_user_id,created_at")
+      .order("created_at",{ascending:false}).order("id",{ascending:false}).limit(50),
     admin.from("tw_release_certification_requirements")
       .select("requirement_key,provider,group_key,label,required_for_sandbox_e2e,active,sort_order")
       .eq("active",true).order("sort_order"),
@@ -94,7 +101,7 @@ async function loadStatus(admin:ReturnType<typeof createClient>){
       .select("id,gate_key,evidence_key,environment,provider,outcome,evidence_ref,safe_summary,staff_user_id,supersedes_evidence_id,created_at")
       .order("id",{ascending:false}).limit(250),
   ]);
-  const checks=[readiness,requirements,runs,receipts,drills,drillEvents,gateEvidence];
+  const checks=[readiness,candidateSelections,requirements,runs,receipts,drills,drillEvents,gateEvidence];
   if(checks.some(x=>x.error))throw new Error("release_certification_read_failed");
 
   const runRows=(runs.data||[]) as AnyRecord[];
@@ -110,6 +117,7 @@ async function loadStatus(admin:ReturnType<typeof createClient>){
 
   return {
     readiness:readiness.data||null,
+    candidateSelections:candidateSelections.data||[],
     requirements:requirements.data||[],
     runs:runRows,
     runStatuses,
@@ -164,9 +172,25 @@ Deno.serve(async(req)=>{
       return json(origin,200,{ok:true,role,...await loadStatus(admin)});
     }
 
+    if(action==="select_candidate"){
+      if(!CERT_ROLES.has(role))return json(origin,403,{error:"risk_or_admin_role_required"});
+      const sha=validFullSha(body.releaseCandidateSha);
+      const sourceRef=safeText(body.sourceRef,500);
+      const note=safeText(body.note,1000)||null;
+      if(!sha||sourceRef.length<3)throw new Error("candidate_selection_fields_required");
+      const {data,error}=await admin.rpc("tw_release_select_candidate",{
+        p_staff_user_id:String(user.id),p_release_candidate_sha:sha,p_source_ref:sourceRef,p_note:note
+      });
+      if(error)throw new Error(safeText(error.message,180)||"candidate_selection_failed");
+      await audit(admin,String(user.id),role,"release_candidate_select","release_candidate",sha,"phase34_candidate_binding",{
+        sourceRef
+      });
+      return json(origin,200,{ok:true,candidateSelection:data,readiness:(await admin.rpc("tw_release_readiness_report")).data||null});
+    }
+
     if(action==="start_certification"){
       if(!CERT_ROLES.has(role))return json(origin,403,{error:"risk_or_admin_role_required"});
-      const sha=validSha(body.releaseCandidateSha);
+      const sha=validFullSha(body.releaseCandidateSha);
       if(!sha)throw new Error("invalid_release_candidate_sha");
       const note=safeText(body.note,1000)||null;
       const {data,error}=await admin.rpc("tw_release_start_certification",{
@@ -206,7 +230,7 @@ Deno.serve(async(req)=>{
     if(action==="start_drill"){
       if(!CERT_ROLES.has(role))return json(origin,403,{error:"risk_or_admin_role_required"});
       const drillType=safeText(body.drillType,40);
-      const sha=validSha(body.releaseCandidateSha);
+      const sha=validFullSha(body.releaseCandidateSha);
       const scenarioKey=safeText(body.scenarioKey,120);
       const note=safeText(body.note,1000)||null;
       if(!["synthetic_incident","rollback"].includes(drillType)||!sha||scenarioKey.length<3)throw new Error("drill_fields_required");
