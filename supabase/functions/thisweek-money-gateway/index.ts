@@ -1081,6 +1081,124 @@ async function riskStatus(admin: ReturnType<typeof createClient>, userId: string
   };
 }
 
+
+async function opsStatus(admin: ReturnType<typeof createClient>, userId: string) {
+  const [cases, events, control, cashAccounts, cashEntries, disputes] = await Promise.all([
+    admin.from("tw_ops_cases")
+      .select("id,case_key,case_type,provider,provider_case_id,resource_ref,amount_cents,severity,state,reason_code,safe_detail,opened_at,updated_at,resolved_at")
+      .eq("user_id", userId).order("updated_at", { ascending: false }).limit(50),
+    admin.from("tw_ops_case_events")
+      .select("id,case_id,event_type,state,reason_code,safe_detail,created_at")
+      .eq("user_id", userId).order("id", { ascending: false }).limit(100),
+    admin.from("tw_risk_user_controls")
+      .select("state,reason_code,expires_at,updated_at").eq("user_id", userId).maybeSingle(),
+    admin.from("tw_money_ledger_accounts")
+      .select("id,account_code").eq("user_id", userId).eq("account_code", "cash:unallocated").maybeSingle(),
+    admin.from("tw_money_ledger_entries")
+      .select("ledger_account_id,amount_cents").eq("user_id", userId),
+    admin.from("tw_money_card_authorizations")
+      .select("id,card_id,provider_transaction_id,amount_cents,final_amount_cents,state,merchant_name,settled_at")
+      .eq("user_id", userId).eq("provider", "unit").eq("state", "settled")
+      .not("provider_transaction_id", "is", null).order("settled_at", { ascending: false }).limit(25),
+  ]);
+  if (cases.error || events.error || control.error || cashAccounts.error || cashEntries.error || disputes.error) {
+    throw new Error("ops_status_read_failed");
+  }
+  const cashId = cashAccounts.data?.id;
+  const cashBalance = (cashEntries.data || [])
+    .filter((e: AnyRecord) => e.ledger_account_id === cashId)
+    .reduce((n: number, e: AnyRecord) => n + Number(e.amount_cents || 0), 0);
+  return {
+    userControl: control.data || { state: "normal" },
+    cashBalanceCents: cashBalance,
+    openCaseCount: (cases.data || []).filter((c: AnyRecord) => !["resolved","closed"].includes(String(c.state))).length,
+    cases: cases.data || [],
+    recentEvents: events.data || [],
+    eligibleDisputes: disputes.data || [],
+  };
+}
+
+async function unitSandboxCreateDispute(
+  admin: ReturnType<typeof createClient>,
+  userId: string,
+  body: AnyRecord,
+) {
+  if (MONEY_EXECUTION_MODE !== "sandbox") throw new Error("sandbox_action_disabled");
+  if (!canExecuteProvider("unit")) throw new Error("unit_not_configured");
+  const cardAuthorizationId = safeText(body.cardAuthorizationId, 80);
+  if (!cardAuthorizationId) throw new Error("card_authorization_id_required");
+
+  const { data: auth, error: authError } = await admin.from("tw_money_card_authorizations")
+    .select("id,card_id,provider_transaction_id,final_amount_cents,amount_cents,state")
+    .eq("id", cardAuthorizationId).eq("user_id", userId).eq("provider", "unit").maybeSingle();
+  if (authError || !auth || auth.state !== "settled" || !auth.provider_transaction_id) {
+    throw new Error("settled_card_transaction_required");
+  }
+  const { data: card } = await admin.from("tw_money_virtual_cards")
+    .select("id,deposit_account_id").eq("id", auth.card_id).eq("user_id", userId).maybeSingle();
+  if (!card?.deposit_account_id) throw new Error("card_deposit_account_missing");
+  const { data: deposit } = await admin.from("tw_money_deposit_accounts")
+    .select("provider_account_id").eq("id", card.deposit_account_id).eq("user_id", userId)
+    .eq("provider", "unit").maybeSingle();
+  if (!deposit?.provider_account_id) throw new Error("unit_deposit_account_missing");
+
+  const defaultAmount = Number(auth.final_amount_cents || auth.amount_cents || 0);
+  const amount = body.amountCents == null ? defaultAmount : moneyInt(body.amountCents, 1, Math.max(defaultAmount, 10_000_000));
+  if (!Number.isSafeInteger(amount) || amount <= 0 || (defaultAmount > 0 && amount > defaultAmount)) {
+    throw new Error("invalid_dispute_amount");
+  }
+
+  const result = await unitRequest("/sandbox/disputes", {
+    method: "POST",
+    body: JSON.stringify({
+      data: {
+        type: "dispute",
+        attributes: { amount },
+        relationships: {
+          account: { data: { type: "account", id: deposit.provider_account_id } },
+          transaction: { data: { type: "transaction", id: auth.provider_transaction_id } },
+        },
+      },
+    }),
+  });
+  const data = result.data && typeof result.data === "object" ? result.data as AnyRecord : {};
+  const attrs = data.attributes && typeof data.attributes === "object" ? data.attributes as AnyRecord : {};
+  return {
+    disputeId: safeText(data.id, 180) || null,
+    status: safeText(attrs.status, 80) || null,
+    amountCents: Number(attrs.amount || amount),
+    cardAuthorizationId: auth.id,
+    transactionId: auth.provider_transaction_id,
+  };
+}
+
+async function unitSandboxAdvanceDispute(
+  providerCaseId: string,
+  action: string,
+) {
+  if (MONEY_EXECUTION_MODE !== "sandbox") throw new Error("sandbox_action_disabled");
+  if (!canExecuteProvider("unit")) throw new Error("unit_not_configured");
+  const allowed: Record<string,string> = {
+    provisional_credit: "credit-provisionally",
+    resolve_won: "resolve-won",
+    resolve_lost: "resolve-lost",
+    deny: "deny",
+  };
+  const endpoint = allowed[action];
+  if (!providerCaseId || !endpoint) throw new Error("invalid_dispute_action");
+  const result = await unitRequest(
+    "/sandbox/disputes/" + encodeURIComponent(providerCaseId) + "/" + endpoint,
+    { method: "POST" },
+  );
+  const data = result.data && typeof result.data === "object" ? result.data as AnyRecord : {};
+  const attrs = data.attributes && typeof data.attributes === "object" ? data.attributes as AnyRecord : {};
+  return {
+    disputeId: safeText(data.id, 180) || providerCaseId,
+    status: safeText(attrs.status, 80) || null,
+    amountCents: Number(attrs.amount || 0),
+  };
+}
+
 async function directDepositLink(
   admin: ReturnType<typeof createClient>,
   userId: string,
@@ -1814,6 +1932,23 @@ Deno.serve(async (req: Request) => {
     if (action === "unit_sandbox_authorization") {
       const result = await simulateUnitAuthorization(admin, user.id, body);
       return json(origin, 200, { ok: true, simulation: result });
+    }
+
+    if (action === "ops_status") {
+      const result = await opsStatus(admin, user.id);
+      return json(origin, 200, { ok: true, operations: result });
+    }
+
+    if (action === "unit_sandbox_create_dispute") {
+      const result = await unitSandboxCreateDispute(admin, user.id, body);
+      return json(origin, 200, { ok: true, dispute: result });
+    }
+
+    if (action === "unit_sandbox_dispute_action") {
+      const providerCaseId = safeText(body.providerCaseId, 180);
+      const disputeAction = safeText(body.disputeAction, 40);
+      const result = await unitSandboxAdvanceDispute(providerCaseId, disputeAction);
+      return json(origin, 200, { ok: true, dispute: result });
     }
 
 
