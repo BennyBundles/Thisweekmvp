@@ -41,6 +41,8 @@ const accountReleaseConfig=requireFile('account/release-config.js');
 const accountCheck=requireFile('account-check.mjs');
 const phase24Doc=requireFile('PHASE_24_IMPLEMENTATION.md');
 const authProductionSetup=requireFile('AUTH_PRODUCTION_SETUP.md');
+const phase26Doc=requireFile('PHASE_26_IMPLEMENTATION.md');
+const phase26Schema=requireFile('supabase/phase26/returns_disputes.sql');
 
 
 let config=null;
@@ -82,7 +84,8 @@ if(html){
     ['Phase 21 Money Lab link','href="./money-lab/"'],
     ['Phase 22 Sandbox chain',"sandboxChain:'plaid_unit_pinwheel_method'"],
     ['Phase 22 credential-gated chain',"sandboxChainMode:'deployed_credentials_required'"],
-    ['Phase 23 Account Center link',"externalTool('./account/'"]
+    ['Phase 23 Account Center link',"externalTool('./account/'"],
+    ['Phase 26 operations readiness',"operationsMode:'returns_disputes_negative_balance_deployed'"]
   ];
   for(const [label,text] of critical)requireText('missing '+label,html,text);
 
@@ -226,6 +229,25 @@ if(accountJs){
 }
 if(phase24Doc)requireText('Phase 24 doc hosted gates remain explicit',phase24Doc,'hosted Supabase');
 if(authProductionSetup)requireText('Auth production setup exact recovery redirect',authProductionSetup,'https://bennybundles.github.io/Thisweekmvp/account/?mode=recovery');
+
+if(phase26Schema){
+  requireText('Phase 26 schema ops cases',phase26Schema,'tw_ops_cases');
+  requireText('Phase 26 schema append-only ops events',phase26Schema,'tw_ops_case_events');
+  requireText('Phase 26 schema ACH return RPC',phase26Schema,'tw_money_apply_unit_ach_return');
+  requireText('Phase 26 schema card credit RPC',phase26Schema,'tw_money_apply_unit_card_credit');
+  requireText('Phase 26 schema dispute RPC',phase26Schema,'tw_ops_record_unit_dispute');
+}
+if(phase21Webhook){
+  requireText('Phase 26 webhook ACH return handling',phase21Webhook,'tw_money_apply_unit_ach_return');
+  requireText('Phase 26 webhook dispute handling',phase21Webhook,'tw_ops_record_unit_dispute');
+  requireText('Phase 26 webhook negative balance restriction',phase21Webhook,'negative_provider_balance');
+}
+if(phase20Gateway){
+  requireText('Phase 26 gateway ops status',phase20Gateway,'ops_status');
+  requireText('Phase 26 gateway Sandbox dispute creation',phase20Gateway,'unit_sandbox_create_dispute');
+  requireText('Phase 26 gateway Sandbox dispute action',phase20Gateway,'unit_sandbox_dispute_action');
+}
+if(phase26Doc)requireText('Phase 26 doc preserves append-only doctrine',phase26Doc,'append-only');
 if(phase20Gateway)requireText('Money gateway rejects revoked session',phase20Gateway,'tw_auth_session_active');
 if(phase19Gateway)requireText('Provider gateway rejects revoked session',phase19Gateway,'tw_auth_session_active');
 
