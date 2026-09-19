@@ -16,9 +16,24 @@ need('money gateway',js,"/functions/v1/thisweek-money-gateway");
 need('sessionStorage sandbox',js,'sessionStorage');
 need('gateway bootstrap',js,"gateway('bootstrap')");
 need('ledger summary',js,"gateway('summary')");
+need('Pinwheel v4 SDK',html,'https://cdn.getpinwheel.com/pinwheel-v4.js');
+need('Pinwheel frame allowlist',html,'frame-src https://*.getpinwheel.com https://*.pinwheel.com');
+need('provider gateway',js,'/functions/v1/thisweek-provider-gateway');
+need('Plaid Hosted Link start',js,"providerGateway('begin_connect')");
+need('Plaid finalize',js,"providerGateway('finalize_connect'");
+need('Plaid to Unit funding link',js,"gateway('plaid_unit_funding_link'");
+need('Unit Sandbox application',js,"gateway('unit_sandbox_application'");
+need('Unit deposit account',js,"gateway('unit_create_deposit_account'");
+need('external ACH pull',js,"gateway('unit_fund_from_external'");
+need('Unit card creation',js,"gateway('create_virtual_card'");
+need('Unit purchase simulation',js,"gateway('unit_sandbox_authorization'");
+need('Pinwheel direct deposit',js,"gateway('direct_deposit_link'");
+need('Method dev setup',js,"gateway('method_sandbox_setup'");
+need('Method dev payment',js,"gateway('method_sandbox_payment'");
+need('sensitive token redaction',js,'/token|password|secret');
 if(/service_role|sb_secret_/i.test(html+js))failures.push('server secret pattern found in Money Lab');
 if(/localStorage/.test(js))failures.push('Money Lab must not persist auth tokens in localStorage');
 try{new Function(js);}catch(e){failures.push('Money Lab script syntax: '+e.message);}
 if(failures.length){console.error('Money Lab check FAILED');failures.forEach(x=>console.error('- '+x));process.exit(1);}
 console.log('Money Lab check passed');
-console.log(JSON.stringify({auth:'recoverable',mfa:'totp',sessionStorage:true,gateway:true,networkAllowlist:'exact-supabase-origin'},null,2));
+console.log(JSON.stringify({auth:'recoverable',mfa:'totp',sessionStorage:true,gateway:true,networkAllowlist:'supabase-api-plus-pinwheel-sdk-frame'},null,2));
