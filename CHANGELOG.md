@@ -2,6 +2,35 @@
 
 Production changes for **This Week** are recorded here.
 
+## Phase 32 — Legal Consent, Retention & Sensitive-Access Audit — 2026-09-19
+
+- Added service-layer-only versioned legal-document registry, immutable customer acceptance receipts, retention-policy registry, and append-only sensitive staff-access audit.
+- Added Account Center rendering of the current active disclosure set with explicit per-version acceptance.
+- Added Sandbox-only disclosure fixtures at `/legal/sandbox/`; they are noindex and explicitly not production legal terms or real authorizations.
+- Production Money Gateway mutations now require the signed-in user to be current on all active required production disclosures.
+- Production Provider Gateway requires current disclosure acceptance for consent, connection initiation/finalization, and sync while preserving read/disconnect access.
+- Production Unit card authorization now resolves the card owner and declines fail-closed when required disclosures are stale.
+- Added admin-only Ops controls to activate/revoke production legal-document versions and retention policies with evidence references.
+- Ops status/dashboard reads now create a separate append-only sensitive-access audit record.
+- Strengthened `tw_release_status()` with derived gates for active production legal set, active production retention policy, and sensitive-access audit coverage.
+- Production legal templates and production retention templates remain inactive/unapproved; no legal approval is fabricated by code.
+- Production money remains disabled.
+
+### Rollback
+- Pre-Phase-32 commit: `cb7c76f1a68f4b69fa32dc5de104cf5252d665d6`
+- Rollback branch: `rollback/phase32-pre-legal-retention-2026-09-19`
+
+## Phase 31 — Production Activation Interlock — 2026-09-19
+
+- Added server-only manual release gates and immutable release-gate event history.
+- Added derived live-money conditions for production risk policy, external notification health, and named admin/risk/support staff coverage.
+- Added `tw_release_money_enabled()` as an independent database interlock.
+- Enforced the interlock in production Money Gateway, Provider Gateway, signed provider webhook processing, and Unit card authorization.
+- Added audited admin release-gate controls and readiness display to Ops Console.
+- Initial live-money readiness remains deliberately locked; no release gate was auto-verified.
+- Production money remains disabled.
+
+
 ## Phase 30 — External Notification Dispatcher — 2026-09-19
 
 - Added a one-minute Supabase Cron dispatcher for the Phase 29 high/critical notification outbox.
