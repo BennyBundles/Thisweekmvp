@@ -470,29 +470,32 @@ body.intro-pending .home-shell{filter:blur(5px);transform:scale(1.015)}.home-she
 @keyframes tagjHeat{to{transform:translateX(5px) scale(1.04);filter:blur(1px)}}
 @media(prefers-reduced-motion:reduce){.intro-gate.playing:before,.intro-gate.playing:after{animation:none!important}}
 </style>
-<style id="tagj-intro-v149-state">
-html.intro-already-seen #introGate{display:none!important}
-html.intro-already-seen body.intro-pending .home-shell{filter:none!important;transform:none!important}
-html.intro-already-seen .world-route,
-html.intro-already-seen .center-core,
-html.intro-already-seen .home-header,
-html.intro-already-seen .home-footer{opacity:1!important;animation:none!important}
+<style id="intro-state-v151">
+html.intro-resume-v151 #introGate{display:none!important;visibility:hidden!important;pointer-events:none!important}
+html.intro-resume-v151 body.intro-pending .home-shell{filter:none!important;transform:none!important}
+html.intro-resume-v151 .world-route,
+html.intro-resume-v151 .center-core,
+html.intro-resume-v151 .home-header,
+html.intro-resume-v151 .home-footer{opacity:1!important;animation:none!important}
 </style>
-<script id="tagj-intro-v149-boot">
-(()=>{const KEY='tagjIntroCompleteV149';window.__tagjIntroCompleteKey=KEY;try{if(sessionStorage.getItem(KEY)==='1')document.documentElement.classList.add('intro-already-seen')}catch(_){}
-document.addEventListener('pointerdown',e=>{const b=e.target&&e.target.closest?e.target.closest('#enterSound,#enterMuted,#skipIntro'):null;if(!b)return;try{sessionStorage.setItem(KEY,'1')}catch(_){}},true);
-})();
+<script id="intro-boot-v151">
+(()=>{try{
+  const p=new URLSearchParams(location.search);
+  const force=p.get('intro')==='1';
+  const resume=p.get('resume')==='1';
+  const deep=!!location.hash&&location.hash!=='#home'&&location.hash!=='#replay-intro';
+  const seen=localStorage.getItem('tagjIntroSeenPersistentV151')==='1'||sessionStorage.getItem('tagjIntroSeenV151')==='1';
+  if(!force&&(resume||deep||seen))document.documentElement.classList.add('intro-resume-v151');
+}catch(_){}})();
 </script>
-<style id="intro-resume-v150-style">html.intro-resume-v150 .intro-gate{display:none!important;visibility:hidden!important;pointer-events:none!important}</style>
-<script id="intro-prehide-v150">try{const p=new URLSearchParams(location.search);if(p.get('intro')!=='1'&&localStorage.getItem('tagjIntroSeenPersistentV150')==='1')document.documentElement.classList.add('intro-resume-v150')}catch(_){}</script>
 </head>
 <body class="home-v11 intro-pending">
 
 <!-- Audio requires a user gesture on iPhone/Safari. -->
 <section class="intro-gate" id="introGate" aria-label="TAGJ intro">
-  <video id="introVideo" class="intro-video" data-cut-start="0" data-cut-end="6.93" data-cut-label="exact-drive-intro-clip" playsinline webkit-playsinline preload="auto" poster="tagj-assets/intro/intro-poster-v149.jpg">
+  <video id="introVideo" class="intro-video" data-cut-start="0" data-cut-end="6.93" data-cut-label="exact-drive-intro-clip-v151" playsinline webkit-playsinline preload="auto" poster="tagj-assets/intro/intro-poster-v149.jpg">
+    <source src="tagj-assets/intro/intro-clip-for-website-v151.mov" type="video/quicktime">
     <source src="tagj-assets/intro/intro-clip-for-website-v150.mp4" type="video/mp4">
-    <source src="tagj-assets/intro/intro-preview-v149.mp4" type="video/mp4">
   </video>
   <div class="intro-shade"></div>
   <div class="intro-frame" aria-hidden="true"></div>
@@ -504,7 +507,7 @@ document.addEventListener('pointerdown',e=>{const b=e.target&&e.target.closest?e
     <span class="intro-v13-line l5">SO <em>TELL ME!!</em></span>
   </div>
   <div class="intro-fire-v13" aria-hidden="true"></div>
-  <span class="intro-v13-source-note" aria-hidden="true">COLD WINTER · EXACT WEBSITE INTRO CLIP</span>
+  <span class="intro-v13-source-note" aria-hidden="true">COLD WINTER · ACTUAL WEBSITE INTRO CLIP</span>
   <div class="intro-brand">
     <span class="intro-micro">TAGJ × BENNY BUNDLES</span>
     <strong>ENTER THE ECOSYSTEM</strong>
@@ -890,28 +893,28 @@ document.addEventListener('pointerdown',e=>{const b=e.target&&e.target.closest?e
   const soundBtn=document.getElementById('enterSound');
   const muteBtn=document.getElementById('enterMuted');
   const introStatus=document.getElementById('introStatus');
-  const INTRO_SESSION_KEY='tagjIntroSeenV150';
-  const INTRO_PERSIST_KEY='tagjIntroSeenPersistentV150';
+  const INTRO_SESSION_KEY='tagjIntroSeenV151';
+  const INTRO_PERSIST_KEY='tagjIntroSeenPersistentV151';
   let introDone=false,introFinishing=false,fallbackTimer=0;
   function hasSeenIntro(){
     if(window.__TAGJ_INTRO_SEEN)return true;
     try{if(localStorage.getItem(INTRO_PERSIST_KEY)==='1')return true}catch(_){}
     try{return sessionStorage.getItem(INTRO_SESSION_KEY)==='1'}catch(_){return false}
   }
-  function markIntroSeen(){
+  function markIntroSeen(hideGate=true){
     window.__TAGJ_INTRO_SEEN=true;
     try{sessionStorage.setItem(INTRO_SESSION_KEY,'1')}catch(_){}
     try{localStorage.setItem(INTRO_PERSIST_KEY,'1')}catch(_){}
-    document.documentElement.classList.add('intro-resume-v150');
+    if(hideGate)document.documentElement.classList.add('intro-resume-v151');
   }
   function clearIntroSeen(){
     window.__TAGJ_INTRO_SEEN=false;
     try{sessionStorage.removeItem(INTRO_SESSION_KEY)}catch(_){}
     try{localStorage.removeItem(INTRO_PERSIST_KEY)}catch(_){}
-    document.documentElement.classList.remove('intro-resume-v150');
+    document.documentElement.classList.remove('intro-resume-v151');
   }
   function completeIntroState(){
-    markIntroSeen();
+    markIntroSeen(true);
     introDone=true;introFinishing=false;
     gate?.classList.remove('settling','v13-running','v13-fire','playing');gate?.classList.add('done');
     if(gate){gate.hidden=true;gate.setAttribute('aria-hidden','true')}
@@ -942,13 +945,15 @@ document.addEventListener('pointerdown',e=>{const b=e.target&&e.target.closest?e
   async function playIntro(muted){
     if(introDone||introFinishing||!video)return;
     if(gate){gate.hidden=false;gate.removeAttribute('aria-hidden')}
-    document.documentElement.classList.remove('intro-resume-v150');
+    document.documentElement.classList.remove('intro-resume-v151');
+    markIntroSeen(false);
     clearTimeout(fallbackTimer);
     gate?.classList.remove('v13-fire');
     gate?.classList.add('playing','v13-running');
     if(introStatus)introStatus.textContent='';
     try{video.pause()}catch(_){}
     try{video.currentTime=0}catch(_){}
+    if(video.readyState===0){try{video.load()}catch(_){}}
     video.setAttribute('playsinline','');
     video.setAttribute('webkit-playsinline','');
     video.muted=!!muted;
@@ -986,15 +991,16 @@ document.addEventListener('pointerdown',e=>{const b=e.target&&e.target.closest?e
     }
   });
   routes.forEach(route=>{
-    route.addEventListener('pointerdown',markIntroSeen,{capture:true,passive:true});
-    route.addEventListener('click',markIntroSeen,{capture:true});
+    route.addEventListener('pointerdown',()=>markIntroSeen(true),{capture:true,passive:true});
+    route.addEventListener('click',()=>markIntroSeen(true),{capture:true});
   });
   document.addEventListener('pointerdown',e=>{
     const a=e.target.closest?.('a[href^="full.html"]');
-    if(a)markIntroSeen();
+    if(a)markIntroSeen(true);
   },{capture:true,passive:true});
 
   // Returning from a world is a resume, not a new visit. Deep links never replay the splash.
+  document.documentElement.classList.remove('intro-already-seen');
   const params=new URLSearchParams(location.search);
   const forceReplay=params.get('intro')==='1';
   const resume=params.get('resume')==='1';
