@@ -64,6 +64,8 @@ if(config){
   }
   if(config.channel!=='production')failures.push('release channel must be production');
   if(!/^[0-9a-f]{40}$/.test(config.rollbackCommit||''))failures.push('rollbackCommit must be a full SHA');
+  if(config.releaseRecord&&!fs.existsSync(config.releaseRecord))failures.push('release record file does not exist: '+config.releaseRecord);
+  if(config.stableBranch&&!/^stable\//.test(config.stableBranch))failures.push('stableBranch must use stable/ prefix');
 }
 if(changelog&&config)requireText('CHANGELOG missing current release entry',changelog,'## '+config.release);
 if(policy)requireText('Release policy must identify main as production',policy,'main is production');
