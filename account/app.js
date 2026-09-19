@@ -2,13 +2,50 @@ const SUPABASE_URL='https://xjtvawmppzwzrooairyx.supabase.co';
 const PUBLISHABLE_KEY='sb_publishable_OcmV-NiXzSy7mqg3TUKxnA_74l8fq87';
 const SESSION_KEY='thisweek.auth.session.v1';
 const LEGACY_KEY='thisweek.moneyLab.session.v1';
+const COOLDOWN_KEY='thisweek.auth.cooldowns.v1';
+const RELEASE=globalThis.THISWEEK_AUTH_RELEASE_CONFIG||{};
+const ACCOUNT_URL=RELEASE.canonicalAccountUrl||'https://bennybundles.github.io/Thisweekmvp/account/';
+const CONFIRM_REDIRECT=RELEASE.confirmationRedirect||ACCOUNT_URL;
+const RECOVERY_REDIRECT=RELEASE.recoveryRedirect||ACCOUNT_URL+'?mode=recovery';
 const $=id=>document.getElementById(id);
 let session=readSession(),user=null,lastEnroll=null,recoveryMode=new URLSearchParams(location.search).get('mode')==='recovery';
+let captchaToken='',captchaWidgetId=null;
 
 function readSession(){try{return JSON.parse(sessionStorage.getItem(SESSION_KEY)||sessionStorage.getItem(LEGACY_KEY)||'null');}catch{return null;}}
 function writeSession(next){session=next?.access_token?{access_token:next.access_token,refresh_token:next.refresh_token||session?.refresh_token||null,expires_at:next.expires_at||Math.floor(Date.now()/1000)+(next.expires_in||3600),token_type:next.token_type||'bearer'}:null;if(session){sessionStorage.setItem(SESSION_KEY,JSON.stringify(session));sessionStorage.removeItem(LEGACY_KEY);}else{sessionStorage.removeItem(SESSION_KEY);sessionStorage.removeItem(LEGACY_KEY);}updateUi();}
 function payload(token){try{const p=token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');return JSON.parse(atob(p.padEnd(Math.ceil(p.length/4)*4,'=')));}catch{return {};}}
 function headers(auth=false){const h={apikey:PUBLISHABLE_KEY,'Content-Type':'application/json'};if(auth&&session?.access_token)h.Authorization='Bearer '+session.access_token;return h;}
+function readCooldowns(){try{return JSON.parse(sessionStorage.getItem(COOLDOWN_KEY)||'{}')||{};}catch{return{};}}
+function markCooldown(name,ms){const all=readCooldowns();all[name]=Date.now()+ms;sessionStorage.setItem(COOLDOWN_KEY,JSON.stringify(all));}
+function assertCooldown(name,ms,label){const all=readCooldowns(),until=Number(all[name]||0),now=Date.now();if(until>now)throw new Error(label+' is temporarily limited. Try again in '+Math.ceil((until-now)/1000)+' seconds.');markCooldown(name,ms);}
+function captchaConfigured(){return RELEASE?.captcha?.provider==='turnstile'&&RELEASE?.captcha?.supabaseProtectionVerified===true&&String(RELEASE?.captcha?.siteKey||'').length>5;}
+function captchaMeta(){if(!captchaConfigured())return{};if(!captchaToken)throw new Error('Complete the bot check first.');return{gotrue_meta_security:{captcha_token:captchaToken}};}
+function resetCaptcha(){captchaToken='';try{if(captchaWidgetId!==null&&globalThis.turnstile?.reset)globalThis.turnstile.reset(captchaWidgetId);}catch{}}
+function releaseGates(){
+  const h=RELEASE.hostedAuth||{};
+  return[
+    ['Site URL',h.siteUrlVerified===true],
+    ['Redirect allowlist',h.redirectAllowlistVerified===true],
+    ['Email confirmations',h.emailConfirmationsVerified===true],
+    ['CAPTCHA',RELEASE?.captcha?.supabaseProtectionVerified===true&&String(RELEASE?.captcha?.siteKey||'').length>5],
+    ['Production mail',h.customSmtpVerified===true]
+  ];
+}
+function renderReleaseReadiness(){
+  const root=$('authReleaseGates');if(!root)return;
+  root.textContent='';
+  const gates=releaseGates();
+  for(const [label,ok] of gates){const box=document.createElement('div');box.className='release-gate '+(ok?'pass':'fail');const s=document.createElement('small');s.textContent=label;const b=document.createElement('strong');b.textContent=ok?'Verified':'Required';box.append(s,b);root.appendChild(box);}
+  const ready=RELEASE.publicAuthReady===true&&gates.every(x=>x[1]===true);
+  setResult('authReleaseResult',ready?'Public Auth release gates verified.':'Beta-capable, but public Auth release is still blocked by unverified hosted settings.',ready?'good':'warn');
+}
+async function initCaptcha(){
+  if(!captchaConfigured())return;
+  $('captchaWrap').style.display='block';
+  if(globalThis.turnstile?.render){captchaWidgetId=globalThis.turnstile.render('#captchaMount',{sitekey:RELEASE.captcha.siteKey,callback:t=>{captchaToken=t||'';},'expired-callback':()=>{captchaToken='';},'error-callback':()=>{captchaToken='';}});return;}
+  await new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';s.async=true;s.defer=true;s.onload=resolve;s.onerror=()=>reject(new Error('CAPTCHA could not load.'));document.head.appendChild(s);});
+  captchaWidgetId=globalThis.turnstile.render('#captchaMount',{sitekey:RELEASE.captcha.siteKey,callback:t=>{captchaToken=t||'';},'expired-callback':()=>{captchaToken='';},'error-callback':()=>{captchaToken='';}});
+}
 async function api(path,options={}){const res=await fetch(SUPABASE_URL+path,{...options,headers:{...headers(!!options.auth),...(options.headers||{})}});const text=await res.text();let body={};try{body=text?JSON.parse(text):{};}catch{body={};}if(!res.ok)throw new Error(body.msg||body.message||body.error_description||body.error||('HTTP '+res.status));return body;}
 async function ensureFresh(){if(!session?.refresh_token)return false;if((session.expires_at||0)-Math.floor(Date.now()/1000)>90)return true;const body=await api('/auth/v1/token?grant_type=refresh_token',{method:'POST',body:JSON.stringify({refresh_token:session.refresh_token})});writeSession(body);return true;}
 function setResult(id,msg,cls=''){const el=$(id);el.textContent=msg;el.className='result '+cls;}
@@ -16,9 +53,9 @@ function updateUi(){const signed=!!session?.access_token,p=session?.access_token
 function handleHash(){if(!location.hash.includes('access_token='))return;const q=new URLSearchParams(location.hash.slice(1));const access_token=q.get('access_token'),refresh_token=q.get('refresh_token');if(access_token){writeSession({access_token,refresh_token,expires_in:Number(q.get('expires_in')||3600),token_type:q.get('token_type')||'bearer'});if(q.get('type')==='recovery')recoveryMode=true;history.replaceState(null,'',location.pathname+(recoveryMode?'?mode=recovery':''));}}
 async function getUser(){if(!session?.access_token){user=null;renderFactors();updateUi();return null;}await ensureFresh();user=await api('/auth/v1/user',{method:'GET',auth:true});renderFactors();updateUi();return user;}
 function renderFactors(){const root=$('factorList');root.textContent='';const fs=Array.isArray(user?.factors)?[...user.factors]:[];if(lastEnroll?.id&&!fs.some(x=>x.id===lastEnroll.id))fs.push({id:lastEnroll.id,factor_type:'totp',status:'unverified',friendly_name:'This Week'});if(!fs.length){const p=document.createElement('p');p.textContent='No authenticator factors enrolled.';root.appendChild(p);return;}for(const f of fs){const row=document.createElement('div');row.className='factor';const txt=document.createElement('span');txt.innerHTML='<strong>'+(f.friendly_name||'Authenticator')+'</strong>'+(f.status||'unknown');const btn=document.createElement('button');btn.textContent='Remove';btn.disabled=!session?.access_token;btn.onclick=()=>unenroll(f.id);row.append(txt,btn);root.appendChild(row);}}
-async function signIn(){const email=$('email').value.trim(),password=$('password').value;if(!email||password.length<10)throw new Error('Enter your email and password.');const body=await api('/auth/v1/token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})});writeSession(body);$('password').value='';await getUser();await accountStatus();setResult('authResult','Signed in.','good');}
-async function signUp(){const email=$('email').value.trim(),password=$('password').value;if(!email||password.length<10)throw new Error('Use an email and a password of at least 10 characters.');const redirect=location.origin+location.pathname;const body=await api('/auth/v1/signup?redirect_to='+encodeURIComponent(redirect),{method:'POST',body:JSON.stringify({email,password})});$('password').value='';if(body.access_token){writeSession(body);await getUser();setResult('authResult','Account created and signed in.','good');}else setResult('authResult','Account created. Check your email to confirm the address.','good');}
-async function forgot(){const email=$('email').value.trim();if(!email)throw new Error('Enter your email first.');const redirect=location.origin+location.pathname+'?mode=recovery';await api('/auth/v1/recover?redirect_to='+encodeURIComponent(redirect),{method:'POST',body:JSON.stringify({email})});setResult('authResult','If that account exists, a password-recovery email has been sent.','good');}
+async function signIn(){assertCooldown('signin',2000,'Sign-in');const email=$('email').value.trim(),password=$('password').value;if(!email||password.length<10)throw new Error('Enter your email and password.');try{const body=await api('/auth/v1/token?grant_type=password',{method:'POST',body:JSON.stringify({email,password,...captchaMeta()})});writeSession(body);$('password').value='';await getUser();await accountStatus();setResult('authResult','Signed in.','good');}finally{resetCaptcha();}}
+async function signUp(){assertCooldown('signup',60000,'Account creation');const email=$('email').value.trim(),password=$('password').value;if(!email||password.length<10)throw new Error('Use an email and a password of at least 10 characters.');try{const body=await api('/auth/v1/signup?redirect_to='+encodeURIComponent(CONFIRM_REDIRECT),{method:'POST',body:JSON.stringify({email,password,data:{auth_surface:'thisweek_account_center'},...captchaMeta()})});$('password').value='';if(body.access_token){writeSession(body);await getUser();setResult('authResult','Account created and signed in.','good');}else setResult('authResult','Account created. Check your email to confirm the address.','good');}finally{resetCaptcha();}}
+async function forgot(){assertCooldown('recover',60000,'Password recovery');const email=$('email').value.trim();if(!email)throw new Error('Enter your email first.');try{await api('/auth/v1/recover?redirect_to='+encodeURIComponent(RECOVERY_REDIRECT),{method:'POST',body:JSON.stringify({email,...captchaMeta()})});setResult('authResult','If that account exists, a password-recovery email has been sent.','good');}finally{resetCaptcha();}}
 async function updatePassword(){const password=$('newPassword').value;if(password.length<12)throw new Error('Use at least 12 characters for the new password.');await ensureFresh();await api('/auth/v1/user',{method:'PUT',auth:true,body:JSON.stringify({password})});$('newPassword').value='';recoveryMode=false;history.replaceState(null,'',location.pathname);updateUi();setResult('recoveryResult','Password updated.','good');}
 async function enroll(){await ensureFresh();const body=await api('/auth/v1/factors',{method:'POST',auth:true,body:JSON.stringify({factor_type:'totp',friendly_name:'This Week'})});lastEnroll=body;if(body.totp?.qr_code){$('qr').src=body.totp.qr_code.startsWith('data:')?body.totp.qr_code:'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(body.totp.qr_code);$('qr').style.display='block';}$('secret').textContent=body.totp?.secret?'Manual setup secret: '+body.totp.secret:'';$('secret').style.display=body.totp?.secret?'block':'none';await getUser();setResult('mfaResult','Authenticator enrolled. Enter the current code to verify it.','warn');}
 async function verifyMfa(){await ensureFresh();const code=$('totpCode').value.trim();const factor=(user?.factors||[]).find(x=>x.status==='unverified')||lastEnroll;if(!factor||!/^[0-9]{6,8}$/.test(code))throw new Error('Enter the current authenticator code.');const challenge=await api('/auth/v1/factors/'+encodeURIComponent(factor.id)+'/challenge',{method:'POST',auth:true,body:'{}'});const verified=await api('/auth/v1/factors/'+encodeURIComponent(factor.id)+'/verify',{method:'POST',auth:true,body:JSON.stringify({challenge_id:challenge.id,code})});if(verified.access_token)writeSession(verified);$('totpCode').value='';lastEnroll=null;await getUser();await accountStatus();setResult('mfaResult','Authenticator verified.','good');}
@@ -29,4 +66,4 @@ async function signOutAll(){await ensureFresh();try{await api('/auth/v1/logout?s
 async function deleteAccount(){const email=$('deleteEmail').value.trim(),confirmation=$('deletePhrase').value.trim();if(!email||confirmation!=='DELETE')throw new Error('Enter your email and type DELETE exactly.');try{const body=await accountGateway('delete_account',{email,confirmation});if(body.deleted){writeSession(null);user=null;renderFactors();$('deletePhrase').value='';setResult('deleteResult','Cloud account deleted. Local Plan data remains on this browser until you delete it from Privacy & Local Data.','good');}}catch(e){if(e.body?.error==='retention_review_required'){setResult('deleteResult','Account closure request recorded. Financial history requires retention review instead of immediate hard deletion.','warn');return;}throw e;}}
 function bind(id,fn){$(id).addEventListener('click',()=>fn().catch(e=>setResult(id==='deleteAccount'?'deleteResult':id==='updatePassword'?'recoveryResult':id.includes('Mfa')?'mfaResult':'authResult',e.message,'bad')));}
 bind('signIn',signIn);bind('signUp',signUp);bind('forgot',forgot);bind('updatePassword',updatePassword);bind('enrollMfa',enroll);bind('verifyMfa',verifyMfa);bind('refreshStatus',accountStatus);bind('signOutAll',signOutAll);bind('deleteAccount',deleteAccount);
-handleHash();updateUi();renderFactors();if(session?.access_token)getUser().then(()=>accountStatus()).catch(e=>{writeSession(null);setResult('authResult','Session expired. Sign in again.','warn');});
+handleHash();updateUi();renderFactors();renderReleaseReadiness();initCaptcha().catch(e=>setResult('authReleaseResult',e.message,'bad'));if(session?.access_token)getUser().then(()=>accountStatus()).catch(e=>{writeSession(null);setResult('authResult','Session expired. Sign in again.','warn');});
