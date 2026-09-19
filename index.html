@@ -8495,7 +8495,7 @@ async function renderConnections(){
           <div class="provider-readiness-head"><div><small>Phase 19 secure provider gateway</small><h3>Live financial data is staged behind explicit infrastructure gates.</h3></div><span class="provider-gate-badge">Not activated</span></div>
           <p class="provider-readiness-copy">The provider plane is implemented as a separate server-side architecture, but this production build intentionally keeps network access disabled until a dedicated backend, recoverable authentication, provider credentials, and an exact CSP allowlist are provisioned.</p>
           <div class="provider-readiness-grid">${liveProviderReadiness().checks.map((x,i)=>`<div class="provider-gate-row"><span class="provider-gate-icon">${i+1}</span><span class="provider-gate-copy"><strong>${escapeHtml(x.label)}</strong><span>${escapeHtml(x.detail)}</span></span><span class="provider-gate-state">${x.ready?'Ready':'Required'}</span></div>`).join('')}</div>
-          <div class="provider-flow" aria-label="Provider reconciliation flow">
+          <div class="provider-flow" aria-label="Provider reconciliation flow" data-flow="Provider → Server Sync → Review → Reconcile → Weekly Transaction">
             <div class="provider-flow-step"><small>1</small><strong>Provider</strong></div>
             <div class="provider-flow-step"><small>2</small><strong>Server sync</strong></div>
             <div class="provider-flow-step"><small>3</small><strong>Review</strong></div>
