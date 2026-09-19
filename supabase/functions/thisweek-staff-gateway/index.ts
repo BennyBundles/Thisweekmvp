@@ -47,13 +47,13 @@ async function activeSession(admin:ReturnType<typeof createClient>,userId:string
   if(error||data!==true)throw new Error("session_revoked");
   return sid;
 }
-async function aal(userClient:ReturnType<typeof createClient>){
-  const {data,error}=await userClient.auth.mfa.getAuthenticatorAssuranceLevel();
+async function aal(userClient:ReturnType<typeof createClient>,token:string){
+  const {data,error}=await userClient.auth.mfa.getAuthenticatorAssuranceLevel(token);
   if(error)throw new Error("mfa_status_failed");
   return data?.currentLevel||"aal1";
 }
-async function requireAal2(userClient:ReturnType<typeof createClient>){
-  if((await aal(userClient))!=="aal2")throw new Error("mfa_aal2_required");
+async function requireAal2(userClient:ReturnType<typeof createClient>,token:string){
+  if((await aal(userClient,token))!=="aal2")throw new Error("mfa_aal2_required");
 }
 async function authoritativeRole(admin:ReturnType<typeof createClient>,userId:string):Promise<string>{
   const {data,error}=await admin.rpc("tw_staff_user_role",{p_user_id:userId});
@@ -110,7 +110,7 @@ Deno.serve(async(req)=>{
 
     if(action==="status"){
       const [summary,currentLevel,callerRole]=await Promise.all([
-        roleSummary(admin),aal(userClient),authoritativeRole(admin,String(user.id))
+        roleSummary(admin),aal(userClient,token),authoritativeRole(admin,String(user.id))
       ]);
       const email=safeText(user.email,320).toLowerCase();
       const emailConfirmed=Boolean(user.email_confirmed_at);
@@ -135,7 +135,7 @@ Deno.serve(async(req)=>{
     }
 
     if(action==="bootstrap_admin"){
-      await requireAal2(userClient);
+      await requireAal2(userClient,token);
       const summary=await roleSummary(admin);
       if(Number(summary.staffUserCount||0)!==0)throw new Error("staff_bootstrap_closed");
       if(!BOOTSTRAP_ADMIN_EMAIL)throw new Error("staff_bootstrap_unconfigured");
