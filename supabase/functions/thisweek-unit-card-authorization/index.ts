@@ -116,6 +116,11 @@ Deno.serve(async (req: Request) => {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 
+  if (MONEY_EXECUTION_MODE === "production") {
+    const release = await admin.rpc("tw_release_money_enabled");
+    if (release.error || release.data !== true) return decline("RestrictedCard");
+  }
+
   const { data, error } = await admin.rpc("tw_money_risk_reserve_card_authorization", {
     p_environment: MONEY_EXECUTION_MODE === "production" ? "production" : "sandbox",
     p_provider_card_id: providerCardId,
