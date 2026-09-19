@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "tagj.beat-license-system.v1.1",
-  "status": "draft_for_legal_review_inquiry_ready",
+  "schemaVersion": "tagj.beat-license-system.v1.2",
+  "status": "inquiry_ready_rights_attestation_required_before_paid_activation",
   "licensor": {
     "businessName": "Thats A Good Jawn LLC",
     "entityDescription": "Wyoming limited liability company registered to do business in Pennsylvania",
@@ -114,8 +114,8 @@
       "contractPath": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
     },
     {
-      "id": "trackout-pro-v1",
-      "label": "Trackout Pro — Derived 3-Stem",
+      "id": "derived-trackout-v1",
+      "label": "Derived Trackout — 3-Stem",
       "licenseType": "non-exclusive",
       "priceUsd": 99,
       "term": "7 years",
@@ -134,7 +134,7 @@
       },
       "publishingSplit": "50% Bundles / 50% Licensee-side writers by default",
       "contentId": "Not permitted without prior written consent",
-      "availabilityRule": "Available for all 22 current catalogue beats as an algorithmically derived 3-stem separation pack after QC. These are not original DAW multitracks and may contain separation bleed/artifacts.",
+      "availabilityRule": "Available for all 22 current catalogue beats as an algorithmically derived 3-stem mix-control pack after QC. Not original DAW multitracks; disclosure is mandatory.",
       "contractPath": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
       "derivedStemDisclosureRequired": true
     },
@@ -193,5 +193,14 @@
     "reviewRef": "tagj-data/sample-review.v1.json",
     "attestationRef": "legal/BEAT_SAMPLE_PROVENANCE_ATTESTATION_DRAFT.md",
     "rule": "Final license execution requires a completed beat-specific source-provenance attestation and any necessary third-party clearances."
+  },
+  "legalReview": {
+    "reviewType": "internal_legal_issue_spotting_against_current_official_sources_not_attorney_opinion",
+    "reviewDate": "2026-09-19",
+    "officialSourceBasis": [
+      "U.S. Copyright Office derivative sound recording/sample guidance",
+      "Pennsylvania Department of State foreign-association guidance"
+    ],
+    "attorneyReviewStillRecommended": true
   }
 }
