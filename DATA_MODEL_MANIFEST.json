@@ -361,7 +361,7 @@
     "status": "production_identity_surface_deployed",
     "activation": true,
     "accountCenterPath": "/account/",
-    "accountGateway": "thisweek-account-gateway:v1",
+    "accountGateway": "thisweek-account-gateway:v2",
     "sessionKey": "thisweek.auth.session.v1",
     "tokenStorage": "sessionStorage_only",
     "networkAllowlist": [
@@ -549,7 +549,7 @@
   "phase27StaffOperations": {
     "status": "staff_backend_and_console_deployed",
     "activation": true,
-    "opsGateway": "thisweek-ops-gateway:v2",
+    "opsGateway": "thisweek-ops-gateway:v6",
     "opsConsolePath": "/ops/",
     "auth": {
       "roles": [
@@ -762,6 +762,109 @@
       "configure_edge_function_destination_secret",
       "deliver_synthetic_high_critical_test_end_to_end",
       "approve_incident_escalation_runbook"
+    ]
+  },
+  "phase31ProductionActivationInterlock": {
+    "status": "server_interlock_deployed_locked",
+    "activation": false,
+    "tables": [
+      "tw_release_gates",
+      "tw_release_gate_events"
+    ],
+    "serviceRoleRpcs": [
+      "tw_release_status",
+      "tw_release_money_enabled",
+      "tw_release_set_gate"
+    ],
+    "manualGates": [
+      "hosted_auth_production_ready",
+      "provider_sandbox_e2e_passed",
+      "production_provider_approvals",
+      "production_webhooks_verified",
+      "production_risk_policy_approved",
+      "named_staff_provisioned",
+      "external_notification_delivery_verified",
+      "incident_escalation_runbook_approved",
+      "retention_access_policy_approved",
+      "legal_terms_privacy_approved",
+      "cost_approval"
+    ],
+    "derivedGates": [
+      "production_risk_policy_active",
+      "notification_channel_healthy",
+      "admin_staff_exists",
+      "risk_staff_exists",
+      "support_staff_exists"
+    ],
+    "enforcement": [
+      "money_gateway",
+      "provider_gateway",
+      "provider_webhook",
+      "unit_card_authorization"
+    ],
+    "browserMutation": false,
+    "liveMoneyReady": false
+  },
+  "phase32LegalRetention": {
+    "status": "enforcement_deployed_production_documents_and_policy_unapproved",
+    "activation": false,
+    "accountGateway": "thisweek-account-gateway:v2",
+    "moneyGateway": "thisweek-money-gateway:v12",
+    "providerGateway": "thisweek-provider-gateway:v6",
+    "cardAuthorizationFunction": "thisweek-unit-card-authorization:v4",
+    "opsGateway": "thisweek-ops-gateway:v6",
+    "accountCenterPath": "/account/",
+    "sandboxLegalPath": "/legal/sandbox/",
+    "tables": [
+      "tw_legal_documents",
+      "tw_legal_acceptances",
+      "tw_retention_policies",
+      "tw_sensitive_access_events"
+    ],
+    "serviceRoleRpcs": [
+      "tw_legal_status",
+      "tw_user_production_legal_ready",
+      "tw_legal_accept_document",
+      "tw_retention_status",
+      "tw_sensitive_access_record",
+      "tw_legal_set_document_state",
+      "tw_retention_set_policy_state"
+    ],
+    "requiredProductionDocuments": [
+      "terms_of_service",
+      "privacy_policy",
+      "esign_consent",
+      "ach_authorization",
+      "cardholder_disclosure"
+    ],
+    "requiredRetentionClasses": [
+      "financial_ledger",
+      "provider_events",
+      "support_records",
+      "staff_access",
+      "auth_security",
+      "legal_acceptance",
+      "ops_records"
+    ],
+    "acceptanceReceiptsAppendOnly": true,
+    "sensitiveAccessAppendOnly": true,
+    "productionDocumentSetActive": false,
+    "productionRetentionPolicyActive": false,
+    "perUserProductionLegalRequired": true,
+    "productionReadOnlyAccessPreserved": true,
+    "sandboxFixturesActive": true,
+    "destructiveProductionRetentionAutomation": false,
+    "releaseDerivedGates": [
+      "productionLegalSetActive",
+      "productionRetentionPolicyActive",
+      "sensitiveAccessAuditActive"
+    ],
+    "remainingGates": [
+      "approved_production_legal_text_and_hashes",
+      "approved_production_retention_periods_and_dispositions",
+      "admin_evidence_for_legal_activation",
+      "admin_evidence_for_retention_activation",
+      "customer_acceptance_validation_in_closed_beta"
     ]
   }
 }
