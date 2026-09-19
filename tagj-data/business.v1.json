@@ -2,7 +2,13 @@
   "schemaVersion": "tagj.business.v1",
   "legal": {
     "businessName": "Thats A Good Jawn LLC",
-    "brandName": "TAGJ"
+    "brandName": "TAGJ",
+    "entityType": "Limited Liability Company",
+    "formationJurisdiction": "Wyoming",
+    "pennsylvaniaRegistrationStatus": "Registered to do business in Pennsylvania",
+    "authorizedRepresentativeLegalName": "Benjamin Alexander",
+    "legalSignatureDisplay": "Benjamin Alexander, Authorized Representative",
+    "publicArtistProducerName": "Benny Bundles / Bundles"
   },
   "contact": {
     "publicBusinessEmail": {
