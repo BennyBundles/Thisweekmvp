@@ -475,3 +475,40 @@ Production provider actions require stronger authentication/MFA and explicit pro
 9. end-to-end sandbox tests;
 10. exact CSP/CORS allowlist;
 11. production provider/program approvals and cost approval.
+
+
+## Phase 22 provider Sandbox chain
+
+The provider integration layer is now code-complete for an end-to-end Sandbox/dev exercise.
+
+Implemented server actions include:
+
+- Unit Sandbox application and status refresh;
+- Unit checking deposit-account creation;
+- direct Unit Sandbox incoming ACH credit;
+- Plaid Auth Hosted Link;
+- Plaid-to-Unit processor-token exchange;
+- Unit counterparty creation from the processor token;
+- authorized external ACH Debit funding into Unit;
+- Unit virtual-card creation;
+- Unit purchase-authorization simulation;
+- Pinwheel Deposit Switch Link-token creation and Web SDK launch;
+- Method dev Entity/Connect liability discovery;
+- Method dev ACH source creation and micro-deposit verification;
+- Method dev Payment submission.
+
+Provider event handlers close the Unit application/account/payment/card loop.
+
+### Current execution state
+
+The code is deployed, but provider calls remain gated by:
+
+`THISWEEK_MONEY_EXECUTION_MODE=sandbox`
+
+and the relevant provider server credentials.
+
+Production still additionally requires `THISWEEK_LIVE_MONEY_ENABLED=true`.
+
+The current repository/client contains no provider secret.
+
+The current production planner network policy remains deny-all.
