@@ -340,6 +340,7 @@ Deno.serve(async (req: Request) => {
   const { data: authData, error: authError } = await userClient.auth.getUser(token);
   const user = authData?.user;
   if (authError || !user) return json(origin, 401, { error: "invalid_session" });
+  if ((user as AnyRecord).is_anonymous === true) return json(origin, 403, { error: "recoverable_auth_required" });
 
   const admin = createClient(SUPABASE_URL, SECRET_KEY, {
     auth: { persistSession: false, autoRefreshToken: false },
@@ -364,8 +365,8 @@ Deno.serve(async (req: Request) => {
     if (action === "consent") {
       if (body.accepted !== true) return json(origin, 400, { error: "consent_required" });
       const scopes = Array.isArray(body.scopes)
-        ? body.scopes.map((v) => safeText(v, 40)).filter((v) => ["transactions", "balances"].includes(v))
-        : ["transactions", "balances"];
+        ? body.scopes.map((v) => safeText(v, 40)).filter((v) => ["auth", "transactions", "balances"].includes(v))
+        : ["auth", "transactions", "balances"];
       const { data, error } = await admin.from("tw_provider_consents").upsert({
         user_id: user.id, provider: PROVIDER, consent_version: CONSENT_VERSION,
         scopes, accepted_at: new Date().toISOString(), revoked_at: null,
@@ -386,7 +387,7 @@ Deno.serve(async (req: Request) => {
       const payload: AnyRecord = {
         client_name: "This Week",
         user: { client_user_id: user.id },
-        products: ["transactions"],
+        products: ["auth", "transactions"],
         country_codes: ["US"],
         language: "en",
         hosted_link: {
