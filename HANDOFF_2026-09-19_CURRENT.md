@@ -3,8 +3,8 @@
 **Handoff date:** 2026-09-19  
 **Canonical repository:** `BennyBundles/Thisweekmvp`  
 **Production branch:** `main`  
-**Verified production head:** `c17abce04b3659ac8e41ea5a38a0b05fa38cc5cd`  
-**Successful GitHub Pages workflow:** `35461289435`  
+**Verified functional production head:** `b55f7902782458726b7d61cbbd256f32b89a6f5e`  
+**Successful GitHub Pages workflow:** `35462422467`  
 **Production hosting:** GitHub Pages  
 **Primary production URL:** `https://bennybundles.github.io/Thisweekmvp/`
 
@@ -175,8 +175,9 @@ Verified 2026-09-19:
 - `thisweek-ops-gateway` — ACTIVE, **v6**, JWT + staff RBAC + AAL2
 - `thisweek-support-gateway` — ACTIVE, **v2**, JWT required
 - `thisweek-ops-notifier` — ACTIVE, **v1**, database nonce authentication
+- `thisweek-release-gateway` — ACTIVE, **v1**, JWT + active session + staff RBAC + AAL2
 
-Current Supabase security/performance advisor audit returned no This Week-specific findings.
+Phase 34 security re-audit returned no Phase 34 findings after explicit service-role-only RLS policies were added. The performance advisor reports expected unused-index notices on the new empty Phase 34 tables and also surfaces pre-existing This Week performance notices elsewhere; do not claim the entire project currently has zero advisor findings.
 
 ---
 
@@ -688,7 +689,100 @@ Local Plan export remains in the planner Data Model & Export surface.
 
 ---
 
-## 16. Production release pipeline
+## 16. Phase 34 — Release Evidence & Sandbox Certification
+
+Phase 34 is implemented and the web release was verified on 2026-09-19.
+
+Verified functional production commit:
+
+- `b55f7902782458726b7d61cbbd256f32b89a6f5e`
+
+Verified GitHub Pages workflow:
+
+- `35462422467`
+
+Rollback branch:
+
+- `rollback/phase34-pre-certification-2026-09-19`
+- anchored to `ff3c8cd98d6e03f16cc1aa223e75ab553a2cc3d6`
+
+Added service-only tables:
+
+- `tw_release_certification_requirements`
+- `tw_release_certification_runs`
+- `tw_release_certification_receipts`
+- `tw_release_drill_runs`
+- `tw_release_drill_events`
+- `tw_release_gate_evidence_requirements`
+- `tw_release_gate_evidence`
+
+Evidence/drill history is append-only. Browser roles have no direct table grants or RLS policies; explicit RLS policies are scoped only to `service_role`.
+
+Added release/certification RPCs including:
+
+- `tw_release_start_certification`
+- `tw_release_record_certification_receipt`
+- `tw_release_certification_status`
+- `tw_release_start_drill`
+- `tw_release_finish_drill`
+- `tw_release_gate_evidence_status`
+- `tw_release_record_gate_evidence`
+- `tw_release_readiness_report`
+
+The existing `tw_release_set_gate` is strengthened so `verified=true` fails with:
+
+`release_gate_supporting_evidence_missing`
+
+unless every required supporting evidence condition for that gate is currently satisfied.
+
+Sandbox certification now requires evidence for:
+
+- provider credential preflight
+- Sandbox webhook registration
+- Plaid bank connection
+- Unit onboarding/account
+- ACH funding
+- card issue
+- authorization/hold
+- settlement
+- reversal
+- Pinwheel direct-deposit switch
+- Method dev bill payment
+- ACH return lifecycle
+- card dispute/refund lifecycle
+- synthetic incident drill
+- rollback validation
+
+Added staff gateway:
+
+- `thisweek-release-gateway` — ACTIVE **v1**
+- JWT required
+- active-session check required
+- AAL2 required
+- role source is server-managed `app_metadata.thisweek_role`
+- support_ops can read readiness
+- risk_ops/admin can manage certification runs and drills
+- admin only can record manual release-gate evidence or change manual gate assertions
+
+Added staff surface:
+
+- `/ops/release/`
+
+The Pages workflow now validates, stages, deploys, and post-deployment verifies this surface.
+
+Phase 34 did **not** fabricate evidence or approve anything:
+
+- certification runs: 0 at completion audit
+- drill runs: 0
+- manual evidence receipts: 0
+- verified release gates: 0 / 11
+- `liveMoneyReady=false`
+
+Production money remains fail-closed.
+
+---
+
+## 17. Production release pipeline
 
 GitHub Pages workflow validates before deployment:
 
@@ -699,6 +793,7 @@ GitHub Pages workflow validates before deployment:
 - Money Sandbox Lab
 - Account Center
 - Operations Console
+- Release Evidence & Sandbox Certification Console
 - Support Center
 - Sandbox legal fixtures
 
@@ -706,8 +801,8 @@ Then deploys and performs exact post-deployment verification.
 
 Latest verified workflow:
 
-- Run: `35461289435`
-- Head: `c17abce04b3659ac8e41ea5a38a0b05fa38cc5cd`
+- Run: `35462422467`
+- Head: `b55f7902782458726b7d61cbbd256f32b89a6f5e`
 - Validation: SUCCESS
 - Deployment: SUCCESS
 - Verify deployed release: SUCCESS
@@ -716,7 +811,7 @@ Never claim a newer commit is deployed until its workflow and Verify deployed re
 
 ---
 
-## 17. Current release posture
+## 18. Current release posture
 
 ### Planning-only public product
 
@@ -734,7 +829,7 @@ What remains is mostly **real-world activation/evidence/configuration**, not ano
 
 ---
 
-## 18. Highest-priority remaining gates
+## 19. Highest-priority remaining gates
 
 Continue in this order unless the user explicitly reprioritizes.
 
@@ -843,30 +938,30 @@ Need approved:
 
 ---
 
-## 19. Suggested next development phase
+## 20. Suggested next work
 
-### Phase 34 recommendation: Release Evidence & Sandbox Certification
+### Phase 34 evidence execution / release-candidate certification
 
-Do not add broad new product features.
+Do not add another broad feature phase yet.
 
-Build an evidence-driven certification layer around what already exists:
+Use the Phase 34 machinery to collect real evidence and close only gates that can actually be proven:
 
-1. Sandbox test-run registry with immutable test receipts.
-2. Per-provider E2E test checklist and pass/fail evidence.
-3. Synthetic incident drill workflow.
-4. Notification delivery verification receipt.
-5. Staff coverage verification view.
-6. Hosted Auth verification evidence fields.
-7. Production gate evidence links/notes.
-8. Release-candidate readiness report generated from actual gate state.
-9. Prevent manual release-gate verification when the supporting derived/test evidence is absent.
-10. Add rollback/drill verification before any real-money beta.
+1. Verify hosted Supabase Auth production settings and record bounded evidence references.
+2. Install real Sandbox credentials for Plaid, Unit, Pinwheel, and Method without exposing them in browser/client state.
+3. Start a Sandbox certification run against an exact release-candidate SHA.
+4. Execute the complete provider/money chain and record pass/fail receipts for every requirement.
+5. Run and record a synthetic incident drill.
+6. Run and record rollback validation.
+7. Provision named least-privilege admin, risk_ops, and support_ops coverage.
+8. Configure and test an approved external critical-notification destination.
+9. Collect actual provider/program, legal, retention, risk, runbook, webhook, and cost approvals.
+10. Verify a release gate only after `tw_release_gate_evidence_status(...).ready=true`.
 
-The point of Phase 34 should be to convert “implemented” into “proven.”
+The largest remaining blockers are evidence, credentials, configuration, staffing, commercial approval, and operational proof—not missing conceptual architecture. Keep production money locked until the server interlock itself returns `liveMoneyReady=true`.
 
 ---
 
-## 20. Rollback / historical anchors
+## 21. Rollback / historical anchors
 
 Important known rollback anchors:
 
@@ -877,15 +972,19 @@ Important known rollback anchors:
 - pre-Phase 24: `0f1fb9df2cbcfbba40bd0232035d6ffa121d42a0`
 - pre-Phase 26: `7d3f509cf2abcc88b698d2f03da5eae86d2f5800`
 
-Current verified production head:
+Current verified functional production head:
 
-`c17abce04b3659ac8e41ea5a38a0b05fa38cc5cd`
+`b55f7902782458726b7d61cbbd256f32b89a6f5e`
+
+Phase 34 rollback branch:
+
+`rollback/phase34-pre-certification-2026-09-19` → `ff3c8cd98d6e03f16cc1aa223e75ab553a2cc3d6`
 
 Before any major new phase, create a fresh rollback branch from the exact current verified head.
 
 ---
 
-## 21. Tool / workflow rules for the next ChatGPT session
+## 22. Tool / workflow rules for the next ChatGPT session
 
 The user expects implementation, not just advice.
 
@@ -936,6 +1035,6 @@ Do not set/claim production provider execution until Phase 31 release interlock 
 
 ---
 
-## 22. One-line continuation instruction for the next chat
+## 23. One-line continuation instruction for the next chat
 
-> Continue managing and implementing **This Week** from verified production commit `c17abce04b3659ac8e41ea5a38a0b05fa38cc5cd`. Read `HANDOFF_2026-09-19_CURRENT.md`, inspect the live repo/Supabase state, and continue with **Phase 34: Release Evidence & Sandbox Certification** unless I explicitly redirect you. Preserve all release interlocks, plan-vs-money semantics, RLS, append-only financial history, and the zero-budget constraint. Do not claim live money readiness until the actual server release gates say `liveMoneyReady=true`.
+> Continue managing and implementing **This Week** from verified functional production commit `b55f7902782458726b7d61cbbd256f32b89a6f5e`. Read `HANDOFF_2026-09-19_CURRENT.md`, inspect the live repo/Supabase state, and continue **Phase 34 evidence execution / Sandbox certification** unless I explicitly redirect you. Preserve all release interlocks, plan-vs-money semantics, RLS, append-only financial history, and the zero-budget constraint. Do not verify a release gate without supporting Phase 34 evidence, and do not claim live money readiness until the actual server release interlock says `liveMoneyReady=true`.
