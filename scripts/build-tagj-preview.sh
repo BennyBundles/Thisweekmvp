@@ -11,4 +11,4 @@ cp tagj-assets/intro/* .tagj-dist/tagj-assets/intro/
 cp tagj-data/* .tagj-dist/tagj-data/
 cp legal/* .tagj-dist/legal/
 
-printf 'V15.9' > .tagj-dist/VERSION.txt
+printf 'V15.10' > .tagj-dist/VERSION.txt
