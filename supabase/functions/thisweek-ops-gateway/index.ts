@@ -41,11 +41,12 @@ function json(origin:string|null,status:number,body:AnyRecord){
     status,headers:{...cors(origin),"Content-Type":"application/json; charset=utf-8"}
   });
 }
-async function activeSession(admin:ReturnType<typeof createClient>,userId:string,token:string){
+async function activeSession(admin:ReturnType<typeof createClient>,userId:string,token:string):Promise<string>{
   const sid=validUuid(decodePayload(token).session_id);
   if(!sid)throw new Error("active_session_required");
   const {data,error}=await admin.rpc("tw_auth_session_active",{p_user_id:userId,p_session_id:sid});
   if(error||data!==true)throw new Error("session_revoked");
+  return sid;
 }
 function staffRole(user:AnyRecord):string{
   const app=user.app_metadata&&typeof user.app_metadata==="object"?user.app_metadata as AnyRecord:{};
@@ -92,7 +93,7 @@ function buildHealth(
 }
 async function dashboard(admin:ReturnType<typeof createClient>){
   const failureSince=new Date(Date.now()-15*60*1000).toISOString();
-  const [alerts,cases,reviews,riskEvents,staffActions,supportRequests,supportMessages,incidents,slaPolicy,providerFailures,healthSnapshots,monitorRuns,notifications,notificationChannel,releaseStatus]=await Promise.all([
+  const [alerts,cases,reviews,riskEvents,staffActions,supportRequests,supportMessages,incidents,slaPolicy,providerFailures,healthSnapshots,monitorRuns,notifications,notificationChannel,releaseStatus,legalDocs,retentionPolicies,retentionStatus,sensitiveAccess]=await Promise.all([
     admin.from("tw_ops_alerts")
       .select("id,user_id,case_id,risk_review_id,alert_type,severity,state,safe_detail,created_at,updated_at,acknowledged_at")
       .neq("state","resolved").order("created_at",{ascending:false}).limit(100),
@@ -136,8 +137,18 @@ async function dashboard(admin:ReturnType<typeof createClient>){
       .select("channel_key,configured,state,last_check_at,last_success_at,last_error_code,updated_at")
       .eq("channel_key","external_webhook").maybeSingle(),
     admin.rpc("tw_release_status"),
+    admin.from("tw_legal_documents")
+      .select("id,environment,document_key,document_type,version,title,public_path,content_sha256,required_for_money,active,approved_for_use,approved_at,evidence_ref,effective_at,updated_at")
+      .eq("environment","production").order("document_key").order("version",{ascending:false}),
+    admin.from("tw_retention_policies")
+      .select("id,environment,policy_version,data_class,retention_days,disposition,active,approved_for_use,approved_at,evidence_ref,note,updated_at")
+      .eq("environment","production").order("data_class").order("policy_version",{ascending:false}),
+    admin.rpc("tw_retention_status",{p_environment:"production"}),
+    admin.from("tw_sensitive_access_events")
+      .select("id,staff_user_id,staff_role,session_id,action,resource_type,resource_ref,subject_user_id,data_classes,reason_code,created_at")
+      .order("id",{ascending:false}).limit(100),
   ]);
-  if(alerts.error||cases.error||reviews.error||riskEvents.error||staffActions.error||supportRequests.error||supportMessages.error||incidents.error||slaPolicy.error||providerFailures.error||healthSnapshots.error||monitorRuns.error||notifications.error||notificationChannel.error||releaseStatus.error)throw new Error("ops_dashboard_read_failed");
+  if(alerts.error||cases.error||reviews.error||riskEvents.error||staffActions.error||supportRequests.error||supportMessages.error||incidents.error||slaPolicy.error||providerFailures.error||healthSnapshots.error||monitorRuns.error||notifications.error||notificationChannel.error||releaseStatus.error||legalDocs.error||retentionPolicies.error||retentionStatus.error||sensitiveAccess.error)throw new Error("ops_dashboard_read_failed");
   const eventById=new Map((riskEvents.data||[]).map((e:AnyRecord)=>[String(e.id),e]));
   const supportRows=supportRequests.data||[];
   const supportIds=new Set(supportRows.map((x:AnyRecord)=>String(x.id)));
@@ -172,6 +183,12 @@ async function dashboard(admin:ReturnType<typeof createClient>){
     health,
     automatedMonitor,
     releaseStatus:releaseStatus.data||null,
+    legalRetention:{
+      documents:legalDocs.data||[],
+      policies:retentionPolicies.data||[],
+      retentionStatus:retentionStatus.data||null,
+      recentSensitiveAccess:sensitiveAccess.data||[]
+    },
     recentProviderFailures:providerFailures.data||[],
     recentStaffActions:staffActions.data||[],
   };
@@ -203,8 +220,9 @@ Deno.serve(async(req)=>{
   if(!STAFF_ROLES.has(role))return json(origin,403,{error:"staff_role_required"});
 
   const admin=createClient(SUPABASE_URL,SERVICE_KEY,{auth:{persistSession:false,autoRefreshToken:false}});
+  let staffSessionId:string|null=null;
   try{
-    await activeSession(admin,String(user.id),token);
+    staffSessionId=await activeSession(admin,String(user.id),token);
     await requireAal2(userClient);
   }catch(error){
     const code=safeText((error as Error)?.message||"staff_session_invalid",100);
@@ -216,6 +234,21 @@ Deno.serve(async(req)=>{
   const action=safeText(body.action,80);
 
   try{
+    if(action==="status"||action==="dashboard"){
+      const access=await admin.rpc("tw_sensitive_access_record",{
+        p_staff_user_id:String(user.id),
+        p_staff_role:role,
+        p_session_id:staffSessionId,
+        p_action:action==="dashboard"?"ops_dashboard_view":"ops_status_view",
+        p_resource_type:"ops_console",
+        p_resource_ref:action,
+        p_subject_user_id:null,
+        p_data_classes:["support_records","ops_records","provider_events","staff_access"],
+        p_reason_code:"staff_operational_access",
+        p_safe_detail:{surface:"ops_console"}
+      });
+      if(access.error)throw new Error("sensitive_access_audit_failed");
+    }
     if(action==="status"){
       const data=await dashboard(admin);
       return json(origin,200,{
@@ -236,12 +269,51 @@ Deno.serve(async(req)=>{
           externalChannelConfigured:data.automatedMonitor?.externalChannelConfigured===true,
           notificationChannel:data.automatedMonitor?.notificationChannel||null
         },
-        releaseStatus:data.releaseStatus||null
+        releaseStatus:data.releaseStatus||null,
+        legalRetention:{
+          productionRetentionReady:data.legalRetention?.retentionStatus?.ready===true,
+          productionLegalSetActive:data.releaseStatus?.productionLegalSetActive===true,
+          sensitiveAccessAuditActive:data.releaseStatus?.sensitiveAccessAuditActive===true
+        }
       });
     }
     if(action==="dashboard"){
       const data=await dashboard(admin);
       return json(origin,200,{ok:true,staff:{userId:String(user.id),email:safeText(user.email,320)||null,role},...data});
+    }
+    if(action==="set_legal_document_state"){
+      if(role!=="admin")return json(origin,403,{error:"admin_role_required"});
+      const documentId=validUuid(body.documentId);
+      const evidenceRef=safeText(body.evidenceRef,500);
+      const note=safeText(body.note,1000);
+      if(!documentId||typeof body.active!=="boolean"||typeof body.approvedForUse!=="boolean"||evidenceRef.length<3)throw new Error("legal_document_fields_required");
+      const {data,error}=await admin.rpc("tw_legal_set_document_state",{
+        p_staff_user_id:String(user.id),
+        p_document_id:documentId,
+        p_active:body.active,
+        p_approved_for_use:body.approvedForUse,
+        p_evidence_ref:evidenceRef,
+        p_note:note||null
+      });
+      if(error)throw new Error(safeText(error.message,120)||"legal_document_update_failed");
+      return json(origin,200,{ok:true,result:data,releaseStatus:(await admin.rpc("tw_release_status")).data||null});
+    }
+    if(action==="set_retention_policy_state"){
+      if(role!=="admin")return json(origin,403,{error:"admin_role_required"});
+      const policyId=validUuid(body.policyId);
+      const evidenceRef=safeText(body.evidenceRef,500);
+      const note=safeText(body.note,1000);
+      if(!policyId||typeof body.active!=="boolean"||typeof body.approvedForUse!=="boolean"||evidenceRef.length<3)throw new Error("retention_policy_fields_required");
+      const {data,error}=await admin.rpc("tw_retention_set_policy_state",{
+        p_staff_user_id:String(user.id),
+        p_policy_id:policyId,
+        p_active:body.active,
+        p_approved_for_use:body.approvedForUse,
+        p_evidence_ref:evidenceRef,
+        p_note:note||null
+      });
+      if(error)throw new Error(safeText(error.message,120)||"retention_policy_update_failed");
+      return json(origin,200,{ok:true,result:data,releaseStatus:(await admin.rpc("tw_release_status")).data||null});
     }
     if(action==="set_release_gate"){
       if(role!=="admin")return json(origin,403,{error:"admin_role_required"});
