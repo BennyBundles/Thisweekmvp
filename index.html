@@ -488,6 +488,8 @@ html.intro-resume-v151 .home-footer{opacity:1!important;animation:none!important
   const resume=p.get('resume')==='1';
   const deep=!!location.hash&&location.hash!=='#home'&&location.hash!=='#replay-intro';
   const seen=sessionStorage.getItem('tagjIntroSeenV153')==='1';
+  const seenAt=Number(localStorage.getItem('tagjIntroSeenV155At')||0);
+  const recentSeen=seenAt>0 && (Date.now()-seenAt)<45*60*1000;
   let fromWorld=false;
   try{
     const ref=document.referrer?new URL(document.referrer):null;
@@ -495,7 +497,7 @@ html.intro-resume-v151 .home-footer{opacity:1!important;animation:none!important
   }catch(_){}
   // Fresh top-level visits show the cinematic intro again. Only an in-session
   // return from the ecosystem, a deep link, or an explicit resume skips it.
-  if(!force&&(resume||deep||seen||fromWorld))document.documentElement.classList.add('intro-resume-v151');
+  if(!force&&(resume||deep||seen||recentSeen||fromWorld))document.documentElement.classList.add('intro-resume-v151');
 }catch(_){}})();
 </script>
 </head>
@@ -912,11 +914,13 @@ html.intro-resume-v151 .home-footer{opacity:1!important;animation:none!important
   function markIntroSeen(hideGate=true){
     window.__TAGJ_INTRO_SEEN=true;
     try{sessionStorage.setItem(INTRO_SESSION_KEY,'1')}catch(_){}
+    try{localStorage.setItem('tagjIntroSeenV155At',String(Date.now()))}catch(_){}
     if(hideGate)document.documentElement.classList.add('intro-resume-v151');
   }
   function clearIntroSeen(){
     window.__TAGJ_INTRO_SEEN=false;
     try{sessionStorage.removeItem(INTRO_SESSION_KEY)}catch(_){}
+    try{localStorage.removeItem('tagjIntroSeenV155At')}catch(_){}
     document.documentElement.classList.remove('intro-resume-v151');
   }
   function completeIntroState(){
