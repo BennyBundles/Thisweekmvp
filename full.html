@@ -1026,7 +1026,58 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
  const scopeChecks=()=>qa('#v142ScopeList input:checked');
  function updateScope(){
    const checked=scopeChecks(), total=checked.reduce((n,x)=>n+Number(x.value||0),0), labels=checked.map(x=>x.dataset.label);
-   q('#v142ScopeTotal').textContent='</html>+total+(checked.some(x=>['35','150'].includes(x.value))?'+':'');
+   q('#v142ScopeTotal').textContent='
+   q('#v142ScopeSummary').textContent=checked.length?labels.join(' + ')+' — starting subtotal only; final scope and any bundle savings require configuration.':'Choose services to create a release scope. Bundle savings are intentionally not applied until a real package price is configured.';
+ }
+ qa('#v142ScopeList input').forEach(x=>x.addEventListener('change',updateScope));updateScope();
+ q('#v142PrepareCreative')?.addEventListener('click',()=>{
+   const checked=scopeChecks(),total=checked.reduce((n,x)=>n+Number(x.value||0),0);
+   openPrepared('TAGJ CREATIVE — RELEASE SCOPE',['Selected services: '+(checked.map(x=>x.dataset.label).join(', ')||'None selected'),'Starting subtotal reference: ,'Bundle discount: not configured']);
+ });
+ // V14.2 mobile depth dock
+ const dock=document.createElement('nav');dock.className='v142-depth-dock';dock.id='v142DepthDock';document.body.appendChild(dock);
+ const dockMap={
+  tagj:[['House','#tagj-house-map'],['Lab','#tagj-product-lab'],['Registry','#tagj-concept-registry-v142'],['Custom','#tagj-custom']],
+  artist:[['Artist','#artist'],['Archive','#artist-release-console'],['Vault','#artist-release-vault-v142'],['Request','#artist-request-deep']],
+  producer:[['Console','#producer'],['Beat Lab','#producer-beat-lab-v14'],['Matrix','#producer-service-matrix-v142'],['Request','#producer-request']],
+  creative:[['Visual Lab','#creative'],['Campaign','#creative-campaign-lab-v14'],['Scope','#creative-scope-builder-v142'],['Inquiry','#creative-inquiry']]
+ };
+ function refreshDock(){const w=document.body.dataset.currentWorld||'';dock.innerHTML=(dockMap[w]||[]).map(x=>'<a href="'+x[1]+'">'+x[0]+'</a>').join('');dock.style.display=(innerWidth<=620&&dockMap[w])?'flex':'none';}
+ addEventListener('hashchange',()=>setTimeout(refreshDock,30));addEventListener('resize',refreshDock,{passive:true});setTimeout(refreshDock,80);
+})();
+</script></body></html>+total+(checked.some(x=>['35','150'].includes(x.value))?'+':'');
+   q('#v142ScopeSummary').textContent=checked.length?labels.join(' + ')+' — starting subtotal only; final scope and any bundle savings require configuration.':'Choose services to create a release scope. Bundle savings are intentionally not applied until a real package price is configured.';
+ }
+ qa('#v142ScopeList input').forEach(x=>x.addEventListener('change',updateScope));updateScope();
+ q('#v142PrepareCreative')?.addEventListener('click',()=>{
+   const checked=scopeChecks(),total=checked.reduce((n,x)=>n+Number(x.value||0),0);
+   openPrepared('TAGJ CREATIVE — RELEASE SCOPE',['Selected services: '+(checked.map(x=>x.dataset.label).join(', ')||'None selected'),'Starting subtotal reference: </html>+total+(checked.some(x=>['35','150'].includes(x.value))?'+':''),'Bundle discount: not configured']);
+ });
+ // V14.2 mobile depth dock
+ const dock=document.createElement('nav');dock.className='v142-depth-dock';dock.id='v142DepthDock';document.body.appendChild(dock);
+ const dockMap={
+  tagj:[['House','#tagj-house-map'],['Lab','#tagj-product-lab'],['Registry','#tagj-concept-registry-v142'],['Custom','#tagj-custom']],
+  artist:[['Artist','#artist'],['Archive','#artist-release-console'],['Vault','#artist-release-vault-v142'],['Request','#artist-request-deep']],
+  producer:[['Console','#producer'],['Beat Lab','#producer-beat-lab-v14'],['Matrix','#producer-service-matrix-v142'],['Request','#producer-request']],
+  creative:[['Visual Lab','#creative'],['Campaign','#creative-campaign-lab-v14'],['Scope','#creative-scope-builder-v142'],['Inquiry','#creative-inquiry']]
+ };
+ function refreshDock(){const w=document.body.dataset.currentWorld||'';dock.innerHTML=(dockMap[w]||[]).map(x=>'<a href="'+x[1]+'">'+x[0]+'</a>').join('');dock.style.display=(innerWidth<=620&&dockMap[w])?'flex':'none';}
+ addEventListener('hashchange',()=>setTimeout(refreshDock,30));addEventListener('resize',refreshDock,{passive:true});setTimeout(refreshDock,80);
+})();
+</script></body></html>+total+(checked.some(x=>['35','150'].includes(x.value))?'+':''),'Bundle discount: not configured']);
+ });
+ // V14.2 mobile depth dock
+ const dock=document.createElement('nav');dock.className='v142-depth-dock';dock.id='v142DepthDock';document.body.appendChild(dock);
+ const dockMap={
+  tagj:[['House','#tagj-house-map'],['Lab','#tagj-product-lab'],['Registry','#tagj-concept-registry-v142'],['Custom','#tagj-custom']],
+  artist:[['Artist','#artist'],['Archive','#artist-release-console'],['Vault','#artist-release-vault-v142'],['Request','#artist-request-deep']],
+  producer:[['Console','#producer'],['Beat Lab','#producer-beat-lab-v14'],['Matrix','#producer-service-matrix-v142'],['Request','#producer-request']],
+  creative:[['Visual Lab','#creative'],['Campaign','#creative-campaign-lab-v14'],['Scope','#creative-scope-builder-v142'],['Inquiry','#creative-inquiry']]
+ };
+ function refreshDock(){const w=document.body.dataset.currentWorld||'';dock.innerHTML=(dockMap[w]||[]).map(x=>'<a href="'+x[1]+'">'+x[0]+'</a>').join('');dock.style.display=(innerWidth<=620&&dockMap[w])?'flex':'none';}
+ addEventListener('hashchange',()=>setTimeout(refreshDock,30));addEventListener('resize',refreshDock,{passive:true});setTimeout(refreshDock,80);
+})();
+</script></body></html>+total+(checked.some(x=>['35','150'].includes(x.value))?'+':'');
    q('#v142ScopeSummary').textContent=checked.length?labels.join(' + ')+' — starting subtotal only; final scope and any bundle savings require configuration.':'Choose services to create a release scope. Bundle savings are intentionally not applied until a real package price is configured.';
  }
  qa('#v142ScopeList input').forEach(x=>x.addEventListener('change',updateScope));updateScope();
