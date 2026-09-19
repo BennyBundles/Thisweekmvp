@@ -2,8 +2,9 @@
 
 **Contract version:** 1  
 **Phase:** 13  
-**Current production runtime:** Browser-local / no active backend  
-**Phase 19:** Dedicated provider-backend source staged; network activation disabled
+**Current production client runtime:** Browser-local Plan; browser network activation disabled  
+**Phase 19:** Provider backend provisioned in shared Supabase project; institution activation disabled  
+**Phase 20:** Money backend foundation provisioned; money execution disabled
 
 This contract defines the boundary between the existing browser-local product and a future server implementation. It does not enable cloud sync today.
 
@@ -240,18 +241,16 @@ Phase 19 implements the source architecture for a dedicated financial-provider d
 The production browser remains deny-by-default:
 
 - live provider enabled: false;
-- backend origin: empty;
+- backend origin: provisioned but not browser-allowlisted;
 - provider credentials: absent from client;
 - `connect-src 'none'`;
 - no browser `fetch()` provider path.
 
 This means the current release is **provider-ready source**, not an active institution connection.
 
-### Dedicated project requirement
+### Shared-project isolation
 
-The provider plane must use a dedicated This Week backend project.
-
-It must not reuse a generic shared backend containing unrelated application data or services.
+The user selected the existing BennyBundles’s Project after the Supabase free organization reached its active-project limit. This Week resources are isolated by `tw_provider_*` / `tw_money_*` namespaces, RLS, revoked browser grants, server-only secret boundaries, and dedicated JWT-protected Edge Functions.
 
 ### Server provider entities
 
@@ -381,10 +380,10 @@ Phase 19 adds a server conflict entity so future provider/backend conflicts rema
 
 The next activation step is infrastructure provisioning, not another client-only feature:
 
-1. provision a dedicated backend project;
+1. use the provisioned shared backend with This Week isolation controls;
 2. configure recoverable Auth;
-3. apply the provider schema;
-4. deploy the JWT-protected gateway;
+3. retain the applied provider schema;
+4. retain the JWT-protected gateway;
 5. configure server-only provider credentials;
 6. verify Sandbox consent/connect/sync/disconnect;
 7. run security/RLS/advisor checks;
@@ -412,3 +411,67 @@ Backend readiness has therefore advanced from `staged_not_active` to `backend_pr
 Live-provider readiness is still incomplete because recoverable Auth and provider credentials are not yet configured and client network access remains denied by CSP.
 
 The Plan remains browser-local and provider data remains supplemental/reference data until explicit reconciliation.
+
+
+## Phase 20 money-layer readiness
+
+Phase 20 adds actual accounting and money-movement domain models without activating live money.
+
+### Current state
+
+- 20 `tw_money_*` server tables are deployed.
+- RLS is enabled on all 20.
+- direct browser-role table access is revoked.
+- `thisweek-money-gateway` is deployed with JWT verification.
+- provider execution mode is disabled.
+- the production browser remains `connect-src 'none'`.
+- the sandbox direct-deposit reward template is inactive.
+- no real transfer, bill payment, deposit account or card is active.
+
+### Source-of-truth split
+
+The weekly Plan remains authoritative for planning.
+
+The server money ledger becomes authoritative only for actual custody/accounting events once providers are activated.
+
+Planning and money states must never be silently conflated.
+
+### Ledger contract
+
+Server money postings:
+
+- use integer cents;
+- are balanced double-entry journals;
+- are idempotent;
+- are append-only;
+- use compensating entries for reversals/corrections;
+- reject allocation moves with insufficient source balance.
+
+### Gateway contract
+
+The authenticated money gateway may eventually execute:
+
+- account/bootstrap and ledger summaries;
+- sandbox cash credits;
+- money-envelope allocations;
+- direct-deposit switch creation;
+- virtual-card issuance;
+- bill-payment authorization/submission.
+
+Anonymous auth is rejected.
+
+Production provider actions require stronger authentication/MFA and explicit production execution flags.
+
+### Remaining gates
+
+1. recoverable Auth;
+2. MFA UX / AAL2 enforcement;
+3. provider sandbox credentials;
+4. Unit onboarding/account flow;
+5. Plaid funding-account bridge;
+6. verified provider webhooks;
+7. card authorization + hold/settlement controller;
+8. Method/Pinwheel discovery/link UX;
+9. end-to-end sandbox tests;
+10. exact CSP/CORS allowlist;
+11. production provider/program approvals and cost approval.
