@@ -13,6 +13,9 @@ const PINWHEEL_BASE_URL = (Deno.env.get("PINWHEEL_BASE_URL") || "https://api.get
 const METHOD_API_KEY = Deno.env.get("METHOD_API_KEY") || "";
 const METHOD_BASE_URL = (Deno.env.get("METHOD_BASE_URL") || "https://dev.methodfi.com").replace(/\/$/, "");
 const METHOD_VERSION = Deno.env.get("METHOD_VERSION") || "2025-12-01";
+const PLAID_CLIENT_ID = Deno.env.get("PLAID_CLIENT_ID") || "";
+const PLAID_SECRET = Deno.env.get("PLAID_SECRET") || "";
+const PLAID_BASE_URL = (Deno.env.get("PLAID_BASE_URL") || "https://sandbox.plaid.com").replace(/\/$/, "");
 
 const MONEY_EXECUTION_MODE = Deno.env.get("THISWEEK_MONEY_EXECUTION_MODE") || "disabled";
 const LIVE_MONEY_ENABLED = Deno.env.get("THISWEEK_LIVE_MONEY_ENABLED") === "true";
@@ -66,10 +69,11 @@ function providerFlags() {
     unit: !!UNIT_API_TOKEN,
     pinwheel: !!PINWHEEL_API_SECRET,
     method: !!METHOD_API_KEY,
+    plaid: !!PLAID_CLIENT_ID && !!PLAID_SECRET,
   };
 }
 
-function canExecuteProvider(name: "unit" | "pinwheel" | "method"): boolean {
+function canExecuteProvider(name: "unit" | "pinwheel" | "method" | "plaid"): boolean {
   const flags = providerFlags();
   if (!flags[name]) return false;
   if (MONEY_EXECUTION_MODE === "sandbox") return true;
@@ -90,6 +94,502 @@ async function parseResponse(res: Response): Promise<AnyRecord> {
     throw new Error(message || "provider_request_failed");
   }
   return body as AnyRecord;
+}
+
+
+async function plaidPost(path: string, payload: AnyRecord): Promise<AnyRecord> {
+  if (!canExecuteProvider("plaid")) throw new Error("plaid_not_configured");
+  const res = await fetch(PLAID_BASE_URL + path, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "PLAID-CLIENT-ID": PLAID_CLIENT_ID,
+      "PLAID-SECRET": PLAID_SECRET,
+      "Plaid-Version": "2020-09-14",
+    },
+    body: JSON.stringify(payload),
+  });
+  return parseResponse(res);
+}
+
+async function vaultRead(admin: ReturnType<typeof createClient>, id: string): Promise<string> {
+  const { data, error } = await admin.rpc("tw_vault_read", { p_secret_id: id });
+  if (error || !data) throw new Error("provider_token_missing");
+  return String(data);
+}
+
+function relationshipId(resource: AnyRecord, name: string): string {
+  const relationships = resource.relationships && typeof resource.relationships === "object"
+    ? resource.relationships as AnyRecord : {};
+  const rel = relationships[name] && typeof relationships[name] === "object"
+    ? relationships[name] as AnyRecord : {};
+  const data = rel.data && typeof rel.data === "object" ? rel.data as AnyRecord : {};
+  return safeText(data.id, 180);
+}
+
+function unitStatusToOnboarding(status: string): string {
+  const s = status.toLowerCase();
+  if (s === "approved") return "approved";
+  if (s === "denied") return "rejected";
+  if (s === "canceled" || s === "cancelled") return "closed";
+  if (s === "pendingreview" || s === "pending") return "submitted";
+  if (s === "awaitingdocuments") return "identity_required";
+  return "submitted";
+}
+
+async function syntheticSandboxSsn(userId: string): Promise<string> {
+  const digest = new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(userId)));
+  let digits = "7";
+  for (let i = 0; i < 8; i++) digits += String(digest[i] % 10);
+  return digits;
+}
+
+async function createUnitSandboxApplication(
+  admin: ReturnType<typeof createClient>,
+  userId: string,
+) {
+  if (MONEY_EXECUTION_MODE !== "sandbox") throw new Error("sandbox_action_disabled");
+  if (!canExecuteProvider("unit")) throw new Error("unit_not_configured");
+
+  await bootstrapMoney(admin, userId);
+  const { data: existing } = await admin.from("tw_money_customers")
+    .select("id,provider_application_id,provider_customer_id,onboarding_state,provider_application_status")
+    .eq("user_id", userId).maybeSingle();
+  if (existing?.provider_application_id) {
+    return {
+      moneyCustomerId: existing.id,
+      applicationId: existing.provider_application_id,
+      customerId: existing.provider_customer_id,
+      onboardingState: existing.onboarding_state,
+      providerStatus: existing.provider_application_status,
+      reused: true,
+    };
+  }
+
+  const compact = userId.replace(/-/g, "");
+  const ssn = await syntheticSandboxSsn(userId);
+  const phoneTail = compact.slice(-7).replace(/[a-f]/gi, (c) => String((c.toLowerCase().charCodeAt(0) - 87) % 10));
+  const providerEmail = "sandbox+" + compact.slice(0, 12) + "@example.com";
+
+  const unit = await unitRequest("/applications", {
+    method: "POST",
+    body: JSON.stringify({
+      data: {
+        type: "individualApplication",
+        attributes: {
+          ssn,
+          fullName: { first: "Thisweek", last: "Sandbox" },
+          dateOfBirth: "2001-08-10",
+          address: {
+            street: "20 Ingram St",
+            city: "Forest Hills",
+            state: "NY",
+            postalCode: "11375",
+            country: "US",
+          },
+          email: providerEmail,
+          phone: { countryCode: "1", number: "555" + phoneTail.padStart(7, "0").slice(-7) },
+          occupation: "ArchitectOrEngineer",
+          annualIncome: "Between50kAnd100k",
+          sourceOfIncome: "EmploymentOrPayrollIncome",
+          tags: { thisweekUserId: userId, environment: "sandbox" },
+          idempotencyKey: "tw-unit-app-" + userId,
+        },
+      },
+    }),
+  });
+
+  const data = unit.data && typeof unit.data === "object" ? unit.data as AnyRecord : {};
+  const attrs = data.attributes && typeof data.attributes === "object" ? data.attributes as AnyRecord : {};
+  const applicationId = safeText(data.id, 180);
+  const providerStatus = safeText(attrs.status, 80) || "Submitted";
+  const customerId = relationshipId(data, "customer") || null;
+  if (!applicationId) throw new Error("unit_application_invalid");
+
+  const update = await admin.from("tw_money_customers").update({
+    banking_provider: "unit",
+    provider_application_id: applicationId,
+    provider_application_status: providerStatus,
+    provider_customer_id: customerId,
+    onboarding_state: unitStatusToOnboarding(providerStatus),
+    kyc_state: providerStatus.toLowerCase() === "approved" ? "verified" : "pending",
+    updated_at: new Date().toISOString(),
+  }).eq("user_id", userId)
+    .select("id,provider_application_id,provider_customer_id,onboarding_state,provider_application_status")
+    .single();
+  if (update.error || !update.data) throw new Error("unit_application_store_failed");
+
+  return {
+    moneyCustomerId: update.data.id,
+    applicationId,
+    customerId,
+    onboardingState: update.data.onboarding_state,
+    providerStatus,
+    reused: false,
+  };
+}
+
+async function refreshUnitApplication(
+  admin: ReturnType<typeof createClient>,
+  userId: string,
+) {
+  if (!canExecuteProvider("unit")) throw new Error("unit_not_configured");
+  const { data: row } = await admin.from("tw_money_customers")
+    .select("id,provider_application_id").eq("user_id", userId).maybeSingle();
+  if (!row?.provider_application_id) throw new Error("unit_application_not_found");
+
+  const unit = await unitRequest("/applications/" + encodeURIComponent(row.provider_application_id));
+  const data = unit.data && typeof unit.data === "object" ? unit.data as AnyRecord : {};
+  const attrs = data.attributes && typeof data.attributes === "object" ? data.attributes as AnyRecord : {};
+  const status = safeText(attrs.status, 80) || "Submitted";
+  const customerId = relationshipId(data, "customer") || null;
+
+  const update = await admin.from("tw_money_customers").update({
+    banking_provider: "unit",
+    provider_application_status: status,
+    provider_customer_id: customerId,
+    onboarding_state: unitStatusToOnboarding(status),
+    kyc_state: status.toLowerCase() === "approved" ? "verified" : status.toLowerCase() === "denied" ? "failed" : "pending",
+    updated_at: new Date().toISOString(),
+  }).eq("user_id", userId)
+    .select("id,provider_application_id,provider_customer_id,onboarding_state,provider_application_status,kyc_state")
+    .single();
+  if (update.error || !update.data) throw new Error("unit_application_refresh_failed");
+  return update.data;
+}
+
+async function createUnitDepositAccount(
+  admin: ReturnType<typeof createClient>,
+  userId: string,
+  requestId: string,
+) {
+  if (!canExecuteProvider("unit")) throw new Error("unit_not_configured");
+  const { data: customer } = await admin.from("tw_money_customers")
+    .select("id,provider_customer_id,onboarding_state")
+    .eq("user_id", userId).maybeSingle();
+  if (!customer?.provider_customer_id || customer.onboarding_state !== "approved") throw new Error("unit_customer_not_ready");
+
+  const { data: existing } = await admin.from("tw_money_deposit_accounts")
+    .select("*").eq("user_id", userId).eq("provider", "unit").neq("status", "closed").maybeSingle();
+  if (existing) return { account: existing, reused: true };
+
+  const unit = await unitRequest("/accounts", {
+    method: "POST",
+    body: JSON.stringify({
+      data: {
+        type: "depositAccount",
+        attributes: {
+          depositProduct: "checking",
+          tags: { purpose: "This Week Cash", thisweekUserId: userId },
+          idempotencyKey: requestId,
+        },
+        relationships: {
+          customer: { data: { type: "individualCustomer", id: customer.provider_customer_id } },
+        },
+      },
+    }),
+  });
+  const data = unit.data && typeof unit.data === "object" ? unit.data as AnyRecord : {};
+  const attrs = data.attributes && typeof data.attributes === "object" ? data.attributes as AnyRecord : {};
+  const providerAccountId = safeText(data.id, 180);
+  if (!providerAccountId) throw new Error("unit_deposit_account_invalid");
+
+  const inserted = await admin.from("tw_money_deposit_accounts").insert({
+    user_id: userId,
+    money_customer_id: customer.id,
+    provider: "unit",
+    provider_account_id: providerAccountId,
+    account_kind: "checking",
+    status: "open",
+    currency: "USD",
+    routing_last4: safeText(attrs.routingNumber, 20).slice(-4) || null,
+    account_last4: safeText(attrs.accountNumber, 40).slice(-4) || null,
+    capabilities: {
+      ach: true,
+      direct_deposit: true,
+      virtual_debit_card: true,
+      sandbox: MONEY_EXECUTION_MODE === "sandbox",
+    },
+    opened_at: new Date().toISOString(),
+  }).select("id,provider,provider_account_id,account_kind,status,currency,routing_last4,account_last4,capabilities")
+    .single();
+  if (inserted.error || !inserted.data) throw new Error("unit_deposit_account_store_failed");
+  return { account: inserted.data, reused: false };
+}
+
+async function sandboxFundUnitAccount(
+  admin: ReturnType<typeof createClient>,
+  userId: string,
+  depositAccountId: string,
+  amountCents: number,
+) {
+  if (MONEY_EXECUTION_MODE !== "sandbox") throw new Error("sandbox_action_disabled");
+  if (!canExecuteProvider("unit")) throw new Error("unit_not_configured");
+  const { data: account } = await admin.from("tw_money_deposit_accounts")
+    .select("id,provider,provider_account_id,status")
+    .eq("id", depositAccountId).eq("user_id", userId).maybeSingle();
+  if (!account || account.provider !== "unit" || account.status !== "open") throw new Error("deposit_account_not_ready");
+
+  const result = await unitRequest("/sandbox/payments", {
+    method: "POST",
+    body: JSON.stringify({
+      data: {
+        type: "achPayment",
+        attributes: {
+          amount: amountCents,
+          direction: "Credit",
+          description: "TWSandbox",
+        },
+        relationships: {
+          account: { data: { type: "depositAccount", id: account.provider_account_id } },
+        },
+      },
+    }),
+  });
+  const data = result.data && typeof result.data === "object" ? result.data as AnyRecord : {};
+  return {
+    providerPaymentId: safeText(data.id, 180) || null,
+    providerStatus: safeText((data.attributes as AnyRecord)?.status, 80) || null,
+    amountCents,
+  };
+}
+
+async function createUnitFundingAccountFromPlaid(
+  admin: ReturnType<typeof createClient>,
+  userId: string,
+  providerAccountRowId: string,
+  requestId: string,
+) {
+  if (!canExecuteProvider("unit") || !canExecuteProvider("plaid")) {
+    throw new Error("plaid_unit_not_configured");
+  }
+
+  const { data: providerAccount } = await admin.from("tw_provider_accounts")
+    .select("id,connection_id,provider_account_id,display_name,subtype,mask")
+    .eq("id", providerAccountRowId).eq("user_id", userId).maybeSingle();
+  if (!providerAccount) throw new Error("provider_account_not_found");
+
+  const { data: connection } = await admin.from("tw_provider_connections")
+    .select("id,vault_secret_id,status")
+    .eq("id", providerAccount.connection_id).eq("user_id", userId).maybeSingle();
+  if (!connection || connection.status !== "active" || !connection.vault_secret_id) {
+    throw new Error("provider_connection_not_ready");
+  }
+
+  const { data: moneyCustomer } = await admin.from("tw_money_customers")
+    .select("provider_customer_id,onboarding_state")
+    .eq("user_id", userId).maybeSingle();
+  if (!moneyCustomer?.provider_customer_id || moneyCustomer.onboarding_state !== "approved") {
+    throw new Error("unit_customer_not_ready");
+  }
+
+  const { data: existing } = await admin.from("tw_money_funding_accounts")
+    .select("*").eq("user_id", userId)
+    .eq("provider_account_row_id", providerAccountRowId)
+    .eq("processor_provider", "unit").maybeSingle();
+  if (existing) return { fundingAccount: existing, reused: true };
+
+  const accessToken = await vaultRead(admin, connection.vault_secret_id);
+  const processor = await plaidPost("/processor/token/create", {
+    access_token: accessToken,
+    account_id: providerAccount.provider_account_id,
+    processor: "unit",
+  });
+  const processorToken = safeText(processor.processor_token, 900);
+  if (!processorToken) throw new Error("plaid_processor_token_invalid");
+
+  const unitCustomer = await unitRequest("/customers/" + encodeURIComponent(moneyCustomer.provider_customer_id));
+  const customerData = unitCustomer.data && typeof unitCustomer.data === "object" ? unitCustomer.data as AnyRecord : {};
+  const customerAttrs = customerData.attributes && typeof customerData.attributes === "object"
+    ? customerData.attributes as AnyRecord : {};
+  const fullName = customerAttrs.fullName && typeof customerAttrs.fullName === "object"
+    ? customerAttrs.fullName as AnyRecord : {};
+  const counterpartyName = safeText(
+    [safeText(fullName.first, 60), safeText(fullName.last, 60)].filter(Boolean).join(" ") || "Thisweek Sandbox",
+    50,
+  );
+
+  const linked = await unitRequest("/counterparties", {
+    method: "POST",
+    body: JSON.stringify({
+      data: {
+        type: "achCounterparty",
+        attributes: {
+          name: counterpartyName,
+          plaidProcessorToken: processorToken,
+          type: "Person",
+          permissions: "CreditAndDebit",
+          verifyName: MONEY_EXECUTION_MODE === "production",
+          tags: { thisweekUserId: userId, providerAccountRowId },
+          idempotencyKey: requestId,
+        },
+        relationships: {
+          customer: { data: { type: "individualCustomer", id: moneyCustomer.provider_customer_id } },
+        },
+      },
+    }),
+  });
+  const linkedData = linked.data && typeof linked.data === "object" ? linked.data as AnyRecord : {};
+  const linkedAttrs = linkedData.attributes && typeof linkedData.attributes === "object"
+    ? linkedData.attributes as AnyRecord : {};
+  const counterpartyId = safeText(linkedData.id, 180);
+  if (!counterpartyId) throw new Error("unit_counterparty_invalid");
+
+  const row = {
+    user_id: userId,
+    provider_connection_id: providerAccount.connection_id,
+    provider_account_row_id: providerAccount.id,
+    verification_provider: "plaid",
+    processor_provider: "unit",
+    processor_reference: counterpartyId,
+    account_kind: safeText(providerAccount.subtype, 40).toLowerCase() === "savings" ? "savings" : "checking",
+    account_last4: safeText(providerAccount.mask, 8).slice(-4) || null,
+    status: "verified",
+    supported_rails: ["ach_debit", "ach_credit"],
+    provider_link_kind: "unit_counterparty",
+    provider_status: safeText(linkedAttrs.status, 80) || "Approved",
+    updated_at: new Date().toISOString(),
+  };
+  const upsert = await admin.from("tw_money_funding_accounts")
+    .upsert(row, { onConflict: "user_id,provider_account_row_id,processor_provider" })
+    .select("id,status,verification_provider,processor_provider,processor_reference,account_kind,account_last4,supported_rails,provider_status")
+    .single();
+  if (upsert.error || !upsert.data) throw new Error("funding_account_store_failed");
+  return { fundingAccount: upsert.data, reused: false };
+}
+
+async function fundUnitFromExternal(
+  admin: ReturnType<typeof createClient>,
+  userId: string,
+  body: AnyRecord,
+) {
+  if (!canExecuteProvider("unit")) throw new Error("unit_not_configured");
+  const fundingAccountId = safeText(body.fundingAccountId, 80);
+  const depositAccountId = safeText(body.depositAccountId, 80);
+  const requestId = safeText(body.clientRequestId, 120);
+  const termsVersion = safeText(body.termsVersion, 80);
+  const consentTextHash = safeText(body.consentTextHash, 180);
+  const amount = moneyInt(body.amountCents, 1, 2_500_000);
+  if (!fundingAccountId || !depositAccountId || !requestId || !termsVersion || !consentTextHash) {
+    throw new Error("funding_request_incomplete");
+  }
+
+  const [funding, deposit] = await Promise.all([
+    admin.from("tw_money_funding_accounts")
+      .select("id,status,processor_provider,processor_reference")
+      .eq("id", fundingAccountId).eq("user_id", userId).maybeSingle(),
+    admin.from("tw_money_deposit_accounts")
+      .select("id,provider,provider_account_id,status")
+      .eq("id", depositAccountId).eq("user_id", userId).maybeSingle(),
+  ]);
+  if (!funding.data || funding.data.status !== "verified" || funding.data.processor_provider !== "unit" || !funding.data.processor_reference) {
+    throw new Error("funding_account_not_verified");
+  }
+  if (!deposit.data || deposit.data.provider !== "unit" || deposit.data.status !== "open") {
+    throw new Error("deposit_account_not_ready");
+  }
+
+  const auth = await admin.from("tw_money_authorizations").insert({
+    user_id: userId,
+    authorization_kind: "ach_debit",
+    terms_version: termsVersion,
+    consent_text_hash: consentTextHash,
+    provider: "unit",
+  }).select("id,accepted_at").single();
+  if (auth.error || !auth.data) throw new Error("funding_authorization_store_failed");
+
+  const result = await unitRequest("/payments", {
+    method: "POST",
+    body: JSON.stringify({
+      data: {
+        type: "achPayment",
+        attributes: {
+          amount,
+          direction: "Debit",
+          description: "TWFUND",
+          verifyCounterpartyBalance: MONEY_EXECUTION_MODE === "production",
+          idempotencyKey: requestId,
+          tags: { thisweekUserId: userId, thisweekTransferKey: requestId },
+        },
+        relationships: {
+          account: { data: { type: "account", id: deposit.data.provider_account_id } },
+          counterparty: { data: { type: "counterparty", id: funding.data.processor_reference } },
+        },
+      },
+    }),
+  });
+  const data = result.data && typeof result.data === "object" ? result.data as AnyRecord : {};
+  const attrs = data.attributes && typeof data.attributes === "object" ? data.attributes as AnyRecord : {};
+  const providerPaymentId = safeText(data.id, 180);
+  if (!providerPaymentId) throw new Error("unit_funding_payment_invalid");
+
+  const transfer = await admin.from("tw_money_transfers").insert({
+    user_id: userId,
+    transfer_type: "funding_in",
+    rail: "ach",
+    source_kind: "external_funding_account",
+    source_ref: funding.data.id,
+    destination_kind: "unit_deposit_account",
+    destination_ref: deposit.data.id,
+    amount_cents: amount,
+    currency: "USD",
+    state: "submitted",
+    authorization_id: auth.data.id,
+    provider: "unit",
+    provider_transfer_id: providerPaymentId,
+    provider_status: safeText(attrs.status, 80) || "Pending",
+    provider_account_id: deposit.data.provider_account_id,
+    idempotency_key: requestId,
+  }).select("id,state,provider_transfer_id,provider_status,amount_cents,created_at").single();
+  if (transfer.error || !transfer.data) throw new Error("funding_transfer_store_failed");
+  return transfer.data;
+}
+
+async function simulateUnitAuthorization(
+  admin: ReturnType<typeof createClient>,
+  userId: string,
+  body: AnyRecord,
+) {
+  if (MONEY_EXECUTION_MODE !== "sandbox") throw new Error("sandbox_action_disabled");
+  if (!canExecuteProvider("unit")) throw new Error("unit_not_configured");
+  const cardId = safeText(body.cardId, 80);
+  const amount = moneyInt(body.amountCents, 1, 5_000_000);
+  const merchantName = safeText(body.merchantName, 80) || "This Week Test";
+  const merchantType = Math.max(1, Math.min(9999, Number(body.merchantType) || 5411));
+  const { data: card } = await admin.from("tw_money_virtual_cards")
+    .select("id,provider,provider_card_id,status").eq("id", cardId).eq("user_id", userId).maybeSingle();
+  if (!card || card.provider !== "unit" || card.status !== "active" || !card.provider_card_id) {
+    throw new Error("card_not_ready");
+  }
+
+  const result = await unitRequest("/sandbox/authorization-requests/purchase", {
+    method: "POST",
+    body: JSON.stringify({
+      data: {
+        type: "purchaseAuthorizationRequest",
+        attributes: {
+          amount,
+          merchantName,
+          merchantType,
+          merchantLocation: "Sandbox",
+          recurring: false,
+          ecommerce: true,
+          cardPresent: false,
+        },
+        relationships: {
+          card: { data: { type: "card", id: card.provider_card_id } },
+        },
+      },
+    }),
+  });
+  const data = result.data && typeof result.data === "object" ? result.data as AnyRecord : {};
+  const attrs = data.attributes && typeof data.attributes === "object" ? data.attributes as AnyRecord : {};
+  return {
+    authorizationRequestId: safeText(data.id, 180) || null,
+    status: safeText(attrs.status, 80) || null,
+    amountCents: Number(attrs.amount || amount),
+    partialApprovalAllowed: attrs.partialApprovalAllowed === true,
+  };
 }
 
 async function unitRequest(path: string, init: RequestInit = {}): Promise<AnyRecord> {
@@ -533,6 +1033,7 @@ Deno.serve(async (req: Request) => {
           unit: canExecuteProvider("unit"),
           pinwheel: canExecuteProvider("pinwheel"),
           method: canExecuteProvider("method"),
+          plaid: canExecuteProvider("plaid"),
         },
         customer: customer.data || null,
         counts: {
@@ -613,6 +1114,53 @@ Deno.serve(async (req: Request) => {
       });
       if (moved.error) throw new Error(safeText(moved.error.message, 120) || "allocation_failed");
       return json(origin, 200, { ok: true, journalId: moved.data });
+    }
+
+
+    if (action === "unit_sandbox_application") {
+      const result = await createUnitSandboxApplication(admin, user.id);
+      return json(origin, 200, { ok: true, application: result });
+    }
+
+    if (action === "unit_application_status") {
+      const result = await refreshUnitApplication(admin, user.id);
+      return json(origin, 200, { ok: true, application: result });
+    }
+
+    if (action === "unit_create_deposit_account") {
+      await requireAal2ForProduction(userClient);
+      const requestId = safeText(body.clientRequestId, 120);
+      if (!requestId) throw new Error("client_request_id_required");
+      const result = await createUnitDepositAccount(admin, user.id, requestId);
+      return json(origin, 200, { ok: true, ...result });
+    }
+
+    if (action === "unit_sandbox_fund") {
+      const depositAccountId = safeText(body.depositAccountId, 80);
+      const amount = moneyInt(body.amountCents, 1, 5_000_000);
+      if (!depositAccountId) throw new Error("deposit_account_id_required");
+      const result = await sandboxFundUnitAccount(admin, user.id, depositAccountId, amount);
+      return json(origin, 200, { ok: true, funding: result });
+    }
+
+    if (action === "plaid_unit_funding_link") {
+      await requireAal2ForProduction(userClient);
+      const providerAccountRowId = safeText(body.providerAccountRowId, 80);
+      const requestId = safeText(body.clientRequestId, 120);
+      if (!providerAccountRowId || !requestId) throw new Error("provider_account_and_request_id_required");
+      const result = await createUnitFundingAccountFromPlaid(admin, user.id, providerAccountRowId, requestId);
+      return json(origin, 200, { ok: true, ...result });
+    }
+
+    if (action === "unit_fund_from_external") {
+      await requireAal2ForProduction(userClient);
+      const result = await fundUnitFromExternal(admin, user.id, body);
+      return json(origin, 200, { ok: true, transfer: result });
+    }
+
+    if (action === "unit_sandbox_authorization") {
+      const result = await simulateUnitAuthorization(admin, user.id, body);
+      return json(origin, 200, { ok: true, simulation: result });
     }
 
     if (action === "direct_deposit_link") {
