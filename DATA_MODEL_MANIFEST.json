@@ -587,7 +587,7 @@
     "status": "customer_support_and_incident_monitoring_deployed",
     "activation": true,
     "supportGateway": "thisweek-support-gateway:v2",
-    "opsGateway": "thisweek-ops-gateway:v2",
+    "opsGateway": "thisweek-ops-gateway:v6",
     "supportCenterPath": "/support/",
     "opsConsolePath": "/ops/",
     "tables": [
@@ -640,7 +640,21 @@
       "formal_customer_support_sla_approval",
       "retention_access_log_policy_approval",
       "provider_bank_escalation_procedures"
-    ]
+    ],
+    "regressionAudit": {
+      "auditedOn": "2026-09-19",
+      "baselineCommit": "6f219b45e552c0d4e23b56266c5f4bef9ce9d844",
+      "phase28TablesWithRls": 5,
+      "directBrowserSupportCreate": false,
+      "serviceRoleSupportCreate": true,
+      "activeInternalSlaPolicies": 1,
+      "activeIncidentsAtAudit": 0,
+      "openSupportRequestsAtAudit": 0,
+      "supportGatewayStatus": "ACTIVE",
+      "opsGatewayStatus": "ACTIVE",
+      "phase28SecurityAdvisorFindings": 0,
+      "phase28PerformanceAdvisorFindings": 0
+    }
   },
   "phase29AutomatedMonitoring": {
     "status": "scheduled_monitor_active_dispatcher_built_channel_unconfigured",
