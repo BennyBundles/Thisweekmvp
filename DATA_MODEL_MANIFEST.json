@@ -287,7 +287,7 @@
     ],
     "deployedFunctions": {
       "providerGateway": "thisweek-provider-gateway:v3",
-      "moneyGateway": "thisweek-money-gateway:v5",
+      "moneyGateway": "thisweek-money-gateway:v6",
       "signedWebhook": "thisweek-money-webhook:v3",
       "unitCardAuthorization": "thisweek-unit-card-authorization:v1"
     },
@@ -324,6 +324,20 @@
       "fraud_limits_and_ach_return_controls",
       "production_provider_approvals",
       "explicit_cost_approval"
-    ]
+    ],
+    "webhookRegistration": {
+      "status": "implemented_credentials_required",
+      "unit": {
+        "generalSubscription": "NotAuthorizationRequest",
+        "authorizationSubscription": "OnlyAuthorizationRequest"
+      },
+      "pinwheelEvents": [
+        "direct_deposit_switch.added",
+        "direct_deposit_allocations.added"
+      ],
+      "methodEvent": "payment.update",
+      "secretsReturnedToClient": false,
+      "idempotency": "list_existing_then_create_missing"
+    }
   }
 }
