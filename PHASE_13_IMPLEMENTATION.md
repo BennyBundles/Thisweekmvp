@@ -348,3 +348,68 @@ Latest Phase 13 application commit:
 `d1d87805acfb1083d45c19335db68ec99f231d62`
 
 This commit adds the future sync contract, schema-manifest export, migration self-tests, portable round-trip test, and integrated readiness suite.
+
+
+## Deterministic snapshot identity and JSON Schema
+
+Phase 13 now also defines a machine-readable JSON Schema for the portable envelope.
+
+The live Data Model & Export screen can export:
+
+- the financial data snapshot;
+- the schema manifest;
+- the portable JSON Schema.
+
+The repository also contains:
+
+- `DATA_MODEL_MANIFEST.json`
+- `PORTABLE_DATA_SCHEMA.json`
+- `BACKEND_READINESS_CONTRACT.md`
+
+### Canonical snapshot serialization
+
+The app now builds a canonical snapshot representation by:
+
+- sorting object keys;
+- sorting entity arrays with stable IDs;
+- excluding the volatile export timestamp from the canonical payload.
+
+This makes repeated serialization of the same normalized financial state deterministic enough to use as an idempotency/change-detection input.
+
+### Snapshot fingerprint
+
+The Data Model route can compute a local fingerprint of the canonical snapshot.
+
+Preferred algorithm:
+
+`SHA-256`
+
+when Web Crypto is available.
+
+Fallback:
+
+`FNV32-fallback`
+
+for non-security change detection only.
+
+The fingerprint is explicitly not:
+
+- an authentication credential;
+- a digital signature;
+- proof that financial data is correct.
+
+It is a stable identifier for the normalized snapshot content.
+
+### Extended readiness suite
+
+The Phase 13 readiness suite now also verifies:
+
+- deterministic canonical serialization;
+- presence of the portable JSON Schema contract;
+- transaction amount fields expressed as integer cents.
+
+### Latest Phase 13 application commit
+
+`5647ddf3dc0d16810e225700f0b3a0792653c6e1`
+
+This extends the Phase 13 completion criteria beyond basic normalization by giving the future backend a formal schema, deterministic snapshot representation, and local snapshot identity mechanism.
