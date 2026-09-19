@@ -214,7 +214,7 @@ requirePhase19FileText('Phase 19 gateway token exchange',phase19Gateway,'/item/p
 requirePhase19FileText('Phase 19 gateway transactions sync',phase19Gateway,'/transactions/sync');
 requirePhase19FileText('Phase 19 gateway provider disconnect',phase19Gateway,'/item/remove');
 requirePhase19FileText('Phase 19 gateway no-store response',phase19Gateway,'"Cache-Control": "no-store"');
-requirePhase19FileText('Phase 19 activation sequence',phase19Readme,'Required activation order');
+requirePhase19FileText('Phase 19 activation sequence',phase19Readme,'Remaining activation gates');
 requirePhase19FileText('Phase 19 shared project isolation rule',phase19Readme,'BennyBundles’s Project');
 
 
