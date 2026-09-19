@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#03070b">
-<title>TAGJ × Benny Bundles — Four-World Navigation V14</title>
+<title>TAGJ × Benny Bundles — Four-World Navigation V15.3</title>
 <style>
 
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#05070a;color:#f6f2e8;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow-x:hidden}a{color:inherit;text-decoration:none}button,input,textarea,select{font:inherit}button{color:inherit}.screen{min-height:100svh;position:relative}.view{display:none;min-height:100svh}.view.active{display:block}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
@@ -481,14 +481,21 @@ html.intro-resume-v151 .center-core,
 html.intro-resume-v151 .home-header,
 html.intro-resume-v151 .home-footer{opacity:1!important;animation:none!important}
 </style>
-<script id="intro-boot-v151">
+<script id="intro-boot-v153">
 (()=>{try{
   const p=new URLSearchParams(location.search);
   const force=p.get('intro')==='1';
   const resume=p.get('resume')==='1';
   const deep=!!location.hash&&location.hash!=='#home'&&location.hash!=='#replay-intro';
-  const seen=localStorage.getItem('tagjIntroSeenPersistentV151')==='1'||sessionStorage.getItem('tagjIntroSeenV151')==='1';
-  if(!force&&(resume||deep||seen))document.documentElement.classList.add('intro-resume-v151');
+  const seen=sessionStorage.getItem('tagjIntroSeenV153')==='1';
+  let fromWorld=false;
+  try{
+    const ref=document.referrer?new URL(document.referrer):null;
+    fromWorld=!!ref&&ref.origin===location.origin&&/(?:full|tagj|artist|producer|creative)\.html$/i.test(ref.pathname);
+  }catch(_){}
+  // Fresh top-level visits show the cinematic intro again. Only an in-session
+  // return from the ecosystem, a deep link, or an explicit resume skips it.
+  if(!force&&(resume||deep||seen||fromWorld))document.documentElement.classList.add('intro-resume-v151');
 }catch(_){}})();
 </script>
 </head>
@@ -896,24 +903,20 @@ html.intro-resume-v151 .home-footer{opacity:1!important;animation:none!important
   const soundBtn=document.getElementById('enterSound');
   const muteBtn=document.getElementById('enterMuted');
   const introStatus=document.getElementById('introStatus');
-  const INTRO_SESSION_KEY='tagjIntroSeenV151';
-  const INTRO_PERSIST_KEY='tagjIntroSeenPersistentV151';
+  const INTRO_SESSION_KEY='tagjIntroSeenV153';
   let introDone=false,introFinishing=false,fallbackTimer=0;
   function hasSeenIntro(){
     if(window.__TAGJ_INTRO_SEEN)return true;
-    try{if(localStorage.getItem(INTRO_PERSIST_KEY)==='1')return true}catch(_){}
     try{return sessionStorage.getItem(INTRO_SESSION_KEY)==='1'}catch(_){return false}
   }
   function markIntroSeen(hideGate=true){
     window.__TAGJ_INTRO_SEEN=true;
     try{sessionStorage.setItem(INTRO_SESSION_KEY,'1')}catch(_){}
-    try{localStorage.setItem(INTRO_PERSIST_KEY,'1')}catch(_){}
     if(hideGate)document.documentElement.classList.add('intro-resume-v151');
   }
   function clearIntroSeen(){
     window.__TAGJ_INTRO_SEEN=false;
     try{sessionStorage.removeItem(INTRO_SESSION_KEY)}catch(_){}
-    try{localStorage.removeItem(INTRO_PERSIST_KEY)}catch(_){}
     document.documentElement.classList.remove('intro-resume-v151');
   }
   function completeIntroState(){
@@ -986,6 +989,12 @@ html.intro-resume-v151 .home-footer{opacity:1!important;animation:none!important
     if(progress)progress.style.width=pct.toFixed(2)+'%';
     gate?.classList.toggle('v13-fire',pct>=72);
   });
+  video?.addEventListener('loadedmetadata',()=>{
+    if(introStatus&&!gate?.classList.contains('playing'))introStatus.textContent='';
+  });
+  video?.addEventListener('stalled',()=>{
+    if(introStatus&&gate?.classList.contains('playing'))introStatus.textContent='Loading the Cold Winter intro clip…';
+  });
   video?.addEventListener('ended',finishIntro);
   video?.addEventListener('error',()=>{
     if(gate?.classList.contains('playing')){
@@ -1008,13 +1017,18 @@ html.intro-resume-v151 .home-footer{opacity:1!important;animation:none!important
   const forceReplay=params.get('intro')==='1';
   const resume=params.get('resume')==='1';
   const deepRoute=!!location.hash&&location.hash!=='#home'&&location.hash!=='#replay-intro';
+  let fromWorld=false;
+  try{
+    const ref=document.referrer?new URL(document.referrer):null;
+    fromWorld=!!ref&&ref.origin===location.origin&&/(?:full|tagj|artist|producer|creative)\.html$/i.test(ref.pathname);
+  }catch(_){}
   if(forceReplay){
     clearIntroSeen();
     introDone=false;introFinishing=false;
     if(gate){gate.hidden=false;gate.removeAttribute('aria-hidden');gate.classList.remove('done')}
     body.classList.add('intro-pending');body.classList.remove('intro-complete','intro-settling');
   }
-  if(!forceReplay&&(resume||deepRoute||hasSeenIntro()))completeIntroState();
+  if(!forceReplay&&(resume||deepRoute||fromWorld||hasSeenIntro()))completeIntroState();
   addEventListener('pageshow',()=>{
     const deep=!!location.hash&&location.hash!=='#home'&&location.hash!=='#replay-intro';
     if(deep||hasSeenIntro())completeIntroState();
