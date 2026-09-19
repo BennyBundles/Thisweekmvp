@@ -78,3 +78,44 @@ after deployment so Safari does not reuse an older page while verifying a new re
 ## Stable milestones
 
 Stable milestones should be represented by an immutable Git tag when repository tooling permits. Until a tag is created, the preserved rollback branch and exact commit SHA remain the authoritative rollback references.
+
+
+## Deterministic production staging
+
+Production HTML is built by:
+
+`node prepare-site.mjs index.html _site/index.html`
+
+The staging step recalculates CSP SHA-256 hashes from the exact inline script contents being deployed. This prevents ordinary source edits from requiring a manual “refresh CSP hashes” commit before every release.
+
+The validation job runs the same staging script before the static and release smoke checks, so the bytes validated are equivalent to the production HTML construction path.
+
+The staging script must:
+
+- require exactly two application script blocks;
+- preserve a CSP that forbids `unsafe-inline`;
+- generate one SHA-256 token for each inline script;
+- verify the staged CSP contains the generated hashes.
+
+## Stale-run control
+
+The Pages production workflow uses one production concurrency group with:
+
+`cancel-in-progress: true`
+
+A newer `main` push therefore cancels an older in-progress production run instead of allowing an older queued release to publish after a newer commit.
+
+## Stable release records
+
+Each milestone must retain:
+
+- exact validated commit SHA;
+- automated workflow run/result;
+- cache-busted production URL;
+- rollback commit and rollback branch;
+- migration note;
+- human-readable release notes.
+
+Milestone records live under `RELEASES/`.
+
+When tag creation is unavailable through the connected repository write surface, use a dedicated `stable/<release>` branch plus the exact commit recorded in `RELEASES/`. Do not claim a Git tag exists unless one was actually created.
