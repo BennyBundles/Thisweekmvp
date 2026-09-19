@@ -116,7 +116,8 @@ Deno.serve(async (req: Request) => {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 
-  const { data, error } = await admin.rpc("tw_money_reserve_card_authorization", {
+  const { data, error } = await admin.rpc("tw_money_risk_reserve_card_authorization", {
+    p_environment: MONEY_EXECUTION_MODE === "production" ? "production" : "sandbox",
     p_provider_card_id: providerCardId,
     p_provider_authorization_id: providerAuthorizationId,
     p_amount_cents: requested,
@@ -147,5 +148,6 @@ Deno.serve(async (req: Request) => {
     return decline("TransactionNotPermittedToCardholder");
   }
   if (reason === "card_not_active") return decline("RestrictedCard");
+  if (reason.startsWith("risk_")) return decline("RestrictedCard");
   return decline("DoNotHonor");
 });
