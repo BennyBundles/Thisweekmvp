@@ -46,6 +46,9 @@ jobs:
           node public-preview-check.mjs public-preview.validation.html
           rm -f public-preview.validation-source.html public-preview.validation.html
 
+      - name: Validate Money Sandbox Lab
+        run: node money-lab-check.mjs money-lab/index.html money-lab/app.js
+
   deploy:
     needs: validate
     environment:
@@ -82,6 +85,11 @@ jobs:
           cp public-preview-icon.svg _site/public-preview/icon.svg
           cp preview.html _site/preview.html
           node public-preview-check.mjs _site/public-preview/index.html
+
+          mkdir -p _site/money-lab
+          cp money-lab/index.html _site/money-lab/index.html
+          cp money-lab/app.js _site/money-lab/app.js
+          node money-lab-check.mjs _site/money-lab/index.html _site/money-lab/app.js
 
           node <<'NODE'
           const fs = require('fs');
@@ -131,11 +139,15 @@ jobs:
             manifest="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/release.json?v=${SHORT}" || true)"
             preview="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/preview.html?v=${SHORT}" || true)"
             public_preview="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/public-preview/?mode=demo&v=${SHORT}" || true)"
+            money_lab="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/money-lab/?v=${SHORT}" || true)"
+            money_lab_js="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/money-lab/app.js?v=${SHORT}" || true)"
 
             if grep -Fq 'This Week' <<< "$html" \
               && grep -Fq -- "$RELEASE_SHA" <<< "$manifest" \
               && grep -Fq 'Public Release Preview' <<< "$preview" \
-              && grep -Fq 'thisweek.publicPreview.state.v2' <<< "$public_preview"; then
+              && grep -Fq 'thisweek.publicPreview.state.v2' <<< "$public_preview" \
+              && grep -Fq 'Money Sandbox Lab' <<< "$money_lab" \
+              && grep -Fq '/functions/v1/thisweek-money-gateway' <<< "$money_lab_js"; then
               success=1
               break
             fi
@@ -157,4 +169,5 @@ jobs:
             echo "- Manifest: `${BASE}/release.json?v=${SHORT}`"
             echo "- Public release preview: `${BASE}/preview.html?v=${SHORT}`"
             echo "- Standalone preview app: `${BASE}/public-preview/?mode=demo&v=${SHORT}`"
+            echo "- Money Sandbox Lab: `${BASE}/money-lab/?v=${SHORT}`"
           } >> "$GITHUB_STEP_SUMMARY"
