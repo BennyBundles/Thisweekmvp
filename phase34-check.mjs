@@ -4,6 +4,7 @@ const read=p=>fs.readFileSync(p,'utf8');
 const schema=read('supabase/phase34/release_evidence_certification.sql');
 const policies=read('supabase/phase34/release_evidence_service_role_policies.sql');
 const candidateBinding=read('supabase/phase34/release_candidate_binding.sql');
+const transitionInvalidation=read('supabase/phase34/candidate_change_gate_invalidation.sql');
 const gateway=read('supabase/functions/thisweek-release-gateway/index.ts');
 const html=read('ops/release/index.html');
 const app=read('ops/release/app.js');
@@ -33,6 +34,10 @@ need('candidate selection RPC',candidateBinding,'tw_release_select_candidate');
 need('candidate-bound certification',candidateBinding,'release_candidate_mismatch');
 need('candidate-specific derived evidence',candidateBinding,"r.release_candidate_sha=v_active_sha");
 need('candidate report',candidateBinding,'tw_release_candidate_report');
+need('candidate transition fail-closed invalidation',transitionInvalidation,'Automatically invalidated because the active release candidate changed.');
+need('sandbox gate invalidation',transitionInvalidation,'provider_sandbox_e2e_passed');
+need('incident gate invalidation',transitionInvalidation,'incident_escalation_runbook_approved');
+need('candidate transition gate audit',transitionInvalidation,'tw_release_gate_events');
 
 need('release gateway active-session enforcement',gateway,'tw_auth_session_active');
 need('release gateway AAL2 enforcement',gateway,'mfa_aal2_required');
