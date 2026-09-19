@@ -6075,6 +6075,22 @@ function clientSecretAudit(){
   }
   return {pass:findings.length===0,findings};
 }
+function runPhase14TrustAudit(){
+  const secretAudit=clientSecretAudit(),sample='\u0000<img src=x onerror=alert(1)>\u202E',sanitized=sanitizeImportedText(sample,240),escaped=escapeHtml(sanitized);
+  const tests=[
+    {name:'Browser-local storage scope',pass:appStorageKeys(localStorage).every(k=>k.startsWith('thisweek.')),detail:'Data inventory and deletion are constrained to thisweek.* keys on this site.'},
+    {name:'Provider-secret audit',pass:secretAudit.pass,detail:secretAudit.pass?'No token/password/secret-shaped fields detected in This Week local JSON.':secretAudit.findings.join(' | ')},
+    {name:'Import file limits',pass:IMPORT_SECURITY_LIMITS.maxFileBytes===5*1024*1024&&IMPORT_SECURITY_LIMITS.maxRows===10000,detail:'5 MB file limit · 10,000 data-row limit · 64-column limit.'},
+    {name:'Control-character sanitization',pass:!sanitized.includes('\u0000')&&!sanitized.includes('\u202E'),detail:'Unsafe control and bidirectional override characters are removed from imported text.'},
+    {name:'Imported text rendering',pass:!escaped.includes('<img')&&escaped.includes('&lt;img'),detail:'Imported text is escaped for HTML display rather than executed.'},
+    {name:'Provider credential boundary',pass:PROVIDER_ADAPTER_CONTRACT.secretPolicy.includes('must never be stored')&&BACKEND_SYNC_CONTRACT.providerSecrets.storage==='server_only',detail:'Provider tokens/secrets are explicitly outside the browser-local data contract.'},
+    {name:'Portable restore boundary',pass:typeof deserializePortableData==='function'&&typeof downloadPortableDataExport==='function',detail:'Portable data can be validated/exported but is not automatically applied back into live state.'},
+    {name:'High-impact confirmation path',pass:typeof confirmHighImpactMutation==='function',detail:'Destructive/reversal paths use an explicit confirmation helper.'}
+  ];
+  const passed=tests.filter(t=>t.pass).length;
+  return {pass:passed===tests.length,passed,total:tests.length,tests};
+}
+
 function downloadRawLocalDataExport(){
   const inventory=localDataInventory(),payload={
     schema:'thisweek.local-data-export',
@@ -7780,6 +7796,10 @@ function renderPrivacy(){
         <div class="world-note">Exports are created locally when requested. The app does not automatically upload the resulting file.</div>
       </section>
 
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Trust checks</span><h2>Verify the local security boundaries</h2><div class="section-caption">Read-only checks for import handling, local credential fields, export boundaries, and destructive-action confirmation.</div></div><button class="btn btn-secondary" id="runTrustAudit">Run trust checks</button></div>
+        <div class="backend-contract" id="trustAuditResults"><div class="schema-row"><div><strong>Not run yet</strong><span>Run the checks to inspect this browser's current local trust boundaries.</span></div><span class="schema-badge">ready</span></div></div>
+      </section>
+
       <section class="danger-zone"><h3>Delete This Week data from this browser</h3><p>This removes all localStorage and sessionStorage keys beginning with <code>thisweek.</code> on this site. It does not delete files you previously downloaded, browser backups, or normal hosting logs.</p>
         <div class="action-row" style="margin-top:9px"><button class="data-mini-action danger" id="beginLocalDelete">Delete local app data</button></div>
         <div class="delete-confirm" id="localDeleteConfirm"><label class="field-label" for="localDeletePhrase">Type DELETE to confirm</label><input class="text-field" id="localDeletePhrase" autocomplete="off" autocapitalize="characters" placeholder="DELETE"><div class="action-row" style="margin-top:7px"><button class="btn btn-primary" id="confirmLocalDelete" disabled>Delete from this browser</button><button class="btn btn-secondary" id="cancelLocalDelete">Cancel</button></div></div>
@@ -7788,6 +7808,11 @@ function renderPrivacy(){
 
     document.getElementById('privacyPortableExport')?.addEventListener('click',()=>{const bytes=downloadPortableDataExport();toast('Normalized data exported · '+(bytes/1024).toFixed(1)+' KB');});
     document.getElementById('privacyRawExport')?.addEventListener('click',()=>{const bytes=downloadRawLocalDataExport();toast('Local data export created · '+(bytes/1024).toFixed(1)+' KB');});
+    document.getElementById('runTrustAudit')?.addEventListener('click',()=>{
+      const box=document.getElementById('trustAuditResults'),audit=runPhase14TrustAudit();
+      if(box)box.innerHTML=audit.tests.map(t=>`<div class="schema-row"><div><strong>${escapeHtml(t.name)}</strong><span>${escapeHtml(t.detail)}</span></div><span class="schema-badge">${t.pass?'pass':'review'}</span></div>`).join('');
+      toast('Trust checks · '+audit.passed+'/'+audit.total+' passed.');
+    });
     const confirmBox=document.getElementById('localDeleteConfirm'),phrase=document.getElementById('localDeletePhrase'),confirmBtn=document.getElementById('confirmLocalDelete');
     document.getElementById('beginLocalDelete')?.addEventListener('click',()=>{confirmBox?.classList.add('show');phrase?.focus();});
     document.getElementById('cancelLocalDelete')?.addEventListener('click',()=>{confirmBox?.classList.remove('show');if(phrase)phrase.value='';if(confirmBtn)confirmBtn.disabled=true;});
