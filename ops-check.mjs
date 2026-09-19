@@ -33,6 +33,14 @@ need('release interlock surface',html,'id="releaseStatus"');
 need('release gate renderer',js,'renderReleaseStatus');
 need('release gate action',js,"ops('set_release_gate'");
 need('release evidence requirement',js,'evidence or approval reference');
+need('legal retention surface',html,'id="legalRetention"');
+need('legal retention renderer',js,'renderLegalRetention');
+need('legal document administration',js,"ops('set_legal_document_state'");
+need('retention policy administration',js,"ops('set_retention_policy_state'");
+need('derived legal release status',js,'productionLegalSetActive');
+need('derived retention release status',js,'productionRetentionPolicyActive');
+need('sensitive access release status',js,'sensitiveAccessAuditActive');
+
 
 need('support renderer',js,'renderSupport');
 need('incident renderer',js,'renderIncidents');
