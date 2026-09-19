@@ -140,6 +140,26 @@ requireText('Phase 17 restrained success confirmation','function successToast(')
 requireText('Phase 17 delayed loading guard','phase17LoadingTimer');
 requireText('Phase 17 lite-mode finish','body[data-performance="lite"] :where(.section');
 requireText('Phase 17 reduced-motion loading state','body[data-motion="reduced"] .state-spinner');
+requireText('Phase 18 power-user efficiency','PHASE 18 — POWER-USER EFFICIENCY v30');
+requireText('Phase 18 power preferences key',"POWER_PREFS_KEY='thisweek.powerPrefs.v1'");
+requireText('Phase 18 default-off direct open','directCategoryOpen:input.directCategoryOpen===true');
+requireText('Phase 18 default-off quick add','quickAdd:input.quickAdd===true');
+requireText('Phase 18 default-off recent shortcut','recentShortcut:input.recentShortcut===true');
+requireText('Phase 18 default-off keyboard','keyboard:input.keyboard===true');
+requireText('Phase 18 default-off studio switcher','rapidSwitcher:input.rapidSwitcher===true');
+requireText('Phase 18 category direct-open guard','power.directCategoryOpen');
+requireText('Phase 18 quick amount prefill','class="power-quick-add"');
+requireText('Phase 18 quick add prefill disclosure','Quick amount · prefill only');
+requireText('Phase 18 pinned Details shortcut','class="power-dock"');
+requireText('Phase 18 recent tool memory','rememberRecentTool');
+requireText('Phase 18 keyboard chords','function bindPowerKeyboard()');
+requireText('Phase 18 rapid studio switcher','function powerStudioSwitcher(active)');
+requireText('Phase 18 Details ordering','POWER_DETAILS_DEFAULT_ORDER');
+requireText('Phase 18 power toggle controls','data-power-toggle');
+requireText('Phase 18 power privacy inventory','Optional power-user navigation and efficiency preferences; no financial amounts');
+requireText('Phase 18 cross-tab power invalidation',"if(e.key===POWER_PREFS_KEY)powerPrefsCache=null");
+requireText('Phase 18 no permanent Home power panel','Every shortcut below is off by default.');
+
 
 requireText('Phase 13 normalized data model','PHASE 13 — NORMALIZED DATA MODEL + BACKEND READINESS v25');
 requireText('Phase 13 core schema marker','CORE_SCHEMA_VERSION = 3');
