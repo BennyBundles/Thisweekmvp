@@ -25,6 +25,12 @@
       "url": "https://unitedmasters.com/a/benny-bundles",
       "label": "Benny Bundles on UnitedMasters",
       "note": "Official artist-profile URL supplied by Benny."
+    },
+    "soundCloudArtist": {
+      "status": "verified",
+      "url": "https://m.soundcloud.com/benny-bundles",
+      "label": "Benny Bundles on SoundCloud",
+      "note": "Official artist-profile URL supplied by Benny."
     }
   },
   "releases": {
