@@ -2,6 +2,26 @@
 
 Production changes for **This Week** are recorded here.
 
+## Phase 17 — Product Polish & Brand System — 2026-09-18
+
+### Presentation system
+- Added canonical surface, border, elevation, radius, typography, status, category, icon, and motion tokens.
+- Preserved distinct Bills, Essentials, Lifestyle, and Savings identities while routing them through one brand system.
+- Added restrained route-specific accents without changing conventional navigation or Home information architecture.
+- Standardized glass surfaces, nested-card hierarchy, controls, focus treatment, and mobile target sizing.
+- Added a shared empty/loading/error/success/info state system with delayed accessible route loading and `aria-busy`.
+- Toast confirmations now distinguish neutral, successful, and error feedback instead of using a success check for every message.
+- Preserved Reduced Motion, Lite performance mode, iPhone compression, accessibility, browser-local privacy, and Phase 14 network restrictions.
+
+### State migrations
+- No financial-state migration.
+- Core financial schema remains **v3**.
+- Portable data schema remains **v1**.
+
+### Rollback
+- Pre-Phase-17 commit: `c848cb44c5a72abdfdd4843208f4eb587936005c`
+- Rollback branch: `rollback/phase17-pre-polish-2026-09-18`
+
 ## v0.15.0-phase15 — 2026-09-18
 
 ### Release discipline
