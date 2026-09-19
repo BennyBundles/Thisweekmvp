@@ -151,7 +151,8 @@
         "stripePriceId": null
       },
       "route": "#tagj-audio-engineer-v147",
-      "colorwayCount": 6
+      "colorwayCount": 6,
+      "previewAsset": "tagj-assets/v147/audio-engineer.webp"
     },
     {
       "id": "concrete-bloom-mids",
@@ -167,7 +168,8 @@
         "stripePriceId": null
       },
       "route": "#tagj-concrete-bloom-mids-v147",
-      "colorwayCount": 6
+      "colorwayCount": 6,
+      "previewAsset": "tagj-assets/v147/concrete-mids.webp"
     },
     {
       "id": "concrete-bloom-pump",
@@ -183,7 +185,8 @@
         "stripePriceId": null
       },
       "route": "#tagj-concrete-bloom-pump-v147",
-      "colorwayCount": 6
+      "colorwayCount": 6,
+      "previewAsset": "tagj-assets/v147/concrete-pump.webp"
     },
     {
       "id": "vault-heel-highs",
@@ -199,7 +202,8 @@
         "stripePriceId": null
       },
       "route": "#tagj-vault-heel-v147",
-      "colorwayCount": 6
+      "colorwayCount": 6,
+      "previewAsset": "tagj-assets/v147/vault-heel.webp"
     },
     {
       "id": "nonstick-slipon",
@@ -215,7 +219,8 @@
         "stripePriceId": null
       },
       "route": "#tagj-nonstick-v147",
-      "colorwayCount": 7
+      "colorwayCount": 7,
+      "previewAsset": "tagj-assets/v147/nonstick.webp"
     },
     {
       "id": "rowhome-highs",
@@ -479,14 +484,16 @@
       "world": "tagj",
       "label": "V14.7 Apparel + Brand System",
       "route": "#tagj-catalogue-v147",
-      "status": "curated_design_assets"
+      "status": "curated_design_assets",
+      "previewAsset": "tagj-assets/v147/apparel-brand.webp"
     },
     {
       "id": "footwear-series-v147",
       "world": "tagj",
       "label": "V14.7 Footwear Concept Archive",
       "route": "#tagj-footwear-v147",
-      "status": "curated_design_assets"
+      "status": "curated_design_assets",
+      "previewAsset": "tagj-assets/v147/footwear-series.webp"
     },
     {
       "id": "network-creative-v147",
@@ -494,7 +501,8 @@
       "label": "V14.7 Network + Creative Proof Assets",
       "artistRoute": "#artist-network-v147",
       "creativeRoute": "#creative-proof-v147",
-      "status": "curated_source_assets"
+      "status": "curated_source_assets",
+      "previewAsset": "tagj-assets/v147/network-creative.webp"
     }
   ]
 }
