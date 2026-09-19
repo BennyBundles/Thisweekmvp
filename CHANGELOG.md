@@ -2,6 +2,23 @@
 
 Production changes for **This Week** are recorded here.
 
+## Phase 30 — External Notification Dispatcher — 2026-09-19
+
+- Added a one-minute Supabase Cron dispatcher for the Phase 29 high/critical notification outbox.
+- Added one-time database dispatch nonces so the cron-triggered Edge Function does not depend on a static public authentication secret.
+- Added duplicate-safe notification claiming with row locks, sending leases, attempt counts, and bounded exponential retry backoff.
+- Deployed `thisweek-ops-notifier` with HTTPS-only external destination support and an optional server-only bearer credential.
+- Added server channel health state: unconfigured / healthy / degraded.
+- Verified the cron-to-notifier handshake. With no destination configured, the function consumed the one-time nonce, left outbox rows unsent, and reported `notification_webhook_not_configured`.
+- Updated Ops Gateway to surface the actual server notification-channel state.
+- No external Pager/Slack/email destination has been configured or claimed working yet.
+- Production money remains disabled.
+
+### Rollback
+- Pre-Phase-30 commit: `f5686e9501df7103e1242230bc3d06ad6752b383`
+- Rollback branch: `rollback/phase30-pre-notification-dispatcher-2026-09-19`
+
+
 ## Phase 29 — Automated Monitoring & Reconciliation — 2026-09-19
 
 - Added a database-only health/reconciliation monitor scheduled every 5 minutes with Supabase Cron/pg_cron.
