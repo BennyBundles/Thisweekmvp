@@ -592,7 +592,8 @@
     "producer": {
       "beatWorkspace": "#producer-beat-workspace-v145",
       "sessionBuilder": "#producer-session-builder-v145",
-      "abLab": "#producer-ab-lab-v143"
+      "abLab": "#producer-ab-lab-v143",
+      "beatVault": "#producer-beat-vault-v158"
     },
     "creative": {
       "campaignWorkflow": "#creative-campaign-workflow-v145"
@@ -681,5 +682,14 @@
       "profilePriority": "secondary",
       "suppliedAssetStatus": "received_in_conversation_pending_repository_ingest"
     }
-  ]
+  ],
+  "producerBeatCatalog": {
+    "schemaRef": "tagj-data/beat-catalog.v1.json",
+    "count": 22,
+    "producer": "Bundles (Benny Bundles)",
+    "route": "#producer-beat-vault-v158",
+    "sourceStatus": "verified_google_drive_audio",
+    "playbackStatus": "drive_backed_candidate",
+    "licensingStatus": "unconfirmed"
+  }
 }
