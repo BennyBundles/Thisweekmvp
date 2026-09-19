@@ -457,7 +457,20 @@ body.intro-pending .home-shell{filter:blur(5px);transform:scale(1.015)}.home-she
   }
   .home-v11 .route-copy p{max-width:72%}
 }
-</style></head>
+</style>
+<style id="tagj-v14-1-hotfix">
+.intro-actions,.intro-enter,.intro-skip{pointer-events:auto!important}
+.intro-enter{position:relative;z-index:410;min-height:48px;display:inline-flex;align-items:center;justify-content:center;touch-action:manipulation}
+.world-route{pointer-events:auto!important;touch-action:manipulation;z-index:18!important}
+.world-route *{pointer-events:none}
+.route-transition,.axis,.nav-ring,.connector,.cursor-light{pointer-events:none!important}
+.intro-gate.playing:before{content:"";position:absolute;z-index:2;inset:0;pointer-events:none;opacity:.48;mix-blend-mode:screen;background:radial-gradient(ellipse at 50% 112%,rgba(255,189,78,.66),rgba(255,77,18,.28) 28%,transparent 55%),radial-gradient(circle at 14% 92%,rgba(255,93,23,.34),transparent 25%),radial-gradient(circle at 86% 88%,rgba(255,126,35,.3),transparent 28%);animation:tagjFire 650ms ease-in-out infinite alternate}
+.intro-gate.playing:after{content:"";position:absolute;z-index:2;inset:-4%;pointer-events:none;opacity:.2;background:repeating-linear-gradient(92deg,transparent 0 24px,rgba(255,151,70,.08) 26px 29px,transparent 31px 54px);animation:tagjHeat 1100ms ease-in-out infinite alternate}
+@keyframes tagjFire{to{filter:saturate(1.45) brightness(1.18);transform:scaleY(1.05)}}
+@keyframes tagjHeat{to{transform:translateX(5px) scale(1.04);filter:blur(1px)}}
+@media(prefers-reduced-motion:reduce){.intro-gate.playing:before,.intro-gate.playing:after{animation:none!important}}
+</style>
+</head>
 <body class="home-v11 intro-pending">
 
 <!-- Audio requires a user gesture on iPhone/Safari. -->
