@@ -40,15 +40,24 @@ PASS:
 - default publishing split is explicit and can be replaced by a signed split sheet;
 - no standard template silently assigns the Beat copyright.
 
-## Legal activation blockers
+## Legal identity and governing-law configuration
 
-1. Confirm governing-law state and venue.
-2. Confirm whether Thats A Good Jawn LLC owns each Beat copyright or is acting as authorized licensing administrator for Bundles (Benny Bundles).
-3. Complete sample / third-party-rights review for each Beat.
-4. Provide lossless masters for the four MP3-only sources before lossless tiers are activated.
-5. Provide actual trackouts before Trackout Pro is activated.
-6. Have the final agreements reviewed by a qualified attorney before paid checkout.
-7. When checkout is added, retain the exact agreement version, Beat ID, tier, price, timestamp, transaction ID and electronic assent. Exclusive licenses should be retained as signed writings.
+- Contracting/licensing entity: **Thats A Good Jawn LLC**.
+- Formation jurisdiction: **Wyoming**.
+- Pennsylvania status: **registered/authorized to do business in Pennsylvania** (user-confirmed).
+- Legal authorized-representative name used in the agreements: **Benjamin Alexander**.
+- Public production credit remains **Bundles (Benny Bundles)**.
+- Draft governing law: **Wyoming**.
+- Draft forum clause: state or federal court of competent jurisdiction in Wyoming, subject to mandatory applicable law.
+
+## Remaining legal activation blockers
+
+1. Confirm whether Thats A Good Jawn LLC owns each Beat copyright or is acting as authorized licensing administrator for the applicable rights controlled by Benjamin Alexander.
+2. Complete sample / third-party-rights review for each Beat.
+3. Provide lossless masters for the four MP3-only sources before lossless tiers are activated.
+4. Provide actual trackouts before Trackout Pro is activated.
+5. Have the final agreements reviewed by a qualified attorney before paid checkout.
+6. When checkout is added, retain the exact agreement version, Beat ID, tier, price, timestamp, transaction ID and electronic assent. Exclusive licenses should be retained as signed writings.
 
 ## Product behavior
 
