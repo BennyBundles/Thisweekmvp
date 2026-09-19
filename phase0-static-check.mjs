@@ -15,6 +15,11 @@ const phase19GatewayUrl=new URL('./supabase/functions/thisweek-provider-gateway/
 const phase19RuntimeUrl=new URL('./supabase/functions/thisweek-provider-gateway/deno.json', import.meta.url);
 const phase19ReadmeUrl=new URL('./supabase/phase19/README.md', import.meta.url);
 const phase19DocUrl=new URL('./PHASE_19_IMPLEMENTATION.md', import.meta.url);
+const phase20SchemaUrl=new URL('./supabase/phase20/money_layer_schema.sql', import.meta.url);
+const phase20GatewayUrl=new URL('./supabase/functions/thisweek-money-gateway/index.ts', import.meta.url);
+const phase20RuntimeUrl=new URL('./supabase/functions/thisweek-money-gateway/deno.json', import.meta.url);
+const phase20ReadmeUrl=new URL('./supabase/phase20/README.md', import.meta.url);
+const phase20DocUrl=new URL('./PHASE_20_IMPLEMENTATION.md', import.meta.url);
 
 const releaseFiles=['prepare-site.mjs','release-smoke-check.mjs','RELEASE_CHECKLIST.md','RELEASE_POLICY.md','release.config.json','CHANGELOG.md','RELEASES/v0.15.0-phase15.md'];
 for(const name of releaseFiles){
@@ -28,7 +33,12 @@ for(const [label,url] of [
   ['Phase 19 provider gateway',phase19GatewayUrl],
   ['Phase 19 provider runtime config',phase19RuntimeUrl],
   ['Phase 19 provider activation README',phase19ReadmeUrl],
-  ['Phase 19 implementation document',phase19DocUrl]
+  ['Phase 19 implementation document',phase19DocUrl],
+  ['Phase 20 money schema',phase20SchemaUrl],
+  ['Phase 20 money gateway',phase20GatewayUrl],
+  ['Phase 20 money runtime config',phase20RuntimeUrl],
+  ['Phase 20 money README',phase20ReadmeUrl],
+  ['Phase 20 implementation document',phase20DocUrl]
 ]){
   if(!fs.existsSync(url))failures.push('Missing '+label);
 }
@@ -36,6 +46,12 @@ const phase19Schema=fs.existsSync(phase19SchemaUrl)?fs.readFileSync(phase19Schem
 const phase19Gateway=fs.existsSync(phase19GatewayUrl)?fs.readFileSync(phase19GatewayUrl,'utf8'):'';
 const phase19Readme=fs.existsSync(phase19ReadmeUrl)?fs.readFileSync(phase19ReadmeUrl,'utf8'):'';
 const requirePhase19FileText=(label,content,text)=>{if(!content.includes(text))failures.push(label);};
+const phase20Schema=fs.existsSync(phase20SchemaUrl)?fs.readFileSync(phase20SchemaUrl,'utf8'):'';
+const phase20Gateway=fs.existsSync(phase20GatewayUrl)?fs.readFileSync(phase20GatewayUrl,'utf8'):'';
+const phase20Runtime=fs.existsSync(phase20RuntimeUrl)?fs.readFileSync(phase20RuntimeUrl,'utf8'):'';
+const phase20Readme=fs.existsSync(phase20ReadmeUrl)?fs.readFileSync(phase20ReadmeUrl,'utf8'):'';
+const phase20Doc=fs.existsSync(phase20DocUrl)?fs.readFileSync(phase20DocUrl,'utf8'):'';
+const requirePhase20FileText=(label,content,text)=>{if(!content.includes(text))failures.push(label);};
 
 const requireText=(label,text)=>{if(!html.includes(text))failures.push(label);};
 const forbidText=(label,text)=>{if(html.includes(text))failures.push(label);};
@@ -216,6 +232,50 @@ requirePhase19FileText('Phase 19 gateway provider disconnect',phase19Gateway,'/i
 requirePhase19FileText('Phase 19 gateway no-store response',phase19Gateway,'"Cache-Control": "no-store"');
 requirePhase19FileText('Phase 19 activation sequence',phase19Readme,'Remaining activation gates');
 requirePhase19FileText('Phase 19 shared project isolation rule',phase19Readme,'BennyBundles’s Project');
+
+// Phase 20 money-layer foundation must remain fail-closed in the browser.
+requireText('Phase 20 money client config','const LIVE_MONEY_CONFIG=Object.freeze({');
+requireText('Phase 20 client money disabled',"state:'backend_foundation_deployed'");
+requireText('Phase 20 client execution disabled',"executionMode:'disabled'");
+requireText('Phase 20 money network deny rule',"networkPolicy:'deny_until_sandbox_auth_and_credentials'");
+requireText('Phase 20 inactive reward disclosure',"rewardMode:'sandbox_template_inactive'");
+requireText('Phase 20 readiness controller','function liveMoneyReadiness()');
+requireText('Phase 20 Money Center route','async function renderMoneyCenter()');
+requireText('Phase 20 direct deposit route','async function renderDirectDeposit()');
+requireText('Phase 20 bill pay route','async function renderBillPay()');
+requireText('Phase 20 category cards route','async function renderCategoryCards()');
+requireText('Phase 20 planning custody boundary','Planning stays separate from custody.');
+requireText('Phase 20 bill payment semantic boundary','Protected ≠ paid');
+requirePhase20FileText('Phase 20 schema customers table',phase20Schema,'tw_money_customers');
+requirePhase20FileText('Phase 20 schema journal table',phase20Schema,'tw_money_journals');
+requirePhase20FileText('Phase 20 schema ledger entries',phase20Schema,'tw_money_ledger_entries');
+requirePhase20FileText('Phase 20 schema funding accounts',phase20Schema,'tw_money_funding_accounts');
+requirePhase20FileText('Phase 20 schema direct deposit switches',phase20Schema,'tw_money_direct_deposit_switches');
+requirePhase20FileText('Phase 20 schema rewards',phase20Schema,'tw_money_reward_offers');
+requirePhase20FileText('Phase 20 schema bill payments',phase20Schema,'tw_money_bill_payments');
+requirePhase20FileText('Phase 20 schema virtual cards',phase20Schema,'tw_money_virtual_cards');
+requirePhase20FileText('Phase 20 schema provider event inbox',phase20Schema,'tw_money_provider_events');
+requirePhase20FileText('Phase 20 schema RLS',phase20Schema,'enable row level security');
+requirePhase20FileText('Phase 20 schema browser grants revoked',phase20Schema,'from public, anon, authenticated');
+requirePhase20FileText('Phase 20 append-only history trigger',phase20Schema,'reject_money_history_mutation');
+requirePhase20FileText('Phase 20 balanced journal guard',phase20Schema,"if v_sum <> 0 then raise exception 'journal_not_balanced'");
+requirePhase20FileText('Phase 20 atomic balance move',phase20Schema,'insufficient_ledger_balance');
+requirePhase20FileText('Phase 20 inactive sandbox reward',phase20Schema,"'TW_DD_SWITCH_25_SANDBOX'");
+requirePhase20FileText('Phase 20 sandbox reward forced inactive',phase20Schema,'active=false');
+requirePhase20FileText('Phase 20 gateway pinned Supabase client',phase20Gateway,'npm:@supabase/supabase-js@2.95.0');
+requirePhase20FileText('Phase 20 gateway validates authenticated user',phase20Gateway,'auth.getUser(token)');
+requirePhase20FileText('Phase 20 gateway rejects anonymous users',phase20Gateway,'recoverable_auth_required');
+requirePhase20FileText('Phase 20 gateway execution lock',phase20Gateway,'THISWEEK_MONEY_EXECUTION_MODE');
+requirePhase20FileText('Phase 20 gateway live money lock',phase20Gateway,'THISWEEK_LIVE_MONEY_ENABLED');
+requirePhase20FileText('Phase 20 gateway Unit adapter',phase20Gateway,'api.s.unit.sh');
+requirePhase20FileText('Phase 20 gateway Pinwheel version',phase20Gateway,'2025-07-08');
+requirePhase20FileText('Phase 20 gateway Method adapter',phase20Gateway,'/payments');
+requirePhase20FileText('Phase 20 gateway allocation via ledger RPC',phase20Gateway,'tw_money_move_balance');
+requirePhase20FileText('Phase 20 gateway no-store response',phase20Gateway,'"Cache-Control": "no-store"');
+requirePhase20FileText('Phase 20 gateway MFA production gate',phase20Gateway,'mfa_aal2_required');
+requirePhase20FileText('Phase 20 runtime strict mode',phase20Runtime,'"strict": true');
+requirePhase20FileText('Phase 20 README no live money',phase20Readme,'No live money is currently moved.');
+requirePhase20FileText('Phase 20 implementation Plan authority',phase20Doc,'Available Now` remains plan-derived.');
 
 
 
