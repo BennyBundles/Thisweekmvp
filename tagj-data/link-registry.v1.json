@@ -407,6 +407,14 @@
         "label": "T311Y Demon Life on Apple Music",
         "note": "Official artist-profile URL supplied by Benny."
       }
+    },
+    "bsfTone066": {
+      "youtubeMusicVideo": {
+        "status": "verified",
+        "url": "https://youtu.be/wbnLweci-IE",
+        "label": "Mud Thicka Than Blood lyric video",
+        "note": "Official video URL supplied by Benny."
+      }
     }
   }
 }
