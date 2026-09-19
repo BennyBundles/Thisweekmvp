@@ -30,6 +30,8 @@ need('Unit purchase simulation',js,"gateway('unit_sandbox_authorization'");
 need('Pinwheel direct deposit',js,"gateway('direct_deposit_link'");
 need('Method dev setup',js,"gateway('method_sandbox_setup'");
 need('Method dev payment',js,"gateway('method_sandbox_payment'");
+need('provider webhook registration',js,"gateway('register_sandbox_webhooks')");
+need('provider webhook registration control',html,'15 · Register provider webhooks');
 need('sensitive token redaction',js,'/token|password|secret');
 if(/service_role|sb_secret_/i.test(html+js))failures.push('server secret pattern found in Money Lab');
 if(/localStorage/.test(js))failures.push('Money Lab must not persist auth tokens in localStorage');
