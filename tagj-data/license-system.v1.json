@@ -1,6 +1,6 @@
 {
   "schemaVersion": "tagj.beat-license-system.v1.1",
-  "status": "draft_for_attorney_review_not_checkout_active",
+  "status": "draft_for_legal_review_inquiry_ready",
   "licensor": {
     "businessName": "Thats A Good Jawn LLC",
     "entityDescription": "Wyoming limited liability company registered to do business in Pennsylvania",
@@ -15,6 +15,7 @@
     "formationJurisdiction": "Wyoming",
     "operatingRegistration": "Pennsylvania foreign registration / authority to do business (user-confirmed)",
     "activationBlockers": [
+      "Complete and retain a beat-specific sample/source provenance attestation; obtain any necessary third-party clearances before final license execution.",
       "Complete and sign the beat-specific Producer Rights / Sample Declaration for each beat before paid licensing.",
       "Resolve any beat-specific provenance hold, including remix/derivative-work questions and prior-client/exclusive commitments.",
       "For the four MP3-origin sources, supply a genuine lossless source master before any tier promises a true lossless master.",
@@ -65,7 +66,8 @@
       "productLabel": "Derived Mix-Control Stem Pack",
       "status": "editing_asset_not_original_trackouts",
       "disclosure": "Drums/percussion, bass and harmonic/music components are algorithmically derived from the stereo master. They are not original DAW multitracks and do not satisfy the default Trackout Pro promise unless the executed Schedule A expressly substitutes derived stems."
-    }
+    },
+    "wavDerivativeDisclosure": "For four legacy MP3-origin beats, a WAV delivery derivative is available, but the agreement and Schedule A must disclose that converting/decoding MP3 to WAV does not restore lost source information."
   },
   "tiers": [
     {
@@ -113,14 +115,14 @@
     },
     {
       "id": "trackout-pro-v1",
-      "label": "Trackout Pro Lease",
+      "label": "Trackout Pro — Derived 3-Stem",
       "licenseType": "non-exclusive",
       "priceUsd": 99,
       "term": "7 years",
       "files": [
-        "MP3",
-        "Genuine lossless WAV when available",
-        "Original DAW trackouts/stems when supplied for the selected beat"
+        "Selected beat stereo delivery",
+        "3 derived separation stems: drums/percussion, bass, music/harmonic",
+        "24-bit FLAC stem pack"
       ],
       "usage": {
         "audioStreams": 1000000,
@@ -132,8 +134,9 @@
       },
       "publishingSplit": "50% Bundles / 50% Licensee-side writers by default",
       "contentId": "Not permitted without prior written consent",
-      "availabilityRule": "Not saleable as original Trackout Pro until original DAW stems/trackouts exist. A derived stereo-separation pack may be offered only under explicit derived-stem disclosure in Schedule A.",
-      "contractPath": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md"
+      "availabilityRule": "Available for all 22 current catalogue beats as an algorithmically derived 3-stem separation pack after QC. These are not original DAW multitracks and may contain separation bleed/artifacts.",
+      "contractPath": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
+      "derivedStemDisclosureRequired": true
     },
     {
       "id": "unlimited-v1",
@@ -185,5 +188,10 @@
       "contentId": "May be permitted after written clearance/whitelisting confirmation",
       "contractPath": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
     }
-  ]
+  ],
+  "sampleProvenance": {
+    "reviewRef": "tagj-data/sample-review.v1.json",
+    "attestationRef": "legal/BEAT_SAMPLE_PROVENANCE_ATTESTATION_DRAFT.md",
+    "rule": "Final license execution requires a completed beat-specific source-provenance attestation and any necessary third-party clearances."
+  }
 }
