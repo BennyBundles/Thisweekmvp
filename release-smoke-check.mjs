@@ -164,6 +164,11 @@ if(phase20Gateway){
   requireText('Phase 22 gateway ACH pull',phase20Gateway,'unit_fund_from_external');
   requireText('Phase 22 gateway Method setup',phase20Gateway,'method_sandbox_setup');
   requireText('Phase 22 gateway Method pay',phase20Gateway,'method_sandbox_payment');
+  requireText('Phase 22 gateway Unit auth webhook',phase20Gateway,'OnlyAuthorizationRequest');
+  requireText('Phase 22 gateway Unit event webhook',phase20Gateway,'NotAuthorizationRequest');
+  requireText('Phase 22 gateway Pinwheel DD webhook',phase20Gateway,'direct_deposit_switch.added');
+  requireText('Phase 22 gateway Method signed webhook setup',phase20Gateway,'METHOD_WEBHOOK_HMAC_SECRET');
+  requireText('Phase 22 gateway webhook registration action',phase20Gateway,'register_sandbox_webhooks');
 }
 if(phase19Gateway)requireText('Phase 22 provider gateway must request Plaid Auth',phase19Gateway,'products: ["auth", "transactions"]');
 
