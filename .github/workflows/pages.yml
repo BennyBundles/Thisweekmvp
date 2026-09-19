@@ -52,6 +52,12 @@ jobs:
       - name: Validate Account Center
         run: node account-check.mjs account/index.html account/app.js account/release-config.js
 
+      - name: Validate Operations Console
+        run: node ops-check.mjs ops/index.html ops/app.js
+
+      - name: Validate Support Center
+        run: node support-check.mjs support/index.html support/app.js
+
   deploy:
     needs: validate
     environment:
@@ -99,6 +105,16 @@ jobs:
           cp account/app.js _site/account/app.js
           cp account/release-config.js _site/account/release-config.js
           node account-check.mjs _site/account/index.html _site/account/app.js _site/account/release-config.js
+
+          mkdir -p _site/ops
+          cp ops/index.html _site/ops/index.html
+          cp ops/app.js _site/ops/app.js
+          node ops-check.mjs _site/ops/index.html _site/ops/app.js
+
+          mkdir -p _site/support
+          cp support/index.html _site/support/index.html
+          cp support/app.js _site/support/app.js
+          node support-check.mjs _site/support/index.html _site/support/app.js
 
           node <<'NODE'
           const fs = require('fs');
@@ -153,6 +169,10 @@ jobs:
             account_center="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/account/?v=${SHORT}" || true)"
             account_js="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/account/app.js?v=${SHORT}" || true)"
             account_release_config="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/account/release-config.js?v=${SHORT}" || true)"
+            ops_console="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/ops/?v=${SHORT}" || true)"
+            ops_js="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/ops/app.js?v=${SHORT}" || true)"
+            support_center="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/support/?v=${SHORT}" || true)"
+            support_js="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/support/app.js?v=${SHORT}" || true)"
 
             if grep -Fq 'This Week' <<< "$html" \
               && grep -Fq -- "$RELEASE_SHA" <<< "$manifest" \
@@ -162,7 +182,11 @@ jobs:
               && grep -Fq '/functions/v1/thisweek-money-gateway' <<< "$money_lab_js" \
               && grep -Fq 'Account & Security' <<< "$account_center" \
               && grep -Fq '/functions/v1/thisweek-account-gateway' <<< "$account_js" \
-              && grep -Fq 'THISWEEK_AUTH_RELEASE_CONFIG' <<< "$account_release_config"; then
+              && grep -Fq 'THISWEEK_AUTH_RELEASE_CONFIG' <<< "$account_release_config" \
+              && grep -Fq 'Operations Console' <<< "$ops_console" \
+              && grep -Fq '/functions/v1/thisweek-ops-gateway' <<< "$ops_js" \
+              && grep -Fq 'Support & Disputes' <<< "$support_center" \
+              && grep -Fq '/functions/v1/thisweek-support-gateway' <<< "$support_js"; then
               success=1
               break
             fi
@@ -186,4 +210,6 @@ jobs:
             echo "- Standalone preview app: `${BASE}/public-preview/?mode=demo&v=${SHORT}`"
             echo "- Money Sandbox Lab: `${BASE}/money-lab/?v=${SHORT}`"
             echo "- Account & Security: `${BASE}/account/?v=${SHORT}`"
+            echo "- Operations Console: `${BASE}/ops/?v=${SHORT}`"
+            echo "- Support & Disputes: `${BASE}/support/?v=${SHORT}`"
           } >> "$GITHUB_STEP_SUMMARY"
