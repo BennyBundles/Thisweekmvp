@@ -29,6 +29,9 @@ need('Phase 20 Bill Pay','async function renderBillPay()');
 need('Phase 20 Category Cards','async function renderCategoryCards()');
 need('Phase 20 money disabled',"executionMode:'disabled'");
 need('Phase 20 reward inactive',"rewardMode:'sandbox_template_inactive'");
+need('Phase 21 signed webhook status',"webhookMode:'signed_receivers_deployed'");
+need('Phase 21 card authorization status',"cardAuthorizationMode:'controller_deployed_execution_locked'");
+need('Phase 21 Money Lab link','href="./money-lab/"');
 forbid('production state key leaked','"thisweek.state.v2"');
 forbid('production user key leaked','"thisweek.userId"');
 
