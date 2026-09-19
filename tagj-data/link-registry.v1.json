@@ -31,6 +31,12 @@
       "url": "https://m.soundcloud.com/benny-bundles",
       "label": "Benny Bundles on SoundCloud",
       "note": "Official artist-profile URL supplied by Benny."
+    },
+    "businessEmail": {
+      "status": "verified",
+      "url": "mailto:prodbybundles@yahoo.com",
+      "label": "Business email",
+      "note": "Preferred public business email supplied by Benny."
     }
   },
   "releases": {
