@@ -1,0 +1,20 @@
+globalThis.THISWEEK_AUTH_RELEASE_CONFIG=Object.freeze({
+  version:1,
+  canonicalAccountUrl:'https://bennybundles.github.io/Thisweekmvp/account/',
+  confirmationRedirect:'https://bennybundles.github.io/Thisweekmvp/account/',
+  recoveryRedirect:'https://bennybundles.github.io/Thisweekmvp/account/?mode=recovery',
+  captcha:Object.freeze({
+    provider:'turnstile',
+    siteKey:'',
+    supabaseProtectionVerified:false
+  }),
+  hostedAuth:Object.freeze({
+    siteUrlVerified:false,
+    redirectAllowlistVerified:false,
+    emailConfirmationsVerified:false,
+    customSmtpVerified:false,
+    securityNotificationsVerified:false
+  }),
+  publicAuthReady:false,
+  note:'Release assertions stay false until an operator verifies the hosted Supabase Auth configuration.'
+});
