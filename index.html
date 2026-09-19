@@ -483,12 +483,15 @@ html.intro-already-seen .home-footer{opacity:1!important;animation:none!importan
 document.addEventListener('pointerdown',e=>{const b=e.target&&e.target.closest?e.target.closest('#enterSound,#enterMuted,#skipIntro'):null;if(!b)return;try{sessionStorage.setItem(KEY,'1')}catch(_){}},true);
 })();
 </script>
+<style id="intro-resume-v150-style">html.intro-resume-v150 .intro-gate{display:none!important;visibility:hidden!important;pointer-events:none!important}</style>
+<script id="intro-prehide-v150">try{const p=new URLSearchParams(location.search);if(p.get('intro')!=='1'&&localStorage.getItem('tagjIntroSeenPersistentV150')==='1')document.documentElement.classList.add('intro-resume-v150')}catch(_){}</script>
 </head>
 <body class="home-v11 intro-pending">
 
 <!-- Audio requires a user gesture on iPhone/Safari. -->
 <section class="intro-gate" id="introGate" aria-label="TAGJ intro">
-  <video id="introVideo" class="intro-video" data-cut-start="0" data-cut-end="7.35" data-cut-label="requested-lyric-source-swap" playsinline webkit-playsinline preload="auto" poster="tagj-assets/intro/intro-poster-v149.jpg">
+  <video id="introVideo" class="intro-video" data-cut-start="0" data-cut-end="6.93" data-cut-label="exact-drive-intro-clip" playsinline webkit-playsinline preload="auto" poster="tagj-assets/intro/intro-poster-v149.jpg">
+    <source src="tagj-assets/intro/intro-clip-for-website-v150.mp4" type="video/mp4">
     <source src="tagj-assets/intro/intro-preview-v149.mp4" type="video/mp4">
   </video>
   <div class="intro-shade"></div>
@@ -501,7 +504,7 @@ document.addEventListener('pointerdown',e=>{const b=e.target&&e.target.closest?e
     <span class="intro-v13-line l5">SO <em>TELL ME!!</em></span>
   </div>
   <div class="intro-fire-v13" aria-hidden="true"></div>
-  <span class="intro-v13-source-note" aria-hidden="true">LYRIC / FIRE CUE · MEDIA CUT SOURCE SWAP READY</span>
+  <span class="intro-v13-source-note" aria-hidden="true">COLD WINTER · EXACT WEBSITE INTRO CLIP</span>
   <div class="intro-brand">
     <span class="intro-micro">TAGJ × BENNY BUNDLES</span>
     <strong>ENTER THE ECOSYSTEM</strong>
@@ -887,23 +890,31 @@ document.addEventListener('pointerdown',e=>{const b=e.target&&e.target.closest?e
   const soundBtn=document.getElementById('enterSound');
   const muteBtn=document.getElementById('enterMuted');
   const introStatus=document.getElementById('introStatus');
-  const INTRO_SESSION_KEY='tagjIntroSeenV149';
+  const INTRO_SESSION_KEY='tagjIntroSeenV150';
+  const INTRO_PERSIST_KEY='tagjIntroSeenPersistentV150';
   let introDone=false,introFinishing=false,fallbackTimer=0;
   function hasSeenIntro(){
-    try{return sessionStorage.getItem(INTRO_SESSION_KEY)==='1'}catch(_){return !!window.__TAGJ_INTRO_SEEN}
+    if(window.__TAGJ_INTRO_SEEN)return true;
+    try{if(localStorage.getItem(INTRO_PERSIST_KEY)==='1')return true}catch(_){}
+    try{return sessionStorage.getItem(INTRO_SESSION_KEY)==='1'}catch(_){return false}
   }
   function markIntroSeen(){
     window.__TAGJ_INTRO_SEEN=true;
     try{sessionStorage.setItem(INTRO_SESSION_KEY,'1')}catch(_){}
+    try{localStorage.setItem(INTRO_PERSIST_KEY,'1')}catch(_){}
+    document.documentElement.classList.add('intro-resume-v150');
   }
   function clearIntroSeen(){
     window.__TAGJ_INTRO_SEEN=false;
     try{sessionStorage.removeItem(INTRO_SESSION_KEY)}catch(_){}
+    try{localStorage.removeItem(INTRO_PERSIST_KEY)}catch(_){}
+    document.documentElement.classList.remove('intro-resume-v150');
   }
   function completeIntroState(){
     markIntroSeen();
     introDone=true;introFinishing=false;
     gate?.classList.remove('settling','v13-running','v13-fire','playing');gate?.classList.add('done');
+    if(gate){gate.hidden=true;gate.setAttribute('aria-hidden','true')}
     body.classList.remove('intro-pending','intro-settling');body.classList.add('intro-complete');
     try{video?.pause()}catch(_){}
     clearTimeout(fallbackTimer);
@@ -930,6 +941,8 @@ document.addEventListener('pointerdown',e=>{const b=e.target&&e.target.closest?e
   }
   async function playIntro(muted){
     if(introDone||introFinishing||!video)return;
+    if(gate){gate.hidden=false;gate.removeAttribute('aria-hidden')}
+    document.documentElement.classList.remove('intro-resume-v150');
     clearTimeout(fallbackTimer);
     gate?.classList.remove('v13-fire');
     gate?.classList.add('playing','v13-running');
@@ -942,7 +955,7 @@ document.addEventListener('pointerdown',e=>{const b=e.target&&e.target.closest?e
     video.defaultMuted=!!muted;
     video.volume=1;
     try{
-      // Keep play() directly in the explicit tap path. The MP4 already contains stereo AAC audio.
+      // Keep play() directly in the explicit tap path. The exact Drive intro clip contains H.264 video + stereo AAC audio.
       const p=video.play();
       if(p&&typeof p.then==='function')await p;
     }catch(err){
@@ -972,14 +985,26 @@ document.addEventListener('pointerdown',e=>{const b=e.target&&e.target.closest?e
       fallbackTimer=setTimeout(finishIntro,900);
     }
   });
-  routes.forEach(route=>route.addEventListener('click',markIntroSeen,{capture:true}));
+  routes.forEach(route=>{
+    route.addEventListener('pointerdown',markIntroSeen,{capture:true,passive:true});
+    route.addEventListener('click',markIntroSeen,{capture:true});
+  });
+  document.addEventListener('pointerdown',e=>{
+    const a=e.target.closest?.('a[href^="full.html"]');
+    if(a)markIntroSeen();
+  },{capture:true,passive:true});
 
   // Returning from a world is a resume, not a new visit. Deep links never replay the splash.
   const params=new URLSearchParams(location.search);
   const forceReplay=params.get('intro')==='1';
   const resume=params.get('resume')==='1';
   const deepRoute=!!location.hash&&location.hash!=='#home'&&location.hash!=='#replay-intro';
-  if(forceReplay)clearIntroSeen();
+  if(forceReplay){
+    clearIntroSeen();
+    introDone=false;introFinishing=false;
+    if(gate){gate.hidden=false;gate.removeAttribute('aria-hidden');gate.classList.remove('done')}
+    body.classList.add('intro-pending');body.classList.remove('intro-complete','intro-settling');
+  }
   if(!forceReplay&&(resume||deepRoute||hasSeenIntro()))completeIntroState();
   addEventListener('pageshow',()=>{
     const deep=!!location.hash&&location.hash!=='#home'&&location.hash!=='#replay-intro';
