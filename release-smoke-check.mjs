@@ -79,7 +79,7 @@ if(html){
     ['Phase 21 Money Lab link','href="./money-lab/"'],
     ['Phase 22 Sandbox chain',"sandboxChain:'plaid_unit_pinwheel_method'"],
     ['Phase 22 credential-gated chain',"sandboxChainMode:'deployed_credentials_required'"],
-    ['Phase 23 Account Center link','href="./account/"']
+    ['Phase 23 Account Center link',"externalTool('./account/'"]
   ];
   for(const [label,text] of critical)requireText('missing '+label,html,text);
 
