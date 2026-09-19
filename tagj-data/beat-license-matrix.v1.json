@@ -2,24 +2,42 @@
   "schemaVersion": "tagj.beat-license-matrix.v1.1",
   "generatedFrom": "tagj-data/beat-catalog.v1.json",
   "legalSystemRef": "tagj-data/license-system.v1.json",
-  "status": "draft_agreements_attached_rights_attestation_required",
+  "sampleReviewRef": "tagj-data/sample-review.v1.json",
+  "sampleAttestationRef": "legal/BEAT_SAMPLE_PROVENANCE_ATTESTATION_DRAFT.md",
+  "status": "draft_agreements_attached_trackouts_ready_inquiry_only",
   "beats": [
     {
       "beatId": "beat-001",
       "title": "Pressure Glass",
       "sourceFilename": "B3 V.1 T.01.wav",
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "standard_provenance_confirmation_required",
+        "riskFlag": null,
+        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
+        "rightsAttestationRequired": true
+      },
+      "trackout": {
+        "type": "derived_3_stem_separation",
+        "status": "qc_passed_uploaded_private_drive",
+        "roles": [
+          "drums_percussion",
+          "bass",
+          "music_harmonic"
+        ],
+        "deliveryFormat": "24-bit FLAC lossless",
+        "driveFolderId": "1Dza-t43qKtr83EsSr6KdKsqMFrp8coQA",
+        "driveId": "1S5j6aRA73n8Z5KRbJfhIwvrqp1oN2d3V",
+        "url": "https://drive.google.com/file/d/1S5j6aRA73n8Z5KRbJfhIwvrqp1oN2d3V/view?usp=drivesdk",
+        "fileName": "beat-001 - Pressure Glass - DERIVED TRACKOUTS FLAC.zip",
+        "fileSizeBytes": 71503606,
+        "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
       "deliveryReadiness": {
         "previewNormalizationRequired": false,
         "sourcePeakDbfs": -0.35,
         "sourceFormat": "wav",
-        "sourceReviewNote": null,
-        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
-        "decodedWavDerivativeStatus": null,
-        "originalSourceFormat": "wav"
+        "audioProvenance": null,
+        "sourceReviewNote": null
       },
       "licenses": {
         "basicMp3": {
@@ -34,9 +52,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "status": "available_derived_3_stem_pack",
           "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
-          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
+          "trackoutDriveId": "1S5j6aRA73n8Z5KRbJfhIwvrqp1oN2d3V"
         },
         "unlimited": {
           "priceUsd": 149,
@@ -48,26 +66,40 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      },
-      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-001",
-      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
+      }
     },
     {
       "beatId": "beat-002",
       "title": "Low Light",
       "sourceFilename": "dopbeat2.wav",
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "standard_provenance_confirmation_required",
+        "riskFlag": null,
+        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
+        "rightsAttestationRequired": true
+      },
+      "trackout": {
+        "type": "derived_3_stem_separation",
+        "status": "qc_passed_uploaded_private_drive",
+        "roles": [
+          "drums_percussion",
+          "bass",
+          "music_harmonic"
+        ],
+        "deliveryFormat": "24-bit FLAC lossless",
+        "driveFolderId": "1Dza-t43qKtr83EsSr6KdKsqMFrp8coQA",
+        "driveId": "1wKQhb8h3jEV-fgj_uPeEH-e0r362IJ0D",
+        "url": "https://drive.google.com/file/d/1wKQhb8h3jEV-fgj_uPeEH-e0r362IJ0D/view?usp=drivesdk",
+        "fileName": "beat-002 - Low Light - DERIVED TRACKOUTS FLAC.zip",
+        "fileSizeBytes": 93745341,
+        "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
       "deliveryReadiness": {
         "previewNormalizationRequired": false,
         "sourcePeakDbfs": 0,
         "sourceFormat": "wav",
-        "sourceReviewNote": null,
-        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
-        "decodedWavDerivativeStatus": null,
-        "originalSourceFormat": "wav"
+        "audioProvenance": null,
+        "sourceReviewNote": null
       },
       "licenses": {
         "basicMp3": {
@@ -82,9 +114,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "status": "available_derived_3_stem_pack",
           "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
-          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
+          "trackoutDriveId": "1wKQhb8h3jEV-fgj_uPeEH-e0r362IJ0D"
         },
         "unlimited": {
           "priceUsd": 149,
@@ -96,26 +128,40 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      },
-      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-002",
-      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
+      }
     },
     {
       "beatId": "beat-003",
       "title": "Heavy Weather",
       "sourceFilename": "slams.wav",
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "standard_provenance_confirmation_required",
+        "riskFlag": null,
+        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
+        "rightsAttestationRequired": true
+      },
+      "trackout": {
+        "type": "derived_3_stem_separation",
+        "status": "qc_passed_uploaded_private_drive",
+        "roles": [
+          "drums_percussion",
+          "bass",
+          "music_harmonic"
+        ],
+        "deliveryFormat": "24-bit FLAC lossless",
+        "driveFolderId": "1Dza-t43qKtr83EsSr6KdKsqMFrp8coQA",
+        "driveId": "1Q-i2Q6Zqv6aPdAd8aoaXDyvffjQ4RvMN",
+        "url": "https://drive.google.com/file/d/1Q-i2Q6Zqv6aPdAd8aoaXDyvffjQ4RvMN/view?usp=drivesdk",
+        "fileName": "beat-003 - Heavy Weather - DERIVED TRACKOUTS FLAC.zip",
+        "fileSizeBytes": 80638994,
+        "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
       "deliveryReadiness": {
         "previewNormalizationRequired": false,
         "sourcePeakDbfs": 0.05,
         "sourceFormat": "wav",
-        "sourceReviewNote": null,
-        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
-        "decodedWavDerivativeStatus": null,
-        "originalSourceFormat": "wav"
+        "audioProvenance": null,
+        "sourceReviewNote": null
       },
       "licenses": {
         "basicMp3": {
@@ -130,9 +176,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "status": "available_derived_3_stem_pack",
           "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
-          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
+          "trackoutDriveId": "1Q-i2Q6Zqv6aPdAd8aoaXDyvffjQ4RvMN"
         },
         "unlimited": {
           "priceUsd": 149,
@@ -144,26 +190,40 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      },
-      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-003",
-      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
+      }
     },
     {
       "beatId": "beat-004",
       "title": "Last One Better",
       "sourceFilename": "doperthanthelast1.wav",
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "standard_provenance_confirmation_required",
+        "riskFlag": null,
+        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
+        "rightsAttestationRequired": true
+      },
+      "trackout": {
+        "type": "derived_3_stem_separation",
+        "status": "qc_passed_uploaded_private_drive",
+        "roles": [
+          "drums_percussion",
+          "bass",
+          "music_harmonic"
+        ],
+        "deliveryFormat": "24-bit FLAC lossless",
+        "driveFolderId": "1Dza-t43qKtr83EsSr6KdKsqMFrp8coQA",
+        "driveId": "1C4Ne5jE5yeXLqB99b9dRavx0haJTlRo9",
+        "url": "https://drive.google.com/file/d/1C4Ne5jE5yeXLqB99b9dRavx0haJTlRo9/view?usp=drivesdk",
+        "fileName": "beat-004 - Last One Better - DERIVED TRACKOUTS FLAC.zip",
+        "fileSizeBytes": 33448248,
+        "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
       "deliveryReadiness": {
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 5.16,
         "sourceFormat": "wav",
-        "sourceReviewNote": null,
-        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
-        "decodedWavDerivativeStatus": null,
-        "originalSourceFormat": "wav"
+        "audioProvenance": null,
+        "sourceReviewNote": null
       },
       "licenses": {
         "basicMp3": {
@@ -178,9 +238,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "status": "available_derived_3_stem_pack",
           "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
-          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
+          "trackoutDriveId": "1C4Ne5jE5yeXLqB99b9dRavx0haJTlRo9"
         },
         "unlimited": {
           "priceUsd": 149,
@@ -192,26 +252,40 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      },
-      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-004",
-      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
+      }
     },
     {
       "beatId": "beat-005",
       "title": "Iron Gospel",
       "sourceFilename": "dope metal type b3at.wav",
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "standard_provenance_confirmation_required",
+        "riskFlag": null,
+        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
+        "rightsAttestationRequired": true
+      },
+      "trackout": {
+        "type": "derived_3_stem_separation",
+        "status": "qc_passed_uploaded_private_drive",
+        "roles": [
+          "drums_percussion",
+          "bass",
+          "music_harmonic"
+        ],
+        "deliveryFormat": "24-bit FLAC lossless",
+        "driveFolderId": "1Dza-t43qKtr83EsSr6KdKsqMFrp8coQA",
+        "driveId": "1Lu1-3hY-qa9l3wqazPDppktqhUTkBCTv",
+        "url": "https://drive.google.com/file/d/1Lu1-3hY-qa9l3wqazPDppktqhUTkBCTv/view?usp=drivesdk",
+        "fileName": "beat-005 - Iron Gospel - DERIVED TRACKOUTS FLAC.zip",
+        "fileSizeBytes": 35834379,
+        "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
       "deliveryReadiness": {
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 10.37,
         "sourceFormat": "wav",
-        "sourceReviewNote": null,
-        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
-        "decodedWavDerivativeStatus": null,
-        "originalSourceFormat": "wav"
+        "audioProvenance": null,
+        "sourceReviewNote": null
       },
       "licenses": {
         "basicMp3": {
@@ -226,9 +300,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "status": "available_derived_3_stem_pack",
           "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
-          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
+          "trackoutDriveId": "1Lu1-3hY-qa9l3wqazPDppktqhUTkBCTv"
         },
         "unlimited": {
           "priceUsd": 149,
@@ -240,26 +314,40 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      },
-      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-005",
-      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
+      }
     },
     {
       "beatId": "beat-006",
       "title": "Cold Receiver",
       "sourceFilename": "beat for dt.wav",
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "standard_provenance_confirmation_required",
+        "riskFlag": null,
+        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
+        "rightsAttestationRequired": true
+      },
+      "trackout": {
+        "type": "derived_3_stem_separation",
+        "status": "qc_passed_uploaded_private_drive",
+        "roles": [
+          "drums_percussion",
+          "bass",
+          "music_harmonic"
+        ],
+        "deliveryFormat": "24-bit FLAC lossless",
+        "driveFolderId": "1Dza-t43qKtr83EsSr6KdKsqMFrp8coQA",
+        "driveId": "1bboYveskUwzNsVy8IjQZNiyz59CHGPOp",
+        "url": "https://drive.google.com/file/d/1bboYveskUwzNsVy8IjQZNiyz59CHGPOp/view?usp=drivesdk",
+        "fileName": "beat-006 - Cold Receiver - DERIVED TRACKOUTS FLAC.zip",
+        "fileSizeBytes": 48103206,
+        "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
       "deliveryReadiness": {
         "previewNormalizationRequired": false,
         "sourcePeakDbfs": -0.22,
         "sourceFormat": "wav",
-        "sourceReviewNote": null,
-        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
-        "decodedWavDerivativeStatus": null,
-        "originalSourceFormat": "wav"
+        "audioProvenance": null,
+        "sourceReviewNote": null
       },
       "licenses": {
         "basicMp3": {
@@ -274,9 +362,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "status": "available_derived_3_stem_pack",
           "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
-          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
+          "trackoutDriveId": "1bboYveskUwzNsVy8IjQZNiyz59CHGPOp"
         },
         "unlimited": {
           "priceUsd": 149,
@@ -288,26 +376,40 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      },
-      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-006",
-      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
+      }
     },
     {
       "beatId": "beat-007",
       "title": "Night Ledger",
       "sourceFilename": "1_2023.wav",
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "standard_provenance_confirmation_required",
+        "riskFlag": null,
+        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
+        "rightsAttestationRequired": true
+      },
+      "trackout": {
+        "type": "derived_3_stem_separation",
+        "status": "qc_passed_uploaded_private_drive",
+        "roles": [
+          "drums_percussion",
+          "bass",
+          "music_harmonic"
+        ],
+        "deliveryFormat": "24-bit FLAC lossless",
+        "driveFolderId": "1Dza-t43qKtr83EsSr6KdKsqMFrp8coQA",
+        "driveId": "1MTQtgAnwezoTVeL22o2qtg--YaWN3k0I",
+        "url": "https://drive.google.com/file/d/1MTQtgAnwezoTVeL22o2qtg--YaWN3k0I/view?usp=drivesdk",
+        "fileName": "beat-007 - Night Ledger - DERIVED TRACKOUTS FLAC.zip",
+        "fileSizeBytes": 56169878,
+        "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
       "deliveryReadiness": {
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 0.61,
         "sourceFormat": "wav",
-        "sourceReviewNote": null,
-        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
-        "decodedWavDerivativeStatus": null,
-        "originalSourceFormat": "wav"
+        "audioProvenance": null,
+        "sourceReviewNote": null
       },
       "licenses": {
         "basicMp3": {
@@ -322,9 +424,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "status": "available_derived_3_stem_pack",
           "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
-          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
+          "trackoutDriveId": "1MTQtgAnwezoTVeL22o2qtg--YaWN3k0I"
         },
         "unlimited": {
           "priceUsd": 149,
@@ -336,26 +438,40 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      },
-      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-007",
-      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
+      }
     },
     {
       "beatId": "beat-008",
       "title": "No Witnesses",
       "sourceFilename": "[DARK Trap] No Samples BEAT 2024 #1,077 (prod. Benny Bundles).wav",
       "sampleStatus": {
-        "status": "filename_states_no_samples_unverified",
-        "note": "Original filename includes “No Samples”; sample status still requires rights review before legal activation."
+        "status": "producer_filename_asserts_no_samples_unverified",
+        "riskFlag": "Original filename says “No Samples”; treat as a producer assertion, not independent legal verification.",
+        "audioOnlyReview": "No embedded third-party sample attribution found.",
+        "rightsAttestationRequired": true
+      },
+      "trackout": {
+        "type": "derived_3_stem_separation",
+        "status": "qc_passed_uploaded_private_drive",
+        "roles": [
+          "drums_percussion",
+          "bass",
+          "music_harmonic"
+        ],
+        "deliveryFormat": "24-bit FLAC lossless",
+        "driveFolderId": "1Dza-t43qKtr83EsSr6KdKsqMFrp8coQA",
+        "driveId": "1pV9F2ZmcsKxi6sLCiXMcH0xthZD_uEM6",
+        "url": "https://drive.google.com/file/d/1pV9F2ZmcsKxi6sLCiXMcH0xthZD_uEM6/view?usp=drivesdk",
+        "fileName": "beat-008 - No Witnesses - DERIVED TRACKOUTS FLAC.zip",
+        "fileSizeBytes": 54902594,
+        "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
       "deliveryReadiness": {
         "previewNormalizationRequired": false,
         "sourcePeakDbfs": -0.17,
         "sourceFormat": "wav",
-        "sourceReviewNote": null,
-        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
-        "decodedWavDerivativeStatus": null,
-        "originalSourceFormat": "wav"
+        "audioProvenance": null,
+        "sourceReviewNote": null
       },
       "licenses": {
         "basicMp3": {
@@ -370,9 +486,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "status": "available_derived_3_stem_pack",
           "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
-          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
+          "trackoutDriveId": "1pV9F2ZmcsKxi6sLCiXMcH0xthZD_uEM6"
         },
         "unlimited": {
           "priceUsd": 149,
@@ -384,26 +500,44 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      },
-      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-008",
-      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
+      }
     },
     {
       "beatId": "beat-009",
       "title": "Four Eights",
-      "sourceFilename": "8888.mp3",
+      "sourceFilename": "Four Eights.wav",
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "standard_provenance_confirmation_required",
+        "riskFlag": null,
+        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
+        "rightsAttestationRequired": true
+      },
+      "trackout": {
+        "type": "derived_3_stem_separation",
+        "status": "qc_passed_uploaded_private_drive",
+        "roles": [
+          "drums_percussion",
+          "bass",
+          "music_harmonic"
+        ],
+        "deliveryFormat": "24-bit FLAC lossless",
+        "driveFolderId": "1Dza-t43qKtr83EsSr6KdKsqMFrp8coQA",
+        "driveId": "18gKp2mwkcUBe9Fl9T_FPyd9BDn6PDT_A",
+        "url": "https://drive.google.com/file/d/18gKp2mwkcUBe9Fl9T_FPyd9BDn6PDT_A/view?usp=drivesdk",
+        "fileName": "beat-009 - Four Eights - DERIVED TRACKOUTS FLAC.zip",
+        "fileSizeBytes": 78024935,
+        "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
       "deliveryReadiness": {
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 1.9,
-        "sourceFormat": "mp3",
-        "sourceReviewNote": null,
-        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
-        "decodedWavDerivativeStatus": "lossy_origin_wav_container",
-        "originalSourceFormat": "mp3"
+        "sourceFormat": "wav",
+        "audioProvenance": {
+          "origin": "decoded_from_mp3",
+          "qualityRestored": false,
+          "disclosure": "WAV container decoded from the original MP3. It does not restore audio information lost during MP3 encoding."
+        },
+        "sourceReviewNote": null
       },
       "licenses": {
         "basicMp3": {
@@ -413,45 +547,59 @@
         },
         "premiumWav": {
           "priceUsd": 49,
-          "status": "genuine_lossless_master_required_decoded_wav_derivative_available",
+          "status": "available_with_mp3_origin_wav_disclosure",
           "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "status": "available_derived_3_stem_pack",
           "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
-          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
+          "trackoutDriveId": "18gKp2mwkcUBe9Fl9T_FPyd9BDn6PDT_A"
         },
         "unlimited": {
           "priceUsd": 149,
-          "status": "genuine_lossless_master_required_decoded_wav_derivative_available",
+          "status": "available_with_mp3_origin_wav_disclosure",
           "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "genuine_lossless_master_and_manual_rights_review_required",
+          "status": "manual_rights_review_required_with_mp3_origin_wav_disclosure",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      },
-      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-009",
-      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
+      }
     },
     {
       "beatId": "beat-010",
       "title": "Unfinished Marble",
       "sourceFilename": "Benjamin Unfinished Symphony.wav",
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "standard_provenance_confirmation_required",
+        "riskFlag": null,
+        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
+        "rightsAttestationRequired": true
+      },
+      "trackout": {
+        "type": "derived_3_stem_separation",
+        "status": "qc_passed_uploaded_private_drive",
+        "roles": [
+          "drums_percussion",
+          "bass",
+          "music_harmonic"
+        ],
+        "deliveryFormat": "24-bit FLAC lossless",
+        "driveFolderId": "1Dza-t43qKtr83EsSr6KdKsqMFrp8coQA",
+        "driveId": "1QHPUT0XH6EZdMhwmx6PGL6jxXdKBVoC4",
+        "url": "https://drive.google.com/file/d/1QHPUT0XH6EZdMhwmx6PGL6jxXdKBVoC4/view?usp=drivesdk",
+        "fileName": "beat-010 - Unfinished Marble - DERIVED TRACKOUTS FLAC.zip",
+        "fileSizeBytes": 52120531,
+        "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
       "deliveryReadiness": {
         "previewNormalizationRequired": false,
         "sourcePeakDbfs": 0,
         "sourceFormat": "wav",
-        "sourceReviewNote": null,
-        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
-        "decodedWavDerivativeStatus": null,
-        "originalSourceFormat": "wav"
+        "audioProvenance": null,
+        "sourceReviewNote": null
       },
       "licenses": {
         "basicMp3": {
@@ -466,9 +614,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "status": "available_derived_3_stem_pack",
           "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
-          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
+          "trackoutDriveId": "1QHPUT0XH6EZdMhwmx6PGL6jxXdKBVoC4"
         },
         "unlimited": {
           "priceUsd": 149,
@@ -480,26 +628,40 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      },
-      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-010",
-      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
+      }
     },
     {
       "beatId": "beat-011",
       "title": "Pacific Pressure",
       "sourceFilename": "West Coast Beat Prod by Bundles.wav",
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "standard_provenance_confirmation_required",
+        "riskFlag": null,
+        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
+        "rightsAttestationRequired": true
+      },
+      "trackout": {
+        "type": "derived_3_stem_separation",
+        "status": "qc_passed_uploaded_private_drive",
+        "roles": [
+          "drums_percussion",
+          "bass",
+          "music_harmonic"
+        ],
+        "deliveryFormat": "24-bit FLAC lossless",
+        "driveFolderId": "1Dza-t43qKtr83EsSr6KdKsqMFrp8coQA",
+        "driveId": "165_jVG8lP1zjB09IKxMUnWbD9ZrBuc1T",
+        "url": "https://drive.google.com/file/d/165_jVG8lP1zjB09IKxMUnWbD9ZrBuc1T/view?usp=drivesdk",
+        "fileName": "beat-011 - Pacific Pressure - DERIVED TRACKOUTS FLAC.zip",
+        "fileSizeBytes": 57872044,
+        "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
       "deliveryReadiness": {
         "previewNormalizationRequired": false,
         "sourcePeakDbfs": 0,
         "sourceFormat": "wav",
-        "sourceReviewNote": null,
-        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
-        "decodedWavDerivativeStatus": null,
-        "originalSourceFormat": "wav"
+        "audioProvenance": null,
+        "sourceReviewNote": null
       },
       "licenses": {
         "basicMp3": {
@@ -514,9 +676,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "status": "available_derived_3_stem_pack",
           "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
-          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
+          "trackoutDriveId": "165_jVG8lP1zjB09IKxMUnWbD9ZrBuc1T"
         },
         "unlimited": {
           "priceUsd": 149,
@@ -528,26 +690,40 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      },
-      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-011",
-      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
+      }
     },
     {
       "beatId": "beat-012",
       "title": "Neon Circuit",
       "sourceFilename": "EDMM.wav",
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "standard_provenance_confirmation_required",
+        "riskFlag": null,
+        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
+        "rightsAttestationRequired": true
+      },
+      "trackout": {
+        "type": "derived_3_stem_separation",
+        "status": "qc_passed_uploaded_private_drive",
+        "roles": [
+          "drums_percussion",
+          "bass",
+          "music_harmonic"
+        ],
+        "deliveryFormat": "24-bit FLAC lossless",
+        "driveFolderId": "1Dza-t43qKtr83EsSr6KdKsqMFrp8coQA",
+        "driveId": "1f8-oLt4cCRSnvM0liIQq7lABLtrpGyIU",
+        "url": "https://drive.google.com/file/d/1f8-oLt4cCRSnvM0liIQq7lABLtrpGyIU/view?usp=drivesdk",
+        "fileName": "beat-012 - Neon Circuit - DERIVED TRACKOUTS FLAC.zip",
+        "fileSizeBytes": 40756712,
+        "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
       "deliveryReadiness": {
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 10.95,
         "sourceFormat": "wav",
-        "sourceReviewNote": "High near-silence percentage; manual arrangement/export review recommended before sale.",
-        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
-        "decodedWavDerivativeStatus": null,
-        "originalSourceFormat": "wav"
+        "audioProvenance": null,
+        "sourceReviewNote": "High near-silence percentage; manual arrangement/export review recommended before sale."
       },
       "licenses": {
         "basicMp3": {
@@ -562,9 +738,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "status": "available_derived_3_stem_pack",
           "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
-          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
+          "trackoutDriveId": "1f8-oLt4cCRSnvM0liIQq7lABLtrpGyIU"
         },
         "unlimited": {
           "priceUsd": 149,
@@ -576,26 +752,40 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      },
-      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-012",
-      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
+      }
     },
     {
       "beatId": "beat-013",
       "title": "Redline",
       "sourceFilename": "intense.wav",
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "standard_provenance_confirmation_required",
+        "riskFlag": null,
+        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
+        "rightsAttestationRequired": true
+      },
+      "trackout": {
+        "type": "derived_3_stem_separation",
+        "status": "qc_passed_uploaded_private_drive",
+        "roles": [
+          "drums_percussion",
+          "bass",
+          "music_harmonic"
+        ],
+        "deliveryFormat": "24-bit FLAC lossless",
+        "driveFolderId": "1Dza-t43qKtr83EsSr6KdKsqMFrp8coQA",
+        "driveId": "1myzcjpaHUoHQi5315s6P2ORPCh5Dx8Ye",
+        "url": "https://drive.google.com/file/d/1myzcjpaHUoHQi5315s6P2ORPCh5Dx8Ye/view?usp=drivesdk",
+        "fileName": "beat-013 - Redline - DERIVED TRACKOUTS FLAC.zip",
+        "fileSizeBytes": 78292013,
+        "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
       "deliveryReadiness": {
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 11.77,
         "sourceFormat": "wav",
-        "sourceReviewNote": null,
-        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
-        "decodedWavDerivativeStatus": null,
-        "originalSourceFormat": "wav"
+        "audioProvenance": null,
+        "sourceReviewNote": null
       },
       "licenses": {
         "basicMp3": {
@@ -610,9 +800,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "status": "available_derived_3_stem_pack",
           "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
-          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
+          "trackoutDriveId": "1myzcjpaHUoHQi5315s6P2ORPCh5Dx8Ye"
         },
         "unlimited": {
           "priceUsd": 149,
@@ -624,26 +814,40 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      },
-      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-013",
-      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
+      }
     },
     {
       "beatId": "beat-014",
       "title": "Soft Armor",
       "sourceFilename": "sarahs beat 3.wav",
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "standard_provenance_confirmation_required",
+        "riskFlag": null,
+        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
+        "rightsAttestationRequired": true
+      },
+      "trackout": {
+        "type": "derived_3_stem_separation",
+        "status": "qc_passed_uploaded_private_drive",
+        "roles": [
+          "drums_percussion",
+          "bass",
+          "music_harmonic"
+        ],
+        "deliveryFormat": "24-bit FLAC lossless",
+        "driveFolderId": "1Dza-t43qKtr83EsSr6KdKsqMFrp8coQA",
+        "driveId": "1DZkQiKt-qleIP0WvSgofIKLnRYJ_LmkA",
+        "url": "https://drive.google.com/file/d/1DZkQiKt-qleIP0WvSgofIKLnRYJ_LmkA/view?usp=drivesdk",
+        "fileName": "beat-014 - Soft Armor - DERIVED TRACKOUTS FLAC.zip",
+        "fileSizeBytes": 59713977,
+        "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
       "deliveryReadiness": {
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 1.3,
         "sourceFormat": "wav",
-        "sourceReviewNote": null,
-        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
-        "decodedWavDerivativeStatus": null,
-        "originalSourceFormat": "wav"
+        "audioProvenance": null,
+        "sourceReviewNote": null
       },
       "licenses": {
         "basicMp3": {
@@ -658,9 +862,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "status": "available_derived_3_stem_pack",
           "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
-          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
+          "trackoutDriveId": "1DZkQiKt-qleIP0WvSgofIKLnRYJ_LmkA"
         },
         "unlimited": {
           "priceUsd": 149,
@@ -672,26 +876,40 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      },
-      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-014",
-      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
+      }
     },
     {
       "beatId": "beat-015",
       "title": "Half Truths",
       "sourceFilename": "hts beat remix 23.wav",
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "heightened_provenance_review_required",
+        "riskFlag": "Original source filename contains “remix”; confirm whether any preexisting musical work or sound recording was used.",
+        "audioOnlyReview": "No file metadata identifies a third-party sample, but audio-only review cannot establish clearance.",
+        "rightsAttestationRequired": true
+      },
+      "trackout": {
+        "type": "derived_3_stem_separation",
+        "status": "qc_passed_uploaded_private_drive",
+        "roles": [
+          "drums_percussion",
+          "bass",
+          "music_harmonic"
+        ],
+        "deliveryFormat": "24-bit FLAC lossless",
+        "driveFolderId": "1Dza-t43qKtr83EsSr6KdKsqMFrp8coQA",
+        "driveId": "1_WmScELeB3grqWzC26SABmqkyAuwCkzu",
+        "url": "https://drive.google.com/file/d/1_WmScELeB3grqWzC26SABmqkyAuwCkzu/view?usp=drivesdk",
+        "fileName": "beat-015 - Half Truths - DERIVED TRACKOUTS FLAC.zip",
+        "fileSizeBytes": 83427985,
+        "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
       "deliveryReadiness": {
         "previewNormalizationRequired": false,
         "sourcePeakDbfs": -0.02,
         "sourceFormat": "wav",
-        "sourceReviewNote": null,
-        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
-        "decodedWavDerivativeStatus": null,
-        "originalSourceFormat": "wav"
+        "audioProvenance": null,
+        "sourceReviewNote": null
       },
       "licenses": {
         "basicMp3": {
@@ -706,9 +924,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "hold_remix_provenance_review_and_original_trackouts_missing",
+          "status": "available_derived_3_stem_pack",
           "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
-          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
+          "trackoutDriveId": "1_WmScELeB3grqWzC26SABmqkyAuwCkzu"
         },
         "unlimited": {
           "priceUsd": 149,
@@ -720,26 +938,40 @@
           "status": "hold_remix_provenance_review",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      },
-      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-015",
-      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
+      }
     },
     {
       "beatId": "beat-016",
       "title": "Black Ledger",
       "sourceFilename": "darktrap.wav",
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "standard_provenance_confirmation_required",
+        "riskFlag": null,
+        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
+        "rightsAttestationRequired": true
+      },
+      "trackout": {
+        "type": "derived_3_stem_separation",
+        "status": "qc_passed_uploaded_private_drive",
+        "roles": [
+          "drums_percussion",
+          "bass",
+          "music_harmonic"
+        ],
+        "deliveryFormat": "24-bit FLAC lossless",
+        "driveFolderId": "1Dza-t43qKtr83EsSr6KdKsqMFrp8coQA",
+        "driveId": "156pjLkEeLrihcTPbd2ZewPL9M_gqASyQ",
+        "url": "https://drive.google.com/file/d/156pjLkEeLrihcTPbd2ZewPL9M_gqASyQ/view?usp=drivesdk",
+        "fileName": "beat-016 - Black Ledger - DERIVED TRACKOUTS FLAC.zip",
+        "fileSizeBytes": 79228084,
+        "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
       "deliveryReadiness": {
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 1.01,
         "sourceFormat": "wav",
-        "sourceReviewNote": null,
-        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
-        "decodedWavDerivativeStatus": null,
-        "originalSourceFormat": "wav"
+        "audioProvenance": null,
+        "sourceReviewNote": null
       },
       "licenses": {
         "basicMp3": {
@@ -754,9 +986,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "status": "available_derived_3_stem_pack",
           "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
-          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
+          "trackoutDriveId": "156pjLkEeLrihcTPbd2ZewPL9M_gqASyQ"
         },
         "unlimited": {
           "priceUsd": 149,
@@ -768,26 +1000,44 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      },
-      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-016",
-      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
+      }
     },
     {
       "beatId": "beat-017",
       "title": "Basement Gold",
-      "sourceFilename": "tghhhhgfdd.mp3",
+      "sourceFilename": "Basement Gold.wav",
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "standard_provenance_confirmation_required",
+        "riskFlag": null,
+        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
+        "rightsAttestationRequired": true
+      },
+      "trackout": {
+        "type": "derived_3_stem_separation",
+        "status": "qc_passed_uploaded_private_drive",
+        "roles": [
+          "drums_percussion",
+          "bass",
+          "music_harmonic"
+        ],
+        "deliveryFormat": "24-bit FLAC lossless",
+        "driveFolderId": "1Dza-t43qKtr83EsSr6KdKsqMFrp8coQA",
+        "driveId": "1mHYn9ZFeXv_MQd_4g7b9-AYd0qem51h8",
+        "url": "https://drive.google.com/file/d/1mHYn9ZFeXv_MQd_4g7b9-AYd0qem51h8/view?usp=drivesdk",
+        "fileName": "beat-017 - Basement Gold - DERIVED TRACKOUTS FLAC.zip",
+        "fileSizeBytes": 81627773,
+        "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
       "deliveryReadiness": {
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 2.63,
-        "sourceFormat": "mp3",
-        "sourceReviewNote": null,
-        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
-        "decodedWavDerivativeStatus": "lossy_origin_wav_container",
-        "originalSourceFormat": "mp3"
+        "sourceFormat": "wav",
+        "audioProvenance": {
+          "origin": "decoded_from_mp3",
+          "qualityRestored": false,
+          "disclosure": "WAV container decoded from the original MP3. It does not restore audio information lost during MP3 encoding."
+        },
+        "sourceReviewNote": null
       },
       "licenses": {
         "basicMp3": {
@@ -797,45 +1047,63 @@
         },
         "premiumWav": {
           "priceUsd": 49,
-          "status": "genuine_lossless_master_required_decoded_wav_derivative_available",
+          "status": "available_with_mp3_origin_wav_disclosure",
           "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "status": "available_derived_3_stem_pack",
           "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
-          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
+          "trackoutDriveId": "1mHYn9ZFeXv_MQd_4g7b9-AYd0qem51h8"
         },
         "unlimited": {
           "priceUsd": 149,
-          "status": "genuine_lossless_master_required_decoded_wav_derivative_available",
+          "status": "available_with_mp3_origin_wav_disclosure",
           "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "genuine_lossless_master_and_manual_rights_review_required",
+          "status": "manual_rights_review_required_with_mp3_origin_wav_disclosure",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      },
-      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-017",
-      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
+      }
     },
     {
       "beatId": "beat-018",
       "title": "Long Way Home",
-      "sourceFilename": "untitled722.mp3",
+      "sourceFilename": "Long Way Home.wav",
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "standard_provenance_confirmation_required",
+        "riskFlag": null,
+        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
+        "rightsAttestationRequired": true
+      },
+      "trackout": {
+        "type": "derived_3_stem_separation",
+        "status": "qc_passed_uploaded_private_drive",
+        "roles": [
+          "drums_percussion",
+          "bass",
+          "music_harmonic"
+        ],
+        "deliveryFormat": "24-bit FLAC lossless",
+        "driveFolderId": "1Dza-t43qKtr83EsSr6KdKsqMFrp8coQA",
+        "driveId": "1agMJyshe5FFiMpbVsHYOXwA_Ko8_LKLh",
+        "url": "https://drive.google.com/file/d/1agMJyshe5FFiMpbVsHYOXwA_Ko8_LKLh/view?usp=drivesdk",
+        "fileName": "beat-018 - Long Way Home - DERIVED TRACKOUTS FLAC.zip",
+        "fileSizeBytes": 92647003,
+        "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
       "deliveryReadiness": {
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 2.32,
-        "sourceFormat": "mp3",
-        "sourceReviewNote": null,
-        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
-        "decodedWavDerivativeStatus": "lossy_origin_wav_container",
-        "originalSourceFormat": "mp3"
+        "sourceFormat": "wav",
+        "audioProvenance": {
+          "origin": "decoded_from_mp3",
+          "qualityRestored": false,
+          "disclosure": "WAV container decoded from the original MP3. It does not restore audio information lost during MP3 encoding."
+        },
+        "sourceReviewNote": null
       },
       "licenses": {
         "basicMp3": {
@@ -845,45 +1113,63 @@
         },
         "premiumWav": {
           "priceUsd": 49,
-          "status": "genuine_lossless_master_required_decoded_wav_derivative_available",
+          "status": "available_with_mp3_origin_wav_disclosure",
           "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "status": "available_derived_3_stem_pack",
           "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
-          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
+          "trackoutDriveId": "1agMJyshe5FFiMpbVsHYOXwA_Ko8_LKLh"
         },
         "unlimited": {
           "priceUsd": 149,
-          "status": "genuine_lossless_master_required_decoded_wav_derivative_available",
+          "status": "available_with_mp3_origin_wav_disclosure",
           "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "genuine_lossless_master_and_manual_rights_review_required",
+          "status": "manual_rights_review_required_with_mp3_origin_wav_disclosure",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      },
-      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-018",
-      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
+      }
     },
     {
       "beatId": "beat-019",
       "title": "Daylight Run",
-      "sourceFilename": "juice.mp3",
+      "sourceFilename": "Daylight Run.wav",
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "standard_provenance_confirmation_required",
+        "riskFlag": null,
+        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
+        "rightsAttestationRequired": true
+      },
+      "trackout": {
+        "type": "derived_3_stem_separation",
+        "status": "qc_passed_uploaded_private_drive",
+        "roles": [
+          "drums_percussion",
+          "bass",
+          "music_harmonic"
+        ],
+        "deliveryFormat": "24-bit FLAC lossless",
+        "driveFolderId": "1Dza-t43qKtr83EsSr6KdKsqMFrp8coQA",
+        "driveId": "1xeCl11dioA8siCLPr9wgeGMRXmbDztBq",
+        "url": "https://drive.google.com/file/d/1xeCl11dioA8siCLPr9wgeGMRXmbDztBq/view?usp=drivesdk",
+        "fileName": "beat-019 - Daylight Run - DERIVED TRACKOUTS FLAC.zip",
+        "fileSizeBytes": 56297305,
+        "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
       "deliveryReadiness": {
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 1.68,
-        "sourceFormat": "mp3",
-        "sourceReviewNote": null,
-        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
-        "decodedWavDerivativeStatus": "lossy_origin_wav_container",
-        "originalSourceFormat": "mp3"
+        "sourceFormat": "wav",
+        "audioProvenance": {
+          "origin": "decoded_from_mp3",
+          "qualityRestored": false,
+          "disclosure": "WAV container decoded from the original MP3. It does not restore audio information lost during MP3 encoding."
+        },
+        "sourceReviewNote": null
       },
       "licenses": {
         "basicMp3": {
@@ -893,45 +1179,59 @@
         },
         "premiumWav": {
           "priceUsd": 49,
-          "status": "genuine_lossless_master_required_decoded_wav_derivative_available",
+          "status": "available_with_mp3_origin_wav_disclosure",
           "agreement": "legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md"
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "status": "available_derived_3_stem_pack",
           "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
-          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
+          "trackoutDriveId": "1xeCl11dioA8siCLPr9wgeGMRXmbDztBq"
         },
         "unlimited": {
           "priceUsd": 149,
-          "status": "genuine_lossless_master_required_decoded_wav_derivative_available",
+          "status": "available_with_mp3_origin_wav_disclosure",
           "agreement": "legal/BEAT_LICENSE_UNLIMITED_DRAFT.md"
         },
         "exclusive": {
           "minimumOfferUsd": 499,
-          "status": "genuine_lossless_master_and_manual_rights_review_required",
+          "status": "manual_rights_review_required_with_mp3_origin_wav_disclosure",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      },
-      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-019",
-      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
+      }
     },
     {
       "beatId": "beat-020",
       "title": "Clean Money",
       "sourceFilename": "2_2023.wav",
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "standard_provenance_confirmation_required",
+        "riskFlag": null,
+        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
+        "rightsAttestationRequired": true
+      },
+      "trackout": {
+        "type": "derived_3_stem_separation",
+        "status": "qc_passed_uploaded_private_drive",
+        "roles": [
+          "drums_percussion",
+          "bass",
+          "music_harmonic"
+        ],
+        "deliveryFormat": "24-bit FLAC lossless",
+        "driveFolderId": "1Dza-t43qKtr83EsSr6KdKsqMFrp8coQA",
+        "driveId": "1dk_tQu1hACNV-luQISVJICjXD0ugiVuL",
+        "url": "https://drive.google.com/file/d/1dk_tQu1hACNV-luQISVJICjXD0ugiVuL/view?usp=drivesdk",
+        "fileName": "beat-020 - Clean Money - DERIVED TRACKOUTS FLAC.zip",
+        "fileSizeBytes": 78460239,
+        "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
       "deliveryReadiness": {
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 9.59,
         "sourceFormat": "wav",
-        "sourceReviewNote": null,
-        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
-        "decodedWavDerivativeStatus": null,
-        "originalSourceFormat": "wav"
+        "audioProvenance": null,
+        "sourceReviewNote": null
       },
       "licenses": {
         "basicMp3": {
@@ -946,9 +1246,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "status": "available_derived_3_stem_pack",
           "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
-          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
+          "trackoutDriveId": "1dk_tQu1hACNV-luQISVJICjXD0ugiVuL"
         },
         "unlimited": {
           "priceUsd": 149,
@@ -960,26 +1260,40 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      },
-      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-020",
-      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
+      }
     },
     {
       "beatId": "beat-021",
       "title": "Pressure Point",
       "sourceFilename": "4_2023.wav",
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "standard_provenance_confirmation_required",
+        "riskFlag": null,
+        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
+        "rightsAttestationRequired": true
+      },
+      "trackout": {
+        "type": "derived_3_stem_separation",
+        "status": "qc_passed_uploaded_private_drive",
+        "roles": [
+          "drums_percussion",
+          "bass",
+          "music_harmonic"
+        ],
+        "deliveryFormat": "24-bit FLAC lossless",
+        "driveFolderId": "1Dza-t43qKtr83EsSr6KdKsqMFrp8coQA",
+        "driveId": "1cRUoDha--dFi2B2h7rCHGbxuqDU5ysMa",
+        "url": "https://drive.google.com/file/d/1cRUoDha--dFi2B2h7rCHGbxuqDU5ysMa/view?usp=drivesdk",
+        "fileName": "beat-021 - Pressure Point - DERIVED TRACKOUTS FLAC.zip",
+        "fileSizeBytes": 61922192,
+        "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
       "deliveryReadiness": {
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 3.2,
         "sourceFormat": "wav",
-        "sourceReviewNote": null,
-        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
-        "decodedWavDerivativeStatus": null,
-        "originalSourceFormat": "wav"
+        "audioProvenance": null,
+        "sourceReviewNote": null
       },
       "licenses": {
         "basicMp3": {
@@ -994,9 +1308,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "status": "available_derived_3_stem_pack",
           "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
-          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
+          "trackoutDriveId": "1cRUoDha--dFi2B2h7rCHGbxuqDU5ysMa"
         },
         "unlimited": {
           "priceUsd": 149,
@@ -1008,26 +1322,40 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      },
-      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-021",
-      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
+      }
     },
     {
       "beatId": "beat-022",
       "title": "Slow Motion Gold",
       "sourceFilename": "3_2023.wav",
       "sampleStatus": {
-        "status": "not_reviewed",
-        "note": "No sample-clearance representation has been made."
+        "status": "standard_provenance_confirmation_required",
+        "riskFlag": null,
+        "audioOnlyReview": "No embedded third-party sample attribution found in the supplied export metadata. Audio-only review cannot prove that no samples, loops, interpolations, or third-party recordings were used.",
+        "rightsAttestationRequired": true
+      },
+      "trackout": {
+        "type": "derived_3_stem_separation",
+        "status": "qc_passed_uploaded_private_drive",
+        "roles": [
+          "drums_percussion",
+          "bass",
+          "music_harmonic"
+        ],
+        "deliveryFormat": "24-bit FLAC lossless",
+        "driveFolderId": "1Dza-t43qKtr83EsSr6KdKsqMFrp8coQA",
+        "driveId": "1im8jlqrQHfl-j7RynchrXUUJ0MImVnt7",
+        "url": "https://drive.google.com/file/d/1im8jlqrQHfl-j7RynchrXUUJ0MImVnt7/view?usp=drivesdk",
+        "fileName": "beat-022 - Slow Motion Gold - DERIVED TRACKOUTS FLAC.zip",
+        "fileSizeBytes": 46512019,
+        "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
       "deliveryReadiness": {
         "previewNormalizationRequired": true,
         "sourcePeakDbfs": 3.47,
         "sourceFormat": "wav",
-        "sourceReviewNote": "Elevated near-silence percentage; manual arrangement/export review recommended.",
-        "derivedStemPackStatus": "derived_from_stereo_master_not_original_multitracks",
-        "decodedWavDerivativeStatus": null,
-        "originalSourceFormat": "wav"
+        "audioProvenance": null,
+        "sourceReviewNote": "Elevated near-silence percentage; manual arrangement/export review recommended."
       },
       "licenses": {
         "basicMp3": {
@@ -1042,9 +1370,9 @@
         },
         "trackoutPro": {
           "priceUsd": 99,
-          "status": "original_trackouts_missing_derived_mix_control_stems_available",
+          "status": "available_derived_3_stem_pack",
           "agreement": "legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md",
-          "deliveryDisclosure": "Derived stem pack exists but is not original DAW trackouts; Trackout Pro remains blocked unless Schedule A expressly substitutes derived stems or original stems are supplied."
+          "trackoutDriveId": "1im8jlqrQHfl-j7RynchrXUUJ0MImVnt7"
         },
         "unlimited": {
           "priceUsd": 149,
@@ -1056,9 +1384,7 @@
           "status": "manual_rights_review_required",
           "agreement": "legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md"
         }
-      },
-      "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-022",
-      "producerRightsDeclaration": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md"
+      }
     }
   ]
 }
