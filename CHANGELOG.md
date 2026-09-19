@@ -2,6 +2,29 @@
 
 Production changes for **This Week** are recorded here.
 
+## Phase 18 — Power-user Efficiency — 2026-09-18
+
+### Optional efficiency layer
+- Added browser-local `thisweek.powerPrefs.v1` preferences; behavioral power features remain off by default.
+- Added optional first-tap direct-open behavior for the four Home category worlds without adding Home widgets.
+- Added optional Add Spending amount-prefill chips; shortcuts never submit a transaction automatically.
+- Added optional pinned and recent deep-tool shortcuts inside Details.
+- Added optional desktop keyboard chords and slash-to-search on Details.
+- Added optional rapid switching among Bills, Essentials, Lifestyle, and Savings Studios.
+- Added user-controlled ordering of the four existing Details groups.
+- Added cross-tab power-preference cache invalidation and Privacy & Local Data inventory disclosure.
+- Preserved Phase 16 analytics boundaries; no shortcut telemetry, dwell time, route-sequence tracking, or remote analytics were added.
+
+### State migrations
+- No financial-state migration.
+- Core financial schema remains **v3**.
+- Portable data schema remains **v1**.
+- Power-user preferences are isolated from the normalized financial model.
+
+### Rollback
+- Pre-Phase-18 commit: `848412e18435b4248fa2a0f38f5e2427c5704995`
+- Rollback branch: `rollback/phase18-pre-power-2026-09-18`
+
 ## Phase 17 — Product Polish & Brand System — 2026-09-18
 
 ### Presentation system
