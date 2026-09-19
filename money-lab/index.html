@@ -70,6 +70,7 @@ header{display:flex;justify-content:space-between;gap:16px;align-items:flex-star
   <p>These controls call real provider Sandbox/dev contracts when server credentials are configured. A disabled provider returns a configuration error instead of silently simulating success.</p>
   <div class="actions">
     <button class="primary" id="providerPreflight" disabled>Preflight providers</button>
+    <button id="riskStatus" disabled>Risk policy status</button>
     <button id="chainRefresh" disabled>0 · Refresh chain</button>
   </div>
   <div id="providerChecks" class="provider-checks" aria-live="polite">
@@ -78,6 +79,7 @@ header{display:flex;justify-content:space-between;gap:16px;align-items:flex-star
     <div class="provider-check warn"><small>Pinwheel</small><strong>Not checked</strong><span>Deposit switch</span></div>
     <div class="provider-check warn"><small>Method</small><strong>Not checked</strong><span>Liability bill pay</span></div>
   </div>
+  <div id="riskChecks" class="notice"><strong>Risk layer:</strong> Not checked. Sandbox policy is application-level and remains subordinate to provider/program/bank limits.</div>
   <div class="actions">
     <button id="unitApplication" disabled>1 · Unit applicant</button>
     <button id="unitApplicationStatus" disabled>2 · Refresh KYC</button>
