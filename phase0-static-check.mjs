@@ -59,6 +59,8 @@ const phase31SchemaUrl=new URL('./supabase/phase31/production_activation_interlo
 const phase31DocUrl=new URL('./PHASE_31_IMPLEMENTATION.md', import.meta.url);
 const phase32SchemaUrl=new URL('./supabase/phase32/legal_retention.sql', import.meta.url);
 const phase32DocUrl=new URL('./PHASE_32_IMPLEMENTATION.md', import.meta.url);
+const phase33SchemaUrl=new URL('./supabase/phase33/privacy_export.sql', import.meta.url);
+const phase33DocUrl=new URL('./PHASE_33_IMPLEMENTATION.md', import.meta.url);
 const legalSandboxUrl=new URL('./legal/sandbox/index.html', import.meta.url);
 const legalCheckUrl=new URL('./legal-check.mjs', import.meta.url);
 const supportGatewayUrl=new URL('./supabase/functions/thisweek-support-gateway/index.ts', import.meta.url);
@@ -123,6 +125,8 @@ for(const [label,url] of [
   ['Phase 31 implementation document',phase31DocUrl],
   ['Phase 32 legal retention schema',phase32SchemaUrl],
   ['Phase 32 implementation document',phase32DocUrl],
+  ['Phase 33 privacy export schema',phase33SchemaUrl],
+  ['Phase 33 implementation document',phase33DocUrl],
   ['Sandbox legal fixture',legalSandboxUrl],
   ['Sandbox legal fixture checker',legalCheckUrl],
   ['Support Gateway',supportGatewayUrl],
@@ -192,6 +196,9 @@ const phase32Schema=fs.existsSync(phase32SchemaUrl)?fs.readFileSync(phase32Schem
 const phase32Doc=fs.existsSync(phase32DocUrl)?fs.readFileSync(phase32DocUrl,'utf8'):'';
 const legalSandbox=fs.existsSync(legalSandboxUrl)?fs.readFileSync(legalSandboxUrl,'utf8'):'';
 const requirePhase32FileText=(label,content,text)=>{if(!content.includes(text))failures.push(label);};
+const phase33Schema=fs.existsSync(phase33SchemaUrl)?fs.readFileSync(phase33SchemaUrl,'utf8'):'';
+const phase33Doc=fs.existsSync(phase33DocUrl)?fs.readFileSync(phase33DocUrl,'utf8'):'';
+const requirePhase33FileText=(label,content,text)=>{if(!content.includes(text))failures.push(label);};
 
 const requireText=(label,text)=>{if(!html.includes(text))failures.push(label);};
 const forbidText=(label,text)=>{if(html.includes(text))failures.push(label);};
@@ -650,6 +657,22 @@ requirePhase32FileText('Phase 32 Ops legal retention surface',opsHtml,'id="legal
 requirePhase32FileText('Phase 32 Ops legal retention renderer',opsJs,'renderLegalRetention');
 requirePhase32FileText('Phase 32 Sandbox-only fixture',legalSandbox,'SANDBOX TEST ONLY.');
 requirePhase32FileText('Phase 32 production templates remain inactive',phase32Doc,'inactive/unapproved');
+
+requirePhase33FileText('Phase 33 export audit table',phase33Schema,'tw_privacy_export_events');
+requirePhase33FileText('Phase 33 immutable export audit',phase33Schema,'tw_privacy_export_events_immutable');
+requirePhase33FileText('Phase 33 browser access revoked',phase33Schema,'from public,anon,authenticated');
+requirePhase33FileText('Phase 33 inventory action',accountGateway,'privacy_inventory');
+requirePhase33FileText('Phase 33 export start action',accountGateway,'privacy_export_start');
+requirePhase33FileText('Phase 33 paginated export action',accountGateway,'privacy_export_page');
+requirePhase33FileText('Phase 33 completion audit action',accountGateway,'privacy_export_complete');
+requirePhase33FileText('Phase 33 fixed dataset allowlist',accountGateway,'PRIVACY_DATASETS');
+requirePhase33FileText('Phase 33 page-size cap',accountGateway,'Math.min(500');
+requirePhase33FileText('Phase 33 excludes Vault/provider secrets',accountGateway,'provider_credentials_and_vault_secrets');
+requirePhase33FileText('Phase 33 export surface',accountHtml,'id="downloadCloudExport"');
+requirePhase33FileText('Phase 33 client-side assembly',accountJs,'thisweek.cloud-export.v1');
+requirePhase33FileText('Phase 33 page loop',accountJs,"accountGateway('privacy_export_page'");
+requirePhase33FileText('Phase 33 local Plan separation',accountHtml,'Export local Plan data');
+requirePhase33FileText('Phase 33 statutory scope disclaimer',phase33Doc,'not represented as a guarantee');
 
 requirePhase28FileText('Phase 28 Support Center gateway',supportJs,'/functions/v1/thisweek-support-gateway');
 if(/service_role|sb_secret_/i.test(supportHtml+supportJs))failures.push('Phase 28 Support Center contains server-secret pattern');
