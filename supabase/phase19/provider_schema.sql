@@ -163,4 +163,60 @@ comment on table public.tw_provider_accounts is
 comment on table public.tw_provider_conflicts is
   'Inspectable conflict queue. Financial conflicts must never be silently merged.';
 
+
+create or replace function public.tw_vault_create(
+  p_secret text,
+  p_name text,
+  p_description text
+)
+returns uuid
+language sql
+security definer
+set search_path = pg_catalog, vault
+as $
+  select vault.create_secret(p_secret, p_name, p_description);
+$;
+
+create or replace function public.tw_vault_read(
+  p_secret_id uuid
+)
+returns text
+language sql
+security definer
+set search_path = pg_catalog, vault
+as $
+  select decrypted_secret
+  from vault.decrypted_secrets
+  where id = p_secret_id
+  limit 1;
+$;
+
+create or replace function public.tw_vault_delete(
+  p_secret_id uuid
+)
+returns void
+language plpgsql
+security definer
+set search_path = pg_catalog, vault
+as $
+begin
+  delete from vault.secrets where id = p_secret_id;
+end;
+$;
+
+revoke all on function public.tw_vault_create(text,text,text) from public, anon, authenticated;
+revoke all on function public.tw_vault_read(uuid) from public, anon, authenticated;
+revoke all on function public.tw_vault_delete(uuid) from public, anon, authenticated;
+
+grant execute on function public.tw_vault_create(text,text,text) to service_role;
+grant execute on function public.tw_vault_read(uuid) to service_role;
+grant execute on function public.tw_vault_delete(uuid) to service_role;
+
+comment on function public.tw_vault_create(text,text,text) is
+  'This Week service-role-only Vault create bridge for provider secrets.';
+comment on function public.tw_vault_read(uuid) is
+  'This Week service-role-only Vault read bridge for provider secrets.';
+comment on function public.tw_vault_delete(uuid) is
+  'This Week service-role-only Vault delete bridge for provider secrets.';
+
 commit;
