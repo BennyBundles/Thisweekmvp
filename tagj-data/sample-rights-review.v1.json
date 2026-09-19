@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "tagj.sample-rights-review.v1",
+  "schemaVersion": "tagj.sample-rights-review.v1.1",
   "reviewDate": "2026-09-19",
   "reviewerType": "technical_and_documentary_review_not_attorney_clearance",
   "scope": [
@@ -29,7 +29,8 @@
       "provenanceFlags": [],
       "requiredAction": "Benjamin Alexander should attest that all Beat elements are original, public-domain, or properly licensed/cleared and disclose any exceptions before paid licensing.",
       "exclusiveSaleGate": "manual_rights_attestation_required",
-      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
+      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone.",
+      "embeddedMetadataReview": "no third-party sample-source attribution found in inspected file metadata; not clearance evidence"
     },
     {
       "beatId": "beat-002",
@@ -42,7 +43,8 @@
       "provenanceFlags": [],
       "requiredAction": "Benjamin Alexander should attest that all Beat elements are original, public-domain, or properly licensed/cleared and disclose any exceptions before paid licensing.",
       "exclusiveSaleGate": "manual_rights_attestation_required",
-      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
+      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone.",
+      "embeddedMetadataReview": "no third-party sample-source attribution found in inspected file metadata; not clearance evidence"
     },
     {
       "beatId": "beat-003",
@@ -55,7 +57,8 @@
       "provenanceFlags": [],
       "requiredAction": "Benjamin Alexander should attest that all Beat elements are original, public-domain, or properly licensed/cleared and disclose any exceptions before paid licensing.",
       "exclusiveSaleGate": "manual_rights_attestation_required",
-      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
+      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone.",
+      "embeddedMetadataReview": "no third-party sample-source attribution found in inspected file metadata; not clearance evidence"
     },
     {
       "beatId": "beat-004",
@@ -68,7 +71,8 @@
       "provenanceFlags": [],
       "requiredAction": "Benjamin Alexander should attest that all Beat elements are original, public-domain, or properly licensed/cleared and disclose any exceptions before paid licensing.",
       "exclusiveSaleGate": "manual_rights_attestation_required",
-      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
+      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone.",
+      "embeddedMetadataReview": "no third-party sample-source attribution found in inspected file metadata; not clearance evidence"
     },
     {
       "beatId": "beat-005",
@@ -81,7 +85,8 @@
       "provenanceFlags": [],
       "requiredAction": "Benjamin Alexander should attest that all Beat elements are original, public-domain, or properly licensed/cleared and disclose any exceptions before paid licensing.",
       "exclusiveSaleGate": "manual_rights_attestation_required",
-      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
+      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone.",
+      "embeddedMetadataReview": "no third-party sample-source attribution found in inspected file metadata; not clearance evidence"
     },
     {
       "beatId": "beat-006",
@@ -95,8 +100,9 @@
         "working filename suggests beat may have been prepared for a specific third party ('beat for dt')"
       ],
       "requiredAction": "Confirm no prior exclusive promise, assignment, work-for-hire obligation, or conflicting license to the intended recipient before exclusive sale.",
-      "exclusiveSaleGate": "manual_rights_attestation_required",
-      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
+      "exclusiveSaleGate": "prior_client_commitment_confirmation_required",
+      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone.",
+      "embeddedMetadataReview": "no third-party sample-source attribution found in inspected file metadata; not clearance evidence"
     },
     {
       "beatId": "beat-007",
@@ -109,7 +115,8 @@
       "provenanceFlags": [],
       "requiredAction": "Benjamin Alexander should attest that all Beat elements are original, public-domain, or properly licensed/cleared and disclose any exceptions before paid licensing.",
       "exclusiveSaleGate": "manual_rights_attestation_required",
-      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
+      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone.",
+      "embeddedMetadataReview": "no third-party sample-source attribution found in inspected file metadata; not clearance evidence"
     },
     {
       "beatId": "beat-008",
@@ -124,7 +131,8 @@
       ],
       "requiredAction": "Treat the filename as producer history only; obtain signed producer attestation before marking sample-free.",
       "exclusiveSaleGate": "manual_rights_attestation_required",
-      "note": "Audio/source review completed. Original filename states “No Samples,” but no external reference-catalog fingerprint match or chain-of-title documentation was available; therefore third-party rights clearance is not certified."
+      "note": "Audio/source review completed. Original filename states “No Samples,” but no external reference-catalog fingerprint match or chain-of-title documentation was available; therefore third-party rights clearance is not certified.",
+      "embeddedMetadataReview": "no third-party sample-source attribution found in inspected file metadata; not clearance evidence"
     },
     {
       "beatId": "beat-009",
@@ -137,7 +145,8 @@
       "provenanceFlags": [],
       "requiredAction": "Benjamin Alexander should attest that all Beat elements are original, public-domain, or properly licensed/cleared and disclose any exceptions before paid licensing.",
       "exclusiveSaleGate": "manual_rights_attestation_required",
-      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
+      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone.",
+      "embeddedMetadataReview": "no third-party sample-source attribution found in inspected file metadata; not clearance evidence"
     },
     {
       "beatId": "beat-010",
@@ -150,7 +159,8 @@
       "provenanceFlags": [],
       "requiredAction": "Benjamin Alexander should attest that all Beat elements are original, public-domain, or properly licensed/cleared and disclose any exceptions before paid licensing.",
       "exclusiveSaleGate": "manual_rights_attestation_required",
-      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
+      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone.",
+      "embeddedMetadataReview": "no third-party sample-source attribution found in inspected file metadata; not clearance evidence"
     },
     {
       "beatId": "beat-011",
@@ -163,7 +173,8 @@
       "provenanceFlags": [],
       "requiredAction": "Benjamin Alexander should attest that all Beat elements are original, public-domain, or properly licensed/cleared and disclose any exceptions before paid licensing.",
       "exclusiveSaleGate": "manual_rights_attestation_required",
-      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
+      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone.",
+      "embeddedMetadataReview": "no third-party sample-source attribution found in inspected file metadata; not clearance evidence"
     },
     {
       "beatId": "beat-012",
@@ -176,7 +187,8 @@
       "provenanceFlags": [],
       "requiredAction": "Benjamin Alexander should attest that all Beat elements are original, public-domain, or properly licensed/cleared and disclose any exceptions before paid licensing.",
       "exclusiveSaleGate": "manual_rights_attestation_required",
-      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
+      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone.",
+      "embeddedMetadataReview": "no third-party sample-source attribution found in inspected file metadata; not clearance evidence"
     },
     {
       "beatId": "beat-013",
@@ -189,7 +201,8 @@
       "provenanceFlags": [],
       "requiredAction": "Benjamin Alexander should attest that all Beat elements are original, public-domain, or properly licensed/cleared and disclose any exceptions before paid licensing.",
       "exclusiveSaleGate": "manual_rights_attestation_required",
-      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
+      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone.",
+      "embeddedMetadataReview": "no third-party sample-source attribution found in inspected file metadata; not clearance evidence"
     },
     {
       "beatId": "beat-014",
@@ -203,8 +216,9 @@
         "working filename suggests beat may have been prepared for a specific third party ('sarahs beat 3')"
       ],
       "requiredAction": "Confirm no prior exclusive promise, assignment, work-for-hire obligation, or conflicting license to the intended recipient before exclusive sale.",
-      "exclusiveSaleGate": "manual_rights_attestation_required",
-      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
+      "exclusiveSaleGate": "prior_client_commitment_confirmation_required",
+      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone.",
+      "embeddedMetadataReview": "no third-party sample-source attribution found in inspected file metadata; not clearance evidence"
     },
     {
       "beatId": "beat-015",
@@ -212,14 +226,15 @@
       "originalWorkingTitle": "hts beat remix 23",
       "audioReviewStatus": "completed",
       "externalFingerprintStatus": "not_available",
-      "sampleClearanceStatus": "unverified_pending_producer_attestation",
+      "sampleClearanceStatus": "HOLD_derivative_remix_provenance_unresolved",
       "provenanceConcernLevel": "high",
       "provenanceFlags": [
         "working filename contains 'remix', creating a material derivative-work/provenance question"
       ],
       "requiredAction": "Hold paid licensing until Benjamin Alexander identifies what was remixed and documents that no protected third-party composition/sound recording is incorporated, or supplies the necessary permissions.",
       "exclusiveSaleGate": "hold_until_resolved",
-      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
+      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone.",
+      "embeddedMetadataReview": "no third-party sample-source attribution found in inspected file metadata; not clearance evidence"
     },
     {
       "beatId": "beat-016",
@@ -232,7 +247,8 @@
       "provenanceFlags": [],
       "requiredAction": "Benjamin Alexander should attest that all Beat elements are original, public-domain, or properly licensed/cleared and disclose any exceptions before paid licensing.",
       "exclusiveSaleGate": "manual_rights_attestation_required",
-      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
+      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone.",
+      "embeddedMetadataReview": "no third-party sample-source attribution found in inspected file metadata; not clearance evidence"
     },
     {
       "beatId": "beat-017",
@@ -245,7 +261,8 @@
       "provenanceFlags": [],
       "requiredAction": "Benjamin Alexander should attest that all Beat elements are original, public-domain, or properly licensed/cleared and disclose any exceptions before paid licensing.",
       "exclusiveSaleGate": "manual_rights_attestation_required",
-      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
+      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone.",
+      "embeddedMetadataReview": "no third-party sample-source attribution found in inspected file metadata; not clearance evidence"
     },
     {
       "beatId": "beat-018",
@@ -258,7 +275,8 @@
       "provenanceFlags": [],
       "requiredAction": "Benjamin Alexander should attest that all Beat elements are original, public-domain, or properly licensed/cleared and disclose any exceptions before paid licensing.",
       "exclusiveSaleGate": "manual_rights_attestation_required",
-      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
+      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone.",
+      "embeddedMetadataReview": "no third-party sample-source attribution found in inspected file metadata; not clearance evidence"
     },
     {
       "beatId": "beat-019",
@@ -271,7 +289,8 @@
       "provenanceFlags": [],
       "requiredAction": "Benjamin Alexander should attest that all Beat elements are original, public-domain, or properly licensed/cleared and disclose any exceptions before paid licensing.",
       "exclusiveSaleGate": "manual_rights_attestation_required",
-      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
+      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone.",
+      "embeddedMetadataReview": "no third-party sample-source attribution found in inspected file metadata; not clearance evidence"
     },
     {
       "beatId": "beat-020",
@@ -284,7 +303,8 @@
       "provenanceFlags": [],
       "requiredAction": "Benjamin Alexander should attest that all Beat elements are original, public-domain, or properly licensed/cleared and disclose any exceptions before paid licensing.",
       "exclusiveSaleGate": "manual_rights_attestation_required",
-      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
+      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone.",
+      "embeddedMetadataReview": "no third-party sample-source attribution found in inspected file metadata; not clearance evidence"
     },
     {
       "beatId": "beat-021",
@@ -297,7 +317,8 @@
       "provenanceFlags": [],
       "requiredAction": "Benjamin Alexander should attest that all Beat elements are original, public-domain, or properly licensed/cleared and disclose any exceptions before paid licensing.",
       "exclusiveSaleGate": "manual_rights_attestation_required",
-      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
+      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone.",
+      "embeddedMetadataReview": "no third-party sample-source attribution found in inspected file metadata; not clearance evidence"
     },
     {
       "beatId": "beat-022",
@@ -310,7 +331,10 @@
       "provenanceFlags": [],
       "requiredAction": "Benjamin Alexander should attest that all Beat elements are original, public-domain, or properly licensed/cleared and disclose any exceptions before paid licensing.",
       "exclusiveSaleGate": "manual_rights_attestation_required",
-      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone."
+      "note": "Audio/source review completed. No external reference-catalog fingerprint match, DAW project/source manifest, or chain-of-title documentation was available; therefore absence of third-party samples cannot be certified from the stereo master alone.",
+      "embeddedMetadataReview": "no third-party sample-source attribution found in inspected file metadata; not clearance evidence"
     }
-  ]
+  ],
+  "metadataObservation": "The inspected files identify FL Studio in encoder/export metadata where metadata is present; no embedded file tags/strings were found that identify a third-party sample source, Splice/Tracklib source, or rights holder. Absence of such metadata is not evidence of clearance.",
+  "reviewConclusion": "22/22 technically reviewed; 0/22 certified sample-cleared from audio alone; 1 high provenance hold; 2 prior-client/exclusive checks; all require producer attestation before paid licensing."
 }
