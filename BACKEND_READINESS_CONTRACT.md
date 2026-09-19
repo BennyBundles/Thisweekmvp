@@ -393,3 +393,22 @@ The next activation step is infrastructure provisioning, not another client-only
 10. enable the client provider configuration.
 
 The client must not be activated before those gates pass.
+
+
+## Phase 19 deployed shared backend
+
+The provider plane is now provisioned in **BennyBundles’s Project** (`xjtvawmppzwzrooairyx`) rather than a separate project.
+
+Isolation controls:
+
+- `tw_provider_*` table namespace;
+- RLS enabled;
+- direct browser-role table grants revoked;
+- `tw_vault_*` functions executable only by `service_role`;
+- JWT-verified Edge Function `thisweek-provider-gateway`.
+
+Backend readiness has therefore advanced from `staged_not_active` to `backend_provisioned`.
+
+Live-provider readiness is still incomplete because recoverable Auth and provider credentials are not yet configured and client network access remains denied by CSP.
+
+The Plan remains browser-local and provider data remains supplemental/reference data until explicit reconciliation.
