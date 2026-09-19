@@ -4,6 +4,15 @@ Production changes for **This Week** are recorded here.
 
 ## Phase 19 — Secure Provider Gateway (staged) — 2026-09-18
 
+### Shared Supabase provisioning
+- Provisioned the Phase 19 provider plane inside **BennyBundles’s Project** after the free organization reached its two-active-project limit.
+- Created 7 `tw_provider_*` provider tables with RLS and revoked direct browser-role access.
+- Added service-role-only `tw_vault_create`, `tw_vault_read`, and `tw_vault_delete` Vault bridges.
+- Deployed `thisweek-provider-gateway` with JWT verification enabled.
+- Verified browser roles cannot directly read provider connection data and cannot execute Vault create; service-role access succeeds.
+- Updated the client with the real Supabase project ref/origin while keeping live provider activation disabled and CSP `connect-src 'none'`.
+
+
 ### Provider architecture
 - Added a dedicated provider-backend schema package for consent, connection metadata, external accounts/balances, provider transactions, sync runs, and conflict records.
 - Added a JWT-authenticated Supabase Edge Function source package for a Plaid Hosted Link adapter, server-side account/transaction synchronization, Vault token references, and explicit disconnect.
