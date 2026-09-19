@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "tagj.beat-catalog.v1.1",
+  "schemaVersion": "tagj.beat-catalog.v1.2",
   "generatedFor": "TAGJ × Benny Bundles Producer / Engineer world",
   "producer": "Bundles (Benny Bundles)",
   "sourcePolicy": "All records originate from Google Drive audio files supplied by Benny. BPM, key, licensing, pricing and availability remain null/unconfirmed until explicitly supplied or separately verified.",
@@ -91,6 +91,23 @@
         "trackoutPro": "legal:trackout-pro-v1",
         "unlimited": "legal:unlimited-v1",
         "exclusive": "legal:exclusive-v1"
+      },
+      "delivery": {
+        "derivedStemPack": {
+          "libraryFileId": "libfile_2b4b0fdda5f8819189f15c71f35951f7",
+          "fileId": "file_000000009f8881f58d129f328204b8ec",
+          "packageFileName": "beat-001 - Pressure Glass - DERIVED STEM PACK.zip",
+          "components": [
+            "drums_percussion_derived",
+            "bass_derived",
+            "music_harmonic_derived"
+          ],
+          "derivationMethod": "classical_spectral_hpss_plus_frequency_split",
+          "status": "derived_from_stereo_master_not_original_multitracks",
+          "reconstructionIntent": "shared-gain separated mix-control assets",
+          "commercialDisclosureRequired": true,
+          "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
+        }
       }
     },
     {
@@ -178,6 +195,23 @@
         "trackoutPro": "legal:trackout-pro-v1",
         "unlimited": "legal:unlimited-v1",
         "exclusive": "legal:exclusive-v1"
+      },
+      "delivery": {
+        "derivedStemPack": {
+          "libraryFileId": "libfile_746ea8ffe1b48191831a2f4d8cb378c3",
+          "fileId": "file_00000000d4e081f5a1505ad19c218ec0",
+          "packageFileName": "beat-002 - Low Light - DERIVED STEM PACK.zip",
+          "components": [
+            "drums_percussion_derived",
+            "bass_derived",
+            "music_harmonic_derived"
+          ],
+          "derivationMethod": "classical_spectral_hpss_plus_frequency_split",
+          "status": "derived_from_stereo_master_not_original_multitracks",
+          "reconstructionIntent": "shared-gain separated mix-control assets",
+          "commercialDisclosureRequired": true,
+          "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
+        }
       }
     },
     {
@@ -265,6 +299,23 @@
         "trackoutPro": "legal:trackout-pro-v1",
         "unlimited": "legal:unlimited-v1",
         "exclusive": "legal:exclusive-v1"
+      },
+      "delivery": {
+        "derivedStemPack": {
+          "libraryFileId": "libfile_902a88da62648191bf15ec14e8204666",
+          "fileId": "file_00000000969881f5989f503c751ca611",
+          "packageFileName": "beat-003 - Heavy Weather - DERIVED STEM PACK.zip",
+          "components": [
+            "drums_percussion_derived",
+            "bass_derived",
+            "music_harmonic_derived"
+          ],
+          "derivationMethod": "classical_spectral_hpss_plus_frequency_split",
+          "status": "derived_from_stereo_master_not_original_multitracks",
+          "reconstructionIntent": "shared-gain separated mix-control assets",
+          "commercialDisclosureRequired": true,
+          "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
+        }
       }
     },
     {
@@ -352,6 +403,23 @@
         "trackoutPro": "legal:trackout-pro-v1",
         "unlimited": "legal:unlimited-v1",
         "exclusive": "legal:exclusive-v1"
+      },
+      "delivery": {
+        "derivedStemPack": {
+          "libraryFileId": "libfile_21472487162481918986d3f03b0a634e",
+          "fileId": "file_00000000b46881f5ae187d044a8d14de",
+          "packageFileName": "beat-004 - Last One Better - DERIVED STEM PACK.zip",
+          "components": [
+            "drums_percussion_derived",
+            "bass_derived",
+            "music_harmonic_derived"
+          ],
+          "derivationMethod": "classical_spectral_hpss_plus_frequency_split",
+          "status": "derived_from_stereo_master_not_original_multitracks",
+          "reconstructionIntent": "shared-gain separated mix-control assets",
+          "commercialDisclosureRequired": true,
+          "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
+        }
       }
     },
     {
@@ -439,6 +507,23 @@
         "trackoutPro": "legal:trackout-pro-v1",
         "unlimited": "legal:unlimited-v1",
         "exclusive": "legal:exclusive-v1"
+      },
+      "delivery": {
+        "derivedStemPack": {
+          "libraryFileId": "libfile_a077e43bc8348191b4be1174e646b580",
+          "fileId": "file_00000000712881f5a1447ebd5469a526",
+          "packageFileName": "beat-005 - Iron Gospel - DERIVED STEM PACK.zip",
+          "components": [
+            "drums_percussion_derived",
+            "bass_derived",
+            "music_harmonic_derived"
+          ],
+          "derivationMethod": "classical_spectral_hpss_plus_frequency_split",
+          "status": "derived_from_stereo_master_not_original_multitracks",
+          "reconstructionIntent": "shared-gain separated mix-control assets",
+          "commercialDisclosureRequired": true,
+          "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
+        }
       }
     },
     {
@@ -526,6 +611,23 @@
         "trackoutPro": "legal:trackout-pro-v1",
         "unlimited": "legal:unlimited-v1",
         "exclusive": "legal:exclusive-v1"
+      },
+      "delivery": {
+        "derivedStemPack": {
+          "libraryFileId": "libfile_af4a03a0d5608191b76f6b72fd700848",
+          "fileId": "file_000000002a7881f5abd4bcad7b5ef233",
+          "packageFileName": "beat-006 - Cold Receiver - DERIVED STEM PACK.zip",
+          "components": [
+            "drums_percussion_derived",
+            "bass_derived",
+            "music_harmonic_derived"
+          ],
+          "derivationMethod": "classical_spectral_hpss_plus_frequency_split",
+          "status": "derived_from_stereo_master_not_original_multitracks",
+          "reconstructionIntent": "shared-gain separated mix-control assets",
+          "commercialDisclosureRequired": true,
+          "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
+        }
       }
     },
     {
@@ -613,6 +715,23 @@
         "trackoutPro": "legal:trackout-pro-v1",
         "unlimited": "legal:unlimited-v1",
         "exclusive": "legal:exclusive-v1"
+      },
+      "delivery": {
+        "derivedStemPack": {
+          "libraryFileId": "libfile_324d69111ac08191bbe5a6a60fd25d29",
+          "fileId": "file_00000000977c81f5bc0989bfc78d0b3a",
+          "packageFileName": "beat-007 - Night Ledger - DERIVED STEM PACK.zip",
+          "components": [
+            "drums_percussion_derived",
+            "bass_derived",
+            "music_harmonic_derived"
+          ],
+          "derivationMethod": "classical_spectral_hpss_plus_frequency_split",
+          "status": "derived_from_stereo_master_not_original_multitracks",
+          "reconstructionIntent": "shared-gain separated mix-control assets",
+          "commercialDisclosureRequired": true,
+          "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
+        }
       }
     },
     {
@@ -700,6 +819,23 @@
         "trackoutPro": "legal:trackout-pro-v1",
         "unlimited": "legal:unlimited-v1",
         "exclusive": "legal:exclusive-v1"
+      },
+      "delivery": {
+        "derivedStemPack": {
+          "libraryFileId": "libfile_ab7595ba6e1c8191bf7eeb5bfcc7fd0d",
+          "fileId": "file_000000005a8c81f5abff30a54c2a45ba",
+          "packageFileName": "beat-008 - No Witnesses - DERIVED STEM PACK.zip",
+          "components": [
+            "drums_percussion_derived",
+            "bass_derived",
+            "music_harmonic_derived"
+          ],
+          "derivationMethod": "classical_spectral_hpss_plus_frequency_split",
+          "status": "derived_from_stereo_master_not_original_multitracks",
+          "reconstructionIntent": "shared-gain separated mix-control assets",
+          "commercialDisclosureRequired": true,
+          "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
+        }
       }
     },
     {
@@ -795,6 +931,37 @@
         "trackoutPro": "legal:trackout-pro-v1",
         "unlimited": "legal:unlimited-v1",
         "exclusive": "legal:exclusive-v1"
+      },
+      "delivery": {
+        "decodedWavDerivative": {
+          "fileName": "Four Eights - decoded WAV 24bit 48k.wav",
+          "format": "wav",
+          "codec": "pcm_s24le",
+          "sampleRate": 48000,
+          "channels": 2,
+          "fileSizeBytes": 61104110,
+          "libraryFileId": "libfile_481a1ea85e988191b721557306fc5137",
+          "fileId": "file_00000000705c81f5bc1e59a669caa0ea",
+          "provenance": "decoded_from_original_mp3",
+          "qualityStatus": "lossy_origin_wav_container",
+          "note": "24-bit/48 kHz PCM WAV derivative decoded from the original MP3. This does not restore information lost to MP3 compression and is not a genuine lossless master."
+        },
+        "preferredCurrentDeliveryFile": "decoded_wav_derivative",
+        "derivedStemPack": {
+          "libraryFileId": "libfile_6d9c87582e4481918934325dfa091db0",
+          "fileId": "file_0000000012b081f58a7407b868a9fd62",
+          "packageFileName": "beat-009 - Four Eights - DERIVED STEM PACK.zip",
+          "components": [
+            "drums_percussion_derived",
+            "bass_derived",
+            "music_harmonic_derived"
+          ],
+          "derivationMethod": "classical_spectral_hpss_plus_frequency_split",
+          "status": "derived_from_stereo_master_not_original_multitracks",
+          "reconstructionIntent": "shared-gain separated mix-control assets",
+          "commercialDisclosureRequired": true,
+          "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
+        }
       }
     },
     {
@@ -882,6 +1049,23 @@
         "trackoutPro": "legal:trackout-pro-v1",
         "unlimited": "legal:unlimited-v1",
         "exclusive": "legal:exclusive-v1"
+      },
+      "delivery": {
+        "derivedStemPack": {
+          "libraryFileId": "libfile_36b2f61248988191b19e22212f259db3",
+          "fileId": "file_000000001a4481f586522afce2cacb1e",
+          "packageFileName": "beat-010 - Unfinished Marble - DERIVED STEM PACK.zip",
+          "components": [
+            "drums_percussion_derived",
+            "bass_derived",
+            "music_harmonic_derived"
+          ],
+          "derivationMethod": "classical_spectral_hpss_plus_frequency_split",
+          "status": "derived_from_stereo_master_not_original_multitracks",
+          "reconstructionIntent": "shared-gain separated mix-control assets",
+          "commercialDisclosureRequired": true,
+          "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
+        }
       }
     },
     {
@@ -969,6 +1153,23 @@
         "trackoutPro": "legal:trackout-pro-v1",
         "unlimited": "legal:unlimited-v1",
         "exclusive": "legal:exclusive-v1"
+      },
+      "delivery": {
+        "derivedStemPack": {
+          "libraryFileId": "libfile_40355b6739208191b33f673f0081f672",
+          "fileId": "file_00000000d4cc81f59d00ccb01579c2a0",
+          "packageFileName": "beat-011 - Pacific Pressure - DERIVED STEM PACK.zip",
+          "components": [
+            "drums_percussion_derived",
+            "bass_derived",
+            "music_harmonic_derived"
+          ],
+          "derivationMethod": "classical_spectral_hpss_plus_frequency_split",
+          "status": "derived_from_stereo_master_not_original_multitracks",
+          "reconstructionIntent": "shared-gain separated mix-control assets",
+          "commercialDisclosureRequired": true,
+          "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
+        }
       }
     },
     {
@@ -1056,6 +1257,23 @@
         "trackoutPro": "legal:trackout-pro-v1",
         "unlimited": "legal:unlimited-v1",
         "exclusive": "legal:exclusive-v1"
+      },
+      "delivery": {
+        "derivedStemPack": {
+          "libraryFileId": "libfile_9bd1a9f960d081918ffb72383486c5bd",
+          "fileId": "file_00000000bd0881f58efda9e61c46c9f7",
+          "packageFileName": "beat-012 - Neon Circuit - DERIVED STEM PACK.zip",
+          "components": [
+            "drums_percussion_derived",
+            "bass_derived",
+            "music_harmonic_derived"
+          ],
+          "derivationMethod": "classical_spectral_hpss_plus_frequency_split",
+          "status": "derived_from_stereo_master_not_original_multitracks",
+          "reconstructionIntent": "shared-gain separated mix-control assets",
+          "commercialDisclosureRequired": true,
+          "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
+        }
       }
     },
     {
@@ -1143,6 +1361,23 @@
         "trackoutPro": "legal:trackout-pro-v1",
         "unlimited": "legal:unlimited-v1",
         "exclusive": "legal:exclusive-v1"
+      },
+      "delivery": {
+        "derivedStemPack": {
+          "libraryFileId": "libfile_5ae8cd8f9cec819181f6db187c00aeb0",
+          "fileId": "file_00000000059081f5b6dbac69c2e420fd",
+          "packageFileName": "beat-013 - Redline - DERIVED STEM PACK.zip",
+          "components": [
+            "drums_percussion_derived",
+            "bass_derived",
+            "music_harmonic_derived"
+          ],
+          "derivationMethod": "classical_spectral_hpss_plus_frequency_split",
+          "status": "derived_from_stereo_master_not_original_multitracks",
+          "reconstructionIntent": "shared-gain separated mix-control assets",
+          "commercialDisclosureRequired": true,
+          "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
+        }
       }
     },
     {
@@ -1230,6 +1465,23 @@
         "trackoutPro": "legal:trackout-pro-v1",
         "unlimited": "legal:unlimited-v1",
         "exclusive": "legal:exclusive-v1"
+      },
+      "delivery": {
+        "derivedStemPack": {
+          "libraryFileId": "libfile_50f5c5d0d7dc8191bb822f9daf5c43ee",
+          "fileId": "file_00000000850881f5a3840e872b314a80",
+          "packageFileName": "beat-014 - Soft Armor - DERIVED STEM PACK.zip",
+          "components": [
+            "drums_percussion_derived",
+            "bass_derived",
+            "music_harmonic_derived"
+          ],
+          "derivationMethod": "classical_spectral_hpss_plus_frequency_split",
+          "status": "derived_from_stereo_master_not_original_multitracks",
+          "reconstructionIntent": "shared-gain separated mix-control assets",
+          "commercialDisclosureRequired": true,
+          "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
+        }
       }
     },
     {
@@ -1317,6 +1569,23 @@
         "trackoutPro": "legal:trackout-pro-v1",
         "unlimited": "legal:unlimited-v1",
         "exclusive": "legal:exclusive-v1"
+      },
+      "delivery": {
+        "derivedStemPack": {
+          "libraryFileId": "libfile_65eaa0e553b88191ade96db21f19cfe1",
+          "fileId": "file_0000000015d481f5a1dcbccaf48c7718",
+          "packageFileName": "beat-015 - Half Truths - DERIVED STEM PACK.zip",
+          "components": [
+            "drums_percussion_derived",
+            "bass_derived",
+            "music_harmonic_derived"
+          ],
+          "derivationMethod": "classical_spectral_hpss_plus_frequency_split",
+          "status": "derived_from_stereo_master_not_original_multitracks",
+          "reconstructionIntent": "shared-gain separated mix-control assets",
+          "commercialDisclosureRequired": true,
+          "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
+        }
       }
     },
     {
@@ -1404,6 +1673,23 @@
         "trackoutPro": "legal:trackout-pro-v1",
         "unlimited": "legal:unlimited-v1",
         "exclusive": "legal:exclusive-v1"
+      },
+      "delivery": {
+        "derivedStemPack": {
+          "libraryFileId": "libfile_5688116a6e1c8191995217fbcaa0e5de",
+          "fileId": "file_00000000fec081f5bd55325cf9dd9dc4",
+          "packageFileName": "beat-016 - Black Ledger - DERIVED STEM PACK.zip",
+          "components": [
+            "drums_percussion_derived",
+            "bass_derived",
+            "music_harmonic_derived"
+          ],
+          "derivationMethod": "classical_spectral_hpss_plus_frequency_split",
+          "status": "derived_from_stereo_master_not_original_multitracks",
+          "reconstructionIntent": "shared-gain separated mix-control assets",
+          "commercialDisclosureRequired": true,
+          "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
+        }
       }
     },
     {
@@ -1499,6 +1785,37 @@
         "trackoutPro": "legal:trackout-pro-v1",
         "unlimited": "legal:unlimited-v1",
         "exclusive": "legal:exclusive-v1"
+      },
+      "delivery": {
+        "decodedWavDerivative": {
+          "fileName": "Basement Gold - decoded WAV 24bit 48k.wav",
+          "format": "wav",
+          "codec": "pcm_s24le",
+          "sampleRate": 48000,
+          "channels": 2,
+          "fileSizeBytes": 62926994,
+          "libraryFileId": "libfile_59c42c4f81708191857d91acda11398c",
+          "fileId": "file_0000000060e481f59067254c12a989c5",
+          "provenance": "decoded_from_original_mp3",
+          "qualityStatus": "lossy_origin_wav_container",
+          "note": "24-bit/48 kHz PCM WAV derivative decoded from the original MP3. This does not restore information lost to MP3 compression and is not a genuine lossless master."
+        },
+        "preferredCurrentDeliveryFile": "decoded_wav_derivative",
+        "derivedStemPack": {
+          "libraryFileId": "libfile_90460fec60a4819184688ed09b81e946",
+          "fileId": "file_00000000c05081f5bb34f074c8ba1b0e",
+          "packageFileName": "beat-017 - Basement Gold - DERIVED STEM PACK.zip",
+          "components": [
+            "drums_percussion_derived",
+            "bass_derived",
+            "music_harmonic_derived"
+          ],
+          "derivationMethod": "classical_spectral_hpss_plus_frequency_split",
+          "status": "derived_from_stereo_master_not_original_multitracks",
+          "reconstructionIntent": "shared-gain separated mix-control assets",
+          "commercialDisclosureRequired": true,
+          "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
+        }
       }
     },
     {
@@ -1594,6 +1911,37 @@
         "trackoutPro": "legal:trackout-pro-v1",
         "unlimited": "legal:unlimited-v1",
         "exclusive": "legal:exclusive-v1"
+      },
+      "delivery": {
+        "decodedWavDerivative": {
+          "fileName": "Long Way Home - decoded WAV 24bit 48k.wav",
+          "format": "wav",
+          "codec": "pcm_s24le",
+          "sampleRate": 48000,
+          "channels": 2,
+          "fileSizeBytes": 153963776,
+          "libraryFileId": "libfile_690d0a0396cc8191888ee730848aded1",
+          "fileId": "file_00000000d39c81f5b41f4f2a4c0d75d9",
+          "provenance": "decoded_from_original_mp3",
+          "qualityStatus": "lossy_origin_wav_container",
+          "note": "24-bit/48 kHz PCM WAV derivative decoded from the original MP3. This does not restore information lost to MP3 compression and is not a genuine lossless master."
+        },
+        "preferredCurrentDeliveryFile": "decoded_wav_derivative",
+        "derivedStemPack": {
+          "libraryFileId": "libfile_8d52ce78e0dc8191a45586428d92f83f",
+          "fileId": "file_00000000a1e081f5b42395a6b73f6cbe",
+          "packageFileName": "beat-018 - Long Way Home - DERIVED STEM PACK.zip",
+          "components": [
+            "drums_percussion_derived",
+            "bass_derived",
+            "music_harmonic_derived"
+          ],
+          "derivationMethod": "classical_spectral_hpss_plus_frequency_split",
+          "status": "derived_from_stereo_master_not_original_multitracks",
+          "reconstructionIntent": "shared-gain separated mix-control assets",
+          "commercialDisclosureRequired": true,
+          "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
+        }
       }
     },
     {
@@ -1689,6 +2037,37 @@
         "trackoutPro": "legal:trackout-pro-v1",
         "unlimited": "legal:unlimited-v1",
         "exclusive": "legal:exclusive-v1"
+      },
+      "delivery": {
+        "decodedWavDerivative": {
+          "fileName": "Daylight Run - decoded WAV 24bit 48k.wav",
+          "format": "wav",
+          "codec": "pcm_s24le",
+          "sampleRate": 48000,
+          "channels": 2,
+          "fileSizeBytes": 43755458,
+          "libraryFileId": "libfile_7dd6a7d582548191a1eab16a2d9d1116",
+          "fileId": "file_000000000f7881f5b554dc0bde61bf56",
+          "provenance": "decoded_from_original_mp3",
+          "qualityStatus": "lossy_origin_wav_container",
+          "note": "24-bit/48 kHz PCM WAV derivative decoded from the original MP3. This does not restore information lost to MP3 compression and is not a genuine lossless master."
+        },
+        "preferredCurrentDeliveryFile": "decoded_wav_derivative",
+        "derivedStemPack": {
+          "libraryFileId": "libfile_2afd7eb41f348191a1740ec7995a4b70",
+          "fileId": "file_00000000b9ac81f59baf41abd5e92530",
+          "packageFileName": "beat-019 - Daylight Run - DERIVED STEM PACK.zip",
+          "components": [
+            "drums_percussion_derived",
+            "bass_derived",
+            "music_harmonic_derived"
+          ],
+          "derivationMethod": "classical_spectral_hpss_plus_frequency_split",
+          "status": "derived_from_stereo_master_not_original_multitracks",
+          "reconstructionIntent": "shared-gain separated mix-control assets",
+          "commercialDisclosureRequired": true,
+          "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
+        }
       }
     },
     {
@@ -1776,6 +2155,23 @@
         "trackoutPro": "legal:trackout-pro-v1",
         "unlimited": "legal:unlimited-v1",
         "exclusive": "legal:exclusive-v1"
+      },
+      "delivery": {
+        "derivedStemPack": {
+          "libraryFileId": "libfile_52183bdf24d481919ad9927154b26d25",
+          "fileId": "file_00000000e5b081f5b20d1e899d74b3d2",
+          "packageFileName": "beat-020 - Clean Money - DERIVED STEM PACK.zip",
+          "components": [
+            "drums_percussion_derived",
+            "bass_derived",
+            "music_harmonic_derived"
+          ],
+          "derivationMethod": "classical_spectral_hpss_plus_frequency_split",
+          "status": "derived_from_stereo_master_not_original_multitracks",
+          "reconstructionIntent": "shared-gain separated mix-control assets",
+          "commercialDisclosureRequired": true,
+          "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
+        }
       }
     },
     {
@@ -1863,6 +2259,23 @@
         "trackoutPro": "legal:trackout-pro-v1",
         "unlimited": "legal:unlimited-v1",
         "exclusive": "legal:exclusive-v1"
+      },
+      "delivery": {
+        "derivedStemPack": {
+          "libraryFileId": "libfile_d6b1a4305c088191b467eaccff6eebe4",
+          "fileId": "file_00000000f22081f5ba443f70dff0e509",
+          "packageFileName": "beat-021 - Pressure Point - DERIVED STEM PACK.zip",
+          "components": [
+            "drums_percussion_derived",
+            "bass_derived",
+            "music_harmonic_derived"
+          ],
+          "derivationMethod": "classical_spectral_hpss_plus_frequency_split",
+          "status": "derived_from_stereo_master_not_original_multitracks",
+          "reconstructionIntent": "shared-gain separated mix-control assets",
+          "commercialDisclosureRequired": true,
+          "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
+        }
       }
     },
     {
@@ -1950,10 +2363,28 @@
         "trackoutPro": "legal:trackout-pro-v1",
         "unlimited": "legal:unlimited-v1",
         "exclusive": "legal:exclusive-v1"
+      },
+      "delivery": {
+        "derivedStemPack": {
+          "libraryFileId": "libfile_db6bedcc059c819181dd6fe0d0ce18ef",
+          "fileId": "file_00000000af9081f59039fbe74a40c628",
+          "packageFileName": "beat-022 - Slow Motion Gold - DERIVED STEM PACK.zip",
+          "components": [
+            "drums_percussion_derived",
+            "bass_derived",
+            "music_harmonic_derived"
+          ],
+          "derivationMethod": "classical_spectral_hpss_plus_frequency_split",
+          "status": "derived_from_stereo_master_not_original_multitracks",
+          "reconstructionIntent": "shared-gain separated mix-control assets",
+          "commercialDisclosureRequired": true,
+          "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
+        }
       }
     }
   ],
-  "analysisVersion": "v15.9",
+  "analysisVersion": "v15.10",
   "pricingModelNote": "Competitive launch ladder informed by current beat-market norms: $29 Basic MP3 / $49 Premium WAV / $99 Trackout Pro / $149 Unlimited / Exclusive minimum offer $499 with manual approval.",
-  "legalStatus": "Draft agreements attached by reference; checkout activation blocked pending governing-law confirmation, rights/sample review, and final legal review."
+  "legalStatus": "Draft agreements attached by reference; checkout activation blocked pending governing-law confirmation, rights/sample review, and final legal review.",
+  "deliveryPolicy": "Original source lineage remains preserved. MP3-decoded WAV derivatives and stereo-derived stem packs are delivery/editing derivatives, not upgraded source masters or original DAW trackouts."
 }
