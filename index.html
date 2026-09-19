@@ -4773,6 +4773,352 @@ body[data-privacy-curtain="on"] .privacy-curtain{display:grid}
 .analytics-empty{padding:15px;border-radius:18px;border:1px dashed rgba(196,181,253,.14);background:rgba(196,181,253,.02);text-align:center}.analytics-empty strong{display:block;font-size:.68rem}.analytics-empty span{display:block;margin-top:5px;color:#8199a3;font-size:.5rem;line-height:1.45}
 @media(max-width:430px){.analytics-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.analytics-principles{grid-template-columns:1fr}}
 @media(max-width:320px){.analytics-summary{grid-template-columns:1fr}.analytics-state{align-items:flex-start;flex-direction:column}}
+
+/* PHASE 17 — PRODUCT POLISH + BRAND SYSTEM v29 */
+:root{
+  --tw-surface-canvas:#06101d;
+  --tw-surface-1:rgba(7,19,31,.86);
+  --tw-surface-2:rgba(10,27,43,.92);
+  --tw-surface-3:rgba(13,33,52,.96);
+  --tw-surface-inset:rgba(255,255,255,.025);
+  --tw-surface-hover:rgba(255,255,255,.045);
+  --tw-border-subtle:rgba(177,206,221,.055);
+  --tw-border-default:rgba(177,206,221,.085);
+  --tw-border-strong:rgba(177,206,221,.13);
+  --tw-border-focus:rgba(103,232,249,.48);
+  --tw-elevation-0:none;
+  --tw-elevation-1:0 8px 20px rgba(0,7,14,.14);
+  --tw-elevation-2:0 18px 42px rgba(0,7,14,.26);
+  --tw-elevation-3:0 28px 66px rgba(0,7,14,.36);
+  --tw-radius-xs:10px;
+  --tw-radius-sm:14px;
+  --tw-radius-md:18px;
+  --tw-radius-lg:22px;
+  --tw-radius-xl:28px;
+  --tw-radius-pill:999px;
+  --tw-type-micro:.48rem;
+  --tw-type-label:.56rem;
+  --tw-type-body-sm:.64rem;
+  --tw-type-body:.76rem;
+  --tw-type-title:.98rem;
+  --tw-type-display:1.45rem;
+  --tw-leading-tight:1.2;
+  --tw-leading-body:1.48;
+  --tw-tracking-label:.105em;
+  --tw-status-info:#67e8f9;
+  --tw-status-success:#72d6aa;
+  --tw-status-warning:#f6d784;
+  --tw-status-danger:#fb7185;
+  --tw-status-neutral:#9fb6c1;
+  --tw-cat-bills:#60a5fa;
+  --tw-cat-essentials:#6ee7b7;
+  --tw-cat-lifestyle:#f0a7d3;
+  --tw-cat-savings:#f6d784;
+  --tw-cat-available:#67e8f9;
+  --route-accent:var(--tw-cat-available);
+  --tw-icon-grid:24px;
+  --tw-icon-sm:20px;
+  --tw-icon-md:28px;
+  --tw-icon-lg:40px;
+  --tw-icon-stroke:1.7;
+  --tw-motion-fast:160ms;
+  --tw-motion-active:260ms;
+  --tw-motion-page:360ms;
+  --tw-motion-confirm:560ms;
+  --tw-motion-ambient:14s;
+  --tw-ease-standard:cubic-bezier(.2,.8,.2,1);
+  --tw-ease-emphasized:cubic-bezier(.18,.86,.2,1);
+  --panel:var(--tw-surface-1);
+  --panel-strong:var(--tw-surface-3);
+  --line:var(--tw-border-default);
+  --line-strong:var(--tw-border-strong);
+  --shadow-lg:var(--tw-elevation-2);
+  --shadow-xl:var(--tw-elevation-3);
+  --radius-sm:var(--tw-radius-sm);
+  --radius-md:var(--tw-radius-md);
+  --radius-lg:var(--tw-radius-lg);
+  --radius-xl:var(--tw-radius-xl);
+  --motion-fast:var(--tw-motion-active);
+  --motion-normal:var(--tw-motion-page);
+  --motion-confirm-duration:var(--tw-motion-confirm);
+}
+body[data-view="bills"]{--route-accent:var(--tw-cat-bills)}
+body[data-view="essentials"]{--route-accent:var(--tw-cat-essentials)}
+body[data-view="lifestyle"]{--route-accent:var(--tw-cat-lifestyle)}
+body[data-view="savings"]{--route-accent:var(--tw-cat-savings)}
+body[data-view="insights"]{--route-accent:#8fd3ff}
+body[data-view="scenario"]{--route-accent:#c4b5fd}
+body[data-view="connections"]{--route-accent:#5eead4}
+body[data-view="privacy"]{--route-accent:#9bd7e8}
+body[data-view="analytics"]{--route-accent:#c4b5fd}
+body[data-view="setup"],
+body[data-view="preferences"]{--route-accent:#d5b06a}
+
+.topbar-inner{
+  border-radius:var(--tw-radius-xl);
+  border-color:var(--tw-border-default);
+  background:
+    radial-gradient(circle at 86% 8%,color-mix(in srgb,var(--route-accent) 10%,transparent),transparent 28%),
+    linear-gradient(145deg,rgba(12,30,48,.96),rgba(6,18,30,.94));
+  box-shadow:var(--tw-elevation-2);
+}
+.topbar-inner::after{
+  content:"";
+  position:absolute;
+  z-index:2;
+  left:16px;
+  right:16px;
+  bottom:0;
+  height:1px;
+  opacity:.65;
+  background:linear-gradient(90deg,transparent,var(--route-accent),transparent);
+  pointer-events:none;
+}
+.brand-mark{
+  width:var(--tw-icon-lg);
+  height:var(--tw-icon-lg);
+  border-radius:var(--tw-radius-sm);
+  border-color:var(--tw-border-default);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07);
+}
+.brand-mark svg{width:var(--tw-icon-grid);height:var(--tw-icon-grid)}
+.brand-kicker,.section-kicker,.studio-kicker,.system-map-kicker{
+  letter-spacing:var(--tw-tracking-label);
+}
+:where(.section,.form-card,.summary-card-full,.warning-card,.empty-card,.studio-hero,.precheck-stage,.scenario-stage,.system-map-hero,.qa-hero,.perf-hero,.data-model-hero,.trust-hero,.analytics-hero){
+  border-radius:var(--tw-radius-lg);
+  border-color:var(--tw-border-default);
+  box-shadow:var(--tw-elevation-2);
+}
+:where(.section,.form-card,.summary-card-full,.empty-card){
+  background:
+    linear-gradient(160deg,rgba(12,29,45,.89),rgba(7,19,31,.90)),
+    var(--tw-surface-1);
+}
+.studio-stack>:where(.section,.summary-card-full,.form-card){
+  box-shadow:var(--tw-elevation-1);
+}
+:where(.mini-metric,.summary-card,.menu-tile,.info-stat,.finance-row,.studio-stat,.system-tool,.analytics-stat,.analytics-bar,.analytics-principle,.trust-card,.entity-card,.schema-row,.perf-stat,.perf-row,.qa-row){
+  border-radius:var(--tw-radius-md);
+  border-color:var(--tw-border-subtle);
+  background:var(--tw-surface-inset);
+}
+:where(.section,.form-card,.summary-card-full) :where(.section,.form-card,.summary-card-full){
+  box-shadow:var(--tw-elevation-0);
+  background:var(--tw-surface-inset);
+}
+button,.btn{
+  min-height:44px;
+  border-radius:var(--tw-radius-md);
+  transition:
+    transform var(--tw-motion-fast) var(--tw-ease-standard),
+    filter var(--tw-motion-fast) ease,
+    box-shadow var(--tw-motion-active) ease,
+    border-color var(--tw-motion-active) ease;
+}
+.back-pill,.header-pill,.text-action{
+  min-height:38px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:var(--tw-radius-pill);
+  border-color:var(--tw-border-default);
+}
+.chip,.select-field,.amount-row,.field-shell,input[type="text"],textarea{
+  border-radius:var(--tw-radius-md);
+}
+.btn-primary{
+  box-shadow:0 10px 24px color-mix(in srgb,var(--route-accent) 16%,transparent);
+}
+.btn-secondary{
+  border-color:var(--tw-border-default);
+  background:rgba(255,255,255,.045);
+}
+.btn-ghost{border-color:var(--tw-border-default)}
+button:focus-visible,.btn:focus-visible,.text-action:focus-visible,.back-pill:focus-visible,.chip:focus-visible,
+input:focus-visible,textarea:focus-visible,select:focus-visible{
+  outline:2px solid var(--tw-border-focus);
+  outline-offset:2px;
+}
+.nav-icon{
+  width:var(--tw-icon-md);
+  height:var(--tw-icon-md);
+  border-radius:var(--tw-radius-xs);
+  display:grid;
+  place-items:center;
+  line-height:1;
+}
+:where(.zen-emblem,.system-tool-icon,.runway-lane-icon,.toast-dot,.qa-dot){
+  display:grid;
+  place-items:center;
+}
+:where(.zen-emblem svg,.system-tool-icon svg,.runway-lane-icon svg){
+  width:var(--tw-icon-grid);
+  height:var(--tw-icon-grid);
+}
+:where(.zen-emblem svg,.system-tool-icon svg,.runway-lane-icon svg) :where(path,rect,circle,line,polyline,polygon){
+  vector-effect:non-scaling-stroke;
+}
+.zen-zone.bills,.zen-zone[data-world="bills"]{--world-accent:var(--tw-cat-bills)}
+.zen-zone.essentials,.zen-zone[data-world="essentials"]{--world-accent:var(--tw-cat-essentials)}
+.zen-zone.lifestyle,.zen-zone[data-world="lifestyle"]{--world-accent:var(--tw-cat-lifestyle)}
+.zen-zone.savings,.zen-zone[data-world="savings"]{--world-accent:var(--tw-cat-savings)}
+.zen-zone{
+  border-color:color-mix(in srgb,var(--world-accent,var(--tw-cat-available)) 15%,var(--tw-border-subtle));
+}
+.zen-zone.focused{
+  border-color:color-mix(in srgb,var(--world-accent,var(--tw-cat-available)) 34%,var(--tw-border-default));
+  box-shadow:0 10px 28px color-mix(in srgb,var(--world-accent,var(--tw-cat-available)) 10%,transparent);
+}
+body[data-view="bills"] .studio-hero{--studio-accent:var(--tw-cat-bills)!important}
+body[data-view="essentials"] .studio-hero{--studio-accent:var(--tw-cat-essentials)!important}
+body[data-view="lifestyle"] .studio-hero{--studio-accent:var(--tw-cat-lifestyle)!important}
+body[data-view="savings"] .studio-hero{--studio-accent:var(--tw-cat-savings)!important}
+
+.state-page-wrap{
+  min-height:min(62vh,560px);
+  display:grid;
+  place-items:center;
+  padding:18px 0;
+}
+.system-state{
+  --state-accent:var(--tw-status-neutral);
+  width:100%;
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  gap:11px;
+  align-items:start;
+  padding:13px 14px;
+  border:1px solid color-mix(in srgb,var(--state-accent) 20%,var(--tw-border-subtle));
+  border-radius:var(--tw-radius-md);
+  background:
+    linear-gradient(145deg,color-mix(in srgb,var(--state-accent) 5%,transparent),transparent 58%),
+    var(--tw-surface-inset);
+  color:var(--text);
+}
+.system-state--page{
+  max-width:390px;
+  padding:18px;
+  border-radius:var(--tw-radius-lg);
+  background:
+    linear-gradient(145deg,color-mix(in srgb,var(--state-accent) 6%,transparent),transparent 52%),
+    var(--tw-surface-2);
+  box-shadow:var(--tw-elevation-2);
+}
+.system-state--empty{--state-accent:var(--tw-status-neutral)}
+.system-state--loading{--state-accent:var(--tw-status-info)}
+.system-state--error{--state-accent:var(--tw-status-danger)}
+.system-state--success{--state-accent:var(--tw-status-success)}
+.system-state--info{--state-accent:var(--tw-status-info)}
+.system-state__icon{
+  width:32px;
+  height:32px;
+  border-radius:var(--tw-radius-sm);
+  display:grid;
+  place-items:center;
+  color:var(--state-accent);
+  border:1px solid color-mix(in srgb,var(--state-accent) 18%,transparent);
+  background:color-mix(in srgb,var(--state-accent) 7%,transparent);
+  font-size:.72rem;
+  font-weight:900;
+}
+.system-state__copy{min-width:0}
+.system-state__copy strong{
+  display:block;
+  font-size:var(--tw-type-body);
+  line-height:var(--tw-leading-tight);
+}
+.system-state__copy span{
+  display:block;
+  margin-top:4px;
+  color:var(--text-soft);
+  font-size:var(--tw-type-body-sm);
+  line-height:var(--tw-leading-body);
+}
+.system-state__actions{
+  grid-column:1/-1;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:3px;
+}
+.state-spinner{
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  border:2px solid color-mix(in srgb,var(--state-accent) 18%,transparent);
+  border-top-color:var(--state-accent);
+  animation:spin .8s linear infinite;
+}
+.empty-card{
+  border-style:dashed;
+  box-shadow:var(--tw-elevation-0);
+}
+.empty{
+  min-height:52px;
+  display:grid;
+  place-items:center;
+  padding:12px;
+  border:1px dashed var(--tw-border-default);
+  border-radius:var(--tw-radius-md);
+  background:var(--tw-surface-inset);
+  color:var(--text-soft);
+  text-align:center;
+  line-height:var(--tw-leading-body);
+}
+.error{
+  border-radius:var(--tw-radius-md);
+  border:1px solid color-mix(in srgb,var(--tw-status-danger) 22%,transparent);
+  background:color-mix(in srgb,var(--tw-status-danger) 7%,transparent);
+  color:#ffd7de;
+}
+.spinner{
+  border-color:var(--tw-border-default);
+  border-top-color:var(--tw-status-info);
+}
+.app-toast{
+  border-radius:var(--tw-radius-md);
+  border-color:var(--tw-border-default);
+  background:rgba(7,17,31,.96);
+  box-shadow:var(--tw-elevation-3);
+}
+.app-toast[data-tone="success"]{border-color:color-mix(in srgb,var(--tw-status-success) 24%,var(--tw-border-default))}
+.app-toast[data-tone="error"]{border-color:color-mix(in srgb,var(--tw-status-danger) 24%,var(--tw-border-default))}
+.app-toast[data-tone="neutral"] .toast-dot{background:rgba(255,255,255,.07);color:var(--text-soft)}
+.app-toast[data-tone="success"] .toast-dot{background:linear-gradient(135deg,#99f6e4,#86efac);color:#07111f}
+.app-toast[data-tone="error"] .toast-dot{background:color-mix(in srgb,var(--tw-status-danger) 18%,rgba(255,255,255,.04));color:#ffd7de}
+.local-confirm{animation-duration:var(--tw-motion-confirm)}
+.section-head h2,.summary-card-full h2,.qa-hero h2,.perf-hero h2,.data-model-hero h2,.trust-hero h2,.analytics-hero h2{
+  line-height:var(--tw-leading-tight);
+}
+.section-caption,.studio-copy,.menu-copy,.world-note,.form-helper{
+  line-height:var(--tw-leading-body);
+}
+:where(.mini-label,.summary-label,.menu-kicker,.small-label,.section-kicker,.studio-kicker){
+  letter-spacing:var(--tw-tracking-label);
+}
+body[data-performance="lite"] :where(.section,.form-card,.summary-card-full,.studio-hero,.system-map-hero,.app-toast){
+  box-shadow:var(--tw-elevation-1);
+}
+body[data-performance="lite"] :where(.topbar,.bottom-nav,.app-toast,.app-sheet,.system-state--page){
+  backdrop-filter:blur(8px);
+}
+body[data-motion="reduced"] .state-spinner{
+  animation:none!important;
+  border-top-color:var(--tw-status-info)!important;
+}
+@media(prefers-reduced-motion:reduce){
+  .state-spinner{animation:none!important;border-top-color:var(--tw-status-info)!important}
+}
+@media(max-width:390px){
+  :root{
+    --tw-type-body:.72rem;
+    --tw-type-body-sm:.61rem;
+  }
+  .system-state--page{max-width:100%;padding:16px}
+  :where(.section,.form-card,.summary-card-full,.warning-card,.empty-card,.studio-hero,.precheck-stage,.scenario-stage){border-radius:var(--tw-radius-lg)}
+}
+
 </style></head><body><a class="skip-link" href="#app">Skip to main content</a><div class="sr-only" id="routeAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div><div class="privacy-curtain" id="privacyCurtain" aria-hidden="true"><div><div class="privacy-curtain-mark">TW</div><strong>Financial view hidden</strong><span>This Week masks the page while it is inactive. This is a best-effort browser privacy layer, not a guarantee about operating-system snapshots.</span></div></div><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app" tabindex="-1">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="zen-home">
@@ -5385,7 +5731,7 @@ function obligationTimeline(p){
     const bd=b.dueDate?new Date(b.dueDate).getTime():Number.MAX_SAFE_INTEGER;
     return ad-bd;
   });
-  if(!list.length)return '<div class="empty-card"><div class="empty">No bill obligations configured yet.</div></div>';
+  if(!list.length)return emptyState('No bill obligations yet.','Add bills in Plan when you want this timeline to appear.');
   return '<div class="obligation-list">'+list.map(b=>{
     const remaining=Math.max(0,(b.weeklyRequired||0)-(b.contributed||0));
     const attention=b.status!=='ON_TRACK';
@@ -5408,7 +5754,30 @@ function shellMeta(kicker,title,sub,action=''){
   headerKicker.textContent=kicker;headerTitle.textContent=title;headerSub.textContent=sub;headerAction.innerHTML=action;
   document.title=(title||'This Week')+' · This Week';
 }
-function errBox(msg){ return msg?`<div class="error" role="alert">${escapeHtml(msg)}</div>`:''; }
+function stateGlyph(kind){
+  if(kind==='success')return '✓';
+  if(kind==='error')return '!';
+  if(kind==='info')return 'i';
+  if(kind==='empty')return '—';
+  return '';
+}
+function systemState(kind,title,message='',actionHtml='',mode='inline'){
+  const safeKind=['empty','loading','error','success','info'].includes(kind)?kind:'info';
+  const role=safeKind==='error'?'alert':'status';
+  const live=safeKind==='error'?'assertive':'polite';
+  const icon=safeKind==='loading'?'<span class="state-spinner" aria-hidden="true"></span>':escapeHtml(stateGlyph(safeKind));
+  const detail=message?'<span>'+escapeHtml(message)+'</span>':'';
+  const actions=actionHtml?'<div class="system-state__actions">'+actionHtml+'</div>':'';
+  return '<section class="system-state system-state--'+safeKind+' system-state--'+mode+'" role="'+role+'" aria-live="'+live+'"><span class="system-state__icon" aria-hidden="true">'+icon+'</span><span class="system-state__copy"><strong>'+escapeHtml(title)+'</strong>'+detail+'</span>'+actions+'</section>';
+}
+function inlineState(kind,title,message=''){return systemState(kind,title,message,'','inline');}
+function emptyState(title,message='',actionHtml=''){return systemState('empty',title,message,actionHtml,'empty');}
+function loadingState(title='Loading…',message='Preparing this view.'){return '<div class="state-page-wrap">'+systemState('loading',title,message,'','page')+'</div>';}
+function pageState(kind,title,message='',actionHtml=''){return '<div class="state-page-wrap">'+systemState(kind,title,message,actionHtml,'page')+'</div>';}
+function routeDisplayName(r){
+  return ({home:'Home',log:'Add Spending',details:'Details',insights:'Advanced Insights',bills:'Bills Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex',savings:'Savings Goal Studio',precheck:'Can I Spend This?',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data',preferences:'Presentation',qa:'Device QA',performance:'Performance','data-model':'Data Model',privacy:'Privacy',analytics:'Usage Insights',future:'System Architecture',reset:'New Week',setup:'Plan'})[r]||'This Week';
+}
+function errBox(msg){ return msg?inlineState('error','Needs attention',msg):''; }
 
 function gentleHaptic(){
   try{
@@ -5418,7 +5787,7 @@ function gentleHaptic(){
   }catch{}
 }
 let toastTimer=null;
-function toast(message){
+function toast(message,tone='neutral'){
   let node=document.getElementById('appToast');
   if(!node){
     node=document.createElement('div');
@@ -5426,14 +5795,19 @@ function toast(message){
     node.className='app-toast';
     node.setAttribute('role','status');
     node.setAttribute('aria-live','polite');
-    node.innerHTML='<div class="toast-dot">✓</div><span></span>';
+    node.innerHTML='<div class="toast-dot">•</div><span></span>';
     document.body.appendChild(node);
   }
+  const safeTone=['neutral','success','error'].includes(tone)?tone:'neutral';
+  node.dataset.tone=safeTone;
+  node.querySelector('.toast-dot').textContent=safeTone==='success'?'✓':safeTone==='error'?'!':'•';
   node.querySelector('span').textContent=message;
   clearTimeout(toastTimer);
   requestAnimationFrame(()=>node.classList.add('show'));
   toastTimer=setTimeout(()=>node.classList.remove('show'),2200);
 }
+function successToast(message){toast(message,'success');}
+function errorToast(message){toast(message,'error');}
 document.addEventListener('click',e=>{
   const hit=e.target.closest('button,.btn,.menu-tile,.nav-link,.chip');
   if(!hit)return;
@@ -7404,7 +7778,7 @@ async function renderDetails(){
     };
     search.addEventListener('input',applySearch);
     tools.forEach(link=>link.addEventListener('click',()=>gentleHaptic()));
-  }catch(e){root.innerHTML=errBox(e.message);}
+  }catch(e){root.innerHTML=pageState('error','Unable to open this view',e.message);}
 }
 
 async function renderInsights(){
@@ -7455,8 +7829,8 @@ async function renderInsights(){
         <details class="intel-panel"><summary>Available money</summary><div class="intel-body">Available now is the sum of remaining balances in your active essential and flexible spending lanes. It is not a connected bank balance.</div></details>
       </div></section>
     </div>`;
-    document.getElementById('restoreRecommendations')?.addEventListener('click',()=>{clearRecommendationSuppressions();toast('Hidden suggestions restored.');renderInsights();});
-  }catch(e){root.innerHTML=errBox(e.message);}
+    document.getElementById('restoreRecommendations')?.addEventListener('click',()=>{clearRecommendationSuppressions();successToast('Hidden suggestions restored.');renderInsights();});
+  }catch(e){root.innerHTML=pageState('error','Unable to open this view',e.message);}
 }
 
 
@@ -7480,8 +7854,8 @@ async function renderBillsStudio(){
     document.getElementById('fundNextBill')?.addEventListener('click',e=>{const btn=e.currentTarget,row=document.querySelector(`.bill-fund-row[data-bill-id="${btn.dataset.id}"]`),input=row?.querySelector('input');if(input){input.value=(Number(btn.dataset.gap)/100).toFixed(2);row.scrollIntoView({behavior:effectiveUiPrefs().effectiveMotion==='reduced'?'auto':'smooth',block:'center'});input.focus();}});
     document.querySelectorAll('.protect-bill').forEach(btn=>btn.onclick=async()=>{
       const input=btn.parentElement.querySelector('input'),dollars=Number(input.value);if(!Number.isFinite(dollars)||dollars<=0){toast('Enter an amount greater than $0.');return;}
-      btn.disabled=true;try{const row=btn.closest('.world-row'),billName=row?.querySelector('.world-row-head strong')?.textContent||'Bill';await apiRequest('/bill/contribute',{method:'POST',body:JSON.stringify({userId,billId:btn.dataset.id,amount:Math.round(dollars*100)})});queueFinancialEvent('billProtected','bills',{amount:Math.round(dollars*100),name:billName});playLocalConfirmation(row,'bills');toast('Bill protection updated.');await new Promise(r=>setTimeout(r,effectiveUiPrefs().effectiveMotion==='reduced'?0:280));await renderBillsStudio();}catch(e){toast(e.message);btn.disabled=false;}});
-  }catch(e){root.innerHTML=errBox(e.message);}
+      btn.disabled=true;try{const row=btn.closest('.world-row'),billName=row?.querySelector('.world-row-head strong')?.textContent||'Bill';await apiRequest('/bill/contribute',{method:'POST',body:JSON.stringify({userId,billId:btn.dataset.id,amount:Math.round(dollars*100)})});queueFinancialEvent('billProtected','bills',{amount:Math.round(dollars*100),name:billName});playLocalConfirmation(row,'bills');successToast('Bill protection updated.');await new Promise(r=>setTimeout(r,effectiveUiPrefs().effectiveMotion==='reduced'?0:280));await renderBillsStudio();}catch(e){toast(e.message);btn.disabled=false;}});
+  }catch(e){root.innerHTML=pageState('error','Unable to open this view',e.message);}
 }
 
 async function renderEssentialsStudio(){
@@ -7501,7 +7875,7 @@ async function renderEssentialsStudio(){
       <div class="world-note">Runway is based on recorded spending so far. Missing or delayed transactions can make the estimate look more comfortable than reality.</div>
     </div>`;
     document.querySelectorAll('.precheck-lane').forEach(btn=>btn.onclick=()=>{setPrecheckHint(btn.dataset.id);location.hash='precheck';});
-  }catch(e){root.innerHTML=errBox(e.message);}
+  }catch(e){root.innerHTML=pageState('error','Unable to open this view',e.message);}
 }
 
 async function renderSavingsStudio(){
@@ -7518,11 +7892,11 @@ async function renderSavingsStudio(){
         <section class="savings-board">${goals.length?goals.map(g=>{const pct=Math.max(0,Math.min(100,Math.round((g.current||0)/Math.max(1,g.target||1)*100))),gap=Math.max(0,(g.target||0)-(g.current||0)),suggested=goalSuggestedWeekly(g,goals,weeklyBudget);return`<article class="savings-goal ${g.active===false?'paused':''}" data-goal-id="${g.id}"><div class="savings-goal-head"><span class="savings-goal-gem">${semanticIcon(g.name,g.type)}</span><span><strong>${escapeHtml(g.name)}</strong><span>${g.active===false?'Paused':pct>=100?'Complete':'Active goal'}</span></span><span class="goal-priority">${escapeHtml(g.priority)} priority</span></div><div class="savings-goal-progress" style="--pct:${pct}%"><i></i></div><div class="savings-goal-facts"><div><small>Current</small><strong>${formatCents(g.current||0)}</strong></div><div><small>Target</small><strong>${formatCents(g.target||0)}</strong></div><div><small>Gap</small><strong>${formatCents(gap)}</strong></div><div><small>Suggested / week</small><strong>${g.active===false?'Paused':weeklyBudget?formatCents(suggested):'—'}</strong></div></div><div class="goal-control-row"><input inputmode="decimal" placeholder="25.00" aria-label="Add progress to ${escapeHtml(g.name)}"><button class="btn btn-primary add-goal" data-id="${g.id}" ${g.active===false?'disabled':''}>Add progress</button></div><details class="goal-settings"><summary>Goal controls</summary><div class="goal-settings-body"><select class="goal-priority-select" data-id="${g.id}" aria-label="Priority for ${escapeHtml(g.name)}"><option value="high" ${g.priority==='high'?'selected':''}>High priority</option><option value="medium" ${g.priority==='medium'?'selected':''}>Medium priority</option><option value="low" ${g.priority==='low'?'selected':''}>Low priority</option></select><button class="goal-toggle" data-id="${g.id}" type="button">${g.active===false?'Resume goal':'Pause goal'}</button></div></details></article>`}).join(''):'<div class="empty">No savings goals configured.</div>'}</section>
         <div class="world-note">Suggested weekly amounts are planning allocations derived from your configured weekly savings target, goal priority, and remaining gap. They are not financial advice or automatic transfers.</div>
       </div>`;
-      document.querySelectorAll('.add-goal').forEach(btn=>btn.onclick=()=>{const input=btn.parentElement.querySelector('input'),d=Number(input.value);if(!Number.isFinite(d)||d<=0){toast('Enter an amount greater than $0.');return;}const goal=goals.find(g=>g.id===btn.dataset.id),card=btn.closest('.savings-goal');goals=goals.map(g=>g.id===btn.dataset.id?{...g,current:(g.current||0)+Math.round(d*100)}:g);writeSavingsGoals(goals);queueFinancialEvent('savingsAdded','savings',{amount:Math.round(d*100),name:goal?.name||'Savings goal'});playLocalConfirmation(card,'savings');toast('Goal progress updated.');setTimeout(draw,effectiveUiPrefs().effectiveMotion==='reduced'?0:300);});
-      document.querySelectorAll('.goal-priority-select').forEach(sel=>sel.onchange=()=>{goals=goals.map(g=>g.id===sel.dataset.id?{...g,priority:sel.value}:g);writeSavingsGoals(goals);toast('Goal priority updated.');draw();});
+      document.querySelectorAll('.add-goal').forEach(btn=>btn.onclick=()=>{const input=btn.parentElement.querySelector('input'),d=Number(input.value);if(!Number.isFinite(d)||d<=0){toast('Enter an amount greater than $0.');return;}const goal=goals.find(g=>g.id===btn.dataset.id),card=btn.closest('.savings-goal');goals=goals.map(g=>g.id===btn.dataset.id?{...g,current:(g.current||0)+Math.round(d*100)}:g);writeSavingsGoals(goals);queueFinancialEvent('savingsAdded','savings',{amount:Math.round(d*100),name:goal?.name||'Savings goal'});playLocalConfirmation(card,'savings');successToast('Goal progress updated.');setTimeout(draw,effectiveUiPrefs().effectiveMotion==='reduced'?0:300);});
+      document.querySelectorAll('.goal-priority-select').forEach(sel=>sel.onchange=()=>{goals=goals.map(g=>g.id===sel.dataset.id?{...g,priority:sel.value}:g);writeSavingsGoals(goals);successToast('Goal priority updated.');draw();});
       document.querySelectorAll('.goal-toggle').forEach(btn=>btn.onclick=()=>{goals=goals.map(g=>g.id===btn.dataset.id?{...g,active:g.active===false}:g);writeSavingsGoals(goals);toast(goals.find(g=>g.id===btn.dataset.id)?.active===false?'Goal paused.':'Goal resumed.');draw();});
     };draw();
-  }catch(e){root.innerHTML=errBox(e.message);}
+  }catch(e){root.innerHTML=pageState('error','Unable to open this view',e.message);}
 }
 
 async function renderPrecheck(){
@@ -7536,12 +7910,12 @@ async function renderPrecheck(){
     const precheckHint=consumePrecheckHint();if(precheckHint&&cats.some(x=>x.id===precheckHint))cat.value=precheckHint;
     const calc=()=>{const cents=Math.round((Number(amount.value)||0)*100),x=cats.find(c=>c.id===cat.value)||cats[0];if(!x||cents<=0){result.className='precheck-result';result.innerHTML='<strong>Enter an amount.</strong><span>Preview remains temporary until you log the purchase.</span>';orb.textContent=formatCents(p.available);return;}const lane=x.remaining-cents,overall=p.available-cents,good=lane>=0&&overall>=0;result.className='precheck-result '+(good?'good':'watch');result.innerHTML=`<strong>${good?'This fits the current plan.':'This would pressure the current plan.'}</strong><span>${escapeHtml(x.name)} would have ${formatCents(lane)} left and Available Now would become ${formatCents(overall)}. Protected-bill calculations are shown separately.</span>`;orb.textContent=formatCents(overall);};
     amount.oninput=calc;cat.onchange=calc;
-  }catch(e){root.innerHTML=errBox(e.message);}
+  }catch(e){root.innerHTML=pageState('error','Unable to open this view',e.message);}
 }
 
 function renderHistory(){
   shellMeta('History','Weekly Memory','Compare completed weeks without turning them into a spreadsheet','<a class="text-action" href="#details">Back</a>');nav('history');
-  const weeks=historySummaries();if(!weeks.length){root.innerHTML='<div class="center"><div class="empty">No week history yet.</div></div>';return;}
+  const weeks=historySummaries();if(!weeks.length){root.innerHTML=pageState('empty','No week history yet.','Close a week to create your first Weekly Memory.');return;}
   const closed=weeks.filter(w=>w.closed),trend=memoryTrend(weeks),learning=memoryLearningLoop(weeks),streak=plannedSavingsStreak(weeks);
   const current=weeks.find(w=>!w.closed)||weeks[0],latestClosed=closed[0]||null;
   const maxScale=Math.max(1,...weeks.map(w=>Math.max(w.essAllocated,w.flexAllocated,w.billTarget,w.savings||0,w.spent||0)));
@@ -7670,7 +8044,7 @@ async function renderScenario(){
       });
       document.getElementById('clearScenario')?.addEventListener('click',()=>{draft={income:0,bills:0,savings:0,essentials:0,lifestyle:0};clearScenarioDraft();render();});
     };render();
-  }catch(e){root.innerHTML=errBox(e.message);}
+  }catch(e){root.innerHTML=pageState('error','Unable to open this view',e.message);}
 }
 
 function renderPreferences(){
@@ -7728,7 +8102,7 @@ function renderPreferences(){
     accessible:{motion:'reduced',density:'compact',contrast:'high',textSize:'large',touch:'comfortable',haptics:'off'},
     rich:{motion:'cinematic',density:'rich',contrast:'normal',textSize:'standard',touch:'comfortable',haptics:'on'}
   };
-  document.querySelectorAll('[data-profile]').forEach(b=>b.onclick=()=>{writeUiPrefs(profiles[b.dataset.profile]);toast('Presentation profile updated.');renderPreferences();});
+  document.querySelectorAll('[data-profile]').forEach(b=>b.onclick=()=>{writeUiPrefs(profiles[b.dataset.profile]);successToast('Presentation profile updated.');renderPreferences();});
   document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{writeUiPrefs({[b.dataset.key]:b.dataset.value});renderPreferences();});
 }
 
@@ -7748,8 +8122,8 @@ async function renderLifestyleStudio(){
       <div class="world-note">Soft caps are personal planning warnings. Exceeding one does not imply a purchase is wrong, unaffordable, or prohibited; use Pre-check for the broader weekly impact.</div>
     </div>`;
     document.querySelectorAll('.precheck-flex').forEach(btn=>btn.onclick=()=>{setPrecheckHint(btn.dataset.id);location.hash='precheck';});
-    document.querySelectorAll('.flex-cap-select').forEach(sel=>sel.onchange=()=>{const next=readFlexCaps();next[sel.dataset.id]=Number(sel.value);writeFlexCaps(next);toast('Soft cap updated.');renderLifestyleStudio();});
-  }catch(e){root.innerHTML=errBox(e.message);}
+    document.querySelectorAll('.flex-cap-select').forEach(sel=>sel.onchange=()=>{const next=readFlexCaps();next[sel.dataset.id]=Number(sel.value);writeFlexCaps(next);successToast('Soft cap updated.');renderLifestyleStudio();});
+  }catch(e){root.innerHTML=pageState('error','Unable to open this view',e.message);}
 }
 
 async function renderConnections(){
@@ -7802,7 +8176,7 @@ async function renderConnections(){
       document.querySelectorAll('.data-filter').forEach(btn=>btn.onclick=()=>{activeFilter=btn.dataset.filter;draw();});
 
       const file=document.getElementById('bankFile');
-      file.onchange=()=>{const chosen=file.files?.[0];if(!chosen)return;try{const safe=assertImportFileSafe(chosen),reader=new FileReader();reader.onload=()=>{try{const parsed=parseDelimitedText(reader.result),records=normalizeImportedRows(parsed.rows,document.getElementById('signMode').value,safe.name);connectionImportPreview=buildConnectedImportPreview(records,safe.name);toast(`Previewed ${records.length} records locally.`);draw();}catch(e){toast(e.message);}};reader.onerror=()=>toast('Could not read that local file.');reader.readAsText(chosen);}catch(e){toast(e.message);file.value='';}};
+      file.onchange=()=>{const chosen=file.files?.[0];if(!chosen)return;try{const safe=assertImportFileSafe(chosen),reader=new FileReader();reader.onload=()=>{try{const parsed=parseDelimitedText(reader.result),records=normalizeImportedRows(parsed.rows,document.getElementById('signMode').value,safe.name);connectionImportPreview=buildConnectedImportPreview(records,safe.name);toast(`Previewed ${records.length} records locally.`);draw();}catch(e){toast(e.message);}};reader.onerror=()=>errorToast('Could not read that local file.');reader.readAsText(chosen);}catch(e){toast(e.message);file.value='';}};
 
       document.getElementById('demoImport').onclick=()=>{const demo=[{Date:new Date().toISOString().slice(0,10),Description:'Neighborhood Grocery Market',Amount:'-42.17',Status:'Posted'},{Date:new Date().toISOString().slice(0,10),Description:'City Fuel Station',Amount:'-36.80',Status:'Posted'},{Date:new Date().toISOString().slice(0,10),Description:'Local Pizza',Amount:'-28.55',Status:'Pending'},{Date:new Date().toISOString().slice(0,10),Description:'Payroll Deposit',Amount:'1800.00',Status:'Posted'}];const records=normalizeImportedRows(demo,'negativePurchase','Demo connection');connectionImportPreview=buildConnectedImportPreview(records,'Demo connection');draw();};
 
@@ -7819,7 +8193,7 @@ async function renderConnections(){
 
       document.getElementById('clearImport').onclick=()=>{
         if(!confirmHighImpactMutation('Clear imported review metadata from this browser? Reconciled transactions already applied to the weekly plan will remain in the plan.'))return;
-        const previous=readConnectedData(),next={version:2,sourceName:null,importedAt:null,records:[],batches:[],sources:[],audit:[]};appendConnectedAudit(next,'clear',null,`Cleared ${previous.records.length} imported metadata records`);writeConnectedData(next);connectionImportPreview=null;toast('Import metadata cleared.');draw();
+        const previous=readConnectedData(),next={version:2,sourceName:null,importedAt:null,records:[],batches:[],sources:[],audit:[]};appendConnectedAudit(next,'clear',null,`Cleared ${previous.records.length} imported metadata records`);writeConnectedData(next);connectionImportPreview=null;successToast('Import metadata cleared.');draw();
       };
 
       document.getElementById('undoLastImport')?.addEventListener('click',async()=>{
@@ -7829,12 +8203,12 @@ async function renderConnections(){
         if(!confirmHighImpactMutation(msg))return;
         try{
           if(applied.length)await apiRequest('/transaction/import/reverse-batch',{method:'POST',body:JSON.stringify({userId,externalIds:applied.map(r=>r.externalId)})});
-          d.records=d.records.filter(r=>r.batchId!==batch.id);d.batches=d.batches.filter(b=>b.id!==batch.id);appendConnectedAudit(d,'undoBatch',null,batch.sourceName||'Import');writeConnectedData(d);p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);toast('Last import undone.');draw();
+          d.records=d.records.filter(r=>r.batchId!==batch.id);d.batches=d.batches.filter(b=>b.id!==batch.id);appendConnectedAudit(d,'undoBatch',null,batch.sourceName||'Import');writeConnectedData(d);p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);successToast('Last import undone.');draw();
         }catch(e){toast(e.message);}
       });
 
       document.querySelectorAll('.defer-btn').forEach(btn=>btn.onclick=()=>{const d=readConnectedData(),rec=d.records.find(x=>x.id===btn.dataset.id);if(!rec)return;rec.reviewState='deferred';appendConnectedAudit(d,'defer',rec,'Deferred from review');writeConnectedData(d);toast('Transaction deferred.');draw();});
-      document.querySelectorAll('.restore-btn').forEach(btn=>btn.onclick=()=>{const d=readConnectedData(),rec=d.records.find(x=>x.id===btn.dataset.id);if(!rec)return;rec.reviewState='unmatched';appendConnectedAudit(d,'restore',rec,'Returned to review');writeConnectedData(d);activeFilter='unmatched';toast('Returned to review.');draw();});
+      document.querySelectorAll('.restore-btn').forEach(btn=>btn.onclick=()=>{const d=readConnectedData(),rec=d.records.find(x=>x.id===btn.dataset.id);if(!rec)return;rec.reviewState='unmatched';appendConnectedAudit(d,'restore',rec,'Returned to review');writeConnectedData(d);activeFilter='unmatched';successToast('Returned to review.');draw();});
 
       document.querySelectorAll('.reconcile-btn').forEach(btn=>btn.onclick=async()=>{
         const d=readConnectedData(),rec=d.records.find(x=>x.id===btn.dataset.id),sel=document.querySelector(`select[data-rec="${btn.dataset.id}"]`);if(!rec||!sel)return;
@@ -7844,7 +8218,7 @@ async function renderConnections(){
           rec.reconciled=true;rec.reviewState='reconciled';rec.categoryId=id;rec.categoryType=type;rec.categoryName=cat?.name||null;rec.reconciledAt=nowIso();
           appendConnectedAudit(d,'reconcile',rec,`Applied to ${cat?.name||'category'}`);writeConnectedData(d);
           queueFinancialEvent('reconciled',type==='LIVING'?'essentials':'lifestyle',{amount:rec.amount,name:rec.description});playLocalConfirmation(btn.closest('.reconcile-row'),type==='LIVING'?'essentials':'lifestyle');
-          p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);toast('Imported purchase reconciled.');setTimeout(draw,effectiveUiPrefs().effectiveMotion==='reduced'?0:250);
+          p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);successToast('Imported purchase reconciled.');setTimeout(draw,effectiveUiPrefs().effectiveMotion==='reduced'?0:250);
         }catch(e){toast(e.message);btn.disabled=false;}
       });
 
@@ -7854,7 +8228,7 @@ async function renderConnections(){
         btn.disabled=true;try{
           await apiRequest('/transaction/import/reverse',{method:'POST',body:JSON.stringify({userId,externalId:rec.externalId})});
           const prior=rec.categoryName||connectedCategoryName(rec,p);rec.reconciled=false;rec.reviewState='unmatched';delete rec.categoryId;delete rec.categoryType;delete rec.categoryName;delete rec.reconciledAt;
-          appendConnectedAudit(d,'unreconcile',rec,`Removed from ${prior}`);writeConnectedData(d);p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);activeFilter='unmatched';toast('Reconciliation undone.');draw();
+          appendConnectedAudit(d,'unreconcile',rec,`Removed from ${prior}`);writeConnectedData(d);p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);activeFilter='unmatched';successToast('Reconciliation undone.');draw();
         }catch(e){toast(e.message);btn.disabled=false;}
       });
 
@@ -7865,11 +8239,11 @@ async function renderConnections(){
         try{
           await apiRequest('/transaction/import/reclassify',{method:'POST',body:JSON.stringify({userId,externalId:rec.externalId,categoryType:type,categoryId:id})});
           const prior=rec.categoryName||connectedCategoryName(rec,p);rec.categoryType=type;rec.categoryId=id;rec.categoryName=cat?.name||null;rec.reclassifiedAt=nowIso();
-          appendConnectedAudit(d,'reclassify',rec,`${prior} → ${cat?.name||'category'}`);writeConnectedData(d);p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);toast('Category corrected.');draw();
+          appendConnectedAudit(d,'reclassify',rec,`${prior} → ${cat?.name||'category'}`);writeConnectedData(d);p=await apiRequest(`/week/current?userId=${encodeURIComponent(userId)}`);successToast('Category corrected.');draw();
         }catch(e){toast(e.message);btn.disabled=false;}
       });
     };draw();
-  }catch(e){root.innerHTML=errBox(e.message);}
+  }catch(e){root.innerHTML=pageState('error','Unable to open this view',e.message);}
 }
 
 function renderLocalAnalytics(){
@@ -7932,7 +8306,7 @@ function renderLocalAnalytics(){
     document.getElementById('clearLocalAnalytics')?.addEventListener('click',()=>{
       if(!summary.totalEvents)return;
       if(!confirmHighImpactMutation('Clear all local usage counters? This does not affect your financial plan or transactions.'))return;
-      clearLocalAnalyticsCounters();toast('Local usage counters cleared.');draw();
+      clearLocalAnalyticsCounters();successToast('Local usage counters cleared.');draw();
     });
     document.getElementById('exportLocalAnalytics')?.addEventListener('click',()=>{
       if(!summary.totalEvents)return;
@@ -8085,10 +8459,10 @@ function renderDataModel(){
       try{
         const fp=await computePortableSnapshotFingerprint();
         if(copy)copy.textContent=fp.algorithm+' · '+fp.value+' · '+fp.bytes.toLocaleString()+' canonical bytes'+(fp.warning?' · '+fp.warning:'');
-        toast('Snapshot fingerprint computed.');
+        successToast('Snapshot fingerprint computed.');
       }catch(e){
         if(copy)copy.textContent='Fingerprint failed · '+e.message;
-        toast('Snapshot fingerprint failed.');
+        errorToast('Snapshot fingerprint failed.');
       }finally{if(btn)btn.disabled=false;}
     });
     document.getElementById('previewPortableSchema')?.addEventListener('click',()=>{
@@ -8101,10 +8475,10 @@ function renderDataModel(){
         const json=serializePortableData(false),parsed=deserializePortableData(json),roundTrip=validatePortableDataEnvelope(parsed);
         if(!roundTrip.valid)throw new Error(roundTrip.errors.join(' '));
         if(copy)copy.textContent='Passed · '+json.length.toLocaleString()+' serialized characters · '+parsed.counts.users+' user record · no live state changed.';
-        toast('Portable serialization round trip passed.');
+        successToast('Portable serialization round trip passed.');
       }catch(e){
         if(copy)copy.textContent='Failed · '+e.message;
-        toast('Portable serialization round trip failed.');
+        errorToast('Portable serialization round trip failed.');
       }
     });
     document.getElementById('runPhase13Suite')?.addEventListener('click',()=>{
@@ -8115,10 +8489,10 @@ function renderDataModel(){
         toast('Phase 13 readiness · '+suite.passed+'/'+suite.total+' checks passed.');
       }catch(e){
         if(box)box.innerHTML=`<div class="schema-row"><div><strong>Suite failed to run</strong><span>${escapeHtml(e.message)}</span></div><span class="schema-badge">fail</span></div>`;
-        toast('Phase 13 readiness suite failed.');
+        errorToast('Phase 13 readiness suite failed.');
       }
     });
-  }catch(e){root.innerHTML=errBox(e.message);}
+  }catch(e){root.innerHTML=pageState('error','Unable to open this view',e.message);}
 }
 
 function renderPerformance(){
@@ -8156,7 +8530,7 @@ function renderPerformance(){
       </div></section>
       <div class="perf-note">Derived caches contain computed/presentation data only. Clearing them does not delete the plan, transactions, imported data, savings goals, or preferences.</div>
     </div>`;
-    document.getElementById('clearPerfCaches')?.addEventListener('click',()=>{clearDerivedRuntimeCaches();toast('Derived caches cleared.');draw();});
+    document.getElementById('clearPerfCaches')?.addEventListener('click',()=>{clearDerivedRuntimeCaches();successToast('Derived caches cleared.');draw();});
   };draw();
 }
 
@@ -8259,11 +8633,11 @@ async function renderLog(){
         queueFinancialEvent('purchase',selected.type==='LIVING'?'essentials':'lifestyle',{amount:Math.round(dollars*100),name:selected.name});
         playLocalConfirmation(chamber,selected.type==='LIVING'?'essentials':'lifestyle');
         focus.textContent='Transaction placed';
-        toast('Spending added. Your week is updated.');
+        successToast('Spending added. Your week is updated.');
         setTimeout(()=>{location.hash='home';},280);
       }catch(e){box.innerHTML=errBox(e.message);submit.disabled=false;submit.textContent='Add Spending';chamber.classList.remove('sending');}
     };
-  }catch(e){root.innerHTML=errBox(e.message);}
+  }catch(e){root.innerHTML=pageState('error','Unable to open this view',e.message);}
 }
 
 async function renderReset(){
@@ -8295,11 +8669,11 @@ async function renderReset(){
         await apiRequest('/week/reset',{method:'POST',body:JSON.stringify({userId})});
         queueFinancialEvent('weekReset','available',{});
         playLocalConfirmation(portal,'available');
-        toast('New week started. Your plan is ready.');
+        successToast('New week started. Your plan is ready.');
         setTimeout(()=>{location.hash='home';},260);
       }catch(e){b.disabled=false;b.textContent='Start New Week';portal.classList.remove('transitioning');alert(e.message);}
     };
-  }catch(e){root.innerHTML=errBox(e.message);}
+  }catch(e){root.innerHTML=pageState('error','Unable to open this view',e.message);}
 }
 
 function renderSetup(){
@@ -8447,7 +8821,13 @@ async function render(){
   if(sceneMotionObserver){try{sceneMotionObserver.disconnect();}catch{}sceneMotionObserver=null;}
   applyUiPrefs();applyRuntimePerformanceTier();bindSystemPreferenceListeners();bindMobileViewportController();bindLongTaskObserver();bindPrivacyCurtain();
   const r=route(),routeChanged=lastRenderedRoute!==null&&lastRenderedRoute!==r;
+  document.body.dataset.view=r;
+  root.setAttribute('aria-busy','true');
+  const phase17LoadingTimer=setTimeout(()=>{
+    if(lastRenderedRoute!==r)root.innerHTML=loadingState('Loading '+routeDisplayName(r),'Preparing the requested workspace.');
+  },140);
   const restoreScroll=historyTraversalPending?(routeScrollPositions.get(r)||0):0;
+  try{
   if(r==='log')await renderLog();
   else if(r==='details')await renderDetails();
   else if(r==='insights')await renderInsights();
@@ -8469,6 +8849,12 @@ async function render(){
   else if(r==='reset')await renderReset();
   else if(r==='setup')await renderSetup();
   else await renderHome();
+  }catch(e){
+    root.innerHTML=pageState('error','Unable to open '+routeDisplayName(r),e?.message||'An unexpected local rendering error occurred.');
+  }finally{
+    clearTimeout(phase17LoadingTimer);
+    root.removeAttribute('aria-busy');
+  }
   requestAnimationFrame(()=>{
     applyRouteEntryTransition(r);
     window.scrollTo({top:restoreScroll,behavior:'auto'});
