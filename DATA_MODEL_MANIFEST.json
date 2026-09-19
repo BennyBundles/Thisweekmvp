@@ -948,7 +948,8 @@
       "tw_release_drill_events",
       "tw_release_gate_evidence_requirements",
       "tw_release_gate_evidence",
-      "tw_release_candidate_selections"
+      "tw_release_candidate_selections",
+      "tw_ops_staff_role_events"
     ],
     "serviceRoleRpcs": [
       "tw_release_drill_status",
@@ -963,7 +964,9 @@
       "tw_release_set_gate",
       "tw_release_active_candidate",
       "tw_release_select_candidate",
-      "tw_release_candidate_report"
+      "tw_release_candidate_report",
+      "tw_staff_role_summary",
+      "tw_staff_user_role"
     ],
     "sandboxChecklist": [
       "provider_preflight",
@@ -1007,7 +1010,9 @@
       "20260919184231_phase34_release_evidence_sandbox_certification",
       "phase34_release_evidence_service_role_policies",
       "phase34_release_candidate_binding",
-      "phase34_candidate_change_gate_invalidation"
+      "phase34_candidate_change_gate_invalidation",
+      "phase34_controlled_staff_bootstrap",
+      "phase34_staff_role_summary_rpc"
     ],
     "releaseCandidateBinding": {
       "activeCandidateSelectionAppendOnly": true,
@@ -1021,6 +1026,38 @@
         "incident_escalation_runbook_approved"
       ],
       "invalidationAudit": "tw_release_gate_events"
+    },
+    "staffProvisioning": {
+      "status": "gateway_and_bootstrap_surface_deployed_bootstrap_unconfigured_until_server_allowlist",
+      "gateway": "thisweek-staff-gateway:v1",
+      "gatewayVerifyJwt": true,
+      "bootstrapPath": "/ops/bootstrap/",
+      "auditTable": "tw_ops_staff_role_events",
+      "serviceRoleRpcs": [
+        "tw_staff_role_summary",
+        "tw_staff_user_role"
+      ],
+      "roleSource": "auth.app_metadata.thisweek_role",
+      "allowedRoles": [
+        "support_ops",
+        "risk_ops",
+        "admin"
+      ],
+      "bootstrapServerSecret": "THISWEEK_BOOTSTRAP_ADMIN_EMAIL",
+      "guards": [
+        "real_auth_user",
+        "confirmed_email",
+        "active_session",
+        "aal2",
+        "server_allowlisted_email",
+        "zero_existing_staff"
+      ],
+      "existingAdminRoleChangesRequireAal2": true,
+      "lastAdminProtected": true,
+      "directBrowserAuthTableMutation": false,
+      "initialObservedAuthUsers": 0,
+      "initialObservedStaffUsers": 0,
+      "releaseGateAutoVerification": false
     }
   }
 }
