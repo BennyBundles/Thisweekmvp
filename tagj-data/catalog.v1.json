@@ -136,6 +136,146 @@
         "stripePriceId": null
       },
       "route": "#tagj-product-grill-v144"
+    },
+    {
+      "id": "audio-engineer-lowtops",
+      "name": "TAGJ-018 Audio Engineer Low Tops",
+      "world": "tagj",
+      "category": "footwear",
+      "developmentStatus": "concept_colorway_system",
+      "inventoryStatus": "unconfirmed",
+      "commerce": {
+        "enabled": false,
+        "displayPrice": null,
+        "salePrice": null,
+        "stripePriceId": null
+      },
+      "route": "#tagj-audio-engineer-v147",
+      "colorwayCount": 6
+    },
+    {
+      "id": "concrete-bloom-mids",
+      "name": "TAGJ-017 Concrete Bloom Mid Tops",
+      "world": "tagj",
+      "category": "footwear",
+      "developmentStatus": "concept_colorway_system",
+      "inventoryStatus": "unconfirmed",
+      "commerce": {
+        "enabled": false,
+        "displayPrice": null,
+        "salePrice": null,
+        "stripePriceId": null
+      },
+      "route": "#tagj-concrete-bloom-mids-v147",
+      "colorwayCount": 6
+    },
+    {
+      "id": "concrete-bloom-pump",
+      "name": "TAGJ-017 Concrete Bloom Pump",
+      "world": "tagj",
+      "category": "footwear",
+      "developmentStatus": "concept_colorway_system",
+      "inventoryStatus": "unconfirmed",
+      "commerce": {
+        "enabled": false,
+        "displayPrice": null,
+        "salePrice": null,
+        "stripePriceId": null
+      },
+      "route": "#tagj-concrete-bloom-pump-v147",
+      "colorwayCount": 6
+    },
+    {
+      "id": "vault-heel-highs",
+      "name": "Bank Vault Heel High Tops",
+      "world": "tagj",
+      "category": "footwear",
+      "developmentStatus": "concept_colorway_system",
+      "inventoryStatus": "unconfirmed",
+      "commerce": {
+        "enabled": false,
+        "displayPrice": null,
+        "salePrice": null,
+        "stripePriceId": null
+      },
+      "route": "#tagj-vault-heel-v147",
+      "colorwayCount": 6
+    },
+    {
+      "id": "nonstick-slipon",
+      "name": "TAGJ-013 Non-Stick Slip-On / Diamond Dust Knit",
+      "world": "tagj",
+      "category": "footwear",
+      "developmentStatus": "concept_colorway_system",
+      "inventoryStatus": "unconfirmed",
+      "commerce": {
+        "enabled": false,
+        "displayPrice": null,
+        "salePrice": null,
+        "stripePriceId": null
+      },
+      "route": "#tagj-nonstick-v147",
+      "colorwayCount": 7
+    },
+    {
+      "id": "rowhome-highs",
+      "name": "Rowhome High Tops",
+      "world": "tagj",
+      "category": "footwear",
+      "developmentStatus": "concept",
+      "inventoryStatus": "unconfirmed",
+      "commerce": {
+        "enabled": false,
+        "displayPrice": null,
+        "salePrice": null,
+        "stripePriceId": null
+      },
+      "route": "#tagj-footwear-v147"
+    },
+    {
+      "id": "jewelry-box-lows",
+      "name": "Jewelry Box Low Tops",
+      "world": "tagj",
+      "category": "footwear",
+      "developmentStatus": "concept",
+      "inventoryStatus": "unconfirmed",
+      "commerce": {
+        "enabled": false,
+        "displayPrice": null,
+        "salePrice": null,
+        "stripePriceId": null
+      },
+      "route": "#tagj-footwear-v147"
+    },
+    {
+      "id": "808-speaker-low",
+      "name": "808 Speaker Low",
+      "world": "tagj",
+      "category": "footwear",
+      "developmentStatus": "concept",
+      "inventoryStatus": "unconfirmed",
+      "commerce": {
+        "enabled": false,
+        "displayPrice": null,
+        "salePrice": null,
+        "stripePriceId": null
+      },
+      "route": "#tagj-footwear-v147"
+    },
+    {
+      "id": "heartbeat-runner",
+      "name": "Heartbeat Sole / Pulse Runner",
+      "world": "tagj",
+      "category": "footwear",
+      "developmentStatus": "concept",
+      "inventoryStatus": "unconfirmed",
+      "commerce": {
+        "enabled": false,
+        "displayPrice": null,
+        "salePrice": null,
+        "stripePriceId": null
+      },
+      "route": "#tagj-footwear-v147"
     }
   ],
   "releases": [
@@ -203,6 +343,14 @@
       "releaseDate": null,
       "route": "#artist-release-freestyle-v144",
       "linksRef": "release:freestyle"
+    },
+    {
+      "id": "cry-dark",
+      "name": "Cry In The Dark",
+      "type": "release_visual_asset",
+      "releaseDate": null,
+      "route": "#artist-cry-dark-v147",
+      "linksRef": "release:cry-dark"
     }
   ],
   "creativeServices": [
@@ -324,5 +472,29 @@
     "creative": {
       "campaignWorkflow": "#creative-campaign-workflow-v145"
     }
-  }
+  },
+  "assetCollections": [
+    {
+      "id": "apparel-brand-v147",
+      "world": "tagj",
+      "label": "V14.7 Apparel + Brand System",
+      "route": "#tagj-catalogue-v147",
+      "status": "curated_design_assets"
+    },
+    {
+      "id": "footwear-series-v147",
+      "world": "tagj",
+      "label": "V14.7 Footwear Concept Archive",
+      "route": "#tagj-footwear-v147",
+      "status": "curated_design_assets"
+    },
+    {
+      "id": "network-creative-v147",
+      "world": "artist_creative",
+      "label": "V14.7 Network + Creative Proof Assets",
+      "artistRoute": "#artist-network-v147",
+      "creativeRoute": "#creative-proof-v147",
+      "status": "curated_source_assets"
+    }
+  ]
 }
