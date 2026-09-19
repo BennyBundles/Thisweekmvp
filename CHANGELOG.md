@@ -2,6 +2,42 @@
 
 Production changes for **This Week** are recorded here.
 
+## Phase 20 — Money Layer Foundation — 2026-09-19
+
+### Real-money architecture
+- Added 20 isolated `tw_money_*` server tables for money customers/accounts, envelopes, double-entry ledger history, transfers, payroll/direct deposit, rewards, bill payments, virtual cards, authorizations, and provider-event processing.
+- Enabled RLS on every money table and revoked direct `public`, `anon`, and normal `authenticated` access.
+- Added service-role-only balanced journal and atomic money-move RPCs.
+- Made posted ledger journals/entries append-only; corrections require compensating entries.
+- Added an inactive `TW_DD_SWITCH_25_SANDBOX` reward template. It is not a customer promotion.
+- Deployed JWT-protected `thisweek-money-gateway` with provider execution disabled by default.
+- Added server adapters for Unit Sandbox, Pinwheel Deposit Switch, and Method payments while retaining Plaid as the existing external-bank connection plane.
+- Gateway rejects anonymous Supabase users and requires an explicit execution mode before provider calls can occur.
+- Added production UI routes under Details → Money for Money Center, Direct Deposit, Bill Pay, and Category Cards without adding Home clutter.
+- Preserved **Available Now** as a plan-derived signal and separated future actual custody under a distinct money plane.
+- Preserved **Bill Protection ≠ bill paid** semantics.
+- Production still uses `connect-src 'none'`; there is no browser money API transport and no live money movement.
+
+### Activation status
+- Backend foundation: deployed.
+- Provider execution: disabled.
+- Live money flag: false.
+- Recoverable Auth/MFA: not yet connected to the production browser client.
+- Provider credentials: not present in the repository/client.
+- Webhook and realtime card-authorization controllers: not yet activated.
+- No real deposit account, bill payment, transfer, payroll switch, customer reward, or virtual card is live.
+
+### State migrations
+- No browser financial-state migration.
+- Core planning schema remains **v3**.
+- Portable data schema remains **v1**.
+- Phase 20 is a separate server money plane.
+
+### Rollback
+- Pre-Phase-20 commit: `daf7785e299fc7ec2865056e356d0263c037531f`
+- Rollback branch: `rollback/phase20-pre-money-layer-2026-09-19`
+
+
 ## Phase 19 — Secure Provider Gateway (staged) — 2026-09-18
 
 ### Shared Supabase provisioning
@@ -16,16 +52,16 @@ Production changes for **This Week** are recorded here.
 ### Provider architecture
 - Added a dedicated provider-backend schema package for consent, connection metadata, external accounts/balances, provider transactions, sync runs, and conflict records.
 - Added a JWT-authenticated Supabase Edge Function source package for a Plaid Hosted Link adapter, server-side account/transaction synchronization, Vault token references, and explicit disconnect.
-- Added a dedicated-backend activation guide; the existing shared Supabase project is not used for This Week provider data.
+- Added an activation guide; Phase 19 was subsequently provisioned in the user-approved shared Supabase project with This Week-specific isolation controls.
 - Added a Phase 19 readiness plane to Connected Data with a deliberately disabled institution-connect action.
 - Added provider-record normalization into the existing review semantics: pending stays reference-only, posted outflows require explicit reconciliation, and inflows never silently increase Available Now.
 - Added explicit external-balance labeling: provider balances never replace or redefine Available Now.
 - Extended Privacy & Local Data, the backend-readiness contract, the data-model manifest, the static regression gate, and release smoke tests for Phase 19.
-- Production retains `connect-src 'none'`, no browser `fetch()` provider path, an empty backend origin, and `LIVE_PROVIDER_CONFIG.enabled = false`.
+- Production retains `connect-src 'none'`, no browser `fetch()` provider path, a known-but-not-allowlisted backend origin, and `LIVE_PROVIDER_CONFIG.enabled = false`.
 
 ### Activation status
 - **No live financial institution is connected by this release.**
-- Activation requires a dedicated backend project, recoverable authentication, provider credentials/approval, Sandbox verification, security/RLS review, and an exact CSP backend allowlist.
+- Activation requires recoverable authentication, provider credentials/approval, Sandbox verification, security/RLS review, and an exact CSP backend allowlist.
 - Provider production usage may have external cost; Phase 19 does not assume paid access under the current zero-operating-budget constraint.
 
 ### State migrations
