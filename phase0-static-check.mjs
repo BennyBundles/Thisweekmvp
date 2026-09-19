@@ -40,6 +40,19 @@ const phase24DocUrl=new URL('./PHASE_24_IMPLEMENTATION.md', import.meta.url);
 const authProductionSetupUrl=new URL('./AUTH_PRODUCTION_SETUP.md', import.meta.url);
 const phase26SchemaUrl=new URL('./supabase/phase26/returns_disputes.sql', import.meta.url);
 const phase26DocUrl=new URL('./PHASE_26_IMPLEMENTATION.md', import.meta.url);
+const phase27SchemaUrl=new URL('./supabase/phase27/staff_ops.sql', import.meta.url);
+const phase27DocUrl=new URL('./PHASE_27_IMPLEMENTATION.md', import.meta.url);
+const opsGatewayUrl=new URL('./supabase/functions/thisweek-ops-gateway/index.ts', import.meta.url);
+const opsHtmlUrl=new URL('./ops/index.html', import.meta.url);
+const opsJsUrl=new URL('./ops/app.js', import.meta.url);
+const opsCheckUrl=new URL('./ops-check.mjs', import.meta.url);
+const opsAccessSetupUrl=new URL('./OPS_ACCESS_SETUP.md', import.meta.url);
+const phase28SchemaUrl=new URL('./supabase/phase28/support_incident_ops.sql', import.meta.url);
+const phase28DocUrl=new URL('./PHASE_28_IMPLEMENTATION.md', import.meta.url);
+const supportGatewayUrl=new URL('./supabase/functions/thisweek-support-gateway/index.ts', import.meta.url);
+const supportHtmlUrl=new URL('./support/index.html', import.meta.url);
+const supportJsUrl=new URL('./support/app.js', import.meta.url);
+const supportCheckUrl=new URL('./support-check.mjs', import.meta.url);
 
 const releaseFiles=['prepare-site.mjs','release-smoke-check.mjs','RELEASE_CHECKLIST.md','RELEASE_POLICY.md','release.config.json','CHANGELOG.md','RELEASES/v0.15.0-phase15.md'];
 for(const name of releaseFiles){
@@ -78,7 +91,20 @@ for(const [label,url] of [
   ['Phase 24 implementation document',phase24DocUrl],
   ['Auth production setup guide',authProductionSetupUrl],
   ['Phase 26 return/dispute schema',phase26SchemaUrl],
-  ['Phase 26 implementation document',phase26DocUrl]
+  ['Phase 26 implementation document',phase26DocUrl],
+  ['Phase 27 staff ops schema',phase27SchemaUrl],
+  ['Phase 27 implementation document',phase27DocUrl],
+  ['Ops Gateway',opsGatewayUrl],
+  ['Ops Console HTML',opsHtmlUrl],
+  ['Ops Console client',opsJsUrl],
+  ['Ops Console checker',opsCheckUrl],
+  ['Ops access setup guide',opsAccessSetupUrl],
+  ['Phase 28 support/incident schema',phase28SchemaUrl],
+  ['Phase 28 implementation document',phase28DocUrl],
+  ['Support Gateway',supportGatewayUrl],
+  ['Support Center HTML',supportHtmlUrl],
+  ['Support Center client',supportJsUrl],
+  ['Support Center checker',supportCheckUrl]
 ]){
   if(!fs.existsSync(url))failures.push('Missing '+label);
 }
@@ -115,6 +141,18 @@ const requirePhase24FileText=(label,content,text)=>{if(!content.includes(text))f
 const phase26Schema=fs.existsSync(phase26SchemaUrl)?fs.readFileSync(phase26SchemaUrl,'utf8'):'';
 const phase26Doc=fs.existsSync(phase26DocUrl)?fs.readFileSync(phase26DocUrl,'utf8'):'';
 const requirePhase26FileText=(label,content,text)=>{if(!content.includes(text))failures.push(label);};
+const phase27Schema=fs.existsSync(phase27SchemaUrl)?fs.readFileSync(phase27SchemaUrl,'utf8'):'';
+const phase27Doc=fs.existsSync(phase27DocUrl)?fs.readFileSync(phase27DocUrl,'utf8'):'';
+const opsGateway=fs.existsSync(opsGatewayUrl)?fs.readFileSync(opsGatewayUrl,'utf8'):'';
+const opsHtml=fs.existsSync(opsHtmlUrl)?fs.readFileSync(opsHtmlUrl,'utf8'):'';
+const opsJs=fs.existsSync(opsJsUrl)?fs.readFileSync(opsJsUrl,'utf8'):'';
+const phase28Schema=fs.existsSync(phase28SchemaUrl)?fs.readFileSync(phase28SchemaUrl,'utf8'):'';
+const phase28Doc=fs.existsSync(phase28DocUrl)?fs.readFileSync(phase28DocUrl,'utf8'):'';
+const supportGateway=fs.existsSync(supportGatewayUrl)?fs.readFileSync(supportGatewayUrl,'utf8'):'';
+const supportHtml=fs.existsSync(supportHtmlUrl)?fs.readFileSync(supportHtmlUrl,'utf8'):'';
+const supportJs=fs.existsSync(supportJsUrl)?fs.readFileSync(supportJsUrl,'utf8'):'';
+const requirePhase27FileText=(label,content,text)=>{if(!content.includes(text))failures.push(label);};
+const requirePhase28FileText=(label,content,text)=>{if(!content.includes(text))failures.push(label);};
 
 const requireText=(label,text)=>{if(!html.includes(text))failures.push(label);};
 const forbidText=(label,text)=>{if(html.includes(text))failures.push(label);};
@@ -472,6 +510,38 @@ requirePhase21FileText('Phase 26 Lab operations control',moneyLabHtml,'id="opsSt
 requirePhase21FileText('Phase 26 Lab dispute create control',moneyLabHtml,'id="createDispute"');
 requirePhase21FileText('Phase 26 Lab operations renderer',moneyLabJs,'renderOpsStatus');
 requirePhase26FileText('Phase 26 production boundary',phase26Doc,"connect-src 'none'");
+
+// Phase 27 staff operations and RBAC.
+requirePhase27FileText('Phase 27 staff action table',phase27Schema,'tw_ops_staff_actions');
+requirePhase27FileText('Phase 27 alert table',phase27Schema,'tw_ops_alerts');
+requirePhase27FileText('Phase 27 staff roles',phase27Doc,'support_ops');
+requirePhase27FileText('Phase 27 app metadata role source',opsGateway,'app_metadata');
+requirePhase27FileText('Phase 27 active session check',opsGateway,'tw_auth_session_active');
+requirePhase27FileText('Phase 27 AAL2 requirement',opsGateway,'mfa_aal2_required');
+requirePhase27FileText('Phase 27 no role assignment doctrine',opsHtml,'No browser role escalation');
+requirePhase27FileText('Phase 27 staff audit UI',opsJs,'renderAudit');
+
+// Phase 28 customer support + incident monitoring.
+requireText('Phase 28 Support Center link',"externalTool('./support/'");
+requirePhase28FileText('Phase 28 support request table',phase28Schema,'tw_support_requests');
+requirePhase28FileText('Phase 28 support messages table',phase28Schema,'tw_support_messages');
+requirePhase28FileText('Phase 28 incident table',phase28Schema,'tw_ops_incidents');
+requirePhase28FileText('Phase 28 internal SLA table',phase28Schema,'tw_ops_sla_policies');
+requirePhase28FileText('Phase 28 SLA not public promise',phase28Schema,'public_commitment');
+requirePhase28FileText('Phase 28 browser access revoked',phase28Schema,'from public,anon,authenticated');
+requirePhase28FileText('Phase 28 append-only support messages',phase28Schema,'tw_support_messages_immutable');
+requirePhase28FileText('Phase 28 support gateway auth',supportGateway,'auth.getUser(token)');
+requirePhase28FileText('Phase 28 support active session',supportGateway,'tw_auth_session_active');
+requirePhase28FileText('Phase 28 support no direct money mutation',phase28Doc,'never directly');
+requirePhase28FileText('Phase 28 sensitive number rejection',supportGateway,'\\d{12,19}');
+requirePhase27FileText('Phase 28 Ops support action',opsGateway,'support_reply');
+requirePhase27FileText('Phase 28 Ops incident action',opsGateway,'open_incident');
+requirePhase27FileText('Phase 28 Ops health calculation',opsGateway,'buildHealth');
+requirePhase27FileText('Phase 28 Ops support renderer',opsJs,'renderSupport');
+requirePhase27FileText('Phase 28 Ops incident renderer',opsJs,'renderIncidents');
+requirePhase28FileText('Phase 28 Support Center gateway',supportJs,'/functions/v1/thisweek-support-gateway');
+if(/service_role|sb_secret_/i.test(supportHtml+supportJs))failures.push('Phase 28 Support Center contains server-secret pattern');
+if(/localStorage/.test(supportJs))failures.push('Phase 28 Support Center must not use localStorage');
 
 
 
