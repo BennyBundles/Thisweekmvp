@@ -422,6 +422,32 @@ body:not([data-current-world]) .v143-request-fab,body[data-current-world="home"]
 @media(max-width:900px){.v143-dossier,.v143-ab{grid-template-columns:1fr}.v143-grid{grid-template-columns:1fr 1fr}.v143-service-list{grid-template-columns:1fr 1fr}.v143-stage,.v143-inspector{min-height:430px}}
 @media(max-width:620px){.v143-shell{width:calc(100% - 24px);padding:70px 0 105px}.v143-grid{grid-template-columns:1fr}.v143-fields{grid-template-columns:1fr}.v143-field.full{grid-column:auto}.v143-service-list{grid-template-columns:1fr 1fr}.v143-service-select{min-height:105px}.v143-title{font-size:clamp(48px,16vw,80px)}.v143-stage{min-height:400px}.v143-inspector{min-height:0}.v143-wizard{padding:0}.v143-wizard-card{height:100svh;max-height:none;width:100%;border:0}.v143-request-fab{right:10px}}
 @media(prefers-reduced-motion:reduce){.v143-tabs button,.v143-service-select{transition:none}}
+</style>
+<style id="v14-4-routing-contracts">
+.v144-route-anchor{position:absolute;top:0;left:0;width:1px;height:1px;pointer-events:none;opacity:0}
+.v144-route-strip{display:flex;gap:6px;overflow:auto;scrollbar-width:none;padding:2px 0 12px}.v144-route-strip::-webkit-scrollbar{display:none}
+.v144-route-strip a{flex:0 0 auto;min-height:38px;display:inline-flex;align-items:center;border:1px solid currentColor;padding:0 10px;text-decoration:none;color:inherit;font:800 7px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase;opacity:.56}
+.v144-route-strip a.active{opacity:1;background:rgba(255,255,255,.08)}
+.v144-link-registry{margin-top:14px;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.12)}
+.v144-link-row{display:grid;grid-template-columns:130px 1fr auto;gap:12px;align-items:center;padding:12px 14px;border-top:1px solid rgba(255,255,255,.1)}.v144-link-row:first-child{border-top:0}
+.v144-link-row b{font:800 8px/1 ui-monospace,Menlo,monospace;letter-spacing:.09em;text-transform:uppercase}.v144-link-row span{font-size:10px;opacity:.62}
+.v144-link-row a,.v144-link-row em{min-height:34px;display:inline-flex;align-items:center;justify-content:center;padding:0 9px;border:1px solid currentColor;text-decoration:none;color:inherit;font:800 7px/1 ui-monospace,Menlo,monospace;font-style:normal;letter-spacing:.07em;text-transform:uppercase}
+.v144-link-row em{opacity:.36;cursor:not-allowed}
+.v144-contract-note{margin-top:10px;padding:10px 12px;border-left:2px solid currentColor;background:rgba(255,255,255,.025);font-size:9px;line-height:1.55;opacity:.62}
+.v144-special{grid-column:1/-1;border-top:1px solid #272d34;padding-top:14px;margin-top:4px}.v144-special-head{grid-column:1/-1;margin-bottom:2px}.v144-special-head b{font-size:13px}.v144-special-head span{display:block;font-size:9px;line-height:1.45;opacity:.56;margin-top:5px}
+.v144-json{grid-column:1/-1;margin-top:8px}.v144-json details{border:1px solid #2b3139;background:#07090c}.v144-json summary{cursor:pointer;padding:11px 13px;font:800 8px/1 ui-monospace,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase}.v144-json pre{white-space:pre-wrap;overflow-wrap:anywhere;margin:0;padding:13px;border-top:1px solid #2b3139;font:500 9px/1.55 ui-monospace,Menlo,monospace;max-height:260px;overflow:auto}
+.v144-transition{position:fixed;inset:0;z-index:19000;pointer-events:none;opacity:0;background:#08090b}
+.v144-transition:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.10),transparent 36%)}
+.v144-transition.run{animation:v144Fade .56s var(--v143-ease,cubic-bezier(.16,1,.3,1)) both}
+.v144-transition[data-target="tagj"]{background:linear-gradient(180deg,#181207,#080706);transform-origin:50% 0}
+.v144-transition[data-target="artist"]{background:linear-gradient(90deg,#090708,#2a1110);transform-origin:100% 50%}
+.v144-transition[data-target="producer"]{background:linear-gradient(0deg,#06150e,#050807);transform-origin:50% 100%}
+.v144-transition[data-target="creative"]{background:linear-gradient(90deg,#1a1030,#08070d);transform-origin:0 50%}
+@keyframes v144Fade{0%{opacity:0;clip-path:inset(48% 48% 48% 48%)}35%{opacity:.94;clip-path:inset(0 0 0 0)}100%{opacity:0;clip-path:inset(0 0 0 0)}}
+.v144-mobile-rail{display:none;position:sticky;top:0;z-index:50;padding:7px;background:rgba(6,8,10,.86);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.1)}
+.v144-mobile-rail a{min-height:40px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.12);color:inherit;text-decoration:none;font:800 7px/1 ui-monospace,Menlo,monospace;letter-spacing:.07em;text-transform:uppercase}
+@media(max-width:620px){.v144-link-row{grid-template-columns:1fr auto}.v144-link-row span{grid-column:1/-1;grid-row:2}.v144-mobile-rail{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.v144-route-strip{padding-bottom:8px}}
+@media(prefers-reduced-motion:reduce){.v144-transition.run{animation:none}}
 </style></head><body class="preview-shell"><div class="world-view world-home home-v10" data-world="home">
 <section class="screen" id="home"><div class="home-grid"></div><div class="home-noise"></div><div class="home-vignette"></div><div class="home-stage"><div class="compass">
 <div class="home-kicker"><b>TAGJ × BENNY BUNDLES</b> / ONE CENTER — FOUR DISTINCT WORLDS</div><div class="orbit o3"></div><div class="orbit o2"></div><div class="orbit o1"></div><div class="beam n"></div><div class="beam e"></div><div class="beam s"></div><div class="beam w"></div>
@@ -526,9 +552,9 @@ body:not([data-current-world]) .v143-request-fab,body[data-current-world="home"]
 <div class="v142-panel" id="v142TagjPanel"><div><div class="v142-kicker">SELECT A RECORD</div><h3>Development information stays hidden until requested.</h3><p>This keeps the catalogue compact while allowing deeper technical information to open only when the user selects a concept.</p><div class="v142-actions"><a href="#tagj-product-lab">Open Product Lab</a><a href="#tagj-custom">Custom request</a></div></div><div class="v142-specs"><div><b>Status</b><span>Concept / development</span></div><div><b>Inventory</b><span>Not confirmed</span></div><div><b>Checkout</b><span>Disabled</span></div><div><b>Next depth</b><span>Materials → construction → campaign</span></div></div></div>
 </div></section>
 <section class="deep deep-v10 tagj-deep v143-section" id="tagj-product-detail-v143">
-<header class="deep-top"><a href="#tagj-concept-registry-v142">← Concept registry</a><span class="micro">TAGJ / PRODUCT DOSSIER / V14.3</span><a href="#tagj-custom">Custom request</a></header>
+<header class="deep-top"><a href="#tagj-concept-registry-v142">← Concept registry</a><span class="micro">TAGJ / PRODUCT DOSSIER / V14.4</span><a href="#tagj-custom">Custom request</a></header><div aria-hidden="true"><span class="v144-route-anchor" id="tagj-product-shadow-v144"></span><span class="v144-route-anchor" id="tagj-product-modular-v144"></span><span class="v144-route-anchor" id="tagj-product-studio-v144"></span><span class="v144-route-anchor" id="tagj-product-vaultboot-v144"></span><span class="v144-route-anchor" id="tagj-product-vaultbloom-v144"></span><span class="v144-route-anchor" id="tagj-product-pressure-v144"></span><span class="v144-route-anchor" id="tagj-product-concrete-v144"></span><span class="v144-route-anchor" id="tagj-product-houseouterwear-v144"></span><span class="v144-route-anchor" id="tagj-product-grill-v144"></span></div>
 <div class="v143-shell"><div class="v143-kicker">LEVEL 05 / INDIVIDUAL CONCEPT DOSSIER</div><h1 class="v143-title">Product<br>Dossier.</h1><p class="v143-lede">One concept at a time. Technical depth is progressively disclosed through concept, materials, colorways, construction, branding, campaign and development-status views. Product imagery is never used to imply physical inventory.</p>
-<div class="v143-toolbar"><label class="sr-only" for="v143ProductSelect">Choose concept</label><select id="v143ProductSelect">
+<nav class="v144-route-strip" id="v144ProductRoutes" aria-label="Product dossier routes"></nav><div class="v143-toolbar"><label class="sr-only" for="v143ProductSelect">Choose concept</label><select id="v143ProductSelect">
 <option value="shadow">Shadow Step V1.1</option><option value="modular">Modular X-Spine</option><option value="studio">Studio Mid 808</option><option value="vaultboot">Vault Boot</option><option value="vaultbloom">Vault Bloom</option><option value="pressure">Pressure Gold Runner</option><option value="concrete">Concrete Bloom Wrap</option><option value="houseouterwear">House Outerwear System</option><option value="grill">Jewelry + Grill Concepts</option>
 </select><span class="v143-chip"><span class="v143-status-dot pending"></span>Concept / development record</span></div>
 <div class="v143-tabs" id="v143ProductTabs"><button class="active" data-tab="concept">Concept</button><button data-tab="materials">Materials</button><button data-tab="colorways">Colorways</button><button data-tab="construction">Construction</button><button data-tab="branding">Branding</button><button data-tab="campaign">Campaign</button><button data-tab="status">Status</button></div>
@@ -608,13 +634,13 @@ body:not([data-current-world]) .v143-request-fab,body[data-current-world="home"]
 <button class="v142-release" data-release="freestyle"><b>FREESTYLE</b><span>Campaign / video</span></button>
 </div></div></div></section>
 <section class="deep deep-v10 artist-deep v143-section" id="artist-release-detail-v143">
-<header class="deep-top"><a href="#artist-release-vault-v142">← Release vault</a><span class="micro">BENNY / RELEASE DOSSIER / V14.3</span><a href="#artist-request-deep">Artist request</a></header>
+<header class="deep-top"><a href="#artist-release-vault-v142">← Release vault</a><span class="micro">BENNY / RELEASE DOSSIER / V14.4</span><a href="#artist-request-deep">Artist request</a></header><div aria-hidden="true"><span class="v144-route-anchor" id="artist-release-reached-v144"></span><span class="v144-route-anchor" id="artist-release-oh-v144"></span><span class="v144-route-anchor" id="artist-release-ndr-v144"></span><span class="v144-route-anchor" id="artist-release-dont-v144"></span><span class="v144-route-anchor" id="artist-release-hold-v144"></span><span class="v144-route-anchor" id="artist-release-stuck-v144"></span><span class="v144-route-anchor" id="artist-release-cold-v144"></span><span class="v144-route-anchor" id="artist-release-freestyle-v144"></span></div>
 <div class="v143-shell"><div class="v143-kicker">LEVEL 05 / RELEASE DETAIL</div><h1 class="v143-title">Release<br>Dossier.</h1><p class="v143-lede">A selected record opens into visual identity, verified-link status, credits and campaign pathways. Unknown dates and streaming URLs remain explicitly unresolved instead of being fabricated.</p>
-<div class="v143-toolbar"><label class="sr-only" for="v143ReleaseSelect">Choose release</label><select id="v143ReleaseSelect"><option value="reached">Reached Into the Fire</option><option value="oh">Oh Lord!</option><option value="ndr">N.D.R</option><option value="dont">Don’t Judge Off…</option><option value="hold">Hold Something</option><option value="stuck">Still Stuck / Still Stuck Pt. 2</option><option value="cold">Cold Winter</option><option value="freestyle">FREESTYLE</option></select></div>
+<nav class="v144-route-strip" id="v144ReleaseRoutes" aria-label="Release dossier routes"></nav><div class="v143-toolbar"><label class="sr-only" for="v143ReleaseSelect">Choose release</label><select id="v143ReleaseSelect"><option value="reached">Reached Into the Fire</option><option value="oh">Oh Lord!</option><option value="ndr">N.D.R</option><option value="dont">Don’t Judge Off…</option><option value="hold">Hold Something</option><option value="stuck">Still Stuck / Still Stuck Pt. 2</option><option value="cold">Cold Winter</option><option value="freestyle">FREESTYLE</option></select></div>
 <div class="v143-tabs" id="v143ReleaseTabs"><button class="active" data-tab="overview">Overview</button><button data-tab="watch">Watch</button><button data-tab="listen">Listen</button><button data-tab="credits">Credits</button><button data-tab="campaign">Campaign</button><button data-tab="source">Source status</button></div>
 <div class="v143-dossier"><div class="v143-stage" id="v143ReleaseStage" style="--v143-art:var(--asset-cover-reached-fire)"><div class="v143-stage-copy"><small id="v143ReleaseEyebrow">PROJECT / CAMPAIGN</small><h3 id="v143ReleaseName">Reached Into the Fire</h3><p id="v143ReleaseStageCopy">Release-world record with artwork already integrated into the site. Verified media destinations can be connected independently.</p></div></div>
 <aside class="v143-inspector"><div class="v143-kicker" id="v143ReleaseTabLabel">OVERVIEW</div><h3 id="v143ReleasePanelTitle">Release identity</h3><p id="v143ReleasePanelCopy">Artwork, release navigation and campaign continuity live here while platform metadata remains a separate verified layer.</p><div id="v143ReleaseStats"><div class="v143-stat"><b>YouTube channel</b><span><span class="v143-status-dot ready"></span>Known channel route available</span></div><div class="v143-stat"><b>Streaming URLs</b><span><span class="v143-status-dot pending"></span>Pending verification</span></div><div class="v143-stat"><b>Release date</b><span>Not asserted</span></div><div class="v143-stat"><b>Campaign assets</b><span>Integrated where available</span></div></div><div class="v143-actions"><a href="#artist-youtube-deep">Watch hub</a><a href="#artist-streaming-deep">Streaming hub</a><button type="button" data-v143-wizard="Collaboration Request">Collaboration request</button></div></aside></div>
-<div class="v143-grid"><div class="v143-module"><div class="v143-kicker">LINK REGISTRY</div><b>Verified destinations only</b><p>Platform fields remain independent so one confirmed URL can go live without inventing the rest.</p></div><div class="v143-module"><div class="v143-kicker">INTRO MEDIA</div><b>Cold Winter source status</b><p>The requested exact opening clip remains marked unverified until the corresponding source video/audio is actually located.</p></div><div class="v143-module"><div class="v143-kicker">REQUEST PATH</div><b>Feature / appearance / collaboration</b><p>Artist requests use the same structured form engine but retain artist-world styling and context.</p></div></div>
+<div class="v144-link-registry" id="v144ReleaseLinks" aria-label="Verified release and artist links"></div><div class="v144-contract-note">Link registry rule: each destination stores its own status, URL and verification note. Pending destinations never render as clickable links.</div><div class="v143-grid"><div class="v143-module"><div class="v143-kicker">LINK REGISTRY</div><b>Verified destinations only</b><p>Platform fields remain independent so one confirmed URL can go live without inventing the rest.</p></div><div class="v143-module"><div class="v143-kicker">INTRO MEDIA</div><b>Cold Winter source status</b><p>The requested exact opening clip remains marked unverified until the corresponding source video/audio is actually located.</p></div><div class="v143-module"><div class="v143-kicker">REQUEST PATH</div><b>Feature / appearance / collaboration</b><p>Artist requests use the same structured form engine but retain artist-world styling and context.</p></div></div>
 </div></section></div><div class="world-view world-producer" data-world="producer" hidden><a aria-label="Return to four-world hub" class="v10-home-link" href="#home">⌂</a>
 <section class="subsite" id="producer"><div class="subsite-shell">
 <header class="console-top-v10"><div class="console-brand">BUNDLES // STUDIO</div><div class="console-status"><span>SESSION <b>ONLINE</b></span><span>48K / 24BIT</span><span>ENGINEER: BENNY</span><span>LATENCY: 4.2MS</span></div><button class="patch-button" data-panel-open="patch-drawer">Open Patch Bay</button></header>
@@ -661,7 +687,7 @@ body:not([data-current-world]) .v143-request-fab,body[data-current-world="home"]
 <section class="deep deep-v10 producer-deep" id="producer-mix-lab-v14"><header class="deep-top"><a href="#producer-audio-services">← Audio services</a><span class="micro">STUDIO / MIX LAB / V14</span><a href="#producer-request">Open session</a></header><div class="route-layer"><div class="v13-kicker">LEVEL 03 / MIX CONTROL SURFACE</div><h1 class="route-title">Mix Lab</h1><p class="route-lede">A visual teaching/demo surface for balance, space and tone. The controls intentionally affect only the interface right now; approved before/after audio will later bind to the same controls.</p><div class="v14-mix-console" data-mix-console><div class="v14-strip"><b>VOCAL</b><input type="range" min="0" max="100" value="74"><small>Presence / forward balance</small></div><div class="v14-strip"><b>LOW END</b><input type="range" min="0" max="100" value="62"><small>Kick + bass relationship</small></div><div class="v14-strip"><b>SPACE</b><input type="range" min="0" max="100" value="48"><small>Depth / ambience</small></div><div class="v14-strip"><b>ENERGY</b><input type="range" min="0" max="100" value="71"><small>Density / impact</small></div></div><div class="v14-depth"><div class="v13-kicker">DELIVERY</div><h2>Mix → master → release.</h2><p>The same request can route into mastering, visual services and a release bundle, keeping the record connected across audio and visual execution.</p><a class="v14-rail-link" href="#producer-request">Prepare session request →</a></div></div></section>
 
 <section class="deep deep-v10 producer-deep v142-section" id="producer-service-matrix-v142">
-<header class="deep-top"><a href="#producer-deep-map">← Studio directory</a><span class="micro">STUDIO / SIGNAL MATRIX / V14.2</span><a href="#producer-request">Open request</a></header>
+<header class="deep-top"><a href="#producer-deep-map">← Studio directory</a><span class="micro">STUDIO / SIGNAL MATRIX / V14.4</span><a href="#producer-request">Open request</a></header><div aria-hidden="true"><span class="v144-route-anchor" id="producer-service-production-v144"></span><span class="v144-route-anchor" id="producer-service-recording-v144"></span><span class="v144-route-anchor" id="producer-service-mixing-v144"></span><span class="v144-route-anchor" id="producer-service-mastering-v144"></span><span class="v144-route-anchor" id="producer-service-engineering-v144"></span></div>
 <div class="v142-shell"><div class="v142-kicker">LEVEL 04 / ROUTE A REAL PROJECT</div><h1 class="v142-title">Arm The<br>Channels.</h1><p class="v142-lede">Select only the services a project actually needs. The matrix builds a local session summary without pretending a booking or payment has occurred.</p>
 <div class="v142-console" id="v142StudioMatrix">
 <button class="v142-channel" data-studio-service="Production"><small>CH 01</small><b>Production</b><span>Beat creation, arrangement and song construction.</span></button>
@@ -753,9 +779,9 @@ body:not([data-current-world]) .v143-request-fab,body[data-current-world="home"]
 </div><aside class="v142-estimate"><div class="v142-kicker">STARTING SUBTOTAL</div><strong id="v142ScopeTotal">$0</strong><p id="v142ScopeSummary">Choose services to create a release scope. Bundle savings are intentionally not applied until a real package price is configured.</p><div class="v142-actions"><button type="button" id="v142PrepareCreative">Prepare brief</button><a href="#creative-service-detail-v143">Service dossier</a><a href="#creative-builder">Full bundle builder</a></div></aside></div>
 </div></section>
 <section class="deep deep-v10 creative-deep v143-section" id="creative-service-detail-v143">
-<header class="deep-top"><a href="#creative-scope-builder-v142">← Scope builder</a><span class="micro">VISUAL LAB / SERVICE DOSSIER / V14.3</span><a href="#creative-inquiry">Free inquiry</a></header>
+<header class="deep-top"><a href="#creative-scope-builder-v142">← Scope builder</a><span class="micro">VISUAL LAB / SERVICE DOSSIER / V14.4</span><a href="#creative-inquiry">Free inquiry</a></header><div aria-hidden="true"><span class="v144-route-anchor" id="creative-service-cover-v144"></span><span class="v144-route-anchor" id="creative-service-visualizer-v144"></span><span class="v144-route-anchor" id="creative-service-video-v144"></span><span class="v144-route-anchor" id="creative-service-youtube-v144"></span><span class="v144-route-anchor" id="creative-service-shorts-v144"></span></div>
 <div class="v143-shell"><div class="v143-kicker">LEVEL 05 / INDIVIDUAL SERVICE DETAIL</div><h1 class="v143-title">Service<br>Dossier.</h1><p class="v143-lede">Each service opens as its own production brief: what it starts at, what information is needed, what the deliverable path looks like and which structured request flow it should open.</p>
-<div class="v143-service-list" id="v143ServiceList">
+<nav class="v144-route-strip" id="v144ServiceRoutes" aria-label="Creative service routes"></nav><div class="v143-service-list" id="v143ServiceList">
 <button class="v143-service-select active" data-service="cover"><small>01 / ARTWORK</small><b>Cover Art</b></button>
 <button class="v143-service-select" data-service="visualizer"><small>02 / LYRIC</small><b>Visualizer</b></button>
 <button class="v143-service-select" data-service="video"><small>03 / MOTION</small><b>Music Video</b></button>
@@ -872,6 +898,7 @@ body:not([data-current-world]) .v143-request-fab,body[data-current-world="home"]
   function show(world, anchor, behavior='auto'){
     views.forEach(v=>v.hidden=v.dataset.world!==world);
     document.body.dataset.currentWorld=world;
+    if(window.TAGJNavPulse) window.TAGJNavPulse(world);
     const target=anchor ? document.getElementById(anchor) : null;
     requestAnimationFrame(()=>{ if(target) target.scrollIntoView({behavior,block:'start'}); else scrollTo({top:0,behavior}); });
   }
@@ -1113,18 +1140,18 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
  addEventListener('hashchange',()=>setTimeout(refreshDock,30));addEventListener('resize',refreshDock,{passive:true});setTimeout(refreshDock,80);
 })();
 </script>
-<button class="v143-request-fab" id="v143RequestFab" type="button" data-v143-wizard="General Contact">Request brief</button>
+<div class="v144-transition" id="v144Transition" aria-hidden="true"></div><button class="v143-request-fab" id="v143RequestFab" type="button" data-v143-wizard="General Contact">Request brief</button>
 <section class="v143-wizard" id="v143Wizard" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="v143WizardTitle">
 <div class="v143-wizard-card"><header class="v143-wizard-head"><div><strong id="v143WizardTitle">Structured request brief</strong><small id="v143WizardRoute">TAGJ × BENNY BUNDLES / PREVIEW-LOCAL</small></div><button id="v143WizardClose" type="button" aria-label="Close request wizard">×</button></header>
 <div class="v143-progress" id="v143WizardProgress"><i class="on"></i><i></i><i></i><i></i></div>
-<form id="v143WizardForm" novalidate>
+<form id="v143WizardForm" novalidate><input type="hidden" name="schemaVersion" value="tagj.request.v1"><input type="hidden" name="requestId" id="v144RequestId"><input type="hidden" name="sourceWorld" id="v144SourceWorld"><input type="hidden" name="sourceRoute" id="v144SourceRoute"><input type="hidden" name="entityId" id="v144EntityId"><input type="hidden" name="serviceId" id="v144ServiceId"><input type="hidden" name="releaseId" id="v144ReleaseId"><input type="hidden" name="clientTimestamp" id="v144ClientTimestamp">
 <section class="v143-step active" data-step="0"><h3>Choose the request.</h3><p>One underlying engine supports the four worlds. The fields stay structured so a backend can later consume the same data without rebuilding the interface.</p><div class="v143-fields"><div class="v143-field full"><label for="v143RequestType">Request type</label><select id="v143RequestType" name="requestType">
 <option>Cover Art Request</option><option>Music Video Request</option><option>Visualizer Request</option><option>Custom Creative Request</option><option>Feature Request</option><option>Appearance Request</option><option>Beat Inquiry</option><option>Mix Request</option><option>Mastering Request</option><option>Recording Request</option><option>TAGJ Custom Clothing Request</option><option>Collaboration Request</option><option>General Contact</option>
 </select></div><div class="v143-field"><label for="v143ProjectTitle">Project / song / product title</label><input id="v143ProjectTitle" name="projectTitle" autocomplete="off"></div><div class="v143-field"><label for="v143ArtistBrand">Artist / brand / requester</label><input id="v143ArtistBrand" name="artistBrand" autocomplete="organization"></div></div></section>
-<section class="v143-step" data-step="1"><h3>Define the project.</h3><p>Give enough context to understand the intended result before discussing files or payment.</p><div class="v143-fields"><div class="v143-field full"><label for="v143Concept">Concept / need</label><textarea id="v143Concept" name="concept" placeholder="What are you trying to create, improve or request?"></textarea></div><div class="v143-field"><label for="v143Mood">Mood / references / direction</label><input id="v143Mood" name="mood" placeholder="Dark, cinematic, luxury, gritty…"></div><div class="v143-field"><label for="v143Platforms">Platforms / intended use</label><input id="v143Platforms" name="platforms" placeholder="YouTube, DSPs, Reels, print…"></div><div class="v143-field full"><label for="v143References">Reference links / source-file links</label><textarea id="v143References" name="references" placeholder="Paste Drive, Dropbox, YouTube or other reference links. Files are not uploaded by this preview."></textarea></div></div></section>
+<section class="v143-step" data-step="1"><h3>Define the project.</h3><p>Give enough context to understand the intended result before discussing files or payment.</p><div class="v143-fields"><div class="v143-field full"><label for="v143Concept">Concept / need</label><textarea id="v143Concept" name="concept" placeholder="What are you trying to create, improve or request?"></textarea></div><div class="v143-field"><label for="v143Mood">Mood / references / direction</label><input id="v143Mood" name="mood" placeholder="Dark, cinematic, luxury, gritty…"></div><div class="v143-field"><label for="v143Platforms">Platforms / intended use</label><input id="v143Platforms" name="platforms" placeholder="YouTube, DSPs, Reels, print…"></div><div class="v143-field full"><label for="v143References">Reference links / source-file links</label><textarea id="v143References" name="references" placeholder="Paste Drive, Dropbox, YouTube or other reference links. Files are not uploaded by this preview."></textarea></div><div class="v143-special v143-fields" id="v144SpecialFields"></div></div></section>
 <section class="v143-step" data-step="2"><h3>Set constraints.</h3><p>Dates and budget are planning inputs, not automatic commitments.</p><div class="v143-fields"><div class="v143-field"><label for="v143Deadline">Deadline</label><input id="v143Deadline" name="deadline" type="date"></div><div class="v143-field"><label for="v143ReleaseDate">Release / event date</label><input id="v143ReleaseDate" name="releaseDate" type="date"></div><div class="v143-field"><label for="v143Budget">Budget range</label><input id="v143Budget" name="budget" placeholder="Optional range"></div><div class="v143-field"><label for="v143Explicit">Explicit-content label?</label><select id="v143Explicit" name="explicitLabel"><option value="">Not applicable / unsure</option><option>Required</option><option>Not required</option></select></div><div class="v143-field full"><label for="v143Notes">Delivery / technical notes</label><textarea id="v143Notes" name="notes" placeholder="File format, stems, quantity, size, revisions, event details, or anything else relevant."></textarea></div></div></section>
-<section class="v143-step" data-step="3"><h3>Contact + review.</h3><p>This preview can save, copy or share the brief locally. It does not transmit the request to a production backend yet.</p><div class="v143-fields"><div class="v143-field"><label for="v143ContactName">Contact name</label><input id="v143ContactName" name="contactName" autocomplete="name"></div><div class="v143-field"><label for="v143Email">Email</label><input id="v143Email" name="email" type="email" autocomplete="email"></div><div class="v143-field"><label for="v143Phone">Phone / social handle</label><input id="v143Phone" name="phone" autocomplete="tel"></div><div class="v143-field"><label for="v143Preferred">Preferred contact</label><select id="v143Preferred" name="preferred"><option>Email</option><option>Phone / text</option><option>Social / DM</option></select></div><div class="v143-field full"><label>Prepared brief</label><div class="v143-review" id="v143Review"></div></div></div></section>
-<div class="v143-wizard-foot"><button id="v143WizardBack" type="button">Back</button><div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end"><button id="v143SaveDraft" type="button">Save draft</button><button id="v143ShareBrief" type="button" style="display:none">Share</button><button class="primary" id="v143WizardNext" type="button">Next</button></div></div>
+<section class="v143-step" data-step="3"><h3>Contact + review.</h3><p>This preview can save, copy or share the brief locally. It does not transmit the request to a production backend yet.</p><div class="v143-fields"><div class="v143-field"><label for="v143ContactName">Contact name</label><input id="v143ContactName" name="contactName" autocomplete="name"></div><div class="v143-field"><label for="v143Email">Email</label><input id="v143Email" name="email" type="email" autocomplete="email"></div><div class="v143-field"><label for="v143Phone">Phone / social handle</label><input id="v143Phone" name="phone" autocomplete="tel"></div><div class="v143-field"><label for="v143Preferred">Preferred contact</label><select id="v143Preferred" name="preferred"><option>Email</option><option>Phone / text</option><option>Social / DM</option></select></div><div class="v143-field full"><label>Prepared brief</label><div class="v143-review" id="v143Review"></div></div><div class="v144-json"><details><summary>Backend-ready JSON payload</summary><pre id="v144JsonReview">{}</pre></details></div></div></section>
+<div class="v143-wizard-foot"><button id="v143WizardBack" type="button">Back</button><div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end"><button id="v144CopyJson" type="button" style="display:none">Copy JSON</button><button id="v143SaveDraft" type="button">Save draft</button><button id="v143ShareBrief" type="button" style="display:none">Share</button><button class="primary" id="v143WizardNext" type="button">Next</button></div></div>
 </form></div></section>
 <script id="v14-3-detail-systems-js">
 (()=>{
@@ -1268,5 +1295,211 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
    if(links[w])dock.innerHTML=links[w].map(x=>'<a href="'+x[1]+'">'+x[0]+'</a>').join('');
  }
  addEventListener('hashchange',()=>setTimeout(upgradeDock,35));setTimeout(upgradeDock,120);
+})();
+</script>
+<script id="v14-4-routing-contracts-js">
+(()=>{
+ const q=(s,r=document)=>r.querySelector(s),qa=(s,r=document)=>[...r.querySelectorAll(s)];
+ const productRoutes={shadow:'tagj-product-shadow-v144',modular:'tagj-product-modular-v144',studio:'tagj-product-studio-v144',vaultboot:'tagj-product-vaultboot-v144',vaultbloom:'tagj-product-vaultbloom-v144',pressure:'tagj-product-pressure-v144',concrete:'tagj-product-concrete-v144',houseouterwear:'tagj-product-houseouterwear-v144',grill:'tagj-product-grill-v144'};
+ const productLabels={shadow:'Shadow Step V1.1',modular:'Modular X-Spine',studio:'Studio Mid 808',vaultboot:'Vault Boot',vaultbloom:'Vault Bloom',pressure:'Pressure Gold Runner',concrete:'Concrete Bloom Wrap',houseouterwear:'House Outerwear',grill:'Jewelry / Grill'};
+ const releaseRoutes={reached:'artist-release-reached-v144',oh:'artist-release-oh-v144',ndr:'artist-release-ndr-v144',dont:'artist-release-dont-v144',hold:'artist-release-hold-v144',stuck:'artist-release-stuck-v144',cold:'artist-release-cold-v144',freestyle:'artist-release-freestyle-v144'};
+ const releaseLabels={reached:'Reached Into the Fire',oh:'Oh Lord!',ndr:'N.D.R',dont:'Don’t Judge Off…',hold:'Hold Something',stuck:'Still Stuck',cold:'Cold Winter',freestyle:'FREESTYLE'};
+ const serviceRoutes={cover:'creative-service-cover-v144',visualizer:'creative-service-visualizer-v144',video:'creative-service-video-v144',youtube:'creative-service-youtube-v144',shorts:'creative-service-shorts-v144'};
+ const serviceLabels={cover:'Cover Art',visualizer:'Visualizer',video:'Music Video',youtube:'YouTube / SEO',shorts:'Shorts'};
+ const producerRoutes={Production:'producer-service-production-v144',Recording:'producer-service-recording-v144',Mixing:'producer-service-mixing-v144',Mastering:'producer-service-mastering-v144',Engineering:'producer-service-engineering-v144'};
+
+ function routeStrip(id,map,labels){
+   const el=q(id);if(!el)return;el.innerHTML=Object.entries(map).map(([k,v])=>'<a href="#'+v+'" data-route-key="'+k+'">'+labels[k]+'</a>').join('');
+ }
+ routeStrip('#v144ProductRoutes',productRoutes,productLabels);routeStrip('#v144ReleaseRoutes',releaseRoutes,releaseLabels);routeStrip('#v144ServiceRoutes',serviceRoutes,serviceLabels);
+
+ function keyForHash(map){const id=(location.hash||'').slice(1);return Object.keys(map).find(k=>map[k]===id)||''}
+ function markStrip(id,key){qa(id+' a').forEach(a=>a.classList.toggle('active',a.dataset.routeKey===key))}
+
+ let syncing=false;
+ function syncHashRoutes(){
+   syncing=true;
+   const pk=keyForHash(productRoutes);if(pk&&q('#v143ProductSelect')){q('#v143ProductSelect').value=pk;q('#v143ProductSelect').dispatchEvent(new Event('change',{bubbles:true}));markStrip('#v144ProductRoutes',pk)}
+   const rk=keyForHash(releaseRoutes);if(rk&&q('#v143ReleaseSelect')){q('#v143ReleaseSelect').value=rk;q('#v143ReleaseSelect').dispatchEvent(new Event('change',{bubbles:true}));markStrip('#v144ReleaseRoutes',rk)}
+   const sk=keyForHash(serviceRoutes);if(sk){const b=q('#v143ServiceList [data-service="'+sk+'"]');if(b)b.click();markStrip('#v144ServiceRoutes',sk)}
+   const producer=Object.entries(producerRoutes).find(([,id])=>id===(location.hash||'').slice(1));if(producer){const b=q('#v142StudioMatrix [data-studio-service="'+producer[0]+'"]');if(b&&!b.classList.contains('armed'))b.click()}
+   syncing=false;
+ }
+ addEventListener('hashchange',syncHashRoutes);addEventListener('popstate',()=>setTimeout(syncHashRoutes,0));setTimeout(syncHashRoutes,40);
+
+ q('#v143ProductSelect')?.addEventListener('change',e=>{const key=e.currentTarget.value;markStrip('#v144ProductRoutes',key);if(!syncing&&productRoutes[key])history.replaceState(null,'','#'+productRoutes[key])});
+ q('#v143ReleaseSelect')?.addEventListener('change',e=>{const key=e.currentTarget.value;markStrip('#v144ReleaseRoutes',key);if(!syncing&&releaseRoutes[key])history.replaceState(null,'','#'+releaseRoutes[key]);renderLinks(key)});
+ qa('#v143ServiceList [data-service]').forEach(b=>b.addEventListener('click',()=>{const key=b.dataset.service;markStrip('#v144ServiceRoutes',key);if(!syncing&&serviceRoutes[key])history.replaceState(null,'','#'+serviceRoutes[key])}));
+ qa('#v142StudioMatrix [data-studio-service]').forEach(b=>b.addEventListener('click',()=>{const id=producerRoutes[b.dataset.studioService];if(!syncing&&id)history.replaceState(null,'','#'+id)}));
+
+ // Progressive TAGJ registry keeps the first tap compact, but its detail CTA gets a stable item route.
+ qa('#v142TagjRecords .v142-record').forEach(card=>card.addEventListener('click',()=>setTimeout(()=>{
+   const a=q('#v142TagjPanel [data-v143-dossier-link]')||[...qa('#v142TagjPanel a')].find(x=>x.textContent.toLowerCase().includes('dossier'));
+   if(a&&productRoutes[card.dataset.record])a.href='#'+productRoutes[card.dataset.record];
+ },0)));
+
+ // Artist vault selection now prepares a stable release URL.
+ qa('#v142ReleaseList [data-release]').forEach(btn=>btn.addEventListener('click',()=>{
+   const key=btn.dataset.release;const a=[...qa('#artist-release-vault-v142 a')].find(x=>x.textContent.toLowerCase().includes('release dossier'));if(a&&releaseRoutes[key])a.href='#'+releaseRoutes[key]
+ }));
+
+ const linkRegistry={
+   global:{youtubeChannel:{platform:'YouTube channel',status:'verified',url:'https://www.youtube.com/@bennybundles',note:'Existing Benny Bundles channel route in project source.'}},
+   reached:{},oh:{},ndr:{},dont:{},hold:{},stuck:{},cold:{},freestyle:{}
+ };
+ const platformNames=['YouTube video','Apple Music','Spotify','SoundCloud','UnitedMasters','YouTube Music'];
+ function renderLinks(key){
+   const box=q('#v144ReleaseLinks');if(!box)return;
+   const rows=[linkRegistry.global.youtubeChannel,...platformNames.map(name=>({platform:name,status:'pending',url:null,note:'Exact '+name+' destination not verified for '+(releaseLabels[key]||'this release')+'.'}))];
+   box.innerHTML=rows.map(x=>'<div class="v144-link-row"><b>'+x.platform+'</b><span><span class="v143-status-dot '+(x.status==='verified'?'ready':'pending')+'"></span>'+x.note+'</span>'+(x.status==='verified'&&x.url?'<a href="'+x.url+'" target="_blank" rel="noopener">Open</a>':'<em>Link pending</em>')+'</div>').join('');
+ }
+ renderLinks(q('#v143ReleaseSelect')?.value||'reached');
+
+ // Directional world-transition pulse. It never intercepts taps.
+ const transition=q('#v144Transition');let transitionTimer=0,lastWorld=document.body.dataset.currentWorld||'home';
+ window.TAGJNavPulse=world=>{
+   if(!transition||world===lastWorld)return;lastWorld=world;if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+   transition.dataset.target=world;transition.classList.remove('run');void transition.offsetWidth;transition.classList.add('run');clearTimeout(transitionTimer);transitionTimer=setTimeout(()=>transition.classList.remove('run'),650)
+ };
+
+ // V14.4 specialized request schema.
+ const fieldSchemas={
+  'Cover Art Request':[
+   ['select','coverUse','Cover use',['Single release','Project / EP / album','Campaign system','Other']],
+   ['select','sourceImageStatus','Source imagery',['Ready to provide','Need image selection help','No source imagery yet']],
+   ['input','coverPlatforms','Required outputs','DSP square, YouTube, socials…']
+  ],
+  'Music Video Request':[
+   ['select','videoType','Video type',['Editing existing footage','Custom visuals','Performance edit','Hybrid','Other']],
+   ['select','footageStatus','Footage status',['Ready','Partially ready','Need production plan']],
+   ['input','songLength','Song length','e.g. 3:18'],
+   ['select','videoOrientation','Primary orientation',['16:9 landscape','9:16 vertical','Both']]
+  ],
+  'Visualizer Request':[
+   ['select','visualizerType','Visualizer type',['Static Motion','Cinematic','Performance Visualizer','3D Visualizer','Full Lyric Film']],
+   ['select','lyricsStatus','Lyrics status',['Final','Needs cleanup','Not ready']],
+   ['select','audioStatus','Audio status',['Final master ready','Mix ready / master pending','Not final']]
+  ],
+  'Feature Request':[
+   ['input','featureSongLink','Song / demo link','Link to song or demo'],
+   ['select','featureNeed','Feature need',['Verse','Hook','Verse + Hook','Open collaboration']],
+   ['input','featureLength','Requested section / length','Optional']
+  ],
+  'Appearance Request':[
+   ['input','eventType','Event type','Show, party, festival, private event…'],
+   ['input','venueCity','Venue / city','Venue and location'],
+   ['input','setLength','Requested set length','e.g. 20 minutes'],
+   ['input','eventTime','Event time','Local time / schedule notes']
+  ],
+  'Beat Inquiry':[
+   ['select','beatNeed','Production need',['Existing beat inquiry','Custom beat','Beat pack','Exclusive inquiry']],
+   ['select','licenseIntent','License intent',['Lease','Premium lease','Exclusive inquiry','Not sure']],
+   ['input','bpmMood','BPM / mood / genre','Optional direction'],
+   ['input','beatReferences','Reference records','Song names or links']
+  ],
+  'Mix Request':[
+   ['input','trackCount','Track / stem count','Approximate count'],
+   ['select','stemsReady','Stems ready?',['Yes','Need export help','Not yet']],
+   ['input','roughMixLink','Rough mix link','Optional link'],
+   ['select','vocalTuning','Vocal tuning',['Already tuned','Tuning needed','Unsure / discuss']]
+  ],
+  'Mastering Request':[
+   ['select','mixStatus','Mix status',['Final mix ready','Near-final','Mix still changing']],
+   ['input','mixFormat','Mix format','WAV bit depth / sample rate if known'],
+   ['input','masterPlatforms','Target platforms','DSPs, YouTube, video…'],
+   ['input','masterReferences','Reference tracks','Optional']
+  ],
+  'Recording Request':[
+   ['input','sessionLocation','Preferred location / area','Studio / location'],
+   ['input','sessionLength','Estimated session length','Hours'],
+   ['input','sessionPeople','People attending','Artist + guests / team'],
+   ['input','recordingNeeds','Recording needs','Vocals, punch-ins, comping…']
+  ],
+  'TAGJ Custom Clothing Request':[
+   ['select','productCategory','Product category',['Garment','Footwear','Colorway','Custom piece','Brand collaboration','Other']],
+   ['input','quantity','Quantity / scale','One-off, sample, run size…'],
+   ['input','sizes','Sizes','If applicable'],
+   ['input','colorway','Colorway / materials','Desired palette / material direction']
+  ],
+  'Collaboration Request':[
+   ['select','collabType','Collaboration type',['Music','Fashion','Visual content','Brand partnership','Other']],
+   ['input','collabDeliverable','Proposed deliverable','Song, capsule, video, campaign…'],
+   ['input','collabPartners','Other partners involved','Optional']
+  ],
+  'Custom Creative Request':[
+   ['input','creativeDeliverable','Desired deliverable','Describe the output'],
+   ['input','creativeDimensions','Format / dimensions','Optional'],
+   ['input','creativeQuantity','Number of deliverables','Optional']
+  ],
+  'General Contact':[]
+ };
+ const commonNames=new Set(['schemaVersion','requestId','sourceWorld','sourceRoute','entityId','serviceId','releaseId','clientTimestamp','requestType','projectTitle','artistBrand','concept','mood','platforms','references','deadline','releaseDate','budget','explicitLabel','notes','contactName','email','phone','preferred']);
+ const specialMount=q('#v144SpecialFields'),type=q('#v143RequestType'),form=q('#v143WizardForm');
+
+ function fieldHtml(f){
+   const [kind,name,label,opt]=f;
+   if(kind==='select')return '<div class="v143-field"><label for="v144_'+name+'">'+label+'</label><select id="v144_'+name+'" name="'+name+'"><option value="">Select…</option>'+opt.map(x=>'<option>'+x+'</option>').join('')+'</select></div>';
+   return '<div class="v143-field"><label for="v144_'+name+'">'+label+'</label><input id="v144_'+name+'" name="'+name+'" placeholder="'+String(opt||'').replace(/"/g,'&quot;')+'"></div>'
+ }
+ function renderSpecial(){
+   if(!specialMount||!type)return;const schema=fieldSchemas[type.value]||[];
+   specialMount.innerHTML=schema.length?'<div class="v144-special-head"><b>'+type.value+' specifics</b><span>Only fields relevant to this request are shown. These values are emitted separately in the backend-ready payload.</span></div>'+schema.map(fieldHtml).join(''):'';
+   const saved=getDraft();if(saved&&saved.special)Object.entries(saved.special).forEach(([k,v])=>{const el=form?.elements.namedItem(k);if(el&&v!=null)el.value=v});
+ }
+ type?.addEventListener('change',()=>{renderSpecial();setTimeout(refreshJson,0)});
+
+ function uid(){try{return crypto.randomUUID()}catch(_){return 'req_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,8)}}
+ function currentContext(){
+   const route=(location.hash||'#home').slice(1),world=route.startsWith('tagj')?'tagj':route.startsWith('artist')?'artist':route.startsWith('producer')?'producer':route.startsWith('creative')?'creative':'home';
+   return {route:'#'+route,world,product:keyForHash(productRoutes)||q('#v143ProductSelect')?.value||'',release:keyForHash(releaseRoutes)||q('#v143ReleaseSelect')?.value||'',service:keyForHash(serviceRoutes)||q('#v143ServiceList .active')?.dataset.service||''}
+ }
+ function ensureMeta(resetId){
+   const ctx=currentContext(),rid=q('#v144RequestId');if(rid&&(!rid.value||resetId))rid.value=uid();
+   if(q('#v144SourceWorld'))q('#v144SourceWorld').value=ctx.world;if(q('#v144SourceRoute'))q('#v144SourceRoute').value=ctx.route;if(q('#v144EntityId'))q('#v144EntityId').value=ctx.product;if(q('#v144ReleaseId'))q('#v144ReleaseId').value=ctx.release;if(q('#v144ServiceId'))q('#v144ServiceId').value=ctx.service;if(q('#v144ClientTimestamp'))q('#v144ClientTimestamp').value=new Date().toISOString()
+ }
+ function payload(){
+   ensureMeta(false);const d=Object.fromEntries(new FormData(form).entries()),special={};Object.entries(d).forEach(([k,v])=>{if(!commonNames.has(k)&&v!=='')special[k]=v});
+   return {
+    schemaVersion:'tagj.request.v1',
+    requestId:d.requestId||uid(),
+    meta:{createdAt:d.clientTimestamp||new Date().toISOString(),sourceWorld:d.sourceWorld||'',sourceRoute:d.sourceRoute||'',previewOnly:true,backendSubmitted:false,paymentStatus:'not_connected'},
+    context:{entityId:d.entityId||null,serviceId:d.serviceId||null,releaseId:d.releaseId||null},
+    request:{type:d.requestType||'',projectTitle:d.projectTitle||'',artistBrand:d.artistBrand||'',concept:d.concept||'',mood:d.mood||'',platforms:d.platforms||'',references:d.references||''},
+    constraints:{deadline:d.deadline||null,releaseDate:d.releaseDate||null,budget:d.budget||null,explicitLabel:d.explicitLabel||null,notes:d.notes||''},
+    contact:{name:d.contactName||'',email:d.email||'',phoneOrHandle:d.phone||'',preferred:d.preferred||''},
+    special
+   }
+ }
+ window.TAGJRequestContractV1={schemaVersion:'tagj.request.v1',build:payload};
+ window.TAGJBuildRequestPayload=payload;
+
+ function getDraft(){try{return JSON.parse(localStorage.getItem('tagjBennyRequestDraftV143')||'null')}catch(_){return null}}
+ function refreshJson(){const pre=q('#v144JsonReview');if(pre)pre.textContent=JSON.stringify(payload(),null,2)}
+ form?.addEventListener('input',refreshJson);form?.addEventListener('change',refreshJson);
+
+ // Capture wizard-opening context before the V14.3 click handler opens the modal.
+ document.addEventListener('click',e=>{
+   const btn=e.target.closest('[data-v143-wizard]');if(!btn)return;
+   setTimeout(()=>{ensureMeta(true);renderSpecial();refreshJson();q('#v144CopyJson').style.display='inline-block'},0)
+ },true);
+ q('#v143WizardNext')?.addEventListener('click',()=>setTimeout(refreshJson,0));
+ q('#v143WizardBack')?.addEventListener('click',()=>setTimeout(refreshJson,0));
+ q('#v144CopyJson')?.addEventListener('click',async()=>{
+   const txt=JSON.stringify(payload(),null,2),btn=q('#v144CopyJson');let ok=false;
+   try{await navigator.clipboard.writeText(txt);ok=true}catch(_){const ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{ok=document.execCommand('copy')}catch(__){}ta.remove()}
+   btn.textContent=ok?'JSON copied':'Copy failed';setTimeout(()=>btn.textContent='Copy JSON',1300)
+ });
+ renderSpecial();ensureMeta(false);refreshJson();
+
+ // Compact mobile rail follows the current world without adding information to the central home.
+ const rail=document.createElement('nav');rail.className='v144-mobile-rail';rail.id='v144MobileRail';document.body.appendChild(rail);
+ const rails={
+  tagj:[['House','#tagj-house-map'],['Registry','#tagj-concept-registry-v142'],['Dossier','#tagj-product-detail-v143'],['Custom','#tagj-custom']],
+  artist:[['Artist','#artist'],['Vault','#artist-release-vault-v142'],['Dossier','#artist-release-detail-v143'],['Request','#artist-request-deep']],
+  producer:[['Studio','#producer'],['Matrix','#producer-service-matrix-v142'],['A/B','#producer-ab-lab-v143'],['Request','#producer-request']],
+  creative:[['Visual','#creative'],['Scope','#creative-scope-builder-v142'],['Dossier','#creative-service-detail-v143'],['Inquiry','#creative-inquiry']]
+ };
+ function refreshRail(){const w=document.body.dataset.currentWorld||'home';rail.innerHTML=(rails[w]||[]).map(x=>'<a href="'+x[1]+'">'+x[0]+'</a>').join('');rail.style.display=(innerWidth<=620&&rails[w])?'grid':'none'}
+ addEventListener('hashchange',()=>setTimeout(refreshRail,25));addEventListener('resize',refreshRail,{passive:true});setTimeout(refreshRail,100);
 })();
 </script></body></html>
