@@ -89,3 +89,10 @@ Candidate-bound derived evidence now requires the active SHA:
 A pass from an older commit therefore cannot satisfy a newer release candidate. The staff console pre-fills the currently deployed Pages commit and workflow run from `release.json`, but selection remains an explicit authenticated AAL2 staff action.
 
 No candidate is auto-selected by deployment, and selecting a candidate does not verify a production release gate.
+
+When the active candidate SHA changes, any previously verified candidate-bound gates are automatically reset to unverified with immutable `tw_release_gate_events` receipts. The currently candidate-bound gates are:
+
+- `provider_sandbox_e2e_passed`;
+- `incident_escalation_runbook_approved`.
+
+This prevents a historical certification/drill assertion from remaining verified after the release candidate changes.
