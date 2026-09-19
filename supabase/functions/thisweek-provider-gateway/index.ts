@@ -442,9 +442,20 @@ Deno.serve(async (req: Request) => {
 
       const linkToken = await vaultRead(session.vault_secret_id);
       const linkStatus = await plaidPost("/link/token/get", { link_token: linkToken });
-      const publicToken = safeText(linkStatus.public_token, 600);
+      const results = linkStatus.results && typeof linkStatus.results === "object"
+        ? linkStatus.results as AnyRecord : {};
+      const itemAdds = Array.isArray(results.item_add_results)
+        ? results.item_add_results as AnyRecord[] : [];
+      const legacySuccess = linkStatus.on_success && typeof linkStatus.on_success === "object"
+        ? linkStatus.on_success as AnyRecord : {};
+      const firstAdd = itemAdds[0] || legacySuccess;
+      const publicToken = safeText(firstAdd.public_token, 600);
       if (!publicToken) return json(origin, 202, { ok: true, status: "pending" });
 
+      const metadata = firstAdd.metadata && typeof firstAdd.metadata === "object"
+        ? firstAdd.metadata as AnyRecord : firstAdd;
+      const institution = metadata.institution && typeof metadata.institution === "object"
+        ? metadata.institution as AnyRecord : {};
       const exchange = await plaidPost("/item/public_token/exchange", { public_token: publicToken });
       const accessToken = safeText(exchange.access_token, 700);
       const itemId = safeText(exchange.item_id, 220);
@@ -452,8 +463,8 @@ Deno.serve(async (req: Request) => {
 
       const connectionId = crypto.randomUUID();
       const accessSecretId = await vaultCreate(accessToken, "thisweek-provider-" + connectionId, "This Week Plaid access token");
-      const institutionName = safeText(body.institutionName, 120) || null;
-      const institutionId = safeText(body.institutionId, 120) || null;
+      const institutionName = safeText(institution.name, 120) || null;
+      const institutionId = safeText(institution.institution_id, 120) || null;
       const { data: consent } = await admin.from("tw_provider_consents").select("id")
         .eq("user_id", user.id).eq("provider", PROVIDER)
         .eq("consent_version", CONSENT_VERSION).is("revoked_at", null).maybeSingle();
@@ -474,7 +485,6 @@ Deno.serve(async (req: Request) => {
         .update({ status: "completed", completed_at: new Date().toISOString() })
         .eq("id", sessionId).eq("user_id", user.id);
 
-      await upsertAccounts(admin, user.id, connectionId, accessToken);
       const sync = await syncConnection(admin, user.id, connectionId);
       return json(origin, 200, { ok: true, status: "completed", connectionId, sync });
     }
