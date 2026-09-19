@@ -92,7 +92,7 @@ function buildHealth(
 }
 async function dashboard(admin:ReturnType<typeof createClient>){
   const failureSince=new Date(Date.now()-15*60*1000).toISOString();
-  const [alerts,cases,reviews,riskEvents,staffActions,supportRequests,supportMessages,incidents,slaPolicy,providerFailures]=await Promise.all([
+  const [alerts,cases,reviews,riskEvents,staffActions,supportRequests,supportMessages,incidents,slaPolicy,providerFailures,healthSnapshots,monitorRuns,notifications]=await Promise.all([
     admin.from("tw_ops_alerts")
       .select("id,user_id,case_id,risk_review_id,alert_type,severity,state,safe_detail,created_at,updated_at,acknowledged_at")
       .neq("state","resolved").order("created_at",{ascending:false}).limit(100),
@@ -123,8 +123,17 @@ async function dashboard(admin:ReturnType<typeof createClient>){
     admin.from("tw_money_provider_events")
       .select("id,provider,event_type,error_code,received_at")
       .eq("state","failed").gte("received_at",failureSince).order("received_at",{ascending:false}).limit(100),
+    admin.from("tw_ops_health_snapshots")
+      .select("id,health_state,policy_version,counts,fingerprint,created_at")
+      .order("created_at",{ascending:false}).limit(12),
+    admin.from("tw_ops_monitor_runs")
+      .select("id,state,snapshot_id,safe_detail,started_at,finished_at")
+      .order("started_at",{ascending:false}).limit(20),
+    admin.from("tw_ops_notification_outbox")
+      .select("id,notification_key,channel,event_type,severity,subject,safe_body,alert_id,incident_id,state,attempt_count,next_attempt_at,last_error_code,created_at,sent_at")
+      .in("state",["pending","failed"]).order("created_at",{ascending:false}).limit(100),
   ]);
-  if(alerts.error||cases.error||reviews.error||riskEvents.error||staffActions.error||supportRequests.error||supportMessages.error||incidents.error||slaPolicy.error||providerFailures.error)throw new Error("ops_dashboard_read_failed");
+  if(alerts.error||cases.error||reviews.error||riskEvents.error||staffActions.error||supportRequests.error||supportMessages.error||incidents.error||slaPolicy.error||providerFailures.error||healthSnapshots.error||monitorRuns.error||notifications.error)throw new Error("ops_dashboard_read_failed");
   const eventById=new Map((riskEvents.data||[]).map((e:AnyRecord)=>[String(e.id),e]));
   const supportRows=supportRequests.data||[];
   const supportIds=new Set(supportRows.map((x:AnyRecord)=>String(x.id)));
@@ -134,6 +143,20 @@ async function dashboard(admin:ReturnType<typeof createClient>){
     alerts.data||[],cases.data||[],reviews.data||[],supportRows,
     providerFailures.data||[],incidentRows,slaPolicy.data||null
   );
+  const latestSnapshot=(healthSnapshots.data||[])[0]||null;
+  const latestRun=(monitorRuns.data||[])[0]||null;
+  const heartbeatAgeMinutes=latestSnapshot?.created_at?minutesOld(latestSnapshot.created_at):null;
+  const schedulerState=heartbeatAgeMinutes==null?"unknown":heartbeatAgeMinutes<=12?"fresh":"stale";
+  const automatedMonitor={
+    schedulerState,
+    heartbeatAgeMinutes,
+    latestSnapshot,
+    latestRun,
+    recentSnapshots:healthSnapshots.data||[],
+    recentRuns:monitorRuns.data||[],
+    pendingNotifications:notifications.data||[],
+    externalChannelConfigured:false
+  };
   return {
     alerts:alerts.data||[],
     cases:cases.data||[],
@@ -142,6 +165,7 @@ async function dashboard(admin:ReturnType<typeof createClient>){
     supportMessages:supportMessageRows,
     incidents:incidentRows,
     health,
+    automatedMonitor,
     recentProviderFailures:providerFailures.data||[],
     recentStaffActions:staffActions.data||[],
   };
@@ -197,14 +221,49 @@ Deno.serve(async(req)=>{
           riskReviews:data.riskReviews.length,
           supportRequests:data.supportRequests.length,
           incidents:data.incidents.length,
+          pendingNotifications:data.automatedMonitor?.pendingNotifications?.length||0,
         },
-        health:data.health
+        health:data.health,
+        automatedMonitor:{
+          schedulerState:data.automatedMonitor?.schedulerState||"unknown",
+          heartbeatAgeMinutes:data.automatedMonitor?.heartbeatAgeMinutes??null,
+          externalChannelConfigured:false
+        }
       });
     }
     if(action==="dashboard"){
       const data=await dashboard(admin);
       return json(origin,200,{ok:true,staff:{userId:String(user.id),email:safeText(user.email,320)||null,role},...data});
     }
+    if(action==="run_monitor"){
+      if(!RISK_ROLES.has(role))return json(origin,403,{error:"risk_role_required"});
+      const {data,error}=await admin.rpc("tw_ops_monitor_tick");
+      if(error)throw new Error(safeText(error.message,120)||"monitor_tick_failed");
+      await admin.from("tw_ops_staff_actions").insert({
+        staff_user_id:String(user.id),staff_role:role,action:"monitor_run",
+        target_type:"monitor",target_ref:String((data as AnyRecord)?.runId||"manual"),
+        reason_code:"manual_health_check",safe_detail:{result:data}
+      });
+      return json(origin,200,{ok:true,result:data});
+    }
+    if(action==="suppress_notification"){
+      if(!RISK_ROLES.has(role))return json(origin,403,{error:"risk_role_required"});
+      const notificationId=validUuid(body.notificationId);
+      const reason=safeText(body.reasonCode,120);
+      if(!notificationId||!reason)throw new Error("notification_and_reason_required");
+      const updated=await admin.from("tw_ops_notification_outbox").update({
+        state:"suppressed",last_error_code:reason
+      }).eq("id",notificationId).in("state",["pending","failed"])
+        .select("id,state,notification_key,severity").maybeSingle();
+      if(updated.error||!updated.data)throw new Error("notification_not_suppressible");
+      await admin.from("tw_ops_staff_actions").insert({
+        staff_user_id:String(user.id),staff_role:role,action:"notification_suppress",
+        target_type:"notification",target_ref:notificationId,
+        reason_code:reason,safe_detail:{notificationKey:updated.data.notification_key,severity:updated.data.severity}
+      });
+      return json(origin,200,{ok:true,result:updated.data});
+    }
+
     if(action==="support_assign"){
       const requestId=validUuid(body.requestId);if(!requestId)throw new Error("request_id_required");
       const {data,error}=await admin.rpc("tw_support_staff_assign",{
