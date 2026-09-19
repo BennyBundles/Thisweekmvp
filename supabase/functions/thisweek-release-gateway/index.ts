@@ -60,8 +60,8 @@ async function activeSession(admin:ReturnType<typeof createClient>,userId:string
   if(error||data!==true)throw new Error("session_revoked");
   return sid;
 }
-async function requireAal2(userClient:ReturnType<typeof createClient>){
-  const {data,error}=await userClient.auth.mfa.getAuthenticatorAssuranceLevel();
+async function requireAal2(userClient:ReturnType<typeof createClient>,token:string){
+  const {data,error}=await userClient.auth.mfa.getAuthenticatorAssuranceLevel(token);
   if(error||data?.currentLevel!=="aal2")throw new Error("mfa_aal2_required");
 }
 async function audit(
@@ -157,7 +157,7 @@ Deno.serve(async(req)=>{
   const admin=createClient(SUPABASE_URL,SERVICE_KEY,{auth:{persistSession:false,autoRefreshToken:false}});
   try{
     await activeSession(admin,String(user.id),token);
-    await requireAal2(userClient);
+    await requireAal2(userClient,token);
   }catch(error){
     const code=safeText((error as Error)?.message||"staff_session_invalid",100);
     return json(origin,code==="mfa_aal2_required"?403:401,{error:code});
