@@ -51,6 +51,8 @@ const opsJs=requireFile('ops/app.js');
 const opsCheck=requireFile('ops-check.mjs');
 const opsAccessSetup=requireFile('OPS_ACCESS_SETUP.md');
 const phase28Doc=requireFile('PHASE_28_IMPLEMENTATION.md');
+const phase29Doc=requireFile('PHASE_29_IMPLEMENTATION.md');
+const phase29Schema=requireFile('supabase/phase29/automated_monitoring.sql');
 const phase28Schema=requireFile('supabase/phase28/support_incident_ops.sql');
 const supportGateway=requireFile('supabase/functions/thisweek-support-gateway/index.ts');
 const supportHtml=requireFile('support/index.html');
@@ -298,6 +300,20 @@ if(supportJs){
 }
 if(!supportCheck)failures.push('Support Center checker unavailable');
 if(phase28Doc)requireText('Phase 28 internal SLA disclosure',phase28Doc,'not customer-facing service guarantees');
+if(phase29Schema){
+  requireText('Phase 29 monitor RPC',phase29Schema,'tw_ops_monitor_tick');
+  requireText('Phase 29 cron job',phase29Schema,'thisweek-phase29-health-monitor');
+  requireText('Phase 29 notification outbox',phase29Schema,'tw_ops_notification_outbox');
+  requireText('Phase 29 RLS/browser revoke',phase29Schema,'from public,anon,authenticated');
+}
+if(opsGateway){
+  requireText('Phase 29 Ops automation payload',opsGateway,'automatedMonitor');
+  requireText('Phase 29 manual monitor action',opsGateway,'run_monitor');
+  requireText('Phase 29 notification suppression',opsGateway,'suppress_notification');
+}
+if(opsHtml)requireText('Phase 29 Ops automation surface',opsHtml,'id="automation"');
+if(opsJs)requireText('Phase 29 Ops automation renderer',opsJs,'renderAutomation');
+if(phase29Doc)requireText('Phase 29 external paging remains gated',phase29Doc,'external paging channel still intentionally unconfigured');
 if(phase20Gateway)requireText('Money gateway rejects revoked session',phase20Gateway,'tw_auth_session_active');
 if(phase19Gateway)requireText('Provider gateway rejects revoked session',phase19Gateway,'tw_auth_session_active');
 
