@@ -38,6 +38,8 @@ const accountReleaseConfigUrl=new URL('./account/release-config.js', import.meta
 const accountCheckUrl=new URL('./account-check.mjs', import.meta.url);
 const phase24DocUrl=new URL('./PHASE_24_IMPLEMENTATION.md', import.meta.url);
 const authProductionSetupUrl=new URL('./AUTH_PRODUCTION_SETUP.md', import.meta.url);
+const phase26SchemaUrl=new URL('./supabase/phase26/returns_disputes.sql', import.meta.url);
+const phase26DocUrl=new URL('./PHASE_26_IMPLEMENTATION.md', import.meta.url);
 
 const releaseFiles=['prepare-site.mjs','release-smoke-check.mjs','RELEASE_CHECKLIST.md','RELEASE_POLICY.md','release.config.json','CHANGELOG.md','RELEASES/v0.15.0-phase15.md'];
 for(const name of releaseFiles){
@@ -74,7 +76,9 @@ for(const [label,url] of [
   ['Account Center release config',accountReleaseConfigUrl],
   ['Account Center checker',accountCheckUrl],
   ['Phase 24 implementation document',phase24DocUrl],
-  ['Auth production setup guide',authProductionSetupUrl]
+  ['Auth production setup guide',authProductionSetupUrl],
+  ['Phase 26 return/dispute schema',phase26SchemaUrl],
+  ['Phase 26 implementation document',phase26DocUrl]
 ]){
   if(!fs.existsSync(url))failures.push('Missing '+label);
 }
@@ -108,6 +112,9 @@ const phase24Doc=fs.existsSync(phase24DocUrl)?fs.readFileSync(phase24DocUrl,'utf
 const authProductionSetup=fs.existsSync(authProductionSetupUrl)?fs.readFileSync(authProductionSetupUrl,'utf8'):'';
 const requirePhase23FileText=(label,content,text)=>{if(!content.includes(text))failures.push(label);};
 const requirePhase24FileText=(label,content,text)=>{if(!content.includes(text))failures.push(label);};
+const phase26Schema=fs.existsSync(phase26SchemaUrl)?fs.readFileSync(phase26SchemaUrl,'utf8'):'';
+const phase26Doc=fs.existsSync(phase26DocUrl)?fs.readFileSync(phase26DocUrl,'utf8'):'';
+const requirePhase26FileText=(label,content,text)=>{if(!content.includes(text))failures.push(label);};
 
 const requireText=(label,text)=>{if(!html.includes(text))failures.push(label);};
 const forbidText=(label,text)=>{if(html.includes(text))failures.push(label);};
@@ -445,6 +452,26 @@ requirePhase23FileText('Phase 24 readiness renderer',accountJs,'renderReleaseRea
 requirePhase24FileText('Phase 24 doc fail-closed readiness',phase24Doc,'public Auth readiness');
 requirePhase24FileText('Phase 24 setup exact redirect',authProductionSetup,'https://bennybundles.github.io/Thisweekmvp/account/?mode=recovery');
 if(/service_role|sb_secret_/i.test(accountReleaseConfig))failures.push('Phase 24 public Auth config contains a server secret pattern');
+
+
+requireText('Phase 26 operations readiness',"operationsMode:'returns_disputes_negative_balance_deployed'");
+requirePhase26FileText('Phase 26 ops case table',phase26Schema,'tw_ops_cases');
+requirePhase26FileText('Phase 26 append-only case events',phase26Schema,'tw_ops_case_events');
+requirePhase26FileText('Phase 26 ACH return RPC',phase26Schema,'tw_money_apply_unit_ach_return');
+requirePhase26FileText('Phase 26 card credit RPC',phase26Schema,'tw_money_apply_unit_card_credit');
+requirePhase26FileText('Phase 26 dispute RPC',phase26Schema,'tw_ops_record_unit_dispute');
+requirePhase26FileText('Phase 26 browser roles revoked',phase26Schema,'from public,anon,authenticated');
+requirePhase21FileText('Phase 26 signed Unit ACH return handler',phase21Webhook,'tw_money_apply_unit_ach_return');
+requirePhase21FileText('Phase 26 signed Unit dispute handler',phase21Webhook,'tw_ops_record_unit_dispute');
+requirePhase21FileText('Phase 26 signed card credit handler',phase21Webhook,'tw_money_apply_unit_card_credit');
+requirePhase21FileText('Phase 26 stronger controls preserved',phase21Webhook,'negative_provider_balance');
+requirePhase20FileText('Phase 26 operations status action',phase20Gateway,'ops_status');
+requirePhase20FileText('Phase 26 Sandbox dispute create',phase20Gateway,'unit_sandbox_create_dispute');
+requirePhase20FileText('Phase 26 Sandbox dispute advance',phase20Gateway,'unit_sandbox_dispute_action');
+requirePhase21FileText('Phase 26 Lab operations control',moneyLabHtml,'id="opsStatus"');
+requirePhase21FileText('Phase 26 Lab dispute create control',moneyLabHtml,'id="createDispute"');
+requirePhase21FileText('Phase 26 Lab operations renderer',moneyLabJs,'renderOpsStatus');
+requirePhase26FileText('Phase 26 production boundary',phase26Doc,"connect-src 'none'");
 
 
 
