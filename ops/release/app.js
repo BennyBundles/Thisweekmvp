@@ -30,12 +30,13 @@ function populateEvidenceKeys(){
   if(!root.options.length)root.append(option('','No manual evidence requirement'));
 }
 function render(){
-  role=data?.role||'';const ready=data?.readiness||{},status=ready.releaseStatus||{},latest=ready.latestSandboxCertification;
+  role=data?.role||'';const ready=data?.readiness||{},status=ready.releaseStatus||{},active=ready.activeCandidate||{},latest=ready.candidateReport?.latestCertification||null;
   $('liveState').textContent=status.liveMoneyReady?'READY':'LOCKED';$('liveState').className=status.liveMoneyReady?'good':'bad';
   $('blockingCount').textContent=String((ready.blockingGateKeys||[]).length);
   $('certState').textContent=latest?.passed?'PASS':latest?'INCOMPLETE':'NONE';$('certState').className=latest?.passed?'good':'warn';
   $('roleState').textContent=role||'—';
-  $('sessionNotice').textContent='Authenticated staff session · AAL2 required server-side · evidence references must not contain credentials, tokens, full account numbers, PAN/CVV, or signing secrets.';
+  const activeLabel=active.releaseCandidateSha?active.releaseCandidateSha.slice(0,12)+'…':'none selected';
+  $('sessionNotice').textContent='Authenticated staff session · active candidate '+activeLabel+' · AAL2 required server-side · evidence references must not contain credentials, tokens, full account numbers, PAN/CVV, or signing secrets.';
   $('sessionNotice').className='notice';
 
   const gates=$('gates');gates.textContent='';
@@ -48,6 +49,9 @@ function render(){
   if(!gates.children.length)gates.textContent='No release gates returned.';
 
   const certs=$('certifications');certs.textContent='';
+  if(active.releaseCandidateSha){
+    certs.appendChild(item('Active candidate · '+active.releaseCandidateSha.slice(0,12),String(active.sourceRef||'no source reference')+(active.selectedAt?' · selected '+new Date(active.selectedAt).toLocaleString():''),'ACTIVE','pass'));
+  }
   for(const r of data?.runs||[]){const s=currentRunStatus(r.id);certs.appendChild(item('Run '+String(r.id).slice(0,8)+' · '+String(r.release_candidate_sha).slice(0,12),(s?.passedCount||0)+'/'+(s?.requiredCount||0)+' passed · '+(s?.failedCount||0)+' failed · '+new Date(r.started_at).toLocaleString(),s?.passed?'PASS':'OPEN',s?.passed?'pass':'block'));}
   if(!certs.children.length)certs.textContent='No certification run has been started.';
 
@@ -64,13 +68,18 @@ function render(){
   if(!ledger.children.length)ledger.textContent='No evidence receipts recorded.';
 
   populate();
+  if(active.releaseCandidateSha){
+    $('certSha').value=active.releaseCandidateSha;
+    $('drillSha').value=active.releaseCandidateSha;
+  }
   const canCert=role==='risk_ops'||role==='admin',isAdmin=role==='admin';
-  for(const id of ['startCert','recordReceipt','startDrill','passDrill','failDrill'])$(id).disabled=!canCert;
+  for(const id of ['selectCandidate','startCert','recordReceipt','startDrill','passDrill','failDrill'])$(id).disabled=!canCert;
   for(const id of ['recordGateEvidence','verifyGate','unverifyGate'])$(id).disabled=!isAdmin;
 }
 async function refresh(){data=await release('status');render();return data;}
 async function mutate(id,action,extra){text(id,'Working…','warn');try{const r=await release(action,extra);text(id,'Recorded. Server state refreshed.','good');await refresh();return r;}catch(e){text(id,e.message,'bad');throw e;}}
 
+$('selectCandidate').onclick=()=>mutate('candidateResult','select_candidate',{releaseCandidateSha:$('candidateSha').value.trim(),sourceRef:$('candidateSource').value.trim(),note:$('candidateNote').value.trim()}).catch(()=>{});
 $('startCert').onclick=()=>mutate('certResult','start_certification',{releaseCandidateSha:$('certSha').value.trim(),note:$('certNote').value.trim()}).catch(()=>{});
 $('recordReceipt').onclick=()=>mutate('receiptResult','record_certification_receipt',{runId:$('receiptRun').value,requirementKey:$('receiptReq').value,outcome:$('receiptOutcome').value,evidenceRef:$('receiptEvidence').value.trim(),safeSummary:$('receiptSummary').value.trim(),drillId:$('receiptDrill').value.trim()||null}).catch(()=>{});
 $('startDrill').onclick=()=>mutate('drillResult','start_drill',{drillType:$('drillType').value,releaseCandidateSha:$('drillSha').value.trim(),scenarioKey:$('scenarioKey').value.trim(),note:$('drillNote').value.trim()}).then(r=>{$('finishDrillId').value=r.drillId||'';}).catch(()=>{});
@@ -80,5 +89,15 @@ $('recordGateEvidence').onclick=()=>mutate('gateEvidenceResult','record_gate_evi
 $('verifyGate').onclick=()=>mutate('gateResult','set_release_gate',{gateKey:$('gateKey').value,verified:true,evidenceRef:$('gateVerificationRef').value.trim(),note:$('gateVerificationNote').value.trim()}).catch(()=>{});
 $('unverifyGate').onclick=()=>mutate('gateResult','set_release_gate',{gateKey:$('gateKey').value,verified:false,evidenceRef:$('gateVerificationRef').value.trim(),note:$('gateVerificationNote').value.trim()}).catch(()=>{});
 
+async function loadDeployedRelease(){
+  try{
+    const r=await fetch('../../release.json?candidate='+Date.now(),{cache:'no-store'});
+    if(!r.ok)return;
+    const m=await r.json();
+    if(/^[0-9a-f]{40}$/.test(String(m.commit||'')))$('candidateSha').value=String(m.commit);
+    if(m.workflowRunId)$('candidateSource').value='github-pages:run:'+String(m.workflowRunId);
+  }catch{}
+}
+loadDeployedRelease();
 if(!session?.access_token){$('sessionNotice').innerHTML='No shared staff session in this tab. <a href="../">Open the Ops Console</a>, sign in, and verify MFA first.';for(const b of document.querySelectorAll('button'))b.disabled=true;}
 else refresh().catch(e=>{if(/session|auth|mfa|staff/i.test(e.message))writeSession(null);$('sessionNotice').textContent=e.message;$('sessionNotice').className='notice';});
