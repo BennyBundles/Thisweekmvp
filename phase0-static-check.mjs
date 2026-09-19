@@ -10,6 +10,10 @@ const html=fs.readFileSync(new URL('./index.html', import.meta.url),'utf8');
 const failures=[];
 const cspUpdaterUrl=new URL('./update-csp-hashes.mjs', import.meta.url);
 const securityPrivacyUrl=new URL('./SECURITY_PRIVACY.md', import.meta.url);
+const releaseFiles=['release-smoke-check.mjs','RELEASE_CHECKLIST.md','RELEASE_POLICY.md','release.config.json','CHANGELOG.md'];
+for(const name of releaseFiles){
+  if(!fs.existsSync(new URL('./'+name, import.meta.url)))failures.push('Missing Phase 15 release file: '+name);
+}
 if(!fs.existsSync(cspUpdaterUrl))failures.push('Missing CSP hash updater utility');
 if(!fs.existsSync(securityPrivacyUrl))failures.push('Missing security/privacy trust document');
 const requireText=(label,text)=>{if(!html.includes(text))failures.push(label);};
@@ -132,7 +136,6 @@ requireText('Phase 13 canonical snapshot','canonicalPortableSnapshotPayload');
 requireText('Phase 13 stable snapshot JSON','stablePortableSnapshotJson');
 requireText('Phase 13 snapshot fingerprint','computePortableSnapshotFingerprint');
 requireText('Phase 13 fingerprint UI','Compute snapshot fingerprint');
-requireText('Phase 15 release discipline','v0.15.0-phase15');
 requireText('Phase 15 privacy baseline','PHASE 14 — SECURITY + PRIVACY + TRUST HARDENING v26');
 requireText('Phase 13 model integrity','validateNormalizedDataModel');
 requireText('Phase 13 integrity summary','normalizedIntegritySummary');
