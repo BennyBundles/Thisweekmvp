@@ -4716,6 +4716,28 @@ body[data-performance="lite"] .fin-event-token:nth-child(n+3){display:none!impor
 @media(max-width:430px){.data-model-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.entity-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:330px){.entity-grid,.data-model-summary{grid-template-columns:1fr}}
 
+
+/* PHASE 14 — SECURITY + PRIVACY + TRUST HARDENING v26 */
+.trust-hero{padding:14px;border-radius:22px;border:1px solid rgba(103,232,249,.10);background:linear-gradient(145deg,rgba(103,232,249,.04),rgba(114,214,170,.025),rgba(255,255,255,.01))}
+.trust-hero h2{margin:5px 0 5px;font-size:1rem}.trust-hero p{margin:0;color:var(--text-soft);font-size:.62rem;line-height:1.46}
+.trust-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.trust-badge{padding:5px 7px;border-radius:999px;border:1px solid rgba(177,206,221,.07);background:rgba(255,255,255,.014);font-size:.43rem;color:#91a8b1}
+.trust-badge.good{border-color:rgba(110,231,183,.10);color:#a8ccb9;background:rgba(110,231,183,.025)}
+.trust-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.trust-card{padding:11px;border-radius:17px;border:1px solid rgba(177,206,221,.055);background:rgba(255,255,255,.012)}
+.trust-card small{display:block;font-size:.4rem;letter-spacing:.08em;text-transform:uppercase;color:#738d98}.trust-card strong{display:block;margin-top:4px;font-size:.67rem}.trust-card span{display:block;margin-top:4px;color:#8099a3;font-size:.49rem;line-height:1.42}
+.source-glossary{display:grid;gap:6px}.source-row{display:grid;grid-template-columns:92px minmax(0,1fr);gap:9px;align-items:start;padding:9px 10px;border-radius:14px;border:1px solid rgba(177,206,221,.05);background:rgba(255,255,255,.012)}
+.source-row b{font-size:.52rem}.source-row span{font-size:.49rem;color:#7f98a3;line-height:1.42}
+.privacy-inventory{display:grid;gap:6px}.privacy-key{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:9px 10px;border-radius:14px;border:1px solid rgba(177,206,221,.05);background:rgba(255,255,255,.012)}
+.privacy-key strong{display:block;font-size:.56rem}.privacy-key span{display:block;margin-top:3px;font-size:.46rem;color:#7b949f;line-height:1.35}.privacy-key code{font-size:.43rem;color:#a5bbc4;white-space:nowrap}
+.danger-zone{padding:12px;border-radius:18px;border:1px solid rgba(251,113,133,.12);background:rgba(251,113,133,.025)}
+.danger-zone h3{margin:0;font-size:.72rem}.danger-zone p{margin:5px 0 0;color:#a68c92;font-size:.51rem;line-height:1.43}
+.delete-confirm{display:none;margin-top:9px;padding-top:9px;border-top:1px solid rgba(251,113,133,.09)}.delete-confirm.show{display:block}.delete-confirm .field-label{color:#c8a3ab}
+.local-only-banner{display:flex;align-items:center;gap:7px;margin-top:8px;padding:7px 9px;border-radius:13px;border:1px solid rgba(103,232,249,.06);background:rgba(103,232,249,.018);font-size:.48rem;color:#86a5af}
+.local-only-banner::before{content:"";width:7px;height:7px;border-radius:50%;background:#67e8f9;box-shadow:0 0 10px rgba(103,232,249,.28)}
+@media(max-width:430px){.trust-grid{grid-template-columns:1fr}.source-row{grid-template-columns:78px minmax(0,1fr)}}
+@media(max-width:330px){.source-row,.privacy-key{grid-template-columns:1fr}.privacy-key code{white-space:normal}}
+
 </style></head><body><a class="skip-link" href="#app">Skip to main content</a><div class="sr-only" id="routeAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app" tabindex="-1">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="zen-home">
@@ -5327,7 +5349,7 @@ function obligationTimeline(p){
 }
 function route(){ return (location.hash.replace('#','')||'home').split('?')[0]; }
 function nav(routeName){
-  const detailRoutes=['insights','reset','bills','essentials','lifestyle','savings','history','scenario','connections','future','qa','performance','data-model'];
+  const detailRoutes=['insights','reset','bills','essentials','lifestyle','savings','history','scenario','connections','future','qa','performance','data-model','privacy'];
   const activeRoute=detailRoutes.includes(routeName)?'details':routeName==='setup'||routeName==='preferences'?'plan':routeName==='precheck'?'log':routeName;
   document.body.dataset.route=activeRoute;
   const index={home:0,log:1,details:2,plan:3}[activeRoute]??0;
@@ -7204,7 +7226,8 @@ async function renderDetails(){
           tool('future','Architecture','System Architecture','See how adaptive constellations, choreography, and connected data fit together.','Guide','#9fc8d1',semanticIcon('architecture')),
           tool('qa','Quality','Device QA','Run mobile viewport, overflow, touch, storage, parser, and static-runtime checks on this device.','QA','#67e8f9',semanticIcon('settings')),
           tool('performance','Runtime','Performance & Resilience','Inspect render timing, storage growth, adaptive tier, and derived-cache behavior.','Health','#72d6aa',semanticIcon('analysis')),
-          tool('data-model','Data model','Data Model & Export','Inspect normalized entities, provider contracts, provenance, and portable JSON serialization.','Schema','#9fc8d1',semanticIcon('architecture'))
+          tool('data-model','Data model','Data Model & Export','Inspect normalized entities, provider contracts, provenance, and portable JSON serialization.','Schema','#9fc8d1',semanticIcon('architecture')),
+          tool('privacy','Trust','Privacy & Local Data','See where financial data lives, what is imported, export it, or delete This Week data from this browser.','Local','#67e8f9',semanticIcon('settings'))
         ].join('')
       }
     ];
@@ -7620,11 +7643,11 @@ async function renderConnections(){
       const preview=connectionImportPreview,batches=(d.batches||[]).slice().reverse(),audit=(d.audit||[]).slice().reverse().slice(0,14);
       const filterButton=(id,label,count)=>`<button class="data-filter ${activeFilter===id?'active':''}" data-filter="${id}">${label}<b>${count}</b></button>`;
       root.innerHTML=`<div class="connections-stack">
-        <section class="connection-stage"><span class="studio-kicker">Connected-data layer</span><h2 style="margin:6px 0">Actual activity can inform the plan without becoming the plan.</h2><p class="studio-copy">Imported records stay separate until you explicitly reconcile a posted purchase. Pending items and deposits remain reference-only.</p>
+        <section class="connection-stage"><span class="studio-kicker">Connected-data layer</span><div class="local-only-banner">Stored in this browser · no live bank connection is active.</div><h2 style="margin:6px 0">Actual activity can inform the plan without becoming the plan.</h2><p class="studio-copy">Imported records stay separate until you explicitly reconcile a posted purchase. Pending items and deposits remain reference-only.</p>
           <div class="connection-split"><div class="connection-column"><h3>This Week planner</h3><div class="connection-row"><div><strong>Available Now</strong><span>Plan-derived</span></div><b>${formatCents(p.available)}</b></div><div class="connection-row"><div><strong>Protected Bills</strong><span>Planning reserve</span></div><b>${formatCents(p.protected)}</b></div><div class="connection-row"><div><strong>Savings</strong><span>Weekly plan</span></div><b>${formatCents(p.savingsThisWeek||0)}</b></div></div><div class="connection-bridge"><i></i></div><div class="connection-column"><h3>Imported actuality</h3><div class="connection-row"><div><strong>Needs review</strong><span>Posted outflows not matched</span></div><b>${summary.unreconciled}</b></div><div class="connection-row"><div><strong>Deferred</strong><span>Intentionally postponed</span></div><b>${summary.deferred}</b></div><div class="connection-row"><div><strong>Applied</strong><span>Explicitly reconciled</span></div><b>${summary.reconciled}</b></div></div></div>
         </section>
 
-        <section class="import-card"><h3>Import transaction data</h3><p>CSV, tab-delimited, and semicolon-delimited exports are parsed locally. You preview the import before anything is added to the review queue.</p><div class="file-row"><div class="field-group"><label class="field-label">Transaction file</label><input class="file-input" type="file" id="bankFile" accept=".csv,.tsv,.txt,text/csv,text/tab-separated-values,text/plain"></div><div class="field-group"><label class="field-label">Amount sign convention</label><select id="signMode" class="select-field"><option value="negativePurchase">Negative amounts are purchases</option><option value="positivePurchase">Positive amounts are purchases</option></select></div></div><div class="action-row"><button class="btn btn-primary" id="demoImport">Preview demo data</button><button class="btn btn-secondary" id="clearImport">Clear import metadata</button></div></section>
+        <section class="import-card"><h3>Import transaction data</h3><p>CSV, tab-delimited, and semicolon-delimited exports are parsed locally as text. Imported text is length-limited, control characters are removed, and displayed values are escaped rather than executed. Maximum file size: 5 MB.</p><div class="file-row"><div class="field-group"><label class="field-label">Transaction file</label><input class="file-input" type="file" id="bankFile" accept=".csv,.tsv,.txt,text/csv,text/tab-separated-values,text/plain"></div><div class="field-group"><label class="field-label">Amount sign convention</label><select id="signMode" class="select-field"><option value="negativePurchase">Negative amounts are purchases</option><option value="positivePurchase">Positive amounts are purchases</option></select></div></div><div class="action-row"><button class="btn btn-primary" id="demoImport">Preview demo data</button><button class="btn btn-secondary" id="clearImport">Clear import metadata</button></div></section>
 
         ${preview?`<section class="import-preview"><div class="import-preview-head"><div><h3>Preview before import</h3><span>${escapeHtml(preview.sourceName)} · nothing has been added yet</span></div><span class="data-badge">${preview.total} rows</span></div><div class="import-preview-stats"><div class="import-preview-stat"><small>New</small><strong>${preview.newRecords.length}</strong></div><div class="import-preview-stat"><small>Duplicates</small><strong>${preview.duplicateRecords.length}</strong></div><div class="import-preview-stat"><small>Pending</small><strong>${preview.pending}</strong></div><div class="import-preview-stat"><small>Inflows</small><strong>${preview.inflows}</strong></div></div><div class="import-preview-list">${preview.records.slice(0,6).map(r=>`<div class="import-preview-row ${preview.duplicateRecords.some(x=>x.externalId===r.externalId)?'import-duplicate':''}"><div><strong>${escapeHtml(r.description)}</strong><span>${new Date(r.date).toLocaleDateString()} · ${r.status} · ${r.direction}</span></div><b>${r.direction==='outflow'?'-':'+'}${formatCents(r.amount)}</b></div>`).join('')}</div>${preview.duplicateRecords.length?`<div class="import-warning">Exact previously imported/applied fingerprints are excluded before confirmation. This protects against common re-import duplicates.</div>`:''}<div class="action-row"><button class="btn btn-primary" id="confirmImport" ${preview.newRecords.length?'':'disabled'}>Import ${preview.newRecords.length} new record${preview.newRecords.length===1?'':'s'}</button><button class="btn btn-secondary" id="cancelImport">Cancel preview</button></div></section>`:''}
 
@@ -7721,6 +7744,64 @@ async function renderConnections(){
   }catch(e){root.innerHTML=errBox(e.message);}
 }
 
+function renderPrivacy(){
+  shellMeta('Trust','Privacy & Local Data','Understand, export, and control the data stored by This Week in this browser','<a class="text-action" href="#details">Back</a>');nav('privacy');
+  const draw=()=>{
+    const inventory=localDataInventory(),audit=clientSecretAudit();
+    const all=[...inventory.local.map(x=>({...x,scope:'Persistent'})),...inventory.session.map(x=>({...x,scope:'Session'}))];
+    const totalBytes=all.reduce((n,x)=>n+x.bytes,0),hasPlan=!!readState();
+    root.innerHTML=`<div class="studio-stack">
+      <section class="trust-hero"><span class="studio-kicker">Phase 14 trust boundary</span><h2>Your financial planning data is local to this browser in the current build.</h2><p>This Week has no active application backend, account login, or live bank-token connection. Financial data is not uploaded by the app. The site host still receives ordinary web requests needed to deliver the static page.</p><div class="trust-badges"><span class="trust-badge good">Browser-local storage</span><span class="trust-badge good">No provider secrets</span><span class="trust-badge">No cloud sync</span><span class="trust-badge">No background financial upload</span></div></section>
+
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Data boundaries</span><h2>What each number means</h2><div class="section-caption">Source labels prevent imported activity from being confused with planning values.</div></div></div>
+        <div class="source-glossary">
+          <div class="source-row"><b>Plan-derived</b><span>Available Now, weekly allocations, bill protection, and planned savings are calculated from the local Plan and recorded activity. They are not bank balances.</span></div>
+          <div class="source-row"><b>Imported</b><span>CSV/TSV transaction records remain separate reference data until you explicitly reconcile a posted outflow.</span></div>
+          <div class="source-row"><b>Reconciled</b><span>A posted imported outflow you explicitly applied to a This Week category. It then affects the weekly plan while retaining import provenance.</span></div>
+          <div class="source-row"><b>External balance</b><span>No live institution balance is currently connected. This Week does not infer an account balance from Available Now.</span></div>
+        </div>
+      </section>
+
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Data minimization</span><h2>Only what the local planner needs</h2></div></div>
+        <div class="trust-grid">
+          <div class="trust-card"><small>Identity</small><strong>No name or email required</strong><span>The app uses a randomly generated local user ID for relationships. It is not an authentication credential.</span></div>
+          <div class="trust-card"><small>Provider credentials</small><strong>${audit.pass?'No sensitive credential fields detected':'Review local storage'}</strong><span>${audit.pass?'The client-side data audit found no token/password/secret-shaped fields in This Week local JSON.':escapeHtml(audit.findings.join(' · '))}</span></div>
+          <div class="trust-card"><small>Imports</small><strong>Text-only local parsing</strong><span>Files are capped at 5 MB and 10,000 data rows. Imported strings are normalized, control characters are removed, lengths are capped, and UI output is escaped.</span></div>
+          <div class="trust-card"><small>Execution</small><strong>Imported text is not code</strong><span>Merchant names, file names, notes, and audit descriptions are treated as text. Import processing does not evaluate scripts or HTML from transaction files.</span></div>
+        </div>
+      </section>
+
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Browser storage inventory</span><h2>${all.length} This Week key${all.length===1?'':'s'} · ${(totalBytes/1024).toFixed(1)} KB</h2><div class="section-caption">Values are not shown here; only key names, purpose, scope, and serialized size.</div></div></div>
+        <div class="privacy-inventory">${all.length?all.map(x=>`<div class="privacy-key"><div><strong>${escapeHtml(x.description)}</strong><span>${escapeHtml(x.scope)} browser storage · ${(x.bytes/1024).toFixed(1)} KB</span></div><code>${escapeHtml(x.key)}</code></div>`).join(''):'<div class="empty">No This Week browser data is currently stored.</div>'}</div>
+      </section>
+
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Export</span><h2>Take a copy before changing devices or deleting data</h2><div class="section-caption">Downloaded files can contain sensitive financial information. Store them accordingly.</div></div></div>
+        <div class="action-row">${hasPlan?'<button class="btn btn-primary" id="privacyPortableExport">Export normalized financial data</button>':''}<button class="btn btn-secondary" id="privacyRawExport">Export all local This Week keys</button><a class="btn btn-secondary" href="#data-model">Open Data Model</a></div>
+        <div class="world-note">Exports are created locally when requested. The app does not automatically upload the resulting file.</div>
+      </section>
+
+      <section class="danger-zone"><h3>Delete This Week data from this browser</h3><p>This removes all localStorage and sessionStorage keys beginning with <code>thisweek.</code> on this site. It does not delete files you previously downloaded, browser backups, or normal hosting logs.</p>
+        <div class="action-row" style="margin-top:9px"><button class="data-mini-action danger" id="beginLocalDelete">Delete local app data</button></div>
+        <div class="delete-confirm" id="localDeleteConfirm"><label class="field-label" for="localDeletePhrase">Type DELETE to confirm</label><input class="text-field" id="localDeletePhrase" autocomplete="off" autocapitalize="characters" placeholder="DELETE"><div class="action-row" style="margin-top:7px"><button class="btn btn-primary" id="confirmLocalDelete" disabled>Delete from this browser</button><button class="btn btn-secondary" id="cancelLocalDelete">Cancel</button></div></div>
+      </section>
+    </div>`;
+
+    document.getElementById('privacyPortableExport')?.addEventListener('click',()=>{const bytes=downloadPortableDataExport();toast('Normalized data exported · '+(bytes/1024).toFixed(1)+' KB');});
+    document.getElementById('privacyRawExport')?.addEventListener('click',()=>{const bytes=downloadRawLocalDataExport();toast('Local data export created · '+(bytes/1024).toFixed(1)+' KB');});
+    const confirmBox=document.getElementById('localDeleteConfirm'),phrase=document.getElementById('localDeletePhrase'),confirmBtn=document.getElementById('confirmLocalDelete');
+    document.getElementById('beginLocalDelete')?.addEventListener('click',()=>{confirmBox?.classList.add('show');phrase?.focus();});
+    document.getElementById('cancelLocalDelete')?.addEventListener('click',()=>{confirmBox?.classList.remove('show');if(phrase)phrase.value='';if(confirmBtn)confirmBtn.disabled=true;});
+    phrase?.addEventListener('input',()=>{if(confirmBtn)confirmBtn.disabled=phrase.value.trim()!=='DELETE';});
+    confirmBtn?.addEventListener('click',()=>{
+      if(phrase?.value.trim()!=='DELETE')return;
+      if(!confirmHighImpactMutation('Permanently remove all This Week local app data from this browser now?'))return;
+      clearAllThisWeekLocalData();
+      location.hash='setup';
+      location.reload();
+    });
+  };draw();
+}
+
 function renderDataModel(){
   shellMeta('Data','Data Model & Export','Inspect the normalized local model and create a portable JSON export','<a class="text-action" href="#details">Back</a>');nav('data-model');
   const userId=getStoredUserId();if(!userId){root.innerHTML='<div class="center"><div class="error">Build a plan first.</div><a class="btn btn-primary" href="#setup">Build Plan</a></div>';return;}
@@ -7739,7 +7820,7 @@ function renderDataModel(){
       ['Preferences',envelope.data.preferences.length,'Presentation + local decision controls']
     ];
     root.innerHTML=`<div class="studio-stack">
-      <section class="data-model-hero"><span class="studio-kicker">Phase 13 normalized model</span><h2>Browser-local today. Server-mappable later.</h2><p>The active app still runs locally at zero infrastructure cost. This normalized view separates entities and provenance so a future backend can ingest them without redefining the financial product.</p><div class="data-model-summary">
+      <section class="data-model-hero"><span class="studio-kicker">Phase 13 normalized model</span><div class="local-only-banner">Current source of truth: this browser · exports are created only when you request them.</div><h2>Browser-local today. Server-mappable later.</h2><p>The active app still runs locally at zero infrastructure cost. This normalized view separates entities and provenance so a future backend can ingest them without redefining the financial product.</p><div class="data-model-summary">
         <div class="data-model-stat"><small>Core schema</small><strong>v${CORE_SCHEMA_VERSION}</strong></div>
         <div class="data-model-stat"><small>Portable schema</small><strong>v${PORTABLE_DATA_SCHEMA_VERSION}</strong></div>
         <div class="data-model-stat"><small>Model</small><strong>${escapeHtml(NORMALIZED_MODEL_VERSION)}</strong></div>
@@ -8131,7 +8212,7 @@ let historyTraversalPending=false;
 try{history.scrollRestoration='manual';}catch{}
 
 function routeAccessibleName(routeName){
-  return ({home:'Home',log:'Add Spending',details:'Details',insights:'Advanced Insights',bills:'Bill Protection Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex Studio',savings:'Savings Goal Studio',precheck:'Purchase Pre-check',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data Center',preferences:'Presentation and Accessibility',future:'System Architecture',qa:'Device QA',performance:'Performance and Resilience','data-model':'Data Model and Export',reset:'New Week',setup:'Plan'})[routeName]||'Home';
+  return ({home:'Home',log:'Add Spending',details:'Details',insights:'Advanced Insights',bills:'Bill Protection Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex Studio',savings:'Savings Goal Studio',precheck:'Purchase Pre-check',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data Center',preferences:'Presentation and Accessibility',future:'System Architecture',qa:'Device QA',performance:'Performance and Resilience','data-model':'Data Model and Export',privacy:'Privacy and Local Data',reset:'New Week',setup:'Plan'})[routeName]||'Home';
 }
 function announceRoute(routeName,focusMain=true){
   const announcer=document.getElementById('routeAnnouncer'),main=document.getElementById('app');
@@ -8161,6 +8242,7 @@ async function render(){
   else if(r==='qa')await renderDeviceQA();
   else if(r==='performance')await renderPerformance();
   else if(r==='data-model')await renderDataModel();
+  else if(r==='privacy')await renderPrivacy();
   else if(r==='future')await renderFutureLab();
   else if(r==='reset')await renderReset();
   else if(r==='setup')await renderSetup();
