@@ -12,6 +12,7 @@ const configText=requireFile('release.config.json');
 const phase0=requireFile('phase0-static-check.mjs');
 const policy=requireFile('RELEASE_POLICY.md');
 const checklist=requireFile('RELEASE_CHECKLIST.md');
+const prep=requireFile('prepare-site.mjs');
 
 let config=null;
 if(configText){
@@ -52,10 +53,13 @@ if(workflow){
   requireText('Pages workflow must create release manifest',workflow,'release.json');
   requireText('Pages workflow must post-deploy verify',workflow,'Verify deployed release');
   requireText('Pages workflow must deploy _site artifact',workflow,'path: "_site"');
+  requireText('Pages workflow must use deterministic production staging',workflow,'node prepare-site.mjs index.html _site/index.html');
+  requireText('Pages workflow validation must stage production HTML first',workflow,'node prepare-site.mjs index.html index.production.html');
+  requireText('Pages workflow must cancel stale in-progress production runs',workflow,'cancel-in-progress: true');
 }
 
 if(config){
-  for(const k of ['release','channel','rollbackCommit','stateSchema','portableSchema','migrationNotes']){
+  for(const k of ['release','channel','rollbackCommit','rollbackBranch','stableBranch','releaseRecord','stateSchema','portableSchema','migrationNotes']){
     if(config[k]===undefined||config[k]===null||config[k]==='')failures.push('release config missing '+k);
   }
   if(config.channel!=='production')failures.push('release channel must be production');
@@ -66,6 +70,11 @@ if(policy)requireText('Release policy must identify main as production',policy,'
 if(checklist)requireText('Release checklist must include rollback verification',checklist,'Rollback point');
 
 if(!phase0)failures.push('phase0 checker unavailable');
+if(prep){
+  requireText('prepare-site script must refresh CSP hashes',prep,"createHash('sha256')");
+  requireText('prepare-site script must reject unsafe-inline',prep,"unsafe-inline");
+  requireText('prepare-site script must verify staged hashes',prep,'Staged CSP missing');
+}
 
 if(failures.length){
   console.error('Release smoke check FAILED');
