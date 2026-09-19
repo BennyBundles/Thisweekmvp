@@ -1,6 +1,6 @@
 # TAGJ Beat Licensing V15.9 — Draft Review
 
-Status: internal implementation review complete; attorney review still required before paid checkout.
+Status: internal technical/legal issue-spotting review complete; not attorney approval. Paid activation remains conditioned on beat-specific rights attestation and resolution of any provenance holds.
 
 ## Audio analysis / catalogue checks
 
@@ -29,8 +29,8 @@ Status: internal implementation review complete; attorney review still required 
 PASS:
 - all 22 beats reference all 5 agreement tiers;
 - all 22 beats have a per-beat license-matrix row;
-- Trackout Pro is blocked for every beat until real stems/trackouts are supplied;
-- MP3-only sources block Premium WAV and Unlimited delivery until a lossless master exists;
+- The $99 tier is labeled **Derived Trackout — 3-Stem** for all 22 beats; packs are algorithmically separated from stereo masters and expressly not original DAW multitracks;
+- Four MP3-origin catalogue sources have WAV-container delivery derivatives with explicit lossy-origin provenance; those WAVs are not genuine lossless masters;
 - every Exclusive tier requires manual rights review;
 - sample status is not overclaimed;
 - prior valid non-exclusive leases survive a later Exclusive agreement;
@@ -86,3 +86,12 @@ True production stems cannot be reconstructed from a stereo master. Source-separ
 1. original DAW/export stems are supplied, or
 2. separated stems are created and the product is expressly renamed/disclosed as AI/source-separated stems rather than original trackouts.
 
+
+## V15.11 completion correction
+
+- All 22 derived 3-stem FLAC packs were generated and QC-packaged for delivery.
+- The four MP3-origin catalogue entries point to WAV-container replacement delivery files while retaining lossy-origin disclosure and backup references to the original MP3s.
+- The sample/source review is complete at the level possible from supplied stereo masters, metadata and filenames. It is **not** a sample-clearance certificate; audio inspection cannot establish chain of title by itself.
+- `Half Truths` remains on a high provenance hold because the original working filename says `remix`; identify the remixed source and document authority before paid licensing.
+- `Cold Receiver` and `Soft Armor` require confirmation that their apparent intended-recipient history did not create a conflicting exclusive/client commitment before exclusive sale.
+- Final legal review performed here is internal issue spotting, not review by an attorney or a separate “Legal GPT” product. No separate Legal-GPT review tool was available, so no claim of such approval is made.
