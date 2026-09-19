@@ -6791,7 +6791,7 @@ function runPhase14TrustAudit(){
     {name:'Control-character sanitization',pass:!sanitized.includes('\u0000')&&!sanitized.includes('\u202E'),detail:'Unsafe control and bidirectional override characters are removed from imported text.'},
     {name:'Imported text rendering',pass:!escaped.includes('<img')&&escaped.includes('&lt;img'),detail:'Imported text is escaped for HTML display rather than executed.'},
     {name:'Provider credential boundary',pass:PROVIDER_ADAPTER_CONTRACT.secretPolicy.includes('must never be stored')&&BACKEND_SYNC_CONTRACT.providerSecrets.storage==='server_only',detail:'Provider tokens/secrets are explicitly outside the browser-local data contract.'},
-    {name:'Phase 19 activation gate',pass:LIVE_PROVIDER_CONFIG.enabled===false&&LIVE_PROVIDER_CONFIG.backendOrigin===''&&LIVE_PROVIDER_CONFIG.networkPolicy==='deny_until_dedicated_backend',detail:'Live-provider networking is disabled until a dedicated authenticated backend is explicitly provisioned and allowlisted.'},
+    {name:'Phase 19 activation gate',pass:LIVE_PROVIDER_CONFIG.enabled===false&&LIVE_PROVIDER_CONFIG.backendOrigin==='https://xjtvawmppzwzrooairyx.supabase.co'&&LIVE_PROVIDER_CONFIG.projectRef==='xjtvawmppzwzrooairyx'&&LIVE_PROVIDER_CONFIG.networkPolicy==='deny_until_auth_and_provider',detail:'The backend is provisioned, but live-provider networking remains disabled until recoverable Auth, provider credentials, and an exact CSP allowlist are ready.'},
     {name:'Inactive-view privacy curtain',pass:!!document.getElementById('privacyCurtain')&&typeof bindPrivacyCurtain==='function',detail:'The financial view is masked when the document becomes inactive; operating-system snapshot behavior can still vary.'},
     {name:'Portable restore boundary',pass:typeof deserializePortableData==='function'&&typeof downloadPortableDataExport==='function',detail:'Portable data can be validated/exported but is not automatically applied back into live state.'},
     {name:'High-impact confirmation path',pass:typeof confirmHighImpactMutation==='function',detail:'Destructive/reversal paths use an explicit confirmation helper.'},
@@ -6890,25 +6890,25 @@ function connectedDataSummary(){
 }
 const LIVE_PROVIDER_CONFIG=Object.freeze({
   version:1,
-  state:'staged',
+  state:'backend_provisioned',
   enabled:false,
-  backendOrigin:'',
-  projectRef:'',
+  backendOrigin:'https://xjtvawmppzwzrooairyx.supabase.co',
+  projectRef:'xjtvawmppzwzrooairyx',
   provider:'plaid',
-  providerMode:'unconfigured',
+  providerMode:'credentials_required',
   authMode:'permanent_user_required',
   consentVersion:'2026-09',
   gatewayFunction:'thisweek-provider-gateway',
   tokenStorage:'server_vault_only',
-  networkPolicy:'deny_until_dedicated_backend'
+  networkPolicy:'deny_until_auth_and_provider'
 });
 function liveProviderReadiness(){
   const cfg=LIVE_PROVIDER_CONFIG;
   const checks=[
-    {id:'backend',label:'Dedicated backend',ready:!!cfg.projectRef&&!!cfg.backendOrigin,detail:'A dedicated This Week Supabase project must be provisioned before financial-provider traffic is allowed.'},
+    {id:'backend',label:'Isolated backend plane',ready:!!cfg.projectRef&&!!cfg.backendOrigin,detail:'Phase 19 tables and the JWT-protected gateway are provisioned inside BennyBundles’s Project with direct browser table access revoked.'},
     {id:'auth',label:'Recoverable authentication',ready:cfg.authMode==='permanent_user_active',detail:'Live provider data requires a recoverable authenticated user; the current browser-local ID is not an authentication credential.'},
     {id:'provider',label:'Provider credentials',ready:cfg.providerMode==='configured',detail:'Provider credentials and approval must exist server-side. No provider secret belongs in this document or browser storage.'},
-    {id:'network',label:'Exact network allowlist',ready:cfg.networkPolicy==='dedicated_backend_only'&&cfg.enabled===true,detail:'Production CSP remains deny-by-default until the dedicated gateway origin is explicitly authorized.'}
+    {id:'network',label:'Exact network allowlist',ready:cfg.networkPolicy==='backend_allowlisted'&&cfg.enabled===true,detail:'Production CSP remains deny-by-default until Auth and provider credentials are ready and the Supabase origin is explicitly allowlisted.'}
   ];
   return {enabled:cfg.enabled===true,ready:cfg.enabled===true&&checks.every(x=>x.ready),checks};
 }
@@ -8487,13 +8487,13 @@ async function renderConnections(){
       const preview=connectionImportPreview,batches=(d.batches||[]).slice().reverse(),audit=(d.audit||[]).slice().reverse().slice(0,14);
       const filterButton=(id,label,count)=>`<button class="data-filter ${activeFilter===id?'active':''}" data-filter="${id}">${label}<b>${count}</b></button>`;
       root.innerHTML=`<div class="connections-stack">
-        <section class="connection-stage"><span class="studio-kicker">Connected-data layer</span><div class="local-only-banner">Provider gateway staged · no live institution connection is active.</div><h2 style="margin:6px 0">Actual activity can inform the plan without becoming the plan.</h2><p class="studio-copy">Imported records stay separate until you explicitly reconcile a posted purchase. Pending items and deposits remain reference-only.</p>
+        <section class="connection-stage"><span class="studio-kicker">Connected-data layer</span><div class="local-only-banner">Provider backend provisioned · no live institution connection is active.</div><h2 style="margin:6px 0">Actual activity can inform the plan without becoming the plan.</h2><p class="studio-copy">Imported records stay separate until you explicitly reconcile a posted purchase. Pending items and deposits remain reference-only.</p>
           <div class="connection-split"><div class="connection-column"><h3>This Week planner</h3><div class="connection-row"><div><strong>Available Now</strong><span>Plan-derived</span></div><b>${formatCents(p.available)}</b></div><div class="connection-row"><div><strong>Protected Bills</strong><span>Planning reserve</span></div><b>${formatCents(p.protected)}</b></div><div class="connection-row"><div><strong>Savings</strong><span>Weekly plan</span></div><b>${formatCents(p.savingsThisWeek||0)}</b></div></div><div class="connection-bridge"><i></i></div><div class="connection-column"><h3>Imported actuality</h3><div class="connection-row"><div><strong>Needs review</strong><span>Posted outflows not matched</span></div><b>${summary.unreconciled}</b></div><div class="connection-row"><div><strong>Deferred</strong><span>Intentionally postponed</span></div><b>${summary.deferred}</b></div><div class="connection-row"><div><strong>Applied</strong><span>Explicitly reconciled</span></div><b>${summary.reconciled}</b></div></div></div>
         </section>
 
         <section class="provider-readiness">
-          <div class="provider-readiness-head"><div><small>Phase 19 secure provider gateway</small><h3>Live financial data is staged behind explicit infrastructure gates.</h3></div><span class="provider-gate-badge">Not activated</span></div>
-          <p class="provider-readiness-copy">The provider plane is implemented as a separate server-side architecture, but this production build intentionally keeps network access disabled until a dedicated backend, recoverable authentication, provider credentials, and an exact CSP allowlist are provisioned.</p>
+          <div class="provider-readiness-head"><div><small>Phase 19 secure provider gateway</small><h3>The backend provider plane is provisioned; institution access remains intentionally off.</h3></div><span class="provider-gate-badge">Backend ready · provider off</span></div>
+          <p class="provider-readiness-copy">The isolated This Week provider tables and JWT-protected gateway are now deployed inside BennyBundles’s Project. Production still blocks provider networking until recoverable authentication, Plaid credentials, provider verification, and an exact CSP allowlist are completed.</p>
           <div class="provider-readiness-grid">${liveProviderReadiness().checks.map((x,i)=>`<div class="provider-gate-row"><span class="provider-gate-icon">${i+1}</span><span class="provider-gate-copy"><strong>${escapeHtml(x.label)}</strong><span>${escapeHtml(x.detail)}</span></span><span class="provider-gate-state">${x.ready?'Ready':'Required'}</span></div>`).join('')}</div>
           <div class="provider-flow" aria-label="Provider reconciliation flow" data-flow="Provider → Server Sync → Review → Reconcile → Weekly Transaction">
             <div class="provider-flow-step"><small>1</small><strong>Provider</strong></div>
@@ -8502,7 +8502,7 @@ async function renderConnections(){
             <div class="provider-flow-step"><small>4</small><strong>Reconcile</strong></div>
             <div class="provider-flow-step"><small>5</small><strong>Weekly transaction</strong></div>
           </div>
-          <div class="provider-action-row"><button class="btn btn-primary" id="connectFinancialProvider" type="button" disabled>Connect financial institution</button><span class="data-badge">Dedicated backend required</span></div>
+          <div class="provider-action-row"><button class="btn btn-primary" id="connectFinancialProvider" type="button" disabled>Connect financial institution</button><span class="data-badge">Auth + provider credentials required</span></div>
           <div class="provider-boundary-note"><strong>External balances stay external.</strong> When Phase 19 is activated, provider balances may be shown as external account context, but they will never replace or redefine Available Now. Provider transactions remain reference data until you deliberately reconcile a posted outflow.</div>
         </section>
 
@@ -8679,7 +8679,7 @@ function renderPrivacy(){
     const all=[...inventory.local.map(x=>({...x,scope:'Persistent'})),...inventory.session.map(x=>({...x,scope:'Session'}))];
     const totalBytes=all.reduce((n,x)=>n+x.bytes,0),hasPlan=!!readState(),storageInspectable=inventory.localAvailable&&inventory.sessionAvailable;
     root.innerHTML=`<div class="studio-stack">
-      <section class="trust-hero"><span class="studio-kicker">Phase 19 staged trust boundary</span><h2>Your active financial Plan remains local to this browser in the current production build.</h2><p>This Week has no active live-provider connection or cloud Plan sync. Phase 19 now includes a server-side provider-gateway source package, but production network access remains blocked until a dedicated backend and recoverable authentication are deliberately provisioned. The site host still receives ordinary requests needed to deliver the static page.</p><div class="trust-badges"><span class="trust-badge good">Plan stays browser-local</span><span class="trust-badge good">Provider secrets server-only</span><span class="trust-badge">Provider gateway staged</span><span class="trust-badge">Network still denied</span></div></section>
+      <section class="trust-hero"><span class="studio-kicker">Phase 19 provisioned trust boundary</span><h2>Your active financial Plan remains local to this browser in the current production build.</h2><p>This Week now has an isolated provider data plane and JWT-protected gateway provisioned inside BennyBundles’s Supabase project, but there is still no active financial-institution connection or cloud Plan sync. Production network access remains blocked until recoverable Auth and provider credentials are deliberately configured. The site host still receives ordinary requests needed to deliver the static page.</p><div class="trust-badges"><span class="trust-badge good">Plan stays browser-local</span><span class="trust-badge good">Provider tables isolated</span><span class="trust-badge good">JWT gateway deployed</span><span class="trust-badge">Provider networking still denied</span></div></section>
 
       <section class="section"><div class="section-head"><div><span class="section-kicker">Data boundaries</span><h2>What each number means</h2><div class="section-caption">Source labels prevent imported activity from being confused with planning values.</div></div></div>
         <div class="source-glossary">
@@ -8694,7 +8694,7 @@ function renderPrivacy(){
         <div class="trust-grid">
           <div class="trust-card"><small>Identity</small><strong>No name or email required</strong><span>The app uses a randomly generated local user ID for relationships. It is not an authentication credential.</span></div>
           <div class="trust-card"><small>Provider credentials</small><strong>${audit.pass?'No sensitive credential fields detected':'Review local storage'}</strong><span>${audit.pass?'The client-side data audit found no token/password/secret-shaped fields in This Week local JSON.':escapeHtml(audit.findings.join(' · '))}</span></div>
-          <div class="trust-card"><small>Phase 19 provider plane</small><strong>Staged, not activated</strong><span>Provider consent, connections, sync cursors, external accounts/transactions, and encrypted provider-token references are designed for a dedicated server project. The weekly Plan remains browser-local.</span></div>
+          <div class="trust-card"><small>Phase 19 provider plane</small><strong>Backend provisioned · provider inactive</strong><span>Provider consent, connections, sync cursors, external accounts/transactions, and encrypted provider-token references are isolated under This Week resources inside BennyBundles’s Project. The weekly Plan remains browser-local.</span></div>
           <div class="trust-card"><small>Imports</small><strong>Text-only local parsing</strong><span>Files are capped at 5 MB and 10,000 data rows. Imported strings are normalized, control characters are removed, lengths are capped, and UI output is escaped.</span></div>
           <div class="trust-card"><small>Retention</small><strong>Local until you clear or delete it</strong><span>Core plan/history remains in browser storage until changed or deleted. Connected Data limits audit history to the most recent 120 actions and import batches to the most recent 40.</span></div>
           <div class="trust-card"><small>At-rest protection</small><strong>No app-level storage encryption</strong><span>This Week does not encrypt localStorage itself. Anyone with access to this browser profile or an unlocked device may be able to access the stored app data.</span></div>
