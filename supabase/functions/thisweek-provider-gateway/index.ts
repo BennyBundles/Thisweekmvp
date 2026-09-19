@@ -386,18 +386,28 @@ Deno.serve(async (req: Request) => {
   const action = safeText(body.action, 60);
 
   try {
+    const productionLegalActions = new Set(["consent","begin_connect","finalize_connect","sync"]);
+    if (PROVIDER_EXECUTION_MODE === "production" && productionLegalActions.has(action)) {
+      const legal = await admin.rpc("tw_user_production_legal_ready",{p_user_id:user.id});
+      if (legal.error || legal.data !== true) {
+        return json(origin,403,{error:"production_legal_acceptance_required"});
+      }
+    }
+
     if (action === "status") {
-      const [{ data: connections }, releaseStatus] = await Promise.all([
+      const [{ data: connections }, releaseStatus, legalReady] = await Promise.all([
         admin.from("tw_provider_connections")
           .select("id,provider,institution_name,status,last_success_at,last_error_code")
           .eq("user_id", user.id).order("created_at", { ascending: false }),
         admin.rpc("tw_release_status"),
+        admin.rpc("tw_user_production_legal_ready",{p_user_id:user.id}),
       ]);
       return json(origin, 200, {
         ok: true, provider: PROVIDER, configured: providerConfigured(),
         executionMode: PROVIDER_EXECUTION_MODE,
         liveMoneyEnabled: LIVE_MONEY_ENABLED,
         productionInterlock: releaseStatus.error ? null : releaseStatus.data,
+        productionLegalReady: legalReady.error ? false : legalReady.data === true,
         consentVersion: CONSENT_VERSION, connections: connections || [],
       });
     }
