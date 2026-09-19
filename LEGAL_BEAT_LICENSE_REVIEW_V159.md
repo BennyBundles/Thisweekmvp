@@ -62,3 +62,27 @@ PASS:
 ## Product behavior
 
 The current website may display and instantiate these documents as DRAFT TERMS and accept inquiries. It must not describe the agreements as attorney-approved or enable final paid licensing until the activation blockers above are resolved.
+
+
+## V15.10 rights/sample forensic review update
+
+A source-level audio review has now been completed for all 22 supplied stereo masters. This is a forensic/source review, not a copyright-database clearance certificate.
+
+### Result
+- 22/22: source audio reviewed.
+- 22/22: no external reference-catalog fingerprint match or chain-of-title/source-project manifest was available in the review environment.
+- Therefore none of the 22 is represented as legally "sample cleared" solely from listening/audio analysis.
+- beat-008 / No Witnesses retains the historical filename statement "No Samples", but that statement remains unverified.
+- The catalogue status is now `forensic_audio_review_complete_rights_clearance_unverified` rather than `not_reviewed`.
+
+### Why this remains a legal blocker
+A rendered stereo master cannot prove that every audible element was originally performed/synthesized, licensed from a royalty-free library under applicable terms, or cleared from a third-party recording/composition. Final clearance requires provenance evidence such as the DAW project/source list, sample-pack/license receipts, collaborator confirmations, or rights-holder licenses where applicable.
+
+### MP3-derived WAV files
+WAV delivery derivatives were created for beat-009, beat-017, beat-018 and beat-019 at 48 kHz / 24-bit PCM. They are explicitly marked `decoded_from_original_mp3`. Converting MP3 to WAV does not restore discarded source information, so these derivatives are not represented as genuine lossless masters and do not remove the lossless-master blocker.
+
+### Trackouts/stems
+True production stems cannot be reconstructed from a stereo master. Source-separation stems may be useful as convenience/editing assets but are not equivalent to original DAW trackouts. Trackout Pro therefore remains blocked until either:
+1. original DAW/export stems are supplied, or
+2. separated stems are created and the product is expressly renamed/disclosed as AI/source-separated stems rather than original trackouts.
+
