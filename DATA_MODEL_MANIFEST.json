@@ -643,7 +643,7 @@
     ]
   },
   "phase29AutomatedMonitoring": {
-    "status": "scheduled_monitor_active_external_paging_unconfigured",
+    "status": "scheduled_monitor_active_dispatcher_built_channel_unconfigured",
     "activation": true,
     "cronJob": {
       "name": "thisweek-phase29-health-monitor",
@@ -676,6 +676,7 @@
       "externalChannelConfigured": false,
       "states": [
         "pending",
+        "sending",
         "sent",
         "failed",
         "suppressed"
@@ -695,12 +696,72 @@
     },
     "remainingGates": [
       "configure_external_paging_channel",
-      "build_notification_dispatcher",
       "named_staff_provisioning",
       "sandbox_adverse_event_end_to_end_validation",
       "formal_support_sla_approval",
       "retention_access_log_policy_approval",
       "provider_bank_escalation_procedures"
+    ]
+  },
+  "phase30NotificationDispatcher": {
+    "status": "dispatcher_active_channel_unconfigured",
+    "activation": true,
+    "notifierFunction": "thisweek-ops-notifier:v1",
+    "notifierVerifyJwt": false,
+    "cronAuth": "single_use_database_nonce",
+    "cronJob": {
+      "name": "thisweek-phase30-notification-dispatcher",
+      "schedule": "* * * * *",
+      "active": true
+    },
+    "tables": [
+      "tw_ops_notification_channel_status",
+      "tw_ops_dispatch_nonces"
+    ],
+    "serviceRoleRpcs": [
+      "tw_ops_issue_dispatch_nonce",
+      "tw_ops_consume_dispatch_nonce",
+      "tw_ops_claim_notifications",
+      "tw_ops_complete_notification",
+      "tw_ops_update_notification_channel"
+    ],
+    "delivery": {
+      "destinationEnv": "THISWEEK_OPS_NOTIFICATION_WEBHOOK_URL",
+      "optionalBearerEnv": "THISWEEK_OPS_NOTIFICATION_WEBHOOK_BEARER",
+      "httpsOnly": true,
+      "externalChannelConfigured": false,
+      "retryBackoffSeconds": {
+        "minimum": 60,
+        "maximum": 3600
+      },
+      "claimLeaseMinutes": 5,
+      "maxBatch": 10
+    },
+    "outboxStates": [
+      "pending",
+      "sending",
+      "sent",
+      "failed",
+      "suppressed"
+    ],
+    "safety": {
+      "browserTableAccess": false,
+      "staticSecretInCron": false,
+      "replayableCronNonce": false,
+      "unconfiguredChannelMarksSent": false,
+      "rawFinancialSecretsInPayload": false
+    },
+    "manualVerification": {
+      "cronToNotifierHandshake": true,
+      "configured": false,
+      "channelState": "unconfigured",
+      "errorCode": "notification_webhook_not_configured"
+    },
+    "remainingGates": [
+      "select_approved_external_notification_destination",
+      "configure_edge_function_destination_secret",
+      "deliver_synthetic_high_critical_test_end_to_end",
+      "approve_incident_escalation_runbook"
     ]
   }
 }
