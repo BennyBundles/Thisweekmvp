@@ -8,7 +8,9 @@ const ACCOUNT_URL=RELEASE.canonicalAccountUrl||'https://bennybundles.github.io/T
 const CONFIRM_REDIRECT=RELEASE.confirmationRedirect||ACCOUNT_URL;
 const RECOVERY_REDIRECT=RELEASE.recoveryRedirect||ACCOUNT_URL+'?mode=recovery';
 const $=id=>document.getElementById(id);
-let session=readSession(),user=null,lastEnroll=null,recoveryMode=new URLSearchParams(location.search).get('mode')==='recovery';
+const PARAMS=new URLSearchParams(location.search);
+const LEGAL_ENVIRONMENT=PARAMS.get('legal')==='sandbox'?'sandbox':'production';
+let session=readSession(),user=null,lastEnroll=null,recoveryMode=PARAMS.get('mode')==='recovery';
 let captchaToken='',captchaWidgetId=null;
 
 function readSession(){try{return JSON.parse(sessionStorage.getItem(SESSION_KEY)||sessionStorage.getItem(LEGACY_KEY)||'null');}catch{return null;}}
@@ -49,6 +51,53 @@ async function initCaptcha(){
 async function api(path,options={}){const res=await fetch(SUPABASE_URL+path,{...options,headers:{...headers(!!options.auth),...(options.headers||{})}});const text=await res.text();let body={};try{body=text?JSON.parse(text):{};}catch{body={};}if(!res.ok)throw new Error(body.msg||body.message||body.error_description||body.error||('HTTP '+res.status));return body;}
 async function ensureFresh(){if(!session?.refresh_token)return false;if((session.expires_at||0)-Math.floor(Date.now()/1000)>90)return true;const body=await api('/auth/v1/token?grant_type=refresh_token',{method:'POST',body:JSON.stringify({refresh_token:session.refresh_token})});writeSession(body);return true;}
 function setResult(id,msg,cls=''){const el=$(id);el.textContent=msg;el.className='result '+cls;}
+function renderLegal(status){
+  const root=$('legalList');if(!root)return;root.textContent='';
+  const env=status?.environment||LEGAL_ENVIRONMENT;
+  const docs=Array.isArray(status?.documents)?status.documents:[];
+  $('legalIntro').textContent=env==='sandbox'
+    ?'Sandbox-only disclosure receipts for testing. These are not production legal terms.'
+    :'Production money features require acceptance of every currently active required disclosure version.';
+  $('legalModeLink').href=env==='sandbox'?'./':'?legal=sandbox';
+  $('legalModeLink').textContent=env==='sandbox'?'Back to production disclosures':'Open Sandbox disclosure test';
+  if(!docs.length){
+    const empty=document.createElement('div');empty.className='notice';
+    empty.textContent=env==='production'
+      ?'No approved production disclosure set is active. Production money remains blocked.'
+      :'No active Sandbox disclosure set is available.';
+    root.appendChild(empty);
+    setResult('legalResult','Disclosure readiness: blocked.','warn');
+    return;
+  }
+  for(const d of docs){
+    const row=document.createElement('div');row.className='legal-row '+(d.accepted?'accepted':'pending');
+    const copy=document.createElement('div');
+    const strong=document.createElement('strong');strong.textContent=d.title||d.documentKey||'Disclosure';
+    const meta=document.createElement('span');
+    meta.textContent='Version '+(d.version||'—')+' · '+(d.requiredForMoney?'required':'optional')+' · SHA-256 '+String(d.contentSha256||'').slice(0,12)+'…';
+    const link=document.createElement('a');link.href=d.publicPath||'#';link.target='_blank';link.rel='noopener noreferrer';link.textContent='Open document';
+    copy.append(strong,meta,link);
+    const action=document.createElement('div');
+    if(d.accepted){const badge=document.createElement('span');badge.className='good';badge.textContent='Accepted';action.appendChild(badge);}
+    else{
+      const btn=document.createElement('button');btn.type='button';btn.className='primary';btn.textContent='I agree to this version';btn.disabled=!session?.access_token;
+      btn.onclick=()=>acceptLegal(d.id).catch(e=>setResult('legalResult',e.message,'bad'));
+      action.appendChild(btn);
+    }
+    row.append(copy,action);root.appendChild(row);
+  }
+  const ready=status?.ready===true;
+  setResult('legalResult',ready
+    ?'All required '+env+' disclosures are accepted.'
+    :'Required '+env+' disclosures are not fully accepted.',ready?'good':'warn');
+}
+async function acceptLegal(documentId){
+  const body=await accountGateway('accept_legal',{documentId});
+  const status=body.legal?.[LEGAL_ENVIRONMENT]||null;
+  renderLegal(status);
+  setResult('legalResult','Disclosure version accepted and receipt recorded.','good');
+}
+
 function updateUi(){const signed=!!session?.access_token,p=session?.access_token?payload(session.access_token):{};$('sessionState').textContent=signed?'Signed in':'Signed out';$('aalState').textContent=p.aal||'—';$('cloudState').textContent=user?.email||'—';for(const id of ['refreshStatus','signOutAll','enrollMfa','verifyMfa','deleteAccount'])$(id).disabled=!signed;$('authCard').classList.toggle('hidden',signed);$('recoveryCard').classList.toggle('hidden',!recoveryMode||!signed);}
 function handleHash(){if(!location.hash.includes('access_token='))return;const q=new URLSearchParams(location.hash.slice(1));const access_token=q.get('access_token'),refresh_token=q.get('refresh_token');if(access_token){writeSession({access_token,refresh_token,expires_in:Number(q.get('expires_in')||3600),token_type:q.get('token_type')||'bearer'});if(q.get('type')==='recovery')recoveryMode=true;history.replaceState(null,'',location.pathname+(recoveryMode?'?mode=recovery':''));}}
 async function getUser(){if(!session?.access_token){user=null;renderFactors();updateUi();return null;}await ensureFresh();user=await api('/auth/v1/user',{method:'GET',auth:true});renderFactors();updateUi();return user;}
@@ -61,9 +110,9 @@ async function enroll(){await ensureFresh();const body=await api('/auth/v1/facto
 async function verifyMfa(){await ensureFresh();const code=$('totpCode').value.trim();const factor=(user?.factors||[]).find(x=>x.status==='unverified')||lastEnroll;if(!factor||!/^[0-9]{6,8}$/.test(code))throw new Error('Enter the current authenticator code.');const challenge=await api('/auth/v1/factors/'+encodeURIComponent(factor.id)+'/challenge',{method:'POST',auth:true,body:'{}'});const verified=await api('/auth/v1/factors/'+encodeURIComponent(factor.id)+'/verify',{method:'POST',auth:true,body:JSON.stringify({challenge_id:challenge.id,code})});if(verified.access_token)writeSession(verified);$('totpCode').value='';lastEnroll=null;await getUser();await accountStatus();setResult('mfaResult','Authenticator verified.','good');}
 async function unenroll(id){await ensureFresh();await api('/auth/v1/factors/'+encodeURIComponent(id),{method:'DELETE',auth:true});lastEnroll=null;await getUser();setResult('mfaResult','Authenticator factor removed.','warn');}
 async function accountGateway(action,extra={}){await ensureFresh();const res=await fetch(SUPABASE_URL+'/functions/v1/thisweek-account-gateway',{method:'POST',headers:{apikey:PUBLISHABLE_KEY,Authorization:'Bearer '+session.access_token,'Content-Type':'application/json'},body:JSON.stringify({action,...extra})});const text=await res.text();let body={};try{body=JSON.parse(text);}catch{}if(!res.ok){const e=new Error(body.error||('Account gateway HTTP '+res.status));e.body=body;throw e;}return body;}
-async function accountStatus(){const body=await accountGateway('status');$('cloudState').textContent=body.user?.email||'—';$('aalState').textContent=body.session?.aal?.currentLevel||payload(session.access_token).aal||'—';const c=body.closure;setResult('sessionResult',(c?.hardDeleteEligible?'Cloud account can currently be hard-deleted.':'Financial history exists; account closure requires retention review.')+' Active session verified server-side.',c?.hardDeleteEligible?'good':'warn');$('deleteEmail').value=body.user?.email||'';return body;}
+async function accountStatus(){const body=await accountGateway('status');$('cloudState').textContent=body.user?.email||'—';$('aalState').textContent=body.session?.aal?.currentLevel||payload(session.access_token).aal||'—';const c=body.closure;setResult('sessionResult',(c?.hardDeleteEligible?'Cloud account can currently be hard-deleted.':'Financial history exists; account closure requires retention review.')+' Active session verified server-side.',c?.hardDeleteEligible?'good':'warn');$('deleteEmail').value=body.user?.email||'';renderLegal(body.legal?.[LEGAL_ENVIRONMENT]||null);return body;}
 async function signOutAll(){await ensureFresh();try{await api('/auth/v1/logout?scope=global',{method:'POST',auth:true,body:'{}'});}finally{writeSession(null);user=null;renderFactors();setResult('sessionResult','Signed out across refresh sessions.','good');}}
 async function deleteAccount(){const email=$('deleteEmail').value.trim(),confirmation=$('deletePhrase').value.trim();if(!email||confirmation!=='DELETE')throw new Error('Enter your email and type DELETE exactly.');try{const body=await accountGateway('delete_account',{email,confirmation});if(body.deleted){writeSession(null);user=null;renderFactors();$('deletePhrase').value='';setResult('deleteResult','Cloud account deleted. Local Plan data remains on this browser until you delete it from Privacy & Local Data.','good');}}catch(e){if(e.body?.error==='retention_review_required'){setResult('deleteResult','Account closure request recorded. Financial history requires retention review instead of immediate hard deletion.','warn');return;}throw e;}}
 function bind(id,fn){$(id).addEventListener('click',()=>fn().catch(e=>setResult(id==='deleteAccount'?'deleteResult':id==='updatePassword'?'recoveryResult':id.includes('Mfa')?'mfaResult':'authResult',e.message,'bad')));}
 bind('signIn',signIn);bind('signUp',signUp);bind('forgot',forgot);bind('updatePassword',updatePassword);bind('enrollMfa',enroll);bind('verifyMfa',verifyMfa);bind('refreshStatus',accountStatus);bind('signOutAll',signOutAll);bind('deleteAccount',deleteAccount);
-handleHash();updateUi();renderFactors();renderReleaseReadiness();initCaptcha().catch(e=>setResult('authReleaseResult',e.message,'bad'));if(session?.access_token)getUser().then(()=>accountStatus()).catch(e=>{writeSession(null);setResult('authResult','Session expired. Sign in again.','warn');});
+handleHash();updateUi();renderFactors();renderReleaseReadiness();renderLegal(null);initCaptcha().catch(e=>setResult('authReleaseResult',e.message,'bad'));if(session?.access_token)getUser().then(()=>accountStatus()).catch(e=>{writeSession(null);setResult('authResult','Session expired. Sign in again.','warn');});
