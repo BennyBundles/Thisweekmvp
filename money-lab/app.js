@@ -105,7 +105,7 @@ function updateUi(){
   $('aalState').textContent=p.aal||'—';
   $('userState').textContent=currentUser?.email||p.sub?.slice(0,8)||'—';
   const signed=!!session?.access_token;
-  for(const id of ['signOut','enrollMfa','verifyMfa','gatewayStatus','gatewayBootstrap','gatewaySummary','sandboxCredit','allocate','chainRefresh','unitApplication','unitApplicationStatus','unitDeposit','unitDirectFund','plaidConsent','plaidStart','plaidFinalize','plaidAccounts','plaidUnitLink','externalFund','createCard','simulateAuth','directDepositToken','methodSetup','methodPay'])$(id).disabled=!signed;
+  for(const id of ['signOut','enrollMfa','verifyMfa','gatewayStatus','gatewayBootstrap','gatewaySummary','sandboxCredit','allocate','chainRefresh','unitApplication','unitApplicationStatus','unitDeposit','unitDirectFund','plaidConsent','plaidStart','plaidFinalize','plaidAccounts','plaidUnitLink','externalFund','createCard','simulateAuth','directDepositToken','methodSetup','methodPay','registerWebhooks'])$(id).disabled=!signed;
 }
 async function signIn(){
   const email=$('email').value.trim(),password=$('password').value;
@@ -332,6 +332,11 @@ async function methodPay(){
   log('Method Sandbox bill payment',body);
   await refreshChain();
 }
+async function registerWebhooks(){
+  const body=await gateway('register_sandbox_webhooks');
+  log('Provider webhook registrations',body);
+  return body;
+}
 
 async function gatewayStatus(){const body=await gateway('status');$('moneyMode').textContent=body.executionMode||'unknown';log('Gateway status',body);}
 async function gatewayBootstrap(){log('Money profile bootstrap',await gateway('bootstrap'));}
@@ -339,5 +344,5 @@ async function gatewaySummary(){log('Ledger summary',await gateway('summary'));}
 async function sandboxCredit(){log('Sandbox credit',await gateway('sandbox_credit',{amountCents:cents($('sandboxAmount').value),clientRequestId:requestId('lab_credit')}));}
 async function allocate(){log('Envelope allocation',await gateway('allocate',{amountCents:cents($('allocateAmount').value),envelopeKey:$('envelope').value,clientRequestId:requestId('lab_allocate')}));}
 function bind(id,fn){$(id).addEventListener('click',()=>fn().catch(e=>log('Error',e.message)));}
-bind('signIn',signIn);bind('signUp',signUp);bind('signOut',signOut);bind('enrollMfa',enrollMfa);bind('verifyMfa',verifyMfa);bind('gatewayStatus',gatewayStatus);bind('gatewayBootstrap',gatewayBootstrap);bind('gatewaySummary',gatewaySummary);bind('sandboxCredit',sandboxCredit);bind('allocate',allocate);bind('chainRefresh',refreshChain);bind('unitApplication',unitApplication);bind('unitApplicationStatus',unitApplicationStatus);bind('unitDeposit',unitDeposit);bind('unitDirectFund',unitDirectFund);bind('plaidConsent',plaidConsent);bind('plaidStart',plaidStart);bind('plaidFinalize',plaidFinalize);bind('plaidAccounts',plaidAccounts);bind('plaidUnitLink',plaidUnitLink);bind('externalFund',externalFund);bind('createCard',createCard);bind('simulateAuth',simulateAuth);bind('directDepositToken',directDepositToken);bind('methodSetup',methodSetup);bind('methodPay',methodPay);
+bind('signIn',signIn);bind('signUp',signUp);bind('signOut',signOut);bind('enrollMfa',enrollMfa);bind('verifyMfa',verifyMfa);bind('gatewayStatus',gatewayStatus);bind('gatewayBootstrap',gatewayBootstrap);bind('gatewaySummary',gatewaySummary);bind('sandboxCredit',sandboxCredit);bind('allocate',allocate);bind('chainRefresh',refreshChain);bind('unitApplication',unitApplication);bind('unitApplicationStatus',unitApplicationStatus);bind('unitDeposit',unitDeposit);bind('unitDirectFund',unitDirectFund);bind('plaidConsent',plaidConsent);bind('plaidStart',plaidStart);bind('plaidFinalize',plaidFinalize);bind('plaidAccounts',plaidAccounts);bind('plaidUnitLink',plaidUnitLink);bind('externalFund',externalFund);bind('createCard',createCard);bind('simulateAuth',simulateAuth);bind('directDepositToken',directDepositToken);bind('methodSetup',methodSetup);bind('methodPay',methodPay);bind('registerWebhooks',registerWebhooks);
 updateUi();renderFactors();if(session?.access_token)getUser().then(()=>refreshChain()).catch(e=>{log('Session restore failed',e.message);writeSession(null);});
