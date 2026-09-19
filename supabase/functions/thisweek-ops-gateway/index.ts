@@ -55,8 +55,44 @@ async function requireAal2(userClient:ReturnType<typeof createClient>){
   const {data,error}=await userClient.auth.mfa.getAuthenticatorAssuranceLevel();
   if(error||data?.currentLevel!=="aal2")throw new Error("mfa_aal2_required");
 }
+
+function minutesOld(value:unknown):number{
+  const ms=Date.now()-new Date(String(value||0)).getTime();
+  return Number.isFinite(ms)?Math.max(0,ms/60000):0;
+}
+function buildHealth(
+  alerts:AnyRecord[],cases:AnyRecord[],reviews:AnyRecord[],support:AnyRecord[],
+  providerFailures:AnyRecord[],incidents:AnyRecord[],policy:AnyRecord|null
+){
+  const p=policy||{
+    policy_version:"fallback-internal",
+    critical_alert_ack_minutes:15,
+    high_alert_ack_minutes:60,
+    support_first_response_minutes:240,
+    risk_review_minutes:240,
+    case_update_minutes:1440,
+    public_commitment:false,
+  };
+  const criticalOverdue=alerts.filter(x=>x.severity==="critical"&&x.state==="open"&&minutesOld(x.created_at)>Number(p.critical_alert_ack_minutes||15)).length;
+  const highOverdue=alerts.filter(x=>x.severity==="high"&&x.state==="open"&&minutesOld(x.created_at)>Number(p.high_alert_ack_minutes||60)).length;
+  const supportOverdue=support.filter(x=>!x.first_staff_response_at&&!["resolved","closed"].includes(String(x.state))&&minutesOld(x.created_at)>Number(p.support_first_response_minutes||240)).length;
+  const reviewOverdue=reviews.filter(x=>x.state==="pending"&&minutesOld(x.created_at)>Number(p.risk_review_minutes||240)).length;
+  const staleCases=cases.filter(x=>!["resolved","closed"].includes(String(x.state))&&minutesOld(x.updated_at)>Number(p.case_update_minutes||1440)).length;
+  const criticalIncidents=incidents.filter(x=>x.state!=="resolved"&&x.severity==="critical").length;
+  const majorIncidents=incidents.filter(x=>x.state!=="resolved"&&x.severity==="major").length;
+  const recentProviderFailures=providerFailures.length;
+  const state=criticalOverdue>0||criticalIncidents>0||recentProviderFailures>=5?"critical":
+    highOverdue>0||supportOverdue>0||reviewOverdue>0||staleCases>0||majorIncidents>0||recentProviderFailures>0?"degraded":"healthy";
+  return {
+    state,
+    policyVersion:safeText(p.policy_version,80)||"fallback-internal",
+    internalTargetsOnly:p.public_commitment!==true,
+    counts:{criticalOverdue,highOverdue,supportOverdue,reviewOverdue,staleCases,recentProviderFailures,criticalIncidents,majorIncidents}
+  };
+}
 async function dashboard(admin:ReturnType<typeof createClient>){
-  const [alerts,cases,reviews,riskEvents,staffActions]=await Promise.all([
+  const failureSince=new Date(Date.now()-15*60*1000).toISOString();
+  const [alerts,cases,reviews,riskEvents,staffActions,supportRequests,supportMessages,incidents,slaPolicy,providerFailures]=await Promise.all([
     admin.from("tw_ops_alerts")
       .select("id,user_id,case_id,risk_review_id,alert_type,severity,state,safe_detail,created_at,updated_at,acknowledged_at")
       .neq("state","resolved").order("created_at",{ascending:false}).limit(100),
@@ -72,13 +108,41 @@ async function dashboard(admin:ReturnType<typeof createClient>){
     admin.from("tw_ops_staff_actions")
       .select("id,staff_user_id,staff_role,action,target_type,target_ref,reason_code,safe_detail,created_at")
       .order("id",{ascending:false}).limit(100),
+    admin.from("tw_support_requests")
+      .select("id,user_id,request_type,subject,resource_kind,resource_ref,provider,priority,state,ops_case_id,assigned_to_staff_user_id,first_staff_response_at,created_at,updated_at,resolved_at")
+      .not("state","in","(resolved,closed)").order("created_at",{ascending:true}).limit(100),
+    admin.from("tw_support_messages")
+      .select("id,request_id,user_id,author_kind,body,created_at")
+      .order("id",{ascending:false}).limit(300),
+    admin.from("tw_ops_incidents")
+      .select("id,incident_key,title,component,severity,state,safe_summary,created_by_staff_user_id,started_at,updated_at,resolved_at")
+      .neq("state","resolved").order("started_at",{ascending:false}).limit(50),
+    admin.from("tw_ops_sla_policies")
+      .select("policy_version,environment,critical_alert_ack_minutes,high_alert_ack_minutes,support_first_response_minutes,risk_review_minutes,case_update_minutes,public_commitment")
+      .eq("environment","sandbox").eq("active",true).maybeSingle(),
+    admin.from("tw_money_provider_events")
+      .select("id,provider,event_type,error_code,received_at")
+      .eq("state","failed").gte("received_at",failureSince).order("received_at",{ascending:false}).limit(100),
   ]);
-  if(alerts.error||cases.error||reviews.error||riskEvents.error||staffActions.error)throw new Error("ops_dashboard_read_failed");
+  if(alerts.error||cases.error||reviews.error||riskEvents.error||staffActions.error||supportRequests.error||supportMessages.error||incidents.error||slaPolicy.error||providerFailures.error)throw new Error("ops_dashboard_read_failed");
   const eventById=new Map((riskEvents.data||[]).map((e:AnyRecord)=>[String(e.id),e]));
+  const supportRows=supportRequests.data||[];
+  const supportIds=new Set(supportRows.map((x:AnyRecord)=>String(x.id)));
+  const supportMessageRows=(supportMessages.data||[]).filter((x:AnyRecord)=>supportIds.has(String(x.request_id))).reverse();
+  const incidentRows=incidents.data||[];
+  const health=buildHealth(
+    alerts.data||[],cases.data||[],reviews.data||[],supportRows,
+    providerFailures.data||[],incidentRows,slaPolicy.data||null
+  );
   return {
     alerts:alerts.data||[],
     cases:cases.data||[],
     riskReviews:(reviews.data||[]).map((r:AnyRecord)=>({...r,riskEvent:eventById.get(String(r.risk_event_id))||null})),
+    supportRequests:supportRows,
+    supportMessages:supportMessageRows,
+    incidents:incidentRows,
+    health,
+    recentProviderFailures:providerFailures.data||[],
     recentStaffActions:staffActions.data||[],
   };
 }
@@ -131,12 +195,84 @@ Deno.serve(async(req)=>{
           alerts:data.alerts.length,
           cases:data.cases.length,
           riskReviews:data.riskReviews.length,
-        }
+          supportRequests:data.supportRequests.length,
+          incidents:data.incidents.length,
+        },
+        health:data.health
       });
     }
     if(action==="dashboard"){
       const data=await dashboard(admin);
       return json(origin,200,{ok:true,staff:{userId:String(user.id),email:safeText(user.email,320)||null,role},...data});
+    }
+    if(action==="support_assign"){
+      const requestId=validUuid(body.requestId);if(!requestId)throw new Error("request_id_required");
+      const {data,error}=await admin.rpc("tw_support_staff_assign",{
+        p_staff_user_id:String(user.id),p_staff_role:role,p_request_id:requestId
+      });
+      if(error)throw new Error(safeText(error.message,120)||"support_assignment_failed");
+      return json(origin,200,{ok:true,result:data});
+    }
+    if(action==="support_reply"){
+      const requestId=validUuid(body.requestId);
+      const message=safeText(body.message,4000);
+      const nextState=safeText(body.nextState,40)||"waiting_on_user";
+      if(!requestId||!message)throw new Error("support_reply_fields_required");
+      const {data,error}=await admin.rpc("tw_support_staff_reply",{
+        p_staff_user_id:String(user.id),p_staff_role:role,p_request_id:requestId,
+        p_message:message,p_next_state:nextState
+      });
+      if(error)throw new Error(safeText(error.message,120)||"support_reply_failed");
+      return json(origin,200,{ok:true,messageId:data});
+    }
+    if(action==="open_incident"){
+      const clientRequestId=safeText(body.clientRequestId,120);
+      const title=safeText(body.title,160),component=safeText(body.component,40),
+        severity=safeText(body.severity,20),summary=safeText(body.summary,2000);
+      if(clientRequestId.length<8||title.length<3||!summary)throw new Error("incident_fields_required");
+      if(!["auth","provider_gateway","money_gateway","provider_webhooks","risk_engine","ops","support","release"].includes(component))throw new Error("invalid_incident_component");
+      if(!["minor","major","critical"].includes(severity))throw new Error("invalid_incident_severity");
+      const key="manual:"+clientRequestId;
+      let incidentId:string|null=null;
+      const existing=await admin.from("tw_ops_incidents").select("id").eq("incident_key",key).maybeSingle();
+      if(existing.error)throw new Error("incident_lookup_failed");
+      if(existing.data?.id) incidentId=String(existing.data.id);
+      else{
+        const inserted=await admin.from("tw_ops_incidents").insert({
+          incident_key:key,title,component,severity,state:"investigating",
+          safe_summary:summary,created_by_staff_user_id:String(user.id)
+        }).select("id").single();
+        if(inserted.error||!inserted.data)throw new Error("incident_create_failed");
+        incidentId=String(inserted.data.id);
+        await admin.from("tw_ops_incident_events").insert({
+          incident_id:incidentId,staff_user_id:String(user.id),event_type:"incident_opened",
+          state:"investigating",safe_detail:summary
+        });
+        await admin.from("tw_ops_staff_actions").insert({
+          staff_user_id:String(user.id),staff_role:role,action:"incident_open",
+          target_type:"incident",target_ref:incidentId,reason_code:severity,
+          safe_detail:{component,title}
+        });
+      }
+      return json(origin,200,{ok:true,incidentId});
+    }
+    if(action==="update_incident"){
+      const incidentId=validUuid(body.incidentId),state=safeText(body.state,30),summary=safeText(body.summary,2000);
+      if(!incidentId||!["investigating","identified","monitoring","resolved"].includes(state)||!summary)throw new Error("incident_update_fields_required");
+      const updated=await admin.from("tw_ops_incidents").update({
+        state,safe_summary:summary,updated_at:new Date().toISOString(),
+        resolved_at:state==="resolved"?new Date().toISOString():null
+      }).eq("id",incidentId).select("id").single();
+      if(updated.error||!updated.data)throw new Error("incident_update_failed");
+      await admin.from("tw_ops_incident_events").insert({
+        incident_id:incidentId,staff_user_id:String(user.id),event_type:"incident_update",
+        state,safe_detail:summary
+      });
+      await admin.from("tw_ops_staff_actions").insert({
+        staff_user_id:String(user.id),staff_role:role,action:"incident_update",
+        target_type:"incident",target_ref:incidentId,reason_code:state
+      });
+      return json(origin,200,{ok:true,incidentId});
     }
     if(action==="assign_case"){
       const caseId=validUuid(body.caseId);if(!caseId)throw new Error("case_id_required");
