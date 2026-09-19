@@ -13,6 +13,9 @@ const PINWHEEL_BASE_URL = (Deno.env.get("PINWHEEL_BASE_URL") || "https://api.get
 const METHOD_API_KEY = Deno.env.get("METHOD_API_KEY") || "";
 const METHOD_BASE_URL = (Deno.env.get("METHOD_BASE_URL") || "https://dev.methodfi.com").replace(/\/$/, "");
 const METHOD_VERSION = Deno.env.get("METHOD_VERSION") || "2025-12-01";
+const UNIT_WEBHOOK_SECRET = Deno.env.get("UNIT_WEBHOOK_SECRET") || "";
+const METHOD_WEBHOOK_AUTH_TOKEN = Deno.env.get("METHOD_WEBHOOK_AUTH_TOKEN") || "";
+const METHOD_WEBHOOK_HMAC_SECRET = Deno.env.get("METHOD_WEBHOOK_HMAC_SECRET") || "";
 const PLAID_CLIENT_ID = Deno.env.get("PLAID_CLIENT_ID") || "";
 const PLAID_SECRET = Deno.env.get("PLAID_SECRET") || "";
 const PLAID_BASE_URL = (Deno.env.get("PLAID_BASE_URL") || "https://sandbox.plaid.com").replace(/\/$/, "");
@@ -641,6 +644,193 @@ async function methodPayment(payload: AnyRecord, idempotencyKey: string): Promis
     headers: { "Idempotency-Key": idempotencyKey },
     body: JSON.stringify(payload),
   });
+}
+
+
+function moneyWebhookUrl(): string {
+  return SUPABASE_URL.replace(/\/$/, "") + "/functions/v1/thisweek-money-webhook";
+}
+
+function cardAuthorizationUrl(): string {
+  return SUPABASE_URL.replace(/\/$/, "") + "/functions/v1/thisweek-unit-card-authorization";
+}
+
+async function ensureUnitWebhook(
+  label: string,
+  url: string,
+  subscriptionType: "OnlyAuthorizationRequest" | "NotAuthorizationRequest",
+): Promise<AnyRecord> {
+  if (!canExecuteProvider("unit")) throw new Error("unit_not_configured");
+  if (!UNIT_WEBHOOK_SECRET) throw new Error("unit_webhook_secret_missing");
+
+  const listDoc = await unitRequest("/webhooks?page%5Blimit%5D=100");
+  const rows = Array.isArray(listDoc.data) ? listDoc.data as AnyRecord[] : [];
+  const match = rows.find((row) => {
+    const attrs = row.attributes && typeof row.attributes === "object" ? row.attributes as AnyRecord : {};
+    return safeText(attrs.url, 700) === url &&
+      safeText(attrs.subscriptionType, 80) === subscriptionType;
+  });
+  if (match) {
+    const attrs = match.attributes && typeof match.attributes === "object" ? match.attributes as AnyRecord : {};
+    const id = safeText(match.id, 180);
+    const status = safeText(attrs.status, 60) || "Unknown";
+    if (id && status.toLowerCase() !== "enabled") {
+      await unitRequest("/webhooks/" + encodeURIComponent(id) + "/enable", {
+        method: "POST",
+        body: JSON.stringify({}),
+      });
+    }
+    return { id, provider: "unit", subscriptionType, url, status: id ? "Enabled" : status, reused: true };
+  }
+
+  const created = await unitRequest("/webhooks", {
+    method: "POST",
+    body: JSON.stringify({
+      data: {
+        type: "webhook",
+        attributes: {
+          label,
+          url,
+          token: UNIT_WEBHOOK_SECRET,
+          contentType: "Json",
+          deliveryMode: "AtLeastOnce",
+          includeResources: false,
+          subscriptionType,
+        },
+      },
+    }),
+  });
+  const data = created.data && typeof created.data === "object" ? created.data as AnyRecord : {};
+  const attrs = data.attributes && typeof data.attributes === "object" ? data.attributes as AnyRecord : {};
+  return {
+    id: safeText(data.id, 180) || null,
+    provider: "unit",
+    subscriptionType,
+    url,
+    status: safeText(attrs.status, 60) || "Enabled",
+    reused: false,
+  };
+}
+
+async function pinwheelRaw(path: string, init: RequestInit = {}): Promise<AnyRecord> {
+  if (!canExecuteProvider("pinwheel")) throw new Error("pinwheel_not_configured");
+  const res = await fetch(PINWHEEL_BASE_URL + path, {
+    ...init,
+    headers: {
+      "Content-Type": "application/json",
+      "Pinwheel-Version": "2025-07-08",
+      "X-API-SECRET": PINWHEEL_API_SECRET,
+      ...(init.headers || {}),
+    },
+  });
+  return parseResponse(res);
+}
+
+async function ensurePinwheelWebhook(url: string): Promise<AnyRecord> {
+  const listed = await pinwheelRaw("/v1/webhooks?limit=100");
+  const rows = Array.isArray(listed.data) ? listed.data as AnyRecord[] : [];
+  const required = ["direct_deposit_switch.added", "direct_deposit_allocations.added"];
+  const match = rows.find((row) => {
+    const enabled = Array.isArray(row.enabled_events) ? row.enabled_events.map(String) : [];
+    return safeText(row.url, 700) === url && required.every((event) => enabled.includes(event));
+  });
+  if (match) {
+    return {
+      id: safeText(match.id, 180) || null,
+      provider: "pinwheel",
+      url,
+      status: safeText(match.status, 60) || "ACTIVE",
+      enabledEvents: required,
+      reused: true,
+    };
+  }
+
+  const created = await pinwheelRaw("/v1/webhooks", {
+    method: "POST",
+    body: JSON.stringify({
+      url,
+      status: "ACTIVE",
+      enabled_events: required,
+    }),
+  });
+  const data = created.data && typeof created.data === "object" ? created.data as AnyRecord : created;
+  return {
+    id: safeText(data.id, 180) || null,
+    provider: "pinwheel",
+    url,
+    status: safeText(data.status, 60) || "ACTIVE",
+    enabledEvents: required,
+    reused: false,
+  };
+}
+
+async function ensureMethodWebhook(url: string): Promise<AnyRecord> {
+  if (!canExecuteProvider("method")) throw new Error("method_not_configured");
+  if (!METHOD_WEBHOOK_AUTH_TOKEN || !METHOD_WEBHOOK_HMAC_SECRET) {
+    throw new Error("method_webhook_secret_missing");
+  }
+
+  const listed = await methodRequest("/webhooks");
+  const rows = Array.isArray(listed) ? listed as AnyRecord[] : [];
+  const match = rows.find((row) =>
+    safeText(row.type, 80) === "payment.update" &&
+    safeText(row.url, 700) === url
+  );
+  if (match) {
+    return {
+      id: safeText(match.id, 180) || null,
+      provider: "method",
+      type: "payment.update",
+      url,
+      status: safeText(match.status, 60) || "active",
+      reused: true,
+    };
+  }
+
+  const created = await methodRequest("/webhooks", {
+    method: "POST",
+    body: JSON.stringify({
+      type: "payment.update",
+      url,
+      auth_token: METHOD_WEBHOOK_AUTH_TOKEN,
+      hmac_secret: METHOD_WEBHOOK_HMAC_SECRET,
+      expand_event: true,
+      metadata: { application: "this-week", environment: MONEY_EXECUTION_MODE },
+    }),
+  });
+  return {
+    id: safeText(created.id, 180) || null,
+    provider: "method",
+    type: "payment.update",
+    url,
+    status: safeText(created.status, 60) || "active",
+    reused: false,
+  };
+}
+
+async function registerSandboxWebhooks(): Promise<AnyRecord> {
+  if (MONEY_EXECUTION_MODE !== "sandbox") throw new Error("sandbox_action_disabled");
+  const generalUrl = moneyWebhookUrl();
+  const cardUrl = cardAuthorizationUrl();
+
+  const [unitEvents, unitAuth, pinwheel, method] = await Promise.all([
+    ensureUnitWebhook("This Week Sandbox Events", generalUrl, "NotAuthorizationRequest"),
+    ensureUnitWebhook("This Week Sandbox Card Authorization", cardUrl, "OnlyAuthorizationRequest"),
+    ensurePinwheelWebhook(generalUrl),
+    ensureMethodWebhook(generalUrl),
+  ]);
+
+  return {
+    unitEvents,
+    unitAuthorization: unitAuth,
+    pinwheel,
+    method,
+    targets: {
+      general: generalUrl,
+      unitAuthorization: cardUrl,
+    },
+    secretsReturned: false,
+  };
 }
 
 async function bootstrapMoney(admin: ReturnType<typeof createClient>, userId: string) {
@@ -1417,6 +1607,13 @@ Deno.serve(async (req: Request) => {
       return json(origin, 200, { ok: true, simulation: result });
     }
 
+
+
+    if (action === "register_sandbox_webhooks") {
+      await requireAal2ForProduction(userClient);
+      const result = await registerSandboxWebhooks();
+      return json(origin, 200, { ok: true, registrations: result });
+    }
 
     if (action === "method_sandbox_setup") {
       const result = await methodSandboxSetup(admin, user.id);
