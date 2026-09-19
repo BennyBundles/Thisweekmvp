@@ -99,7 +99,7 @@ jobs:
             html="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/?v=${SHORT}" || true)"
             manifest="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/release.json?v=${SHORT}" || true)"
 
-            if printf '%s' "$html" | grep -q 'This Week' && printf '%s' "$manifest" | grep -q "$RELEASE_SHA"; then
+            if grep -Fq 'This Week' <<< "$html" && grep -Fq -- "$RELEASE_SHA" <<< "$manifest"; then
               success=1
               break
             fi
