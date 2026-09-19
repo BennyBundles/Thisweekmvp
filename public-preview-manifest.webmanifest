@@ -1,0 +1,21 @@
+{
+  "name": "This Week — Weekly Money Planner",
+  "short_name": "This Week",
+  "description": "A private, mobile-first weekly financial planning and decision-support workspace.",
+  "id": "./",
+  "start_url": "./?mode=demo",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#040a12",
+  "theme_color": "#07151f",
+  "categories": ["finance", "productivity"],
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
