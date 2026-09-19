@@ -7,6 +7,24 @@
       "url": "https://www.youtube.com/@bennybundles",
       "label": "Benny Bundles YouTube channel",
       "note": "Existing channel route already used in project source."
+    },
+    "appleMusicArtist": {
+      "status": "verified",
+      "url": "https://music.apple.com/us/artist/benny-bundles/1730543318",
+      "label": "Benny Bundles on Apple Music",
+      "note": "Official artist-profile URL supplied by Benny."
+    },
+    "spotifyArtist": {
+      "status": "verified",
+      "url": "https://open.spotify.com/artist/7B0YUXsyJgA56DagjkbeGh",
+      "label": "Benny Bundles on Spotify",
+      "note": "Official artist-profile URL supplied by Benny."
+    },
+    "unitedMastersArtist": {
+      "status": "verified",
+      "url": "https://unitedmasters.com/a/benny-bundles",
+      "label": "Benny Bundles on UnitedMasters",
+      "note": "Official artist-profile URL supplied by Benny."
     }
   },
   "releases": {
