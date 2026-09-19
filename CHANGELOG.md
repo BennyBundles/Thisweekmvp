@@ -17,6 +17,9 @@ Production changes for **This Week** are recorded here.
 - Added Phase 22 release checks for Plaid Auth, Unit processor-token flow, Method dev setup/payment, Pinwheel SDK, credential gating and continued production network denial.
 - Added credential-gated, list-before-create provider webhook registration for Unit general events, Unit authorization requests, Pinwheel direct-deposit events, and Method payment updates.
 - Money Sandbox Lab now includes step **15 · Register provider webhooks**; signing secrets remain server-only and are never returned to the browser.
+- Added credential-preflight diagnostics for Plaid, Unit, Pinwheel and Method with explicit `missing_credentials`, `execution_locked`, `credential_valid`, and `credential_rejected` states.
+- Provider preflight is read-only and never bypasses `THISWEEK_MONEY_EXECUTION_MODE`; external credential checks run only in Sandbox execution mode.
+- Money Lab provider controls now disable themselves based on authenticated gateway readiness instead of enabling every provider action after sign-in.
 
 ### Activation state
 - Provider orchestration code: deployed.
