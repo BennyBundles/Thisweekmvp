@@ -1,0 +1,319 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://thisweek.local/schema/portable-v1.json",
+  "title": "This Week Portable Data Envelope",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "exportSchema",
+    "exportSchemaVersion",
+    "coreSchemaVersion",
+    "modelVersion",
+    "exportedAt",
+    "source",
+    "counts",
+    "data"
+  ],
+  "properties": {
+    "exportSchema": {
+      "const": "thisweek.portable"
+    },
+    "exportSchemaVersion": {
+      "const": 1
+    },
+    "coreSchemaVersion": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "modelVersion": {
+      "type": "string"
+    },
+    "exportedAt": {
+      "type": "string"
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "application",
+        "runtime",
+        "currency",
+        "amountUnit"
+      ],
+      "properties": {
+        "application": {
+          "const": "This Week"
+        },
+        "runtime": {
+          "const": "browser-local"
+        },
+        "currency": {
+          "const": "USD"
+        },
+        "amountUnit": {
+          "const": "cent"
+        }
+      },
+      "additionalProperties": true
+    },
+    "providerAdapterContract": {
+      "type": "object"
+    },
+    "backendSyncContract": {
+      "type": "object"
+    },
+    "entityManifest": {
+      "type": "object"
+    },
+    "integrity": {
+      "type": "object"
+    },
+    "counts": {
+      "type": "object"
+    },
+    "data": {
+      "type": "object",
+      "required": [
+        "modelVersion",
+        "currency",
+        "amountUnit",
+        "users",
+        "weeks",
+        "categories",
+        "weekCategoryBalances",
+        "bills",
+        "billContributions",
+        "transactions",
+        "adjustments",
+        "savingsGoals",
+        "connectedAccounts",
+        "importSources",
+        "imports",
+        "importRecords",
+        "reconciliations",
+        "preferences"
+      ],
+      "properties": {
+        "modelVersion": {
+          "type": "string"
+        },
+        "currency": {
+          "const": "USD"
+        },
+        "amountUnit": {
+          "const": "cent"
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "payProfiles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "userId"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "weekRules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "userId"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "savingsPolicies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "userId"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "preferences": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "userId"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "userId",
+              "type"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "weeks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "userId",
+              "startAt",
+              "endAt"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "weekCategoryBalances": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "weekId",
+              "categoryId"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "bills": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "userId"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "billContributions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "weekId",
+              "billId"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "transactions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "userId",
+              "weekId",
+              "categoryId",
+              "amountCents"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "adjustments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "weekId"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "savingsGoals": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "userId"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "connectedAccounts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "provider",
+              "status"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "importSources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "imports": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "importRecords": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "reconciliations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "importRecordId"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "connectedAudit": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}
