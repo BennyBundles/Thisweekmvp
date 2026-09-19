@@ -58,6 +58,9 @@ jobs:
       - name: Validate Release Certification Console
         run: node phase34-check.mjs
 
+      - name: Validate Staff Bootstrap
+        run: node phase34c-check.mjs
+
       - name: Validate Support Center
         run: node support-check.mjs support/index.html support/app.js
 
@@ -121,6 +124,11 @@ jobs:
           cp ops/release/index.html _site/ops/release/index.html
           cp ops/release/app.js _site/ops/release/app.js
           node phase34-check.mjs
+
+          mkdir -p _site/ops/bootstrap
+          cp ops/bootstrap/index.html _site/ops/bootstrap/index.html
+          cp ops/bootstrap/app.js _site/ops/bootstrap/app.js
+          node phase34c-check.mjs
 
           mkdir -p _site/support
           cp support/index.html _site/support/index.html
@@ -188,6 +196,8 @@ jobs:
             ops_js="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/ops/app.js?v=${SHORT}" || true)"
             release_console="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/ops/release/?v=${SHORT}" || true)"
             release_console_js="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/ops/release/app.js?v=${SHORT}" || true)"
+            staff_bootstrap="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/ops/bootstrap/?v=${SHORT}" || true)"
+            staff_bootstrap_js="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/ops/bootstrap/app.js?v=${SHORT}" || true)"
             support_center="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/support/?v=${SHORT}" || true)"
             support_js="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/support/app.js?v=${SHORT}" || true)"
             legal_sandbox="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/legal/sandbox/?v=${SHORT}" || true)"
@@ -205,6 +215,8 @@ jobs:
               && grep -Fq '/functions/v1/thisweek-ops-gateway' <<< "$ops_js" \
               && grep -Fq 'Release Evidence' <<< "$release_console" \
               && grep -Fq '/functions/v1/thisweek-release-gateway' <<< "$release_console_js" \
+              && grep -Fq 'Staff Bootstrap' <<< "$staff_bootstrap" \
+              && grep -Fq '/functions/v1/thisweek-staff-gateway' <<< "$staff_bootstrap_js" \
               && grep -Fq 'Support & Disputes' <<< "$support_center" \
               && grep -Fq '/functions/v1/thisweek-support-gateway' <<< "$support_js" \
               && grep -Fq 'accept_legal' <<< "$account_js" \
@@ -236,6 +248,7 @@ jobs:
             echo "- Account & Security: `${BASE}/account/?v=${SHORT}`"
             echo "- Operations Console: `${BASE}/ops/?v=${SHORT}`"
             echo "- Release Certification: `${BASE}/ops/release/?v=${SHORT}`"
+            echo "- Staff Bootstrap: `${BASE}/ops/bootstrap/?v=${SHORT}`"
             echo "- Support & Disputes: `${BASE}/support/?v=${SHORT}`"
             echo "- Sandbox disclosure fixtures: `${BASE}/legal/sandbox/?v=${SHORT}`"
           } >> "$GITHUB_STEP_SUMMARY"
