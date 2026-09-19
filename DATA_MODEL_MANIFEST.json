@@ -227,5 +227,44 @@
       "production_provider_approval",
       "cost_approval"
     ]
+  },
+  "phase21SignedMoneyEvents": {
+    "status": "controllers_deployed_execution_locked",
+    "activation": false,
+    "webhookFunction": "thisweek-money-webhook",
+    "webhookVerifyJwt": false,
+    "webhookAuthentication": {
+      "unit": "HMAC-SHA1 raw body + X-Unit-Signature",
+      "pinwheel": "v2 HMAC-SHA256 over timestamp + raw body",
+      "method": "auth token + HMAC-SHA256 timestamp/raw body + freshness check"
+    },
+    "cardAuthorizationFunction": "thisweek-unit-card-authorization",
+    "cardAuthorizationVerifyJwt": false,
+    "cardAuthorizationFailClosed": true,
+    "serviceRoleRpcs": [
+      "tw_money_reserve_card_authorization",
+      "tw_money_release_card_authorization",
+      "tw_money_settle_card_authorization"
+    ],
+    "supportsPartialAuthorization": true,
+    "moneyLab": {
+      "path": "/money-lab/",
+      "networkAllowlist": [
+        "https://xjtvawmppzwzrooairyx.supabase.co"
+      ],
+      "auth": "recoverable_email_password",
+      "mfa": "totp",
+      "tokenStorage": "sessionStorage_only",
+      "productionPlannerNetworkPolicy": "connect-src none"
+    },
+    "remainingGates": [
+      "provider_sandbox_credentials",
+      "unit_programmatic_authorization_enablement",
+      "provider_webhook_registration",
+      "sandbox_end_to_end_card_tests",
+      "production_auth_ui",
+      "fraud_rate_limits",
+      "provider_program_approval"
+    ]
   }
 }
