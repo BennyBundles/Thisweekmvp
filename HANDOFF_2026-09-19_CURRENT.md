@@ -3,8 +3,8 @@
 **Handoff date:** 2026-09-19  
 **Canonical repository:** `BennyBundles/Thisweekmvp`  
 **Production branch:** `main`  
-**Verified functional production head:** `b55f7902782458726b7d61cbbd256f32b89a6f5e`  
-**Successful GitHub Pages workflow:** `35462422467`  
+**Verified functional production head:** `c09a2c4a00c97b45059a4aa3c311d311f38a7796`  
+**Successful GitHub Pages workflow:** `35463647568`  
 **Production hosting:** GitHub Pages  
 **Primary production URL:** `https://bennybundles.github.io/Thisweekmvp/`
 
@@ -175,7 +175,7 @@ Verified 2026-09-19:
 - `thisweek-ops-gateway` — ACTIVE, **v6**, JWT + staff RBAC + AAL2
 - `thisweek-support-gateway` — ACTIVE, **v2**, JWT required
 - `thisweek-ops-notifier` — ACTIVE, **v1**, database nonce authentication
-- `thisweek-release-gateway` — ACTIVE, **v1**, JWT + active session + staff RBAC + AAL2
+- `thisweek-release-gateway` — ACTIVE, **v2**, JWT + active session + staff RBAC + AAL2
 
 Phase 34 security re-audit returned no Phase 34 findings after explicit service-role-only RLS policies were added. The performance advisor reports expected unused-index notices on the new empty Phase 34 tables and also surfaces pre-existing This Week performance notices elsewhere; do not claim the entire project currently has zero advisor findings.
 
@@ -695,11 +695,11 @@ Phase 34 is implemented and the web release was verified on 2026-09-19.
 
 Verified functional production commit:
 
-- `b55f7902782458726b7d61cbbd256f32b89a6f5e`
+- `c09a2c4a00c97b45059a4aa3c311d311f38a7796`
 
 Verified GitHub Pages workflow:
 
-- `35462422467`
+- `35463647568`
 
 Rollback branch:
 
@@ -715,6 +715,7 @@ Added service-only tables:
 - `tw_release_drill_events`
 - `tw_release_gate_evidence_requirements`
 - `tw_release_gate_evidence`
+- `tw_release_candidate_selections`
 
 Evidence/drill history is append-only. Browser roles have no direct table grants or RLS policies; explicit RLS policies are scoped only to `service_role`.
 
@@ -728,6 +729,9 @@ Added release/certification RPCs including:
 - `tw_release_gate_evidence_status`
 - `tw_release_record_gate_evidence`
 - `tw_release_readiness_report`
+- `tw_release_active_candidate`
+- `tw_release_select_candidate`
+- `tw_release_candidate_report`
 
 The existing `tw_release_set_gate` is strengthened so `verified=true` fails with:
 
@@ -755,7 +759,7 @@ Sandbox certification now requires evidence for:
 
 Added staff gateway:
 
-- `thisweek-release-gateway` — ACTIVE **v1**
+- `thisweek-release-gateway` — ACTIVE **v2**
 - JWT required
 - active-session check required
 - AAL2 required
@@ -780,6 +784,33 @@ Phase 34 did **not** fabricate evidence or approve anything:
 
 Production money remains fail-closed.
 
+### Phase 34 continuation — release-candidate binding
+
+Certification is now explicitly bound to one active release-candidate SHA.
+
+- candidate selections are append-only;
+- a full 40-character commit SHA plus bounded source reference is required;
+- certification runs must match the active SHA;
+- drill starts/completions must match the active SHA;
+- certification receipts must belong to the active SHA;
+- Sandbox-certification, rollback-drill, and synthetic-incident derived evidence is candidate-scoped;
+- the staff release console pre-fills the currently deployed Pages commit/workflow from `release.json`, but selection remains an explicit AAL2 staff action;
+- changing the active candidate automatically resets previously verified `provider_sandbox_e2e_passed` and `incident_escalation_runbook_approved` gates to false, with immutable release-gate event receipts.
+
+No candidate is auto-selected by deployment. At the completion audit:
+
+- active candidate: none selected;
+- candidate selections: 0;
+- verified gates: 0 / 11;
+- certification runs: 0;
+- drill runs: 0;
+- `liveMoneyReady=false`.
+
+Continuation rollback branch:
+
+- `rollback/phase34b-pre-candidate-binding-2026-09-19`
+- anchored to `1a4d4824e029baf927311ce24d68cfeb9b352114`
+
 ---
 
 ## 17. Production release pipeline
@@ -801,8 +832,8 @@ Then deploys and performs exact post-deployment verification.
 
 Latest verified workflow:
 
-- Run: `35462422467`
-- Head: `b55f7902782458726b7d61cbbd256f32b89a6f5e`
+- Run: `35463647568`
+- Head: `c09a2c4a00c97b45059a4aa3c311d311f38a7796`
 - Validation: SUCCESS
 - Deployment: SUCCESS
 - Verify deployed release: SUCCESS
@@ -974,11 +1005,12 @@ Important known rollback anchors:
 
 Current verified functional production head:
 
-`b55f7902782458726b7d61cbbd256f32b89a6f5e`
+`c09a2c4a00c97b45059a4aa3c311d311f38a7796`
 
-Phase 34 rollback branch:
+Phase 34 rollback branches:
 
-`rollback/phase34-pre-certification-2026-09-19` → `ff3c8cd98d6e03f16cc1aa223e75ab553a2cc3d6`
+- `rollback/phase34-pre-certification-2026-09-19` → `ff3c8cd98d6e03f16cc1aa223e75ab553a2cc3d6`
+- `rollback/phase34b-pre-candidate-binding-2026-09-19` → `1a4d4824e029baf927311ce24d68cfeb9b352114`
 
 Before any major new phase, create a fresh rollback branch from the exact current verified head.
 
@@ -1037,4 +1069,4 @@ Do not set/claim production provider execution until Phase 31 release interlock 
 
 ## 23. One-line continuation instruction for the next chat
 
-> Continue managing and implementing **This Week** from verified functional production commit `b55f7902782458726b7d61cbbd256f32b89a6f5e`. Read `HANDOFF_2026-09-19_CURRENT.md`, inspect the live repo/Supabase state, and continue **Phase 34 evidence execution / Sandbox certification** unless I explicitly redirect you. Preserve all release interlocks, plan-vs-money semantics, RLS, append-only financial history, and the zero-budget constraint. Do not verify a release gate without supporting Phase 34 evidence, and do not claim live money readiness until the actual server release interlock says `liveMoneyReady=true`.
+> Continue managing and implementing **This Week** from verified functional production commit `c09a2c4a00c97b45059a4aa3c311d311f38a7796`. Read `HANDOFF_2026-09-19_CURRENT.md`, inspect the live repo/Supabase state, and continue **Phase 34 evidence execution / Sandbox certification** unless I explicitly redirect you. Preserve all release interlocks, plan-vs-money semantics, RLS, append-only financial history, and the zero-budget constraint. Do not verify a release gate without supporting Phase 34 evidence, and do not claim live money readiness until the actual server release interlock says `liveMoneyReady=true`.
