@@ -424,7 +424,7 @@ async function createUnitFundingAccountFromPlaid(
           idempotencyKey: requestId,
         },
         relationships: {
-          customer: { data: { type: "individualCustomer", id: moneyCustomer.provider_customer_id } },
+          customer: { data: { type: "customer", id: moneyCustomer.provider_customer_id } },
         },
       },
     }),
