@@ -2,6 +2,17 @@
 
 Production changes for **This Week** are recorded here.
 
+## Phase 28 regression audit — 2026-09-19
+
+- Revalidated customer support, incident, and internal-SLA infrastructure against the Phase 33 production baseline.
+- Confirmed all five Phase 28 service tables still have RLS.
+- Confirmed browser roles cannot directly execute the support-create RPC; the service-role gateway path remains authoritative.
+- Confirmed Support Gateway v2 and current Ops Gateway v6 are ACTIVE.
+- Confirmed no Phase 28-specific Supabase security or performance advisor findings.
+- Corrected the Phase 28 data manifest from historical Ops Gateway v2 to the current v6.
+- No money-execution, provider, or customer-financial state was changed.
+
+
 ## Phase 33 — Cloud Data Export & Privacy Inventory — 2026-09-19
 
 - Added append-only `tw_privacy_export_events` with RLS and direct browser access revoked.
