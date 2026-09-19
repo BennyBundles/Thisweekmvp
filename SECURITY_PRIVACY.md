@@ -701,3 +701,32 @@ The normal planner remains `connect-src 'none'`.
 The isolated Money Lab may call only the exact Supabase project API. It additionally permits the official Pinwheel Web SDK script/frame origins solely to launch the user-facing Link modal.
 
 No live-money execution flag is enabled by this phase.
+
+
+## 24. Phase 23 account and session security
+
+The production identity surface is now `/account/`.
+
+It uses the browser-safe Supabase publishable key and restricts browser network access to the exact Supabase project origin.
+
+Auth tokens are kept in `sessionStorage`, not localStorage.
+
+Supported user-security operations include password recovery/update, TOTP MFA, global sign-out, account status and typed cloud-account deletion.
+
+### Revoked-session protection
+
+Sensitive authenticated gateways now validate both the JWT and the JWT's `session_id` against a service-only boolean RPC.
+
+This prevents a revoked/deleted session from continuing to use a still-unexpired JWT against This Week money/provider gateways.
+
+The RPC exposes no Auth session rows and is not executable by browser roles.
+
+### Account deletion
+
+Cloud hard deletion requires typed `DELETE`, matching account email and AAL2 when MFA is enrolled.
+
+If retention-sensitive financial history exists, the request becomes `review_required` and accounting records are preserved.
+
+If hard deletion is eligible, provider Vault secrets are destroyed before the Supabase Auth user is deleted.
+
+Cloud identity deletion remains separate from browser-local Plan deletion.
