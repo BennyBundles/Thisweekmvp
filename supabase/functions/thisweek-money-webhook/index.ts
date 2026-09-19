@@ -197,6 +197,10 @@ async function processUnit(
       direction: safeText(attrs.direction, 20) || null,
       decision_source: safeText(attrs.cardDecisionSource, 60) || null,
       decline_reason: safeText(attrs.declineReason, 80) || null,
+      return_reason: safeText(attrs.returnReason, 100) || safeText(attrs.reason, 100) || null,
+      dispute_id: relationId(item, "dispute") || null,
+      disputed_transaction_id: relationId(item, "transaction") || null,
+      account_balance_cents: Number.isSafeInteger(Number(attrs.balance)) ? Number(attrs.balance) : null,
     };
 
     let state = "processed";
@@ -260,6 +264,38 @@ async function processUnit(
     }
 
     if (
+      userId && paymentId && eventType === "payment.returned" &&
+      Number.isSafeInteger(amount) && amount > 0
+    ) {
+      const returned = await admin.rpc("tw_money_apply_unit_ach_return", {
+        p_user_id: userId,
+        p_provider_event_id: eventId,
+        p_payment_id: paymentId,
+        p_amount_cents: amount,
+        p_reason_code: safeText(attrs.returnReason, 100) || safeText(attrs.reason, 100) || "returned",
+      });
+      if (returned.error) state = "failed";
+    }
+
+    const disputeId = relationId(item, "dispute");
+    if (
+      userId && disputeId &&
+      (eventType === "dispute.created" || eventType === "dispute.statusChanged")
+    ) {
+      const disputedTransactionId = relationId(item, "transaction");
+      const dispute = await admin.rpc("tw_ops_record_unit_dispute", {
+        p_user_id: userId,
+        p_provider_event_id: eventId,
+        p_dispute_id: disputeId,
+        p_status: providerStatus || safeText(attrs.status, 80) || "InvestigationStarted",
+        p_amount_cents: Number.isSafeInteger(amount) && amount >= 0 ? amount : 0,
+        p_disputed_transaction_id: disputedTransactionId || null,
+        p_reason_code: safeText(attrs.decisionReason, 100) || safeText(attrs.reason, 100) || null,
+      });
+      if (dispute.error) state = "failed";
+    }
+
+    if (
       userId &&
       eventType === "transaction.created" &&
       !authRequestId &&
@@ -305,6 +341,80 @@ async function processUnit(
           updated_at: new Date().toISOString(),
         }).eq("user_id", userId).eq("provider", "unit").eq("provider_transfer_id", paymentId);
       }
+      const reconciled = await admin.rpc("tw_ops_reconcile_cash_control", { p_user_id: userId });
+      if (reconciled.error) state = "failed";
+    }
+
+    if (
+      userId && eventType === "transaction.created" &&
+      Number.isSafeInteger(amount) && amount > 0 &&
+      safeText(attrs.direction, 20).toLowerCase() === "credit" &&
+      /^(cardReversalTransaction|disputeTransaction)$/i.test(transactionType)
+    ) {
+      const providerCardId = relationId(item, "card");
+      const caseType = /dispute/i.test(transactionType) ? "card_dispute" : "card_refund";
+      if (providerCardId) {
+        const credit = await admin.rpc("tw_money_apply_unit_card_credit", {
+          p_user_id: userId,
+          p_provider_event_id: eventId,
+          p_provider_card_id: providerCardId,
+          p_amount_cents: amount,
+          p_case_type: caseType,
+          p_provider_case_id: disputeId || null,
+          p_reason_code: transactionType,
+        });
+        if (credit.error) state = "failed";
+      } else {
+        const operational = await admin.rpc("tw_ops_open_case", {
+          p_user_id: userId,
+          p_case_key: "unit:unmapped-card-credit:" + eventId,
+          p_case_type: caseType,
+          p_provider: "unit",
+          p_provider_case_id: disputeId || null,
+          p_resource_ref: relationId(item, "transaction") || eventId,
+          p_related_transfer_id: null,
+          p_related_card_authorization_id: null,
+          p_amount_cents: amount,
+          p_severity: caseType === "card_dispute" ? "high" : "medium",
+          p_state: "action_required",
+          p_reason_code: "card_credit_unmapped",
+          p_safe_detail: { transaction_type: transactionType },
+          p_event_key: "unit:event:" + eventId,
+          p_event_type: "unmapped_card_credit",
+        });
+        if (operational.error) state = "failed";
+      }
+    }
+
+    if (
+      userId && eventType === "transaction.created" &&
+      Number.isSafeInteger(Number(attrs.balance)) && Number(attrs.balance) < 0
+    ) {
+      await admin.from("tw_risk_user_controls").upsert({
+        user_id: userId,
+        state: "restricted",
+        reason_code: "negative_provider_balance",
+        expires_at: null,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: "user_id" });
+      const negative = await admin.rpc("tw_ops_open_case", {
+        p_user_id: userId,
+        p_case_key: "unit:negative-provider-balance:" + accountId,
+        p_case_type: "negative_balance",
+        p_provider: "unit",
+        p_provider_case_id: null,
+        p_resource_ref: accountId || eventId,
+        p_related_transfer_id: null,
+        p_related_card_authorization_id: null,
+        p_amount_cents: Math.abs(Number(attrs.balance)),
+        p_severity: "critical",
+        p_state: "action_required",
+        p_reason_code: "negative_provider_balance",
+        p_safe_detail: { provider_balance_cents: Number(attrs.balance), transaction_type: transactionType },
+        p_event_key: "unit:event:" + eventId,
+        p_event_type: "negative_provider_balance_detected",
+      });
+      if (negative.error) state = "failed";
     }
 
     if (userId && authRequestId && (
@@ -324,7 +434,7 @@ async function processUnit(
     if (userId && authRequestId && eventType === "transaction.created" && Number.isSafeInteger(amount) && amount >= 0) {
       const settle = await admin.rpc("tw_money_settle_card_authorization", {
         p_provider_authorization_id: authRequestId,
-        p_provider_transaction_id: eventId,
+        p_provider_transaction_id: relationId(item, "transaction") || eventId,
         p_settled_amount_cents: amount,
       });
       if (settle.error && !String(settle.error.message || "").includes("not_settleable")) {
@@ -423,6 +533,29 @@ async function processMethod(
         paid_at: next === "paid" ? new Date().toISOString() : null,
         failure_code: next === "failed" || next === "returned" ? safeText((expanded.error as AnyRecord)?.code, 100) || next : null,
       }).eq("user_id", userId).eq("provider", "method").eq("provider_payment_id", resourceId);
+    }
+    if (userId && (next === "returned" || next === "reversed" || next === "failed")) {
+      const { data: paymentRow } = await admin.from("tw_money_bill_payments")
+        .select("id,amount_cents").eq("user_id", userId).eq("provider", "method")
+        .eq("provider_payment_id", resourceId).maybeSingle();
+      const ops = await admin.rpc("tw_ops_open_case", {
+        p_user_id: userId,
+        p_case_key: "method:payment:" + resourceId,
+        p_case_type: "payment_return",
+        p_provider: "method",
+        p_provider_case_id: resourceId,
+        p_resource_ref: resourceId,
+        p_related_transfer_id: null,
+        p_related_card_authorization_id: null,
+        p_amount_cents: Number(paymentRow?.amount_cents || 0),
+        p_severity: next === "returned" || next === "reversed" ? "high" : "medium",
+        p_state: "action_required",
+        p_reason_code: safeText((expanded.error as AnyRecord)?.code, 100) || next,
+        p_safe_detail: { provider_status: providerStatus, bill_payment_id: paymentRow?.id || null },
+        p_event_key: "method:event:" + eventId,
+        p_event_type: eventType,
+      });
+      if (ops.error) throw new Error("method_ops_case_failed");
     }
   }
 
