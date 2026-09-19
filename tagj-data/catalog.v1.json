@@ -320,9 +320,25 @@
       "id": "hold",
       "name": "Hold Something",
       "type": "release",
-      "releaseDate": null,
+      "releaseDate": "2026-08-22",
       "route": "#artist-release-hold-v144",
-      "linksRef": "release:hold"
+      "linksRef": "release:hold",
+      "artist": "Benny Bundles",
+      "credits": {
+        "performer": "Benny Bundles",
+        "producer": "Bundles (Benny Bundles)",
+        "mixedBy": "Bundles (Benny Bundles)",
+        "masteredBy": "Bundles (Benny Bundles)",
+        "releasedBy": "Thats A Good Jawn LLC",
+        "labelBrand": "TAGJ",
+        "ownershipNote": "Thats A Good Jawn LLC is owned by Benny Bundles.",
+        "video": {
+          "producer": "Benny Bundles",
+          "shotBy": "Benny Bundles",
+          "editedBy": "Benny Bundles",
+          "releasedBy": "Benny Bundles through Thats A Good Jawn LLC"
+        }
+      }
     },
     {
       "id": "stuck",
@@ -345,41 +361,121 @@
       "id": "freestyle",
       "name": "FREESTYLE",
       "type": "campaign_video",
-      "releaseDate": null,
+      "releaseDate": "2026-07-26",
       "route": "#artist-release-freestyle-v144",
-      "linksRef": "release:freestyle"
+      "linksRef": "release:freestyle",
+      "artist": "Benny Bundles",
+      "credits": {
+        "performer": "Benny Bundles",
+        "producer": "Bundles (Benny Bundles)",
+        "mixedBy": "Bundles (Benny Bundles)",
+        "masteredBy": "Bundles (Benny Bundles)",
+        "releasedBy": "Thats A Good Jawn LLC",
+        "labelBrand": "TAGJ",
+        "ownershipNote": "Thats A Good Jawn LLC is owned by Benny Bundles.",
+        "video": {
+          "producer": "Benny Bundles",
+          "shotBy": "Benny Bundles",
+          "editedBy": "Benny Bundles",
+          "releasedBy": "Benny Bundles through Thats A Good Jawn LLC"
+        }
+      }
     },
     {
       "id": "cry-dark",
-      "name": "Cries in the Dark",
+      "name": "Cried in the Dark",
       "type": "release_video",
-      "releaseDate": null,
+      "releaseDate": "2026-06-30",
       "route": "#artist-cry-dark-v147",
-      "linksRef": "release:cry-dark"
+      "linksRef": "release:cry-dark",
+      "artist": "Benny Bundles",
+      "credits": {
+        "performer": "Benny Bundles",
+        "producer": "Bundles (Benny Bundles)",
+        "mixedBy": "Bundles (Benny Bundles)",
+        "masteredBy": "Bundles (Benny Bundles)",
+        "releasedBy": "Thats A Good Jawn LLC",
+        "labelBrand": "TAGJ",
+        "ownershipNote": "Thats A Good Jawn LLC is owned by Benny Bundles.",
+        "video": {
+          "producer": "Benny Bundles",
+          "shotBy": "Benny Bundles",
+          "editedBy": "Benny Bundles",
+          "releasedBy": "Benny Bundles through Thats A Good Jawn LLC"
+        }
+      }
     },
     {
       "id": "wanted",
       "name": "Wanted Me Gone",
       "type": "release_video",
-      "releaseDate": null,
+      "releaseDate": "2026-09-14",
       "route": "#artist-release-scene-v145",
-      "linksRef": "release:wanted"
+      "linksRef": "release:wanted",
+      "artist": "Benny Bundles",
+      "credits": {
+        "performer": "Benny Bundles",
+        "producer": "Bundles (Benny Bundles)",
+        "mixedBy": "Bundles (Benny Bundles)",
+        "masteredBy": "Bundles (Benny Bundles)",
+        "releasedBy": "Thats A Good Jawn LLC",
+        "labelBrand": "TAGJ",
+        "ownershipNote": "Thats A Good Jawn LLC is owned by Benny Bundles.",
+        "video": {
+          "producer": "Benny Bundles",
+          "shotBy": "Benny Bundles",
+          "editedBy": "Benny Bundles",
+          "releasedBy": "Benny Bundles through Thats A Good Jawn LLC"
+        }
+      }
     },
     {
       "id": "karma",
       "name": "Can’t Crop Karma",
       "type": "release_video",
-      "releaseDate": null,
+      "releaseDate": "2026-08-13",
       "route": "#artist-release-scene-v145",
-      "linksRef": "release:karma"
+      "linksRef": "release:karma",
+      "artist": "Benny Bundles",
+      "credits": {
+        "performer": "Benny Bundles",
+        "producer": "Bundles (Benny Bundles)",
+        "mixedBy": "Bundles (Benny Bundles)",
+        "masteredBy": "Bundles (Benny Bundles)",
+        "releasedBy": "Thats A Good Jawn LLC",
+        "labelBrand": "TAGJ",
+        "ownershipNote": "Thats A Good Jawn LLC is owned by Benny Bundles.",
+        "video": {
+          "producer": "Benny Bundles",
+          "shotBy": "Benny Bundles",
+          "editedBy": "Benny Bundles",
+          "releasedBy": "Benny Bundles through Thats A Good Jawn LLC"
+        }
+      }
     },
     {
       "id": "whole-brand",
       "name": "The Whole Brand",
       "type": "release_video",
-      "releaseDate": null,
+      "releaseDate": "2026-06-30",
       "route": "#artist-release-scene-v145",
-      "linksRef": "release:whole-brand"
+      "linksRef": "release:whole-brand",
+      "artist": "Benny Bundles",
+      "credits": {
+        "performer": "Benny Bundles",
+        "producer": "Bundles (Benny Bundles)",
+        "mixedBy": "Bundles (Benny Bundles)",
+        "masteredBy": "Bundles (Benny Bundles)",
+        "releasedBy": "Thats A Good Jawn LLC",
+        "labelBrand": "TAGJ",
+        "ownershipNote": "Thats A Good Jawn LLC is owned by Benny Bundles.",
+        "video": {
+          "producer": "Benny Bundles",
+          "shotBy": "Benny Bundles",
+          "editedBy": "Benny Bundles",
+          "releasedBy": "Benny Bundles through Thats A Good Jawn LLC"
+        }
+      }
     }
   ],
   "creativeServices": [
