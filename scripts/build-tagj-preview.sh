@@ -8,4 +8,4 @@ cp index.html full.html tagj.html artist.html producer.html creative.html .tagj-
 cp tagj-assets/*.css .tagj-dist/tagj-assets/
 cp tagj-data/* .tagj-dist/tagj-data/
 
-printf 'V14.4' > .tagj-dist/VERSION.txt
+printf 'V14.5' > .tagj-dist/VERSION.txt
