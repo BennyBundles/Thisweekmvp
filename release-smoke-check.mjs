@@ -43,6 +43,19 @@ const phase24Doc=requireFile('PHASE_24_IMPLEMENTATION.md');
 const authProductionSetup=requireFile('AUTH_PRODUCTION_SETUP.md');
 const phase26Doc=requireFile('PHASE_26_IMPLEMENTATION.md');
 const phase26Schema=requireFile('supabase/phase26/returns_disputes.sql');
+const phase27Doc=requireFile('PHASE_27_IMPLEMENTATION.md');
+const phase27Schema=requireFile('supabase/phase27/staff_ops.sql');
+const opsGateway=requireFile('supabase/functions/thisweek-ops-gateway/index.ts');
+const opsHtml=requireFile('ops/index.html');
+const opsJs=requireFile('ops/app.js');
+const opsCheck=requireFile('ops-check.mjs');
+const opsAccessSetup=requireFile('OPS_ACCESS_SETUP.md');
+const phase28Doc=requireFile('PHASE_28_IMPLEMENTATION.md');
+const phase28Schema=requireFile('supabase/phase28/support_incident_ops.sql');
+const supportGateway=requireFile('supabase/functions/thisweek-support-gateway/index.ts');
+const supportHtml=requireFile('support/index.html');
+const supportJs=requireFile('support/app.js');
+const supportCheck=requireFile('support-check.mjs');
 
 
 let config=null;
@@ -85,6 +98,7 @@ if(html){
     ['Phase 22 Sandbox chain',"sandboxChain:'plaid_unit_pinwheel_method'"],
     ['Phase 22 credential-gated chain',"sandboxChainMode:'deployed_credentials_required'"],
     ['Phase 23 Account Center link',"externalTool('./account/'"],
+    ['Phase 28 Support Center link',"externalTool('./support/'"],
     ['Phase 26 operations readiness',"operationsMode:'returns_disputes_negative_balance_deployed'"]
   ];
   for(const [label,text] of critical)requireText('missing '+label,html,text);
@@ -248,6 +262,42 @@ if(phase20Gateway){
   requireText('Phase 26 gateway Sandbox dispute action',phase20Gateway,'unit_sandbox_dispute_action');
 }
 if(phase26Doc)requireText('Phase 26 doc preserves append-only doctrine',phase26Doc,'append-only');
+
+if(phase27Schema){
+  requireText('Phase 27 staff audit table',phase27Schema,'tw_ops_staff_actions');
+  requireText('Phase 27 alerts table',phase27Schema,'tw_ops_alerts');
+}
+if(opsGateway){
+  requireText('Phase 27 server role source',opsGateway,'app_metadata');
+  requireText('Phase 27 AAL2',opsGateway,'mfa_aal2_required');
+  requireText('Phase 28 support staff action',opsGateway,'support_reply');
+  requireText('Phase 28 incident action',opsGateway,'open_incident');
+  requireText('Phase 28 health monitor',opsGateway,'buildHealth');
+}
+if(opsHtml)requireText('Phase 28 Ops support queue',opsHtml,'id="support"');
+if(opsJs)requireText('Phase 28 Ops health renderer',opsJs,'renderHealth');
+if(!opsCheck)failures.push('Ops Console checker unavailable');
+if(!opsAccessSetup)failures.push('Ops access setup guide unavailable');
+
+if(phase28Schema){
+  requireText('Phase 28 support request table',phase28Schema,'tw_support_requests');
+  requireText('Phase 28 support message table',phase28Schema,'tw_support_messages');
+  requireText('Phase 28 incident table',phase28Schema,'tw_ops_incidents');
+  requireText('Phase 28 internal SLA policy',phase28Schema,'public_commitment');
+  requireText('Phase 28 browser grants revoked',phase28Schema,'from public,anon,authenticated');
+}
+if(supportGateway){
+  requireText('Phase 28 support gateway auth',supportGateway,'auth.getUser(token)');
+  requireText('Phase 28 support session revocation check',supportGateway,'tw_auth_session_active');
+  requireText('Phase 28 support secret guard',supportGateway,'sensitive_secret_pattern_rejected');
+}
+if(supportHtml)requireText('Phase 28 support no-direct-money copy',supportHtml,'never directly changes or refunds money');
+if(supportJs){
+  requireText('Phase 28 support gateway client',supportJs,'/functions/v1/thisweek-support-gateway');
+  if(/service_role|sb_secret_/i.test(supportJs))failures.push('Support Center contains server-secret pattern');
+}
+if(!supportCheck)failures.push('Support Center checker unavailable');
+if(phase28Doc)requireText('Phase 28 internal SLA disclosure',phase28Doc,'not customer-facing service guarantees');
 if(phase20Gateway)requireText('Money gateway rejects revoked session',phase20Gateway,'tw_auth_session_active');
 if(phase19Gateway)requireText('Provider gateway rejects revoked session',phase19Gateway,'tw_auth_session_active');
 
