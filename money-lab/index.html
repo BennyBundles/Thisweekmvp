@@ -124,6 +124,10 @@ header{display:flex;justify-content:space-between;gap:16px;align-items:flex-star
     <div class="field"><label>&nbsp;</label><span class="muted">Explicit Sandbox authorization + Method Payment.</span></div>
     <div class="field"><label>&nbsp;</label><button id="methodPay" disabled>14 · Submit Method payment</button></div>
   </div>
+
+  <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+  <div class="actions"><button class="primary" id="registerWebhooks" disabled>15 · Register provider webhooks</button></div>
+  <p class="muted" style="margin-top:8px">Lists existing subscriptions first, then creates only the missing Unit general/card-authorization, Pinwheel direct-deposit, and Method payment webhooks. Signing secrets never return to this page.</p>
 </section>
 
 <section class="card wide">
