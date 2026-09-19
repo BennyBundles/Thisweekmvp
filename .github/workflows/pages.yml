@@ -38,6 +38,14 @@ jobs:
       - name: Production release smoke check
         run: node release-smoke-check.mjs
 
+      - name: Build and validate public release preview
+        run: |
+          set -euo pipefail
+          node prepare-public-preview.mjs index.html public-preview.validation-source.html
+          node prepare-site.mjs public-preview.validation-source.html public-preview.validation.html
+          node public-preview-check.mjs public-preview.validation.html
+          rm -f public-preview.validation-source.html public-preview.validation.html
+
   deploy:
     needs: validate
     environment:
@@ -64,6 +72,16 @@ jobs:
 
           node prepare-site.mjs index.html _site/index.html
           touch _site/.nojekyll
+
+          mkdir -p _site/public-preview
+          node prepare-public-preview.mjs index.html _site/public-preview.source.html
+          node prepare-site.mjs _site/public-preview.source.html _site/public-preview/index.html
+          rm -f _site/public-preview.source.html
+          cp public-preview-manifest.webmanifest _site/public-preview/manifest.webmanifest
+          cp public-preview-sw.js _site/public-preview/sw.js
+          cp public-preview-icon.svg _site/public-preview/icon.svg
+          cp preview.html _site/preview.html
+          node public-preview-check.mjs _site/public-preview/index.html
 
           node <<'NODE'
           const fs = require('fs');
@@ -111,8 +129,13 @@ jobs:
           for attempt in $(seq 1 12); do
             html="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/?v=${SHORT}" || true)"
             manifest="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/release.json?v=${SHORT}" || true)"
+            preview="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/preview.html?v=${SHORT}" || true)"
+            public_preview="$(curl -fsSL --retry 2 --retry-delay 1 "${BASE}/public-preview/?mode=demo&v=${SHORT}" || true)"
 
-            if grep -Fq 'This Week' <<< "$html" && grep -Fq -- "$RELEASE_SHA" <<< "$manifest"; then
+            if grep -Fq 'This Week' <<< "$html" \
+              && grep -Fq -- "$RELEASE_SHA" <<< "$manifest" \
+              && grep -Fq 'Public Release Preview' <<< "$preview" \
+              && grep -Fq 'thisweek.publicPreview.state.v2' <<< "$public_preview"; then
               success=1
               break
             fi
@@ -132,4 +155,6 @@ jobs:
             echo "- Commit: `$RELEASE_SHA`"
             echo "- Cache-busted URL: `${BASE}/?v=${SHORT}`"
             echo "- Manifest: `${BASE}/release.json?v=${SHORT}`"
+            echo "- Public release preview: `${BASE}/preview.html?v=${SHORT}`"
+            echo "- Standalone preview app: `${BASE}/public-preview/?mode=demo&v=${SHORT}`"
           } >> "$GITHUB_STEP_SUMMARY"
