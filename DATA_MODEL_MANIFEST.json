@@ -144,7 +144,7 @@
     "providerSecrets": "server_only"
   },
   "phase19ProviderPlane": {
-    "status": "staged_not_active",
+    "status": "backend_provisioned_shared_isolated",
     "activation": false,
     "provider": "plaid",
     "clientNetworkPolicy": "deny_until_dedicated_backend",
@@ -164,6 +164,21 @@
     ],
     "reconciliationRule": "Provider activity remains reference data until explicit reconciliation creates a weekly transaction.",
     "externalBalanceRule": "External provider balances never replace or redefine Available Now.",
-    "conflictRule": "Never silently merge conflicting financial mutations."
+    "conflictRule": "Never silently merge conflicting financial mutations.",
+    "projectName": "BennyBundles’s Project",
+    "projectRef": "xjtvawmppzwzrooairyx",
+    "backendOrigin": "https://xjtvawmppzwzrooairyx.supabase.co",
+    "gatewayFunction": "thisweek-provider-gateway",
+    "gatewayJwtVerification": true,
+    "providerTableCount": 7,
+    "vaultBridgeFunctionCount": 3,
+    "directBrowserTableAccess": false,
+    "remainingGates": [
+      "recoverable_auth",
+      "provider_credentials",
+      "provider_sandbox_verification",
+      "exact_csp_allowlist",
+      "client_transport"
+    ]
   }
 }
