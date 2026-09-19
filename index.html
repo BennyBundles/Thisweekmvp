@@ -7872,6 +7872,75 @@ async function renderConnections(){
   }catch(e){root.innerHTML=errBox(e.message);}
 }
 
+function renderLocalAnalytics(){
+  shellMeta('Insights','Local Usage Insights','Optional aggregate counters for workflow friction — stored only in this browser','<a class="text-action" href="#details">Back</a>');nav('analytics');
+  const draw=()=>{
+    const data=readLocalAnalytics(),summary=localAnalyticsSummary(data),prefs=readUiPrefs();
+    const maxWorld=Math.max(1,...Object.values(data.worldFocus||{})),maxStudio=Math.max(1,...Object.values(data.studioOpens||{}));
+    const worldLabel={bills:'Bills',essentials:'Essentials',lifestyle:'Lifestyle',savings:'Savings'};
+    const studioLabel={bills:'Bill Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex',savings:'Savings Goals',precheck:'Can I Spend This?',scenario:'Scenario',history:'Weekly Memory',connections:'Connected Data',insights:'Advanced Insights'};
+    root.innerHTML=`<div class="studio-stack">
+      <section class="analytics-hero"><span class="studio-kicker">Phase 16 · local-only analytics</span><h2>Measure friction without measuring your financial life.</h2><p>This optional system stores aggregate counters only. It does not record time-on-page, dollar amounts, merchant names, category names, transaction IDs, route sequences, or event timestamps, and it does not send analytics to a server.</p>
+        <div class="analytics-state"><div><strong>${data.enabled?'Local usage counters are on':'Local usage counters are off'}</strong><span>${data.enabled?'New qualifying interactions are being added to aggregate counters in this browser.':'Nothing is counted until you enable the local counter system.'}</span></div><button class="btn ${data.enabled?'btn-secondary':'btn-primary'}" id="toggleLocalAnalytics">${data.enabled?'Disable collection':'Enable local counters'}</button></div>
+      </section>
+
+      ${data.enabled||summary.totalEvents?`<section class="analytics-summary">
+        <div class="analytics-stat"><small>Category focus</small><strong>${summary.categoryFocus}</strong><span>Home category Peek opens</span></div>
+        <div class="analytics-stat"><small>Deep tools</small><strong>${summary.studioOpens}</strong><span>Selected studio/tool route opens</span></div>
+        <div class="analytics-stat"><small>Tasks completed</small><strong>${summary.tasks}</strong><span>Plan/spend/bill/import/week actions</span></div>
+        <div class="analytics-stat"><small>Recommendations opened</small><strong>${summary.recommendationOpens}</strong><span>Home decision-support sheets opened</span></div>
+        <div class="analytics-stat"><small>Import corrections</small><strong>${summary.corrections}</strong><span>Undo/reclassify actions</span></div>
+        <div class="analytics-stat"><small>Current density</small><strong>${escapeHtml(prefs.density)}</strong><span>${summary.preferredDensity?'Most selected: '+escapeHtml(summary.preferredDensity):'No density changes counted yet'}</span></div>
+      </section>`:`<div class="analytics-empty"><strong>No local usage data yet.</strong><span>Enable the counters to start collecting aggregate workflow signals from zero. Nothing is reconstructed from prior activity.</span></div>`}
+
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Home interaction</span><h2>Which category worlds get inspected?</h2><div class="section-caption">Counts show category focus only. They do not store the underlying category, amount, or purchase detail.</div></div></div>
+        <div class="analytics-bars">${LOCAL_ANALYTICS_WORLD_KEYS.map(k=>{const n=data.worldFocus[k]||0,pct=Math.round(n/maxWorld*100);return`<div class="analytics-bar"><div class="analytics-bar-head"><strong>${worldLabel[k]}</strong><span>${n}</span></div><div class="analytics-bar-track"><i style="--pct:${pct}%"></i></div></div>`;}).join('')}</div>
+      </section>
+
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Deep-tool usage</span><h2>Which advanced surfaces are actually opened?</h2><div class="section-caption">This helps decide which tools deserve polish without promoting all of them onto Home.</div></div></div>
+        <div class="analytics-bars">${LOCAL_ANALYTICS_STUDIO_KEYS.map(k=>{const n=data.studioOpens[k]||0,pct=Math.round(n/maxStudio*100);return`<div class="analytics-bar"><div class="analytics-bar-head"><strong>${studioLabel[k]}</strong><span>${n}</span></div><div class="analytics-bar-track"><i style="--pct:${pct}%"></i></div></div>`;}).join('')}</div>
+      </section>
+
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Task outcome signals</span><h2>Completion and correction, not engagement time</h2><div class="section-caption">The goal is faster, clearer financial tasks — not keeping someone in the app longer.</div></div></div>
+        <div class="trust-grid">
+          <div class="trust-card"><small>Spend logging</small><strong>${data.taskCompletions.spend_logged||0}</strong><span>Successful manual spending entries.</span></div>
+          <div class="trust-card"><small>Bill protection</small><strong>${data.taskCompletions.bill_protected||0}</strong><span>Successful bill-protection contributions.</span></div>
+          <div class="trust-card"><small>Imported reconciliation</small><strong>${data.taskCompletions.import_reconciled||0}</strong><span>Imported purchases intentionally applied to the plan.</span></div>
+          <div class="trust-card"><small>Correction ratio</small><strong>${summary.correctionRate==null?'—':summary.correctionRate+'%'}</strong><span>Undo/reclassify actions divided by successful imported reconciliations. Descriptive only; not a quality score.</span></div>
+        </div>
+      </section>
+
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Privacy design</span><h2>What this intentionally does not collect</h2></div></div>
+        <div class="analytics-principles">
+          <div class="analytics-principle"><strong>No financial values</strong><span>No dollar amounts, balances, income, bill amounts, savings amounts, or spending amounts.</span></div>
+          <div class="analytics-principle"><strong>No behavioral surveillance</strong><span>No dwell time, session duration, clickstream history, route sequence, scrolling, or background activity.</span></div>
+          <div class="analytics-principle"><strong>No merchant/category names</strong><span>Only broad product worlds such as Bills, Essentials, Lifestyle, and Savings are counted.</span></div>
+          <div class="analytics-principle"><strong>No remote analytics</strong><span>Counters remain under ${escapeHtml(LOCAL_ANALYTICS_KEY)} in this browser unless you explicitly export them yourself.</span></div>
+        </div>
+      </section>
+
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Control</span><h2>You can stop or erase the counters at any time</h2><div class="section-caption">Disabling stops new counts but retains existing aggregate counters until you clear them.</div></div></div>
+        <div class="action-row"><button class="btn btn-secondary" id="exportLocalAnalytics" ${summary.totalEvents?'':'disabled'}>Export counters JSON</button><button class="data-mini-action danger" id="clearLocalAnalytics" ${summary.totalEvents?'':'disabled'}>Clear counters</button><a class="btn btn-secondary" href="#privacy">Privacy & Local Data</a></div>
+      </section>
+    </div>`;
+
+    document.getElementById('toggleLocalAnalytics')?.addEventListener('click',()=>{
+      const next=setLocalAnalyticsEnabled(!data.enabled);
+      toast(next.enabled?'Local usage counters enabled.':'Local usage counters disabled.');
+      draw();
+    });
+    document.getElementById('clearLocalAnalytics')?.addEventListener('click',()=>{
+      if(!summary.totalEvents)return;
+      if(!confirmHighImpactMutation('Clear all local usage counters? This does not affect your financial plan or transactions.'))return;
+      clearLocalAnalyticsCounters();toast('Local usage counters cleared.');draw();
+    });
+    document.getElementById('exportLocalAnalytics')?.addEventListener('click',()=>{
+      if(!summary.totalEvents)return;
+      const bytes=downloadLocalAnalyticsExport();toast('Usage counters exported · '+(bytes/1024).toFixed(1)+' KB');
+    });
+  };draw();
+}
+
 function renderPrivacy(){
   shellMeta('Trust','Privacy & Local Data','Understand, export, and control the data stored by This Week in this browser','<a class="text-action" href="#details">Back</a>');nav('privacy');
   const draw=()=>{
@@ -8395,6 +8464,7 @@ async function render(){
   else if(r==='performance')await renderPerformance();
   else if(r==='data-model')await renderDataModel();
   else if(r==='privacy')await renderPrivacy();
+  else if(r==='analytics')await renderLocalAnalytics();
   else if(r==='future')await renderFutureLab();
   else if(r==='reset')await renderReset();
   else if(r==='setup')await renderSetup();
