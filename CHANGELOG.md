@@ -2,6 +2,26 @@
 
 Production changes for **This Week** are recorded here.
 
+## Phase 23 — Account & Session Security — 2026-09-19
+
+- Added production-facing **Account & Security** Center under Details.
+- Added email/password signup/signin, password recovery/update, TOTP MFA management and global sign-out.
+- Added shared tab-scoped `thisweek.auth.session.v1` identity session for Account Center and Money Lab.
+- Added service-role-only `tw_auth_session_active` boolean RPC.
+- Money and Provider gateways now reject revoked/deleted sessions even when an issued JWT has not expired yet.
+- Deployed JWT-protected `thisweek-account-gateway`.
+- Added typed cloud-account deletion with matching-email verification.
+- Hard deletion is allowed only when no retention-sensitive financial history exists.
+- Financial-history accounts create a review-required closure request instead of deleting ledger history.
+- Provider Vault secrets are deleted before eligible Auth hard deletion.
+- Planner remains network-denied; Account Center has its own exact Supabase CSP allowlist.
+- Added deterministic Account Center validation, staging and post-deploy verification.
+
+### Rollback
+- Pre-Phase-23 commit: `cea6de24f3636376534ebb51a56f56e01eee7d5c`
+- Rollback branch: `rollback/phase23-pre-account-security-2026-09-19`
+
+
 ## Phase 22 — Provider Sandbox Chain — 2026-09-19
 
 ### End-to-end provider orchestration
