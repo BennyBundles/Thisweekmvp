@@ -72,7 +72,7 @@
           "status": "available_after_delivery_qc"
         },
         "trackoutPro": {
-          "status": "requires_stems_trackouts"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available"
         },
         "unlimited": {
           "status": "available_after_delivery_qc"
@@ -108,6 +108,11 @@
           "commercialDisclosureRequired": true,
           "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
         }
+      },
+      "rightsReview": {
+        "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-001",
+        "producerDeclarationPath": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md",
+        "declarationStatus": "pending_signature_and_provenance_confirmation"
       }
     },
     {
@@ -176,7 +181,7 @@
           "status": "available_after_delivery_qc"
         },
         "trackoutPro": {
-          "status": "requires_stems_trackouts"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available"
         },
         "unlimited": {
           "status": "available_after_delivery_qc"
@@ -212,6 +217,11 @@
           "commercialDisclosureRequired": true,
           "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
         }
+      },
+      "rightsReview": {
+        "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-002",
+        "producerDeclarationPath": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md",
+        "declarationStatus": "pending_signature_and_provenance_confirmation"
       }
     },
     {
@@ -280,7 +290,7 @@
           "status": "available_after_delivery_qc"
         },
         "trackoutPro": {
-          "status": "requires_stems_trackouts"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available"
         },
         "unlimited": {
           "status": "available_after_delivery_qc"
@@ -316,6 +326,11 @@
           "commercialDisclosureRequired": true,
           "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
         }
+      },
+      "rightsReview": {
+        "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-003",
+        "producerDeclarationPath": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md",
+        "declarationStatus": "pending_signature_and_provenance_confirmation"
       }
     },
     {
@@ -384,7 +399,7 @@
           "status": "available_after_delivery_qc"
         },
         "trackoutPro": {
-          "status": "requires_stems_trackouts"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available"
         },
         "unlimited": {
           "status": "available_after_delivery_qc"
@@ -420,6 +435,11 @@
           "commercialDisclosureRequired": true,
           "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
         }
+      },
+      "rightsReview": {
+        "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-004",
+        "producerDeclarationPath": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md",
+        "declarationStatus": "pending_signature_and_provenance_confirmation"
       }
     },
     {
@@ -488,7 +508,7 @@
           "status": "available_after_delivery_qc"
         },
         "trackoutPro": {
-          "status": "requires_stems_trackouts"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available"
         },
         "unlimited": {
           "status": "available_after_delivery_qc"
@@ -524,6 +544,11 @@
           "commercialDisclosureRequired": true,
           "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
         }
+      },
+      "rightsReview": {
+        "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-005",
+        "producerDeclarationPath": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md",
+        "declarationStatus": "pending_signature_and_provenance_confirmation"
       }
     },
     {
@@ -592,7 +617,7 @@
           "status": "available_after_delivery_qc"
         },
         "trackoutPro": {
-          "status": "requires_stems_trackouts"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available"
         },
         "unlimited": {
           "status": "available_after_delivery_qc"
@@ -628,6 +653,12 @@
           "commercialDisclosureRequired": true,
           "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
         }
+      },
+      "rightsReview": {
+        "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-006",
+        "producerDeclarationPath": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md",
+        "declarationStatus": "pending_signature_and_provenance_confirmation",
+        "priorClientCommitmentReview": "required_before_exclusive_sale"
       }
     },
     {
@@ -696,7 +727,7 @@
           "status": "available_after_delivery_qc"
         },
         "trackoutPro": {
-          "status": "requires_stems_trackouts"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available"
         },
         "unlimited": {
           "status": "available_after_delivery_qc"
@@ -732,6 +763,11 @@
           "commercialDisclosureRequired": true,
           "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
         }
+      },
+      "rightsReview": {
+        "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-007",
+        "producerDeclarationPath": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md",
+        "declarationStatus": "pending_signature_and_provenance_confirmation"
       }
     },
     {
@@ -800,7 +836,7 @@
           "status": "available_after_delivery_qc"
         },
         "trackoutPro": {
-          "status": "requires_stems_trackouts"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available"
         },
         "unlimited": {
           "status": "available_after_delivery_qc"
@@ -836,6 +872,11 @@
           "commercialDisclosureRequired": true,
           "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
         }
+      },
+      "rightsReview": {
+        "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-008",
+        "producerDeclarationPath": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md",
+        "declarationStatus": "pending_signature_and_provenance_confirmation"
       }
     },
     {
@@ -909,16 +950,16 @@
           "status": "available_after_preview_render"
         },
         "premiumWav": {
-          "status": "requires_lossless_master"
+          "status": "genuine_lossless_master_required_decoded_wav_derivative_available"
         },
         "trackoutPro": {
-          "status": "requires_stems_trackouts"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available"
         },
         "unlimited": {
-          "status": "requires_lossless_master"
+          "status": "genuine_lossless_master_required_decoded_wav_derivative_available"
         },
         "exclusive": {
-          "status": "requires_lossless_master_and_manual_rights_review"
+          "status": "genuine_lossless_master_and_manual_rights_review_required"
         }
       },
       "sampleStatus": {
@@ -962,6 +1003,11 @@
           "commercialDisclosureRequired": true,
           "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
         }
+      },
+      "rightsReview": {
+        "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-009",
+        "producerDeclarationPath": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md",
+        "declarationStatus": "pending_signature_and_provenance_confirmation"
       }
     },
     {
@@ -1030,7 +1076,7 @@
           "status": "available_after_delivery_qc"
         },
         "trackoutPro": {
-          "status": "requires_stems_trackouts"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available"
         },
         "unlimited": {
           "status": "available_after_delivery_qc"
@@ -1066,6 +1112,11 @@
           "commercialDisclosureRequired": true,
           "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
         }
+      },
+      "rightsReview": {
+        "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-010",
+        "producerDeclarationPath": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md",
+        "declarationStatus": "pending_signature_and_provenance_confirmation"
       }
     },
     {
@@ -1134,7 +1185,7 @@
           "status": "available_after_delivery_qc"
         },
         "trackoutPro": {
-          "status": "requires_stems_trackouts"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available"
         },
         "unlimited": {
           "status": "available_after_delivery_qc"
@@ -1170,6 +1221,11 @@
           "commercialDisclosureRequired": true,
           "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
         }
+      },
+      "rightsReview": {
+        "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-011",
+        "producerDeclarationPath": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md",
+        "declarationStatus": "pending_signature_and_provenance_confirmation"
       }
     },
     {
@@ -1238,7 +1294,7 @@
           "status": "available_after_delivery_qc"
         },
         "trackoutPro": {
-          "status": "requires_stems_trackouts"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available"
         },
         "unlimited": {
           "status": "available_after_delivery_qc"
@@ -1274,6 +1330,11 @@
           "commercialDisclosureRequired": true,
           "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
         }
+      },
+      "rightsReview": {
+        "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-012",
+        "producerDeclarationPath": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md",
+        "declarationStatus": "pending_signature_and_provenance_confirmation"
       }
     },
     {
@@ -1342,7 +1403,7 @@
           "status": "available_after_delivery_qc"
         },
         "trackoutPro": {
-          "status": "requires_stems_trackouts"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available"
         },
         "unlimited": {
           "status": "available_after_delivery_qc"
@@ -1378,6 +1439,11 @@
           "commercialDisclosureRequired": true,
           "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
         }
+      },
+      "rightsReview": {
+        "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-013",
+        "producerDeclarationPath": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md",
+        "declarationStatus": "pending_signature_and_provenance_confirmation"
       }
     },
     {
@@ -1446,7 +1512,7 @@
           "status": "available_after_delivery_qc"
         },
         "trackoutPro": {
-          "status": "requires_stems_trackouts"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available"
         },
         "unlimited": {
           "status": "available_after_delivery_qc"
@@ -1482,6 +1548,12 @@
           "commercialDisclosureRequired": true,
           "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
         }
+      },
+      "rightsReview": {
+        "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-014",
+        "producerDeclarationPath": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md",
+        "declarationStatus": "pending_signature_and_provenance_confirmation",
+        "priorClientCommitmentReview": "required_before_exclusive_sale"
       }
     },
     {
@@ -1544,19 +1616,19 @@
       },
       "licenseAvailability": {
         "basicMp3": {
-          "status": "available_after_preview_render"
+          "status": "hold_remix_provenance_review"
         },
         "premiumWav": {
-          "status": "available_after_delivery_qc"
+          "status": "hold_remix_provenance_review"
         },
         "trackoutPro": {
-          "status": "requires_stems_trackouts"
+          "status": "hold_remix_provenance_review_and_original_trackouts_missing"
         },
         "unlimited": {
-          "status": "available_after_delivery_qc"
+          "status": "hold_remix_provenance_review"
         },
         "exclusive": {
-          "status": "manual_rights_review_required"
+          "status": "hold_remix_provenance_review"
         }
       },
       "sampleStatus": {
@@ -1586,6 +1658,12 @@
           "commercialDisclosureRequired": true,
           "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
         }
+      },
+      "rightsReview": {
+        "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-015",
+        "producerDeclarationPath": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md",
+        "declarationStatus": "pending_signature_and_provenance_confirmation",
+        "provenanceHold": "original filename contains remix; derivative-work/source provenance must be resolved"
       }
     },
     {
@@ -1654,7 +1732,7 @@
           "status": "available_after_delivery_qc"
         },
         "trackoutPro": {
-          "status": "requires_stems_trackouts"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available"
         },
         "unlimited": {
           "status": "available_after_delivery_qc"
@@ -1690,6 +1768,11 @@
           "commercialDisclosureRequired": true,
           "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
         }
+      },
+      "rightsReview": {
+        "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-016",
+        "producerDeclarationPath": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md",
+        "declarationStatus": "pending_signature_and_provenance_confirmation"
       }
     },
     {
@@ -1763,16 +1846,16 @@
           "status": "available_after_preview_render"
         },
         "premiumWav": {
-          "status": "requires_lossless_master"
+          "status": "genuine_lossless_master_required_decoded_wav_derivative_available"
         },
         "trackoutPro": {
-          "status": "requires_stems_trackouts"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available"
         },
         "unlimited": {
-          "status": "requires_lossless_master"
+          "status": "genuine_lossless_master_required_decoded_wav_derivative_available"
         },
         "exclusive": {
-          "status": "requires_lossless_master_and_manual_rights_review"
+          "status": "genuine_lossless_master_and_manual_rights_review_required"
         }
       },
       "sampleStatus": {
@@ -1816,6 +1899,11 @@
           "commercialDisclosureRequired": true,
           "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
         }
+      },
+      "rightsReview": {
+        "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-017",
+        "producerDeclarationPath": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md",
+        "declarationStatus": "pending_signature_and_provenance_confirmation"
       }
     },
     {
@@ -1889,16 +1977,16 @@
           "status": "available_after_preview_render"
         },
         "premiumWav": {
-          "status": "requires_lossless_master"
+          "status": "genuine_lossless_master_required_decoded_wav_derivative_available"
         },
         "trackoutPro": {
-          "status": "requires_stems_trackouts"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available"
         },
         "unlimited": {
-          "status": "requires_lossless_master"
+          "status": "genuine_lossless_master_required_decoded_wav_derivative_available"
         },
         "exclusive": {
-          "status": "requires_lossless_master_and_manual_rights_review"
+          "status": "genuine_lossless_master_and_manual_rights_review_required"
         }
       },
       "sampleStatus": {
@@ -1942,6 +2030,11 @@
           "commercialDisclosureRequired": true,
           "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
         }
+      },
+      "rightsReview": {
+        "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-018",
+        "producerDeclarationPath": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md",
+        "declarationStatus": "pending_signature_and_provenance_confirmation"
       }
     },
     {
@@ -2015,16 +2108,16 @@
           "status": "available_after_preview_render"
         },
         "premiumWav": {
-          "status": "requires_lossless_master"
+          "status": "genuine_lossless_master_required_decoded_wav_derivative_available"
         },
         "trackoutPro": {
-          "status": "requires_stems_trackouts"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available"
         },
         "unlimited": {
-          "status": "requires_lossless_master"
+          "status": "genuine_lossless_master_required_decoded_wav_derivative_available"
         },
         "exclusive": {
-          "status": "requires_lossless_master_and_manual_rights_review"
+          "status": "genuine_lossless_master_and_manual_rights_review_required"
         }
       },
       "sampleStatus": {
@@ -2068,6 +2161,11 @@
           "commercialDisclosureRequired": true,
           "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
         }
+      },
+      "rightsReview": {
+        "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-019",
+        "producerDeclarationPath": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md",
+        "declarationStatus": "pending_signature_and_provenance_confirmation"
       }
     },
     {
@@ -2136,7 +2234,7 @@
           "status": "available_after_delivery_qc"
         },
         "trackoutPro": {
-          "status": "requires_stems_trackouts"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available"
         },
         "unlimited": {
           "status": "available_after_delivery_qc"
@@ -2172,6 +2270,11 @@
           "commercialDisclosureRequired": true,
           "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
         }
+      },
+      "rightsReview": {
+        "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-020",
+        "producerDeclarationPath": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md",
+        "declarationStatus": "pending_signature_and_provenance_confirmation"
       }
     },
     {
@@ -2240,7 +2343,7 @@
           "status": "available_after_delivery_qc"
         },
         "trackoutPro": {
-          "status": "requires_stems_trackouts"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available"
         },
         "unlimited": {
           "status": "available_after_delivery_qc"
@@ -2276,6 +2379,11 @@
           "commercialDisclosureRequired": true,
           "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
         }
+      },
+      "rightsReview": {
+        "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-021",
+        "producerDeclarationPath": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md",
+        "declarationStatus": "pending_signature_and_provenance_confirmation"
       }
     },
     {
@@ -2344,7 +2452,7 @@
           "status": "available_after_delivery_qc"
         },
         "trackoutPro": {
-          "status": "requires_stems_trackouts"
+          "status": "original_trackouts_missing_derived_mix_control_stems_available"
         },
         "unlimited": {
           "status": "available_after_delivery_qc"
@@ -2380,6 +2488,11 @@
           "commercialDisclosureRequired": true,
           "note": "Derived from the stereo master. Not original DAW trackouts. Must not be marketed as original multitrack stems."
         }
+      },
+      "rightsReview": {
+        "sampleRightsReviewRef": "tagj-data/sample-rights-review.v1.json#beat-022",
+        "producerDeclarationPath": "legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md",
+        "declarationStatus": "pending_signature_and_provenance_confirmation"
       }
     }
   ],
