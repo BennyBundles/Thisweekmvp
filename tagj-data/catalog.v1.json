@@ -723,5 +723,38 @@
     "sourceStatus": "verified_google_drive_audio",
     "playbackStatus": "drive_backed_candidate",
     "licensingStatus": "unconfirmed"
-  }
+  },
+  "creativeCaseStudies": [
+    {
+      "id": "bsf-bloxx-robbers",
+      "title": "Bloxx and Robbers",
+      "client": "BSF Tone 066",
+      "creator": "Benny Bundles",
+      "route": "#creative-case-bsf-tone-v1512",
+      "sourceAssetCount": 9,
+      "disciplines": [
+        "cover art direction",
+        "merchandise design",
+        "visual identity continuity"
+      ],
+      "relationshipRoute": "#artist-bsf-tone-066",
+      "status": "repository_backed_live_case_study"
+    },
+    {
+      "id": "t311y-project-artwork",
+      "title": "T311Y Demon Life — Project Artwork System",
+      "client": "T311Y Demon Life",
+      "creator": "Benny Bundles",
+      "route": "#creative-case-t311y-v1512",
+      "sourceAssetCount": 5,
+      "verifiedDriveAssetCount": 6,
+      "disciplines": [
+        "cover art",
+        "identity mark",
+        "project visual direction"
+      ],
+      "relationshipRoute": "#artist-t311y",
+      "status": "repository_backed_live_case_study_partial_drive_set"
+    }
+  ]
 }
