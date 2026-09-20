@@ -644,7 +644,8 @@
       "route": "#artist-billyen",
       "profilePriority": "primary",
       "suppliedAssetStatus": "received_in_conversation_pending_repository_ingest",
-      "publicBioSafetyNote": "Exact custodial-location details are not included in public profile metadata."
+      "publicBioSafetyNote": "Exact custodial-location details are not included in public profile metadata.",
+      "directRoute": "full.html#artist-billyen"
     },
     {
       "id": "t311y-demon-life",
@@ -682,7 +683,8 @@
       "profilePriority": "secondary",
       "suppliedAssetStatus": "canonical_drive_assets_partially_ingested",
       "repositoryAssetCount": 5,
-      "verifiedDriveAssetCount": 6
+      "verifiedDriveAssetCount": 6,
+      "directRoute": "network/t311y-demon-life.html"
     },
     {
       "id": "bsf-tone-066",
@@ -712,7 +714,8 @@
       "route": "#artist-bsf-tone-066",
       "profilePriority": "secondary",
       "suppliedAssetStatus": "canonical_drive_assets_ingested",
-      "repositoryAssetCount": 9
+      "repositoryAssetCount": 9,
+      "directRoute": "network/bsf-tone-066.html"
     }
   ],
   "producerBeatCatalog": {
@@ -756,5 +759,9 @@
       "relationshipRoute": "#artist-t311y",
       "status": "repository_backed_live_case_study_partial_drive_set"
     }
-  ]
+  ],
+  "networkDirectory": {
+    "route": "network/index.html",
+    "status": "standalone_live"
+  }
 }
