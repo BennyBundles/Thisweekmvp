@@ -43,4 +43,4 @@
  fetch('../tagj-data/beat-catalog.v1.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('catalog');return r.json()}).then(x=>{beats=Array.isArray(x.beats)?x.beats:[];render()}).catch(()=>{count.textContent='Catalogue unavailable';grid.innerHTML='<div class="empty">The beat catalogue could not be loaded.</div>'});
  search.addEventListener('input',render);
 })();
-</script></body></html>
+</script><script src="../tagj-assets/runtime-stability.js" defer></script></body></html>
