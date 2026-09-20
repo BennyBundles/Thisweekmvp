@@ -1,0 +1,46 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#05090b"><title>Bundles Beat Catalogue — TAGJ</title><meta name="description" content="Browse 22 original Benny Bundles beats with analyzed tempo, key, tags and licensing paths."><style>
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#05090b;color:#dce6eb;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:inherit;text-decoration:none}button,input{font:inherit}.wrap{width:min(1180px,calc(100% - 28px));margin:auto}.top{min-height:62px;position:sticky;top:0;z-index:20;background:rgba(5,9,11,.88);backdrop-filter:blur(18px);border-bottom:1px solid #26343d}.top .wrap{min-height:62px;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-size:10px;font-weight:950;letter-spacing:.15em;text-transform:uppercase}.nav{display:flex;gap:7px;flex-wrap:wrap}.nav a,.btn{min-height:40px;display:inline-flex;align-items:center;border:1px solid #40515b;padding:9px 12px;font-size:8px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.hero{padding:76px 0 42px;background:radial-gradient(circle at 80% 25%,rgba(229,138,67,.17),transparent 28%),linear-gradient(145deg,#05090b,#091217)}.kicker{font-size:8px;color:#81919a;letter-spacing:.16em;text-transform:uppercase;font-weight:900}.hero h1{font-size:clamp(56px,10vw,130px);line-height:.76;letter-spacing:-.075em;margin:12px 0 20px}.hero h1 span{color:#e58a43}.hero p{font-size:11px;line-height:1.8;color:#9cabb3;max-width:720px}.toolbar{position:sticky;top:62px;z-index:15;background:#070d10;border-top:1px solid #1d2a31;border-bottom:1px solid #26343d;padding:10px 0}.tools{display:grid;grid-template-columns:1fr auto;gap:10px}.search{width:100%;min-height:44px;border:1px solid #33444d;background:#0a1115;color:#fff;padding:10px 12px}.count{display:flex;align-items:center;padding:0 12px;border:1px solid #33444d;font-size:9px;color:#91a0a7}.section{padding:36px 0 70px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.beat{border:1px solid #26343d;background:linear-gradient(145deg,#0a1115,#070b0e);padding:18px;min-height:300px;display:flex;flex-direction:column}.beat .id{font-size:8px;color:#64747d;letter-spacing:.13em}.beat h2{font-size:24px;line-height:1;margin:10px 0 8px}.meta{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 12px}.chip{border:1px solid #33444d;padding:6px 8px;font-size:8px;color:#91a0a7}.tags{display:flex;flex-wrap:wrap;gap:5px}.tag{padding:4px 6px;border-radius:999px;background:#111b20;color:#86969e;font-size:7px;text-transform:uppercase;letter-spacing:.06em}.pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:18px 0}.price{border-top:1px solid #2c3a42;padding-top:7px}.price small{display:block;font-size:6px;color:#71818a;text-transform:uppercase;letter-spacing:.08em}.price b{font-size:13px;color:#e58a43}.beat .actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}.beat .btn{cursor:pointer;background:#0d151a;color:#dce6eb}.beat .btn.primary{background:#e58a43;border-color:#e58a43;color:#111}.notice{margin:24px 0 0;border-left:2px solid #e58a43;background:rgba(229,138,67,.06);padding:12px 14px;font-size:9px;line-height:1.65;color:#9baab2}.empty{padding:40px;border:1px dashed #30414a;text-align:center;color:#81919a}.footer{padding:28px 0 70px;border-top:1px solid #26343d;color:#71818a;font-size:9px}@media(max-width:900px){.grid{grid-template-columns:1fr 1fr}}@media(max-width:620px){.grid{grid-template-columns:1fr}.tools{grid-template-columns:1fr}.toolbar{top:58px}.nav a:not(:last-child){display:none}.pricing{grid-template-columns:repeat(5,1fr)}.price b{font-size:11px}}
+</style></head><body>
+<header class="top"><div class="wrap"><a class="brand" href="../producer.html">BUNDLES / BEAT CATALOGUE</a><nav class="nav"><a href="../licensing.html">Licensing</a><a href="../contact.html">Contact</a><a href="../full.html#producer-beat-vault-v158">Full Beat Vault</a><a href="../index.html">Center →</a></nav></div></header>
+<section class="hero"><div class="wrap"><div class="kicker">22 ORIGINAL SOURCE RECORDS / PRODUCED BY BUNDLES</div><h1>BEAT<br><span>CATALOGUE.</span></h1><p>Search the current catalogue by title, tempo, tonal estimate or creative tag. Tempo and key fields are audio-analysis estimates. Use the full Beat Vault for source-backed audition and the beat-specific licensing request flow.</p></div></section>
+<div class="toolbar"><div class="wrap tools"><input class="search" id="search" type="search" placeholder="Search title, key, tempo or tags…" aria-label="Search beat catalogue"><div class="count" id="count">Loading catalogue…</div></div></div>
+<main class="section"><div class="wrap"><div class="grid" id="grid" aria-live="polite"></div><div class="notice"><strong>Delivery disclosure:</strong> the four catalogue items whose source began as MP3 can have WAV-container delivery derivatives, but those derivatives are not original lossless masters. Current $99 trackout packs are 3-part stereo-derived separations, not original DAW multitracks, and may contain separation bleed/artifacts.</div></div></main>
+<footer class="footer"><div class="wrap">Bundles (Benny Bundles) / Thats A Good Jawn LLC — Standard licensing from $29; exclusive inquiries from $499.</div></footer>
+<script>
+(()=>{
+ const grid=document.getElementById('grid'),search=document.getElementById('search'),count=document.getElementById('count');
+ let beats=[];
+ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const price=(b,k,fallback)=>b.pricing?.[k]??fallback;
+ function openVault(b){
+   try{localStorage.setItem('tagjSelectedBeatV158',JSON.stringify({id:b.id,title:b.title,driveId:b.source?.driveId||null}))}catch(_){}
+   location.href='../full.html#producer-beat-vault-v158';
+ }
+ function render(){
+   const q=(search.value||'').trim().toLowerCase();
+   const rows=beats.filter(b=>{
+     const a=b.analysis||{};
+     return [b.id,b.title,b.originalWorkingTitle,a.tempoFeel,a.keyEstimate,...(a.creativeTags||[])].join(' ').toLowerCase().includes(q);
+   });
+   count.textContent=rows.length+' / '+beats.length+' beats';
+   grid.textContent='';
+   if(!rows.length){grid.innerHTML='<div class="empty">No beats match this search.</div>';return}
+   rows.forEach(b=>{
+     const a=b.analysis||{},card=document.createElement('article');card.className='beat';
+     card.innerHTML='<div class="id"></div><h2></h2><div class="meta"></div><div class="tags"></div><div class="pricing"></div><div class="actions"></div>';
+     card.querySelector('.id').textContent=b.id.toUpperCase()+' / PROD. BY BUNDLES';
+     card.querySelector('h2').textContent=b.title;
+     card.querySelector('.meta').innerHTML='<span class="chip">'+esc(a.tempoFeel||'Tempo pending')+'</span><span class="chip">'+esc(a.keyEstimate||'Key pending')+'</span><span class="chip">'+esc((b.audio?.format||'').toUpperCase())+'</span>';
+     card.querySelector('.tags').innerHTML=(a.creativeTags||[]).map(x=>'<span class="tag">'+esc(x)+'</span>').join('');
+     const tiers=[['Basic',price(b,'basicMp3',29)],['Premium',price(b,'premiumWav',49)],['Trackout',price(b,'trackoutPro',99)],['Unlimited',price(b,'unlimited',149)],['Exclusive','from $'+price(b,'exclusiveMinimumOffer',499)]];
+     card.querySelector('.pricing').innerHTML=tiers.map(([n,p])=>'<div class="price"><small>'+n+'</small><b>'+(/^from/.test(String(p))?esc(p):'$'+esc(p))+'</b></div>').join('');
+     const actions=card.querySelector('.actions');
+     const primary=document.createElement('button');primary.type='button';primary.className='btn primary';primary.textContent='Select in Beat Vault';primary.addEventListener('click',()=>openVault(b));actions.appendChild(primary);
+     if(b.source?.viewerUrl){const source=document.createElement('a');source.className='btn';source.href=b.source.viewerUrl;source.target='_blank';source.rel='noopener';source.textContent='Drive source';actions.appendChild(source)}
+     grid.appendChild(card);
+   });
+ }
+ fetch('../tagj-data/beat-catalog.v1.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('catalog');return r.json()}).then(x=>{beats=Array.isArray(x.beats)?x.beats:[];render()}).catch(()=>{count.textContent='Catalogue unavailable';grid.innerHTML='<div class="empty">The beat catalogue could not be loaded.</div>'});
+ search.addEventListener('input',render);
+})();
+</script></body></html>
