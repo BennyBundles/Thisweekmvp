@@ -763,5 +763,18 @@
   "networkDirectory": {
     "route": "network/index.html",
     "status": "standalone_live"
+  },
+  "publicRoutes": {
+    "center": "index.html",
+    "fullEcosystem": "full.html#home",
+    "tagj": "tagj.html",
+    "artist": "artist.html",
+    "producer": "producer.html",
+    "creative": "creative.html",
+    "artistNetwork": "network/index.html",
+    "musicArchive": "music/index.html",
+    "beatCatalogue": "beats/index.html",
+    "beatLicensing": "licensing.html",
+    "contact": "contact.html"
   }
 }
