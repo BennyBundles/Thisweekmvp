@@ -741,7 +741,8 @@
         "visual identity continuity"
       ],
       "relationshipRoute": "#artist-bsf-tone-066",
-      "status": "repository_backed_live_case_study"
+      "status": "repository_backed_live_case_study",
+      "directRoute": "creative/case-bsf-tone-066.html"
     },
     {
       "id": "t311y-project-artwork",
@@ -757,7 +758,8 @@
         "project visual direction"
       ],
       "relationshipRoute": "#artist-t311y",
-      "status": "repository_backed_live_case_study"
+      "status": "repository_backed_live_case_study",
+      "directRoute": "creative/case-t311y-demon-life.html"
     }
   ],
   "networkDirectory": {
