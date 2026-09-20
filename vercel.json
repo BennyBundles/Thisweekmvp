@@ -16,6 +16,10 @@
       "destination": "/preview.html"
     },
     {
+      "source": "/full",
+      "destination": "/full.html"
+    },
+    {
       "source": "/tagj",
       "destination": "/tagj.html"
     },
@@ -81,6 +85,19 @@
     }
   ],
   "headers": [
+    {
+      "source": "/tagj-sw.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        },
+        {
+          "key": "Service-Worker-Allowed",
+          "value": "/"
+        }
+      ]
+    },
     {
       "source": "/tagj-assets/(.*)",
       "headers": [
