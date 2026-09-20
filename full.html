@@ -560,6 +560,20 @@ body:not([data-current-world]) .v143-request-fab,body[data-current-world="home"]
 .v1513-proof-ribbon{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:18px 0 26px}.v1513-proof-ribbon a{position:relative;min-height:190px;overflow:hidden;border:1px solid rgba(255,255,255,.1);background:#0a0d10}.v1513-proof-ribbon img{width:100%;height:100%;object-fit:cover;display:block}.v1513-proof-ribbon span{position:absolute;left:0;right:0;bottom:0;padding:28px 10px 9px;background:linear-gradient(transparent,rgba(0,0,0,.88));font-size:8px;font-weight:900;letter-spacing:.08em;color:#fff;text-transform:uppercase}
 @media(max-width:760px){.v1513-network-live{grid-template-columns:1fr}.v1513-network-card{min-height:320px}.v1513-proof-ribbon{grid-template-columns:1fr 1fr}}
 </style>
+<style id="v1522-performance-css">
+.world-view[hidden]{display:none!important}
+.deep,[id]{scroll-margin-top:72px}
+@supports(content-visibility:auto){
+  .world-view:not([hidden]) .deep,
+  .world-view:not([hidden]) .v13-section,
+  .world-view:not([hidden]) .v145-section,
+  .world-view:not([hidden]) .v147-section,
+  .world-view:not([hidden]) .v1512-case-shell{
+    content-visibility:auto;
+    contain-intrinsic-size:auto 900px;
+  }
+}
+</style>
 </head><body class="preview-shell"><div class="world-view world-home home-v10" data-world="home">
 <section class="screen" id="home"><div class="home-grid"></div><div class="home-noise"></div><div class="home-vignette"></div><div class="home-stage"><div class="compass">
 <div class="home-kicker"><b>TAGJ × BENNY BUNDLES</b> / ONE CENTER — FOUR DISTINCT WORLDS</div><div class="orbit o3"></div><div class="orbit o2"></div><div class="orbit o1"></div><div class="beam n"></div><div class="beam e"></div><div class="beam s"></div><div class="beam w"></div>
@@ -1225,16 +1239,14 @@ body:not([data-current-world]) .v143-request-fab,body[data-current-world="home"]
 (() => {
   const views=[...document.querySelectorAll('.world-view')];
   const roots=['home','tagj','artist','producer','creative'];
+  const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let routing=false;
+
   function worldForHash(hash){
     const id=(hash||'#home').slice(1);
     if(id==='home') return 'home';
     for(const r of roots.slice(1)){ if(id===r || id.startsWith(r+'-')) return r; }
 
-    // Deep sections added after V12 do not all use a world-prefixed id.
-    // Resolve the owning world from the DOM before falling back. This prevents
-    // a generic detail hash (for example a V14/V15 dossier or tool id) from
-    // incorrectly reopening the center/home screen while the user is already
-    // inside TAGJ, Artist, Studio or Creative.
     const target=document.getElementById(id);
     const owner=target?.closest?.('.world-view');
     if(owner?.dataset?.world && roots.includes(owner.dataset.world)) return owner.dataset.world;
@@ -1243,24 +1255,58 @@ body:not([data-current-world]) .v143-request-fab,body[data-current-world="home"]
     if(current && current!=='home' && roots.includes(current)) return current;
     return 'home';
   }
-  function show(world, anchor, behavior='auto'){
-    views.forEach(v=>v.hidden=v.dataset.world!==world);
+
+  function show(world,anchor,behavior='auto'){
+    if(!roots.includes(world)) world='home';
+    const active=views.find(v=>!v.hidden)?.dataset.world;
+    if(active!==world) views.forEach(v=>v.hidden=v.dataset.world!==world);
     document.body.dataset.currentWorld=world;
     if(window.TAGJNavPulse) window.TAGJNavPulse(world);
+
     const target=anchor ? document.getElementById(anchor) : null;
-    requestAnimationFrame(()=>{ if(target) target.scrollIntoView({behavior,block:'start'}); else scrollTo({top:0,behavior}); });
+    const mode=reduceMotion?'auto':behavior;
+    requestAnimationFrame(()=>{
+      if(target) target.scrollIntoView({behavior:mode,block:'start'});
+      else scrollTo({top:0,behavior:mode});
+    });
   }
+
+  function routeCurrent(behavior='auto'){
+    const id=(location.hash||'#home').slice(1);
+    const target=document.getElementById(id);
+    const world=worldForHash(location.hash);
+    show(world,id==='home'||!target?null:id,behavior);
+  }
+
+  function announceHashChange(oldURL){
+    routing=true;
+    try{dispatchEvent(new HashChangeEvent('hashchange',{oldURL,newURL:location.href}))}
+    catch(_){dispatchEvent(new Event('hashchange'))}
+    routing=false;
+  }
+
   document.addEventListener('click',e=>{
-    const a=e.target.closest('a[href^="#"]'); if(!a) return;
-    const id=a.getAttribute('href').slice(1); if(!id) return;
+    const a=e.target.closest('a[href^="#"]');
+    if(!a) return;
+    const id=a.getAttribute('href').slice(1);
+    if(!id) return;
+    const target=document.getElementById(id);
+    if(!target && id!=='home') return;
+
+    e.preventDefault();
     const world=worldForHash('#'+id);
     const current=views.find(v=>!v.hidden)?.dataset.world;
-    if(world!==current || roots.includes(id)){
-      e.preventDefault(); history.pushState(null,'','#'+id); show(world,id==='home'?null:id,'smooth');
-    }
+    const oldURL=location.href;
+    const next='#'+id;
+    if(location.hash!==next) history.pushState(null,'',next);
+    show(world,id==='home'?null:id,current===world?'smooth':'auto');
+    announceHashChange(oldURL);
   });
-  addEventListener('popstate',()=>{const id=(location.hash||'#home').slice(1);show(worldForHash(location.hash),id==='home'?null:id,'auto')});
-  const id=(location.hash||'#home').slice(1); show(worldForHash(location.hash),id==='home'?null:id,'auto');
+
+  addEventListener('hashchange',()=>{if(!routing)routeCurrent('auto')});
+  addEventListener('popstate',()=>routeCurrent('auto'));
+  addEventListener('pageshow',e=>{if(e.persisted)routeCurrent('auto')},{passive:true});
+  routeCurrent('auto');
 })();
 </script>
 
@@ -2358,4 +2404,4 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
  addEventListener('keydown',e=>{if(!box.classList.contains('open'))return;if(e.key==='Escape')close();if(e.key==='ArrowLeft')step(-1);if(e.key==='ArrowRight')step(1)});
 })();
 </script>
-</body></html>
+<script src="tagj-assets/runtime-stability.js" defer></script></body></html>
