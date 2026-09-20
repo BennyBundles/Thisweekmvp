@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "tagj.network-assets.v1",
+  "schemaVersion": "tagj.network-assets.v1.1",
   "profiles": {
     "billyen": {
       "status": "source_assets_received",
@@ -55,7 +55,7 @@
     },
     "t311y-demon-life": {
       "status": "source_assets_received",
-      "repositoryIngestStatus": "pending_binary_asset_copy",
+      "repositoryIngestStatus": "canonical_drive_assets_partially_ingested",
       "assets": [
         {
           "id": "t311y-green-varsity-portrait",
@@ -142,11 +142,63 @@
           ],
           "publicUse": "approved_from_supplied_source"
         }
+      ],
+      "canonicalDriveAssetCount": 6,
+      "canonicalDriveAssets": [
+        {
+          "id": "t311y-profile-01",
+          "driveId": "1htGPuCbUjG4d46-3tmUaLDE8zgRbr_5s",
+          "sourceName": "T311y demon life profile photo.jpg",
+          "type": "portrait",
+          "repositoryPath": "tagj-assets/network/t311y-demon-life/profile.jpg",
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "t311y-tdc-logo",
+          "driveId": "14XSBDIT0Jhp8u8zPcd_3yBy08b16iuVY",
+          "sourceName": "tDC (T311y) the demon culture logo.JPG",
+          "type": "logo",
+          "repositoryPath": "tagj-assets/network/t311y-demon-life/the-demon-culture-logo.jpg",
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "t311y-3d-cover",
+          "driveId": "1jSlr8iUdvCqWbSoZR3mSQFZCvJd8Ql_w",
+          "sourceName": "3-D (T311y demon Life and Shizzy Demon) cover art .JPG",
+          "type": "cover_art",
+          "repositoryPath": "tagj-assets/network/t311y-demon-life/3-d-cover.jpg",
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "t311y-light-pack-cover",
+          "driveId": "1qaT-_RKMKLHFQGVwapnJinMBrlu-nZ3M",
+          "sourceName": "Chapter 3 : The Light Pack (T311y Demon Life) cover art.jpg",
+          "type": "cover_art",
+          "repositoryPath": "tagj-assets/network/t311y-demon-life/chapter-3-light-pack.jpg",
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "t311y-jimmy-cover",
+          "driveId": "1S0T7NnenFMyRPwG57K7V_n-4U8IOGbp1",
+          "sourceName": "Jimmy onna blast off (T311y demon life) cover art",
+          "type": "cover_art",
+          "repositoryPath": "tagj-assets/network/t311y-demon-life/jimmy-onna-blast-off.png",
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "t311y-devils-playground-cover",
+          "driveId": "1qUANxk3mBaGIBxcM0aCaK-c5CPsHPyVc",
+          "sourceName": "The Devils Playground (T311y Demon Life).PNG",
+          "type": "cover_art",
+          "repositoryPath": null,
+          "publicUse": "approved_from_supplied_source",
+          "ingestStatus": "drive_source_verified_repo_binary_pending_transfer"
+        }
       ]
     },
     "bsf-tone-066": {
       "status": "source_assets_received",
-      "repositoryIngestStatus": "pending_binary_asset_copy",
+      "repositoryIngestStatus": "canonical_drive_assets_ingested",
       "assets": [
         {
           "id": "bsf-bloxx-robbers-stone-art",
@@ -237,6 +289,81 @@
             "Bloxx and Robbers archive",
             "affiliate profile gallery"
           ],
+          "publicUse": "approved_from_supplied_source"
+        }
+      ],
+      "canonicalDriveAssetCount": 9,
+      "canonicalDriveAssets": [
+        {
+          "id": "bsf-tone-profile-01",
+          "driveId": "11kCt9A_W5KFvF5wFC8BKlGr506FYQqtG",
+          "sourceName": "BSF tone 066 profile photo 1.PNG",
+          "type": "portrait",
+          "repositoryPath": "tagj-assets/network/bsf-tone-066/profile.png",
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "bsf-bloxx-cover-01",
+          "driveId": "1wn2kMO69CUK8XD3nCw8Cvq4gQ9cEFh4b",
+          "sourceName": "Bloxx and robbers cover art 1 (tone).jpg",
+          "type": "cover_art_variant",
+          "repositoryPath": "tagj-assets/network/bsf-tone-066/bloxx-robbers-cover-01.jpg",
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "bsf-bloxx-cover-02",
+          "driveId": "1Wmzu7a8_cxL0B-aRhLTgKOezrT7C3PJ9",
+          "sourceName": "Bloxx and robbers cover art 2 (tone).JPG",
+          "type": "cover_art_variant",
+          "repositoryPath": "tagj-assets/network/bsf-tone-066/bloxx-robbers-cover-02.jpg",
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "bsf-bloxx-cover-03",
+          "driveId": "1QE2zIhBVBNxcHj0mInI3mHM7tLmHFhtg",
+          "sourceName": "Bloxx and robbers cover art 3 (tone).jpg",
+          "type": "cover_art_variant",
+          "repositoryPath": "tagj-assets/network/bsf-tone-066/bloxx-robbers-cover-03.jpg",
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "bsf-bloxx-cover-04",
+          "driveId": "1Ilf1j7rVYyhH-LNGr_amWM1Spn0Rd3Gm",
+          "sourceName": "Bloxx and Robbers cover art 4 (tone).jpg",
+          "type": "cover_art_variant",
+          "repositoryPath": "tagj-assets/network/bsf-tone-066/bloxx-robbers-cover-04.jpg",
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "bsf-bloxx-merch-01",
+          "driveId": "1loT61CQmX1XhTCLk9mFGCgizgsy1KYzw",
+          "sourceName": "Bloxx and Robbers merch 1 (Tone).PNG",
+          "type": "merch_design",
+          "repositoryPath": "tagj-assets/network/bsf-tone-066/bloxx-robbers-merch-01.png",
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "bsf-bloxx-merch-02",
+          "driveId": "13y1hJcaeXdgPRfxDw--fYFAKwTI2_yCo",
+          "sourceName": "Bloxx and robbers merch 2 (tone).PNG",
+          "type": "merch_design",
+          "repositoryPath": "tagj-assets/network/bsf-tone-066/bloxx-robbers-merch-02.png",
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "bsf-bloxx-merch-03",
+          "driveId": "15pAM6aIY4Ff8eGbAKpah79IOOGvy-hDN",
+          "sourceName": "Bloxx and robbers merch 3 (tone).JPG",
+          "type": "merch_design",
+          "repositoryPath": "tagj-assets/network/bsf-tone-066/bloxx-robbers-merch-03.jpg",
+          "publicUse": "approved_from_supplied_source"
+        },
+        {
+          "id": "bsf-bloxx-merch-04",
+          "driveId": "17QFi5dQUwLT6vOatW-Zgaxm1wCcMbYNP",
+          "sourceName": "Bloxx and robbers merch 4 (tone).JPG",
+          "type": "merch_design",
+          "repositoryPath": "tagj-assets/network/bsf-tone-066/bloxx-robbers-merch-04.jpg",
           "publicUse": "approved_from_supplied_source"
         }
       ]
