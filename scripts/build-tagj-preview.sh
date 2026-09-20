@@ -2,10 +2,12 @@
 set -eu
 
 rm -rf .tagj-dist
-mkdir -p .tagj-dist/network .tagj-dist/tagj-assets/v147 .tagj-dist/tagj-assets/intro .tagj-dist/tagj-assets/network .tagj-dist/tagj-data .tagj-dist/legal
+mkdir -p .tagj-dist/network .tagj-dist/music .tagj-dist/beats .tagj-dist/tagj-assets/v147 .tagj-dist/tagj-assets/intro .tagj-dist/tagj-assets/network .tagj-dist/tagj-data .tagj-dist/legal
 
 cp index.html full.html tagj.html artist.html producer.html creative.html contact.html licensing.html 404.html .tagj-dist/
 cp network/*.html .tagj-dist/network/
+cp music/*.html .tagj-dist/music/
+cp beats/*.html .tagj-dist/beats/
 cp tagj-assets/*.css .tagj-dist/tagj-assets/
 cp tagj-assets/v147/* .tagj-dist/tagj-assets/v147/
 cp tagj-assets/intro/* .tagj-dist/tagj-assets/intro/
@@ -13,4 +15,4 @@ cp -R tagj-assets/network/* .tagj-dist/tagj-assets/network/
 cp tagj-data/* .tagj-dist/tagj-data/
 cp legal/* .tagj-dist/legal/
 
-printf 'V15.16' > .tagj-dist/VERSION.txt
+printf 'V15.17' > .tagj-dist/VERSION.txt
