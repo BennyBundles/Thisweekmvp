@@ -5,6 +5,7 @@ on:
     branches: ["tagj-v12-preview"]
     paths:
       - "index.html"
+      - "preview.html"
       - "full.html"
       - "tagj.html"
       - "artist.html"
@@ -14,11 +15,14 @@ on:
       - "licensing.html"
       - "404.html"
       - "network/**"
+      - "creative/**"
       - "tagj-assets/**"
       - "tagj-data/**"
       - "legal/**"
       - "scripts/build-tagj-preview.sh"
       - "scripts/check-tagj-static.mjs"
+      - "scripts/check-tagj-package.mjs"
+      - "vercel.json"
       - ".github/workflows/tagj-preview-qa.yml"
   workflow_dispatch:
 
@@ -38,11 +42,15 @@ jobs:
       - name: Build TAGJ preview package
         run: sh scripts/build-tagj-preview.sh
 
+      - name: Verify packaged integrity
+        run: node scripts/check-tagj-package.mjs
+
       - name: Verify packaged routes
         shell: bash
         run: |
           set -euo pipefail
           test -f .tagj-dist/index.html
+          test -f .tagj-dist/preview.html
           test -f .tagj-dist/full.html
           test -f .tagj-dist/tagj.html
           test -f .tagj-dist/artist.html
@@ -54,10 +62,18 @@ jobs:
           test -f .tagj-dist/network/index.html
           test -f .tagj-dist/network/bsf-tone-066.html
           test -f .tagj-dist/network/t311y-demon-life.html
+          test -f .tagj-dist/creative/index.html
+          test -f .tagj-dist/creative/portfolio.html
+          test -f .tagj-dist/creative/case-bsf-tone-066.html
+          test -f .tagj-dist/creative/case-t311y-demon-life.html
           test -f .tagj-dist/tagj-data/beat-catalog.v1.json
           test -f .tagj-dist/legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md
           test -f .tagj-dist/tagj-assets/network/bsf-tone-066/profile.png
           test -f .tagj-dist/tagj-assets/network/t311y-demon-life/profile.jpg
+          test -f .tagj-dist/tagj-assets/runtime-stability.js
+          test -f .tagj-dist/tagj-assets/media/asset-fashion-hero.jpg
+          test -f .tagj-dist/tagj-assets/media/asset-green-set.jpg
+          test -f .tagj-dist/tagj-assets/media/asset-track-navy.jpg
           printf 'Packaged TAGJ version: '
           cat .tagj-dist/VERSION.txt
 
