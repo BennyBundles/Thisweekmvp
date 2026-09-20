@@ -2,8 +2,111 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
   "installCommand": "",
-  "buildCommand": "sh scripts/build-tagj-preview.sh",
+  "buildCommand": "sh scripts/build-tagj-preview.sh && node scripts/check-tagj-package.mjs",
   "outputDirectory": ".tagj-dist",
   "cleanUrls": false,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/home",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/preview",
+      "destination": "/preview.html"
+    },
+    {
+      "source": "/tagj",
+      "destination": "/tagj.html"
+    },
+    {
+      "source": "/artist",
+      "destination": "/artist.html"
+    },
+    {
+      "source": "/producer",
+      "destination": "/producer.html"
+    },
+    {
+      "source": "/creative",
+      "destination": "/creative.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact.html"
+    },
+    {
+      "source": "/licensing",
+      "destination": "/licensing.html"
+    },
+    {
+      "source": "/network",
+      "destination": "/network/index.html"
+    },
+    {
+      "source": "/network/bsf-tone-066",
+      "destination": "/network/bsf-tone-066.html"
+    },
+    {
+      "source": "/network/t311y-demon-life",
+      "destination": "/network/t311y-demon-life.html"
+    },
+    {
+      "source": "/creative/portfolio",
+      "destination": "/creative/portfolio.html"
+    },
+    {
+      "source": "/creative/case-bsf-tone-066",
+      "destination": "/creative/case-bsf-tone-066.html"
+    },
+    {
+      "source": "/creative/case-t311y-demon-life",
+      "destination": "/creative/case-t311y-demon-life.html"
+    },
+    {
+      "source": "/services",
+      "destination": "/services/index.html"
+    },
+    {
+      "source": "/beats",
+      "destination": "/beats/index.html"
+    },
+    {
+      "source": "/music",
+      "destination": "/music/index.html"
+    },
+    {
+      "source": "/catalogue",
+      "destination": "/catalogue/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/tagj-assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
+        }
+      ]
+    },
+    {
+      "source": "/tagj-data/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=60, stale-while-revalidate=300"
+        }
+      ]
+    },
+    {
+      "source": "/(.*).html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        }
+      ]
+    }
+  ]
 }
