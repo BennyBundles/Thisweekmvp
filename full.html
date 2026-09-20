@@ -542,6 +542,15 @@ body:not([data-current-world]) .v143-request-fab,body[data-current-world="home"]
 @media(max-width:850px){.v1512-case-hero{grid-template-columns:1fr}.v1512-case-visual{min-height:360px}.v1512-role-grid{grid-template-columns:1fr 1fr}.v1512-case-stats{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.v1512-role-grid{grid-template-columns:1fr}.v1512-case-copy{padding:20px}.v1512-case-visual{min-height:320px}}
 </style>
+<style id="v1514-lightbox-css">
+.v1511-gallery img,.v1512-case-visual img,.v1511-affiliate-portrait img,.v1511-affiliate-mark img{cursor:zoom-in}
+.v1514-lightbox{position:fixed;inset:0;z-index:10050;background:rgba(2,4,6,.94);display:none;grid-template-rows:auto 1fr auto;padding:max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));backdrop-filter:blur(16px)}
+.v1514-lightbox.open{display:grid}.v1514-lightbox-head,.v1514-lightbox-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;color:#fff}
+.v1514-lightbox-head small{font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:#8c9aa2}.v1514-lightbox button{width:44px;height:44px;border:1px solid #40505a;border-radius:50%;background:#0c1419;color:#fff;font-size:19px}
+.v1514-lightbox-stage{min-height:0;display:grid;grid-template-columns:52px 1fr 52px;align-items:center;gap:12px}.v1514-lightbox-frame{height:100%;min-height:0;display:grid;place-items:center;overflow:hidden}.v1514-lightbox-frame img{max-width:100%;max-height:calc(100svh - 150px);object-fit:contain;box-shadow:0 30px 90px rgba(0,0,0,.55)}
+.v1514-lightbox-foot{justify-content:center;text-align:center;font-size:9px;line-height:1.5;letter-spacing:.05em;text-transform:uppercase;color:#c4ced3}.v1514-lightbox-count{font-variant-numeric:tabular-nums;color:#7f9099}
+@media(max-width:600px){.v1514-lightbox-stage{grid-template-columns:38px 1fr 38px;gap:6px}.v1514-lightbox button{width:38px;height:38px}.v1514-lightbox-frame img{max-height:calc(100svh - 135px)}}
+</style>
 </head><body class="preview-shell"><div class="world-view world-home home-v10" data-world="home">
 <section class="screen" id="home"><div class="home-grid"></div><div class="home-noise"></div><div class="home-vignette"></div><div class="home-stage"><div class="compass">
 <div class="home-kicker"><b>TAGJ × BENNY BUNDLES</b> / ONE CENTER — FOUR DISTINCT WORLDS</div><div class="orbit o3"></div><div class="orbit o2"></div><div class="orbit o1"></div><div class="beam n"></div><div class="beam e"></div><div class="beam s"></div><div class="beam w"></div>
@@ -2304,4 +2313,28 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
 })();
 </script>
 
+<div class="v1514-lightbox" id="v1514Lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Artwork viewer">
+  <div class="v1514-lightbox-head"><div><small>TAGJ / ARTWORK VIEWER</small><div class="v1514-lightbox-count" id="v1514LightboxCount"></div></div><button type="button" id="v1514LightboxClose" aria-label="Close artwork viewer">×</button></div>
+  <div class="v1514-lightbox-stage"><button type="button" id="v1514LightboxPrev" aria-label="Previous artwork">‹</button><div class="v1514-lightbox-frame"><img id="v1514LightboxImage" alt=""></div><button type="button" id="v1514LightboxNext" aria-label="Next artwork">›</button></div>
+  <div class="v1514-lightbox-foot" id="v1514LightboxCaption"></div>
+</div>
+<script id="v1514-lightbox-js">
+(()=>{
+ const box=document.getElementById('v1514Lightbox'),img=document.getElementById('v1514LightboxImage'),cap=document.getElementById('v1514LightboxCaption'),count=document.getElementById('v1514LightboxCount');
+ if(!box||!img)return;
+ let items=[],index=0,lastFocus=null;
+ const eligible=()=>[...document.querySelectorAll('.v1511-gallery img,.v1512-case-visual img,.v1511-affiliate-portrait img,.v1511-affiliate-mark img')];
+ function captionFor(el){return el.closest('figure')?.querySelector('figcaption')?.textContent?.trim()||el.alt||'TAGJ artwork'}
+ function render(){const el=items[index];if(!el)return;img.src=el.currentSrc||el.src;img.alt=el.alt||captionFor(el);cap.textContent=captionFor(el);count.textContent=(index+1)+' / '+items.length}
+ function open(el){items=eligible();index=Math.max(0,items.indexOf(el));lastFocus=document.activeElement;render();box.classList.add('open');box.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';document.getElementById('v1514LightboxClose')?.focus()}
+ function close(){box.classList.remove('open');box.setAttribute('aria-hidden','true');document.body.style.overflow='';lastFocus?.focus?.()}
+ function step(d){if(!items.length)return;index=(index+d+items.length)%items.length;render()}
+ eligible().forEach(el=>{el.tabIndex=0;el.setAttribute('role','button');el.setAttribute('aria-label','Open full artwork: '+captionFor(el));el.addEventListener('click',()=>open(el));el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open(el)}})});
+ document.getElementById('v1514LightboxClose')?.addEventListener('click',close);
+ document.getElementById('v1514LightboxPrev')?.addEventListener('click',()=>step(-1));
+ document.getElementById('v1514LightboxNext')?.addEventListener('click',()=>step(1));
+ box.addEventListener('click',e=>{if(e.target===box)close()});
+ addEventListener('keydown',e=>{if(!box.classList.contains('open'))return;if(e.key==='Escape')close();if(e.key==='ArrowLeft')step(-1);if(e.key==='ArrowRight')step(1)});
+})();
+</script>
 </body></html>
