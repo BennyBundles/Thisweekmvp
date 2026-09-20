@@ -680,7 +680,9 @@
       "linksRef": "network:t311yDemonLife",
       "route": "#artist-t311y",
       "profilePriority": "secondary",
-      "suppliedAssetStatus": "received_in_conversation_pending_repository_ingest"
+      "suppliedAssetStatus": "canonical_drive_assets_partially_ingested",
+      "repositoryAssetCount": 5,
+      "verifiedDriveAssetCount": 6
     },
     {
       "id": "bsf-tone-066",
@@ -709,7 +711,8 @@
       "linksRef": "network:bsfTone066",
       "route": "#artist-bsf-tone-066",
       "profilePriority": "secondary",
-      "suppliedAssetStatus": "received_in_conversation_pending_repository_ingest"
+      "suppliedAssetStatus": "canonical_drive_assets_ingested",
+      "repositoryAssetCount": 9
     }
   ],
   "producerBeatCatalog": {
