@@ -167,6 +167,23 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   if(!build.includes(token))fail(`Build script missing expected shipping rule: ${token}`);
 }
 
+
+// V15.24 navigation reliability invariants.
+{
+  const runtime=read('tagj-assets/runtime-stability.js');
+  if(/touchstart[^\n]*warm\(/i.test(runtime))fail('runtime-stability.js: touch prefetch must remain disabled');
+  if(!runtime.includes("isVercelPreview"))fail('runtime-stability.js: Vercel-preview stability mode missing');
+  if(!runtime.includes("startsWith('tagj-nav-')"))fail('runtime-stability.js: preview cache cleanup missing');
+  const sw=read('tagj-sw.js');
+  for(const token of ['/404.html','/network/bsf-tone-066.html','/network/t311y-demon-life.html','/creative/case-bsf-tone-066.html','/creative/case-t311y-demon-life.html']){
+    if(!sw.includes(token))fail('tagj-sw.js: missing reliability route '+token);
+  }
+  if(/<iframe\b/i.test(html['preview.html']))fail('preview.html: nested full-site iframe is prohibited');
+  const vc=JSON.parse(read('vercel.json'));
+  if(!(vc.redirects||[]).some(x=>x.source==='/preview'&&x.destination==='/'))fail('vercel.json: /preview must redirect to root');
+  if(!/tagj-404-self-heal/.test(html['404.html']))fail('404.html: canonical-route self-heal missing');
+}
+
 finish();
 function finish(){
   if(failures.length){
