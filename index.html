@@ -657,14 +657,24 @@ html.intro-resume-v151 .home-footer{opacity:1!important;animation:none!important
     const p = h > 0 ? scrollY / h : 0;
     root.style.setProperty('--scroll-pct', Math.max(0, Math.min(1, p)).toFixed(4));
   }
-  addEventListener('scroll', setProgress, {passive:true});
+  let scrollRaf=0;
+  addEventListener('scroll',()=>{
+    if(scrollRaf)return;
+    scrollRaf=requestAnimationFrame(()=>{scrollRaf=0;setProgress()});
+  },{passive:true});
   setProgress();
 
-  if(!reduceMotion){
-    addEventListener('pointermove', e => {
-      root.style.setProperty('--pointer-x', (e.clientX / innerWidth).toFixed(4));
-      root.style.setProperty('--pointer-y', (e.clientY / innerHeight).toFixed(4));
-    }, {passive:true});
+  if(!reduceMotion && matchMedia('(hover:hover) and (pointer:fine)').matches){
+    let pointerRaf=0,px=.5,py=.5;
+    addEventListener('pointermove',e=>{
+      px=e.clientX/innerWidth;py=e.clientY/innerHeight;
+      if(pointerRaf)return;
+      pointerRaf=requestAnimationFrame(()=>{
+        pointerRaf=0;
+        root.style.setProperty('--pointer-x',px.toFixed(4));
+        root.style.setProperty('--pointer-y',py.toFixed(4));
+      });
+    },{passive:true});
   }
 
   const io = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
@@ -1068,5 +1078,5 @@ html.intro-resume-v151 .home-footer{opacity:1!important;animation:none!important
   });
 })();
 </script>
-</body>
+<script src="tagj-assets/runtime-stability.js" defer></script></body>
 </html>
