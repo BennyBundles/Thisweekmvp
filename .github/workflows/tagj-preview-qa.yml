@@ -1,0 +1,75 @@
+name: TAGJ Preview QA
+
+on:
+  push:
+    branches: ["tagj-v12-preview"]
+    paths:
+      - "index.html"
+      - "full.html"
+      - "tagj.html"
+      - "artist.html"
+      - "producer.html"
+      - "creative.html"
+      - "contact.html"
+      - "licensing.html"
+      - "404.html"
+      - "network/**"
+      - "tagj-assets/**"
+      - "tagj-data/**"
+      - "legal/**"
+      - "scripts/build-tagj-preview.sh"
+      - "scripts/check-tagj-static.mjs"
+      - ".github/workflows/tagj-preview-qa.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-qa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout preview branch
+        uses: actions/checkout@v6
+
+      - name: Static regression gate
+        run: node scripts/check-tagj-static.mjs
+
+      - name: Build TAGJ preview package
+        run: sh scripts/build-tagj-preview.sh
+
+      - name: Verify packaged routes
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f .tagj-dist/index.html
+          test -f .tagj-dist/full.html
+          test -f .tagj-dist/tagj.html
+          test -f .tagj-dist/artist.html
+          test -f .tagj-dist/producer.html
+          test -f .tagj-dist/creative.html
+          test -f .tagj-dist/contact.html
+          test -f .tagj-dist/licensing.html
+          test -f .tagj-dist/404.html
+          test -f .tagj-dist/network/index.html
+          test -f .tagj-dist/network/bsf-tone-066.html
+          test -f .tagj-dist/network/t311y-demon-life.html
+          test -f .tagj-dist/tagj-data/beat-catalog.v1.json
+          test -f .tagj-dist/legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md
+          test -f .tagj-dist/tagj-assets/network/bsf-tone-066/profile.png
+          test -f .tagj-dist/tagj-assets/network/t311y-demon-life/profile.jpg
+          printf 'Packaged TAGJ version: '
+          cat .tagj-dist/VERSION.txt
+
+      - name: Summarize package
+        shell: bash
+        run: |
+          {
+            echo "## TAGJ Preview QA"
+            echo ""
+            echo "- Static regression gate: passed"
+            echo "- Preview package build: passed"
+            echo "- Version: $(cat .tagj-dist/VERSION.txt)"
+            echo "- Packaged files: $(find .tagj-dist -type f | wc -l)"
+            echo "- This workflow does not deploy or modify production."
+          } >> "$GITHUB_STEP_SUMMARY"
