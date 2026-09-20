@@ -775,6 +775,8 @@
     "musicArchive": "music/index.html",
     "beatCatalogue": "beats/index.html",
     "beatLicensing": "licensing.html",
-    "contact": "contact.html"
+    "contact": "contact.html",
+    "productCatalogue": "catalogue/index.html",
+    "services": "services/index.html"
   }
 }
