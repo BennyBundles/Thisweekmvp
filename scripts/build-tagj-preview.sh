@@ -18,4 +18,4 @@ cp -R tagj-assets/network/* .tagj-dist/tagj-assets/network/
 cp tagj-data/* .tagj-dist/tagj-data/
 cp legal/* .tagj-dist/legal/
 
-printf 'V15.19' > .tagj-dist/VERSION.txt
+printf 'V15.20' > .tagj-dist/VERSION.txt
