@@ -513,9 +513,9 @@ html.intro-resume-v151 .home-footer{opacity:1!important;animation:none!important
 
 <!-- Audio requires a user gesture on iPhone/Safari. -->
 <section class="intro-gate" id="introGate" aria-label="TAGJ intro">
-  <video id="introVideo" class="intro-video" data-cut-start="0" data-cut-end="6.93" data-cut-label="drive-intro-clip-for-website" playsinline webkit-playsinline preload="auto" poster="tagj-assets/intro/intro-poster-v149.jpg">
+  <video id="introVideo" class="intro-video" data-cut-start="0" data-cut-end="6.93" data-cut-label="drive-intro-clip-for-website" playsinline webkit-playsinline preload="none" poster="tagj-assets/intro/intro-poster-v149.jpg">
+    <source src="tagj-assets/intro/intro-clip-for-website-v152.mp4" type="video/mp4">
     <source src="tagj-assets/intro/intro-clip.mov" type="video/quicktime">
-  <source src="tagj-assets/intro/intro-clip-for-website-v152.mp4" type="video/mp4">
     <source src="tagj-assets/intro/intro-clip-for-website-v151.mov" type="video/quicktime">
   </video>
   <div class="intro-shade"></div>
@@ -945,7 +945,26 @@ html.intro-resume-v151 .home-footer{opacity:1!important;animation:none!important
   const muteBtn=document.getElementById('enterMuted');
   const introStatus=document.getElementById('introStatus');
   const INTRO_SESSION_KEY='tagjIntroSeenV153';
+  const introSources=video?[...video.querySelectorAll('source')]:[];
+  introSources.forEach(source=>{ if(!source.dataset.src) source.dataset.src=source.getAttribute('src')||''; });
   let introDone=false,introFinishing=false,fallbackTimer=0;
+  function restoreIntroMedia(){
+    if(!video)return;
+    let changed=false;
+    introSources.forEach(source=>{
+      if(!source.getAttribute('src')&&source.dataset.src){source.setAttribute('src',source.dataset.src);changed=true}
+    });
+    if(changed||video.readyState===0){try{video.load()}catch(_){}}
+  }
+  function releaseIntroMedia(){
+    if(!video)return;
+    try{
+      video.pause();
+      introSources.forEach(source=>source.removeAttribute('src'));
+      video.removeAttribute('src');
+      video.load();
+    }catch(_){}
+  }
   function hasSeenIntro(){
     if(window.__TAGJ_INTRO_SEEN)return true;
     try{return sessionStorage.getItem(INTRO_SESSION_KEY)==='1'}catch(_){return false}
@@ -968,7 +987,7 @@ html.intro-resume-v151 .home-footer{opacity:1!important;animation:none!important
     gate?.classList.remove('settling','v13-running','v13-fire','playing');gate?.classList.add('done');
     if(gate){gate.hidden=true;gate.setAttribute('aria-hidden','true')}
     body.classList.remove('intro-pending','intro-settling');body.classList.add('intro-complete');
-    try{video?.pause()}catch(_){}
+    releaseIntroMedia();
     clearTimeout(fallbackTimer);
     collapseSearchLater();
   }
@@ -1001,6 +1020,7 @@ html.intro-resume-v151 .home-footer{opacity:1!important;animation:none!important
     gate?.classList.add('playing','v13-running');
     if(introStatus)introStatus.textContent='';
     try{video.pause()}catch(_){}
+    restoreIntroMedia();
     try{video.currentTime=0}catch(_){}
     if(video.readyState===0){try{video.load()}catch(_){}}
     video.setAttribute('playsinline','');
