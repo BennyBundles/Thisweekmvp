@@ -6,14 +6,22 @@
   "outputDirectory": ".tagj-dist",
   "cleanUrls": false,
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/preview",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/preview.html",
+      "destination": "/",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/home",
       "destination": "/index.html"
-    },
-    {
-      "source": "/preview",
-      "destination": "/preview.html"
     },
     {
       "source": "/full",
