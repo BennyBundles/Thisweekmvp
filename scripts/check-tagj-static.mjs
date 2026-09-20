@@ -13,9 +13,10 @@ const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const failures=[];
 const warnings=[];
 const htmlFiles=[
-  'index.html','full.html','tagj.html','artist.html','producer.html','creative.html',
+  'index.html','preview.html','full.html','tagj.html','artist.html','producer.html','creative.html',
   'contact.html','licensing.html','404.html',
   'network/index.html','network/bsf-tone-066.html','network/t311y-demon-life.html',
+  'creative/index.html','creative/portfolio.html','creative/case-bsf-tone-066.html','creative/case-t311y-demon-life.html',
   'music/index.html','beats/index.html','catalogue/index.html','services/index.html'
 ];
 const jsonFiles=[
@@ -28,7 +29,7 @@ const read=(p)=>fs.readFileSync(path.join(root,p),'utf8');
 const exists=(p)=>fs.existsSync(path.join(root,p));
 const fail=(x)=>failures.push(x);
 
-for(const p of [...htmlFiles,...jsonFiles,'scripts/build-tagj-preview.sh']){
+for(const p of [...htmlFiles,...jsonFiles,'scripts/build-tagj-preview.sh','scripts/check-tagj-package.mjs','tagj-assets/runtime-stability.js','vercel.json']){
   if(!exists(p))fail(`Missing required file: ${p}`);
 }
 if(failures.length)finish();
@@ -97,6 +98,13 @@ for(const [file,src] of Object.entries(html)){
   }
 }
 
+// CSS bundle regression: large binary data URIs caused multi-megabyte CSS parsing
+// and mobile-memory pressure. Keep CSS small and cache binary media separately.
+for(const name of fs.readdirSync(path.join(root,'tagj-assets')).filter(x=>x.endsWith('.css'))){
+  const src=read(path.posix.join('tagj-assets',name));
+  if(Buffer.byteLength(src,'utf8')>250_000)fail(`tagj-assets/${name}: CSS exceeds 250 KB; extract large media instead of embedding it`);
+}
+
 // Core catalogue invariants.
 const beats=parsed['tagj-data/beat-catalog.v1.json']?.beats||[];
 if(beats.length!==22)fail(`Beat catalogue expected 22 records; found ${beats.length}`);
@@ -155,7 +163,7 @@ if(devil&&!devil.repositoryPath)warnings.push("Devil's Playground: verified Driv
 
 // Build must ship the dedicated subsites, direct network pages, data, legal docs and network assets.
 const build=read('scripts/build-tagj-preview.sh');
-for(const token of ['tagj.html artist.html producer.html creative.html contact.html licensing.html 404.html','cp network/*.html .tagj-dist/network/','cp music/*.html .tagj-dist/music/','cp beats/*.html .tagj-dist/beats/','cp catalogue/*.html .tagj-dist/catalogue/','cp services/*.html .tagj-dist/services/','cp -R tagj-assets/network/* .tagj-dist/tagj-assets/network/','cp tagj-data/* .tagj-dist/tagj-data/','cp legal/* .tagj-dist/legal/']){
+for(const token of ['index.html preview.html full.html tagj.html artist.html producer.html creative.html contact.html licensing.html 404.html','cp network/*.html .tagj-dist/network/','cp music/*.html .tagj-dist/music/','cp beats/*.html .tagj-dist/beats/','cp catalogue/*.html .tagj-dist/catalogue/','cp services/*.html .tagj-dist/services/','cp creative/*.html .tagj-dist/creative/','cp tagj-assets/*.js .tagj-dist/tagj-assets/','cp tagj-assets/media/* .tagj-dist/tagj-assets/media/','cp -R tagj-assets/network/* .tagj-dist/tagj-assets/network/','cp tagj-data/* .tagj-dist/tagj-data/','cp legal/* .tagj-dist/legal/']){
   if(!build.includes(token))fail(`Build script missing expected shipping rule: ${token}`);
 }
 
