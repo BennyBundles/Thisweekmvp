@@ -681,8 +681,8 @@
       "linksRef": "network:t311yDemonLife",
       "route": "#artist-t311y",
       "profilePriority": "secondary",
-      "suppliedAssetStatus": "canonical_drive_assets_partially_ingested",
-      "repositoryAssetCount": 5,
+      "suppliedAssetStatus": "canonical_drive_assets_ingested",
+      "repositoryAssetCount": 6,
       "verifiedDriveAssetCount": 6,
       "directRoute": "network/t311y-demon-life.html"
     },
@@ -749,7 +749,7 @@
       "client": "T311Y Demon Life",
       "creator": "Benny Bundles",
       "route": "#creative-case-t311y-v1512",
-      "sourceAssetCount": 5,
+      "sourceAssetCount": 6,
       "verifiedDriveAssetCount": 6,
       "disciplines": [
         "cover art",
@@ -757,7 +757,7 @@
         "project visual direction"
       ],
       "relationshipRoute": "#artist-t311y",
-      "status": "repository_backed_live_case_study_partial_drive_set"
+      "status": "repository_backed_live_case_study"
     }
   ],
   "networkDirectory": {
