@@ -55,7 +55,7 @@
     },
     "t311y-demon-life": {
       "status": "source_assets_received",
-      "repositoryIngestStatus": "canonical_drive_assets_partially_ingested",
+      "repositoryIngestStatus": "canonical_drive_assets_ingested",
       "assets": [
         {
           "id": "t311y-green-varsity-portrait",
@@ -190,9 +190,10 @@
           "driveId": "1qUANxk3mBaGIBxcM0aCaK-c5CPsHPyVc",
           "sourceName": "The Devils Playground (T311y Demon Life).PNG",
           "type": "cover_art",
-          "repositoryPath": null,
+          "repositoryPath": "tagj-assets/network/t311y-demon-life/devils-playground.webp",
           "publicUse": "approved_from_supplied_source",
-          "ingestStatus": "drive_source_verified_repo_binary_pending_transfer"
+          "ingestStatus": "repository_backed_web_optimized_derivative",
+          "deliveryNote": "Web-optimized derivative generated from the canonical supplied PNG; original Drive source remains authoritative."
         }
       ]
     },
