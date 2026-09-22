@@ -17,7 +17,9 @@ const htmlFiles=[
   'contact.html','licensing.html','404.html',
   'network/index.html','network/bsf-tone-066.html','network/t311y-demon-life.html',
   'creative/index.html','creative/portfolio.html','creative/case-bsf-tone-066.html','creative/case-t311y-demon-life.html',
-  'music/index.html','beats/index.html','catalogue/index.html','services/index.html'
+  'music/index.html','music/wanted-me-gone.html','music/cant-crop-karma.html','music/hold-something.html',
+  'music/freestyle.html','music/cried-in-the-dark.html','music/the-whole-brand.html',
+  'beats/index.html','catalogue/index.html','services/index.html'
 ];
 const jsonFiles=[
   'tagj-data/business.v1.json','tagj-data/catalog.v1.json','tagj-data/link-registry.v1.json',
@@ -219,9 +221,12 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   }
   if(!(vc.redirects||[]).some(x=>x.source==='/preview'&&x.destination==='/'))fail('vercel.json: /preview must redirect to root');
 
-  if(/<iframe\b/i.test(html['preview.html']))fail('preview.html: nested full-site iframe is prohibited');
+  for(const [file,src] of Object.entries(html)){
+    if(!src.includes('runtime-stability.js'))fail(file+': shared stability runtime missing');
+  }
+    if(/<iframe\b/i.test(html['preview.html']))fail('preview.html: nested full-site iframe is prohibited');
   if(!/tagj-404-self-heal/.test(html['404.html']))fail('404.html: route self-heal missing');
-  if(!html['404.html'].includes("'/artist':'/artist.html'"))fail('404.html: clean artist route must recover to physical HTML');
+  if(!html['404.html'].includes("['/artist','/artist.html']"))fail('404.html: clean artist route must recover to physical HTML');
 }
 
 finish();
