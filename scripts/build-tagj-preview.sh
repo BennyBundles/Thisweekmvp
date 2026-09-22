@@ -25,4 +25,4 @@ rm -f .tagj-dist/tagj-assets/network/t311y-demon-life/jimmy-blast-off.png
 cp tagj-data/* .tagj-dist/tagj-data/
 cp legal/* .tagj-dist/legal/
 
-printf 'V15.26' > .tagj-dist/VERSION.txt
+printf 'V15.27' > .tagj-dist/VERSION.txt
