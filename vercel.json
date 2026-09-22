@@ -16,6 +16,101 @@
       "source": "/preview.html",
       "destination": "/",
       "permanent": false
+    },
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/full.html",
+      "destination": "/full",
+      "permanent": false
+    },
+    {
+      "source": "/tagj.html",
+      "destination": "/tagj",
+      "permanent": false
+    },
+    {
+      "source": "/artist.html",
+      "destination": "/artist",
+      "permanent": false
+    },
+    {
+      "source": "/producer.html",
+      "destination": "/producer",
+      "permanent": false
+    },
+    {
+      "source": "/creative.html",
+      "destination": "/creative",
+      "permanent": false
+    },
+    {
+      "source": "/contact.html",
+      "destination": "/contact",
+      "permanent": false
+    },
+    {
+      "source": "/licensing.html",
+      "destination": "/licensing",
+      "permanent": false
+    },
+    {
+      "source": "/network/index.html",
+      "destination": "/network",
+      "permanent": false
+    },
+    {
+      "source": "/network/bsf-tone-066.html",
+      "destination": "/network/bsf-tone-066",
+      "permanent": false
+    },
+    {
+      "source": "/network/t311y-demon-life.html",
+      "destination": "/network/t311y-demon-life",
+      "permanent": false
+    },
+    {
+      "source": "/creative/index.html",
+      "destination": "/creative",
+      "permanent": false
+    },
+    {
+      "source": "/creative/portfolio.html",
+      "destination": "/creative/portfolio",
+      "permanent": false
+    },
+    {
+      "source": "/creative/case-bsf-tone-066.html",
+      "destination": "/creative/case-bsf-tone-066",
+      "permanent": false
+    },
+    {
+      "source": "/creative/case-t311y-demon-life.html",
+      "destination": "/creative/case-t311y-demon-life",
+      "permanent": false
+    },
+    {
+      "source": "/services/index.html",
+      "destination": "/services",
+      "permanent": false
+    },
+    {
+      "source": "/beats/index.html",
+      "destination": "/beats",
+      "permanent": false
+    },
+    {
+      "source": "/music/index.html",
+      "destination": "/music",
+      "permanent": false
+    },
+    {
+      "source": "/catalogue/index.html",
+      "destination": "/catalogue",
+      "permanent": false
     }
   ],
   "rewrites": [
