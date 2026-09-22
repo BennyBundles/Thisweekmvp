@@ -29,7 +29,7 @@ const read=(p)=>fs.readFileSync(path.join(root,p),'utf8');
 const exists=(p)=>fs.existsSync(path.join(root,p));
 const fail=(x)=>failures.push(x);
 
-for(const p of [...htmlFiles,...jsonFiles,'scripts/build-tagj-preview.sh','scripts/check-tagj-package.mjs','tagj-assets/runtime-stability.js','vercel.json']){
+for(const p of [...htmlFiles,...jsonFiles,'scripts/build-tagj-preview.sh','scripts/check-tagj-package.mjs','tagj-assets/runtime-stability.js','tagj-assets/index-v1527.css','tagj-assets/full-v1527.css','vercel.json']){
   if(!exists(p))fail(`Missing required file: ${p}`);
 }
 if(failures.length)finish();
@@ -167,6 +167,17 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   if(!build.includes(token))fail(`Build script missing expected shipping rule: ${token}`);
 }
 
+
+// V15.27 cacheable shell CSS invariants.
+{
+  if(!html['index.html'].includes('tagj-assets/index-v1527.css'))fail('index.html: external navigation-shell CSS missing');
+  if(!html['full.html'].includes('tagj-assets/full-v1527.css'))fail('full.html: external ecosystem CSS missing');
+  const inlineCssBytes=src=>[...src.matchAll(/<style\\b[^>]*>([\\s\\S]*?)<\\/style>/gi)].reduce((n,m)=>n+Buffer.byteLength(m[1]||'','utf8'),0);
+  if(inlineCssBytes(html['index.html'])>5000)fail('index.html: too much inline CSS; keep heavy styling cacheable');
+  if(inlineCssBytes(html['full.html'])>5000)fail('full.html: too much inline CSS; keep heavy styling cacheable');
+  if(Buffer.byteLength(read('tagj-assets/index-v1527.css'),'utf8')>250000)fail('index-v1527.css exceeds mobile-safe CSS budget');
+  if(Buffer.byteLength(read('tagj-assets/full-v1527.css'),'utf8')>250000)fail('full-v1527.css exceeds mobile-safe CSS budget');
+}
 
 // V15.26 mobile/navigation hardening invariants.
 {
