@@ -71,6 +71,8 @@ jobs:
           test -f .tagj-dist/tagj-assets/network/bsf-tone-066/profile.png
           test -f .tagj-dist/tagj-assets/network/t311y-demon-life/profile.jpg
           test -f .tagj-dist/tagj-assets/runtime-stability.js
+          test -f .tagj-dist/tagj-assets/index-v1528.js
+          test -f .tagj-dist/tagj-assets/full-v1528.js
           test -f .tagj-dist/tagj-assets/index-v1528.css
           test -f .tagj-dist/tagj-assets/full-v1528.css
           test ! -f .tagj-dist/tagj-assets/index-v1527.css
