@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#03070b">
 <title>TAGJ × Benny Bundles — Four-World Navigation</title>
-<link rel="stylesheet" href="tagj-assets/index-v1527.css">
-<link rel="stylesheet" href="tagj-assets/a01.css"><link rel="stylesheet" href="tagj-assets/a02.css"><link rel="stylesheet" href="tagj-assets/a03.css"><link rel="stylesheet" href="tagj-assets/a04.css"><link rel="stylesheet" href="tagj-assets/a05.css"><link rel="stylesheet" href="tagj-assets/a06.css"><link rel="stylesheet" href="tagj-assets/a07.css"><link rel="stylesheet" href="tagj-assets/a08.css"><link rel="stylesheet" href="tagj-assets/a09.css"><link rel="stylesheet" href="tagj-assets/a10.css"><link rel="stylesheet" href="tagj-assets/a11.css"><link rel="stylesheet" href="tagj-assets/a12.css"><link rel="stylesheet" href="tagj-assets/a13.css"><link rel="stylesheet" href="tagj-assets/a14.css"><link rel="stylesheet" href="tagj-assets/a15.css"><link rel="stylesheet" href="tagj-assets/a16.css">
+<link rel="stylesheet" href="tagj-assets/index-v1528.css">
+
 
 <style id="intro-state-v151">
 html.intro-resume-v151 #introGate{display:none!important;visibility:hidden!important;pointer-events:none!important}
@@ -457,11 +457,12 @@ html.intro-resume-v151 .home-footer{opacity:1!important;animation:none!important
   const transition=document.getElementById('routeTransition');
   const transitionLabel=document.getElementById('transitionLabel');
   const exitAngles={north:'-90deg',east:'0deg',south:'90deg',west:'180deg'};
+  const nativeFastNav=reduce||matchMedia('(pointer:coarse)').matches||/iP(?:hone|ad|od)/.test(navigator.userAgent)||(/Macintosh/.test(navigator.userAgent)&&navigator.maxTouchPoints>1);
+  document.documentElement.classList.toggle('tagj-native-nav',nativeFastNav);
   routes.forEach(route=>route.addEventListener('click',e=>{
-    if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||route.target==='_blank') return;
+    if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||route.target==='_blank'||nativeFastNav) return;
     const w=worlds[route.dataset.world], href=route.getAttribute('href');
-    // Native anchor remains the no-JS/iPhone fallback. Only intercept if the
-    // visual transition system is complete, so a missing layer cannot trap taps.
+    // Desktop-only transition. Touch/iOS always follows the native anchor immediately.
     if(!w||!href||!transition||!transitionLabel) return;
     e.preventDefault();
     let navigated=false;
@@ -471,8 +472,8 @@ html.intro-resume-v151 .home-footer{opacity:1!important;animation:none!important
       transition.style.setProperty('--exit-angle',exitAngles[route.dataset.direction]);
       transitionLabel.textContent='OPENING '+w.title.toUpperCase();
       transition.classList.add('go');
-      setTimeout(go, reduce?0:180);
-      setTimeout(go, 650);
+      setTimeout(go,120);
+      setTimeout(go,420);
     }catch(_){go()}
   }));
 
