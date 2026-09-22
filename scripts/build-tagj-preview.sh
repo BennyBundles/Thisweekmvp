@@ -14,10 +14,15 @@ cp creative/*.html .tagj-dist/creative/
 cp tagj-assets/*.css .tagj-dist/tagj-assets/
 cp tagj-assets/*.js .tagj-dist/tagj-assets/
 cp tagj-assets/v147/* .tagj-dist/tagj-assets/v147/
-cp tagj-assets/intro/* .tagj-dist/tagj-assets/intro/
+cp tagj-assets/intro/intro-poster-v149.jpg tagj-assets/intro/intro-clip-for-website-v152.mp4 .tagj-dist/tagj-assets/intro/
 cp tagj-assets/media/* .tagj-dist/tagj-assets/media/
 cp -R tagj-assets/network/* .tagj-dist/tagj-assets/network/
+# Remove unreferenced duplicate network binaries from the deploy package only.
+rm -f .tagj-dist/tagj-assets/network/bsf-tone-066/profile-01.png
+rm -f .tagj-dist/tagj-assets/network/t311y-demon-life/profile-01.jpg
+rm -f .tagj-dist/tagj-assets/network/t311y-demon-life/tdc-logo.jpg
+rm -f .tagj-dist/tagj-assets/network/t311y-demon-life/jimmy-blast-off.png
 cp tagj-data/* .tagj-dist/tagj-data/
 cp legal/* .tagj-dist/legal/
 
-printf 'V15.25' > .tagj-dist/VERSION.txt
+printf 'V15.26' > .tagj-dist/VERSION.txt
