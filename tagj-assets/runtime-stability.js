@@ -2,39 +2,15 @@
   'use strict';
   const d=document,root=d.documentElement;
   const prefetched=new Set();
-  const isVercelPreview=/\.vercel\.app$/i.test(location.hostname);
   const conn=navigator.connection||navigator.mozConnection||navigator.webkitConnection||null;
   const constrained=!!(conn&&(conn.saveData||/^(?:slow-2g|2g|3g)$/i.test(conn.effectiveType||'')));
   const isIOS=/iP(?:hone|ad|od)/.test(navigator.userAgent)||(/Macintosh/.test(navigator.userAgent)&&navigator.maxTouchPoints>1);
   const lowMemory=!!((navigator.deviceMemory&&navigator.deviceMemory<=4)||isIOS);
   root.classList.toggle('tagj-low-memory',lowMemory);
 
-  const canonicalRoutes={
-    '/index.html':'/','/preview.html':'/','/full.html':'/full','/tagj.html':'/tagj',
-    '/artist.html':'/artist','/producer.html':'/producer','/creative.html':'/creative',
-    '/contact.html':'/contact','/licensing.html':'/licensing',
-    '/network/index.html':'/network','/network/bsf-tone-066.html':'/network/bsf-tone-066',
-    '/network/t311y-demon-life.html':'/network/t311y-demon-life',
-    '/creative/index.html':'/creative','/creative/portfolio.html':'/creative/portfolio',
-    '/creative/case-bsf-tone-066.html':'/creative/case-bsf-tone-066',
-    '/creative/case-t311y-demon-life.html':'/creative/case-t311y-demon-life',
-    '/services/index.html':'/services','/beats/index.html':'/beats',
-    '/music/index.html':'/music','/catalogue/index.html':'/catalogue'
-  };
-
-  function normalizePreviewLinks(){
-    if(!/\.vercel\.app$/i.test(location.hostname))return;
-    d.querySelectorAll('a[href]').forEach(a=>{
-      const raw=a.getAttribute('href')||'';
-      if(!raw||raw[0]==='#'||/^(?:mailto:|tel:|javascript:|data:)/i.test(raw))return;
-      let u;try{u=new URL(raw,location.href)}catch(_){return}
-      if(u.origin!==location.origin)return;
-      const clean=canonicalRoutes[u.pathname];
-      if(clean!==undefined)a.setAttribute('href',clean+u.search+u.hash);
-    });
-  }
-  if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',normalizePreviewLinks,{once:true});
-  else normalizePreviewLinks();
+  // Keep navigation native. Static HTML links remain the source of truth on every host.
+  // This avoids redirect/rewrite races and prevents client JS from trapping taps.
+  root.classList.add('tagj-native-nav-runtime');
 
   const syncVisibility=()=>root.classList.toggle('tagj-runtime-paused',d.hidden);
   d.addEventListener('visibilitychange',syncVisibility,{passive:true});
@@ -69,7 +45,7 @@
   if('IntersectionObserver' in window){
     const io=new IntersectionObserver(entries=>{
       entries.forEach(e=>e.target.classList.toggle('tagj-offscreen',!e.isIntersecting));
-    },{rootMargin:'240px 0px'});
+    },{rootMargin:'220px 0px'});
     d.querySelectorAll('main>section,.deep,.section,.v13-section,.v145-section,.v147-section').forEach(el=>io.observe(el));
   }
 
@@ -84,7 +60,7 @@
   }
 
   function warm(anchor){
-    if(constrained)return;
+    if(constrained||lowMemory)return;
     const u=candidate(anchor);if(!u)return;
     if(/\/(?:full|full\.html)$/.test(u.pathname))return;
     const href=u.origin+u.pathname+u.search;
@@ -100,24 +76,16 @@
   },{passive:true});
   d.addEventListener('focusin',e=>warm(e.target.closest?.('a[href]')),{passive:true});
 
-  let navLockUntil=0;
+  // Never cancel or debounce a valid native navigation. We only expose a brief
+  // visual pending state, then let the browser perform the request immediately.
   d.addEventListener('click',e=>{
     const a=e.target.closest?.('a[href]');
-    const u=candidate(a);
-    if(!u)return;
-    const now=performance.now();
-    if(now<navLockUntil){
-      e.preventDefault();
-      e.stopPropagation();
-      return;
-    }
-    navLockUntil=now+900;
+    if(!candidate(a))return;
     root.classList.add('tagj-nav-pending');
   },true);
 
-  addEventListener('pageshow',()=>{navLockUntil=0;root.classList.remove('tagj-nav-pending')},{passive:true});
+  addEventListener('pageshow',()=>root.classList.remove('tagj-nav-pending'),{passive:true});
   addEventListener('pagehide',()=>{
-    navLockUntil=0;
     root.classList.remove('tagj-nav-pending');
     d.querySelectorAll('video,audio').forEach(m=>{try{m.pause()}catch(_){}});
   },{passive:true});
@@ -127,17 +95,16 @@
   addEventListener('offline',syncNetwork,{passive:true});
   syncNetwork();
 
+  // V15.28: replace any older navigation-caching worker with a pass-through
+  // worker. The CDN/browser owns navigation; the worker only clears legacy caches.
   if('serviceWorker' in navigator&&location.protocol==='https:'){
     addEventListener('load',()=>{
-      if(isVercelPreview){
-        navigator.serviceWorker.getRegistrations().then(regs=>Promise.all(regs.map(r=>{
-          const worker=r.active||r.waiting||r.installing;
-          return worker&&/\/tagj-sw\.js(?:\?|$)/.test(worker.scriptURL||'')?r.unregister():false;
-        }))).catch(()=>{});
-        if('caches' in window)caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('tagj-nav-')).map(k=>caches.delete(k)))).catch(()=>{});
-        return;
-      }
-      navigator.serviceWorker.register('/tagj-sw.js',{scope:'/'}).catch(()=>{});
+      navigator.serviceWorker.register('/tagj-sw.js',{scope:'/',updateViaCache:'none'}).then(reg=>{
+        try{reg.update()}catch(_){}
+      }).catch(()=>{});
+      if('caches' in window)caches.keys().then(keys=>Promise.all(
+        keys.filter(k=>k.startsWith('tagj-nav-')).map(k=>caches.delete(k))
+      )).catch(()=>{});
     },{once:true,passive:true});
   }
 })();
