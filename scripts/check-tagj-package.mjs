@@ -19,7 +19,7 @@ const textExt=new Set(['.html','.css','.js','.json','.md','.txt']);
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 
 function resolveRef(from,ref){
-  if(!ref || ref.startsWith('#') || /^(?:https?:|mailto:|tel:|data:|javascript:)/i.test(ref)) return null;
+  if(!ref || ref.startsWith('#') || /^%23/i.test(ref) || /^(?:https?:|mailto:|tel:|data:|javascript:)/i.test(ref)) return null;
   const clean=ref.split('#')[0].split('?')[0];
   if(!clean) return null;
   const base=path.posix.dirname(from);
