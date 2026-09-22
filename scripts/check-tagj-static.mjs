@@ -168,6 +168,26 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
 }
 
 
+// V15.26 mobile/navigation hardening invariants.
+{
+  const runtime=read('tagj-assets/runtime-stability.js');
+  if(!runtime.includes("tagj-low-memory"))fail('runtime-stability.js: low-memory/iOS mode missing');
+  if(!runtime.includes('navLockUntil'))fail('runtime-stability.js: duplicate-navigation guard missing');
+  if(!runtime.includes("data-tagj-preload-tuned"))fail('runtime-stability.js: media preload discipline missing');
+  const intro=html['index.html'];
+  const introSources=[...intro.matchAll(/<source\\b[^>]*src=[\"']tagj-assets\\/intro\\/([^\"']+)[\"']/gi)].map(m=>m[1]);
+  if(introSources.length!==1||introSources[0]!=='intro-clip-for-website-v152.mp4')fail('index.html: intro must use one canonical MP4 source');
+  const build=read('scripts/build-tagj-preview.sh');
+  if(build.includes('cp tagj-assets/intro/*'))fail('build: wildcard intro copy reintroduces unused media');
+  for(const duplicate of ['profile-01.png','profile-01.jpg','tdc-logo.jpg','jimmy-blast-off.png']){
+    if(!build.includes('rm -f')||!build.includes(duplicate))fail('build: duplicate deploy cleanup missing '+duplicate);
+  }
+  const vc=JSON.parse(read('vercel.json'));
+  for(const pair of [['/artist.html','/artist'],['/producer.html','/producer'],['/creative.html','/creative'],['/full.html','/full']]){
+    if(!(vc.redirects||[]).some(x=>x.source===pair[0]&&x.destination===pair[1]))fail('vercel.json: canonical redirect missing '+pair[0]);
+  }
+}
+
 // V15.24 navigation reliability invariants.
 {
   const runtime=read('tagj-assets/runtime-stability.js');
