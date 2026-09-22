@@ -31,7 +31,7 @@ const read=(p)=>fs.readFileSync(path.join(root,p),'utf8');
 const exists=(p)=>fs.existsSync(path.join(root,p));
 const fail=(x)=>failures.push(x);
 
-for(const p of [...htmlFiles,...jsonFiles,'scripts/build-tagj-preview.sh','scripts/check-tagj-package.mjs','tagj-assets/runtime-stability.js','tagj-assets/index-v1528.css','tagj-assets/full-v1528.css','vercel.json']){
+for(const p of [...htmlFiles,...jsonFiles,'scripts/build-tagj-preview.sh','scripts/check-tagj-package.mjs','tagj-assets/runtime-stability.js','tagj-assets/index-v1528.js','tagj-assets/full-v1528.js','tagj-assets/index-v1528.css','tagj-assets/full-v1528.css','vercel.json']){
   if(!exists(p))fail(`Missing required file: ${p}`);
 }
 if(failures.length)finish();
@@ -52,6 +52,11 @@ for(const [file,src] of Object.entries(html)){
     i++;
     try{new Function(m[2]||'')}catch(e){fail(`${file}: inline script ${i} syntax: ${e.message}`)}
   }
+}
+
+// Cacheable external shell runtime syntax.
+for(const p of ['tagj-assets/index-v1528.js','tagj-assets/full-v1528.js','tagj-assets/runtime-stability.js']){
+  try{new Function(read(p))}catch(e){fail(p+': external runtime JS syntax: '+e.message)}
 }
 
 // IDs should be unique in actual markup. Strip script/style/template source first so
@@ -175,6 +180,8 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
 {
   const indexCss='tagj-assets/index-v1528.css';
   const fullCss='tagj-assets/full-v1528.css';
+  if(!html['index.html'].includes('tagj-assets/index-v1528.js'))fail('index.html: homepage deferred runtime missing');
+  if(!html['full.html'].includes('tagj-assets/full-v1528.js'))fail('full.html: ecosystem deferred runtime missing');
   if(!html['index.html'].includes(indexCss))fail('index.html: V15.28 navigation-shell CSS missing');
   if(!html['full.html'].includes(fullCss))fail('full.html: V15.28 ecosystem CSS missing');
   for(const old of ['tagj-assets/index-v1527.css','tagj-assets/full-v1527.css',...Array.from({length:16},(_,i)=>'tagj-assets/a'+String(i+1).padStart(2,'0')+'.css')]){
@@ -183,6 +190,9 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   const inlineCssBytes=src=>[...src.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi)].reduce((n,m)=>n+Buffer.byteLength(m[1]||'','utf8'),0);
   if(inlineCssBytes(html['index.html'])>5000)fail('index.html: too much inline CSS; keep heavy styling cacheable');
   if(inlineCssBytes(html['full.html'])>5000)fail('full.html: too much inline CSS; keep heavy styling cacheable');
+  const inlineJsBytes=src=>[...src.matchAll(/<script\b(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/gi)].reduce((n,m)=>n+Buffer.byteLength(m[1]||'','utf8'),0);
+  if(inlineJsBytes(html['index.html'])>2500)fail('index.html: main runtime should remain external/deferred');
+  if(inlineJsBytes(html['full.html'])>1000)fail('full.html: main runtime should remain external/deferred');
   if(Buffer.byteLength(read(indexCss),'utf8')>250000)fail('index-v1528.css exceeds mobile-safe CSS budget');
   if(Buffer.byteLength(read(fullCss),'utf8')>250000)fail('full-v1528.css exceeds mobile-safe CSS budget');
 
