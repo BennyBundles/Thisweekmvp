@@ -47,11 +47,15 @@ for(const p of files.map(rel).filter(p=>p.endsWith('.css'))){
     if(target && !fileSet.has(target)) failures.push(`${p}: missing packaged CSS asset ${raw} -> ${target}`);
   }
 }
+for(const forbidden of ['tagj-assets/network/bsf-tone-066/profile-01.png','tagj-assets/network/t311y-demon-life/profile-01.jpg','tagj-assets/network/t311y-demon-life/tdc-logo.jpg','tagj-assets/network/t311y-demon-life/jimmy-blast-off.png']){
+  if(fileSet.has(forbidden)) failures.push(forbidden+' must not ship in the deploy package; canonical equivalent already exists');
+}
+
 for(const required of [
   'index.html','preview.html','full.html','artist.html','producer.html','creative.html',
   'creative/index.html','creative/portfolio.html','creative/case-bsf-tone-066.html','creative/case-t311y-demon-life.html',
   'network/index.html','network/bsf-tone-066.html','network/t311y-demon-life.html',
-  'tagj-assets/runtime-stability.js','tagj-sw.js',
+  'tagj-assets/runtime-stability.js','tagj-assets/index-v1527.css','tagj-assets/full-v1527.css','tagj-sw.js',
   'tagj-assets/media/asset-fashion-hero.jpg','tagj-assets/media/asset-green-set.jpg','tagj-assets/media/asset-track-navy.jpg'
 ]){
   if(!fileSet.has(required)) failures.push('Missing packaged critical file: '+required);
