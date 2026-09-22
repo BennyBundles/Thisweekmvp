@@ -99,7 +99,10 @@
   // worker. The CDN/browser owns navigation; the worker only clears legacy caches.
   if('serviceWorker' in navigator&&location.protocol==='https:'){
     addEventListener('load',()=>{
-      navigator.serviceWorker.register('/tagj-sw.js',{scope:'/',updateViaCache:'none'}).then(reg=>{
+      const runtimeScript=[...d.scripts].find(x=>/\/tagj-assets\/runtime-stability\.js(?:\?|$)/.test(x.src||''));
+      const workerUrl=runtimeScript?new URL('../tagj-sw.js',runtimeScript.src):new URL('tagj-sw.js',location.href);
+      const scopeUrl=runtimeScript?new URL('../',runtimeScript.src):new URL('./',location.href);
+      navigator.serviceWorker.register(workerUrl.pathname,{scope:scopeUrl.pathname,updateViaCache:'none'}).then(reg=>{
         try{reg.update()}catch(_){}
       }).catch(()=>{});
       if('caches' in window)caches.keys().then(keys=>Promise.all(
