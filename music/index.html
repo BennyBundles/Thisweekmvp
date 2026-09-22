@@ -27,7 +27,8 @@
      card.querySelector('p').textContent=r.artist?('Artist: '+r.artist+'. TAGJ release/campaign record.'):'TAGJ release/campaign record.';
      const actions=card.querySelector('.actions');
      links.forEach((l,i)=>{const a=document.createElement('a');a.className='btn verified';a.href=l.url;a.target='_blank';a.rel='noopener';a.textContent=l.label||(i===0?'Open verified media':'Verified link');actions.appendChild(a)});
-     if(r.route){const a=document.createElement('a');a.className='btn';a.href='../full.html'+r.route;a.textContent='Open dossier';actions.appendChild(a)}
+     if(r.directRoute){const a=document.createElement('a');a.className='btn';a.href='../'+r.directRoute;a.textContent='Release page';actions.appendChild(a)}
+     if(r.route){const a=document.createElement('a');a.className='btn';a.href='../full.html'+r.route;a.textContent='Full dossier';actions.appendChild(a)}
      const pending=card.querySelector('.pending');
      pending.textContent=links.length?links.length+' verified public destination'+(links.length===1?'':'s')+' on file.':'Direct platform destinations still pending verification; dossier only.';
      grid.appendChild(card);
