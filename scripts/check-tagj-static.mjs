@@ -29,7 +29,7 @@ const read=(p)=>fs.readFileSync(path.join(root,p),'utf8');
 const exists=(p)=>fs.existsSync(path.join(root,p));
 const fail=(x)=>failures.push(x);
 
-for(const p of [...htmlFiles,...jsonFiles,'scripts/build-tagj-preview.sh','scripts/check-tagj-package.mjs','tagj-assets/runtime-stability.js','tagj-assets/index-v1527.css','tagj-assets/full-v1527.css','vercel.json']){
+for(const p of [...htmlFiles,...jsonFiles,'scripts/build-tagj-preview.sh','scripts/check-tagj-package.mjs','tagj-assets/runtime-stability.js','tagj-assets/index-v1528.css','tagj-assets/full-v1528.css','vercel.json']){
   if(!exists(p))fail(`Missing required file: ${p}`);
 }
 if(failures.length)finish();
@@ -142,7 +142,8 @@ const canonicalAssets=[
   'tagj-assets/network/t311y-demon-life/the-demon-culture-logo.jpg',
   'tagj-assets/network/t311y-demon-life/chapter-3-light-pack.jpg',
   'tagj-assets/network/t311y-demon-life/jimmy-onna-blast-off.png',
-  'tagj-assets/network/t311y-demon-life/3-d-cover.jpg'
+  'tagj-assets/network/t311y-demon-life/3-d-cover.jpg',
+  'tagj-assets/network/t311y-demon-life/devils-playground.webp'
 ];
 for(const p of canonicalAssets)if(!exists(p))fail(`Missing canonical network asset: ${p}`);
 
@@ -168,51 +169,59 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
 }
 
 
-// V15.27 cacheable shell CSS invariants.
+// V15.28 navigation/performance hardening invariants.
 {
-  if(!html['index.html'].includes('tagj-assets/index-v1527.css'))fail('index.html: external navigation-shell CSS missing');
-  if(!html['full.html'].includes('tagj-assets/full-v1527.css'))fail('full.html: external ecosystem CSS missing');
+  const indexCss='tagj-assets/index-v1528.css';
+  const fullCss='tagj-assets/full-v1528.css';
+  if(!html['index.html'].includes(indexCss))fail('index.html: V15.28 navigation-shell CSS missing');
+  if(!html['full.html'].includes(fullCss))fail('full.html: V15.28 ecosystem CSS missing');
+  for(const old of ['tagj-assets/index-v1527.css','tagj-assets/full-v1527.css',...Array.from({length:16},(_,i)=>'tagj-assets/a'+String(i+1).padStart(2,'0')+'.css')]){
+    if(html['index.html'].includes(old)||html['full.html'].includes(old))fail('obsolete render-blocking stylesheet still referenced: '+old);
+  }
   const inlineCssBytes=src=>[...src.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi)].reduce((n,m)=>n+Buffer.byteLength(m[1]||'','utf8'),0);
   if(inlineCssBytes(html['index.html'])>5000)fail('index.html: too much inline CSS; keep heavy styling cacheable');
   if(inlineCssBytes(html['full.html'])>5000)fail('full.html: too much inline CSS; keep heavy styling cacheable');
-  if(Buffer.byteLength(read('tagj-assets/index-v1527.css'),'utf8')>250000)fail('index-v1527.css exceeds mobile-safe CSS budget');
-  if(Buffer.byteLength(read('tagj-assets/full-v1527.css'),'utf8')>250000)fail('full-v1527.css exceeds mobile-safe CSS budget');
-}
+  if(Buffer.byteLength(read(indexCss),'utf8')>250000)fail('index-v1528.css exceeds mobile-safe CSS budget');
+  if(Buffer.byteLength(read(fullCss),'utf8')>250000)fail('full-v1528.css exceeds mobile-safe CSS budget');
 
-// V15.26 mobile/navigation hardening invariants.
-{
   const runtime=read('tagj-assets/runtime-stability.js');
-  if(!runtime.includes("tagj-low-memory"))fail('runtime-stability.js: low-memory/iOS mode missing');
-  if(!runtime.includes('navLockUntil'))fail('runtime-stability.js: duplicate-navigation guard missing');
-  if(!runtime.includes("data-tagj-preload-tuned"))fail('runtime-stability.js: media preload discipline missing');
+  if(!runtime.includes('tagj-low-memory'))fail('runtime-stability.js: low-memory/iOS mode missing');
+  if(!runtime.includes('tagj-native-nav-runtime'))fail('runtime-stability.js: native navigation marker missing');
+  if(runtime.includes('navLockUntil'))fail('runtime-stability.js: navigation must not be click-blocked/debounced');
+  if(runtime.includes('canonicalRoutes')||runtime.includes('normalizePreviewLinks'))fail('runtime-stability.js: client-side URL rewriting must remain removed');
+  if(!runtime.includes('data-tagj-preload-tuned'))fail('runtime-stability.js: media preload discipline missing');
+  if(!runtime.includes("updateViaCache:'none'"))fail('runtime-stability.js: service-worker update must bypass stale cache');
+  if(/touchstart[^\n]*warm\(/i.test(runtime))fail('runtime-stability.js: touch prefetch must remain disabled');
+
   const intro=html['index.html'];
   const introSources=[...intro.matchAll(/<source\b[^>]*src=["']tagj-assets\/intro\/([^"']+)["']/gi)].map(m=>m[1]);
   if(introSources.length!==1||introSources[0]!=='intro-clip-for-website-v152.mp4')fail('index.html: intro must use one canonical MP4 source');
+  if(!intro.includes('nativeFastNav'))fail('index.html: iOS/coarse-pointer native navigation bypass missing');
+
+  const sw=read('tagj-sw.js');
+  if(/addEventListener\(\s*['"]fetch['"]/i.test(sw))fail('tagj-sw.js: fetch interception must remain disabled');
+  if(!sw.includes('tagj-nav-v1528-reset'))fail('tagj-sw.js: V15.28 reset worker marker missing');
+
   const build=read('scripts/build-tagj-preview.sh');
   if(build.includes('cp tagj-assets/intro/*'))fail('build: wildcard intro copy reintroduces unused media');
   for(const duplicate of ['profile-01.png','profile-01.jpg','tdc-logo.jpg','jimmy-blast-off.png']){
     if(!build.includes('rm -f')||!build.includes(duplicate))fail('build: duplicate deploy cleanup missing '+duplicate);
   }
-  const vc=JSON.parse(read('vercel.json'));
-  for(const pair of [['/artist.html','/artist'],['/producer.html','/producer'],['/creative.html','/creative'],['/full.html','/full']]){
-    if(!(vc.redirects||[]).some(x=>x.source===pair[0]&&x.destination===pair[1]))fail('vercel.json: canonical redirect missing '+pair[0]);
-  }
-}
+  if(!build.includes('.tagj-dist/tagj-assets/a??.css'))fail('build: obsolete micro-CSS cleanup missing');
+  if(!build.includes("printf 'V15.28'"))fail('build: VERSION.txt is not V15.28');
 
-// V15.24 navigation reliability invariants.
-{
-  const runtime=read('tagj-assets/runtime-stability.js');
-  if(/touchstart[^\n]*warm\(/i.test(runtime))fail('runtime-stability.js: touch prefetch must remain disabled');
-  if(!runtime.includes("isVercelPreview"))fail('runtime-stability.js: Vercel-preview stability mode missing');
-  if(!runtime.includes("startsWith('tagj-nav-')"))fail('runtime-stability.js: preview cache cleanup missing');
-  const sw=read('tagj-sw.js');
-  for(const token of ['/404.html','/network/bsf-tone-066.html','/network/t311y-demon-life.html','/creative/case-bsf-tone-066.html','/creative/case-t311y-demon-life.html']){
-    if(!sw.includes(token))fail('tagj-sw.js: missing reliability route '+token);
-  }
-  if(/<iframe\b/i.test(html['preview.html']))fail('preview.html: nested full-site iframe is prohibited');
   const vc=JSON.parse(read('vercel.json'));
+  for(const bad of ['/index.html','/full.html','/tagj.html','/artist.html','/producer.html','/creative.html','/contact.html','/licensing.html']){
+    if((vc.redirects||[]).some(x=>x.source===bad))fail('vercel.json: physical HTML must load directly without redirect: '+bad);
+  }
+  for(const pair of [['/artist','/artist.html'],['/producer','/producer.html'],['/creative','/creative.html'],['/full','/full.html'],['/network','/network/index.html'],['/services','/services/index.html']]){
+    if(!(vc.rewrites||[]).some(x=>x.source===pair[0]&&x.destination===pair[1]))fail('vercel.json: clean-route compatibility rewrite missing '+pair[0]);
+  }
   if(!(vc.redirects||[]).some(x=>x.source==='/preview'&&x.destination==='/'))fail('vercel.json: /preview must redirect to root');
-  if(!/tagj-404-self-heal/.test(html['404.html']))fail('404.html: canonical-route self-heal missing');
+
+  if(/<iframe\b/i.test(html['preview.html']))fail('preview.html: nested full-site iframe is prohibited');
+  if(!/tagj-404-self-heal/.test(html['404.html']))fail('404.html: route self-heal missing');
+  if(!html['404.html'].includes("'/artist':'/artist.html'"))fail('404.html: clean artist route must recover to physical HTML');
 }
 
 finish();
