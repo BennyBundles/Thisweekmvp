@@ -208,7 +208,7 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   const intro=html['index.html'];
   const introSources=[...intro.matchAll(/<source\b[^>]*src=["']tagj-assets\/intro\/([^"']+)["']/gi)].map(m=>m[1]);
   if(introSources.length!==1||introSources[0]!=='intro-clip-for-website-v152.mp4')fail('index.html: intro must use one canonical MP4 source');
-  if(!intro.includes('nativeFastNav'))fail('index.html: iOS/coarse-pointer native navigation bypass missing');
+  if(!read('tagj-assets/index-v1528.js').includes('nativeFastNav'))fail('index-v1528.js: iOS/coarse-pointer native navigation bypass missing');
 
   const sw=read('tagj-sw.js');
   if(/addEventListener\(\s*['"]fetch['"]/i.test(sw))fail('tagj-sw.js: fetch interception must remain disabled');
