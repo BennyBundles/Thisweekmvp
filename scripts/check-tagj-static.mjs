@@ -172,7 +172,7 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
 {
   if(!html['index.html'].includes('tagj-assets/index-v1527.css'))fail('index.html: external navigation-shell CSS missing');
   if(!html['full.html'].includes('tagj-assets/full-v1527.css'))fail('full.html: external ecosystem CSS missing');
-  const inlineCssBytes=src=>[...src.matchAll(/<style\\b[^>]*>([\\s\\S]*?)<\\/style>/gi)].reduce((n,m)=>n+Buffer.byteLength(m[1]||'','utf8'),0);
+  const inlineCssBytes=src=>[...src.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi)].reduce((n,m)=>n+Buffer.byteLength(m[1]||'','utf8'),0);
   if(inlineCssBytes(html['index.html'])>5000)fail('index.html: too much inline CSS; keep heavy styling cacheable');
   if(inlineCssBytes(html['full.html'])>5000)fail('full.html: too much inline CSS; keep heavy styling cacheable');
   if(Buffer.byteLength(read('tagj-assets/index-v1527.css'),'utf8')>250000)fail('index-v1527.css exceeds mobile-safe CSS budget');
@@ -186,7 +186,7 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   if(!runtime.includes('navLockUntil'))fail('runtime-stability.js: duplicate-navigation guard missing');
   if(!runtime.includes("data-tagj-preload-tuned"))fail('runtime-stability.js: media preload discipline missing');
   const intro=html['index.html'];
-  const introSources=[...intro.matchAll(/<source\\b[^>]*src=[\"']tagj-assets\\/intro\\/([^\"']+)[\"']/gi)].map(m=>m[1]);
+  const introSources=[...intro.matchAll(/<source\b[^>]*src=["']tagj-assets\/intro\/([^"']+)["']/gi)].map(m=>m[1]);
   if(introSources.length!==1||introSources[0]!=='intro-clip-for-website-v152.mp4')fail('index.html: intro must use one canonical MP4 source');
   const build=read('scripts/build-tagj-preview.sh');
   if(build.includes('cp tagj-assets/intro/*'))fail('build: wildcard intro copy reintroduces unused media');
