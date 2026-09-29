@@ -1055,7 +1055,22 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
  const q=(s,r=document)=>r.querySelector(s);
  const list=q('#v158BeatList'),search=q('#v158BeatSearch'),audio=q('#v158BeatAudio'),title=q('#v158BeatTitle'),meta=q('#v158BeatMeta'),status=q('#v158BeatStatus'),source=q('#v158BeatSource'),request=q('#v158BeatRequest'),wave=q('#v158BeatWave');
  if(!list)return;
- let beats=[],selected=null;
+ let beats=[],selected=null,drivePreview=null,driveFrame=null;
+ if(audio){
+   audio.hidden=true;
+   drivePreview=document.createElement('div');
+   drivePreview.id='v158DrivePreviewWrap';
+   drivePreview.hidden=true;
+   drivePreview.style.cssText='margin:14px 0;border:1px solid rgba(255,255,255,.14);background:#030608;border-radius:10px;overflow:hidden';
+   driveFrame=document.createElement('iframe');
+   driveFrame.id='v158DrivePreview';
+   driveFrame.title='Selected beat preview';
+   driveFrame.allow='autoplay';
+   driveFrame.loading='eager';
+   driveFrame.style.cssText='display:block;width:100%;height:190px;border:0;background:#000';
+   drivePreview.appendChild(driveFrame);
+   audio.insertAdjacentElement('afterend',drivePreview);
+ }
  const fmtTime=s=>{s=Math.round(Number(s)||0);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
  const fmtSize=n=>(Number(n||0)/1048576).toFixed(1)+' MB';
  function render(filter=''){
@@ -1072,9 +1087,20 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
  function selectBeat(b){
    selected=b;render(search?.value||'');title.textContent=b.title;
    meta.innerHTML='<span>'+fmtTime(b.audio.durationSeconds)+'</span><span>'+b.audio.format.toUpperCase()+'</span><span>'+Math.round(b.audio.sampleRate/1000*10)/10+' kHz</span><span>'+fmtSize(b.audio.fileSizeBytes)+'</span><span>Prod. by Bundles</span>';
-   audio.pause();audio.removeAttribute('src');audio.load();
-   audio.src=b.source.streamCandidateUrl;audio.load();
-   status.textContent='Drive-backed source prepared. Tap play to audition; playback requires the Drive share permissions and browser to allow streaming.';
+   if(audio){audio.pause();audio.removeAttribute('src');audio.load();audio.hidden=true}
+   if(driveFrame){driveFrame.src='about:blank'}if(drivePreview)drivePreview.hidden=true;
+   const localPreview=b.previewUrl||b.preview?.url||null;
+   if(localPreview&&audio){
+     audio.src=localPreview;audio.hidden=false;audio.load();
+     status.textContent='Site-hosted preview ready. Tap play to audition.';
+   }else if(b.source?.driveId&&driveFrame){
+     driveFrame.title=b.title+' beat preview';
+     driveFrame.src='https://drive.google.com/file/d/'+encodeURIComponent(b.source.driveId)+'/preview';
+     drivePreview.hidden=false;
+     status.textContent='Beat preview loaded in the Drive player. Tap play inside the player to audition.';
+   }else{
+     status.textContent='No browser preview source is available for this beat. Use “Open Drive source.”';
+   }
    source.href=b.source.viewerUrl;source.removeAttribute('aria-disabled');
    request.disabled=false;
    try{localStorage.setItem('tagjSelectedBeatV158',JSON.stringify({id:b.id,title:b.title,driveId:b.source.driveId}))}catch(_){}
@@ -1083,7 +1109,7 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
  audio?.addEventListener('play',()=>wave?.classList.add('playing'));
  audio?.addEventListener('pause',()=>wave?.classList.remove('playing'));
  audio?.addEventListener('ended',()=>wave?.classList.remove('playing'));
- audio?.addEventListener('error',()=>{wave?.classList.remove('playing');if(selected)status.textContent='Direct Drive playback is unavailable in this browser. Use “Open Drive source” to audition the original file.'});
+ audio?.addEventListener('error',()=>{wave?.classList.remove('playing');if(selected)status.textContent='The site-hosted audio preview could not load. Use the embedded Drive player or “Open Drive source.”'});
  request?.addEventListener('click',()=>{if(!selected)return;setTimeout(()=>{const p=q('#v143ProjectTitle');if(p&&!p.value)p.value=selected.title;const n=q('#v143Notes');if(n&&!n.value)n.value='Selected beat: '+selected.title+' / source '+selected.id;},0)},true);
  search?.addEventListener('input',()=>render(search.value));
  fetch('tagj-data/beat-catalog.v1.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('catalog');return r.json()}).then(data=>{
