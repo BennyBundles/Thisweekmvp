@@ -1,6 +1,6 @@
 # TAGJ × Benny Bundles — Codex handoff
 
-Updated 2026-09-30. Source audit complete; browser/device acceptance remains outstanding.
+Updated 2026-10-01. Source audit complete; browser/device acceptance remains outstanding.
 This supersedes the initial blocked draft. The repository was located through the user-supplied Vercel deployment and refreshed to the current branch. This update changes documentation only and preserves all existing site work.
 
 ## Repository and release identity
@@ -182,8 +182,8 @@ A separately named V12.3 commit was not established. Existing baseline files rec
 - [x] Locate/refresh the actual TAGJ branch; preserve later V15.x changes.
 - [x] Audit architecture, historical V14 work, current assets/routes/contracts and build configuration.
 - [x] Run existing static/build/package gates.
-- [ ] Commit this handoff and inventory on tagj-v12-preview and verify the Git-triggered deployment reaches READY at that documentation commit.
-- [ ] Record deployment receipt with commit, ID, URL and verification scope.
+- [x] Handoff and inventory saved on tagj-v12-preview at `636f22d9268e809b00e84a8b0aebc4e1ad4624f0`; matching Git-triggered deployment reached READY.
+- [x] Record deployment receipt with commit, ID, URL and verification scope; see CODEX_DEPLOYMENT_RECEIPT.md.
 - [ ] P0: complete fresh-session and replay media tests on iPhone/Safari; reproduce any remaining failure before a minimal fix.
 - [ ] P0: complete four-world/deep-route/back-forward/restore tests and verify the overlay never intercepts navigation after entry.
 - [ ] P1: test all physical pages, aliases, 404 recovery, reduced motion, keyboard focus, mobile scroll/touch, and returning service-worker clients.
