@@ -60,7 +60,7 @@ for(const required of [
   'creative/index.html','creative/portfolio.html','creative/case-bsf-tone-066.html','creative/case-t311y-demon-life.html',
   'network/index.html','network/bsf-tone-066.html','network/t311y-demon-life.html',
   'tagj-assets/runtime-stability.js','tagj-assets/index-v1528.js','tagj-assets/full-v1528.js','tagj-assets/index-v1528.css','tagj-assets/full-v1528.css','tagj-sw.js',
-  'tagj-assets/media/asset-fashion-hero.jpg','tagj-assets/media/asset-green-set.jpg','tagj-assets/media/asset-track-navy.jpg'
+  'tagj-assets/media/asset-fashion-hero.webp','tagj-assets/media/asset-green-set.webp','tagj-assets/media/asset-track-navy.webp'
 ]){
   if(!fileSet.has(required)) failures.push('Missing packaged critical file: '+required);
 }

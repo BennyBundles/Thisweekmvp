@@ -156,20 +156,20 @@ for(const id of ['bsf-bloxx-robbers','t311y-project-artwork']){
 
 // Canonical affiliate repository assets currently expected to be public.
 const canonicalAssets=[
-  'tagj-assets/network/bsf-tone-066/profile.png',
-  'tagj-assets/network/bsf-tone-066/bloxx-robbers-cover-01.jpg',
+  'tagj-assets/network/bsf-tone-066/profile.webp',
+  'tagj-assets/network/bsf-tone-066/bloxx-robbers-cover-01.webp',
   'tagj-assets/network/bsf-tone-066/bloxx-robbers-cover-02.jpg',
   'tagj-assets/network/bsf-tone-066/bloxx-robbers-cover-03.jpg',
   'tagj-assets/network/bsf-tone-066/bloxx-robbers-cover-04.jpg',
-  'tagj-assets/network/bsf-tone-066/bloxx-robbers-merch-01.png',
-  'tagj-assets/network/bsf-tone-066/bloxx-robbers-merch-02.png',
-  'tagj-assets/network/bsf-tone-066/bloxx-robbers-merch-03.jpg',
-  'tagj-assets/network/bsf-tone-066/bloxx-robbers-merch-04.jpg',
-  'tagj-assets/network/t311y-demon-life/profile.jpg',
-  'tagj-assets/network/t311y-demon-life/the-demon-culture-logo.jpg',
-  'tagj-assets/network/t311y-demon-life/chapter-3-light-pack.jpg',
-  'tagj-assets/network/t311y-demon-life/jimmy-onna-blast-off.png',
-  'tagj-assets/network/t311y-demon-life/3-d-cover.jpg',
+  'tagj-assets/network/bsf-tone-066/bloxx-robbers-merch-01.webp',
+  'tagj-assets/network/bsf-tone-066/bloxx-robbers-merch-02.webp',
+  'tagj-assets/network/bsf-tone-066/bloxx-robbers-merch-03.webp',
+  'tagj-assets/network/bsf-tone-066/bloxx-robbers-merch-04.webp',
+  'tagj-assets/network/t311y-demon-life/profile.webp',
+  'tagj-assets/network/t311y-demon-life/the-demon-culture-logo.webp',
+  'tagj-assets/network/t311y-demon-life/chapter-3-light-pack.webp',
+  'tagj-assets/network/t311y-demon-life/jimmy-onna-blast-off.webp',
+  'tagj-assets/network/t311y-demon-life/3-d-cover.webp',
   'tagj-assets/network/t311y-demon-life/devils-playground.webp'
 ];
 for(const p of canonicalAssets)if(!exists(p))fail(`Missing canonical network asset: ${p}`);

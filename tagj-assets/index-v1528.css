@@ -466,19 +466,19 @@ body.intro-pending .home-shell{filter:blur(5px);transform:scale(1.015)}.home-she
 @media(max-width:760px){.intro-replay-link{font-size:9px}}
 
 /* V15.28 consolidated asset variables: replaces 16 render-blocking micro stylesheets. */
-:root{--asset-black-gold-jacket:url('media/asset-black-gold-jacket.jpg')}
-:root{--asset-cover-big-difference:url('media/asset-cover-big-difference.jpg')}
-:root{--asset-cover-cant-crop:url('media/asset-cover-cant-crop.jpg')}
-:root{--asset-cover-count-everything:url('media/asset-cover-count-everything.jpg')}
-:root{--asset-cover-dont-judge-church:url('media/asset-cover-dont-judge-church.jpg')}
-:root{--asset-cover-dont-judge-money:url('media/asset-cover-dont-judge-money.jpg')}
-:root{--asset-cover-dont-judge-street:url('media/asset-cover-dont-judge-street.jpg')}
-:root{--asset-cover-hold-gold:url('media/asset-cover-hold-gold.jpg')}
-:root{--asset-cover-hold-night:url('media/asset-cover-hold-night.jpg')}
-:root{--asset-cover-hold-rooftop:url('media/asset-cover-hold-rooftop.jpg')}
-:root{--asset-cover-reached-fire:url('media/asset-cover-reached-fire.jpg')}
-:root{--asset-cover-reached-prayer:url('media/asset-cover-reached-prayer.jpg')}
-:root{--asset-fashion-hero:url('media/asset-fashion-hero.jpg')}
-:root{--asset-green-set:url('media/asset-green-set.jpg')}
-:root{--asset-tagj-mark:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImEiIHgxPSIwIiB4Mj0iMSIgeTE9IjAiIHkyPSIxIj48c3RvcCBzdG9wLWNvbG9yPSIjZjdmYmZmIi8+PHN0b3Agb2Zmc2V0PSIuNDUiIHN0b3AtY29sb3I9IiM5ZmRjZjciLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM1MzY3NzgiLz48L2xpbmVhckdyYWRpZW50PjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHgyPSIxIj48c3RvcCBzdG9wLWNvbG9yPSIjZjBkNzlkIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjOWY3MzM1Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHBhdGggZD0iTTkwIDE1NiAyNSA4NEMxIDU3IDE5IDI0IDUyIDI0YzE3IDAgMjkgOSAzOCAyMiA5LTEzIDIxLTIyIDM4LTIyIDMzIDAgNTEgMzMgMjcgNjBaIiBmaWxsPSIjMDcxMTFjIiBzdHJva2U9InVybCgjYSkiIHN0cm9rZS13aWR0aD0iNiIvPjxwYXRoIGQ9Ik0zOSA3NmgyNWwxMS0xOCAxNSAzOSAxNS0zMSAxMSAxOGgyNyIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzllZGY4IiBzdHJva2Utd2lkdGg9IjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik00OSA0NyA5MCAxNDcgMTMxIDQ3TTM0IDg0aDExMk02NSAzMWwyNSAxMTYgMjUtMTE2IiBmaWxsPSJub25lIiBzdHJva2U9IiM3ZmE5YmQiIG9wYWNpdHk9Ii4zOCIgc3Ryb2tlLXdpZHRoPSIyIi8+PHRleHQgeD0iOTAiIHk9IjExNiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjM0IiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSJ1cmwoI2cpIj5UQUdKPC90ZXh0Pjwvc3ZnPg==');}:root{--asset-track-navy:url('media/asset-track-navy.jpg')}
+:root{--asset-black-gold-jacket:url('media/asset-black-gold-jacket.webp')}
+:root{--asset-cover-big-difference:url('media/asset-cover-big-difference.webp')}
+:root{--asset-cover-cant-crop:url('media/asset-cover-cant-crop.webp')}
+:root{--asset-cover-count-everything:url('media/asset-cover-count-everything.webp')}
+:root{--asset-cover-dont-judge-church:url('media/asset-cover-dont-judge-church.webp')}
+:root{--asset-cover-dont-judge-money:url('media/asset-cover-dont-judge-money.webp')}
+:root{--asset-cover-dont-judge-street:url('media/asset-cover-dont-judge-street.webp')}
+:root{--asset-cover-hold-gold:url('media/asset-cover-hold-gold.webp')}
+:root{--asset-cover-hold-night:url('media/asset-cover-hold-night.webp')}
+:root{--asset-cover-hold-rooftop:url('media/asset-cover-hold-rooftop.webp')}
+:root{--asset-cover-reached-fire:url('media/asset-cover-reached-fire.webp')}
+:root{--asset-cover-reached-prayer:url('media/asset-cover-reached-prayer.webp')}
+:root{--asset-fashion-hero:url('media/asset-fashion-hero.webp')}
+:root{--asset-green-set:url('media/asset-green-set.webp')}
+:root{--asset-tagj-mark:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImEiIHgxPSIwIiB4Mj0iMSIgeTE9IjAiIHkyPSIxIj48c3RvcCBzdG9wLWNvbG9yPSIjZjdmYmZmIi8+PHN0b3Agb2Zmc2V0PSIuNDUiIHN0b3AtY29sb3I9IiM5ZmRjZjciLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM1MzY3NzgiLz48L2xpbmVhckdyYWRpZW50PjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHgyPSIxIj48c3RvcCBzdG9wLWNvbG9yPSIjZjBkNzlkIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjOWY3MzM1Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHBhdGggZD0iTTkwIDE1NiAyNSA4NEMxIDU3IDE5IDI0IDUyIDI0YzE3IDAgMjkgOSAzOCAyMiA5LTEzIDIxLTIyIDM4LTIyIDMzIDAgNTEgMzMgMjcgNjBaIiBmaWxsPSIjMDcxMTFjIiBzdHJva2U9InVybCgjYSkiIHN0cm9rZS13aWR0aD0iNiIvPjxwYXRoIGQ9Ik0zOSA3NmgyNWwxMS0xOCAxNSAzOSAxNS0zMSAxMSAxOGgyNyIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzllZGY4IiBzdHJva2Utd2lkdGg9IjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik00OSA0NyA5MCAxNDcgMTMxIDQ3TTM0IDg0aDExMk02NSAzMWwyNSAxMTYgMjUtMTE2IiBmaWxsPSJub25lIiBzdHJva2U9IiM3ZmE5YmQiIG9wYWNpdHk9Ii4zOCIgc3Ryb2tlLXdpZHRoPSIyIi8+PHRleHQgeD0iOTAiIHk9IjExNiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjM0IiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSJ1cmwoI2cpIj5UQUdKPC90ZXh0Pjwvc3ZnPg==');}:root{--asset-track-navy:url('media/asset-track-navy.webp')}
 
