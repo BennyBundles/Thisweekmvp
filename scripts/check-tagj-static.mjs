@@ -242,6 +242,9 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   if(!build.includes('.tagj-dist/tagj-assets/a??.css'))fail('build: obsolete micro-CSS cleanup missing');
   if(!build.includes("printf 'V15.32'"))fail('build: VERSION.txt is not V15.32');
   if(!build.includes('generate-tagj-seo.mjs'))fail('build: environment-aware SEO generator missing');
+  if(!build.includes('beat-preview-status.v1.json'))fail('build: Beat Vault preview capability manifest generation missing');
+  if(!html['beats/index.html'].includes('beat-preview-status.v1.json'))fail('beats/index.html: build-aware preview capability fetch missing');
+  if(!read('tagj-assets/full-v1528.js').includes('beat-preview-status.v1.json'))fail('full-v1528.js: build-aware Beat Vault preview capability fetch missing');
   const seoScript=read('scripts/generate-tagj-seo.mjs');
   if(!seoScript.includes('TAGJ_PUBLIC_ORIGIN')||!seoScript.includes('noindex,nofollow,noarchive'))fail('SEO generator: protected/public mode contract missing');
   if(!build.includes('tagj-public-assets-ready.zip'))fail('build: one-file public asset bundle support missing');
