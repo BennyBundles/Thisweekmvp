@@ -75,6 +75,18 @@ for(const [file,src] of Object.entries(html)){
   for(const [id,count] of counts)if(count>1)fail(`${file}: duplicate DOM id "${id}" ×${count}`);
 }
 
+// Basic accessibility and external-link safety.
+for(const [file,src] of Object.entries(html)){
+  const clean=stripExecutable(src);
+  for(const m of clean.matchAll(/<img\b[^>]*>/gi)){
+    if(!/\balt\s*=\s*["'][^"']*["']/i.test(m[0])) fail(`${file}: image without alt attribute`);
+  }
+  for(const m of clean.matchAll(/<a\b[^>]*target\s*=\s*["']_blank["'][^>]*>/gi)){
+    if(!/\brel\s*=\s*["'][^"']*\bnoopener\b[^"']*["']/i.test(m[0])) fail(`${file}: target=_blank link is missing rel=noopener`);
+  }
+  if(!/<html\b[^>]*\blang\s*=\s*["'][^"']+["']/i.test(src)) fail(`${file}: html lang attribute missing`);
+}
+
 // Hash routes: validate same-file anchors and explicit full.html# routes.
 for(const [file,src] of Object.entries(html)){
   const clean=stripExecutable(src);
