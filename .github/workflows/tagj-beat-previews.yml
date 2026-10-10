@@ -1,0 +1,125 @@
+name: Build TAGJ beat previews
+
+on:
+  push:
+    branches:
+      - tagj-v12-preview
+    paths:
+      - .github/workflows/tagj-beat-previews.yml
+
+permissions:
+  contents: write
+
+jobs:
+  previews:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out TAGJ preview branch
+        uses: actions/checkout@v4
+        with:
+          ref: tagj-v12-preview
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install download helper
+        run: python -m pip install --quiet gdown
+
+      - name: Ensure ffmpeg is available
+        run: |
+          if ! command -v ffmpeg >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y ffmpeg
+          fi
+
+      - name: Generate mobile-friendly previews
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p tagj-assets/beat-previews
+          while IFS='|' read -r beat_id drive_id; do
+            [ -n "$beat_id" ] || continue
+            echo "Generating $beat_id"
+            rm -f /tmp/tagj-source.wav
+            gdown --fuzzy "https://drive.google.com/file/d/$drive_id/view" -O /tmp/tagj-source.wav
+            ffmpeg -hide_banner -loglevel error -y -ss 15 -i /tmp/tagj-source.wav -t 45 -vn \
+              -af "loudnorm=I=-14:LRA=11:TP=-1.5,afade=t=in:st=0:d=0.35,afade=t=out:st=44:d=1" \
+              -ar 44100 -ac 2 -c:a libmp3lame -b:a 160k "tagj-assets/beat-previews/$beat_id.mp3"
+          done <<'BEATS'
+          beat-001|16R6LVgcKMit918RT3bc683GWbiczaSWF
+          beat-002|1nLqvRpgUO3TjLSej4ogFy03aWh3_69WW
+          beat-003|1eNesEKu5UADBsHPhvWHoU0UnG7ALi1T4
+          beat-004|1WMFO-uq5lphvdKFKiWjUWOt60FrYk0U9
+          beat-005|1dJ80wgS3cpkRdvCnjKYU_JcTFPiY20pi
+          beat-006|1Efu1Z-gVBTOpguQ2e0rFgy-S5tQ5WbGB
+          beat-007|1y1qftSjk2_2UBd6QAPf0hr4QWOgiZ0a4
+          beat-008|15cR-lEE2pFpNCmm8Ya3AGZ-77VELpBdm
+          beat-009|18P9nQPKt-mkbggYHXrLB8ez4pqWh4NuU
+          beat-010|1knnKDObfdP7GrpMQTiqp6-Cz47MHcVFp
+          beat-011|1dAakN1YiNpe9aaK26FiLRa6Z1ykM3Duq
+          beat-012|1p41XcUadqwcpSvA562eSti_00cyu9kAV
+          beat-013|1qYB5c2fDuw4HRSR0Mwf_8qsvraVic2MU
+          beat-014|19bWZ4rsL4nLcrqKEQHtKC_TAZpzOSDxX
+          beat-015|1PDPgwFDD97q9RwNvMx7rBUjYXHlsEEke
+          beat-016|1QReQfjQs7nsezEiGzrqsocZKAnLrwmQT
+          beat-017|1rRDeZ05q3jXFd-WsovChFrnZ9GpI2VWC
+          beat-018|1YsWZz9rn2o7Kfc4YBS6Jfy9zknnqwoet
+          beat-019|1jIevjqiJUfsPKrWpihs9keEBCgwI_iBw
+          beat-020|18nKLLzYt63Tj36fFK05JEKLzzUZkNzy6
+          beat-021|1VxeYsPHDojaTmM4ug7v2daL5auk9e62N
+          beat-022|16rqG0FCVxKB4NnqK4CjpchSUJ6soyct5
+          BEATS
+          rm -f /tmp/tagj-source.wav
+
+      - name: Wire previews into beat catalogue
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("tagj-data/beat-catalog.v1.json")
+          data=json.loads(p.read_text())
+          for beat in data.get("beats", []):
+              beat_id=beat.get("id")
+              if not beat_id:
+                  continue
+              url=f"/tagj-assets/beat-previews/{beat_id}.mp3"
+              beat["previewUrl"]=url
+              beat["preview"]={
+                  "url":url,
+                  "format":"mp3",
+                  "durationSeconds":45,
+                  "bitrateKbps":160,
+                  "sourceOffsetSeconds":15
+              }
+          p.write_text(json.dumps(data,indent=2,ensure_ascii=False)+"\n")
+          PY
+
+      - name: Verify preview set
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(find tagj-assets/beat-previews -type f -name 'beat-*.mp3' | wc -l)" -eq 22
+          test "$(python - <<'PY'
+          import json
+          d=json.load(open("tagj-data/beat-catalog.v1.json"))
+          print(sum(1 for b in d.get("beats",[]) if b.get("previewUrl")))
+          PY
+          )" -eq 22
+
+      - name: Commit generated preview assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tagj-assets/beat-previews tagj-data/beat-catalog.v1.json
+          if git diff --cached --quiet; then
+            echo "Preview assets already current."
+            exit 0
+          fi
+          git commit -m "Add site-hosted TAGJ beat previews [skip ci]"
+          git push origin HEAD:tagj-v12-preview
