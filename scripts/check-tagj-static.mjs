@@ -246,7 +246,7 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
 }
 
 
-// V15.35 navigation/performance hardening invariants.
+// V15.36 navigation/performance hardening invariants.
 {
   const indexCss='tagj-assets/index-v1528.css';
   const fullCss='tagj-assets/full-v1528.css';
@@ -290,7 +290,7 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
     if(!build.includes('rm -f')||!build.includes(duplicate))fail('build: duplicate deploy cleanup missing '+duplicate);
   }
   if(!build.includes('.tagj-dist/tagj-assets/a??.css'))fail('build: obsolete micro-CSS cleanup missing');
-  if(!build.includes("printf 'V15.35'"))fail('build: VERSION.txt is not V15.35');
+  if(!build.includes("printf 'V15.36'"))fail('build: VERSION.txt is not V15.36');
   const homeRuntime=read('tagj-assets/index-v1528.js');
   if(!homeRuntime.includes("const saveData=!!connection?.saveData"))fail('home runtime: Data Saver detection missing');
   if(!homeRuntime.includes('accessibilityFastEntry=reduce||saveData'))fail('home runtime: Reduce Motion / Data Saver intro fast-entry contract missing');
@@ -312,7 +312,7 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   if(!html['press.html'].includes('id="benny-epk-schema"'))fail('press.html: EPK schema missing');
   if(!html['artist.html'].includes('Benny Bundles — Artist, Producer & Engineer | TAGJ'))fail('artist.html: artist-first title metadata missing');
   for(const p of ['producer.html','creative.html','tagj.html','full.html']){
-    if(!html[p].includes('data-tagj-entity-v1531'))fail(p+': V15.35 entity marker missing');
+    if(!html[p].includes('data-tagj-entity-v1531'))fail(p+': V15.36 entity marker missing');
   }
   if(!html['full.html'].includes('id="artist-current-v1531"'))fail('full.html: current verified release rail missing');
   for(const url of ['https://music.apple.com/us/artist/benny-bundles/1730543318','https://open.spotify.com/artist/7B0YUXsyJgA56DagjkbeGh','https://www.youtube.com/@bennybundles']){
@@ -369,7 +369,7 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   if(!html['404.html'].includes("['/campaign','/campaign.html']")||!html['404.html'].includes("['/now','/campaign.html']"))fail('404.html: campaign /now clean-route recovery missing');
 }
 
-// V15.35: shared runtime route portability.
+// V15.36: shared runtime route portability.
 {
   const runtime=read('tagj-assets/runtime-stability.js');
   if(!runtime.includes("const sitePath=(p='')"))fail('runtime: site-base route resolver missing');
@@ -377,7 +377,7 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   if(runtime.includes('href="/artist"')||runtime.includes('href="/producer"')||runtime.includes("fetch('/tagj-data/"))fail('runtime: root-absolute navigation/data dependency breaks subpath hosts');
 }
 
-// V15.35: third-party video must remain click-to-play.
+// V15.36: third-party video must remain click-to-play.
 for(const p of ['campaign.html','network/billyen.html','music/wanted-me-gone.html','music/hold-something.html','music/cant-crop-karma.html','music/freestyle.html','music/cried-in-the-dark.html','music/the-whole-brand.html']){
   const src=html[p];
   if(/<iframe\b[^>]*\s+src=["']https:\/\/www\.youtube-nocookie\.com\/embed\//i.test(src))fail(p+': eager YouTube iframe source must remain removed');
@@ -388,7 +388,7 @@ for(const p of ['campaign.html','network/billyen.html','music/wanted-me-gone.htm
 const deferredVideo=read('tagj-assets/deferred-video.js');
 if(!deferredVideo.includes('iframe[data-video-src]')||!deferredVideo.includes('YouTube loads only after you press play'))fail('deferred-video.js: click-to-play contract missing');
 
-// V15.35: cinematic release continuity + press toolkit.
+// V15.36: cinematic release continuity + press toolkit.
 const releaseContinuity={
   'music/wanted-me-gone.html':'release-wanted-me-gone',
   'music/hold-something.html':'release-hold-something',
@@ -405,7 +405,7 @@ for(const [p,name] of Object.entries(releaseContinuity)){
 if(!html['artist.html'].includes('release-wanted-me-gone')||!html['music/index.html'].includes('transitionName=slug'))fail('Release source transition identities are incomplete');
 if(!html['press.html'].includes('id="press-tools"')||!html['press.html'].includes('id="printEpk"')||!html['press.html'].includes('data-copy-target="shortBioText"'))fail('press.html: press toolkit controls missing');
 
-// V15.35: release video rich-result integrity.
+// V15.36: release video rich-result integrity.
 for(const p of ['music/wanted-me-gone.html','music/hold-something.html','music/cant-crop-karma.html','music/freestyle.html','music/cried-in-the-dark.html','music/the-whole-brand.html']){
   const src=html[p];
   const blocks=[...src.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
