@@ -47,6 +47,15 @@ rm -f .tagj-dist/tagj-assets/network/t311y-demon-life/profile-01.jpg
 rm -f .tagj-dist/tagj-assets/network/t311y-demon-life/tdc-logo.jpg
 rm -f .tagj-dist/tagj-assets/network/t311y-demon-life/jimmy-blast-off.png
 cp tagj-data/* .tagj-dist/tagj-data/
+preview_count=$(find .tagj-dist/tagj-assets/beat-previews -maxdepth 1 -type f -name 'beat-*.mp3' | wc -l | tr -d ' ')
+if [ "$preview_count" = "22" ]; then
+  preview_ready=true
+  preview_mode=local
+else
+  preview_ready=false
+  preview_mode=drive_fallback
+fi
+printf '{"schemaVersion":1,"expectedPreviewCount":22,"localPreviewCount":%s,"localPreviewsReady":%s,"preferredMode":"%s"}\n' "$preview_count" "$preview_ready" "$preview_mode" > .tagj-dist/tagj-data/beat-preview-status.v1.json
 cp legal/* .tagj-dist/legal/
 
 node scripts/generate-tagj-seo.mjs
