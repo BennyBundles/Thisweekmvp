@@ -282,9 +282,14 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   ]){
     if(!(vc.rewrites||[]).some(x=>x.source===pair[0]&&x.destination===pair[1]))fail('vercel.json: clean release rewrite missing '+pair[0]);
   }
-  for(const key of ['X-Content-Type-Options','Referrer-Policy','Permissions-Policy']){
+  for(const key of ['X-Content-Type-Options','Referrer-Policy','Permissions-Policy','Content-Security-Policy','X-Frame-Options','Cross-Origin-Opener-Policy','X-Permitted-Cross-Domain-Policies','Strict-Transport-Security']){
     if(!globalHeaders.some(x=>x.key===key))fail('vercel.json: baseline security header missing '+key);
   }
+  const csp=globalHeaders.find(x=>x.key==='Content-Security-Policy')?.value||'';
+  if(!csp.includes("object-src 'none'"))fail('vercel.json: CSP must forbid object execution');
+  if(!csp.includes("frame-ancestors 'self'"))fail('vercel.json: CSP frame ancestor policy missing');
+  if(!csp.includes('https://i.ytimg.com'))fail('vercel.json: CSP must allow verified YouTube thumbnails');
+  if(!csp.includes('https://drive.google.com'))fail('vercel.json: CSP must allow Beat Vault Drive fallback frames');
   for(const bad of ['/index.html','/full.html','/tagj.html','/artist.html','/producer.html','/creative.html','/contact.html','/licensing.html']){
     if((vc.redirects||[]).some(x=>x.source===bad))fail('vercel.json: physical HTML must load directly without redirect: '+bad);
   }
