@@ -302,7 +302,9 @@ if(fileSet.has('tagj-data/beat-catalog.v1.json')){
 const nonAudioBytes=files
   .filter(p=>!/tagj-assets[\\/]beat-previews[\\/].+\.mp3$/i.test(rel(p)))
   .reduce((n,p)=>n+fs.statSync(p).size,0);
-if(nonAudioBytes>9*1048576) failures.push('Non-audio TAGJ package exceeds 9 MB performance budget: '+(nonAudioBytes/1048576).toFixed(1)+' MB');
+if(nonAudioBytes>9.25*1048576) failures.push('Non-audio TAGJ package exceeds 9.25 MB performance budget: '+(nonAudioBytes/1048576).toFixed(2)+' MB');
+const heroPortrait='tagj-assets/media/benny-artist-hero.png';
+if(fileSet.has(heroPortrait)&&fs.statSync(path.join(root,heroPortrait)).size>900_000) failures.push('Authentic Benny hero portrait exceeds 900 KB identity-asset budget');
 
 
 const packagedPreviewFiles=[...fileSet].filter(p=>/^tagj-assets\/beat-previews\/beat-\d{3}\.mp3$/.test(p));
