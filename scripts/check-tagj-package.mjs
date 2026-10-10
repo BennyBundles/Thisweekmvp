@@ -126,7 +126,7 @@ for(const p of files.map(rel).filter(p=>p.endsWith('.html'))){
 }
 
 if(!fileSet.has('VERSION.txt')) failures.push('Missing packaged VERSION.txt');
-else if(read('VERSION.txt').trim()!=='V15.35') failures.push('VERSION.txt must identify the current V15.35 baseline');
+else if(read('VERSION.txt').trim()!=='V15.36') failures.push('VERSION.txt must identify the current V15.36 baseline');
 const publicOrigin=(process.env.TAGJ_PUBLIC_ORIGIN||'').trim().replace(/\/$/,'');
 if(!fileSet.has('robots.txt')) failures.push('Missing packaged robots.txt');
 else if(publicOrigin){
