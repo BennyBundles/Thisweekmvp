@@ -100,6 +100,22 @@ for(const p of files.map(rel).filter(p=>p.endsWith('.html'))){
 }
 if(!fileSet.has('VERSION.txt')) failures.push('Missing packaged VERSION.txt');
 else if(read('VERSION.txt').trim()!=='V15.31') failures.push('VERSION.txt must identify the current V15.31 baseline');
+const publicOrigin=(process.env.TAGJ_PUBLIC_ORIGIN||'').trim().replace(/\/$/,'');
+if(!fileSet.has('robots.txt')) failures.push('Missing packaged robots.txt');
+else if(publicOrigin){
+  if(!read('robots.txt').includes('Allow: /')) failures.push('Public robots.txt must allow crawling');
+  if(!fileSet.has('sitemap.xml')) failures.push('Public build is missing sitemap.xml');
+  for(const p of files.map(rel).filter(p=>p.endsWith('.html'))){
+    const src=read(p);
+    if(src.includes('noindex,nofollow,noarchive')) failures.push(p+': public build still contains preview noindex');
+  }
+}else{
+  if(!read('robots.txt').includes('Disallow: /')) failures.push('Protected preview robots.txt must disallow crawling');
+  if(fileSet.has('sitemap.xml')) failures.push('Protected preview must not ship a sitemap.xml');
+  for(const p of files.map(rel).filter(p=>p.endsWith('.html'))){
+    if(!read(p).includes('noindex,nofollow,noarchive')) failures.push(p+': protected preview robots meta is missing');
+  }
+}
 if(fileSet.has('tagj-data/beat-catalog.v1.json')){
   try{
     const beatCatalog=JSON.parse(read('tagj-data/beat-catalog.v1.json'));
