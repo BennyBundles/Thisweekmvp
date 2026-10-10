@@ -293,7 +293,7 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
 
   const sw=read('tagj-sw.js');
   if(/addEventListener\(\s*['"]fetch['"]/i.test(sw))fail('tagj-sw.js: fetch interception must remain disabled');
-  if(!sw.includes('tagj-nav-v1528-reset'))fail('tagj-sw.js: V15.28 reset worker marker missing');
+  if(!sw.includes('tagj-nav-v1536-reset'))fail('tagj-sw.js: V15.36 reset worker marker missing');
 
   const build=read('scripts/build-tagj-preview.sh');
   if(build.includes('cp tagj-assets/intro/*'))fail('build: wildcard intro copy reintroduces unused media');
