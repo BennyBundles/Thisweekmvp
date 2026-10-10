@@ -63,7 +63,7 @@ for(const oldCss of ['tagj-assets/index-v1527.css','tagj-assets/full-v1527.css',
 }
 
 for(const required of [
-  'index.html','preview.html','full.html','artist.html','producer.html','creative.html','campaign.html','press.html','site.webmanifest',
+  'index.html','preview.html','full.html','artist.html','producer.html','creative.html','campaign.html','press.html','site.webmanifest','build-manifest.json',
   'creative/index.html','creative/portfolio.html','creative/case-bsf-tone-066.html','creative/case-t311y-demon-life.html',
   'network/index.html','network/billyen.html','network/bsf-tone-066.html','network/t311y-demon-life.html','tagj-data/current-campaign.v1.json',
   'tagj-assets/runtime-stability.js','tagj-assets/deferred-video.js','tagj-assets/index-v1528.js','tagj-assets/full-v1528.js','tagj-assets/index-v1528.css','tagj-assets/full-v1528.css','tagj-sw.js',
@@ -128,6 +128,20 @@ for(const p of files.map(rel).filter(p=>p.endsWith('.html'))){
 if(!fileSet.has('VERSION.txt')) failures.push('Missing packaged VERSION.txt');
 else if(read('VERSION.txt').trim()!=='V15.36') failures.push('VERSION.txt must identify the current V15.36 baseline');
 const publicOrigin=(process.env.TAGJ_PUBLIC_ORIGIN||'').trim().replace(/\/$/,'');
+if(fileSet.has('build-manifest.json')){
+  try{
+    const bm=JSON.parse(read('build-manifest.json'));
+    const campaign=JSON.parse(read('tagj-data/current-campaign.v1.json'));
+    const preview=JSON.parse(read('tagj-data/beat-preview-status.v1.json'));
+    if(bm.schemaVersion!==1) failures.push('build manifest schemaVersion must be 1');
+    if(bm.version!=='V15.36') failures.push('build manifest version mismatch');
+    if(bm.mode!==(publicOrigin?'public':'protected-preview')) failures.push('build manifest mode mismatch');
+    if(bm.campaignId!==campaign.campaignId) failures.push('build manifest campaignId mismatch');
+    if(bm.currentRelease!==campaign.release?.id) failures.push('build manifest currentRelease mismatch');
+    if(bm.localBeatPreviewCount!==preview.localPreviewCount||bm.expectedBeatPreviewCount!==preview.expectedPreviewCount) failures.push('build manifest Beat Vault counts mismatch');
+  }catch(err){failures.push('build-manifest.json: invalid JSON: '+err.message)}
+}
+
 if(!fileSet.has('robots.txt')) failures.push('Missing packaged robots.txt');
 else if(publicOrigin){
   if(!read('robots.txt').includes('Allow: /')) failures.push('Public robots.txt must allow crawling');
