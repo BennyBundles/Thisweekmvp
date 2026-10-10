@@ -86,6 +86,7 @@ if(!html['campaign.html'].includes('id="campaignCaption"')||!html['campaign.html
 }
 if(!html['artist.html'].includes('href="campaign.html"'))fail('artist.html: current campaign route missing');
 if(!html['index.html'].includes('class="home-release-signal" href="campaign.html"'))fail('index.html: home current-release signal must enter campaign loop');
+if(!html['index.html'].includes('class="home-subscribe-climax"')||!html['index.html'].includes('https://www.youtube.com/@bennybundles?sub_confirmation=1'))fail('index.html: home YouTube subscription climax missing');
 if(!html['producer.html'].includes('id="featuredBeatGrid"')||!html['producer.html'].includes("new Audio(beat.previewUrl)"))fail('producer.html: featured Beat audition rail missing');
 if(!html['artist.html'].includes('href="network/billyen.html"')||!html['network/index.html'].includes('href="billyen.html"'))fail('BillYen direct network surface missing');
 if(!html['network/billyen.html'].includes('billyen-profile-schema')||!html['network/billyen.html'].includes('https://youtube.com/@billyenthebuilder')||!html['network/billyen.html'].includes('oDa5fa3Zet8'))fail('BillYen profile verified identity/link contract missing');
