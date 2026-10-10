@@ -11,6 +11,7 @@ on:
       - "artist.html"
       - "producer.html"
       - "creative.html"
+      - "campaign.html"
       - "contact.html"
       - "licensing.html"
       - "press.html"
@@ -62,6 +63,7 @@ jobs:
           test -f .tagj-dist/artist.html
           test -f .tagj-dist/producer.html
           test -f .tagj-dist/creative.html
+          test -f .tagj-dist/campaign.html
           test -f .tagj-dist/contact.html
           test -f .tagj-dist/licensing.html
           test -f .tagj-dist/press.html
@@ -99,6 +101,7 @@ jobs:
           TAGJ_PUBLIC_ORIGIN=https://example.com sh scripts/build-tagj-preview.sh
           TAGJ_PUBLIC_ORIGIN=https://example.com node scripts/check-tagj-package.mjs
           grep -q '<loc>https://example.com/artist</loc>' .tagj-dist/sitemap.xml
+          grep -q '<loc>https://example.com/campaign</loc>' .tagj-dist/sitemap.xml
           grep -q 'Sitemap: https://example.com/sitemap.xml' .tagj-dist/robots.txt
 
       - name: Summarize package
