@@ -7,7 +7,6 @@ if(!fs.existsSync(dist)) throw new Error('.tagj-dist does not exist; run the TAG
 
 const routeMap=[
   ['index.html','/'],
-  ['full.html','/full'],
   ['artist.html','/artist'],
   ['producer.html','/producer'],
   ['creative.html','/creative'],
