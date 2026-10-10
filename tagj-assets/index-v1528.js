@@ -127,7 +127,7 @@ document.documentElement.classList.add('js');
 
   const searchIndex = [
     ['TAGJ Product Catalogue','Development catalogue for footwear, apparel and accessories with explicit commerce status','catalogue/index.html','TAGJ','#d5bd7f','tagj product catalogue footwear apparel accessories concepts development inventory'],
-    ['TAGJ Season 1 Waitlist','First-access email handoff for the first TAGJ apparel drop and free-shirt drawing notice','tagj.html#season-one','TAGJ','#d5bd7f','tagj season 1 waitlist first drop apparel free shirt drawing first access'],
+    ['TAGJ Season 1','First-access page for the first TAGJ apparel drop, design-direction vote and rules-gated drawing notice','season1.html','TAGJ','#d5bd7f','tagj season 1 waitlist first drop apparel free shirt drawing first access vote design direction'],
     ['TAGJ × Benny Bundles Services','Creative, production, recording, mixing, mastering and engineering directory','services/index.html','BUSINESS','#9fb2bc','services creative production recording mixing mastering engineering rates quotes'],
     ['Benny Bundles Music Archive','Release records, verified videos and campaign dossiers','music/index.html','ARTIST','#b85751','benny bundles music archive releases songs videos catalogue'],
     ['Current Campaign','Wanted Me Gone watch, share, follow and promotion room','campaign.html','ARTIST','#b85751','current campaign wanted me gone share promote watch follow caption'],
@@ -146,7 +146,7 @@ document.documentElement.classList.add('js');
     ['TAGJ Design House Subsite','Footwear, apparel, accessories and product-development entry','tagj.html','TAGJ','#d5bd7f','tagj design house subsite clothing footwear apparel accessories product catalogue'],
     ['Benny Bundles Artist Subsite','Music, releases, streaming and collaborator network entry','artist.html','ARTIST','#b85751','benny bundles artist subsite music releases streaming network'],
     ['Bundles Studio Subsite','Beat Vault, licensing, production and engineering entry','producer.html','STUDIO','#e58a43','bundles producer studio subsite beats licensing recording mixing mastering engineering'],
-    ['Producer’s Tools / VST Lab','Benny Bundles and TAGJ music-production software development lane','producer.html#producer-tools','STUDIO','#e58a43','producer tools vst plugin melody vst beta software tagj'],
+    ['Melody VST Lab','Benny Bundles and TAGJ music-production software research, roadmap and future beta lane','vst.html','STUDIO','#e58a43','producer tools vst plugin melody vst beta software tagj music production midi research'],
     ['TAGJ Visual Lab Subsite','Cover art, music videos, visualizers and client case studies','creative.html','CREATIVE','#7457ff','tagj visual lab creative subsite cover art video visualizer portfolio case studies'],
     ['TAGJ Artist Network Subsite','Direct collaborator and affiliate profile index','network/index.html','ARTIST','#b85751','tagj artist network subsite collaborators affiliates billyen bsf tone 066 t311y demon life'],
     ['BillYen Direct Profile','Primary collaborator spotlight, early producer history and TAGJ origin connection','network/billyen.html','ARTIST','#b85751','billyen bill yen collaborator west philadelphia tagj origin good jawn producer history'],
