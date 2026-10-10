@@ -222,7 +222,14 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   if(!build.includes('.tagj-dist/tagj-assets/a??.css'))fail('build: obsolete micro-CSS cleanup missing');
   if(!build.includes("printf 'V15.30'"))fail('build: VERSION.txt is not V15.30');
 
+  if(!html['full.html'].includes('id="v1530EmailBrief"'))fail('full.html: Email Brief action missing from request wizard');
+  if(!read('tagj-assets/full-v1528.js').includes("mailto:prodbybundles@yahoo.com?subject="))fail('full-v1528.js: reviewable inquiry email handoff missing');
+
   const vc=JSON.parse(read('vercel.json'));
+  const globalHeaders=(vc.headers||[]).find(x=>x.source==='/(.*)')?.headers||[];
+  for(const key of ['X-Content-Type-Options','Referrer-Policy','Permissions-Policy']){
+    if(!globalHeaders.some(x=>x.key===key))fail('vercel.json: baseline security header missing '+key);
+  }
   for(const bad of ['/index.html','/full.html','/tagj.html','/artist.html','/producer.html','/creative.html','/contact.html','/licensing.html']){
     if((vc.redirects||[]).some(x=>x.source===bad))fail('vercel.json: physical HTML must load directly without redirect: '+bad);
   }
