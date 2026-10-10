@@ -55,7 +55,7 @@ const absolutizeStructuredData=(src,origin,isHome=false)=>src.replace(
         if(Array.isArray(value)) return value.map(walk);
         if(value&&typeof value==='object'){
           for(const [key,val] of Object.entries(value)){
-            if(typeof val==='string' && ['@id','url','contentUrl','embedUrl'].includes(key) && val.startsWith('/')) value[key]=origin+val;
+            if(typeof val==='string' && ['@id','url','contentUrl','embedUrl','logo','image','thumbnailUrl'].includes(key) && val.startsWith('/')) value[key]=origin+val;
             else value[key]=walk(val);
           }
         }
