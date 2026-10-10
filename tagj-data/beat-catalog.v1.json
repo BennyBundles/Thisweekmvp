@@ -1203,7 +1203,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "site_hosted_preview_ready",
       "originalWorkingTitle": "8888",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -1331,8 +1331,16 @@
         "fileSizeBytes": 78024935,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
-      "previewAvailability": "drive_restricted",
-      "previewDelivery": "no_public_browser_preview"
+      "previewAvailability": "local",
+      "previewDelivery": "site_hosted_mp3",
+      "previewUrl": "/tagj-assets/beat-previews/beat-009.mp3",
+      "preview": {
+        "url": "/tagj-assets/beat-previews/beat-009.mp3",
+        "format": "mp3",
+        "durationSeconds": 30,
+        "bitrateKbps": 128,
+        "sourceOffsetSeconds": 15
+      }
     },
     {
       "id": "beat-010",
@@ -2388,7 +2396,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "site_hosted_preview_ready",
       "originalWorkingTitle": "tghhhhgfdd",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -2516,8 +2524,16 @@
         "fileSizeBytes": 81627773,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
-      "previewAvailability": "drive_restricted",
-      "previewDelivery": "no_public_browser_preview"
+      "previewAvailability": "local",
+      "previewDelivery": "site_hosted_mp3",
+      "previewUrl": "/tagj-assets/beat-previews/beat-017.mp3",
+      "preview": {
+        "url": "/tagj-assets/beat-previews/beat-017.mp3",
+        "format": "mp3",
+        "durationSeconds": 30,
+        "bitrateKbps": 128,
+        "sourceOffsetSeconds": 15
+      }
     },
     {
       "id": "beat-018",
@@ -2563,7 +2579,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "site_hosted_preview_ready",
       "originalWorkingTitle": "untitled722",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -2691,8 +2707,16 @@
         "fileSizeBytes": 92647003,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
-      "previewAvailability": "drive_restricted",
-      "previewDelivery": "no_public_browser_preview"
+      "previewAvailability": "local",
+      "previewDelivery": "site_hosted_mp3",
+      "previewUrl": "/tagj-assets/beat-previews/beat-018.mp3",
+      "preview": {
+        "url": "/tagj-assets/beat-previews/beat-018.mp3",
+        "format": "mp3",
+        "durationSeconds": 30,
+        "bitrateKbps": 128,
+        "sourceOffsetSeconds": 15
+      }
     },
     {
       "id": "beat-019",
@@ -2738,7 +2762,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "site_hosted_preview_ready",
       "originalWorkingTitle": "juice",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -2866,8 +2890,16 @@
         "fileSizeBytes": 56297305,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
       },
-      "previewAvailability": "drive_restricted",
-      "previewDelivery": "no_public_browser_preview"
+      "previewAvailability": "local",
+      "previewDelivery": "site_hosted_mp3",
+      "previewUrl": "/tagj-assets/beat-previews/beat-019.mp3",
+      "preview": {
+        "url": "/tagj-assets/beat-previews/beat-019.mp3",
+        "format": "mp3",
+        "durationSeconds": 30,
+        "bitrateKbps": 128,
+        "sourceOffsetSeconds": 15
+      }
     },
     {
       "id": "beat-020",

@@ -40,17 +40,12 @@
     },
     {
       "id": "beat-vault-local-preview-coverage",
-      "status": "hybrid",
+      "status": "local",
       "blockingForSite": false,
-      "localPreviewCount": 18,
+      "localPreviewCount": 22,
       "expectedPreviewCount": 22,
-      "restrictedBeatIds": [
-        "beat-009",
-        "beat-017",
-        "beat-018",
-        "beat-019"
-      ],
-      "detail": "Authenticated Drive access to the remaining masters is available without changing permissions, but the current connector/container boundary cannot hand converted binary MP3 bytes into GitHub safely. The four beats retain explicit authenticated Drive fallback; no master visibility is changed."
+      "restrictedBeatIds": [],
+      "detail": "All 22 Beat Vault records now have site-hosted 30-second / 128 kbps audition previews. Restricted source masters remain private; only derived audition files are public."
     },
     {
       "id": "billyen-source-binaries",
