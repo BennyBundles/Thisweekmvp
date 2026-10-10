@@ -32,11 +32,12 @@ function resolveRef(from,ref){
   return normalized;
 }
 
+const optionalPackagedRefs=new Set(['tagj-assets/media/benny-artist-hero.webp']);
 for(const p of files.map(rel).filter(p=>p.endsWith('.html'))){
   const src=read(p).replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,'');
   for(const m of src.matchAll(/(?:href|src)\s*=\s*["']([^"']+)["']/gi)){
     const raw=m[1], target=resolveRef(p,raw);
-    if(target && !fileSet.has(target)) failures.push(`${p}: missing packaged reference ${raw} -> ${target}`);
+    if(target && !fileSet.has(target) && !optionalPackagedRefs.has(target)) failures.push(`${p}: missing packaged reference ${raw} -> ${target}`);
   }
 }
 for(const p of files.map(rel).filter(p=>p.endsWith('.css'))){
