@@ -147,6 +147,19 @@ for(const p of ['artist.html','campaign.html']) if(!html[p].includes('id="youtub
   if(release.title&&!html['index.html'].toLowerCase().includes(release.title.toLowerCase()))fail('index.html: current release signal drifted from campaign config');
 }
 
+// Zero-backend conversion funnels must preserve privacy and attribution context.
+{
+  const runtime=read('tagj-assets/runtime-stability.js');
+  if(!runtime.includes('window.TAGJAttribution')||!runtime.includes("utm_source")||!runtime.includes("referrer:safeReferrer"))fail('runtime: privacy-preserving attribution helper missing');
+  for(const p of ['tagj.html','producer.html']){
+    if(!html[p].includes('Attribution source:'))fail(p+': user-reviewed conversion handoff lacks attribution context');
+  }
+  if(!html['tagj.html'].includes('id="copyWaitlistRequest"')||!html['tagj.html'].includes('Nothing is transmitted automatically'))fail('tagj.html: waitlist privacy/copy fallback missing');
+  if(!html['producer.html'].includes('id="copyVstBetaRequest"')||!html['producer.html'].includes('id="copyVstLink"'))fail('producer.html: VST research copy/share fallback missing');
+  if(!html['contact.html'].includes('id="contactQuickBrief"')||!html['contact.html'].includes('id="copyQuickBrief"')||!html['contact.html'].includes('Nothing is transmitted automatically'))fail('contact.html: zero-backend Quick Brief contract missing');
+  if(!html['contact.html'].includes('Attribution source:'))fail('contact.html: Quick Brief attribution context missing');
+}
+
 // Basic accessibility and external-link safety.
 for(const [file,src] of Object.entries(html)){
   const clean=stripExecutable(src);
