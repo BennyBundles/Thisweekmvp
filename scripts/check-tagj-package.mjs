@@ -64,6 +64,32 @@ for(const required of [
   if(!fileSet.has(required)) failures.push('Missing packaged critical file: '+required);
 }
 
+const mobileNavPages=[
+  'tagj.html','artist.html','producer.html','creative.html','contact.html','licensing.html',
+  'network/index.html','network/bsf-tone-066.html','network/t311y-demon-life.html',
+  'services/index.html','music/index.html','catalogue/index.html','beats/index.html',
+  'creative/index.html','creative/portfolio.html','creative/case-bsf-tone-066.html','creative/case-t311y-demon-life.html','404.html',
+  'music/wanted-me-gone.html','music/cant-crop-karma.html','music/freestyle.html',
+  'music/cried-in-the-dark.html','music/the-whole-brand.html','music/hold-something.html'
+];
+for(const p of mobileNavPages){
+  if(!fileSet.has(p)) failures.push('Missing packaged mobile route: '+p);
+  else if(!read(p).includes('tagj-mobile-nav-v1530')) failures.push(p+': mobile navigation regression guard is missing');
+}
+if(fileSet.has('artist.html') && !read('artist.html').includes('benny-bundles-entity-schema')){
+  failures.push('artist.html: Benny Bundles structured entity metadata is missing');
+}
+if(fileSet.has('music/index.html') && !read('music/index.html').includes('music-archive-schema')){
+  failures.push('music/index.html: structured music archive metadata is missing');
+}
+for(const p of [
+  'music/wanted-me-gone.html','music/cant-crop-karma.html','music/freestyle.html',
+  'music/cried-in-the-dark.html','music/the-whole-brand.html','music/hold-something.html'
+]){
+  if(!fileSet.has(p)) failures.push('Missing packaged release page: '+p);
+  else if(!read(p).includes('tagj-release-schema')) failures.push(p+': structured release metadata is missing');
+}
+
 if(failures.length){
   console.error('TAGJ package check FAILED');
   failures.forEach(x=>console.error(' - '+x));
