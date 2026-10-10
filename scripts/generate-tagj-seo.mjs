@@ -102,6 +102,39 @@ const absolutizeStructuredData=(src,origin,isHome=false)=>src.replace(
   }
 );
 
+const ensureSocialMeta=src=>{
+  const title=(src.match(/<title>([\s\S]*?)<\/title>/i)?.[1]||'').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+  const description=(src.match(/<meta\b[^>]*name=["']description["'][^>]*content=["']([^"']*)["'][^>]*>/i)?.[1]||'').trim();
+  const add=(tag,re)=>{ if(!re.test(src)) src=src.replace(/<\/head>/i,tag+'</head>'); };
+  if(title){
+    add('<meta property="og:title" content="'+esc(title)+'">',/<meta\b[^>]*property=["']og:title["']/i);
+    add('<meta name="twitter:title" content="'+esc(title)+'">',/<meta\b[^>]*name=["']twitter:title["']/i);
+  }
+  if(description){
+    add('<meta property="og:description" content="'+esc(description)+'">',/<meta\b[^>]*property=["']og:description["']/i);
+    add('<meta name="twitter:description" content="'+esc(description)+'">',/<meta\b[^>]*name=["']twitter:description["']/i);
+  }
+  add('<meta property="og:type" content="website">',/<meta\b[^>]*property=["']og:type["']/i);
+  add('<meta name="twitter:card" content="summary">',/<meta\b[^>]*name=["']twitter:card["']/i);
+
+  let thumb='';
+  for(const m of src.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)){
+    try{
+      const data=JSON.parse(m[1]);
+      if(data?.['@type']!=='MusicRecording') continue;
+      const videos=Array.isArray(data.subjectOf)?data.subjectOf:[data.subjectOf].filter(Boolean);
+      thumb=videos.find(v=>v?.['@type']==='VideoObject'&&v.thumbnailUrl)?.thumbnailUrl||'';
+      if(thumb)break;
+    }catch(_){}
+  }
+  if(thumb){
+    add('<meta property="og:image" content="'+esc(thumb)+'">',/<meta\b[^>]*property=["']og:image["']/i);
+    add('<meta name="twitter:image" content="'+esc(thumb)+'">',/<meta\b[^>]*name=["']twitter:image["']/i);
+    src=src.replace(/<meta\b[^>]*name=["']twitter:card["'][^>]*>/i,'<meta name="twitter:card" content="summary_large_image">');
+  }
+  return src;
+};
+
 const upsertHead=(src,tag,matcher)=>{
   if(matcher.test(src)) return src.replace(matcher,tag);
   return src.replace(/<\/head>/i,tag+'</head>');
@@ -116,6 +149,7 @@ const htmlFiles=walkHtml(dist);
 // Default-deny indexing. Public mode explicitly promotes only canonical routes below.
 for(const p of htmlFiles){
   let src=fs.readFileSync(p,'utf8');
+  src=ensureSocialMeta(src);
   src=upsertHead(
     src,
     origin?'<meta name="robots" content="noindex,follow">':'<meta name="robots" content="noindex,nofollow,noarchive">',
