@@ -485,6 +485,9 @@ for(const p of ['music/wanted-me-gone.html','music/hold-something.html','music/c
   const blocks=[...src.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
   const music=blocks.map(m=>{try{return JSON.parse(m[1])}catch(_){return null}}).find(x=>x?.['@type']==='MusicRecording');
   if(!music){fail(p+': MusicRecording schema missing');continue}
+  if(music?.byArtist?.['@id']!=='/artist#benny-bundles'||music?.byArtist?.url!=='/artist')fail(p+': MusicRecording byArtist must resolve to canonical Benny artist page');
+  if(music?.publisher?.['@id']!=='/artist#tagj'||music?.publisher?.url!=='/tagj')fail(p+': MusicRecording publisher must resolve to canonical TAGJ page');
+  if(!String(music?.image||'').startsWith('/tagj-assets/releases/'))fail(p+': MusicRecording image must match first-party release art');
   const videos=Array.isArray(music.subjectOf)?music.subjectOf:[music.subjectOf].filter(Boolean);
   if(!videos.length)fail(p+': VideoObject subjectOf missing');
   for(const v of videos){
@@ -492,6 +495,8 @@ for(const p of ['music/wanted-me-gone.html','music/hold-something.html','music/c
     if(!v?.thumbnailUrl)fail(p+': VideoObject missing thumbnailUrl');
     if(!v?.uploadDate)fail(p+': VideoObject missing uploadDate');
     if(!v?.embedUrl)fail(p+': VideoObject missing embedUrl');
+    if(v?.creator?.['@id']!=='/artist#benny-bundles'||v?.creator?.url!=='/artist')fail(p+': VideoObject creator must resolve to canonical Benny artist page');
+    if(/^Official official\b/i.test(v?.description||''))fail(p+': VideoObject description contains duplicated Official wording');
     if(v?.contentUrl&&/youtu(?:\.be|be\.com)/i.test(v.contentUrl))fail(p+': YouTube watch URL must not be used as VideoObject contentUrl');
   }
 }
