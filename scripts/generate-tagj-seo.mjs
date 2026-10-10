@@ -131,6 +131,8 @@ const ensureSocialMeta=src=>{
     add('<meta name="twitter:description" content="'+esc(description)+'">',/<meta\b[^>]*name=["']twitter:description["']/i);
   }
   add('<meta property="og:type" content="website">',/<meta\b[^>]*property=["']og:type["']/i);
+  add('<meta property="og:site_name" content="Benny Bundles × TAGJ">',/<meta\b[^>]*property=["']og:site_name["']/i);
+  add('<meta property="og:locale" content="en_US">',/<meta\b[^>]*property=["']og:locale["']/i);
   add('<meta name="twitter:card" content="summary">',/<meta\b[^>]*name=["']twitter:card["']/i);
 
   let thumb='';
