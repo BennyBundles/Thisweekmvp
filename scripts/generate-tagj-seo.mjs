@@ -32,6 +32,31 @@ const routeMap=[
   ['creative/case-t311y-demon-life.html','/creative/case-t311y-demon-life']
 ];
 
+const breadcrumbPaths={
+  '/artist':[['Home','/'],['Benny Bundles','/artist']],
+  '/producer':[['Home','/'],['Benny Bundles','/artist'],['Producer / Engineer','/producer']],
+  '/creative':[['Home','/'],['Creative Services','/creative']],
+  '/tagj':[['Home','/'],['TAGJ','/tagj']],
+  '/contact':[['Home','/'],['Contact','/contact']],
+  '/licensing':[['Home','/'],['Producer / Engineer','/producer'],['Beat Licensing','/licensing']],
+  '/services':[['Home','/'],['Services','/services']],
+  '/beats':[['Home','/'],['Producer / Engineer','/producer'],['Beat Vault','/beats']],
+  '/catalogue':[['Home','/'],['TAGJ','/tagj'],['Catalogue','/catalogue']],
+  '/music':[['Home','/'],['Benny Bundles','/artist'],['Music','/music']],
+  '/music/wanted-me-gone':[['Home','/'],['Benny Bundles','/artist'],['Music','/music'],['Wanted Me Gone','/music/wanted-me-gone']],
+  '/music/hold-something':[['Home','/'],['Benny Bundles','/artist'],['Music','/music'],['Hold Something','/music/hold-something']],
+  '/music/cant-crop-karma':[['Home','/'],['Benny Bundles','/artist'],['Music','/music'],['Can’t Crop Karma','/music/cant-crop-karma']],
+  '/music/freestyle':[['Home','/'],['Benny Bundles','/artist'],['Music','/music'],['FREESTYLE','/music/freestyle']],
+  '/music/cried-in-the-dark':[['Home','/'],['Benny Bundles','/artist'],['Music','/music'],['Cried in the Dark','/music/cried-in-the-dark']],
+  '/music/the-whole-brand':[['Home','/'],['Benny Bundles','/artist'],['Music','/music'],['The Whole Brand','/music/the-whole-brand']],
+  '/network':[['Home','/'],['Benny Bundles','/artist'],['Artist Network','/network']],
+  '/network/bsf-tone-066':[['Home','/'],['Benny Bundles','/artist'],['Artist Network','/network'],['BSF Tone 066','/network/bsf-tone-066']],
+  '/network/t311y-demon-life':[['Home','/'],['Benny Bundles','/artist'],['Artist Network','/network'],['T311Y Demon Life','/network/t311y-demon-life']],
+  '/creative/portfolio':[['Home','/'],['Creative Services','/creative'],['Portfolio','/creative/portfolio']],
+  '/creative/case-bsf-tone-066':[['Home','/'],['Creative Services','/creative'],['Portfolio','/creative/portfolio'],['BSF Tone 066 Case Study','/creative/case-bsf-tone-066']],
+  '/creative/case-t311y-demon-life':[['Home','/'],['Creative Services','/creative'],['Portfolio','/creative/portfolio'],['T311Y Demon Life Case Study','/creative/case-t311y-demon-life']]
+};
+
 const raw=(process.env.TAGJ_PUBLIC_ORIGIN||'').trim().replace(/\/$/,'');
 let origin='';
 if(raw){
@@ -109,6 +134,22 @@ if(origin){
     src=upsertHead(src,`<meta property="og:url" content="${esc(url)}">`,/<meta\b[^>]*property=["']og:url["'][^>]*>/i);
     src=src.replace(/<meta\b[^>]*name=["']robots["'][^>]*>/gi,'');
     src=absolutizeStructuredData(src,origin,file==='index.html');
+    const crumbs=breadcrumbPaths[route];
+    if(crumbs&&crumbs.length>=2){
+      const schema={
+        '@context':'https://schema.org',
+        '@type':'BreadcrumbList',
+        itemListElement:crumbs.map(([name,item],i)=>({
+          '@type':'ListItem',
+          position:i+1,
+          name,
+          item:origin+item
+        }))
+      };
+      const tag='<script id="tagj-breadcrumb-schema" type="application/ld+json">'+JSON.stringify(schema)+'</script>';
+      src=src.replace(/<script\b[^>]*id=["']tagj-breadcrumb-schema["'][^>]*>[\s\S]*?<\/script>/i,tag);
+      if(!src.includes('id="tagj-breadcrumb-schema"')) src=src.replace(/<\/head>/i,tag+'</head>');
+    }
     fs.writeFileSync(p,src);
   }
 }
