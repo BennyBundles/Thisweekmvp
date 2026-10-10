@@ -45,6 +45,38 @@ if(raw){
 }
 
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+
+const absolutizeStructuredData=(src,origin,isHome=false)=>src.replace(
+  /<script\b([^>]*)type=["']application\/ld\+json["']([^>]*)>([\s\S]*?)<\/script>/gi,
+  (whole,a,b,jsonText)=>{
+    try{
+      const data=JSON.parse(jsonText);
+      const walk=value=>{
+        if(Array.isArray(value)) return value.map(walk);
+        if(value&&typeof value==='object'){
+          for(const [key,val] of Object.entries(value)){
+            if(typeof val==='string' && ['@id','url','contentUrl','embedUrl'].includes(key) && val.startsWith('/')) value[key]=origin+val;
+            else value[key]=walk(val);
+          }
+        }
+        return value;
+      };
+      walk(data);
+      if(isHome){
+        const graph=Array.isArray(data['@graph'])?data['@graph']:[data];
+        const site=graph.find(x=>x&&x['@type']==='WebSite');
+        if(site){
+          site['@id']=origin+'/#website';
+          site.url=origin+'/';
+          site.name='Benny Bundles × TAGJ';
+          site.alternateName=['Benny Bundles','TAGJ','That’s A Good Jawn'];
+        }
+      }
+      return '<script'+a+'type="application/ld+json"'+b+'>'+JSON.stringify(data)+'</script>';
+    }catch(_){return whole}
+  }
+);
+
 const upsertHead=(src,tag,matcher)=>{
   if(matcher.test(src)) return src.replace(matcher,tag);
   return src.replace(/<\/head>/i,tag+'</head>');
