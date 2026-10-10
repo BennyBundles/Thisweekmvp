@@ -324,6 +324,23 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   if(!html['404.html'].includes("['/artist','/artist.html']"))fail('404.html: clean artist route must recover to physical HTML');
 }
 
+// V15.33: cinematic release continuity + press toolkit.
+const releaseContinuity={
+  'music/wanted-me-gone.html':'release-wanted-me-gone',
+  'music/hold-something.html':'release-hold-something',
+  'music/cant-crop-karma.html':'release-cant-crop-karma',
+  'music/freestyle.html':'release-freestyle',
+  'music/cried-in-the-dark.html':'release-cried-in-the-dark',
+  'music/the-whole-brand.html':'release-the-whole-brand'
+};
+for(const [p,name] of Object.entries(releaseContinuity)){
+  if(!html[p].includes('class="release-poster"'))fail(p+': cinematic release poster missing');
+  if(!html[p].includes('view-transition-name:'+name))fail(p+': release transition identity missing '+name);
+  if(!html[p].includes('class="release-sequence"'))fail(p+': cinematic release sequence missing');
+}
+if(!html['artist.html'].includes('release-wanted-me-gone')||!html['music/index.html'].includes('transitionName=slug'))fail('Release source transition identities are incomplete');
+if(!html['press.html'].includes('id="press-tools"')||!html['press.html'].includes('id="printEpk"')||!html['press.html'].includes('data-copy-target="shortBioText"'))fail('press.html: press toolkit controls missing');
+
 // V15.33: release video rich-result integrity.
 for(const p of ['music/wanted-me-gone.html','music/hold-something.html','music/cant-crop-karma.html','music/freestyle.html','music/cried-in-the-dark.html','music/the-whole-brand.html']){
   const src=html[p];
