@@ -308,8 +308,15 @@ if(devil&&!devil.repositoryPath)warnings.push("Devil's Playground: verified Driv
 
 // Build must ship the dedicated subsites, direct network pages, data, legal docs and network assets.
 const build=read('scripts/build-tagj-preview.sh');
-for(const token of ['index.html preview.html full.html tagj.html artist.html producer.html creative.html campaign.html contact.html licensing.html press.html 404.html','cp network/*.html .tagj-dist/network/','cp music/*.html .tagj-dist/music/','cp beats/*.html .tagj-dist/beats/','cp catalogue/*.html .tagj-dist/catalogue/','cp services/*.html .tagj-dist/services/','cp creative/*.html .tagj-dist/creative/','cp tagj-assets/*.js .tagj-dist/tagj-assets/','cp tagj-assets/media/* .tagj-dist/tagj-assets/media/','cp tagj-assets/icons/*.png .tagj-dist/tagj-assets/icons/','cp tagj-assets/releases/*.webp .tagj-dist/tagj-assets/releases/','tagj-assets/beat-previews/*.mp3','cp -R tagj-assets/network/* .tagj-dist/tagj-assets/network/','cp tagj-data/* .tagj-dist/tagj-data/','cp legal/* .tagj-dist/legal/']){
+for(const token of ['index.html preview.html full.html tagj.html artist.html producer.html creative.html campaign.html contact.html licensing.html press.html 404.html','cp network/*.html .tagj-dist/network/','cp music/*.html .tagj-dist/music/','cp beats/*.html .tagj-dist/beats/','cp catalogue/*.html .tagj-dist/catalogue/','cp services/*.html .tagj-dist/services/','cp creative/*.html .tagj-dist/creative/','cp tagj-assets/*.js .tagj-dist/tagj-assets/','cp tagj-assets/media/* .tagj-dist/tagj-assets/media/','cp tagj-assets/icons/*.png .tagj-dist/tagj-assets/icons/','cp tagj-assets/releases/*.webp .tagj-dist/tagj-assets/releases/','tagj-assets/beat-previews/*.mp3','cp -R tagj-assets/network/* .tagj-dist/tagj-assets/network/','tagj-data/beat-catalog.v1.json','tagj-data/catalog.v1.json','tagj-data/current-campaign.v1.json','tagj-data/license-system.v1.json','tagj-data/link-registry.v1.json','legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md','legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md','legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md','legal/BEAT_LICENSE_UNLIMITED_DRAFT.md','legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md']){
   if(!build.includes(token))fail(`Build script missing expected shipping rule: ${token}`);
+
+if(build.includes('cp tagj-data/*'))fail('build: engineering-only data must not be wildcard-shipped');
+if(build.includes('cp legal/*'))fail('build: engineering-only legal drafts must not be wildcard-shipped');
+for(const forbidden of ['business.v1.json','launch-gates.v1.json','sample-review.v1.json','sample-rights-review.v1.json','request-schema.v1.json','workflow.v1.json','BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md','BEAT_SAMPLE_PROVENANCE_ATTESTATION_DRAFT.md']){
+  if(/cp\s+[^\n]*\b/.test('')||false){}
+  if(build.split('\n').some(line=>/^\s*cp\b/.test(line)&&line.includes(forbidden)))fail('build: engineering-only source explicitly shipped '+forbidden);
+}
 }
 
 
@@ -427,9 +434,11 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
     if(!(vc.rewrites||[]).some(x=>x.source===pair[0]&&x.destination===pair[1]))fail('vercel.json: clean-route compatibility rewrite missing '+pair[0]);
   }
   const fallbackPairs=new Map([...html['404.html'].matchAll(/\['(\/[^']*)','([^']+)'\]/g)].map(m=>[m[1],m[2]]));
+  const normRouteTarget=x=>String(x||'').replace(/^\//,'');
   for(const rewrite of vc.rewrites||[]){
-    const expected=String(rewrite.destination||'').replace(/^\//,'');
-    if(fallbackPairs.get(rewrite.source)!==expected)fail('static-host fallback parity mismatch '+rewrite.source+' -> '+expected);
+    const expected=normRouteTarget(rewrite.destination);
+    const actual=normRouteTarget(fallbackPairs.get(rewrite.source));
+    if(actual!==expected)fail('static-host fallback parity mismatch '+rewrite.source+' -> '+expected);
   }
   if(!(vc.redirects||[]).some(x=>x.source==='/preview'&&x.destination==='/'))fail('vercel.json: /preview must redirect to root');
   if(!(vc.redirects||[]).some(x=>x.source==='/now'&&x.destination==='/campaign'&&x.permanent===false))fail('vercel.json: evergreen /now campaign redirect missing');
