@@ -90,6 +90,16 @@ for(const p of [
   else if(!read(p).includes('tagj-release-schema')) failures.push(p+': structured release metadata is missing');
 }
 
+for(const p of files.map(rel).filter(p=>p.endsWith('.html'))){
+  const src=read(p);
+  for(const m of src.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)){
+    try{ JSON.parse(m[1]); }
+    catch(err){ failures.push(`${p}: Invalid JSON-LD: ${err.message}`); }
+  }
+}
+if(!fileSet.has('VERSION.txt')) failures.push('Missing packaged VERSION.txt');
+else if(read('VERSION.txt').trim()!=='V15.30') failures.push('VERSION.txt must identify the current V15.30 baseline');
+
 if(failures.length){
   console.error('TAGJ package check FAILED');
   failures.forEach(x=>console.error(' - '+x));
