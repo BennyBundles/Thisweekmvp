@@ -1,0 +1,133 @@
+name: Audit EQUINOX Melody Forge Windows VST3
+
+on:
+  push:
+    branches: ["tagj-v12-preview"]
+    paths:
+      - "equinox-v08-native-source-seed.zip"
+      - ".github/workflows/equinox-v08-windows-build.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: equinox-v08-windows-build
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: windows-2022
+    timeout-minutes: 45
+
+    steps:
+      - name: Check out TAGJ preview branch
+        uses: actions/checkout@v6
+        with:
+          ref: tagj-v12-preview
+          fetch-depth: 0
+
+      - name: Detect source seed
+        id: seed
+        shell: pwsh
+        run: |
+          if (Test-Path "equinox-v08-native-source-seed.zip") {
+            "present=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          } else {
+            "present=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          }
+
+      - name: Extract internal source seed
+        if: steps.seed.outputs.present == 'true'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path equinox-v08-src | Out-Null
+          Expand-Archive -LiteralPath equinox-v08-native-source-seed.zip -DestinationPath equinox-v08-src -Force
+
+      - name: Clone pinned JUCE 9.0.2
+        if: steps.seed.outputs.present == 'true'
+        shell: pwsh
+        run: |
+          git clone --depth 1 --branch 9.0.2 https://github.com/juce-framework/JUCE.git JUCE
+
+      - name: Configure Visual Studio 2022 x64
+        if: steps.seed.outputs.present == 'true'
+        shell: pwsh
+        run: |
+          cmake -S equinox-v08-src -B build-equinox-win -G "Visual Studio 17 2022" -A x64 -DJUCE_DIR="$pwd/JUCE" -DEQUINOX_BUILD_PLUGIN=ON
+
+      - name: Build VST3 and standalone
+        if: steps.seed.outputs.present == 'true'
+        shell: pwsh
+        run: |
+          cmake --build build-equinox-win --config Release --target EQUINOXMelodyForge_VST3 EQUINOXMelodyForge_Standalone -- /m:2
+
+      - name: Run Windows core regression tests
+        if: steps.seed.outputs.present == 'true'
+        shell: pwsh
+        run: |
+          cmake --build build-equinox-win --config Release --target equinox_test equinox_diversity_test equinox_profiles_test equinox_sampler_timeline_test -- /m:2
+          ctest --test-dir build-equinox-win -C Release --output-on-failure
+
+      - name: Verify and package native artifacts
+        if: steps.seed.outputs.present == 'true'
+        shell: pwsh
+        run: |
+          $vst3 = Get-ChildItem -Path build-equinox-win -Recurse -Directory -Filter "*.vst3" | Select-Object -First 1
+          $exe = Get-ChildItem -Path build-equinox-win -Recurse -File -Filter "*.exe" |
+            Where-Object { $_.FullName -match "Standalone" -and $_.Name -match "EQUINOX" } |
+            Select-Object -First 1
+          if (-not $vst3) { throw "No VST3 bundle was produced." }
+          if (-not $exe) { throw "No EQUINOX standalone executable was produced." }
+
+          New-Item -ItemType Directory -Force -Path native-artifact | Out-Null
+          Copy-Item -Recurse -Force $vst3.FullName native-artifact/
+          Copy-Item -Force $exe.FullName native-artifact/
+
+          $vstFiles = Get-ChildItem -Path $vst3.FullName -Recurse -File
+          $vstBytes = ($vstFiles | Measure-Object -Property Length -Sum).Sum
+          $binary = $vstFiles | Sort-Object Length -Descending | Select-Object -First 1
+          $hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $binary.FullName).Hash.ToLowerInvariant()
+          $report = [ordered]@{
+            schemaVersion = 1
+            product = "EQUINOX Melody Forge"
+            version = "0.8.0"
+            buildEnvironment = "GitHub Actions windows-2022 / Visual Studio 2022 x64"
+            juceVersion = "9.0.2"
+            configuredPluginFormats = @("VST3","Standalone")
+            vst3BundleName = $vst3.Name
+            vst3BundleBytes = [int64]$vstBytes
+            vst3PrimaryBinary = $binary.Name
+            vst3PrimaryBinarySha256 = $hash
+            standaloneName = $exe.Name
+            standaloneBytes = [int64]$exe.Length
+            coreTests = "passed"
+            flStudioHostValidation = "not_performed"
+            publicDownload = $false
+            releaseStatus = "internal_native_build_compiled_host_validation_pending"
+            sourceKitDriveFileId = "1ZlBdcwbi8IK_69KRatLg2zgZh79VNS5d"
+          }
+          $report | ConvertTo-Json -Depth 5 | Set-Content -Encoding utf8 native-artifact/equinox-native-build-report.v0.8.json
+          Copy-Item native-artifact/equinox-native-build-report.v0.8.json tagj-data/equinox-native-build-report.v0.8.json
+
+      - name: Upload private native build artifact
+        if: steps.seed.outputs.present == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: equinox-melody-forge-v0.8-windows-native
+          path: native-artifact/
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 6
+
+      - name: Commit build report and remove source seed
+        if: steps.seed.outputs.present == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tagj-data/equinox-native-build-report.v0.8.json
+          git rm -f equinox-v08-native-source-seed.zip
+          git commit -m "Record EQUINOX v0.8 Windows native build audit"
+          git pull --rebase origin tagj-v12-preview
+          git push origin HEAD:tagj-v12-preview
