@@ -78,6 +78,7 @@ for(const [file,src] of Object.entries(html)){
 
 if(!html['campaign.html'].includes('id="campaignCaption"')||!html['campaign.html'].includes('data-share')||!html['campaign.html'].includes('campaign-schema'))fail('campaign.html: current campaign controls missing');
 if(!html['artist.html'].includes('href="campaign.html"'))fail('artist.html: current campaign route missing');
+if(!html['producer.html'].includes('id="featuredBeatGrid"')||!html['producer.html'].includes("new Audio(beat.previewUrl)"))fail('producer.html: featured Beat audition rail missing');
 
 // Basic accessibility and external-link safety.
 for(const [file,src] of Object.entries(html)){
@@ -337,6 +338,7 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
     if(!(vc.rewrites||[]).some(x=>x.source===pair[0]&&x.destination===pair[1]))fail('vercel.json: clean-route compatibility rewrite missing '+pair[0]);
   }
   if(!(vc.redirects||[]).some(x=>x.source==='/preview'&&x.destination==='/'))fail('vercel.json: /preview must redirect to root');
+  if(!(vc.redirects||[]).some(x=>x.source==='/now'&&x.destination==='/campaign'&&x.permanent===false))fail('vercel.json: evergreen /now campaign redirect missing');
 
   for(const [file,src] of Object.entries(html)){
     if(!src.includes('runtime-stability.js'))fail(file+': shared stability runtime missing');
