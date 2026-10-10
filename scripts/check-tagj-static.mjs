@@ -210,7 +210,7 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
 }
 
 
-// V15.32 navigation/performance hardening invariants.
+// V15.33 navigation/performance hardening invariants.
 {
   const indexCss='tagj-assets/index-v1528.css';
   const fullCss='tagj-assets/full-v1528.css';
@@ -254,7 +254,7 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
     if(!build.includes('rm -f')||!build.includes(duplicate))fail('build: duplicate deploy cleanup missing '+duplicate);
   }
   if(!build.includes('.tagj-dist/tagj-assets/a??.css'))fail('build: obsolete micro-CSS cleanup missing');
-  if(!build.includes("printf 'V15.32'"))fail('build: VERSION.txt is not V15.32');
+  if(!build.includes("printf 'V15.33'"))fail('build: VERSION.txt is not V15.33');
   if(!build.includes('generate-tagj-seo.mjs'))fail('build: environment-aware SEO generator missing');
   if(!build.includes('site.webmanifest'))fail('build: site.webmanifest shipping rule missing');
   if(!build.includes('beat-preview-status.v1.json'))fail('build: Beat Vault preview capability manifest generation missing');
@@ -269,7 +269,7 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   if(!html['press.html'].includes('id="benny-epk-schema"'))fail('press.html: EPK schema missing');
   if(!html['artist.html'].includes('Benny Bundles — Artist, Producer & Engineer | TAGJ'))fail('artist.html: artist-first title metadata missing');
   for(const p of ['producer.html','creative.html','tagj.html','full.html']){
-    if(!html[p].includes('data-tagj-entity-v1531'))fail(p+': V15.32 entity marker missing');
+    if(!html[p].includes('data-tagj-entity-v1531'))fail(p+': V15.33 entity marker missing');
   }
   if(!html['full.html'].includes('id="artist-current-v1531"'))fail('full.html: current verified release rail missing');
   for(const url of ['https://music.apple.com/us/artist/benny-bundles/1730543318','https://open.spotify.com/artist/7B0YUXsyJgA56DagjkbeGh','https://www.youtube.com/@bennybundles']){
@@ -324,7 +324,7 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   if(!html['404.html'].includes("['/artist','/artist.html']"))fail('404.html: clean artist route must recover to physical HTML');
 }
 
-// V15.32: release video rich-result integrity.
+// V15.33: release video rich-result integrity.
 for(const p of ['music/wanted-me-gone.html','music/hold-something.html','music/cant-crop-karma.html','music/freestyle.html','music/cried-in-the-dark.html','music/the-whole-brand.html']){
   const src=html[p];
   const blocks=[...src.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
