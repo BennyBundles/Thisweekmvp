@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const root=path.resolve('.tagj-dist');
+const sourceRoot=path.resolve('.');
 const failures=[];
 if(!fs.existsSync(root)){
   console.error('TAGJ package check FAILED\n - .tagj-dist does not exist');
@@ -17,6 +18,7 @@ const rel=p=>path.relative(root,p).replaceAll(path.sep,'/');
 const fileSet=new Set(files.map(rel));
 const textExt=new Set(['.html','.css','.js','.json','.md','.txt']);
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const readSource=p=>fs.readFileSync(path.join(sourceRoot,p),'utf8');
 
 function resolveRef(from,ref){
   if(!ref || ref.startsWith('#') || /^%23/i.test(ref) || /^(?:https?:|mailto:|tel:|data:|javascript:)/i.test(ref)) return null;
@@ -58,6 +60,29 @@ for(const p of [...fileSet].filter(p=>/\.(?:jpg|jpeg|png)$/i.test(p))){
 for(const forbidden of ['tagj-assets/network/bsf-tone-066/profile-01.png','tagj-assets/network/t311y-demon-life/profile-01.jpg','tagj-assets/network/t311y-demon-life/tdc-logo.jpg','tagj-assets/network/t311y-demon-life/jimmy-blast-off.png']){
   if(fileSet.has(forbidden)) failures.push(forbidden+' must not ship in the deploy package; canonical equivalent already exists');
 }
+const forbiddenOperational=[
+  'tagj-data/business.v1.json',
+  'tagj-data/launch-gates.v1.json',
+  'tagj-data/network-assets.v1.json',
+  'tagj-data/request-schema.v1.json',
+  'tagj-data/sample-review.v1.json',
+  'tagj-data/sample-rights-review.v1.json',
+  'tagj-data/workflow.v1.json',
+  'tagj-data/beat-license-matrix.v1.json',
+  'tagj-data/README.md',
+  'legal/BEAT_PRODUCER_RIGHTS_SAMPLE_DECLARATION_DRAFT.md',
+  'legal/BEAT_SAMPLE_PROVENANCE_ATTESTATION_DRAFT.md'
+];
+for(const p of forbiddenOperational) if(fileSet.has(p)) failures.push(p+': engineering-only file must not ship in public/protected web package');
+
+for(const requiredLegal of [
+  'legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md',
+  'legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md',
+  'legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md',
+  'legal/BEAT_LICENSE_UNLIMITED_DRAFT.md',
+  'legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md'
+]) if(!fileSet.has(requiredLegal)) failures.push('Missing packaged public license draft: '+requiredLegal);
+
 for(const oldCss of ['tagj-assets/index-v1527.css','tagj-assets/full-v1527.css',...Array.from({length:16},(_,i)=>'tagj-assets/a'+String(i+1).padStart(2,'0')+'.css')]){
   if(fileSet.has(oldCss)) failures.push('Obsolete render-blocking CSS fragment shipped: '+oldCss);
 }
@@ -65,7 +90,8 @@ for(const oldCss of ['tagj-assets/index-v1527.css','tagj-assets/full-v1527.css',
 for(const required of [
   'index.html','preview.html','full.html','artist.html','producer.html','creative.html','campaign.html','press.html','site.webmanifest','build-manifest.json',
   'creative/index.html','creative/portfolio.html','creative/case-bsf-tone-066.html','creative/case-t311y-demon-life.html',
-  'network/index.html','network/billyen.html','network/bsf-tone-066.html','network/t311y-demon-life.html','tagj-data/current-campaign.v1.json','tagj-data/launch-gates.v1.json',
+  'network/index.html','network/billyen.html','network/bsf-tone-066.html','network/t311y-demon-life.html',
+  'tagj-data/beat-catalog.v1.json','tagj-data/catalog.v1.json','tagj-data/current-campaign.v1.json','tagj-data/license-system.v1.json','tagj-data/link-registry.v1.json',
   'tagj-assets/runtime-stability.js','tagj-assets/deferred-video.js','tagj-assets/index-v1528.js','tagj-assets/full-v1528.js','tagj-assets/index-v1528.css','tagj-assets/full-v1528.css','tagj-sw.js',
   'tagj-assets/media/asset-fashion-hero.webp','tagj-assets/media/asset-green-set.webp','tagj-assets/media/asset-track-navy.webp',
   'tagj-assets/icons/favicon-32.png','tagj-assets/icons/apple-touch-icon.png','tagj-assets/icons/icon-192.png','tagj-assets/icons/icon-512.png','tagj-assets/icons/icon-512-maskable.png',
@@ -134,18 +160,17 @@ for(const p of files.map(rel).filter(p=>p.endsWith('.html'))){
 if(!fileSet.has('VERSION.txt')) failures.push('Missing packaged VERSION.txt');
 else if(read('VERSION.txt').trim()!=='V15.37') failures.push('VERSION.txt must identify the current V15.37 baseline');
 const publicOrigin=(process.env.TAGJ_PUBLIC_ORIGIN||'').trim().replace(/\/$/,'');
-if(fileSet.has('tagj-data/launch-gates.v1.json')){
-  try{
-    const gates=JSON.parse(read('tagj-data/launch-gates.v1.json'));
-    if(gates.schemaVersion!==1||gates.baseline!=='V15.37') failures.push('launch gates packaged baseline mismatch');
-  }catch(err){failures.push('tagj-data/launch-gates.v1.json: invalid JSON: '+err.message)}
-}
+try{
+  const gates=JSON.parse(readSource('tagj-data/launch-gates.v1.json'));
+  if(gates.schemaVersion!==1||gates.baseline!=='V15.37') failures.push('launch gates source baseline mismatch');
+}catch(err){failures.push('tagj-data/launch-gates.v1.json source: invalid JSON: '+err.message)}
+
 if(fileSet.has('build-manifest.json')){
   try{
     const bm=JSON.parse(read('build-manifest.json'));
     const campaign=JSON.parse(read('tagj-data/current-campaign.v1.json'));
     const preview=JSON.parse(read('tagj-data/beat-preview-status.v1.json'));
-    const gates=JSON.parse(read('tagj-data/launch-gates.v1.json'));
+    const gates=JSON.parse(readSource('tagj-data/launch-gates.v1.json'));
     if(bm.schemaVersion!==2) failures.push('build manifest schemaVersion must be 2');
     if(bm.version!=='V15.37') failures.push('build manifest version mismatch');
     if(bm.mode!==(publicOrigin?'public':'protected-preview')) failures.push('build manifest mode mismatch');
