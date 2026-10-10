@@ -23,7 +23,9 @@ function resolveRef(from,ref){
   const clean=ref.split('#')[0].split('?')[0];
   if(!clean) return null;
   const base=path.posix.dirname(from);
-  const normalized=path.posix.normalize(path.posix.join(base,clean)).replace(/^\.\//,'');
+  const normalized=clean.startsWith('/')
+    ? path.posix.normalize(clean.slice(1))
+    : path.posix.normalize(path.posix.join(base,clean)).replace(/^\.\//,'');
   if(fileSet.has(normalized)) return normalized;
   if(!path.posix.extname(normalized)){
     if(fileSet.has(normalized+'.html')) return normalized+'.html';
