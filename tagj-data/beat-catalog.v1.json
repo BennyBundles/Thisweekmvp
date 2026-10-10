@@ -146,7 +146,9 @@
         "durationSeconds": 45,
         "bitrateKbps": 160,
         "sourceOffsetSeconds": 15
-      }
+      },
+      "previewAvailability": "local",
+      "previewDelivery": "site_hosted_mp3"
     },
     {
       "id": "beat-002",
@@ -288,7 +290,9 @@
         "durationSeconds": 45,
         "bitrateKbps": 160,
         "sourceOffsetSeconds": 15
-      }
+      },
+      "previewAvailability": "local",
+      "previewDelivery": "site_hosted_mp3"
     },
     {
       "id": "beat-003",
@@ -430,7 +434,9 @@
         "durationSeconds": 45,
         "bitrateKbps": 160,
         "sourceOffsetSeconds": 15
-      }
+      },
+      "previewAvailability": "local",
+      "previewDelivery": "site_hosted_mp3"
     },
     {
       "id": "beat-004",
@@ -572,7 +578,9 @@
         "durationSeconds": 45,
         "bitrateKbps": 160,
         "sourceOffsetSeconds": 15
-      }
+      },
+      "previewAvailability": "local",
+      "previewDelivery": "site_hosted_mp3"
     },
     {
       "id": "beat-005",
@@ -714,7 +722,9 @@
         "durationSeconds": 45,
         "bitrateKbps": 160,
         "sourceOffsetSeconds": 15
-      }
+      },
+      "previewAvailability": "local",
+      "previewDelivery": "site_hosted_mp3"
     },
     {
       "id": "beat-006",
@@ -857,7 +867,9 @@
         "durationSeconds": 45,
         "bitrateKbps": 160,
         "sourceOffsetSeconds": 15
-      }
+      },
+      "previewAvailability": "local",
+      "previewDelivery": "site_hosted_mp3"
     },
     {
       "id": "beat-007",
@@ -999,7 +1011,9 @@
         "durationSeconds": 45,
         "bitrateKbps": 160,
         "sourceOffsetSeconds": 15
-      }
+      },
+      "previewAvailability": "local",
+      "previewDelivery": "site_hosted_mp3"
     },
     {
       "id": "beat-008",
@@ -1141,7 +1155,9 @@
         "durationSeconds": 45,
         "bitrateKbps": 160,
         "sourceOffsetSeconds": 15
-      }
+      },
+      "previewAvailability": "local",
+      "previewDelivery": "site_hosted_mp3"
     },
     {
       "id": "beat-009",
@@ -1314,7 +1330,9 @@
         "fileName": "beat-009 - Four Eights - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 78024935,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
-      }
+      },
+      "previewAvailability": "drive_restricted",
+      "previewDelivery": "no_public_browser_preview"
     },
     {
       "id": "beat-010",
@@ -1456,7 +1474,9 @@
         "durationSeconds": 45,
         "bitrateKbps": 160,
         "sourceOffsetSeconds": 15
-      }
+      },
+      "previewAvailability": "local",
+      "previewDelivery": "site_hosted_mp3"
     },
     {
       "id": "beat-011",
@@ -1598,7 +1618,9 @@
         "durationSeconds": 45,
         "bitrateKbps": 160,
         "sourceOffsetSeconds": 15
-      }
+      },
+      "previewAvailability": "local",
+      "previewDelivery": "site_hosted_mp3"
     },
     {
       "id": "beat-012",
@@ -1740,7 +1762,9 @@
         "durationSeconds": 45,
         "bitrateKbps": 160,
         "sourceOffsetSeconds": 15
-      }
+      },
+      "previewAvailability": "local",
+      "previewDelivery": "site_hosted_mp3"
     },
     {
       "id": "beat-013",
@@ -1882,7 +1906,9 @@
         "durationSeconds": 45,
         "bitrateKbps": 160,
         "sourceOffsetSeconds": 15
-      }
+      },
+      "previewAvailability": "local",
+      "previewDelivery": "site_hosted_mp3"
     },
     {
       "id": "beat-014",
@@ -2025,7 +2051,9 @@
         "durationSeconds": 45,
         "bitrateKbps": 160,
         "sourceOffsetSeconds": 15
-      }
+      },
+      "previewAvailability": "local",
+      "previewDelivery": "site_hosted_mp3"
     },
     {
       "id": "beat-015",
@@ -2168,7 +2196,9 @@
         "durationSeconds": 45,
         "bitrateKbps": 160,
         "sourceOffsetSeconds": 15
-      }
+      },
+      "previewAvailability": "local",
+      "previewDelivery": "site_hosted_mp3"
     },
     {
       "id": "beat-016",
@@ -2310,7 +2340,9 @@
         "durationSeconds": 45,
         "bitrateKbps": 160,
         "sourceOffsetSeconds": 15
-      }
+      },
+      "previewAvailability": "local",
+      "previewDelivery": "site_hosted_mp3"
     },
     {
       "id": "beat-017",
@@ -2483,7 +2515,9 @@
         "fileName": "beat-017 - Basement Gold - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 81627773,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
-      }
+      },
+      "previewAvailability": "drive_restricted",
+      "previewDelivery": "no_public_browser_preview"
     },
     {
       "id": "beat-018",
@@ -2656,7 +2690,9 @@
         "fileName": "beat-018 - Long Way Home - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 92647003,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
-      }
+      },
+      "previewAvailability": "drive_restricted",
+      "previewDelivery": "no_public_browser_preview"
     },
     {
       "id": "beat-019",
@@ -2829,7 +2865,9 @@
         "fileName": "beat-019 - Daylight Run - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 56297305,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
-      }
+      },
+      "previewAvailability": "drive_restricted",
+      "previewDelivery": "no_public_browser_preview"
     },
     {
       "id": "beat-020",
@@ -2971,7 +3009,9 @@
         "durationSeconds": 45,
         "bitrateKbps": 160,
         "sourceOffsetSeconds": 15
-      }
+      },
+      "previewAvailability": "local",
+      "previewDelivery": "site_hosted_mp3"
     },
     {
       "id": "beat-021",
@@ -3113,7 +3153,9 @@
         "durationSeconds": 45,
         "bitrateKbps": 160,
         "sourceOffsetSeconds": 15
-      }
+      },
+      "previewAvailability": "local",
+      "previewDelivery": "site_hosted_mp3"
     },
     {
       "id": "beat-022",
@@ -3255,7 +3297,9 @@
         "durationSeconds": 45,
         "bitrateKbps": 160,
         "sourceOffsetSeconds": 15
-      }
+      },
+      "previewAvailability": "local",
+      "previewDelivery": "site_hosted_mp3"
     }
   ],
   "analysisVersion": "v15.10",
