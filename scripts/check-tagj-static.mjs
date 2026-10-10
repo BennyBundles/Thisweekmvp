@@ -176,7 +176,7 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
 }
 
 
-// V15.28 navigation/performance hardening invariants.
+// V15.30 navigation/performance hardening invariants.
 {
   const indexCss='tagj-assets/index-v1528.css';
   const fullCss='tagj-assets/full-v1528.css';
@@ -220,7 +220,7 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
     if(!build.includes('rm -f')||!build.includes(duplicate))fail('build: duplicate deploy cleanup missing '+duplicate);
   }
   if(!build.includes('.tagj-dist/tagj-assets/a??.css'))fail('build: obsolete micro-CSS cleanup missing');
-  if(!build.includes("printf 'V15.28'"))fail('build: VERSION.txt is not V15.28');
+  if(!build.includes("printf 'V15.30'"))fail('build: VERSION.txt is not V15.30');
 
   const vc=JSON.parse(read('vercel.json'));
   for(const bad of ['/index.html','/full.html','/tagj.html','/artist.html','/producer.html','/creative.html','/contact.html','/licensing.html']){
