@@ -214,6 +214,13 @@ const nonAudioBytes=files
   .reduce((n,p)=>n+fs.statSync(p).size,0);
 if(nonAudioBytes>9*1048576) failures.push('Non-audio TAGJ package exceeds 9 MB performance budget: '+(nonAudioBytes/1048576).toFixed(1)+' MB');
 
+
+const packagedPreviewFiles=[...fileSet].filter(p=>/^tagj-assets\/beat-previews\/beat-\d{3}\.mp3$/.test(p));
+const packagedPreviewBytes=packagedPreviewFiles.reduce((sum,p)=>sum+fs.statSync(path.join(root,p)).size,0);
+for(const p of packagedPreviewFiles){
+  if(fs.statSync(path.join(root,p)).size>1_200_000) failures.push('Beat preview exceeds 1.2 MB mobile budget: '+p);
+}
+if(packagedPreviewBytes>22_000_000) failures.push('Beat preview audio budget exceeded: '+(packagedPreviewBytes/1048576).toFixed(1)+' MB');
 const packagedPreviewCount=[...fileSet].filter(p=>/^tagj-assets\/beat-previews\/beat-\d{3}\.mp3$/.test(p)).length;
 if(fileSet.has('tagj-data/beat-preview-status.v1.json')){
   try{
