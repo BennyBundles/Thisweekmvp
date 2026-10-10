@@ -3,25 +3,21 @@
   "baseline": "V15.37",
   "updatedAt": "2026-10-10",
   "previewLaunch": {
-    "status": "ready_when_ci_green",
-    "blockers": []
+    "status": "deployed_protected_preview",
+    "branchAlias": "https://bennybundles-artist-preview-git-tagj-v12-preview-brief2delivery.vercel.app",
+    "indexing": "noindex",
+    "protection": "retained"
   },
   "publicLaunch": {
-    "status": "blocked",
+    "status": "awaiting_activation_decision",
+    "candidateOrigin": "https://bennybundles-artist-preview.vercel.app",
     "blockers": [
       {
-        "id": "vercel-api-deployment-quota",
-        "owner": "platform",
-        "status": "waiting_external_reset",
+        "id": "public-access-indexing-and-origin",
+        "owner": "user",
+        "status": "pending_decision",
         "blocking": true,
-        "detail": "The isolated Vercel Hobby project reached its API deployment limit during this pass. Source remains deploy-ready; do not burn additional deploy attempts until the limit resets."
-      },
-      {
-        "id": "canonical-public-origin",
-        "owner": "project",
-        "status": "pending_confirmation",
-        "blocking": true,
-        "detail": "Public SEO mode requires a stable production origin so canonical URLs, sitemap, robots, RSS, security.txt and structured data resolve to one permanent host."
+        "detail": "Choose whether the verified Vercel project domain should become the public canonical origin or whether a branded domain will be connected, and explicitly authorize switching the site from protected/noindex preview mode to public/indexable SEO mode."
       }
     ]
   },
