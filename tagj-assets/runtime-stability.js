@@ -53,7 +53,7 @@
     ':where(a,button,input,select,textarea):focus-visible{outline:2px solid currentColor!important;outline-offset:3px!important}',
     '[id]{scroll-margin-top:84px}',
     '@supports(animation-timeline:scroll()){html::after{content:"";position:fixed;z-index:9998;left:0;right:0;top:0;height:2px;pointer-events:none;background:linear-gradient(90deg,#d5b56a,#e58a43 48%,#8a6dff);transform-origin:left center;animation:tagj-scroll-progress linear both;animation-timeline:scroll(root)}@keyframes tagj-scroll-progress{from{transform:scaleX(0)}to{transform:scaleX(1)}}}',
-    '.top nav a[aria-current="location"],.nav a[aria-current="location"]{background:currentColor}.top nav a[aria-current="location"]::before,.nav a[aria-current="location"]::before{content:""}.top nav a[aria-current="location"],.nav a[aria-current="location"]{box-shadow:inset 0 0 0 999px rgba(255,255,255,.10)}',
+    '.top nav a[aria-current="location"],.nav a[aria-current="location"]{background:rgba(255,255,255,.10)!important;border-color:rgba(255,255,255,.42)!important;box-shadow:0 0 0 1px rgba(255,255,255,.035) inset;opacity:1!important}',
     '.btn,.nav a,.top nav a,button,.actions a,.subnav a,.v13-depth-nav a,.world-route{touch-action:manipulation}',
     '@media(pointer:coarse){button,.btn,.nav a,.top nav a{min-height:44px}}',
     '@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}::view-transition-old(root),::view-transition-new(root){animation:none!important}.tagj-skip-link{transition:none}html::after{display:none!important}}',
