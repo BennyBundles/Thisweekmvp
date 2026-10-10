@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "campaignId": "wanted-me-gone-2026",
+  "status": "active",
+  "updatedAt": "2026-10-10",
+  "release": {
+    "id": "wanted-me-gone",
+    "title": "Wanted Me Gone",
+    "artist": "Benny Bundles",
+    "releaseDate": "2026-09-14",
+    "releasePath": "/music/wanted-me-gone",
+    "campaignPath": "/campaign",
+    "evergreenPath": "/now",
+    "artworkPath": "/tagj-assets/releases/wanted-me-gone.webp",
+    "officialVideoUrl": "https://youtu.be/QyweiAeVUW8",
+    "officialVideoEmbedUrl": "https://www.youtube-nocookie.com/embed/QyweiAeVUW8"
+  },
+  "objectives": [
+    {
+      "priority": 1,
+      "id": "watch",
+      "label": "Watch the official video"
+    },
+    {
+      "priority": 2,
+      "id": "share",
+      "label": "Share the evergreen /now link"
+    },
+    {
+      "priority": 3,
+      "id": "follow",
+      "label": "Follow an official Benny Bundles profile"
+    }
+  ],
+  "attributionLinks": {
+    "instagram": "/now?utm_source=instagram&utm_medium=social&utm_campaign=wanted_me_gone",
+    "facebook": "/now?utm_source=facebook&utm_medium=social&utm_campaign=wanted_me_gone",
+    "youtube": "/now?utm_source=youtube&utm_medium=social&utm_campaign=wanted_me_gone",
+    "bluesky": "/now?utm_source=bluesky&utm_medium=social&utm_campaign=wanted_me_gone",
+    "linkedin": "/now?utm_source=linkedin&utm_medium=social&utm_campaign=wanted_me_gone",
+    "reddit": "/now?utm_source=reddit&utm_medium=community&utm_campaign=wanted_me_gone",
+    "direct": "/now?utm_source=direct&utm_medium=share&utm_campaign=wanted_me_gone"
+  },
+  "copy": {
+    "short": "Benny Bundles — “Wanted Me Gone.” Official cinematic music video out now. Watch it, send it to one person, and follow the run.",
+    "instagram": "Benny Bundles — “Wanted Me Gone.” Official cinematic music video out now. Produced, mixed, mastered, shot and edited by Benny Bundles through TAGJ.\n\nWatch it. Send it to one person. Link in bio.\n\n#BennyBundles #WantedMeGone #TAGJ #IndependentArtist #NewMusic",
+    "facebook": "Benny Bundles — “Wanted Me Gone.” Official cinematic music video out now. Produced, mixed, mastered, shot and edited in-house through TAGJ. Watch the full video and share it with one person who listens to independent hip-hop.",
+    "bluesky": "Benny Bundles — “Wanted Me Gone.” Official cinematic music video out now. Produced, mixed, mastered, shot + edited by Benny Bundles through TAGJ. Watch + share: /now",
+    "youtubeCommunity": "“Wanted Me Gone” is the current Benny Bundles release. Watch the official cinematic video, then send it to one person who would actually run it back. /now"
+  },
+  "officialProfiles": {
+    "spotify": "https://open.spotify.com/artist/7B0YUXsyJgA56DagjkbeGh",
+    "appleMusic": "https://music.apple.com/us/artist/benny-bundles/1730543318",
+    "youtube": "https://www.youtube.com/@bennybundles",
+    "soundcloud": "https://m.soundcloud.com/benny-bundles",
+    "unitedMasters": "https://unitedmasters.com/a/benny-bundles",
+    "instagram": "https://www.instagram.com/ben_alexander96/"
+  }
+}
