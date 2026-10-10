@@ -16,7 +16,7 @@ fi
 rm -rf .tagj-dist
 mkdir -p .tagj-dist/network .tagj-dist/music .tagj-dist/beats .tagj-dist/catalogue .tagj-dist/services .tagj-dist/creative .tagj-dist/tagj-assets/v147 .tagj-dist/tagj-assets/intro .tagj-dist/tagj-assets/network .tagj-dist/tagj-assets/media .tagj-dist/tagj-assets/icons .tagj-dist/tagj-assets/releases .tagj-dist/tagj-assets/beat-previews .tagj-dist/tagj-data .tagj-dist/legal
 
-cp index.html preview.html full.html tagj.html artist.html producer.html creative.html campaign.html contact.html licensing.html press.html 404.html tagj-sw.js site.webmanifest .tagj-dist/
+cp index.html preview.html full.html tagj.html artist.html producer.html creative.html campaign.html season1.html vst.html contact.html licensing.html press.html 404.html tagj-sw.js site.webmanifest .tagj-dist/
 cp network/*.html .tagj-dist/network/
 cp music/*.html .tagj-dist/music/
 cp beats/*.html .tagj-dist/beats/
