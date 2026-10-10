@@ -18,7 +18,7 @@
 <script>
 (()=>{
  const grid=document.getElementById('grid'),search=document.getElementById('search'),count=document.getElementById('count');
- let beats=[],activePreview=null;
+ let beats=[],activePreview=null,previewState={localPreviewsReady:false,localPreviewCount:0,expectedPreviewCount:22,preferredMode:'drive_fallback'};
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const price=(b,k,fallback)=>b.pricing?.[k]??fallback;
  function openVault(b){
@@ -31,7 +31,7 @@
      const a=b.analysis||{};
      return [b.id,b.title,b.originalWorkingTitle,a.tempoFeel,a.keyEstimate,...(a.creativeTags||[])].join(' ').toLowerCase().includes(q);
    });
-   count.textContent=rows.length+' / '+beats.length+' beats';
+   count.textContent=rows.length+' / '+beats.length+' beats · '+(previewState.localPreviewsReady?'site audio':'Drive preview');
    grid.textContent='';
    if(!rows.length){grid.innerHTML='<div class="empty">No beats match this search.</div>';return}
    rows.forEach(b=>{
@@ -44,22 +44,35 @@
      const tiers=[['Basic',price(b,'basicMp3',29)],['Premium',price(b,'premiumWav',49)],['Trackout',price(b,'trackoutPro',99)],['Unlimited',price(b,'unlimited',149)],['Exclusive','from $'+price(b,'exclusiveMinimumOffer',499)]];
      card.querySelector('.pricing').innerHTML=tiers.map(([n,p])=>'<div class="price"><small>'+n+'</small><b>'+(/^from/.test(String(p))?esc(p):'$'+esc(p))+'</b></div>').join('');
      const actions=card.querySelector('.actions'),preview=card.querySelector('.beat-preview');
+     const driveMarkup=id=>'<iframe title="'+esc(b.title)+' beat preview" src="https://drive.google.com/file/d/'+encodeURIComponent(id)+'/preview" allow="autoplay" loading="lazy" referrerpolicy="no-referrer"></iframe>';
      const play=document.createElement('button');play.type='button';play.className='btn primary';play.textContent='Play Preview';play.addEventListener('click',()=>{
        if(activePreview&&activePreview!==preview){activePreview.hidden=true;activePreview.innerHTML=''}
        if(!preview.hidden){preview.hidden=true;preview.innerHTML='';activePreview=null;play.textContent='Play Preview';return}
        const id=b.source?.driveId;
-       const previewUrl=b.previewUrl||b.preview?.url||('../tagj-assets/beat-previews/'+encodeURIComponent(b.id)+'.mp3');
-       const audio=document.createElement('audio');audio.controls=true;audio.preload='metadata';audio.src=previewUrl;audio.setAttribute('aria-label',b.title+' beat preview');
-       if(id)audio.addEventListener('error',()=>{preview.innerHTML='<iframe title="'+esc(b.title)+' beat preview" src="https://drive.google.com/file/d/'+encodeURIComponent(id)+'/preview" allow="autoplay" loading="lazy" referrerpolicy="no-referrer"></iframe>'},{once:true});
-       preview.replaceChildren(audio);
-       preview.hidden=false;activePreview=preview;play.textContent='Close Preview';
+       if(previewState.localPreviewsReady){
+         const previewUrl=b.previewUrl||b.preview?.url||('../tagj-assets/beat-previews/'+encodeURIComponent(b.id)+'.mp3');
+         const audio=document.createElement('audio');audio.controls=true;audio.preload='metadata';audio.src=previewUrl;audio.setAttribute('aria-label',b.title+' beat preview');
+         if(id)audio.addEventListener('error',()=>{preview.innerHTML=driveMarkup(id);play.textContent='Close Drive Preview'},{once:true});
+         preview.replaceChildren(audio);
+         play.textContent='Close Preview';
+       }else if(id){
+         preview.innerHTML=driveMarkup(id);
+         play.textContent='Close Drive Preview';
+       }else{
+         preview.innerHTML='<div class="empty">No browser preview is available for this beat yet. Use the source or licensing route.</div>';
+         play.textContent='Close';
+       }
+       preview.hidden=false;activePreview=preview;
      });actions.appendChild(play);
      const primary=document.createElement('button');primary.type='button';primary.className='btn';primary.textContent='Select in Beat Vault';primary.addEventListener('click',()=>openVault(b));actions.appendChild(primary);
      if(b.source?.viewerUrl){const source=document.createElement('a');source.className='btn';source.href=b.source.viewerUrl;source.target='_blank';source.rel='noopener';source.textContent='Drive source';actions.appendChild(source)}
      grid.appendChild(card);
    });
  }
- fetch('../tagj-data/beat-catalog.v1.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('catalog');return r.json()}).then(x=>{beats=Array.isArray(x.beats)?x.beats:[];render()}).catch(()=>{count.textContent='Catalogue unavailable';grid.innerHTML='<div class="empty">The beat catalogue could not be loaded.</div>'});
+ Promise.all([
+   fetch('../tagj-data/beat-catalog.v1.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('catalog');return r.json()}),
+   fetch('../tagj-data/beat-preview-status.v1.json',{cache:'no-store'}).then(r=>r.ok?r.json():previewState).catch(()=>previewState)
+ ]).then(([x,state])=>{previewState={...previewState,...state};beats=Array.isArray(x.beats)?x.beats:[];render()}).catch(()=>{count.textContent='Catalogue unavailable';grid.innerHTML='<div class="empty">The beat catalogue could not be loaded.</div>'});
  search.addEventListener('input',render);
 })();
 </script><script src="../tagj-assets/runtime-stability.js" defer></script></body></html>
