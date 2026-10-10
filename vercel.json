@@ -207,5 +207,13 @@
         }
       ]
     }
-  ]
+  ],
+  "git": {
+    "deploymentEnabled": {
+      "tagj-v12-preview": false
+    }
+  },
+  "github": {
+    "silent": true
+  }
 }
