@@ -31,7 +31,7 @@ const read=(p)=>fs.readFileSync(path.join(root,p),'utf8');
 const exists=(p)=>fs.existsSync(path.join(root,p));
 const fail=(x)=>failures.push(x);
 
-for(const p of [...htmlFiles,...jsonFiles,'scripts/build-tagj-preview.sh','scripts/check-tagj-package.mjs','scripts/generate-tagj-seo.mjs','tagj-assets/runtime-stability.js','tagj-assets/index-v1528.js','tagj-assets/full-v1528.js','tagj-assets/index-v1528.css','tagj-assets/full-v1528.css','vercel.json']){
+for(const p of [...htmlFiles,...jsonFiles,'scripts/build-tagj-preview.sh','scripts/check-tagj-package.mjs','scripts/generate-tagj-seo.mjs','tagj-assets/runtime-stability.js','tagj-assets/deferred-video.js','tagj-assets/index-v1528.js','tagj-assets/full-v1528.js','tagj-assets/index-v1528.css','tagj-assets/full-v1528.css','vercel.json']){
   if(!exists(p))fail(`Missing required file: ${p}`);
 }
 if(failures.length)finish();
@@ -56,7 +56,7 @@ for(const [file,src] of Object.entries(html)){
 }
 
 // Cacheable external shell runtime syntax.
-for(const p of ['tagj-assets/index-v1528.js','tagj-assets/full-v1528.js','tagj-assets/runtime-stability.js']){
+for(const p of ['tagj-assets/index-v1528.js','tagj-assets/full-v1528.js','tagj-assets/runtime-stability.js','tagj-assets/deferred-video.js']){
   try{new Function(read(p))}catch(e){fail(p+': external runtime JS syntax: '+e.message)}
 }
 
@@ -366,6 +366,17 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   if(!html['404.html'].includes("['/artist','/artist.html']"))fail('404.html: clean artist route must recover to physical HTML');
   if(!html['404.html'].includes("['/campaign','/campaign.html']")||!html['404.html'].includes("['/now','/campaign.html']"))fail('404.html: campaign /now clean-route recovery missing');
 }
+
+// V15.35: third-party video must remain click-to-play.
+for(const p of ['campaign.html','music/wanted-me-gone.html','music/hold-something.html','music/cant-crop-karma.html','music/freestyle.html','music/cried-in-the-dark.html','music/the-whole-brand.html']){
+  const src=html[p];
+  if(/<iframe\b[^>]*\bsrc=["']https:\/\/www\.youtube-nocookie\.com\/embed\//i.test(src))fail(p+': eager YouTube iframe source must remain removed');
+  if(!src.includes('data-video-src="https://www.youtube-nocookie.com/embed/'))fail(p+': deferred verified video source missing');
+  const expected=p==='campaign.html'?'tagj-assets/deferred-video.js':'../tagj-assets/deferred-video.js';
+  if(!src.includes(expected))fail(p+': deferred-video runtime missing');
+}
+const deferredVideo=read('tagj-assets/deferred-video.js');
+if(!deferredVideo.includes('iframe[data-video-src]')||!deferredVideo.includes('YouTube loads only after you press play'))fail('deferred-video.js: click-to-play contract missing');
 
 // V15.35: cinematic release continuity + press toolkit.
 const releaseContinuity={
