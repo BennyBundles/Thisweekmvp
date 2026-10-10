@@ -123,6 +123,18 @@ else if(publicOrigin){
     const src=read(p);
     if(!src.includes('noindex,follow')) failures.push(p+': non-canonical public HTML must remain noindex,follow');
   }
+  const home=read('index.html');
+  const homeSchema=home.match(/<script\b[^>]*id=["']tagj-home-entity-schema["'][^>]*>([\s\S]*?)<\/script>/i);
+  if(!homeSchema) failures.push('index.html: public home entity schema missing');
+  else{
+    try{
+      const data=JSON.parse(homeSchema[1]);
+      const site=(data['@graph']||[]).find(x=>x&&x['@type']==='WebSite');
+      if(!site||site.url!==publicOrigin+'/') failures.push('index.html: public WebSite schema URL missing or incorrect');
+      if(!site||site['@id']!==publicOrigin+'/#website') failures.push('index.html: public WebSite @id missing or incorrect');
+      if(!Array.isArray(site?.alternateName)||!site.alternateName.includes('TAGJ')) failures.push('index.html: public WebSite alternateName missing TAGJ');
+    }catch(err){ failures.push('index.html: unable to validate public WebSite schema: '+err.message); }
+  }
 }else{
   if(!read('robots.txt').includes('Disallow: /')) failures.push('Protected preview robots.txt must disallow crawling');
   if(fileSet.has('sitemap.xml')) failures.push('Protected preview must not ship a sitemap.xml');
