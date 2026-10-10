@@ -13,6 +13,8 @@ let chain=readChain();
 let providerAccounts=[];
 let moneySummary=null;
 let pinwheelToken=null;
+let certificationContext=null;
+let certificationEvidence=null;
 
 function log(label,data){
   const stamp=new Date().toISOString().slice(11,19);
@@ -110,7 +112,10 @@ function updateUi(){
   $('aalState').textContent=p.aal||'—';
   $('userState').textContent=currentUser?.email||p.sub?.slice(0,8)||'—';
   const signed=!!session?.access_token;
+  const aal2=signed&&p.aal==='aal2';
   for(const id of ['signOut','enrollMfa','verifyMfa','gatewayStatus','gatewayBootstrap','gatewaySummary','sandboxCredit','allocate','providerPreflight','riskStatus','opsStatus','chainRefresh','unitApplication','unitApplicationStatus','unitDeposit','unitDirectFund','plaidConsent','plaidStart','plaidFinalize','plaidAccounts','plaidUnitLink','externalFund','createCard','simulateAuth','createDispute','advanceDispute','directDepositToken','methodSetup','methodPay','registerWebhooks'])$(id).disabled=!signed;
+  $('refreshCertification').disabled=!aal2;
+  if(!aal2)$('recordReadyEvidence').disabled=true;
 }
 async function signIn(){
   const email=$('email').value.trim(),password=$('password').value;
@@ -130,7 +135,7 @@ async function signOut(){
   if(session?.access_token){
     try{await api('/auth/v1/logout?scope=local',{method:'POST',auth:true,body:'{}'});}catch(e){log('Sign-out request warning',e.message);}
   }
-  writeSession(null);currentUser=null;lastEnroll=null;renderFactors();$('qr').style.display='none';$('secret').style.display='none';log('Signed out','Session tokens cleared from this tab.');
+  writeSession(null);currentUser=null;lastEnroll=null;certificationContext=null;certificationEvidence=null;renderFactors();renderCertification(null,null);$('qr').style.display='none';$('secret').style.display='none';log('Signed out','Session tokens cleared from this tab.');
 }
 async function enrollMfa(){
   await ensureFresh();
@@ -156,6 +161,7 @@ async function verifyMfa(){
   if(verified.access_token)writeSession(verified);
   $('totpCode').value='';await getUser();
   log('MFA verified',{factor_id:factorId,aal:jwtPayload(session.access_token).aal});
+  await refreshCertification({quiet:true});
 }
 async function gateway(action,extra={}){
   await ensureFresh();
@@ -179,6 +185,105 @@ async function providerGateway(action,extra={}){
   if(!res.ok)throw new Error(body.error||('Provider Gateway HTTP '+res.status));
   return body;
 }
+async function releaseGateway(action,extra={}){
+  await ensureFresh();
+  const res=await fetch(SUPABASE_URL+'/functions/v1/thisweek-release-gateway',{
+    method:'POST',
+    headers:{'apikey':PUBLISHABLE_KEY,'Authorization':'Bearer '+session.access_token,'Content-Type':'application/json'},
+    body:JSON.stringify({action,...extra})
+  });
+  const text=await res.text();let body={};try{body=JSON.parse(text);}catch{body={raw:text};}
+  if(!res.ok)throw new Error(body.error||('Release Gateway HTTP '+res.status));
+  return body;
+}
+function renderCertification(release,evidence){
+  const candidate=release?.readiness?.activeCandidate||null;
+  const cert=release?.readiness?.candidateReport?.latestCertification||null;
+  const scanner=Array.isArray(evidence?.evidence?.requirements)?evidence.evidence.requirements:[];
+  const scannerMap=new Map(scanner.map(x=>[x.requirementKey,x]));
+  $('certCandidate').textContent=candidate?.releaseCandidateSha?candidate.releaseCandidateSha.slice(0,10):'—';
+  $('certRun').textContent=cert?.runId?String(cert.runId).slice(0,8):'—';
+  $('certProgress').textContent=cert?.exists?(Number(cert.passedCount||0)+' / '+Number(cert.requiredCount||0)):'—';
+  const missing=new Set(Array.isArray(cert?.missing)?cert.missing:[]);
+  const readyUnrecorded=scanner.filter(x=>x.ready&&missing.has(x.requirementKey));
+  $('certReady').textContent=scanner.length?(readyUnrecorded.length+' ready to record'):'—';
+  $('recordReadyEvidence').disabled=!(session?.access_token&&jwtPayload(session.access_token).aal==='aal2'&&cert?.runId&&readyUnrecorded.length&&['admin','risk_ops'].includes(release?.role));
+  const notice=$('certNotice');
+  if(!session?.access_token||jwtPayload(session.access_token).aal!=='aal2'){
+    notice.innerHTML='<strong>Certification:</strong> Verify TOTP MFA to load staff-only release evidence.';
+  }else if(!candidate){
+    notice.innerHTML='<strong>Certification:</strong> No active release candidate is selected.';
+  }else if(!cert?.runId){
+    notice.innerHTML='<strong>Certification:</strong> Active candidate has no certification run.';
+  }else if(cert.passed){
+    notice.innerHTML='<strong>Certification:</strong> This Sandbox certification run is fully passed.';
+  }else{
+    notice.innerHTML='<strong>Certification:</strong> '+Number(cert.passedCount||0)+' recorded · '+missing.size+' missing · '+readyUnrecorded.length+' persisted evidence item'+(readyUnrecorded.length===1?'':'s')+' ready to record.';
+  }
+  const root=$('certEvidence');root.textContent='';
+  const rows=Array.isArray(cert?.requirements)?cert.requirements:[];
+  for(const req of rows){
+    const scan=scannerMap.get(req.requirementKey)||null;
+    const recorded=req.outcome==='pass';
+    const ready=!recorded&&scan?.ready===true;
+    const box=document.createElement('div');box.className='cert-item '+(recorded?'recorded':ready?'ready':'');
+    const small=document.createElement('small');small.textContent=req.provider+' · '+req.group;
+    const strong=document.createElement('strong');strong.textContent=(recorded?'Recorded · ':ready?'Evidence ready · ':'Pending · ')+req.label;
+    const span=document.createElement('span');
+    span.textContent=recorded?(req.evidenceRef||'Pass receipt recorded')
+      :ready?(scan.safeSummary||'Persisted server evidence is ready.')
+      :(scan?.pendingReason||'Requires operator/drill evidence.');
+    box.append(small,strong,span);root.appendChild(box);
+  }
+}
+async function refreshCertification({quiet=false}={}){
+  if(!session?.access_token||jwtPayload(session.access_token).aal!=='aal2'){
+    certificationContext=null;certificationEvidence=null;renderCertification(null,null);return null;
+  }
+  try{
+    const [release,evidence]=await Promise.all([
+      releaseGateway('status'),
+      gateway('certification_evidence_status')
+    ]);
+    certificationContext=release;certificationEvidence=evidence;renderCertification(release,evidence);
+    if(!quiet)log('Phase 34 certification evidence refreshed',{
+      candidate:release?.readiness?.activeCandidate?.releaseCandidateSha||null,
+      runId:release?.readiness?.candidateReport?.latestCertification?.runId||null,
+      serverReady:evidence?.evidence?.readyCount||0
+    });
+    return {release,evidence};
+  }catch(e){
+    certificationContext=null;certificationEvidence=null;
+    $('certNotice').innerHTML='<strong>Certification:</strong> '+String(e.message||e);
+    $('recordReadyEvidence').disabled=true;
+    if(!quiet)throw e;
+    return null;
+  }
+}
+async function recordReadyEvidence(){
+  const loaded=await refreshCertification({quiet:true});
+  if(!loaded)throw new Error('Certification context is not available.');
+  const release=loaded.release,evidence=loaded.evidence;
+  const cert=release?.readiness?.candidateReport?.latestCertification;
+  const missing=new Set(Array.isArray(cert?.missing)?cert.missing:[]);
+  const ready=(evidence?.evidence?.requirements||[]).filter(x=>x.ready&&missing.has(x.requirementKey)&&x.evidenceRef);
+  if(!cert?.runId||!ready.length)throw new Error('No persisted evidence is ready to record.');
+  let recorded=0;
+  for(const item of ready){
+    const body=await releaseGateway('record_certification_receipt',{
+      runId:cert.runId,
+      requirementKey:item.requirementKey,
+      outcome:'pass',
+      evidenceRef:item.evidenceRef,
+      safeSummary:item.safeSummary||'Persisted Sandbox evidence validated by Money Gateway.'
+    });
+    recorded+=1;
+    log('Certification receipt recorded',{requirementKey:item.requirementKey,receiptId:body.receiptId||null,evidenceRef:item.evidenceRef});
+  }
+  await refreshCertification({quiet:true});
+  log('Phase 34 evidence batch complete',{recorded});
+}
+
 async function sha256Text(text){
   const bytes=new TextEncoder().encode(text);
   const hash=new Uint8Array(await crypto.subtle.digest('SHA-256',bytes));
@@ -253,6 +358,7 @@ async function refreshChain(){
   try{renderRiskStatus(await gateway('risk_status'));}catch(e){log('Risk status warning',e.message);}
   try{renderOpsStatus(await gateway('ops_status'));}catch(e){log('Operations status warning',e.message);}
   log('Sandbox chain refreshed',{money,provider});
+  if(session?.access_token&&jwtPayload(session.access_token).aal==='aal2')await refreshCertification({quiet:true});
   return {money,provider};
 }
 function cents(input){
@@ -464,5 +570,5 @@ async function gatewaySummary(){log('Ledger summary',await gateway('summary'));}
 async function sandboxCredit(){log('Sandbox credit',await gateway('sandbox_credit',{amountCents:cents($('sandboxAmount').value),clientRequestId:requestId('lab_credit')}));}
 async function allocate(){log('Envelope allocation',await gateway('allocate',{amountCents:cents($('allocateAmount').value),envelopeKey:$('envelope').value,clientRequestId:requestId('lab_allocate')}));}
 function bind(id,fn){$(id).addEventListener('click',()=>fn().catch(e=>log('Error',e.message)));}
-bind('signIn',signIn);bind('signUp',signUp);bind('signOut',signOut);bind('enrollMfa',enrollMfa);bind('verifyMfa',verifyMfa);bind('providerPreflight',providerPreflight);bind('riskStatus',riskStatus);bind('opsStatus',opsStatus);bind('gatewayStatus',gatewayStatus);bind('gatewayBootstrap',gatewayBootstrap);bind('gatewaySummary',gatewaySummary);bind('sandboxCredit',sandboxCredit);bind('allocate',allocate);bind('chainRefresh',refreshChain);bind('unitApplication',unitApplication);bind('unitApplicationStatus',unitApplicationStatus);bind('unitDeposit',unitDeposit);bind('unitDirectFund',unitDirectFund);bind('plaidConsent',plaidConsent);bind('plaidStart',plaidStart);bind('plaidFinalize',plaidFinalize);bind('plaidAccounts',plaidAccounts);bind('plaidUnitLink',plaidUnitLink);bind('externalFund',externalFund);bind('createCard',createCard);bind('simulateAuth',simulateAuth);bind('createDispute',createDispute);bind('advanceDispute',advanceDispute);bind('directDepositToken',directDepositToken);bind('methodSetup',methodSetup);bind('methodPay',methodPay);bind('registerWebhooks',registerWebhooks);
-updateUi();renderFactors();if(session?.access_token)getUser().then(()=>fillConfigurationStatus()).then(()=>refreshChain()).catch(e=>{log('Session restore failed',e.message);writeSession(null);});
+bind('refreshCertification',refreshCertification);bind('recordReadyEvidence',recordReadyEvidence);bind('signIn',signIn);bind('signUp',signUp);bind('signOut',signOut);bind('enrollMfa',enrollMfa);bind('verifyMfa',verifyMfa);bind('providerPreflight',providerPreflight);bind('riskStatus',riskStatus);bind('opsStatus',opsStatus);bind('gatewayStatus',gatewayStatus);bind('gatewayBootstrap',gatewayBootstrap);bind('gatewaySummary',gatewaySummary);bind('sandboxCredit',sandboxCredit);bind('allocate',allocate);bind('chainRefresh',refreshChain);bind('unitApplication',unitApplication);bind('unitApplicationStatus',unitApplicationStatus);bind('unitDeposit',unitDeposit);bind('unitDirectFund',unitDirectFund);bind('plaidConsent',plaidConsent);bind('plaidStart',plaidStart);bind('plaidFinalize',plaidFinalize);bind('plaidAccounts',plaidAccounts);bind('plaidUnitLink',plaidUnitLink);bind('externalFund',externalFund);bind('createCard',createCard);bind('simulateAuth',simulateAuth);bind('createDispute',createDispute);bind('advanceDispute',advanceDispute);bind('directDepositToken',directDepositToken);bind('methodSetup',methodSetup);bind('methodPay',methodPay);bind('registerWebhooks',registerWebhooks);
+updateUi();renderFactors();renderCertification(null,null);if(session?.access_token)getUser().then(()=>fillConfigurationStatus()).then(()=>refreshChain()).catch(e=>{log('Session restore failed',e.message);writeSession(null);});
