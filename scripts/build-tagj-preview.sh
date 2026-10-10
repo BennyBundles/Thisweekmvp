@@ -65,3 +65,21 @@ cp legal/* .tagj-dist/legal/
 
 node scripts/generate-tagj-seo.mjs
 printf 'V15.36' > .tagj-dist/VERSION.txt
+node - <<'NODE'
+const fs=require('fs');
+const campaign=JSON.parse(fs.readFileSync('tagj-data/current-campaign.v1.json','utf8'));
+const previews=JSON.parse(fs.readFileSync('.tagj-dist/tagj-data/beat-preview-status.v1.json','utf8'));
+const manifest={
+  schemaVersion:1,
+  product:'Benny Bundles × TAGJ',
+  version:'V15.36',
+  mode:process.env.TAGJ_PUBLIC_ORIGIN?'public':'protected-preview',
+  commit:process.env.VERCEL_GIT_COMMIT_SHA||process.env.GITHUB_SHA||null,
+  campaignId:campaign.campaignId||null,
+  currentRelease:campaign.release?.id||null,
+  localBeatPreviewCount:previews.localPreviewCount,
+  expectedBeatPreviewCount:previews.expectedPreviewCount,
+  localPreviewsReady:previews.localPreviewsReady
+};
+fs.writeFileSync('.tagj-dist/build-manifest.json',JSON.stringify(manifest,null,2)+'\n');
+NODE
