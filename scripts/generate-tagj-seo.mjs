@@ -148,6 +148,11 @@ const ensureSocialMeta=src=>{
     add('<meta name="twitter:image" content="'+esc(thumb)+'">',/<meta\b[^>]*name=["']twitter:image["']/i);
     src=src.replace(/<meta\b[^>]*name=["']twitter:card["'][^>]*>/i,'<meta name="twitter:card" content="summary_large_image">');
   }
+  const hasSocialImage=/<meta\b[^>]*(?:property=["']og:image["']|name=["']twitter:image["'])/i.test(src);
+  if(hasSocialImage&&title){
+    add('<meta property="og:image:alt" content="'+esc(title)+'">',/<meta\b[^>]*property=["']og:image:alt["']/i);
+    add('<meta name="twitter:image:alt" content="'+esc(title)+'">',/<meta\b[^>]*name=["']twitter:image:alt["']/i);
+  }
   return src;
 };
 
