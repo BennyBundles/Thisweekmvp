@@ -235,10 +235,34 @@ Use the official pages below as the preferred source for identity, current relea
 - [Instagram](https://www.instagram.com/ben_alexander96/)
 `;
   fs.writeFileSync(path.join(dist,'llms.txt'),llms);
+
+  const releaseFeed=[
+    ['Wanted Me Gone','2026-09-14','/music/wanted-me-gone'],
+    ['Hold Something','2026-08-22','/music/hold-something'],
+    ['Can’t Crop Karma','2026-08-13','/music/cant-crop-karma'],
+    ['FREESTYLE','2026-07-26','/music/freestyle'],
+    ['Cried in the Dark','2026-06-30','/music/cried-in-the-dark'],
+    ['The Whole Brand','2026-06-30','/music/the-whole-brand']
+  ];
+  const rssItems=releaseFeed.map(([name,date,route])=>{
+    const link=origin+route;
+    const pub=new Date(date+'T12:00:00Z').toUTCString();
+    return `<item><title>${esc(name)}</title><link>${esc(link)}</link><guid isPermaLink="true">${esc(link)}</guid><pubDate>${esc(pub)}</pubDate><description>Official Benny Bundles release page.</description></item>`;
+  }).join('');
+  const rss=`<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Benny Bundles Releases</title><link>${esc(origin+'/music')}</link><description>Official Benny Bundles release feed.</description><language>en-us</language>${rssItems}</channel></rss>\n`;
+  fs.writeFileSync(path.join(dist,'releases.xml'),rss);
+  for(const file of ['index.html','artist.html','press.html','music/index.html']){
+    const p=path.join(dist,file);
+    if(!fs.existsSync(p))continue;
+    let src=fs.readFileSync(p,'utf8');
+    src=upsertHead(src,`<link rel="alternate" type="application/rss+xml" title="Benny Bundles Releases" href="${esc(origin+'/releases.xml')}">`,/<link\b[^>]*type=["']application\/rss\+xml["'][^>]*>/i);
+    fs.writeFileSync(p,src);
+  }
   console.log('TAGJ SEO mode: public',origin,'routes:',routeMap.length);
 }else{
   fs.rmSync(path.join(dist,'sitemap.xml'),{force:true});
   fs.rmSync(path.join(dist,'llms.txt'),{force:true});
+  fs.rmSync(path.join(dist,'releases.xml'),{force:true});
   fs.writeFileSync(path.join(dist,'robots.txt'),'User-agent: *\nDisallow: /\n');
   console.log('TAGJ SEO mode: protected preview / noindex');
 }
