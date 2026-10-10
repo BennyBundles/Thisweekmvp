@@ -44,6 +44,11 @@ need('server-derived certification evidence action',js,"gateway('certification_e
 need('AAL2 certification evidence recorder',js,"releaseGateway('record_certification_receipt'");
 need('certification refresh control',html,'id="refreshCertification"');
 need('ready evidence batch control',html,'id="recordReadyEvidence"');
+need('deployed candidate control',html,'id="activateDeployedCandidate"');
+need('deployed release manifest guard',js,"fetch('../release.json?money-lab='");
+need('candidate selection stays AAL2 release-gateway mediated',js,"releaseGateway('select_candidate'");
+need('fresh certification run stays AAL2 release-gateway mediated',js,"releaseGateway('start_certification'");
+need('candidate mismatch blocks evidence recording',js,'Active release candidate does not match the deployed commit.');
 need('provider control gating',js,'applyProviderControlState');
 need('operations status control',html,'id="opsStatus"');
 need('operations status action',js,"gateway('ops_status')");
