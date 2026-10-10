@@ -306,6 +306,24 @@ async function activateDeployedCandidate(){
   }
   await refreshCertification({quiet:true});
 }
+async function recordLiveRequirement(requirementKey,evidencePayload,safeSummary){
+  const loaded=await refreshCertification({quiet:true});
+  if(!loaded)return false;
+  const release=loaded.release;
+  const cert=release?.readiness?.candidateReport?.latestCertification;
+  const deployedSha=String(deployedRelease?.commit||'');
+  const candidateSha=String(release?.readiness?.activeCandidate?.releaseCandidateSha||'');
+  const missing=new Set(Array.isArray(cert?.missing)?cert.missing:[]);
+  if(!cert?.runId||!deployedSha||candidateSha!==deployedSha||!missing.has(requirementKey))return false;
+  const digest=await sha256Text(JSON.stringify(evidencePayload));
+  const evidenceRef='money-lab-live:'+requirementKey+':'+digest.slice(0,24);
+  const body=await releaseGateway('record_certification_receipt',{
+    runId:cert.runId,requirementKey,outcome:'pass',evidenceRef,safeSummary
+  });
+  log('Live certification receipt recorded',{requirementKey,receiptId:body.receiptId||null,evidenceRef});
+  await refreshCertification({quiet:true});
+  return true;
+}
 async function recordReadyEvidence(){
   const loaded=await refreshCertification({quiet:true});
   if(!loaded)throw new Error('Certification context is not available.');
@@ -479,6 +497,17 @@ async function providerPreflight(){
   renderProviderChecks(body.preflight);
   applyProviderControlState(await gateway('status'));
   log('Provider Sandbox preflight',body);
+  const providers=body?.preflight?.providers||{};
+  const keys=['plaid','unit','pinwheel','method'];
+  const allValid=keys.every(k=>providers[k]?.status==='credential_valid'&&providers[k]?.reachable===true);
+  if(allValid&&session?.access_token&&jwtPayload(session.access_token).aal==='aal2'){
+    try{
+      await recordLiveRequirement('provider_preflight',
+        Object.fromEntries(keys.map(k=>[k,{status:providers[k].status,reachable:providers[k].reachable===true}])),
+        'Plaid, Unit, Pinwheel, and Method Sandbox credential preflight all returned credential_valid.'
+      );
+    }catch(e){log('Preflight certification receipt warning',e.message);}
+  }
   return body;
 }
 
@@ -610,6 +639,24 @@ async function methodPay(){
 async function registerWebhooks(){
   const body=await gateway('register_sandbox_webhooks');
   log('Provider webhook registrations',body);
+  const registrations=body?.registrations||{};
+  const keys=['unitEvents','unitAuthorization','pinwheel','method'];
+  const safe=Object.fromEntries(keys.map(k=>{
+    const row=registrations[k]||{};
+    return [k,{provider:row.provider||k,status:String(row.status||''),registered:!!row.id,reused:row.reused===true}];
+  }));
+  const allRegistered=keys.every(k=>{
+    const row=registrations[k]||{};
+    const status=String(row.status||'').toLowerCase();
+    return !!row.id&&!/(fail|error|disabled|inactive)/.test(status);
+  });
+  if(allRegistered&&session?.access_token&&jwtPayload(session.access_token).aal==='aal2'){
+    try{
+      await recordLiveRequirement('sandbox_webhook_registration',safe,
+        'Unit event/auth, Pinwheel, and Method Sandbox webhooks are registered and returned active/enabled states.'
+      );
+    }catch(e){log('Webhook certification receipt warning',e.message);}
+  }
   return body;
 }
 
