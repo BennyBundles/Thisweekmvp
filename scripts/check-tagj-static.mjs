@@ -31,7 +31,7 @@ const read=(p)=>fs.readFileSync(path.join(root,p),'utf8');
 const exists=(p)=>fs.existsSync(path.join(root,p));
 const fail=(x)=>failures.push(x);
 
-for(const p of [...htmlFiles,...jsonFiles,'scripts/build-tagj-preview.sh','scripts/check-tagj-package.mjs','scripts/generate-tagj-seo.mjs','tagj-assets/runtime-stability.js','tagj-assets/deferred-video.js','tagj-assets/index-v1528.js','tagj-assets/full-v1528.js','tagj-assets/index-v1528.css','tagj-assets/full-v1528.css','vercel.json']){
+for(const p of [...htmlFiles,...jsonFiles,'scripts/build-tagj-preview.sh','scripts/prepare-tagj-release-candidate.sh','scripts/check-tagj-package.mjs','scripts/generate-tagj-seo.mjs','tagj-assets/runtime-stability.js','tagj-assets/deferred-video.js','tagj-assets/index-v1528.js','tagj-assets/full-v1528.js','tagj-assets/index-v1528.css','tagj-assets/full-v1528.css','vercel.json']){
   if(!exists(p))fail(`Missing required file: ${p}`);
 }
 if(failures.length)finish();
@@ -359,6 +359,8 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   if(!runtimeNav.includes("e.key==='Tab'")||!runtimeNav.includes("aria-current','page"))fail('runtime: route switcher focus/current-page safeguards missing');
   if(!runtimeNav.includes('data-tagj-share-page')||!runtimeNav.includes('navigator.share'))fail('runtime: native release/EPK share action missing');
   if(!build.includes('generate-tagj-seo.mjs'))fail('build: environment-aware SEO generator missing');
+  const rc=read('scripts/prepare-tagj-release-candidate.sh');
+  if(!rc.includes('release-candidate.json')||!rc.includes('checksums.sha256')||!rc.includes('check-tagj-package.mjs'))fail('release candidate packager contract missing');
   if(!build.includes('site.webmanifest'))fail('build: site.webmanifest shipping rule missing');
   if(!build.includes('beat-preview-status.v1.json'))fail('build: Beat Vault preview capability manifest generation missing');
   if(!html['beats/index.html'].includes('beat-preview-status.v1.json'))fail('beats/index.html: build-aware preview capability fetch missing');
