@@ -649,9 +649,9 @@
       "linksRef": "network:billyen",
       "route": "#artist-billyen",
       "profilePriority": "primary",
-      "suppliedAssetStatus": "received_in_conversation_pending_repository_ingest",
+      "suppliedAssetStatus": "approved_sources_received_binary_ingest_pending",
       "publicBioSafetyNote": "Exact custodial-location details are not included in public profile metadata.",
-      "directRoute": "full.html#artist-billyen"
+      "directRoute": "network/billyen.html"
     },
     {
       "id": "t311y-demon-life",
