@@ -3,10 +3,19 @@
   "baseline": "V15.37",
   "updatedAt": "2026-10-10",
   "previewLaunch": {
-    "status": "deployed_protected_preview",
+    "status": "source_green_deploy_pending",
+    "sourceVersion": "V15.37",
+    "deployedBaseline": "V15.34",
     "branchAlias": "https://bennybundles-artist-preview-git-tagj-v12-preview-brief2delivery.vercel.app",
     "indexing": "noindex",
-    "protection": "retained"
+    "protection": "retained",
+    "blocker": {
+      "id": "vercel-api-deployment-quota",
+      "owner": "platform",
+      "blockingForCode": false,
+      "blockingForPreviewFreshness": true,
+      "detail": "The latest V15.37 source is QA-green, but the isolated Hobby project previously hit Vercel's API deployment-rate quota. Deploy once after the quota permits; do not churn intermediate deployments."
+    }
   },
   "publicLaunch": {
     "status": "awaiting_activation_decision",
