@@ -112,6 +112,24 @@ for(const p of ['artist.html','campaign.html']) if(!html[p].includes('id="youtub
   if(!hero||hero.status!=='source_reference_recovered_binary_missing'||hero.blockingForSite!==false)fail('launch gates must declare non-blocking Benny hero portrait fallback');
 }
 
+// Canonical creator / organization identity must be consistent across first-party surfaces.
+{
+  const artistSchema=JSON.parse((html['artist.html'].match(/<script\b[^>]*id=["']benny-bundles-entity-schema["'][^>]*>([\s\S]*?)<\/script>/i)||[])[1]||'{}');
+  const artistGraph=artistSchema['@graph']||[];
+  const person=artistGraph.find(x=>x&&x['@type']==='Person');
+  const org=artistGraph.find(x=>x&&x['@type']==='Organization');
+  const profile=artistGraph.find(x=>x&&x['@type']==='ProfilePage');
+  if(person?.['@id']!=='/artist#benny-bundles'||person?.url!=='/artist')fail('artist.html: canonical Benny entity URL drift');
+  if(org?.['@id']!=='/artist#tagj'||org?.url!=='/tagj')fail('artist.html: canonical TAGJ entity URL drift');
+  if(profile?.url!=='/artist'||profile?.mainEntity?.['@id']!=='/artist#benny-bundles')fail('artist.html: canonical ProfilePage identity drift');
+  const homeSchema=JSON.parse((html['index.html'].match(/<script\b[^>]*id=["']tagj-home-entity-schema["'][^>]*>([\s\S]*?)<\/script>/i)||[])[1]||'{}');
+  const homeGraph=homeSchema['@graph']||[];
+  const hp=homeGraph.find(x=>x&&x['@type']==='Person');
+  const ho=homeGraph.find(x=>x&&x['@type']==='Organization');
+  const hs=homeGraph.find(x=>x&&x['@type']==='WebSite');
+  if(hp?.['@id']!=='/artist#benny-bundles'||ho?.['@id']!=='/artist#tagj'||hs?.about?.['@id']!=='/artist#benny-bundles')fail('index.html: home entity graph diverges from canonical artist identities');
+}
+
 // Current campaign must stay internally consistent across promotional surfaces.
 {
   const campaign=parsed['tagj-data/current-campaign.v1.json'];
