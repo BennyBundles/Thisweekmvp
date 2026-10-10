@@ -33,6 +33,16 @@
 
   const style=d.createElement('style');
   style.textContent=[
+    '@view-transition{navigation:auto}',
+    '@keyframes tagj-vt-out{to{opacity:.78;transform:scale(.997)}}',
+    '@keyframes tagj-vt-in{from{opacity:.72;transform:scale(1.003)}}',
+    '::view-transition-old(root){animation:tagj-vt-out .16s ease-out both}',
+    '::view-transition-new(root){animation:tagj-vt-in .24s ease-out both}',
+    ':where(a,button,input,select,textarea):focus-visible{outline:2px solid currentColor!important;outline-offset:3px!important}',
+    '[id]{scroll-margin-top:84px}',
+    '.btn,.nav a,.top nav a,button,.actions a,.subnav a,.v13-depth-nav a,.world-route{touch-action:manipulation}',
+    '@media(pointer:coarse){button,.btn,.nav a,.top nav a{min-height:44px}}',
+    '@media(prefers-reduced-motion:reduce){::view-transition-old(root),::view-transition-new(root){animation:none!important}}',
     'html.tagj-runtime-paused *,html.tagj-runtime-paused *::before,html.tagj-runtime-paused *::after{animation-play-state:paused!important}',
     '.tagj-offscreen *,.tagj-offscreen *::before,.tagj-offscreen *::after{animation-play-state:paused!important}',
     'html.tagj-nav-pending{cursor:progress}',
