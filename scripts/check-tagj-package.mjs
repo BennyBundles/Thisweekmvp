@@ -151,6 +151,14 @@ else if(publicOrigin){
     if(!read(p).includes('noindex,nofollow,noarchive')) failures.push(p+': protected preview robots meta is missing');
   }
 }
+if(!fileSet.has('tagj-data/beat-preview-status.v1.json')) failures.push('Missing generated Beat Vault preview status');
+else{
+  try{
+    const previewStatus=JSON.parse(read('tagj-data/beat-preview-status.v1.json'));
+    if(previewStatus.expectedPreviewCount!==22) failures.push('Beat preview status expected count must be 22');
+    if(previewStatus.localPreviewsReady!==(previewStatus.localPreviewCount===22)) failures.push('Beat preview readiness does not match packaged preview count');
+  }catch(err){failures.push('Invalid Beat Vault preview status JSON: '+err.message)}
+}
 if(fileSet.has('tagj-data/beat-catalog.v1.json')){
   try{
     const beatCatalog=JSON.parse(read('tagj-data/beat-catalog.v1.json'));
