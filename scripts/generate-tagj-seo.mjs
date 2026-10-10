@@ -108,6 +108,7 @@ if(origin){
     src=upsertHead(src,`<link rel="canonical" href="${esc(url)}">`,/<link\b[^>]*rel=["']canonical["'][^>]*>/i);
     src=upsertHead(src,`<meta property="og:url" content="${esc(url)}">`,/<meta\b[^>]*property=["']og:url["'][^>]*>/i);
     src=src.replace(/<meta\b[^>]*name=["']robots["'][^>]*>/gi,'');
+    src=absolutizeStructuredData(src,origin,file==='index.html');
     fs.writeFileSync(p,src);
   }
 }
