@@ -63,6 +63,7 @@ jobs:
           test -f .tagj-dist/creative.html
           test -f .tagj-dist/contact.html
           test -f .tagj-dist/licensing.html
+          test -f .tagj-dist/press.html
           test -f .tagj-dist/404.html
           test -f .tagj-dist/network/index.html
           test -f .tagj-dist/network/bsf-tone-066.html
