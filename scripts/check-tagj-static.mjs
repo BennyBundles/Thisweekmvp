@@ -227,6 +227,10 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   }
   if(!build.includes('.tagj-dist/tagj-assets/a??.css'))fail('build: obsolete micro-CSS cleanup missing');
   if(!build.includes("printf 'V15.30'"))fail('build: VERSION.txt is not V15.30');
+  if(!build.includes('tagj-public-assets-ready.zip'))fail('build: one-file public asset bundle support missing');
+  if(!html['artist.html'].includes('bennyHeroAsset')||!html['artist.html'].includes('benny-artist-hero.webp'))fail('artist.html: drop-in hero asset hook missing');
+  if(!html['beats/index.html'].includes("../tagj-assets/beat-previews/"))fail('beats/index.html: local beat preview convention missing');
+  if(!read('tagj-assets/full-v1528.js').includes("tagj-assets/beat-previews/"))fail('full-v1528.js: Beat Vault local preview convention missing');
 
   if(!html['full.html'].includes('id="v1530EmailBrief"'))fail('full.html: Email Brief action missing from request wizard');
   if(!read('tagj-assets/full-v1528.js').includes("mailto:prodbybundles@yahoo.com?subject="))fail('full-v1528.js: reviewable inquiry email handoff missing');
