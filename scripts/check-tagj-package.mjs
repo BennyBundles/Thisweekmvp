@@ -121,6 +121,7 @@ for(const p of files.map(rel).filter(p=>p.endsWith('.html'))){
   const src=read(p);
   const depth=p.split('/').length-1;
   const prefix='../'.repeat(depth);
+  if(!/<meta\b[^>]*name=["']viewport["'][^>]*content=["'][^"']*viewport-fit=cover[^"']*["'][^>]*>/i.test(src)) failures.push(p+': iPhone viewport-fit=cover metadata missing');
   if(!src.includes('rel="manifest" href="'+prefix+'site.webmanifest"')) failures.push(p+': portable manifest link missing');
   if(!src.includes('rel="apple-touch-icon" sizes="180x180" href="'+prefix+'tagj-assets/icons/apple-touch-icon.png"')) failures.push(p+': portable iPhone icon metadata missing');
   if(!src.includes('sizes="32x32" href="'+prefix+'tagj-assets/icons/favicon-32.png"')) failures.push(p+': portable favicon metadata missing');
