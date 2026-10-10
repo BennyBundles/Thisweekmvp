@@ -295,8 +295,8 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
     else if(idx<=last)fail('artist.html: verified releases are not in descending date order');
     last=idx;
   }
-  if(!html['beats/index.html'].includes("../tagj-assets/beat-previews/"))fail('beats/index.html: local beat preview convention missing');
-  if(!read('tagj-assets/full-v1528.js').includes("tagj-assets/beat-previews/"))fail('full-v1528.js: Beat Vault local preview convention missing');
+  if(!html['beats/index.html'].includes('const localPreview=b.previewUrl||b.preview?.url||null'))fail('beats/index.html: per-beat local preview convention missing');
+  if(!read('tagj-assets/full-v1528.js').includes('const localPreview=b.previewUrl||b.preview?.url||null'))fail('full-v1528.js: per-beat Beat Vault preview convention missing');
 
   if(!html['full.html'].includes('id="v1530EmailBrief"'))fail('full.html: Email Brief action missing from request wizard');
   if(!read('tagj-assets/full-v1528.js').includes("mailto:prodbybundles@yahoo.com?subject="))fail('full-v1528.js: reviewable inquiry email handoff missing');
