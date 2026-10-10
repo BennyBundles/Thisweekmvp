@@ -144,12 +144,20 @@ if(fileSet.has('build-manifest.json')){
     const bm=JSON.parse(read('build-manifest.json'));
     const campaign=JSON.parse(read('tagj-data/current-campaign.v1.json'));
     const preview=JSON.parse(read('tagj-data/beat-preview-status.v1.json'));
-    if(bm.schemaVersion!==1) failures.push('build manifest schemaVersion must be 1');
+    const gates=JSON.parse(read('tagj-data/launch-gates.v1.json'));
+    if(bm.schemaVersion!==2) failures.push('build manifest schemaVersion must be 2');
     if(bm.version!=='V15.37') failures.push('build manifest version mismatch');
     if(bm.mode!==(publicOrigin?'public':'protected-preview')) failures.push('build manifest mode mismatch');
     if(bm.campaignId!==campaign.campaignId) failures.push('build manifest campaignId mismatch');
     if(bm.currentRelease!==campaign.release?.id) failures.push('build manifest currentRelease mismatch');
-    if(bm.localBeatPreviewCount!==preview.localPreviewCount||bm.expectedBeatPreviewCount!==preview.expectedPreviewCount) failures.push('build manifest Beat Vault counts mismatch');
+    if(bm.currentCampaignRoute!==campaign.release?.campaignPath||bm.evergreenCampaignRoute!==campaign.release?.evergreenPath) failures.push('build manifest campaign route mismatch');
+    if(bm.localBeatPreviewCount!==preview.localPreviewCount||bm.expectedBeatPreviewCount!==preview.expectedPreviewCount||bm.beatPreviewMode!==preview.preferredMode) failures.push('build manifest Beat Vault state mismatch');
+    if(bm.launch?.previewStatus!==gates.previewLaunch?.status||bm.launch?.publicStatus!==gates.publicLaunch?.status) failures.push('build manifest launch status mismatch');
+    const expectedBlockers=(gates.publicLaunch?.blockers||[]).filter(x=>x.blocking).map(x=>x.id);
+    if(JSON.stringify(bm.launch?.publicBlockers||[])!==JSON.stringify(expectedBlockers)) failures.push('build manifest public blocker list mismatch');
+    for(const route of ['/now','/season1','/vst','/subscribe','/press','/contact']) if(!(bm.growthRoutes||[]).includes(route)) failures.push('build manifest missing growth route '+route);
+    if(bm.portablePwa!==true) failures.push('build manifest portablePwa flag missing');
+    for(const gate of gates.featureGates||[]) if(bm.featureStates?.[gate.id]!==gate.status) failures.push('build manifest feature state mismatch '+gate.id);
   }catch(err){failures.push('build-manifest.json: invalid JSON: '+err.message)}
 }
 
