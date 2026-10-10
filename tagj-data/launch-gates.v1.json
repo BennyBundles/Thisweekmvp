@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseline": "V15.36",
+  "baseline": "V15.37",
   "updatedAt": "2026-10-10",
   "previewLaunch": {
     "status": "ready_when_ci_green",
