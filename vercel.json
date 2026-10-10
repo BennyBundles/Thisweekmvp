@@ -61,6 +61,10 @@
       "destination": "/network/index.html"
     },
     {
+      "source": "/network/billyen",
+      "destination": "/network/billyen.html"
+    },
+    {
       "source": "/network/bsf-tone-066",
       "destination": "/network/bsf-tone-066.html"
     },
