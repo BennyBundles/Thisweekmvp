@@ -35,8 +35,9 @@ const buildSeasonOneRequest=()=>{
   const size=document.getElementById('wlSize').value||'Not provided';
   const giveaway=document.getElementById('wlGiveaway').checked?'Yes — notify me when official rules open':'No';
   const direction=form.querySelector('input[name="direction"]:checked')?.value||'No preference';
+  const attr=window.TAGJAttribution?.()||{};
   const subject='TAGJ Season 1 Waitlist — '+name;
-  const body=['TAGJ Season 1 waitlist request','','Name: '+name,'Email: '+email,'Social handle: '+handle,'Likely shirt size: '+size,'Preferred Season 1 direction: '+direction,'Free-shirt drawing notification: '+giveaway,'','I understand this request is not a giveaway entry. Notify me only when official drawing rules are published.'].join('\n');
+  const body=['TAGJ Season 1 waitlist request','','Name: '+name,'Email: '+email,'Social handle: '+handle,'Likely shirt size: '+size,'Preferred Season 1 direction: '+direction,'Free-shirt drawing notification: '+giveaway,'','Attribution source: '+(attr.source||'direct / unavailable'),'Attribution medium: '+(attr.medium||'not set'),'Attribution campaign: '+(attr.campaign||'not set'),'Referrer: '+(attr.referrer||'none'),'Entry path: '+(attr.entryPath||location.pathname),'','I understand this request is not a giveaway entry. Notify me only when official drawing rules are published.'].join('\n');
   return {subject,body};
 };
 document.getElementById('tagjWaitlistForm')?.addEventListener('submit',e=>{
