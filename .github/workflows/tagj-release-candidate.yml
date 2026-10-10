@@ -1,0 +1,44 @@
+name: TAGJ Release Candidate
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tagj-release-candidate
+  cancel-in-progress: false
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out current preview head
+        uses: actions/checkout@v6
+        with:
+          ref: tagj-v12-preview
+
+      - name: Static regression gate
+        run: node scripts/check-tagj-static.mjs
+
+      - name: Build protected release candidate
+        run: sh scripts/prepare-tagj-release-candidate.sh
+
+      - name: Verify release metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f .tagj-dist/.release/release-candidate.json
+          test -f .tagj-dist/.release/checksums.sha256
+          grep -q '"mode": "protected-preview"' .tagj-dist/.release/release-candidate.json
+          printf 'Release candidate: '
+          cat .tagj-dist/VERSION.txt
+
+      - name: Upload protected release candidate
+        uses: actions/upload-artifact@v4
+        with:
+          name: tagj-${{ github.sha }}-protected-release-candidate
+          path: .tagj-dist/
+          if-no-files-found: error
+          retention-days: 7
