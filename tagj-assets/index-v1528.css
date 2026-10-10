@@ -491,7 +491,7 @@ body.intro-pending .home-shell{filter:blur(5px);transform:scale(1.015)}.home-she
 /* V15.33 — one current promotional signal on the four-world hub */
 .home-release-signal{position:absolute;z-index:26;left:clamp(16px,3.2vw,48px);top:92px;width:min(320px,32vw);min-height:72px;display:grid;grid-template-columns:58px 1fr;gap:11px;align-items:center;padding:7px;border:1px solid rgba(184,87,81,.30);border-radius:14px;background:rgba(4,8,11,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 18px 50px rgba(0,0,0,.28);transition:transform .3s,border-color .3s,background .3s}
 .home-release-signal:hover,.home-release-signal:focus-visible{transform:translateY(-3px);border-color:rgba(184,87,81,.62);background:rgba(13,12,14,.88)}
-.home-release-art{display:block;width:58px;aspect-ratio:1;border-radius:9px;background:url('releases/wanted-me-gone.webp') center/cover no-repeat;box-shadow:0 10px 30px rgba(0,0,0,.28)}
+.home-release-art{display:block;width:58px;aspect-ratio:1;border-radius:9px;background:url('releases/wanted-me-gone.webp') center/cover no-repeat;box-shadow:0 10px 30px rgba(0,0,0,.28);view-transition-name:release-wanted-me-gone}
 .home-release-copy{display:flex;min-width:0;flex-direction:column;gap:3px}
 .home-release-copy small{font:800 6.5px ui-monospace,Menlo,monospace;letter-spacing:.12em;color:#c27770;white-space:nowrap}
 .home-release-copy b{font-size:14px;line-height:1;letter-spacing:-.02em}
