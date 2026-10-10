@@ -112,6 +112,7 @@ const ensureInstallMeta=(src,file)=>{
   const depth=String(file||'').split('/').length-1;
   const prefix='../'.repeat(Math.max(0,depth));
   const set=(tag,re)=>{ src=re.test(src)?src.replace(re,tag):src.replace(/<\/head>/i,tag+'</head>'); };
+  set('<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">',/<meta\b[^>]*name=["']viewport["'][^>]*>/i);
   set('<link rel="manifest" href="'+prefix+'site.webmanifest">',/<link\b[^>]*rel=["']manifest["'][^>]*>/i);
   set('<link rel="icon" type="image/png" sizes="32x32" href="'+prefix+'tagj-assets\/icons\/favicon-32.png">',/<link\b[^>]*rel=["']icon["'][^>]*sizes=["']32x32["'][^>]*>/i);
   set('<link rel="apple-touch-icon" sizes="180x180" href="'+prefix+'tagj-assets\/icons\/apple-touch-icon.png">',/<link\b[^>]*rel=["']apple-touch-icon["'][^>]*>/i);
