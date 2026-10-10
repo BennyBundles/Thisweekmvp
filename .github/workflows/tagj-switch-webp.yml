@@ -40,7 +40,7 @@ jobs:
           text_ext={".html",".css",".js",".json",".md",".yml",".yaml",".sh",".mjs",".txt"}
           changed=[]
           for p in Path(".").rglob("*"):
-              if not p.is_file() or ".git" in p.parts or p.suffix.lower() not in text_ext:
+              if not p.is_file() or ".git" in p.parts or ".github" in p.parts or p.suffix.lower() not in text_ext:
                   continue
               try:
                   src=p.read_text()
