@@ -43,4 +43,4 @@ cp tagj-data/* .tagj-dist/tagj-data/
 cp legal/* .tagj-dist/legal/
 
 node scripts/generate-tagj-seo.mjs
-printf 'V15.31' > .tagj-dist/VERSION.txt
+printf 'V15.32' > .tagj-dist/VERSION.txt
