@@ -234,6 +234,13 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   if(!html['index.html'].includes('tagj-home-entity-schema'))fail('index.html: home entity graph missing');
   if(!html['artist.html'].includes('id="about"')||!html['artist.html'].includes('id="verified-releases"'))fail('artist.html: artist-first entity structure missing');
   if(!html['artist.html'].includes('Benny Bundles — Artist, Producer & Engineer | TAGJ'))fail('artist.html: artist-first title metadata missing');
+  for(const p of ['producer.html','creative.html','tagj.html','full.html']){
+    if(!html[p].includes('data-tagj-entity-v1531'))fail(p+': V15.31 entity marker missing');
+  }
+  if(!html['full.html'].includes('id="artist-current-v1531"'))fail('full.html: current verified release rail missing');
+  for(const url of ['https://music.apple.com/us/artist/benny-bundles/1730543318','https://open.spotify.com/artist/7B0YUXsyJgA56DagjkbeGh','https://www.youtube.com/@bennybundles']){
+    if(!html['full.html'].includes(url))fail('full.html: verified artist destination missing '+url);
+  }
   const releaseOrder=['Wanted Me Gone','Hold Something','Can’t Crop Karma','FREESTYLE','Cried in the Dark','The Whole Brand'];
   let last=-1;
   for(const name of releaseOrder){
