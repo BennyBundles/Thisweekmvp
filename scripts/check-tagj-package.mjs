@@ -36,7 +36,7 @@ function resolveRef(from,ref){
   return normalized;
 }
 
-const optionalPackagedRefs=new Set(['tagj-assets/media/benny-artist-hero.webp']);
+const optionalPackagedRefs=new Set();
 for(const p of files.map(rel).filter(p=>p.endsWith('.html'))){
   const src=read(p).replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,'');
   for(const m of src.matchAll(/(?:href|src)\s*=\s*["']([^"']+)["']/gi)){
@@ -93,7 +93,7 @@ for(const required of [
   'network/index.html','network/billyen.html','network/bsf-tone-066.html','network/t311y-demon-life.html',
   'tagj-data/beat-catalog.v1.json','tagj-data/catalog.v1.json','tagj-data/current-campaign.v1.json','tagj-data/license-system.v1.json','tagj-data/link-registry.v1.json',
   'tagj-assets/runtime-stability.js','tagj-assets/deferred-video.js','tagj-assets/index-v1528.js','tagj-assets/full-v1528.js','tagj-assets/index-v1528.css','tagj-assets/full-v1528.css','tagj-sw.js',
-  'tagj-assets/media/asset-fashion-hero.webp','tagj-assets/media/asset-green-set.webp','tagj-assets/media/asset-track-navy.webp',
+  'tagj-assets/media/benny-artist-hero.png','tagj-assets/media/asset-fashion-hero.webp','tagj-assets/media/asset-green-set.webp','tagj-assets/media/asset-track-navy.webp',
   'tagj-assets/icons/favicon-32.png','tagj-assets/icons/apple-touch-icon.png','tagj-assets/icons/icon-192.png','tagj-assets/icons/icon-512.png','tagj-assets/icons/icon-512-maskable.png',
   'tagj-assets/releases/wanted-me-gone.webp','tagj-assets/releases/hold-something.webp','tagj-assets/releases/hold-something-lyric.webp',
   'tagj-assets/releases/cant-crop-karma.webp','tagj-assets/releases/freestyle.webp','tagj-assets/releases/cried-in-the-dark.webp','tagj-assets/releases/the-whole-brand.webp'
