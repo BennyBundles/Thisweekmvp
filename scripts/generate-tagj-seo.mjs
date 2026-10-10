@@ -7,6 +7,7 @@ if(!fs.existsSync(dist)) throw new Error('.tagj-dist does not exist; run the TAG
 
 const routeMap=[
   ['index.html','/'],
+  ['full.html','/full'],
   ['artist.html','/artist'],
   ['producer.html','/producer'],
   ['creative.html','/creative'],
@@ -49,19 +50,34 @@ const upsertHead=(src,tag,matcher)=>{
   return src.replace(/<\/head>/i,tag+'</head>');
 };
 
-for(const [file,route] of routeMap){
-  const p=path.join(dist,file);
-  if(!fs.existsSync(p)) continue;
+const walkHtml=dir=>fs.readdirSync(dir,{withFileTypes:true}).flatMap(entry=>{
+  const p=path.join(dir,entry.name);
+  return entry.isDirectory()?walkHtml(p):(entry.isFile()&&entry.name.endsWith('.html')?[p]:[]);
+});
+const htmlFiles=walkHtml(dist);
+
+// Default-deny indexing. Public mode explicitly promotes only canonical routes below.
+for(const p of htmlFiles){
   let src=fs.readFileSync(p,'utf8');
-  if(origin){
+  src=upsertHead(
+    src,
+    origin?'<meta name="robots" content="noindex,follow">':'<meta name="robots" content="noindex,nofollow,noarchive">',
+    /<meta\b[^>]*name=["']robots["'][^>]*>/i
+  );
+  fs.writeFileSync(p,src);
+}
+
+if(origin){
+  for(const [file,route] of routeMap){
+    const p=path.join(dist,file);
+    if(!fs.existsSync(p)) continue;
+    let src=fs.readFileSync(p,'utf8');
     const url=origin+route;
     src=upsertHead(src,`<link rel="canonical" href="${esc(url)}">`,/<link\b[^>]*rel=["']canonical["'][^>]*>/i);
     src=upsertHead(src,`<meta property="og:url" content="${esc(url)}">`,/<meta\b[^>]*property=["']og:url["'][^>]*>/i);
     src=src.replace(/<meta\b[^>]*name=["']robots["'][^>]*>/gi,'');
-  }else{
-    src=upsertHead(src,'<meta name="robots" content="noindex,nofollow,noarchive">',/<meta\b[^>]*name=["']robots["'][^>]*>/i);
+    fs.writeFileSync(p,src);
   }
-  fs.writeFileSync(p,src);
 }
 
 if(origin){
