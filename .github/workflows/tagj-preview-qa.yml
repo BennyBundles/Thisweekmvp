@@ -89,6 +89,16 @@ jobs:
           printf 'Packaged TAGJ version: '
           cat .tagj-dist/VERSION.txt
 
+      - name: Verify public SEO build mode
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .tagj-dist
+          TAGJ_PUBLIC_ORIGIN=https://example.com sh scripts/build-tagj-preview.sh
+          TAGJ_PUBLIC_ORIGIN=https://example.com node scripts/check-tagj-package.mjs
+          grep -q '<loc>https://example.com/artist</loc>' .tagj-dist/sitemap.xml
+          grep -q 'Sitemap: https://example.com/sitemap.xml' .tagj-dist/robots.txt
+
       - name: Summarize package
         shell: bash
         run: |
