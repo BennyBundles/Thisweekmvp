@@ -42,4 +42,5 @@ rm -f .tagj-dist/tagj-assets/network/t311y-demon-life/jimmy-blast-off.png
 cp tagj-data/* .tagj-dist/tagj-data/
 cp legal/* .tagj-dist/legal/
 
+node scripts/generate-tagj-seo.mjs
 printf 'V15.31' > .tagj-dist/VERSION.txt
