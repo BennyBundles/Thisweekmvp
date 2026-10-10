@@ -1,0 +1,95 @@
+name: TAGJ One-Time Release Poster Ingest
+
+on:
+  push:
+    branches: ["tagj-v12-preview"]
+    paths:
+      - ".github/tagj-release-posters.trigger"
+
+permissions:
+  contents: write
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout TAGJ preview branch
+        uses: actions/checkout@v6
+        with:
+          ref: tagj-v12-preview
+          fetch-depth: 1
+
+      - name: Install Pillow
+        run: python -m pip install --quiet pillow
+
+      - name: Fetch official release video posters
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p tagj-assets/releases /tmp/tagj-posters
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess
+          from PIL import Image, ImageOps
+
+          items=[
+            ("wanted-me-gone","QyweiAeVUW8"),
+            ("hold-something","f32T_dAEfsA"),
+            ("cant-crop-karma","taWPe81hAYc"),
+            ("freestyle","WBwOWkJi8Jg"),
+            ("cried-in-the-dark","tFhwHrSRZl8"),
+            ("the-whole-brand","CV7piYg0EK4"),
+          ]
+          outdir=Path("tagj-assets/releases")
+          tmpdir=Path("/tmp/tagj-posters")
+          for slug,vid in items:
+              tmp=tmpdir/(slug+".jpg")
+              urls=[
+                  f"https://i.ytimg.com/vi/{vid}/maxresdefault.jpg",
+                  f"https://i.ytimg.com/vi/{vid}/hqdefault.jpg",
+              ]
+              ok=False
+              for url in urls:
+                  try:
+                      subprocess.run(["curl","-fsSL","--retry","2",url,"-o",str(tmp)],check=True)
+                      with Image.open(tmp) as test:
+                          test.verify()
+                      ok=True
+                      break
+                  except Exception:
+                      pass
+              if not ok:
+                  raise SystemExit(f"Unable to fetch poster for {slug}")
+              with Image.open(tmp) as im:
+                  im=ImageOps.exif_transpose(im).convert("RGB")
+                  # Preserve official composition; maxres is normally 16:9. For
+                  # legacy 4:3 fallback, center-crop to a stable 16:9 card.
+                  target_ratio=16/9
+                  ratio=im.width/im.height
+                  if abs(ratio-target_ratio)>.03:
+                      if ratio>target_ratio:
+                          nw=round(im.height*target_ratio); left=(im.width-nw)//2
+                          im=im.crop((left,0,left+nw,im.height))
+                      else:
+                          nh=round(im.width/target_ratio); top=(im.height-nh)//2
+                          im=im.crop((0,top,im.width,top+nh))
+                  if im.width>1280:
+                      im.thumbnail((1280,1280))
+                  out=outdir/(slug+".webp")
+                  im.save(out,"WEBP",quality=90,method=6)
+                  print(slug,im.size,out.stat().st_size)
+          PY
+
+      - name: Commit local release posters
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "BennyBundles"
+          git config user.email "146196050+BennyBundles@users.noreply.github.com"
+          git add tagj-assets/releases
+          if git diff --cached --quiet; then
+            echo "Release posters already current."
+            exit 0
+          fi
+          git commit -m "Ingest optimized Benny release posters"
+          git push origin HEAD:tagj-v12-preview
