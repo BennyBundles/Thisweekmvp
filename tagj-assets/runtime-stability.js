@@ -32,7 +32,19 @@
     mapButton.addEventListener('click',openMap);
     map.querySelector('.tagj-map-close')?.addEventListener('click',closeMap);
     map.addEventListener('click',e=>{if(e.target===map)closeMap()});
-    addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();map.classList.contains('open')?closeMap():openMap()}else if(e.key==='Escape'&&map.classList.contains('open'))closeMap()});
+    map.querySelectorAll('a').forEach(a=>{const href=a.getAttribute('href')||'';if(href===cleanPath||(cleanPath.endsWith('.html')&&href===cleanPath.replace(/\.html$/,'')))a.setAttribute('aria-current','page')});
+    addEventListener('keydown',e=>{
+      if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();map.classList.contains('open')?closeMap():openMap();return}
+      if(!map.classList.contains('open'))return;
+      if(e.key==='Escape'){e.preventDefault();closeMap();return}
+      if(e.key==='Tab'){
+        const focusable=[...map.querySelectorAll('a[href],button:not([disabled])')].filter(el=>el.offsetParent!==null);
+        if(!focusable.length)return;
+        const first=focusable[0],last=focusable[focusable.length-1];
+        if(e.shiftKey&&d.activeElement===first){e.preventDefault();last.focus()}
+        else if(!e.shiftKey&&d.activeElement===last){e.preventDefault();first.focus()}
+      }
+    });
     d.body.append(mapButton,map);
   }
 
