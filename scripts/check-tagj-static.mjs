@@ -23,7 +23,7 @@ const htmlFiles=[
 ];
 const jsonFiles=[
   'tagj-data/business.v1.json','tagj-data/catalog.v1.json','tagj-data/link-registry.v1.json',
-  'tagj-data/network-assets.v1.json','tagj-data/current-campaign.v1.json','tagj-data/beat-catalog.v1.json',
+  'tagj-data/network-assets.v1.json','tagj-data/current-campaign.v1.json','tagj-data/launch-gates.v1.json','tagj-data/beat-catalog.v1.json',
   'tagj-data/beat-license-matrix.v1.json','tagj-data/license-system.v1.json',
   'tagj-data/request-schema.v1.json','tagj-data/workflow.v1.json'
 ];
@@ -92,6 +92,16 @@ for(const p of ['artist.html','campaign.html']) if(!html[p].includes('id="youtub
   if(manifest.id!=='./'||manifest.start_url!=='./?resume=1'||manifest.scope!=='./')fail('site.webmanifest: portable webmanifest contract missing');
   for(const url of ['campaign','artist','beats','press'])if(!(manifest.shortcuts||[]).some(x=>x.url===url))fail('site.webmanifest: missing portable shortcut '+url);
   for(const icon of [...(manifest.icons||[]),...(manifest.shortcuts||[]).flatMap(x=>x.icons||[])])if(String(icon.src||'').startsWith('/'))fail('site.webmanifest: root-absolute icon breaks project-subpath hosting');
+}
+
+{
+  const gates=parsed['tagj-data/launch-gates.v1.json'];
+  if(gates?.schemaVersion!==1)fail('launch-gates.v1.json schemaVersion must be 1');
+  if(gates?.baseline!=='V15.36')fail('launch gates baseline mismatch');
+  const beatGate=(gates?.featureGates||[]).find(x=>x.id==='beat-vault-local-preview-coverage');
+  if(!beatGate||beatGate.localPreviewCount!==18||beatGate.expectedPreviewCount!==22)fail('launch gates Beat Vault coverage must declare 18/22');
+  const giveaway=(gates?.featureGates||[]).find(x=>x.id==='season-one-giveaway');
+  if(!giveaway||giveaway.blockingForGiveawayActivation!==true)fail('launch gates must keep Season 1 drawing rules-gated');
 }
 
 // Current campaign must stay internally consistent across promotional surfaces.
@@ -383,6 +393,15 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
 {
   const search=read('tagj-assets/index-v1528.js');
   for(const token of ['TAGJ Season 1 Waitlist','Producer’s Tools / VST Lab','YouTube Subscribe','BillYen Direct Profile']) if(!search.includes(token))fail('growth surfaces missing from ecosystem search: '+token);
+}
+
+// V15.36: evergreen promotion shortcuts.
+{
+  const vc=JSON.parse(read('vercel.json'));
+  for(const [source,destination] of [['/season1','/tagj#season-one'],['/vst','/producer#producer-tools'],['/subscribe','/artist#youtube-subscribe']]){
+    if(!(vc.redirects||[]).some(x=>x.source===source&&x.destination===destination&&x.permanent===false))fail('Evergreen promo shortcut missing: '+source);
+  }
+  for(const token of ["['/season1','/tagj.html#season-one']","['/vst','/producer.html#producer-tools']","['/subscribe','/artist.html#youtube-subscribe']"])if(!html['404.html'].includes(token))fail('404.html: static-host promo shortcut missing '+token);
 }
 
 // V15.36: shared runtime route portability.
