@@ -160,6 +160,9 @@ else if(publicOrigin){
     if(/<meta\b[^>]*name=["']robots["']/i.test(src)) failures.push(p+': canonical public route must not remain noindex');
     if(!/<link\b[^>]*rel=["']canonical["']/i.test(src)) failures.push(p+': public canonical link missing');
     if(!/<meta\b[^>]*property=["']og:url["']/i.test(src)) failures.push(p+': public og:url missing');
+    for(const m of src.matchAll(/<meta\b[^>]*(?:property=["']og:image["']|name=["']twitter:image["'])[^>]*content=["']([^"']+)["'][^>]*>/gi)){
+      if(m[1].startsWith('/')) failures.push(p+': public social image must be absolute');
+    }
   }
   for(const p of files.map(rel).filter(p=>p.endsWith('.html')&&!publicRoutes.includes(p))){
     const src=read(p);
