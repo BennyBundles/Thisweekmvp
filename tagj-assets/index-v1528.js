@@ -107,6 +107,8 @@ document.documentElement.classList.add('js');
 (() => {
   const body = document.body;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const connection=navigator.connection||navigator.mozConnection||navigator.webkitConnection||null;
+  const saveData=!!connection?.saveData;
   const routes = [...document.querySelectorAll('.world-route')];
   const centerTitle = document.getElementById('centerTitle');
   const centerCopy = document.getElementById('centerCopy');
@@ -454,7 +456,8 @@ document.documentElement.classList.add('js');
     if(gate){gate.hidden=false;gate.removeAttribute('aria-hidden');gate.classList.remove('done')}
     body.classList.add('intro-pending');body.classList.remove('intro-complete','intro-settling');
   }
-  if(!forceReplay&&(resume||deepRoute||fromWorld||hasSeenIntro()))completeIntroState();
+  const accessibilityFastEntry=reduce||saveData;
+  if(!forceReplay&&(accessibilityFastEntry||resume||deepRoute||fromWorld||hasSeenIntro()))completeIntroState();
   addEventListener('pageshow',()=>{
     const deep=!!location.hash&&location.hash!=='#home'&&location.hash!=='#replay-intro';
     if(deep||hasSeenIntro())completeIntroState();
