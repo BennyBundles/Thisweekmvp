@@ -65,7 +65,7 @@ for(const oldCss of ['tagj-assets/index-v1527.css','tagj-assets/full-v1527.css',
 for(const required of [
   'index.html','preview.html','full.html','artist.html','producer.html','creative.html','campaign.html','press.html','site.webmanifest',
   'creative/index.html','creative/portfolio.html','creative/case-bsf-tone-066.html','creative/case-t311y-demon-life.html',
-  'network/index.html','network/bsf-tone-066.html','network/t311y-demon-life.html','tagj-data/current-campaign.v1.json',
+  'network/index.html','network/billyen.html','network/bsf-tone-066.html','network/t311y-demon-life.html','tagj-data/current-campaign.v1.json',
   'tagj-assets/runtime-stability.js','tagj-assets/deferred-video.js','tagj-assets/index-v1528.js','tagj-assets/full-v1528.js','tagj-assets/index-v1528.css','tagj-assets/full-v1528.css','tagj-sw.js',
   'tagj-assets/media/asset-fashion-hero.webp','tagj-assets/media/asset-green-set.webp','tagj-assets/media/asset-track-navy.webp',
   'tagj-assets/icons/favicon-32.png','tagj-assets/icons/apple-touch-icon.png','tagj-assets/icons/icon-192.png','tagj-assets/icons/icon-512.png','tagj-assets/icons/icon-512-maskable.png',
@@ -77,7 +77,7 @@ for(const required of [
 
 const mobileNavPages=[
   'tagj.html','artist.html','producer.html','creative.html','campaign.html','contact.html','licensing.html','press.html',
-  'network/index.html','network/bsf-tone-066.html','network/t311y-demon-life.html',
+  'network/index.html','network/billyen.html','network/bsf-tone-066.html','network/t311y-demon-life.html',
   'services/index.html','music/index.html','catalogue/index.html','beats/index.html',
   'creative/index.html','creative/portfolio.html','creative/case-bsf-tone-066.html','creative/case-t311y-demon-life.html','404.html',
   'music/wanted-me-gone.html','music/cant-crop-karma.html','music/freestyle.html',
@@ -152,7 +152,7 @@ else if(publicOrigin){
     'services/index.html','beats/index.html','catalogue/index.html','music/index.html',
     'music/wanted-me-gone.html','music/hold-something.html','music/cant-crop-karma.html','music/freestyle.html',
     'music/cried-in-the-dark.html','music/the-whole-brand.html','network/index.html','network/bsf-tone-066.html',
-    'network/t311y-demon-life.html','creative/portfolio.html','creative/case-bsf-tone-066.html','creative/case-t311y-demon-life.html'
+    'network/t311y-demon-life.html','network/billyen.html','creative/portfolio.html','creative/case-bsf-tone-066.html','creative/case-t311y-demon-life.html'
   ];
   for(const p of publicRoutes){
     if(!fileSet.has(p)) continue;
