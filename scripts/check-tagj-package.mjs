@@ -65,7 +65,7 @@ for(const oldCss of ['tagj-assets/index-v1527.css','tagj-assets/full-v1527.css',
 for(const required of [
   'index.html','preview.html','full.html','artist.html','producer.html','creative.html','campaign.html','press.html','site.webmanifest','build-manifest.json',
   'creative/index.html','creative/portfolio.html','creative/case-bsf-tone-066.html','creative/case-t311y-demon-life.html',
-  'network/index.html','network/billyen.html','network/bsf-tone-066.html','network/t311y-demon-life.html','tagj-data/current-campaign.v1.json',
+  'network/index.html','network/billyen.html','network/bsf-tone-066.html','network/t311y-demon-life.html','tagj-data/current-campaign.v1.json','tagj-data/launch-gates.v1.json',
   'tagj-assets/runtime-stability.js','tagj-assets/deferred-video.js','tagj-assets/index-v1528.js','tagj-assets/full-v1528.js','tagj-assets/index-v1528.css','tagj-assets/full-v1528.css','tagj-sw.js',
   'tagj-assets/media/asset-fashion-hero.webp','tagj-assets/media/asset-green-set.webp','tagj-assets/media/asset-track-navy.webp',
   'tagj-assets/icons/favicon-32.png','tagj-assets/icons/apple-touch-icon.png','tagj-assets/icons/icon-192.png','tagj-assets/icons/icon-512.png','tagj-assets/icons/icon-512-maskable.png',
@@ -128,6 +128,12 @@ for(const p of files.map(rel).filter(p=>p.endsWith('.html'))){
 if(!fileSet.has('VERSION.txt')) failures.push('Missing packaged VERSION.txt');
 else if(read('VERSION.txt').trim()!=='V15.36') failures.push('VERSION.txt must identify the current V15.36 baseline');
 const publicOrigin=(process.env.TAGJ_PUBLIC_ORIGIN||'').trim().replace(/\/$/,'');
+if(fileSet.has('tagj-data/launch-gates.v1.json')){
+  try{
+    const gates=JSON.parse(read('tagj-data/launch-gates.v1.json'));
+    if(gates.schemaVersion!==1||gates.baseline!=='V15.36') failures.push('launch gates packaged baseline mismatch');
+  }catch(err){failures.push('tagj-data/launch-gates.v1.json: invalid JSON: '+err.message)}
+}
 if(fileSet.has('build-manifest.json')){
   try{
     const bm=JSON.parse(read('build-manifest.json'));
