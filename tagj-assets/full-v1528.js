@@ -1090,10 +1090,10 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
    meta.innerHTML='<span>'+fmtTime(b.audio.durationSeconds)+'</span><span>'+b.audio.format.toUpperCase()+'</span><span>'+Math.round(b.audio.sampleRate/1000*10)/10+' kHz</span><span>'+fmtSize(b.audio.fileSizeBytes)+'</span><span>Prod. by Bundles</span>';
    if(audio){audio.pause();audio.removeAttribute('src');audio.load();audio.hidden=true}
    if(driveFrame){driveFrame.src='about:blank'}if(drivePreview)drivePreview.hidden=true;
-   const localPreview=b.previewUrl||b.preview?.url||null;
-   if(localPreview&&audio){
+   const localPreview=b.previewUrl||b.preview?.url||('tagj-assets/beat-previews/'+encodeURIComponent(b.id)+'.mp3');
+   if(audio){
      audio.src=localPreview;audio.hidden=false;audio.load();
-     status.textContent='Site-hosted preview ready. Tap play to audition.';
+     status.textContent='Loading site-hosted preview… Drive fallback is automatic if needed.';
    }else if(b.source?.driveId&&driveFrame){
      driveFrame.title=b.title+' beat preview';
      driveFrame.src='https://drive.google.com/file/d/'+encodeURIComponent(b.source.driveId)+'/preview';
@@ -1110,7 +1110,7 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
  audio?.addEventListener('play',()=>wave?.classList.add('playing'));
  audio?.addEventListener('pause',()=>wave?.classList.remove('playing'));
  audio?.addEventListener('ended',()=>wave?.classList.remove('playing'));
- audio?.addEventListener('error',()=>{wave?.classList.remove('playing');if(selected)status.textContent='The site-hosted audio preview could not load. Use the embedded Drive player or “Open Drive source.”'});
+ audio?.addEventListener('error',()=>{wave?.classList.remove('playing');if(!selected)return;audio.hidden=true;if(selected.source?.driveId&&driveFrame){driveFrame.title=selected.title+' beat preview';driveFrame.src='https://drive.google.com/file/d/'+encodeURIComponent(selected.source.driveId)+'/preview';drivePreview.hidden=false;status.textContent='Site preview unavailable; Drive fallback loaded automatically.'}else status.textContent='The site-hosted audio preview could not load. Use “Open Drive source.”'});
  request?.addEventListener('click',()=>{if(!selected)return;setTimeout(()=>{const p=q('#v143ProjectTitle');if(p&&!p.value)p.value=selected.title;const n=q('#v143Notes');if(n&&!n.value)n.value='Selected beat: '+selected.title+' / source '+selected.id;},0)},true);
  search?.addEventListener('input',()=>render(search.value));
  fetch('tagj-data/beat-catalog.v1.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('catalog');return r.json()}).then(data=>{
