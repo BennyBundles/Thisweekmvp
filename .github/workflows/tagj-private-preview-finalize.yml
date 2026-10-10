@@ -1,0 +1,144 @@
+name: Finalize private TAGJ beat previews
+
+on:
+  push:
+    branches: ["tagj-v12-preview"]
+    paths:
+      - "tagj-private-preview-seed.zip"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tagj-private-preview-finalize
+  cancel-in-progress: false
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out preview branch
+        uses: actions/checkout@v6
+        with:
+          ref: tagj-v12-preview
+          fetch-depth: 0
+
+      - name: Exit cleanly after seed cleanup
+        id: seed
+        shell: bash
+        run: |
+          if [ -f tagj-private-preview-seed.zip ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Ensure ffmpeg
+        if: steps.seed.outputs.present == 'true'
+        shell: bash
+        run: |
+          if ! command -v ffmpeg >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y ffmpeg
+          fi
+
+      - name: Re-encode restricted previews to current mobile standard
+        if: steps.seed.outputs.present == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p tagj-assets/beat-previews /tmp/tagj-private-seed
+          for beat in beat-009 beat-017 beat-018 beat-019; do
+            unzip -p tagj-private-preview-seed.zip "tagj-assets/beat-previews/$beat.mp3" > "/tmp/tagj-private-seed/$beat.mp3"
+            test -s "/tmp/tagj-private-seed/$beat.mp3"
+            ffmpeg -nostdin -hide_banner -loglevel error -y -i "/tmp/tagj-private-seed/$beat.mp3" -t 30 -vn \
+              -af "loudnorm=I=-14:LRA=11:TP=-1.5,afade=t=in:st=0:d=0.35,afade=t=out:st=29:d=1" \
+              -ar 44100 -ac 2 -c:a libmp3lame -b:a 128k "tagj-assets/beat-previews/$beat.mp3"
+          done
+          test "$(find tagj-assets/beat-previews -maxdepth 1 -type f -name 'beat-*.mp3' | wc -l | tr -d ' ')" -eq 22
+
+      - name: Promote Beat Vault to 22 of 22 local previews
+        if: steps.seed.outputs.present == 'true'
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          catalog_path=Path("tagj-data/beat-catalog.v1.json")
+          catalog=json.loads(catalog_path.read_text())
+          restricted={"beat-009","beat-017","beat-018","beat-019"}
+          for beat in catalog.get("beats",[]):
+              if beat.get("id") not in restricted:
+                  continue
+              beat_id=beat["id"]
+              url=f"/tagj-assets/beat-previews/{beat_id}.mp3"
+              beat["previewUrl"]=url
+              beat["preview"]={
+                  "url":url,
+                  "format":"mp3",
+                  "durationSeconds":30,
+                  "bitrateKbps":128,
+                  "sourceOffsetSeconds":15
+              }
+              beat["previewAvailability"]="site_hosted"
+              beat["previewDelivery"]="local_preview"
+              beat["publicPlaybackStatus"]="site_hosted_preview_ready"
+          catalog_path.write_text(json.dumps(catalog,indent=2,ensure_ascii=False)+"\n")
+
+          gates_path=Path("tagj-data/launch-gates.v1.json")
+          gates=json.loads(gates_path.read_text())
+          gate=next(x for x in gates.get("featureGates",[]) if x.get("id")=="beat-vault-local-preview-coverage")
+          gate["status"]="local"
+          gate["localPreviewCount"]=22
+          gate["expectedPreviewCount"]=22
+          gate["restrictedBeatIds"]=[]
+          gate["detail"]="All 22 Beat Vault records now have site-hosted 30-second / 128 kbps audition previews. Restricted source masters remain private; only derived audition files are public."
+          gates_path.write_text(json.dumps(gates,indent=2,ensure_ascii=False)+"\n")
+
+          qa_path=Path("scripts/check-tagj-static.mjs")
+          qa=qa_path.read_text()
+          old="if(!beatGate||beatGate.status!=='hybrid'||beatGate.localPreviewCount!==18||beatGate.expectedPreviewCount!==22)fail('launch gates Beat Vault coverage must declare hybrid 18/22');"
+          new="if(!beatGate||beatGate.status!=='local'||beatGate.localPreviewCount!==22||beatGate.expectedPreviewCount!==22||(beatGate.restrictedBeatIds||[]).length)fail('launch gates Beat Vault coverage must declare local 22/22');"
+          if old not in qa:
+              raise SystemExit("Expected hybrid Beat Vault QA invariant not found")
+          qa_path.write_text(qa.replace(old,new))
+
+          harvest_path=Path(".github/workflows/tagj-public-beat-previews.yml")
+          harvest=harvest_path.read_text()
+          marker='            echo "::group::$beat_id"\n            rm -f /tmp/tagj-source.wav\n'
+          replacement='            echo "::group::$beat_id"\n            if [ -f "tagj-assets/beat-previews/$beat_id.mp3" ]; then\n              echo "Local preview already exists; preserving it."\n              success=$((success+1))\n              echo "::endgroup::"\n              continue\n            fi\n            rm -f /tmp/tagj-source.wav\n'
+          if marker in harvest:
+              harvest=harvest.replace(marker,replacement)
+          harvest_path.write_text(harvest)
+          PY
+
+      - name: Validate final 22 of 22 source and package
+        if: steps.seed.outputs.present == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/check-tagj-public-source-security.mjs
+          node scripts/check-tagj-static.mjs
+          rm -rf .tagj-dist
+          sh scripts/build-tagj-preview.sh
+          node scripts/check-tagj-package.mjs
+          node - <<'NODE'
+          const fs=require('fs');
+          const s=JSON.parse(fs.readFileSync('.tagj-dist/tagj-data/beat-preview-status.v1.json','utf8'));
+          if(s.localPreviewCount!==22||s.localPreviewsReady!==true||s.preferredMode!=='local')throw new Error('Packaged Beat Vault did not reach local 22/22');
+          NODE
+
+      - name: Commit final preview coverage and remove staging seed
+        if: steps.seed.outputs.present == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tagj-assets/beat-previews tagj-data/beat-catalog.v1.json tagj-data/launch-gates.v1.json scripts/check-tagj-static.mjs .github/workflows/tagj-public-beat-previews.yml
+          git rm -f tagj-private-preview-seed.zip
+          git rm -f .github/workflows/tagj-private-preview-finalize.yml
+          git commit -m "Complete Beat Vault site-hosted previews 22 of 22"
+          git pull --rebase origin tagj-v12-preview
+          git push origin HEAD:tagj-v12-preview
