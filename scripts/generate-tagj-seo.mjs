@@ -195,6 +195,8 @@ if(origin){
     const url=origin+route;
     src=upsertHead(src,`<link rel="canonical" href="${esc(url)}">`,/<link\b[^>]*rel=["']canonical["'][^>]*>/i);
     src=upsertHead(src,`<meta property="og:url" content="${esc(url)}">`,/<meta\b[^>]*property=["']og:url["'][^>]*>/i);
+    src=upsertHead(src,`<link rel="alternate" type="application/rss+xml" title="Benny Bundles Releases" href="${esc(origin+'/releases.xml')}">`,/<link\b[^>]*type=["']application\/rss\+xml["'][^>]*>/i);
+    src=upsertHead(src,`<link rel="author" href="${esc(origin+'/artist')}">`,/<link\b[^>]*rel=["']author["'][^>]*>/i);
     src=src.replace(/<meta\b[^>]*name=["']robots["'][^>]*>/gi,'');
     src=absolutizeStructuredData(src,origin,file==='index.html');
     src=absolutizeSocialImages(src,origin);
