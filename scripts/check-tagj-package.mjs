@@ -165,6 +165,11 @@ if(!fileSet.has('robots.txt')) failures.push('Missing packaged robots.txt');
 else if(publicOrigin){
   if(!read('robots.txt').includes('Allow: /')) failures.push('Public robots.txt must allow crawling');
   if(!fileSet.has('sitemap.xml')) failures.push('Public build is missing sitemap.xml');
+  if(fileSet.has('sitemap.xml')){
+    const sitemap=read('sitemap.xml');
+    for(const canonical of ['/campaign','/artist','/producer','/tagj','/press']) if(!sitemap.includes('<loc>'+publicOrigin+canonical+'</loc>')) failures.push('Public sitemap missing canonical growth surface '+canonical);
+    for(const shortcut of ['/now','/season1','/vst','/subscribe']) if(sitemap.includes('<loc>'+publicOrigin+shortcut+'</loc>')) failures.push('Growth shortcut must not appear in sitemap '+shortcut);
+  }
   if(!fileSet.has('.well-known/security.txt')) failures.push('Public build is missing security.txt');
   if(!fileSet.has('releases.xml')) failures.push('Public build is missing releases.xml');
   else{
