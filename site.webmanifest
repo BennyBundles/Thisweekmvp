@@ -33,5 +33,59 @@
       "type": "image/png",
       "purpose": "maskable"
     }
+  ],
+  "shortcuts": [
+    {
+      "name": "Current Campaign",
+      "short_name": "Campaign",
+      "description": "Watch and share the current Benny Bundles release.",
+      "url": "/campaign",
+      "icons": [
+        {
+          "src": "/tagj-assets/icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Benny Bundles Artist",
+      "short_name": "Artist",
+      "description": "Open the official Benny Bundles artist hub.",
+      "url": "/artist",
+      "icons": [
+        {
+          "src": "/tagj-assets/icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Beat Vault",
+      "short_name": "Beats",
+      "description": "Audition Benny Bundles original beat previews.",
+      "url": "/beats",
+      "icons": [
+        {
+          "src": "/tagj-assets/icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Benny Bundles EPK",
+      "short_name": "EPK",
+      "description": "Open the official Benny Bundles electronic press kit.",
+      "url": "/press",
+      "icons": [
+        {
+          "src": "/tagj-assets/icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
   ]
 }
