@@ -194,7 +194,7 @@ else if(publicOrigin){
   if(fileSet.has('sitemap.xml')){
     const sitemap=read('sitemap.xml');
     for(const canonical of ['/campaign','/artist','/producer','/tagj','/press']) if(!sitemap.includes('<loc>'+publicOrigin+canonical+'</loc>')) failures.push('Public sitemap missing canonical growth surface '+canonical);
-    for(const shortcut of ['/now','/season1','/vst','/subscribe']) if(sitemap.includes('<loc>'+publicOrigin+shortcut+'</loc>')) failures.push('Growth shortcut must not appear in sitemap '+shortcut);
+    for(const shortcut of ['/now','/season1','/vst','/subscribe','/full']) if(sitemap.includes('<loc>'+publicOrigin+shortcut+'</loc>')) failures.push('Non-canonical shortcut/deep route must not appear in sitemap '+shortcut);
   }
   if(!fileSet.has('.well-known/security.txt')) failures.push('Public build is missing security.txt');
   if(!fileSet.has('releases.xml')) failures.push('Public build is missing releases.xml');
