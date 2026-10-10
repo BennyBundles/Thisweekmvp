@@ -212,7 +212,7 @@ else if(publicOrigin){
     if(!llms.includes(publicOrigin+'/artist')||!llms.includes(publicOrigin+'/press')||!llms.includes(publicOrigin+'/campaign')) failures.push('llms.txt is missing canonical Artist / EPK / Campaign routes');
   }
   const publicRoutes=[
-    'index.html','full.html','artist.html','producer.html','creative.html','tagj.html','campaign.html','contact.html','press.html','licensing.html',
+    'index.html','artist.html','producer.html','creative.html','tagj.html','campaign.html','contact.html','press.html','licensing.html',
     'services/index.html','beats/index.html','catalogue/index.html','music/index.html',
     'music/wanted-me-gone.html','music/hold-something.html','music/cant-crop-karma.html','music/freestyle.html',
     'music/cried-in-the-dark.html','music/the-whole-brand.html','network/index.html','network/bsf-tone-066.html',
@@ -251,7 +251,8 @@ else if(publicOrigin){
     const src=read(p);
     if(!src.includes('noindex,follow')) failures.push(p+': non-canonical public HTML must remain noindex,follow');
   }
-  for(const p of publicRoutes.filter(p=>!['index.html','full.html'].includes(p))){
+  if(fileSet.has('full.html')&&!read('full.html').includes('noindex,follow')) failures.push('full.html: deep ecosystem shell must remain noindex,follow');
+  for(const p of publicRoutes.filter(p=>p!=='index.html')){
     if(!fileSet.has(p)) continue;
     if(!read(p).includes('id="tagj-breadcrumb-schema"')) failures.push(p+': public breadcrumb schema missing');
   }
