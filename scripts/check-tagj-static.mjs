@@ -14,7 +14,7 @@ const failures=[];
 const warnings=[];
 const htmlFiles=[
   'index.html','preview.html','full.html','tagj.html','artist.html','producer.html','creative.html',
-  'contact.html','licensing.html','press.html','404.html',
+  'campaign.html','contact.html','licensing.html','press.html','404.html',
   'network/index.html','network/bsf-tone-066.html','network/t311y-demon-life.html',
   'creative/index.html','creative/portfolio.html','creative/case-bsf-tone-066.html','creative/case-t311y-demon-life.html',
   'music/index.html','music/wanted-me-gone.html','music/cant-crop-karma.html','music/hold-something.html',
@@ -75,6 +75,9 @@ for(const [file,src] of Object.entries(html)){
   for(const id of ids)counts.set(id,(counts.get(id)||0)+1);
   for(const [id,count] of counts)if(count>1)fail(`${file}: duplicate DOM id "${id}" ×${count}`);
 }
+
+if(!html['campaign.html'].includes('id="campaignCaption"')||!html['campaign.html'].includes('data-share')||!html['campaign.html'].includes('campaign-schema'))fail('campaign.html: current campaign controls missing');
+if(!html['artist.html'].includes('href="campaign.html"'))fail('artist.html: current campaign route missing');
 
 // Basic accessibility and external-link safety.
 for(const [file,src] of Object.entries(html)){
