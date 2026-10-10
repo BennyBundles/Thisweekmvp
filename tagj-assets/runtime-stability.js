@@ -9,6 +9,11 @@
   root.classList.toggle('tagj-low-memory',lowMemory);
   root.dataset.tagjRuntime='15.35';
 
+  const runtimeNode=[...d.scripts].find(x=>/\/tagj-assets\/runtime-stability\.js(?:\?|$)/.test(x.src||''));
+  const siteBase=runtimeNode?new URL('../',runtimeNode.src):new URL('./',location.href);
+  const sitePath=(p='')=>new URL(String(p).replace(/^\//,''),siteBase).pathname;
+  const siteRootPath=siteBase.pathname.replace(/\/+$/,'')||'/';
+
   const mainTarget=d.querySelector('main,#home,.home-shell,.subsite');
   if(mainTarget){
     if(!mainTarget.id)mainTarget.id='tagj-main';
@@ -20,12 +25,13 @@
   }
 
   const cleanPath=location.pathname.replace(/\/+$/,'')||'/';
-  if(!['/','/index.html'].includes(cleanPath)){
+  const siteIndexPath=(siteRootPath==='/'?'':siteRootPath)+'/index.html';
+  if(![siteRootPath,siteIndexPath].includes(cleanPath)){
     const mapButton=d.createElement('button');
     mapButton.type='button';mapButton.className='tagj-map-trigger';mapButton.textContent='MAP';
     mapButton.setAttribute('aria-label','Open TAGJ site map');mapButton.setAttribute('aria-expanded','false');
     const map=d.createElement('div');map.id='tagj-global-map';map.className='tagj-map-overlay';map.setAttribute('aria-hidden','true');
-    map.innerHTML='<div class="tagj-map-panel" role="dialog" aria-modal="true" aria-label="TAGJ site map"><div class="tagj-map-head"><div><small>BENNY BUNDLES × TAGJ</small><b>Jump between worlds.</b></div><button type="button" class="tagj-map-close" aria-label="Close site map">×</button></div><nav class="tagj-map-grid"><a href="/"><small>00 / CENTER</small><b>Four-World Hub</b><span>Start here</span></a><a href="/artist"><small>01 / PRIMARY</small><b>Benny Bundles</b><span>Artist identity</span></a><a href="/music"><small>02 / RELEASES</small><b>Music</b><span>2026 run + archive</span></a><a href="/producer"><small>03 / STUDIO</small><b>Producer / Engineer</b><span>Production + sessions</span></a><a href="/beats"><small>04 / AUDIO</small><b>Beat Vault</b><span>Preview + licensing</span></a><a href="/creative"><small>05 / VISUAL</small><b>Creative</b><span>Campaign + client proof</span></a><a href="/tagj"><small>06 / DESIGN</small><b>TAGJ</b><span>Fashion + product</span></a><a href="/press"><small>07 / PRESS</small><b>EPK</b><span>Official fact source</span></a><a href="/contact"><small>08 / WORK</small><b>Contact</b><span>Route an inquiry</span></a></nav></div>';
+    map.innerHTML='<div class="tagj-map-panel" role="dialog" aria-modal="true" aria-label="TAGJ site map"><div class="tagj-map-head"><div><small>BENNY BUNDLES × TAGJ</small><b>Jump between worlds.</b></div><button type="button" class="tagj-map-close" aria-label="Close site map">×</button></div><nav class="tagj-map-grid"><a href="'+sitePath('')+'"><small>00 / CENTER</small><b>Four-World Hub</b><span>Start here</span></a><a href="'+sitePath('campaign')+'"><small>01 / NOW</small><b>Current Campaign</b><span>Watch + share</span></a><a href="'+sitePath('artist')+'"><small>02 / PRIMARY</small><b>Benny Bundles</b><span>Artist identity</span></a><a href="'+sitePath('music')+'"><small>03 / RELEASES</small><b>Music</b><span>2026 run + archive</span></a><a href="'+sitePath('producer')+'"><small>04 / STUDIO</small><b>Producer / Engineer</b><span>Production + sessions</span></a><a href="'+sitePath('beats')+'"><small>05 / AUDIO</small><b>Beat Vault</b><span>Preview + licensing</span></a><a href="'+sitePath('creative')+'"><small>06 / VISUAL</small><b>Creative</b><span>Campaign + client proof</span></a><a href="'+sitePath('tagj')+'"><small>07 / DESIGN</small><b>TAGJ</b><span>Fashion + product</span></a><a href="'+sitePath('press')+'"><small>08 / PRESS</small><b>EPK</b><span>Official fact source</span></a><a href="'+sitePath('contact')+'"><small>09 / WORK</small><b>Contact</b><span>Route an inquiry</span></a></nav></div>';
     let mapLastFocus=null;
     const openMap=()=>{mapLastFocus=d.activeElement;map.classList.add('open');map.setAttribute('aria-hidden','false');mapButton.setAttribute('aria-expanded','true');d.body.style.overflow='hidden';map.querySelector('.tagj-map-close')?.focus()};
     const closeMap=()=>{map.classList.remove('open');map.setAttribute('aria-hidden','true');mapButton.setAttribute('aria-expanded','false');d.body.style.overflow='';mapLastFocus?.focus?.()};
@@ -64,8 +70,8 @@
       section.innerHTML='<div class="wrap"><div class="studio-console"><div class="studio-readout"><small><i class="studio-led"></i>Beat Vault playback</small><b data-preview-mode>Drive fallback ready</b><span><span data-local-preview-count>0</span> of 22 local mobile previews</span></div><div class="studio-readout"><small>Catalogue</small><b><span data-beat-count>22</span> beats</b><span>Source-backed records</span></div><div class="studio-readout"><small>Workflow</small><b>Review before delivery</b><span>Scope stays explicit</span></div></div></div>';
       hero.insertAdjacentElement('afterend',section);
       Promise.allSettled([
-        fetch('/tagj-data/beat-catalog.v1.json',{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()),
-        fetch('/tagj-data/beat-preview-status.v1.json',{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject())
+        fetch(sitePath('tagj-data/beat-catalog.v1.json'),{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()),
+        fetch(sitePath('tagj-data/beat-preview-status.v1.json'),{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject())
       ]).then(([catalog,status])=>{
         if(catalog.status==='fulfilled')section.querySelectorAll('[data-beat-count]').forEach(el=>el.textContent=catalog.value.beats?.length||22);
         if(status.status==='fulfilled'){
