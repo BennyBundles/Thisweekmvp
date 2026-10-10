@@ -123,6 +123,10 @@ else if(publicOrigin){
     const src=read(p);
     if(!src.includes('noindex,follow')) failures.push(p+': non-canonical public HTML must remain noindex,follow');
   }
+  for(const p of publicRoutes.filter(p=>!['index.html','full.html'].includes(p))){
+    if(!fileSet.has(p)) continue;
+    if(!read(p).includes('id="tagj-breadcrumb-schema"')) failures.push(p+': public breadcrumb schema missing');
+  }
   const home=read('index.html');
   const homeSchema=home.match(/<script\b[^>]*id=["']tagj-home-entity-schema["'][^>]*>([\s\S]*?)<\/script>/i);
   if(!homeSchema) failures.push('index.html: public home entity schema missing');
