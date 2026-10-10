@@ -31,7 +31,7 @@
     },
     {
       "id": "beat-vault-local-preview-coverage",
-      "status": "partial",
+      "status": "hybrid",
       "blockingForSite": false,
       "localPreviewCount": 18,
       "expectedPreviewCount": 22,
@@ -41,7 +41,7 @@
         "beat-018",
         "beat-019"
       ],
-      "detail": "Remaining sources are Drive-restricted and the connected GitHub writer cannot commit binary MP3 bytes. Catalogue fallback remains explicit."
+      "detail": "Authenticated Drive access to the remaining masters is available without changing permissions, but the current connector/container boundary cannot hand converted binary MP3 bytes into GitHub safely. The four beats retain explicit authenticated Drive fallback; no master visibility is changed."
     },
     {
       "id": "billyen-source-binaries",
@@ -54,6 +54,26 @@
       "status": "optional_not_enabled",
       "blockingForSite": false,
       "detail": "Vercel Web Analytics is optional. Current connector can read analytics but cannot enable the project-level feature."
+    },
+    {
+      "id": "benny-hero-portrait",
+      "status": "source_reference_recovered_binary_missing",
+      "blockingForSite": false,
+      "expectedAsset": "tagj-assets/media/benny-artist-hero.webp",
+      "legacySourcePath": "assets/photos/artist-chains.webp",
+      "detail": "The original approved portrait path was recovered from archived Benny site previews, but the standalone binary is not present in Library or repository storage. Artist hero uses a first-party release-art fallback until the original binary is recovered."
+    },
+    {
+      "id": "season-one-product-signal",
+      "status": "active_zero_backend",
+      "blockingForSite": false,
+      "detail": "Season 1 waitlist captures size, social handle, style-direction preference and optional drawing-notification interest through a user-reviewed mailto handoff. Giveaway entry remains rules-gated."
+    },
+    {
+      "id": "melody-vst-beta-research",
+      "status": "active_zero_backend",
+      "blockingForSite": false,
+      "detail": "Producer’s Tools collects DAW, OS, workflow pain point and feature priorities through a user-reviewed mailto handoff. No public download is represented until a tested build exists."
     }
   ]
 }
