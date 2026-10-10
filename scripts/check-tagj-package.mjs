@@ -48,6 +48,11 @@ for(const p of files.map(rel).filter(p=>p.endsWith('.css'))){
     if(target && !fileSet.has(target)) failures.push(`${p}: missing packaged CSS asset ${raw} -> ${target}`);
   }
 }
+for(const p of [...fileSet].filter(p=>/\.(?:jpg|jpeg|png)$/i.test(p))){
+  const webp=p.replace(/\.(?:jpg|jpeg|png)$/i,'.webp');
+  if(fileSet.has(webp)) failures.push(p+': paired raster original shipped beside WebP '+webp);
+}
+
 for(const forbidden of ['tagj-assets/network/bsf-tone-066/profile-01.png','tagj-assets/network/t311y-demon-life/profile-01.jpg','tagj-assets/network/t311y-demon-life/tdc-logo.jpg','tagj-assets/network/t311y-demon-life/jimmy-blast-off.png']){
   if(fileSet.has(forbidden)) failures.push(forbidden+' must not ship in the deploy package; canonical equivalent already exists');
 }
