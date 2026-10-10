@@ -151,6 +151,11 @@ const ensureSocialMeta=src=>{
   return src;
 };
 
+const absolutizeSocialImages=(src,origin)=>src.replace(
+  /<meta\b([^>]*?(?:property=["']og:image["']|name=["']twitter:image["'])[^>]*?content=["'])(\/[^"']+)(["'][^>]*>)/gi,
+  (_whole,a,url,b)=>'<meta '+a+origin+url+b
+);
+
 const upsertHead=(src,tag,matcher)=>{
   if(matcher.test(src)) return src.replace(matcher,tag);
   return src.replace(/<\/head>/i,tag+'</head>');
@@ -185,6 +190,7 @@ if(origin){
     src=upsertHead(src,`<meta property="og:url" content="${esc(url)}">`,/<meta\b[^>]*property=["']og:url["'][^>]*>/i);
     src=src.replace(/<meta\b[^>]*name=["']robots["'][^>]*>/gi,'');
     src=absolutizeStructuredData(src,origin,file==='index.html');
+    src=absolutizeSocialImages(src,origin);
     const crumbs=breadcrumbPaths[route];
     if(crumbs&&crumbs.length>=2){
       const schema={
