@@ -99,7 +99,7 @@ for(const p of files.map(rel).filter(p=>p.endsWith('.html'))){
   }
 }
 if(!fileSet.has('VERSION.txt')) failures.push('Missing packaged VERSION.txt');
-else if(read('VERSION.txt').trim()!=='V15.30') failures.push('VERSION.txt must identify the current V15.30 baseline');
+else if(read('VERSION.txt').trim()!=='V15.31') failures.push('VERSION.txt must identify the current V15.31 baseline');
 if(fileSet.has('tagj-data/beat-catalog.v1.json')){
   try{
     const beatCatalog=JSON.parse(read('tagj-data/beat-catalog.v1.json'));
