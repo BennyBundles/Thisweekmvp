@@ -114,7 +114,7 @@ if(fileSet.has('site.webmanifest')){
     if(manifest.name!=='Benny Bundles × TAGJ'||manifest.id!=='./'||manifest.start_url!=='./?resume=1'||manifest.scope!=='./') failures.push('site.webmanifest: portable canonical manifest metadata missing');
     if(!Array.isArray(manifest.icons)||manifest.icons.length<3) failures.push('site.webmanifest: icon set incomplete');
     const shortcutUrls=Array.isArray(manifest.shortcuts)?manifest.shortcuts.map(x=>x.url):[];
-    for(const url of ['campaign','artist','beats','press']) if(!shortcutUrls.includes(url)) failures.push('site.webmanifest: missing app shortcut '+url);
+    for(const url of ['campaign','season1','vst','artist','beats','press']) if(!shortcutUrls.includes(url)) failures.push('site.webmanifest: missing app shortcut '+url);
   }catch(err){failures.push('site.webmanifest: invalid packaged JSON: '+err.message)}
 }
 for(const p of files.map(rel).filter(p=>p.endsWith('.html'))){
