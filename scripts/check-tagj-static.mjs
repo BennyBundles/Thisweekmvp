@@ -154,6 +154,19 @@ for(const id of ['bsf-bloxx-robbers','t311y-project-artwork']){
   if(!(catalog?.creativeCaseStudies||[]).some(x=>x.id===id))fail(`Missing creative case study: ${id}`);
 }
 
+// Canonical first-party release posters.
+const canonicalReleasePosters=[
+  'tagj-assets/releases/wanted-me-gone.webp',
+  'tagj-assets/releases/hold-something.webp',
+  'tagj-assets/releases/hold-something-lyric.webp',
+  'tagj-assets/releases/cant-crop-karma.webp',
+  'tagj-assets/releases/freestyle.webp',
+  'tagj-assets/releases/cried-in-the-dark.webp',
+  'tagj-assets/releases/the-whole-brand.webp'
+];
+for(const p of canonicalReleasePosters)if(!exists(p))fail('Missing canonical release poster: '+p);
+for(const [file,src] of Object.entries(html))if(src.includes('https://i.ytimg.com/'))fail(file+': remote YouTube thumbnail dependency must remain removed');
+
 // Canonical affiliate repository assets currently expected to be public.
 const canonicalAssets=[
   'tagj-assets/network/bsf-tone-066/profile.webp',
@@ -191,7 +204,7 @@ if(devil&&!devil.repositoryPath)warnings.push("Devil's Playground: verified Driv
 
 // Build must ship the dedicated subsites, direct network pages, data, legal docs and network assets.
 const build=read('scripts/build-tagj-preview.sh');
-for(const token of ['index.html preview.html full.html tagj.html artist.html producer.html creative.html contact.html licensing.html press.html 404.html','cp network/*.html .tagj-dist/network/','cp music/*.html .tagj-dist/music/','cp beats/*.html .tagj-dist/beats/','cp catalogue/*.html .tagj-dist/catalogue/','cp services/*.html .tagj-dist/services/','cp creative/*.html .tagj-dist/creative/','cp tagj-assets/*.js .tagj-dist/tagj-assets/','cp tagj-assets/media/* .tagj-dist/tagj-assets/media/','tagj-assets/beat-previews/*.mp3','cp -R tagj-assets/network/* .tagj-dist/tagj-assets/network/','cp tagj-data/* .tagj-dist/tagj-data/','cp legal/* .tagj-dist/legal/']){
+for(const token of ['index.html preview.html full.html tagj.html artist.html producer.html creative.html contact.html licensing.html press.html 404.html','cp network/*.html .tagj-dist/network/','cp music/*.html .tagj-dist/music/','cp beats/*.html .tagj-dist/beats/','cp catalogue/*.html .tagj-dist/catalogue/','cp services/*.html .tagj-dist/services/','cp creative/*.html .tagj-dist/creative/','cp tagj-assets/*.js .tagj-dist/tagj-assets/','cp tagj-assets/media/* .tagj-dist/tagj-assets/media/','cp tagj-assets/releases/*.webp .tagj-dist/tagj-assets/releases/','tagj-assets/beat-previews/*.mp3','cp -R tagj-assets/network/* .tagj-dist/tagj-assets/network/','cp tagj-data/* .tagj-dist/tagj-data/','cp legal/* .tagj-dist/legal/']){
   if(!build.includes(token))fail(`Build script missing expected shipping rule: ${token}`);
 }
 
@@ -292,7 +305,6 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   const csp=globalHeaders.find(x=>x.key==='Content-Security-Policy')?.value||'';
   if(!csp.includes("object-src 'none'"))fail('vercel.json: CSP must forbid object execution');
   if(!csp.includes("frame-ancestors 'self'"))fail('vercel.json: CSP frame ancestor policy missing');
-  if(!csp.includes('https://i.ytimg.com'))fail('vercel.json: CSP must allow verified YouTube thumbnails');
   if(!csp.includes('https://drive.google.com'))fail('vercel.json: CSP must allow Beat Vault Drive fallback frames');
   for(const bad of ['/index.html','/full.html','/tagj.html','/artist.html','/producer.html','/creative.html','/contact.html','/licensing.html']){
     if((vc.redirects||[]).some(x=>x.source===bad))fail('vercel.json: physical HTML must load directly without redirect: '+bad);
