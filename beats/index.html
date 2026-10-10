@@ -47,12 +47,11 @@
      const play=document.createElement('button');play.type='button';play.className='btn primary';play.textContent='Play Preview';play.addEventListener('click',()=>{
        if(activePreview&&activePreview!==preview){activePreview.hidden=true;activePreview.innerHTML=''}
        if(!preview.hidden){preview.hidden=true;preview.innerHTML='';activePreview=null;play.textContent='Play Preview';return}
-       const previewUrl=b.previewUrl||b.preview?.url||null,id=b.source?.driveId;
-       if(previewUrl){
-         const audio=document.createElement('audio');audio.controls=true;audio.preload='metadata';audio.src=previewUrl;audio.setAttribute('aria-label',b.title+' beat preview');preview.replaceChildren(audio);
-       }else if(id){
-         preview.innerHTML='<iframe title="'+esc(b.title)+' beat preview" src="https://drive.google.com/file/d/'+encodeURIComponent(id)+'/preview" allow="autoplay" loading="lazy" referrerpolicy="no-referrer"></iframe>';
-       }else return;
+       const id=b.source?.driveId;
+       const previewUrl=b.previewUrl||b.preview?.url||('../tagj-assets/beat-previews/'+encodeURIComponent(b.id)+'.mp3');
+       const audio=document.createElement('audio');audio.controls=true;audio.preload='metadata';audio.src=previewUrl;audio.setAttribute('aria-label',b.title+' beat preview');
+       if(id)audio.addEventListener('error',()=>{preview.innerHTML='<iframe title="'+esc(b.title)+' beat preview" src="https://drive.google.com/file/d/'+encodeURIComponent(id)+'/preview" allow="autoplay" loading="lazy" referrerpolicy="no-referrer"></iframe>'},{once:true});
+       preview.replaceChildren(audio);
        preview.hidden=false;activePreview=preview;play.textContent='Close Preview';
      });actions.appendChild(play);
      const primary=document.createElement('button');primary.type='button';primary.className='btn';primary.textContent='Select in Beat Vault';primary.addEventListener('click',()=>openVault(b));actions.appendChild(primary);
