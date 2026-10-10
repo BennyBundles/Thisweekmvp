@@ -9,7 +9,7 @@ if [ -f tagj-public-assets-ready.zip ]; then
   unzip -oq tagj-public-assets-ready.zip -d .
   if [ -d tagj-assets/beat-previews ]; then
     preview_count=$(find tagj-assets/beat-previews -type f -name 'beat-*.mp3' | wc -l | tr -d ' ')
-    [ "$preview_count" = "0" ] || [ "$preview_count" = "22" ] || { echo "Beat preview bundle must contain all 22 previews; found $preview_count" >&2; exit 1; }
+    [ "$preview_count" -le 22 ] || { echo "Beat preview bundle contains more than 22 canonical previews; found $preview_count" >&2; exit 1; }
   fi
 fi
 
@@ -53,6 +53,9 @@ preview_count=$(find .tagj-dist/tagj-assets/beat-previews -maxdepth 1 -type f -n
 if [ "$preview_count" = "22" ]; then
   preview_ready=true
   preview_mode=local
+elif [ "$preview_count" -gt 0 ]; then
+  preview_ready=false
+  preview_mode=hybrid
 else
   preview_ready=false
   preview_mode=drive_fallback
