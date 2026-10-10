@@ -90,6 +90,30 @@
     {
       "source": "/catalogue",
       "destination": "/catalogue/index.html"
+    },
+    {
+      "source": "/music/wanted-me-gone",
+      "destination": "/music/wanted-me-gone.html"
+    },
+    {
+      "source": "/music/hold-something",
+      "destination": "/music/hold-something.html"
+    },
+    {
+      "source": "/music/cant-crop-karma",
+      "destination": "/music/cant-crop-karma.html"
+    },
+    {
+      "source": "/music/freestyle",
+      "destination": "/music/freestyle.html"
+    },
+    {
+      "source": "/music/cried-in-the-dark",
+      "destination": "/music/cried-in-the-dark.html"
+    },
+    {
+      "source": "/music/the-whole-brand",
+      "destination": "/music/the-whole-brand.html"
     }
   ],
   "headers": [
@@ -147,6 +171,19 @@
         {
           "key": "Cache-Control",
           "value": "no-cache"
+        }
+      ]
+    },
+    {
+      "source": "/tagj-assets/beat-previews/(.*).mp3",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800, stale-while-revalidate=2592000"
+        },
+        {
+          "key": "Accept-Ranges",
+          "value": "bytes"
         }
       ]
     }
