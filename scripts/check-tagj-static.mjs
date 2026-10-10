@@ -267,6 +267,9 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   }
   if(!build.includes('.tagj-dist/tagj-assets/a??.css'))fail('build: obsolete micro-CSS cleanup missing');
   if(!build.includes("printf 'V15.33'"))fail('build: VERSION.txt is not V15.33');
+  const homeRuntime=read('tagj-assets/index-v1528.js');
+  if(!homeRuntime.includes("const saveData=!!connection?.saveData"))fail('home runtime: Data Saver detection missing');
+  if(!homeRuntime.includes('accessibilityFastEntry=reduce||saveData'))fail('home runtime: Reduce Motion / Data Saver intro fast-entry contract missing');
   const runtimeNav=read('tagj-assets/runtime-stability.js');
   if(!runtimeNav.includes('tagj-global-map')||!runtimeNav.includes('tagj-map-trigger'))fail('runtime: global route switcher missing');
   if(!runtimeNav.includes("e.key==='Tab'")||!runtimeNav.includes("aria-current','page"))fail('runtime: route switcher focus/current-page safeguards missing');
