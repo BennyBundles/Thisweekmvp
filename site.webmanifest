@@ -49,6 +49,32 @@
       ]
     },
     {
+      "name": "TAGJ Season 1",
+      "short_name": "Season 1",
+      "description": "Open the TAGJ Season 1 first-access and product-signal waitlist.",
+      "url": "season1",
+      "icons": [
+        {
+          "src": "tagj-assets/icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Melody VST Lab",
+      "short_name": "VST Lab",
+      "description": "Open Producer’s Tools and the Melody VST beta research surface.",
+      "url": "vst",
+      "icons": [
+        {
+          "src": "tagj-assets/icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
       "name": "Benny Bundles Artist",
       "short_name": "Artist",
       "description": "Open the official Benny Bundles artist hub.",
