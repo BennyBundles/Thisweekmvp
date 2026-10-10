@@ -14,9 +14,9 @@ if [ -f tagj-public-assets-ready.zip ]; then
 fi
 
 rm -rf .tagj-dist
-mkdir -p .tagj-dist/network .tagj-dist/music .tagj-dist/beats .tagj-dist/catalogue .tagj-dist/services .tagj-dist/creative .tagj-dist/tagj-assets/v147 .tagj-dist/tagj-assets/intro .tagj-dist/tagj-assets/network .tagj-dist/tagj-assets/media .tagj-dist/tagj-assets/releases .tagj-dist/tagj-assets/beat-previews .tagj-dist/tagj-data .tagj-dist/legal
+mkdir -p .tagj-dist/network .tagj-dist/music .tagj-dist/beats .tagj-dist/catalogue .tagj-dist/services .tagj-dist/creative .tagj-dist/tagj-assets/v147 .tagj-dist/tagj-assets/intro .tagj-dist/tagj-assets/network .tagj-dist/tagj-assets/media .tagj-dist/tagj-assets/icons .tagj-dist/tagj-assets/releases .tagj-dist/tagj-assets/beat-previews .tagj-dist/tagj-data .tagj-dist/legal
 
-cp index.html preview.html full.html tagj.html artist.html producer.html creative.html contact.html licensing.html press.html 404.html tagj-sw.js .tagj-dist/
+cp index.html preview.html full.html tagj.html artist.html producer.html creative.html contact.html licensing.html press.html 404.html tagj-sw.js site.webmanifest .tagj-dist/
 cp network/*.html .tagj-dist/network/
 cp music/*.html .tagj-dist/music/
 cp beats/*.html .tagj-dist/beats/
@@ -32,6 +32,7 @@ rm -f .tagj-dist/tagj-assets/index-v1527.css .tagj-dist/tagj-assets/full-v1527.c
 cp tagj-assets/v147/* .tagj-dist/tagj-assets/v147/
 cp tagj-assets/intro/intro-poster-v149.jpg tagj-assets/intro/intro-clip-for-website-v152.mp4 .tagj-dist/tagj-assets/intro/
 cp tagj-assets/media/* .tagj-dist/tagj-assets/media/
+cp tagj-assets/icons/*.png .tagj-dist/tagj-assets/icons/
 cp tagj-assets/releases/*.webp .tagj-dist/tagj-assets/releases/
 if ls tagj-assets/beat-previews/*.mp3 >/dev/null 2>&1; then cp tagj-assets/beat-previews/*.mp3 .tagj-dist/tagj-assets/beat-previews/; fi
 cp -R tagj-assets/network/* .tagj-dist/tagj-assets/network/
