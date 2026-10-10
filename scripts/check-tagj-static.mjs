@@ -119,6 +119,12 @@ if(new Set(beats.map(b=>b.id)).size!==beats.length)fail('Beat catalogue contains
 if(beats.some(b=>!b.title))fail('One or more beat records has no catalogue title');
 if(beats.some(b=>b.sampleStatus?.priorSaleStatus!=='producer_attested_none'))fail('One or more beats lacks the recorded no-prior-sale attestation');
 if(beats.some(b=>b.sampleStatus?.priorExclusiveLicenseStatus!=='producer_attested_none'))fail('One or more beats lacks the recorded no-prior-exclusive attestation');
+for(const b of beats){
+  if(!b.previewUrl)continue;
+  const previewPath=String(b.previewUrl).replace(/^\//,'');
+  if(!exists(previewPath))fail(`${b.id}: previewUrl points to missing file ${b.previewUrl}`);
+  if(!/\.mp3$/i.test(previewPath))fail(`${b.id}: site-hosted preview must be MP3`);
+}
 
 const matrix=parsed['tagj-data/beat-license-matrix.v1.json']?.beats||[];
 if(matrix.length!==22)fail(`License matrix expected 22 beat rows; found ${matrix.length}`);
@@ -171,7 +177,7 @@ if(devil&&!devil.repositoryPath)warnings.push("Devil's Playground: verified Driv
 
 // Build must ship the dedicated subsites, direct network pages, data, legal docs and network assets.
 const build=read('scripts/build-tagj-preview.sh');
-for(const token of ['index.html preview.html full.html tagj.html artist.html producer.html creative.html contact.html licensing.html 404.html','cp network/*.html .tagj-dist/network/','cp music/*.html .tagj-dist/music/','cp beats/*.html .tagj-dist/beats/','cp catalogue/*.html .tagj-dist/catalogue/','cp services/*.html .tagj-dist/services/','cp creative/*.html .tagj-dist/creative/','cp tagj-assets/*.js .tagj-dist/tagj-assets/','cp tagj-assets/media/* .tagj-dist/tagj-assets/media/','cp -R tagj-assets/network/* .tagj-dist/tagj-assets/network/','cp tagj-data/* .tagj-dist/tagj-data/','cp legal/* .tagj-dist/legal/']){
+for(const token of ['index.html preview.html full.html tagj.html artist.html producer.html creative.html contact.html licensing.html 404.html','cp network/*.html .tagj-dist/network/','cp music/*.html .tagj-dist/music/','cp beats/*.html .tagj-dist/beats/','cp catalogue/*.html .tagj-dist/catalogue/','cp services/*.html .tagj-dist/services/','cp creative/*.html .tagj-dist/creative/','cp tagj-assets/*.js .tagj-dist/tagj-assets/','cp tagj-assets/media/* .tagj-dist/tagj-assets/media/','tagj-assets/beat-previews/*.mp3','cp -R tagj-assets/network/* .tagj-dist/tagj-assets/network/','cp tagj-data/* .tagj-dist/tagj-data/','cp legal/* .tagj-dist/legal/']){
   if(!build.includes(token))fail(`Build script missing expected shipping rule: ${token}`);
 }
 
