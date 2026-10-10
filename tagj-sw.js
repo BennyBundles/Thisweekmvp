@@ -1,5 +1,5 @@
 'use strict';
-const VERSION='tagj-nav-v1536-reset';
+const VERSION='tagj-nav-v1537-reset';
 
 self.addEventListener('install',event=>{
   event.waitUntil(self.skipWaiting());
