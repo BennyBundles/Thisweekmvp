@@ -426,6 +426,11 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   for(const pair of [['/artist','/artist.html'],['/producer','/producer.html'],['/creative','/creative.html'],['/full','/full.html'],['/press','/press.html'],['/network','/network/index.html'],['/services','/services/index.html']]){
     if(!(vc.rewrites||[]).some(x=>x.source===pair[0]&&x.destination===pair[1]))fail('vercel.json: clean-route compatibility rewrite missing '+pair[0]);
   }
+  const fallbackPairs=new Map([...html['404.html'].matchAll(/\['(\/[^']*)','([^']+)'\]/g)].map(m=>[m[1],m[2]]));
+  for(const rewrite of vc.rewrites||[]){
+    const expected=String(rewrite.destination||'').replace(/^\//,'');
+    if(fallbackPairs.get(rewrite.source)!==expected)fail('static-host fallback parity mismatch '+rewrite.source+' -> '+expected);
+  }
   if(!(vc.redirects||[]).some(x=>x.source==='/preview'&&x.destination==='/'))fail('vercel.json: /preview must redirect to root');
   if(!(vc.redirects||[]).some(x=>x.source==='/now'&&x.destination==='/campaign'&&x.permanent===false))fail('vercel.json: evergreen /now campaign redirect missing');
 
