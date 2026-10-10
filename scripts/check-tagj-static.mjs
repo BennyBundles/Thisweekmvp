@@ -121,7 +121,7 @@ for(const p of ['artist.html','campaign.html']) if(!html[p].includes('id="youtub
   const vstResearch=(gates?.featureGates||[]).find(x=>x.id==='melody-vst-beta-research');
   if(!vstResearch||vstResearch.status!=='active_zero_backend')fail('launch gates must declare active Melody VST beta research');
   const hero=(gates?.featureGates||[]).find(x=>x.id==='benny-hero-portrait');
-  if(!hero||hero.status!=='source_reference_recovered_binary_missing'||hero.blockingForSite!==false)fail('launch gates must declare non-blocking Benny hero portrait fallback');
+  if(!hero||hero.status!=='resolved_first_party_asset'||hero.blockingForSite!==false||hero.expectedAsset!=='tagj-assets/media/benny-artist-hero.png')fail('launch gates must declare resolved first-party Benny hero portrait');
 }
 
 // Canonical creator / organization identity must be consistent across first-party surfaces.
@@ -134,6 +134,7 @@ for(const p of ['artist.html','campaign.html']) if(!html[p].includes('id="youtub
   if(person?.['@id']!=='/artist#benny-bundles'||person?.url!=='/artist')fail('artist.html: canonical Benny entity URL drift');
   if(org?.['@id']!=='/artist#tagj'||org?.url!=='/tagj')fail('artist.html: canonical TAGJ entity URL drift');
   if(profile?.url!=='/artist'||profile?.mainEntity?.['@id']!=='/artist#benny-bundles')fail('artist.html: canonical ProfilePage identity drift');
+  if(person?.image!=='/tagj-assets/media/benny-artist-hero.png'||profile?.primaryImageOfPage!=='/tagj-assets/media/benny-artist-hero.png')fail('artist.html: canonical Benny portrait schema drift');
   const homeSchema=JSON.parse((html['index.html'].match(/<script\b[^>]*id=["']tagj-home-entity-schema["'][^>]*>([\s\S]*?)<\/script>/i)||[])[1]||'{}');
   const homeGraph=homeSchema['@graph']||[];
   const hp=homeGraph.find(x=>x&&x['@type']==='Person');
@@ -214,9 +215,8 @@ for(const [file,src] of Object.entries(html)){
 }
 
 // Local HTML/assets referenced from static markup must exist. Ignore generated JS strings,
-// mailto, external protocols and pure hash links. The Benny hero is an intentional
-// optional drop-in binary; packaged integrity validates it when the public asset bundle exists.
-const optionalLocalRefs=new Set(['tagj-assets/media/benny-artist-hero.webp']);
+// mailto, external protocols and pure hash links.
+const optionalLocalRefs=new Set();
 for(const [file,src] of Object.entries(html)){
   const clean=stripExecutable(src);
   const dir=path.dirname(file);
@@ -401,7 +401,7 @@ for(const forbidden of ['business.v1.json','launch-gates.v1.json','sample-review
   const seoScript=read('scripts/generate-tagj-seo.mjs');
   if(!seoScript.includes('TAGJ_PUBLIC_ORIGIN')||!seoScript.includes('noindex,nofollow,noarchive'))fail('SEO generator: protected/public mode contract missing');
   if(!build.includes('tagj-public-assets-ready.zip'))fail('build: one-file public asset bundle support missing');
-  if(!html['artist.html'].includes('bennyHeroAsset')||!html['artist.html'].includes('benny-artist-hero.webp'))fail('artist.html: drop-in hero asset hook missing');
+  if(!html['artist.html'].includes('bennyHeroAsset')||!html['artist.html'].includes('benny-artist-hero.png'))fail('artist.html: authentic hero portrait missing');
   if(!html['index.html'].includes('tagj-home-entity-schema'))fail('index.html: home entity graph missing');
   if(!html['artist.html'].includes('id="about"')||!html['artist.html'].includes('id="verified-releases"'))fail('artist.html: artist-first entity structure missing');
   if(!html['press.html'].includes('id="benny-epk-schema"'))fail('press.html: EPK schema missing');
