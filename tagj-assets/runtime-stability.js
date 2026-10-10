@@ -78,6 +78,26 @@
     }
   }
 
+
+  const shareEligible=/\/music\/(?!index\.html?$)[^/]+(?:\.html)?\/?$/.test(location.pathname)||/\/press(?:\.html)?\/?$/.test(location.pathname);
+  if(shareEligible){
+    const actions=d.querySelector('main .hero .actions,.hero .actions');
+    if(actions&&!actions.querySelector('[data-tagj-share-page]')){
+      const shareBtn=d.createElement('button');
+      shareBtn.type='button';shareBtn.className='btn';shareBtn.setAttribute('data-tagj-share-page','');shareBtn.textContent='Share';
+      shareBtn.addEventListener('click',async()=>{
+        const description=d.querySelector('meta[name="description"]')?.content||'';
+        const payload={title:d.title,text:description,url:location.href};
+        try{
+          if(navigator.share){await navigator.share(payload);return}
+          await navigator.clipboard.writeText(location.href);
+          const old=shareBtn.textContent;shareBtn.textContent='Link copied';setTimeout(()=>shareBtn.textContent=old,1400);
+        }catch(_){}
+      });
+      actions.appendChild(shareBtn);
+    }
+  }
+
   const syncVisibility=()=>root.classList.toggle('tagj-runtime-paused',d.hidden);
   d.addEventListener('visibilitychange',syncVisibility,{passive:true});
   syncVisibility();
