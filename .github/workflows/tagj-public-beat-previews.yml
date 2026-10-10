@@ -46,9 +46,9 @@ jobs:
             echo "::group::$beat_id"
             rm -f /tmp/tagj-source.wav
             if timeout 90 gdown "$drive_id" -O /tmp/tagj-source.wav </dev/null; then
-              if ffmpeg -nostdin -hide_banner -loglevel error -y -ss 15 -i /tmp/tagj-source.wav -t 45 -vn \
-                -af "loudnorm=I=-14:LRA=11:TP=-1.5,afade=t=in:st=0:d=0.35,afade=t=out:st=44:d=1" \
-                -ar 44100 -ac 2 -c:a libmp3lame -b:a 160k "tagj-assets/beat-previews/$beat_id.mp3"; then
+              if ffmpeg -nostdin -hide_banner -loglevel error -y -ss 15 -i /tmp/tagj-source.wav -t 30 -vn \
+                -af "loudnorm=I=-14:LRA=11:TP=-1.5,afade=t=in:st=0:d=0.35,afade=t=out:st=29:d=1" \
+                -ar 44100 -ac 2 -c:a libmp3lame -b:a 128k "tagj-assets/beat-previews/$beat_id.mp3"; then
                 success=$((success+1))
                 echo "Generated $beat_id from an already-public Drive source."
               else
@@ -103,7 +103,7 @@ jobs:
               if local.exists():
                   url=f"/tagj-assets/beat-previews/{beat_id}.mp3"
                   beat["previewUrl"]=url
-                  beat["preview"]={"url":url,"format":"mp3","durationSeconds":45,"bitrateKbps":160,"sourceOffsetSeconds":15}
+                  beat["preview"]={"url":url,"format":"mp3","durationSeconds":30,"bitrateKbps":128,"sourceOffsetSeconds":15}
               else:
                   beat.pop("previewUrl",None)
                   beat.pop("preview",None)
