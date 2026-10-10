@@ -15,6 +15,7 @@ let moneySummary=null;
 let pinwheelToken=null;
 let certificationContext=null;
 let certificationEvidence=null;
+let deployedRelease=null;
 
 function log(label,data){
   const stamp=new Date().toISOString().slice(11,19);
@@ -115,7 +116,7 @@ function updateUi(){
   const aal2=signed&&p.aal==='aal2';
   for(const id of ['signOut','enrollMfa','verifyMfa','gatewayStatus','gatewayBootstrap','gatewaySummary','sandboxCredit','allocate','providerPreflight','riskStatus','opsStatus','chainRefresh','unitApplication','unitApplicationStatus','unitDeposit','unitDirectFund','plaidConsent','plaidStart','plaidFinalize','plaidAccounts','plaidUnitLink','externalFund','createCard','simulateAuth','createDispute','advanceDispute','directDepositToken','methodSetup','methodPay','registerWebhooks'])$(id).disabled=!signed;
   $('refreshCertification').disabled=!aal2;
-  if(!aal2)$('recordReadyEvidence').disabled=true;
+  if(!aal2){$('recordReadyEvidence').disabled=true;$('activateDeployedCandidate').disabled=true;}
 }
 async function signIn(){
   const email=$('email').value.trim(),password=$('password').value;
@@ -135,7 +136,7 @@ async function signOut(){
   if(session?.access_token){
     try{await api('/auth/v1/logout?scope=local',{method:'POST',auth:true,body:'{}'});}catch(e){log('Sign-out request warning',e.message);}
   }
-  writeSession(null);currentUser=null;lastEnroll=null;certificationContext=null;certificationEvidence=null;renderFactors();renderCertification(null,null);$('qr').style.display='none';$('secret').style.display='none';log('Signed out','Session tokens cleared from this tab.');
+  writeSession(null);currentUser=null;lastEnroll=null;certificationContext=null;certificationEvidence=null;deployedRelease=null;renderFactors();renderCertification(null,null,null);$('qr').style.display='none';$('secret').style.display='none';log('Signed out','Session tokens cleared from this tab.');
 }
 async function enrollMfa(){
   await ensureFresh();
@@ -196,9 +197,20 @@ async function releaseGateway(action,extra={}){
   if(!res.ok)throw new Error(body.error||('Release Gateway HTTP '+res.status));
   return body;
 }
-function renderCertification(release,evidence){
+async function loadDeployedRelease(){
+  try{
+    const res=await fetch('../release.json?money-lab='+Date.now(),{cache:'no-store'});
+    if(!res.ok)return null;
+    const body=await res.json();
+    return /^[0-9a-f]{40}$/.test(String(body.commit||''))?body:null;
+  }catch{return null;}
+}
+function renderCertification(release,evidence,deployed=deployedRelease){
   const candidate=release?.readiness?.activeCandidate||null;
   const cert=release?.readiness?.candidateReport?.latestCertification||null;
+  const deployedSha=String(deployed?.commit||'');
+  const candidateSha=String(candidate?.releaseCandidateSha||'');
+  const candidateMatches=!!deployedSha&&deployedSha===candidateSha;
   const scanner=Array.isArray(evidence?.evidence?.requirements)?evidence.evidence.requirements:[];
   const scannerMap=new Map(scanner.map(x=>[x.requirementKey,x]));
   $('certCandidate').textContent=candidate?.releaseCandidateSha?candidate.releaseCandidateSha.slice(0,10):'—';
@@ -207,18 +219,24 @@ function renderCertification(release,evidence){
   const missing=new Set(Array.isArray(cert?.missing)?cert.missing:[]);
   const readyUnrecorded=scanner.filter(x=>x.ready&&missing.has(x.requirementKey));
   $('certReady').textContent=scanner.length?(readyUnrecorded.length+' ready to record'):'—';
-  $('recordReadyEvidence').disabled=!(session?.access_token&&jwtPayload(session.access_token).aal==='aal2'&&cert?.runId&&readyUnrecorded.length&&['admin','risk_ops'].includes(release?.role));
+  const canCertify=session?.access_token&&jwtPayload(session.access_token).aal==='aal2'&&['admin','risk_ops'].includes(release?.role);
+  $('activateDeployedCandidate').disabled=!(canCertify&&deployedSha&&(!candidateMatches||!cert?.runId));
+  $('recordReadyEvidence').disabled=!(canCertify&&candidateMatches&&cert?.runId&&readyUnrecorded.length);
   const notice=$('certNotice');
   if(!session?.access_token||jwtPayload(session.access_token).aal!=='aal2'){
-    notice.innerHTML='<strong>Certification:</strong> Verify TOTP MFA to load staff-only release evidence.';
+    notice.textContent='Certification: Verify TOTP MFA to load staff-only release evidence.';
+  }else if(!deployedSha){
+    notice.textContent='Certification: Deployed release metadata is unavailable; evidence recording is blocked.';
   }else if(!candidate){
-    notice.innerHTML='<strong>Certification:</strong> No active release candidate is selected.';
+    notice.textContent='Certification: No active release candidate is selected. Use the deployed candidate before recording evidence.';
+  }else if(!candidateMatches){
+    notice.textContent='Certification: Active candidate '+candidateSha.slice(0,10)+' is stale; deployed release is '+deployedSha.slice(0,10)+'. Select the deployed candidate before recording evidence.';
   }else if(!cert?.runId){
-    notice.innerHTML='<strong>Certification:</strong> Active candidate has no certification run.';
+    notice.textContent='Certification: Current deployed candidate has no certification run. Start the deployed candidate pass.';
   }else if(cert.passed){
-    notice.innerHTML='<strong>Certification:</strong> This Sandbox certification run is fully passed.';
+    notice.textContent='Certification: This Sandbox certification run is fully passed.';
   }else{
-    notice.innerHTML='<strong>Certification:</strong> '+Number(cert.passedCount||0)+' recorded · '+missing.size+' missing · '+readyUnrecorded.length+' persisted evidence item'+(readyUnrecorded.length===1?'':'s')+' ready to record.';
+    notice.textContent='Certification: '+Number(cert.passedCount||0)+' recorded · '+missing.size+' missing · '+readyUnrecorded.length+' persisted evidence item'+(readyUnrecorded.length===1?'':'s')+' ready to record.';
   }
   const root=$('certEvidence');root.textContent='';
   const rows=Array.isArray(cert?.requirements)?cert.requirements:[];
@@ -241,11 +259,12 @@ async function refreshCertification({quiet=false}={}){
     certificationContext=null;certificationEvidence=null;renderCertification(null,null);return null;
   }
   try{
-    const [release,evidence]=await Promise.all([
+    const [release,evidence,deployed]=await Promise.all([
       releaseGateway('status'),
-      gateway('certification_evidence_status')
+      gateway('certification_evidence_status'),
+      loadDeployedRelease()
     ]);
-    certificationContext=release;certificationEvidence=evidence;renderCertification(release,evidence);
+    certificationContext=release;certificationEvidence=evidence;deployedRelease=deployed;renderCertification(release,evidence,deployed);
     if(!quiet)log('Phase 34 certification evidence refreshed',{
       candidate:release?.readiness?.activeCandidate?.releaseCandidateSha||null,
       runId:release?.readiness?.candidateReport?.latestCertification?.runId||null,
@@ -254,17 +273,47 @@ async function refreshCertification({quiet=false}={}){
     return {release,evidence};
   }catch(e){
     certificationContext=null;certificationEvidence=null;
-    $('certNotice').innerHTML='<strong>Certification:</strong> '+String(e.message||e);
-    $('recordReadyEvidence').disabled=true;
+    $('certNotice').textContent='Certification: '+String(e.message||e);
+    $('recordReadyEvidence').disabled=true;$('activateDeployedCandidate').disabled=true;
     if(!quiet)throw e;
     return null;
   }
+}
+async function activateDeployedCandidate(){
+  if(!session?.access_token||jwtPayload(session.access_token).aal!=='aal2')throw new Error('Verify MFA before changing the release candidate.');
+  const deployed=await loadDeployedRelease();
+  const sha=String(deployed?.commit||'');
+  if(!/^[0-9a-f]{40}$/.test(sha))throw new Error('Deployed release commit is unavailable.');
+  let status=await releaseGateway('status');
+  const activeSha=String(status?.readiness?.activeCandidate?.releaseCandidateSha||'');
+  if(activeSha!==sha){
+    const sourceRef=deployed?.workflowRunId?'github-pages:run:'+String(deployed.workflowRunId):'github-pages:release.json';
+    await releaseGateway('select_candidate',{
+      releaseCandidateSha:sha,
+      sourceRef,
+      note:'Selected from the deployed Money Lab release manifest before Phase 34 evidence execution.'
+    });
+    status=await releaseGateway('status');
+    log('Deployed release candidate selected',{releaseCandidateSha:sha,sourceRef});
+  }
+  const cert=status?.readiness?.candidateReport?.latestCertification||null;
+  if(!cert?.exists||String(cert.releaseCandidateSha||'')!==sha){
+    const started=await releaseGateway('start_certification',{
+      releaseCandidateSha:sha,
+      note:'Phase 34 Sandbox certification run for the currently deployed Pages release.'
+    });
+    log('Phase 34 certification run started',{releaseCandidateSha:sha,runId:started.runId||null});
+  }
+  await refreshCertification({quiet:true});
 }
 async function recordReadyEvidence(){
   const loaded=await refreshCertification({quiet:true});
   if(!loaded)throw new Error('Certification context is not available.');
   const release=loaded.release,evidence=loaded.evidence;
   const cert=release?.readiness?.candidateReport?.latestCertification;
+  const deployedSha=String(deployedRelease?.commit||'');
+  const candidateSha=String(release?.readiness?.activeCandidate?.releaseCandidateSha||'');
+  if(!deployedSha||candidateSha!==deployedSha)throw new Error('Active release candidate does not match the deployed commit.');
   const missing=new Set(Array.isArray(cert?.missing)?cert.missing:[]);
   const ready=(evidence?.evidence?.requirements||[]).filter(x=>x.ready&&missing.has(x.requirementKey)&&x.evidenceRef);
   if(!cert?.runId||!ready.length)throw new Error('No persisted evidence is ready to record.');
@@ -570,5 +619,5 @@ async function gatewaySummary(){log('Ledger summary',await gateway('summary'));}
 async function sandboxCredit(){log('Sandbox credit',await gateway('sandbox_credit',{amountCents:cents($('sandboxAmount').value),clientRequestId:requestId('lab_credit')}));}
 async function allocate(){log('Envelope allocation',await gateway('allocate',{amountCents:cents($('allocateAmount').value),envelopeKey:$('envelope').value,clientRequestId:requestId('lab_allocate')}));}
 function bind(id,fn){$(id).addEventListener('click',()=>fn().catch(e=>log('Error',e.message)));}
-bind('refreshCertification',refreshCertification);bind('recordReadyEvidence',recordReadyEvidence);bind('signIn',signIn);bind('signUp',signUp);bind('signOut',signOut);bind('enrollMfa',enrollMfa);bind('verifyMfa',verifyMfa);bind('providerPreflight',providerPreflight);bind('riskStatus',riskStatus);bind('opsStatus',opsStatus);bind('gatewayStatus',gatewayStatus);bind('gatewayBootstrap',gatewayBootstrap);bind('gatewaySummary',gatewaySummary);bind('sandboxCredit',sandboxCredit);bind('allocate',allocate);bind('chainRefresh',refreshChain);bind('unitApplication',unitApplication);bind('unitApplicationStatus',unitApplicationStatus);bind('unitDeposit',unitDeposit);bind('unitDirectFund',unitDirectFund);bind('plaidConsent',plaidConsent);bind('plaidStart',plaidStart);bind('plaidFinalize',plaidFinalize);bind('plaidAccounts',plaidAccounts);bind('plaidUnitLink',plaidUnitLink);bind('externalFund',externalFund);bind('createCard',createCard);bind('simulateAuth',simulateAuth);bind('createDispute',createDispute);bind('advanceDispute',advanceDispute);bind('directDepositToken',directDepositToken);bind('methodSetup',methodSetup);bind('methodPay',methodPay);bind('registerWebhooks',registerWebhooks);
+bind('refreshCertification',refreshCertification);bind('activateDeployedCandidate',activateDeployedCandidate);bind('recordReadyEvidence',recordReadyEvidence);bind('signIn',signIn);bind('signUp',signUp);bind('signOut',signOut);bind('enrollMfa',enrollMfa);bind('verifyMfa',verifyMfa);bind('providerPreflight',providerPreflight);bind('riskStatus',riskStatus);bind('opsStatus',opsStatus);bind('gatewayStatus',gatewayStatus);bind('gatewayBootstrap',gatewayBootstrap);bind('gatewaySummary',gatewaySummary);bind('sandboxCredit',sandboxCredit);bind('allocate',allocate);bind('chainRefresh',refreshChain);bind('unitApplication',unitApplication);bind('unitApplicationStatus',unitApplicationStatus);bind('unitDeposit',unitDeposit);bind('unitDirectFund',unitDirectFund);bind('plaidConsent',plaidConsent);bind('plaidStart',plaidStart);bind('plaidFinalize',plaidFinalize);bind('plaidAccounts',plaidAccounts);bind('plaidUnitLink',plaidUnitLink);bind('externalFund',externalFund);bind('createCard',createCard);bind('simulateAuth',simulateAuth);bind('createDispute',createDispute);bind('advanceDispute',advanceDispute);bind('directDepositToken',directDepositToken);bind('methodSetup',methodSetup);bind('methodPay',methodPay);bind('registerWebhooks',registerWebhooks);
 updateUi();renderFactors();renderCertification(null,null);if(session?.access_token)getUser().then(()=>fillConfigurationStatus()).then(()=>refreshChain()).catch(e=>{log('Session restore failed',e.message);writeSession(null);});
