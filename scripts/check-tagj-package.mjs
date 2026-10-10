@@ -193,6 +193,8 @@ else{
     const previewStatus=JSON.parse(read('tagj-data/beat-preview-status.v1.json'));
     if(previewStatus.expectedPreviewCount!==22) failures.push('Beat preview status expected count must be 22');
     if(previewStatus.localPreviewsReady!==(previewStatus.localPreviewCount===22)) failures.push('Beat preview readiness does not match packaged preview count');
+    const expectedMode=previewStatus.localPreviewCount===22?'local':previewStatus.localPreviewCount>0?'hybrid':'drive_fallback';
+    if(previewStatus.preferredMode!==expectedMode) failures.push('Beat preview preferred mode does not match local coverage');
   }catch(err){failures.push('Invalid Beat Vault preview status JSON: '+err.message)}
 }
 if(fileSet.has('tagj-data/beat-catalog.v1.json')){
@@ -211,7 +213,12 @@ const nonAudioBytes=files
 if(nonAudioBytes>9*1048576) failures.push('Non-audio TAGJ package exceeds 9 MB performance budget: '+(nonAudioBytes/1048576).toFixed(1)+' MB');
 
 const packagedPreviewCount=[...fileSet].filter(p=>/^tagj-assets\/beat-previews\/beat-\d{3}\.mp3$/.test(p)).length;
-if(packagedPreviewCount>0 && packagedPreviewCount!==22) failures.push('Package contains a partial site-hosted beat preview set: '+packagedPreviewCount+'/22');
+if(fileSet.has('tagj-data/beat-preview-status.v1.json')){
+  try{
+    const previewStatus=JSON.parse(read('tagj-data/beat-preview-status.v1.json'));
+    if(previewStatus.localPreviewCount!==packagedPreviewCount) failures.push('Beat preview status count does not match packaged MP3 count');
+  }catch(_){}
+}
 
 if(failures.length){
   console.error('TAGJ package check FAILED');
