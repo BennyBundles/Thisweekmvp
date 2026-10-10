@@ -64,4 +64,4 @@ printf '{"schemaVersion":1,"expectedPreviewCount":22,"localPreviewCount":%s,"loc
 cp legal/* .tagj-dist/legal/
 
 node scripts/generate-tagj-seo.mjs
-printf 'V15.35' > .tagj-dist/VERSION.txt
+printf 'V15.36' > .tagj-dist/VERSION.txt
