@@ -267,6 +267,10 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   }
   if(!build.includes('.tagj-dist/tagj-assets/a??.css'))fail('build: obsolete micro-CSS cleanup missing');
   if(!build.includes("printf 'V15.33'"))fail('build: VERSION.txt is not V15.33');
+  const runtime=read('tagj-assets/runtime-stability.js');
+  if(!runtime.includes('tagj-global-map')||!runtime.includes('tagj-map-trigger'))fail('runtime: global route switcher missing');
+  if(!runtime.includes("e.key==='Tab'")||!runtime.includes("aria-current','page"))fail('runtime: route switcher focus/current-page safeguards missing');
+  if(!runtime.includes('data-tagj-share-page')||!runtime.includes('navigator.share'))fail('runtime: native release/EPK share action missing');
   if(!build.includes('generate-tagj-seo.mjs'))fail('build: environment-aware SEO generator missing');
   if(!build.includes('site.webmanifest'))fail('build: site.webmanifest shipping rule missing');
   if(!build.includes('beat-preview-status.v1.json'))fail('build: Beat Vault preview capability manifest generation missing');
