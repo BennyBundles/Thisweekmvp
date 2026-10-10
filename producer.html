@@ -42,7 +42,7 @@ body{background:#05090b;color:#dce6eb}.top{background:rgba(5,9,11,.82);border-bo
    grid.innerHTML='';
    featured.forEach((beat,index)=>{
      const card=document.createElement('article');card.className='feature-beat';
-     card.innerHTML='<div><small>FEATURE '+String(index+1).padStart(2,'0')+' / SITE PREVIEW</small><b></b><p>45-second mobile preview. Full-quality delivery depends on license tier and available source.</p><div class="beat-bars" aria-hidden="true">'+bars()+'</div></div><div class="beat-actions"><button type="button" class="beat-play">Play preview</button><a href="beats/index.html">Beat Vault →</a></div>';
+     card.innerHTML='<div><small>FEATURE '+String(index+1).padStart(2,'0')+' / SITE PREVIEW</small><b></b><p>30-second mobile preview. Full-quality delivery depends on license tier and available source.</p><div class="beat-bars" aria-hidden="true">'+bars()+'</div></div><div class="beat-actions"><button type="button" class="beat-play">Play preview</button><a href="beats/index.html">Beat Vault →</a></div>';
      card.querySelector('b').textContent=beat.title||beat.id;
      const btn=card.querySelector('.beat-play');
      btn.addEventListener('click',async()=>{
