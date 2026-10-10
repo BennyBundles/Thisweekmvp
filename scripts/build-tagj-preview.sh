@@ -69,17 +69,30 @@ node - <<'NODE'
 const fs=require('fs');
 const campaign=JSON.parse(fs.readFileSync('tagj-data/current-campaign.v1.json','utf8'));
 const previews=JSON.parse(fs.readFileSync('.tagj-dist/tagj-data/beat-preview-status.v1.json','utf8'));
+const gates=JSON.parse(fs.readFileSync('tagj-data/launch-gates.v1.json','utf8'));
+const featureStates=Object.fromEntries((gates.featureGates||[]).map(x=>[x.id,x.status||null]));
 const manifest={
-  schemaVersion:1,
+  schemaVersion:2,
   product:'Benny Bundles × TAGJ',
   version:'V15.37',
   mode:process.env.TAGJ_PUBLIC_ORIGIN?'public':'protected-preview',
   commit:process.env.VERCEL_GIT_COMMIT_SHA||process.env.GITHUB_SHA||null,
   campaignId:campaign.campaignId||null,
   currentRelease:campaign.release?.id||null,
+  currentCampaignRoute:campaign.release?.campaignPath||'/campaign',
+  evergreenCampaignRoute:campaign.release?.evergreenPath||'/now',
   localBeatPreviewCount:previews.localPreviewCount,
   expectedBeatPreviewCount:previews.expectedPreviewCount,
-  localPreviewsReady:previews.localPreviewsReady
+  localPreviewsReady:previews.localPreviewsReady,
+  beatPreviewMode:previews.preferredMode,
+  launch:{
+    previewStatus:gates.previewLaunch?.status||null,
+    publicStatus:gates.publicLaunch?.status||null,
+    publicBlockers:(gates.publicLaunch?.blockers||[]).filter(x=>x.blocking).map(x=>x.id)
+  },
+  featureStates,
+  growthRoutes:['/now','/season1','/vst','/subscribe','/press','/contact'],
+  portablePwa:true
 };
 fs.writeFileSync('.tagj-dist/build-manifest.json',JSON.stringify(manifest,null,2)+'\n');
 NODE
