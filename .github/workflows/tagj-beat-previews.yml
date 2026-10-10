@@ -7,6 +7,10 @@ on:
     paths:
       - .github/workflows/tagj-beat-previews.yml
 
+concurrency:
+  group: tagj-beat-preview-generation
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
@@ -122,4 +126,5 @@ jobs:
             exit 0
           fi
           git commit -m "Add site-hosted TAGJ beat previews [skip ci]"
+          git pull --rebase origin tagj-v12-preview
           git push origin HEAD:tagj-v12-preview
