@@ -49,7 +49,7 @@ jobs:
             [ -n "$beat_id" ] || continue
             echo "Generating $beat_id"
             rm -f /tmp/tagj-source.wav
-            gdown "$drive_id" -O /tmp/tagj-source.wav
+            gdown "$drive_id" -O /tmp/tagj-source.wav </dev/null
             ffmpeg -hide_banner -loglevel error -y -ss 15 -i /tmp/tagj-source.wav -t 45 -vn \
               -af "loudnorm=I=-14:LRA=11:TP=-1.5,afade=t=in:st=0:d=0.35,afade=t=out:st=44:d=1" \
               -ar 44100 -ac 2 -c:a libmp3lame -b:a 160k "tagj-assets/beat-previews/$beat_id.mp3"
