@@ -1090,17 +1090,20 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
    meta.innerHTML='<span>'+fmtTime(b.audio.durationSeconds)+'</span><span>'+b.audio.format.toUpperCase()+'</span><span>'+Math.round(b.audio.sampleRate/1000*10)/10+' kHz</span><span>'+fmtSize(b.audio.fileSizeBytes)+'</span><span>Prod. by Bundles</span>';
    if(audio){audio.pause();audio.removeAttribute('src');audio.load();audio.hidden=true}
    if(driveFrame){driveFrame.src='about:blank'}if(drivePreview)drivePreview.hidden=true;
-   const localPreview=b.previewUrl||b.preview?.url||('tagj-assets/beat-previews/'+encodeURIComponent(b.id)+'.mp3');
-   if(previewState.localPreviewsReady&&audio){
+   const localPreview=b.previewUrl||b.preview?.url||null;
+   const restricted=b.previewAvailability==='drive_restricted'||b.previewDelivery==='no_public_browser_preview';
+   if(localPreview&&audio){
      audio.src=localPreview;audio.hidden=false;audio.load();
      status.textContent='Site-hosted 45-second preview ready.';
-   }else if(b.source?.driveId&&driveFrame){
+   }else if(b.source?.driveId&&driveFrame&&!restricted){
      driveFrame.title=b.title+' beat preview';
      driveFrame.src='https://drive.google.com/file/d/'+encodeURIComponent(b.source.driveId)+'/preview';
      drivePreview.hidden=false;
-     status.textContent='Drive preview loaded directly while site-hosted previews are unavailable.';
+     status.textContent='Drive preview loaded.';
+   }else if(restricted){
+     status.textContent='Public browser preview unavailable for this beat; the source master remains restricted.';
    }else{
-     status.textContent='No browser preview source is available for this beat. Use “Open Drive source.”';
+     status.textContent='No browser preview source is available for this beat yet.';
    }
    source.href=b.source.viewerUrl;source.removeAttribute('aria-disabled');
    request.disabled=false;
@@ -1110,7 +1113,7 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
  audio?.addEventListener('play',()=>wave?.classList.add('playing'));
  audio?.addEventListener('pause',()=>wave?.classList.remove('playing'));
  audio?.addEventListener('ended',()=>wave?.classList.remove('playing'));
- audio?.addEventListener('error',()=>{wave?.classList.remove('playing');if(!selected)return;audio.hidden=true;if(selected.source?.driveId&&driveFrame){driveFrame.title=selected.title+' beat preview';driveFrame.src='https://drive.google.com/file/d/'+encodeURIComponent(selected.source.driveId)+'/preview';drivePreview.hidden=false;status.textContent='Site preview unavailable; Drive fallback loaded automatically.'}else status.textContent='The site-hosted audio preview could not load. Use “Open Drive source.”'});
+ audio?.addEventListener('error',()=>{wave?.classList.remove('playing');if(!selected)return;audio.hidden=true;const restricted=selected.previewAvailability==='drive_restricted'||selected.previewDelivery==='no_public_browser_preview';if(selected.source?.driveId&&driveFrame&&!restricted){driveFrame.title=selected.title+' beat preview';driveFrame.src='https://drive.google.com/file/d/'+encodeURIComponent(selected.source.driveId)+'/preview';drivePreview.hidden=false;status.textContent='Site preview unavailable; Drive fallback loaded automatically.'}else status.textContent=restricted?'Public browser preview unavailable; source remains restricted.':'The site-hosted audio preview could not load.'});
  request?.addEventListener('click',()=>{if(!selected)return;setTimeout(()=>{const p=q('#v143ProjectTitle');if(p&&!p.value)p.value=selected.title;const n=q('#v143Notes');if(n&&!n.value)n.value='Selected beat: '+selected.title+' / source '+selected.id;},0)},true);
  search?.addEventListener('input',()=>render(search.value));
  Promise.all([
@@ -1119,7 +1122,8 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
  ]).then(([data,state])=>{
    previewState={...previewState,...state};
    beats=Array.isArray(data.beats)?data.beats:[];render();
-   status.textContent=beats.length+' verified source records loaded · '+(previewState.localPreviewsReady?'site-hosted previews ready':'Drive preview fallback active')+'. Select a beat.';
+   const delivery=previewState.preferredMode==='local'?'all site-hosted previews ready':previewState.preferredMode==='hybrid'?(previewState.localPreviewCount+' / '+previewState.expectedPreviewCount+' site-hosted previews ready · restricted beats labeled'):'Drive preview fallback active';
+   status.textContent=beats.length+' verified source records loaded · '+delivery+'. Select a beat.';
    try{const saved=JSON.parse(localStorage.getItem('tagjSelectedBeatV158')||'null');const hit=saved&&beats.find(b=>b.id===saved.id);if(hit)selectBeat(hit)}catch(_){}
  }).catch(()=>{status.textContent='Beat catalogue data could not be loaded. The source records remain available in the project data layer.'});
 })();
