@@ -104,6 +104,15 @@ const absolutizeStructuredData=(src,origin,isHome=false)=>src.replace(
   }
 );
 
+const ensureInstallMeta=src=>{
+  const add=(tag,re)=>{ if(!re.test(src)) src=src.replace(/<\/head>/i,tag+'</head>'); };
+  add('<link rel="manifest" href="/site.webmanifest">',/<link\b[^>]*rel=["']manifest["']/i);
+  add('<link rel="icon" type="image/png" sizes="32x32" href="/tagj-assets/icons/favicon-32.png">',/<link\b[^>]*rel=["']icon["'][^>]*sizes=["']32x32["']/i);
+  add('<link rel="apple-touch-icon" sizes="180x180" href="/tagj-assets/icons/apple-touch-icon.png">',/<link\b[^>]*rel=["']apple-touch-icon["']/i);
+  add('<meta name="apple-mobile-web-app-title" content="Benny Bundles">',/<meta\b[^>]*name=["']apple-mobile-web-app-title["']/i);
+  return src;
+};
+
 const ensureSocialMeta=src=>{
   const title=(src.match(/<title>([\s\S]*?)<\/title>/i)?.[1]||'').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
   const description=(src.match(/<meta\b[^>]*name=["']description["'][^>]*content=["']([^"']*)["'][^>]*>/i)?.[1]||'').trim();
@@ -151,6 +160,7 @@ const htmlFiles=walkHtml(dist);
 // Default-deny indexing. Public mode explicitly promotes only canonical routes below.
 for(const p of htmlFiles){
   let src=fs.readFileSync(p,'utf8');
+  src=ensureInstallMeta(src);
   src=ensureSocialMeta(src);
   src=upsertHead(
     src,
