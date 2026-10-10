@@ -82,6 +82,17 @@ if(!html['index.html'].includes('class="home-release-signal" href="campaign.html
 if(!html['producer.html'].includes('id="featuredBeatGrid"')||!html['producer.html'].includes("new Audio(beat.previewUrl)"))fail('producer.html: featured Beat audition rail missing');
 if(!html['artist.html'].includes('href="network/billyen.html"')||!html['network/index.html'].includes('href="billyen.html"'))fail('BillYen direct network surface missing');
 if(!html['network/billyen.html'].includes('billyen-profile-schema')||!html['network/billyen.html'].includes('https://youtube.com/@billyenthebuilder')||!html['network/billyen.html'].includes('oDa5fa3Zet8'))fail('BillYen profile verified identity/link contract missing');
+if(!html['tagj.html'].includes('id="season-one"')||!html['tagj.html'].includes('id="tagjWaitlistForm"')||!html['tagj.html'].includes('Your information is not transmitted until you review and send that email'))fail('TAGJ Season 1 waitlist contract missing');
+if(!html['tagj.html'].includes('free-shirt drawing')||!html['tagj.html'].includes('official rules'))fail('TAGJ free-shirt promotion must remain pre-launch and rules-gated');
+if(!html['producer.html'].includes('id="producer-tools"')||!html['producer.html'].includes('Melody VST')||!html['producer.html'].includes('No fake download'))fail('Producer’s Tools / VST development surface missing or misleading');
+for(const p of ['artist.html','campaign.html']) if(!html[p].includes('id="youtube-subscribe"')||!html[p].includes('https://www.youtube.com/@bennybundles?sub_confirmation=1')) fail(p+': YouTube subscribe climax missing');
+
+{
+  const manifest=JSON.parse(read('site.webmanifest'));
+  if(manifest.id!=='./'||manifest.start_url!=='./?resume=1'||manifest.scope!=='./')fail('site.webmanifest: portable webmanifest contract missing');
+  for(const url of ['campaign','artist','beats','press'])if(!(manifest.shortcuts||[]).some(x=>x.url===url))fail('site.webmanifest: missing portable shortcut '+url);
+  for(const icon of [...(manifest.icons||[]),...(manifest.shortcuts||[]).flatMap(x=>x.icons||[])])if(String(icon.src||'').startsWith('/'))fail('site.webmanifest: root-absolute icon breaks project-subpath hosting');
+}
 
 // Current campaign must stay internally consistent across promotional surfaces.
 {
@@ -367,6 +378,11 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   if(!/tagj-404-self-heal/.test(html['404.html']))fail('404.html: route self-heal missing');
   if(!html['404.html'].includes("['/artist','/artist.html']"))fail('404.html: clean artist route must recover to physical HTML');
   if(!html['404.html'].includes("['/campaign','/campaign.html']")||!html['404.html'].includes("['/now','/campaign.html']"))fail('404.html: campaign /now clean-route recovery missing');
+}
+
+{
+  const search=read('tagj-assets/index-v1528.js');
+  for(const token of ['TAGJ Season 1 Waitlist','Producer’s Tools / VST Lab','YouTube Subscribe','BillYen Direct Profile']) if(!search.includes(token))fail('growth surfaces missing from ecosystem search: '+token);
 }
 
 // V15.36: shared runtime route portability.
