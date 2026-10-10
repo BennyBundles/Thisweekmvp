@@ -21,6 +21,21 @@
       "source": "/now",
       "destination": "/campaign",
       "permanent": false
+    },
+    {
+      "source": "/season1",
+      "destination": "/tagj#season-one",
+      "permanent": false
+    },
+    {
+      "source": "/vst",
+      "destination": "/producer#producer-tools",
+      "permanent": false
+    },
+    {
+      "source": "/subscribe",
+      "destination": "/artist#youtube-subscribe",
+      "permanent": false
     }
   ],
   "rewrites": [
