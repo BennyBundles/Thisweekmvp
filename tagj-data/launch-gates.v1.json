@@ -61,11 +61,11 @@
     },
     {
       "id": "benny-hero-portrait",
-      "status": "source_reference_recovered_binary_missing",
+      "status": "resolved_first_party_asset",
       "blockingForSite": false,
-      "expectedAsset": "tagj-assets/media/benny-artist-hero.webp",
-      "legacySourcePath": "assets/photos/artist-chains.webp",
-      "detail": "The original approved portrait path was recovered from archived Benny site previews, but the standalone binary is not present in Library or repository storage. Artist hero uses a first-party release-art fallback until the original binary is recovered."
+      "expectedAsset": "tagj-assets/media/benny-artist-hero.png",
+      "detail": "Authentic first-party Benny Bundles profile portrait recovered from connected Drive and packaged as the canonical Artist hero, social-share image and structured-data image.",
+      "sourceDriveFileId": "1ppQZWSd5X1JKs1lNliSQhB_yIrpBuHNJ"
     },
     {
       "id": "season-one-product-signal",
