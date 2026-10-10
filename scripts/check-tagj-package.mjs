@@ -119,7 +119,12 @@ if(fileSet.has('site.webmanifest')){
 }
 for(const p of files.map(rel).filter(p=>p.endsWith('.html'))){
   const src=read(p);
-  if(!src.includes('rel="manifest"')||!src.includes('apple-touch-icon')) failures.push(p+': manifest / iPhone icon metadata missing');
+  const depth=p.split('/').length-1;
+  const prefix='../'.repeat(depth);
+  if(!src.includes('rel="manifest" href="'+prefix+'site.webmanifest"')) failures.push(p+': portable manifest link missing');
+  if(!src.includes('rel="apple-touch-icon" sizes="180x180" href="'+prefix+'tagj-assets/icons/apple-touch-icon.png"')) failures.push(p+': portable iPhone icon metadata missing');
+  if(!src.includes('sizes="32x32" href="'+prefix+'tagj-assets/icons/favicon-32.png"')) failures.push(p+': portable favicon metadata missing');
+  if(/<link\b[^>]*rel=["']manifest["'][^>]*href=["']\//i.test(src)) failures.push(p+': root-absolute manifest link breaks project-subpath hosting');
   for(const token of ['apple-mobile-web-app-capable','apple-mobile-web-app-status-bar-style','mobile-web-app-capable']){
     if(!src.includes(token)) failures.push(p+': standalone install metadata missing '+token);
   }
