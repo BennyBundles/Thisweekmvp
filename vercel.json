@@ -118,6 +118,10 @@
     {
       "source": "/press",
       "destination": "/press.html"
+    },
+    {
+      "source": "/campaign",
+      "destination": "/campaign.html"
     }
   ],
   "headers": [
