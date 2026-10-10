@@ -1,0 +1,77 @@
+name: TAGJ One-Time WebP Reference Migration
+
+on:
+  push:
+    branches: ["tagj-v12-preview"]
+    paths:
+      - ".github/tagj-switch-webp.trigger"
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout TAGJ preview branch
+        uses: actions/checkout@v6
+        with:
+          ref: tagj-v12-preview
+          fetch-depth: 1
+
+      - name: Replace canonical asset references with WebP derivatives
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          roots=[Path("tagj-assets/media"),Path("tagj-assets/network")]
+          pairs=[]
+          for root in roots:
+              for webp in root.rglob("*.webp"):
+                  stem=webp.with_suffix("")
+                  for ext in (".jpg",".jpeg",".png"):
+                      old=Path(str(stem)+ext)
+                      if old.exists():
+                          pairs.append((old,webp))
+                          break
+
+          text_ext={".html",".css",".js",".json",".md",".yml",".yaml",".sh",".mjs",".txt"}
+          changed=[]
+          for p in Path(".").rglob("*"):
+              if not p.is_file() or ".git" in p.parts or p.suffix.lower() not in text_ext:
+                  continue
+              try:
+                  src=p.read_text()
+              except UnicodeDecodeError:
+                  continue
+              out=src
+              for old,new in pairs:
+                  old_rel=old.as_posix()
+                  new_rel=new.as_posix()
+                  out=out.replace(old_rel,new_rel)
+                  if old.parent.as_posix()=="tagj-assets/media":
+                      out=out.replace("media/"+old.name,"media/"+new.name)
+              if out!=src:
+                  p.write_text(out)
+                  changed.append(str(p))
+
+          print("reference pairs:",len(pairs))
+          print("changed files:",len(changed))
+          for p in changed: print(p)
+          PY
+
+      - name: Commit WebP reference migration
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "BennyBundles"
+          git config user.email "146196050+BennyBundles@users.noreply.github.com"
+          git add .
+          if git diff --cached --quiet; then
+            echo "No source references required migration."
+            exit 0
+          fi
+          git commit -m "Switch TAGJ canonical visual references to WebP"
+          git push origin HEAD:tagj-v12-preview
