@@ -77,6 +77,7 @@ jobs:
           test -f .tagj-dist/creative/case-bsf-tone-066.html
           test -f .tagj-dist/creative/case-t311y-demon-life.html
           test -f .tagj-dist/tagj-data/beat-catalog.v1.json
+          test -f .tagj-dist/tagj-data/launch-gates.v1.json
           test -f .tagj-dist/legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md
           test -f .tagj-dist/tagj-assets/network/bsf-tone-066/profile.webp
           test -f .tagj-dist/tagj-assets/network/t311y-demon-life/profile.webp
