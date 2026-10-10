@@ -69,6 +69,7 @@ jobs:
           test -f .tagj-dist/press.html
           test -f .tagj-dist/404.html
           test -f .tagj-dist/network/index.html
+          test -f .tagj-dist/network/billyen.html
           test -f .tagj-dist/network/bsf-tone-066.html
           test -f .tagj-dist/network/t311y-demon-life.html
           test -f .tagj-dist/creative/index.html
@@ -102,6 +103,7 @@ jobs:
           TAGJ_PUBLIC_ORIGIN=https://example.com node scripts/check-tagj-package.mjs
           grep -q '<loc>https://example.com/artist</loc>' .tagj-dist/sitemap.xml
           grep -q '<loc>https://example.com/campaign</loc>' .tagj-dist/sitemap.xml
+          grep -q '<loc>https://example.com/network/billyen</loc>' .tagj-dist/sitemap.xml
           grep -q 'Sitemap: https://example.com/sitemap.xml' .tagj-dist/robots.txt
 
       - name: Summarize package
