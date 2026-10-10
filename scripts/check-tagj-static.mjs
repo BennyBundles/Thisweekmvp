@@ -78,6 +78,7 @@ for(const [file,src] of Object.entries(html)){
 
 if(!html['campaign.html'].includes('id="campaignCaption"')||!html['campaign.html'].includes('data-share')||!html['campaign.html'].includes('campaign-schema'))fail('campaign.html: current campaign controls missing');
 if(!html['artist.html'].includes('href="campaign.html"'))fail('artist.html: current campaign route missing');
+if(!html['index.html'].includes('class="home-release-signal" href="campaign.html"'))fail('index.html: home current-release signal must enter campaign loop');
 if(!html['producer.html'].includes('id="featuredBeatGrid"')||!html['producer.html'].includes("new Audio(beat.previewUrl)"))fail('producer.html: featured Beat audition rail missing');
 
 // Basic accessibility and external-link safety.
@@ -346,6 +347,7 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
     if(/<iframe\b/i.test(html['preview.html']))fail('preview.html: nested full-site iframe is prohibited');
   if(!/tagj-404-self-heal/.test(html['404.html']))fail('404.html: route self-heal missing');
   if(!html['404.html'].includes("['/artist','/artist.html']"))fail('404.html: clean artist route must recover to physical HTML');
+  if(!html['404.html'].includes("['/campaign','/campaign.html']")||!html['404.html'].includes("['/now','/campaign.html']"))fail('404.html: campaign /now clean-route recovery missing');
 }
 
 // V15.35: cinematic release continuity + press toolkit.
