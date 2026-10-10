@@ -110,6 +110,12 @@ if(!fileSet.has('robots.txt')) failures.push('Missing packaged robots.txt');
 else if(publicOrigin){
   if(!read('robots.txt').includes('Allow: /')) failures.push('Public robots.txt must allow crawling');
   if(!fileSet.has('sitemap.xml')) failures.push('Public build is missing sitemap.xml');
+  if(!fileSet.has('llms.txt')) failures.push('Public build is missing llms.txt');
+  else{
+    const llms=read('llms.txt');
+    if(!llms.startsWith('# Benny Bundles × TAGJ')) failures.push('llms.txt must begin with the canonical site identity');
+    if(!llms.includes(publicOrigin+'/artist')||!llms.includes(publicOrigin+'/press')) failures.push('llms.txt is missing canonical Artist / EPK routes');
+  }
   const publicRoutes=[
     'index.html','full.html','artist.html','producer.html','creative.html','tagj.html','contact.html','press.html','licensing.html',
     'services/index.html','beats/index.html','catalogue/index.html','music/index.html',
@@ -147,6 +153,7 @@ else if(publicOrigin){
 }else{
   if(!read('robots.txt').includes('Disallow: /')) failures.push('Protected preview robots.txt must disallow crawling');
   if(fileSet.has('sitemap.xml')) failures.push('Protected preview must not ship a sitemap.xml');
+  if(fileSet.has('llms.txt')) failures.push('Protected preview must not ship llms.txt');
   for(const p of files.map(rel).filter(p=>p.endsWith('.html'))){
     if(!read(p).includes('noindex,nofollow,noarchive')) failures.push(p+': protected preview robots meta is missing');
   }
