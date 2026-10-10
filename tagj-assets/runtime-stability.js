@@ -13,6 +13,25 @@
   const siteBase=runtimeNode?new URL('../',runtimeNode.src):new URL('./',location.href);
   const sitePath=(p='')=>new URL(String(p).replace(/^\//,''),siteBase).pathname;
   const siteRootPath=siteBase.pathname.replace(/\/+$/,'')||'/';
+  const attributionParams=new URLSearchParams(location.search);
+  const safeReferrer=(()=>{
+    try{
+      if(!document.referrer)return '';
+      const u=new URL(document.referrer);
+      return u.origin===location.origin?'internal':u.hostname;
+    }catch(_){return ''}
+  })();
+  const attribution=Object.freeze({
+    source:attributionParams.get('utm_source')||'',
+    medium:attributionParams.get('utm_medium')||'',
+    campaign:attributionParams.get('utm_campaign')||'',
+    content:attributionParams.get('utm_content')||'',
+    term:attributionParams.get('utm_term')||'',
+    referrer:safeReferrer,
+    entryPath:location.pathname
+  });
+  window.TAGJAttribution=()=>({...attribution});
+
 
   const mainTarget=d.querySelector('main,#home,.home-shell,.subsite');
   if(mainTarget){
