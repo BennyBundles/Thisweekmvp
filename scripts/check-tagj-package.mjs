@@ -88,7 +88,7 @@ for(const oldCss of ['tagj-assets/index-v1527.css','tagj-assets/full-v1527.css',
 }
 
 for(const required of [
-  'index.html','preview.html','full.html','artist.html','producer.html','creative.html','campaign.html','press.html','site.webmanifest','build-manifest.json',
+  'index.html','preview.html','full.html','artist.html','producer.html','creative.html','campaign.html','season1.html','vst.html','press.html','site.webmanifest','build-manifest.json',
   'creative/index.html','creative/portfolio.html','creative/case-bsf-tone-066.html','creative/case-t311y-demon-life.html',
   'network/index.html','network/billyen.html','network/bsf-tone-066.html','network/t311y-demon-life.html',
   'tagj-data/beat-catalog.v1.json','tagj-data/catalog.v1.json','tagj-data/current-campaign.v1.json','tagj-data/license-system.v1.json','tagj-data/link-registry.v1.json',
@@ -102,7 +102,7 @@ for(const required of [
 }
 
 const mobileNavPages=[
-  'tagj.html','artist.html','producer.html','creative.html','campaign.html','contact.html','licensing.html','press.html',
+  'tagj.html','artist.html','producer.html','creative.html','campaign.html','season1.html','vst.html','contact.html','licensing.html','press.html',
   'network/index.html','network/billyen.html','network/bsf-tone-066.html','network/t311y-demon-life.html',
   'services/index.html','music/index.html','catalogue/index.html','beats/index.html',
   'creative/index.html','creative/portfolio.html','creative/case-bsf-tone-066.html','creative/case-t311y-demon-life.html','404.html',
@@ -194,8 +194,8 @@ else if(publicOrigin){
   if(!fileSet.has('sitemap.xml')) failures.push('Public build is missing sitemap.xml');
   if(fileSet.has('sitemap.xml')){
     const sitemap=read('sitemap.xml');
-    for(const canonical of ['/campaign','/artist','/producer','/tagj','/press']) if(!sitemap.includes('<loc>'+publicOrigin+canonical+'</loc>')) failures.push('Public sitemap missing canonical growth surface '+canonical);
-    for(const shortcut of ['/now','/season1','/vst','/subscribe','/full']) if(sitemap.includes('<loc>'+publicOrigin+shortcut+'</loc>')) failures.push('Non-canonical shortcut/deep route must not appear in sitemap '+shortcut);
+    for(const canonical of ['/campaign','/season1','/vst','/artist','/producer','/tagj','/press']) if(!sitemap.includes('<loc>'+publicOrigin+canonical+'</loc>')) failures.push('Public sitemap missing canonical growth surface '+canonical);
+    for(const shortcut of ['/now','/subscribe','/full']) if(sitemap.includes('<loc>'+publicOrigin+shortcut+'</loc>')) failures.push('Non-canonical shortcut/deep route must not appear in sitemap '+shortcut);
   }
   if(!fileSet.has('.well-known/security.txt')) failures.push('Public build is missing security.txt');
   if(!fileSet.has('releases.xml')) failures.push('Public build is missing releases.xml');
@@ -210,10 +210,10 @@ else if(publicOrigin){
   else{
     const llms=read('llms.txt');
     if(!llms.startsWith('# Benny Bundles × TAGJ')) failures.push('llms.txt must begin with the canonical site identity');
-    if(!llms.includes(publicOrigin+'/artist')||!llms.includes(publicOrigin+'/press')||!llms.includes(publicOrigin+'/campaign')) failures.push('llms.txt is missing canonical Artist / EPK / Campaign routes');
+    if(!llms.includes(publicOrigin+'/artist')||!llms.includes(publicOrigin+'/press')||!llms.includes(publicOrigin+'/campaign')||!llms.includes(publicOrigin+'/season1')||!llms.includes(publicOrigin+'/vst')) failures.push('llms.txt is missing canonical Artist / EPK / Campaign / Season 1 / VST routes');
   }
   const publicRoutes=[
-    'index.html','artist.html','producer.html','creative.html','tagj.html','campaign.html','contact.html','press.html','licensing.html',
+    'index.html','artist.html','producer.html','creative.html','tagj.html','campaign.html','season1.html','vst.html','contact.html','press.html','licensing.html',
     'services/index.html','beats/index.html','catalogue/index.html','music/index.html',
     'music/wanted-me-gone.html','music/hold-something.html','music/cant-crop-karma.html','music/freestyle.html',
     'music/cried-in-the-dark.html','music/the-whole-brand.html','network/index.html','network/bsf-tone-066.html',
