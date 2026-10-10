@@ -192,6 +192,21 @@ else if(publicOrigin){
     for(const m of src.matchAll(/<meta\b[^>]*(?:property=["']og:image["']|name=["']twitter:image["'])[^>]*content=["']([^"']+)["'][^>]*>/gi)){
       if(m[1].startsWith('/')) failures.push(p+': public social image must be absolute');
     }
+    for(const m of src.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)){
+      try{
+        const data=JSON.parse(m[1]);
+        const mediaKeys=new Set(['@id','url','contentUrl','embedUrl','thumbnailUrl','image','logo']);
+        const walk=(value,keyPath='root')=>{
+          if(Array.isArray(value)){ value.forEach((item,i)=>walk(item,keyPath+'['+i+']')); return; }
+          if(!value||typeof value!=='object')return;
+          for(const [key,val] of Object.entries(value)){
+            if(mediaKeys.has(key)&&typeof val==='string'&&val.startsWith('/')) failures.push(p+': public structured URL remains root-relative at '+keyPath+'.'+key+' -> '+val);
+            walk(val,keyPath+'.'+key);
+          }
+        };
+        walk(data);
+      }catch(err){ failures.push(p+': invalid public JSON-LD during URL validation: '+err.message); }
+    }
   }
   for(const p of files.map(rel).filter(p=>p.endsWith('.html')&&!publicRoutes.includes(p))){
     const src=read(p);
