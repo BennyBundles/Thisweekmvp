@@ -1,6 +1,16 @@
 #!/bin/sh
 set -eu
 
+# Optional one-file public asset bundle. When present at the repo root, unpack
+# the selected Benny hero portrait and 22 mobile beat previews before packaging.
+if [ -f tagj-public-assets-ready.zip ]; then
+  command -v unzip >/dev/null 2>&1 || { echo "unzip is required for tagj-public-assets-ready.zip" >&2; exit 1; }
+  unzip -oq tagj-public-assets-ready.zip -d .
+  test -f tagj-assets/media/benny-artist-hero.webp || { echo "Asset bundle missing Benny hero portrait" >&2; exit 1; }
+  preview_count=$(find tagj-assets/beat-previews -type f -name 'beat-*.mp3' | wc -l | tr -d ' ')
+  [ "$preview_count" = "22" ] || { echo "Asset bundle must contain 22 beat previews; found $preview_count" >&2; exit 1; }
+fi
+
 rm -rf .tagj-dist
 mkdir -p .tagj-dist/network .tagj-dist/music .tagj-dist/beats .tagj-dist/catalogue .tagj-dist/services .tagj-dist/creative .tagj-dist/tagj-assets/v147 .tagj-dist/tagj-assets/intro .tagj-dist/tagj-assets/network .tagj-dist/tagj-assets/media .tagj-dist/tagj-assets/beat-previews .tagj-dist/tagj-data .tagj-dist/legal
 
