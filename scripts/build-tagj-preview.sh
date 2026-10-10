@@ -76,7 +76,7 @@ cp \
   .tagj-dist/legal/
 
 node scripts/generate-tagj-seo.mjs
-printf 'V15.37' > .tagj-dist/VERSION.txt
+printf 'V15.38' > .tagj-dist/VERSION.txt
 node - <<'NODE'
 const fs=require('fs');
 const campaign=JSON.parse(fs.readFileSync('tagj-data/current-campaign.v1.json','utf8'));
@@ -86,7 +86,7 @@ const featureStates=Object.fromEntries((gates.featureGates||[]).map(x=>[x.id,x.s
 const manifest={
   schemaVersion:2,
   product:'Benny Bundles × TAGJ',
-  version:'V15.37',
+  version:'V15.38',
   mode:process.env.TAGJ_PUBLIC_ORIGIN?'public':'protected-preview',
   commit:process.env.VERCEL_GIT_COMMIT_SHA||process.env.GITHUB_SHA||null,
   campaignId:campaign.campaignId||null,

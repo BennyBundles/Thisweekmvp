@@ -7,7 +7,7 @@
   const isIOS=/iP(?:hone|ad|od)/.test(navigator.userAgent)||(/Macintosh/.test(navigator.userAgent)&&navigator.maxTouchPoints>1);
   const lowMemory=!!((navigator.deviceMemory&&navigator.deviceMemory<=4)||isIOS);
   root.classList.toggle('tagj-low-memory',lowMemory);
-  root.dataset.tagjRuntime='15.37';
+  root.dataset.tagjRuntime='15.38';
 
   const runtimeNode=[...d.scripts].find(x=>/\/tagj-assets\/runtime-stability\.js(?:\?|$)/.test(x.src||''));
   const siteBase=runtimeNode?new URL('../',runtimeNode.src):new URL('./',location.href);

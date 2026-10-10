@@ -158,11 +158,11 @@ for(const p of files.map(rel).filter(p=>p.endsWith('.html'))){
 }
 
 if(!fileSet.has('VERSION.txt')) failures.push('Missing packaged VERSION.txt');
-else if(read('VERSION.txt').trim()!=='V15.37') failures.push('VERSION.txt must identify the current V15.37 baseline');
+else if(read('VERSION.txt').trim()!=='V15.38') failures.push('VERSION.txt must identify the current V15.38 baseline');
 const publicOrigin=(process.env.TAGJ_PUBLIC_ORIGIN||'').trim().replace(/\/$/,'');
 try{
   const gates=JSON.parse(readSource('tagj-data/launch-gates.v1.json'));
-  if(gates.schemaVersion!==1||gates.baseline!=='V15.37') failures.push('launch gates source baseline mismatch');
+  if(gates.schemaVersion!==1||gates.baseline!=='V15.38') failures.push('launch gates source baseline mismatch');
 }catch(err){failures.push('tagj-data/launch-gates.v1.json source: invalid JSON: '+err.message)}
 
 if(fileSet.has('build-manifest.json')){
@@ -172,7 +172,7 @@ if(fileSet.has('build-manifest.json')){
     const preview=JSON.parse(read('tagj-data/beat-preview-status.v1.json'));
     const gates=JSON.parse(readSource('tagj-data/launch-gates.v1.json'));
     if(bm.schemaVersion!==2) failures.push('build manifest schemaVersion must be 2');
-    if(bm.version!=='V15.37') failures.push('build manifest version mismatch');
+    if(bm.version!=='V15.38') failures.push('build manifest version mismatch');
     if(bm.mode!==(publicOrigin?'public':'protected-preview')) failures.push('build manifest mode mismatch');
     if(bm.campaignId!==campaign.campaignId) failures.push('build manifest campaignId mismatch');
     if(bm.currentRelease!==campaign.release?.id) failures.push('build manifest currentRelease mismatch');
