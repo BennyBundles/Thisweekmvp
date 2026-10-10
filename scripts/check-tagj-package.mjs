@@ -61,11 +61,12 @@ for(const oldCss of ['tagj-assets/index-v1527.css','tagj-assets/full-v1527.css',
 }
 
 for(const required of [
-  'index.html','preview.html','full.html','artist.html','producer.html','creative.html','press.html',
+  'index.html','preview.html','full.html','artist.html','producer.html','creative.html','press.html','site.webmanifest',
   'creative/index.html','creative/portfolio.html','creative/case-bsf-tone-066.html','creative/case-t311y-demon-life.html',
   'network/index.html','network/bsf-tone-066.html','network/t311y-demon-life.html',
   'tagj-assets/runtime-stability.js','tagj-assets/index-v1528.js','tagj-assets/full-v1528.js','tagj-assets/index-v1528.css','tagj-assets/full-v1528.css','tagj-sw.js',
   'tagj-assets/media/asset-fashion-hero.webp','tagj-assets/media/asset-green-set.webp','tagj-assets/media/asset-track-navy.webp',
+  'tagj-assets/icons/favicon-32.png','tagj-assets/icons/apple-touch-icon.png','tagj-assets/icons/icon-192.png','tagj-assets/icons/icon-512.png','tagj-assets/icons/icon-512-maskable.png',
   'tagj-assets/releases/wanted-me-gone.webp','tagj-assets/releases/hold-something.webp','tagj-assets/releases/hold-something-lyric.webp',
   'tagj-assets/releases/cant-crop-karma.webp','tagj-assets/releases/freestyle.webp','tagj-assets/releases/cried-in-the-dark.webp','tagj-assets/releases/the-whole-brand.webp'
 ]){
@@ -105,6 +106,18 @@ for(const p of files.map(rel).filter(p=>p.endsWith('.html'))){
     catch(err){ failures.push(`${p}: Invalid JSON-LD: ${err.message}`); }
   }
 }
+if(fileSet.has('site.webmanifest')){
+  try{
+    const manifest=JSON.parse(read('site.webmanifest'));
+    if(manifest.name!=='Benny Bundles × TAGJ'||manifest.start_url!=='/?resume=1'||manifest.scope!=='/') failures.push('site.webmanifest: canonical manifest metadata missing');
+    if(!Array.isArray(manifest.icons)||manifest.icons.length<3) failures.push('site.webmanifest: icon set incomplete');
+  }catch(err){failures.push('site.webmanifest: invalid packaged JSON: '+err.message)}
+}
+for(const p of files.map(rel).filter(p=>p.endsWith('.html'))){
+  const src=read(p);
+  if(!src.includes('rel="manifest"')||!src.includes('apple-touch-icon')) failures.push(p+': manifest / iPhone icon metadata missing');
+}
+
 if(!fileSet.has('VERSION.txt')) failures.push('Missing packaged VERSION.txt');
 else if(read('VERSION.txt').trim()!=='V15.32') failures.push('VERSION.txt must identify the current V15.32 baseline');
 const publicOrigin=(process.env.TAGJ_PUBLIC_ORIGIN||'').trim().replace(/\/$/,'');
