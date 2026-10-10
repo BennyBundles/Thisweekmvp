@@ -130,6 +130,7 @@ if(!fileSet.has('robots.txt')) failures.push('Missing packaged robots.txt');
 else if(publicOrigin){
   if(!read('robots.txt').includes('Allow: /')) failures.push('Public robots.txt must allow crawling');
   if(!fileSet.has('sitemap.xml')) failures.push('Public build is missing sitemap.xml');
+  if(!fileSet.has('.well-known/security.txt')) failures.push('Public build is missing security.txt');
   if(!fileSet.has('releases.xml')) failures.push('Public build is missing releases.xml');
   else{
     const rss=read('releases.xml');
@@ -183,6 +184,7 @@ else if(publicOrigin){
   if(fileSet.has('sitemap.xml')) failures.push('Protected preview must not ship a sitemap.xml');
   if(fileSet.has('llms.txt')) failures.push('Protected preview must not ship llms.txt');
   if(fileSet.has('releases.xml')) failures.push('Protected preview must not ship releases.xml');
+  if(fileSet.has('.well-known/security.txt')) failures.push('Protected preview must not ship security.txt');
   for(const p of files.map(rel).filter(p=>p.endsWith('.html'))){
     if(!read(p).includes('noindex,nofollow,noarchive')) failures.push(p+': protected preview robots meta is missing');
   }
