@@ -70,8 +70,9 @@ const buildVstBetaRequest=()=>{
   const os=document.getElementById('vstOs').value;
   const pain=document.getElementById('vstPain').value.trim();
   const features=[...form.querySelectorAll('input[name="vstFeature"]:checked')].map(x=>x.value);
+  const attr=window.TAGJAttribution?.()||{};
   const subject='Melody VST Beta Research — '+name;
-  const body=['Melody VST beta research','','Producer: '+name,'Email: '+email,'Primary DAW: '+daw,'OS: '+os,'','Workflow problem:',pain,'','Desired features: '+(features.length?features.join(', '):'No boxes selected'),'','I understand there is no public beta download yet; this message is product feedback / future beta interest.'].join('\n');
+  const body=['Melody VST beta research','','Producer: '+name,'Email: '+email,'Primary DAW: '+daw,'OS: '+os,'','Workflow problem:',pain,'','Desired features: '+(features.length?features.join(', '):'No boxes selected'),'','Attribution source: '+(attr.source||'direct / unavailable'),'Attribution medium: '+(attr.medium||'not set'),'Attribution campaign: '+(attr.campaign||'not set'),'Referrer: '+(attr.referrer||'none'),'Entry path: '+(attr.entryPath||location.pathname),'','I understand there is no public beta download yet; this message is product feedback / future beta interest.'].join('\n');
   return {subject,body};
 };
 document.getElementById('vstBetaForm')?.addEventListener('submit',e=>{
