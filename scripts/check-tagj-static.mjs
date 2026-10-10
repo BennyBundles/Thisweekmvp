@@ -184,7 +184,7 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
 }
 
 
-// V15.30 navigation/performance hardening invariants.
+// V15.31 navigation/performance hardening invariants.
 {
   const indexCss='tagj-assets/index-v1528.css';
   const fullCss='tagj-assets/full-v1528.css';
@@ -228,9 +228,20 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
     if(!build.includes('rm -f')||!build.includes(duplicate))fail('build: duplicate deploy cleanup missing '+duplicate);
   }
   if(!build.includes('.tagj-dist/tagj-assets/a??.css'))fail('build: obsolete micro-CSS cleanup missing');
-  if(!build.includes("printf 'V15.30'"))fail('build: VERSION.txt is not V15.30');
+  if(!build.includes("printf 'V15.31'"))fail('build: VERSION.txt is not V15.31');
   if(!build.includes('tagj-public-assets-ready.zip'))fail('build: one-file public asset bundle support missing');
   if(!html['artist.html'].includes('bennyHeroAsset')||!html['artist.html'].includes('benny-artist-hero.webp'))fail('artist.html: drop-in hero asset hook missing');
+  if(!html['index.html'].includes('tagj-home-entity-schema'))fail('index.html: home entity graph missing');
+  if(!html['artist.html'].includes('id="about"')||!html['artist.html'].includes('id="verified-releases"'))fail('artist.html: artist-first entity structure missing');
+  if(!html['artist.html'].includes('Benny Bundles — Artist, Producer & Engineer | TAGJ'))fail('artist.html: artist-first title metadata missing');
+  const releaseOrder=['Wanted Me Gone','Hold Something','Can’t Crop Karma','FREESTYLE','Cried in the Dark','The Whole Brand'];
+  let last=-1;
+  for(const name of releaseOrder){
+    const idx=html['artist.html'].indexOf('<b>'+name+'</b>');
+    if(idx<0)fail('artist.html: verified release missing '+name);
+    else if(idx<=last)fail('artist.html: verified releases are not in descending date order');
+    last=idx;
+  }
   if(!html['beats/index.html'].includes("../tagj-assets/beat-previews/"))fail('beats/index.html: local beat preview convention missing');
   if(!read('tagj-assets/full-v1528.js').includes("tagj-assets/beat-previews/"))fail('full-v1528.js: Beat Vault local preview convention missing');
 
