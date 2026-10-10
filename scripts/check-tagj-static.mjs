@@ -167,6 +167,20 @@ for(const p of ['artist.html','campaign.html']) if(!html[p].includes('id="youtub
   if(!html['contact.html'].includes('Attribution source:'))fail('contact.html: Quick Brief attribution context missing');
 }
 
+// Direct search-facing routes must have one unambiguous page-level heading.
+// The deep full.html experience is intentionally excluded from indexing and from this contract.
+for(const p of [
+  'index.html','tagj.html','artist.html','producer.html','creative.html','campaign.html','contact.html','licensing.html','press.html',
+  'network/index.html','network/billyen.html','network/bsf-tone-066.html','network/t311y-demon-life.html',
+  'creative/portfolio.html','creative/case-bsf-tone-066.html','creative/case-t311y-demon-life.html',
+  'music/index.html','music/wanted-me-gone.html','music/hold-something.html','music/cant-crop-karma.html','music/freestyle.html','music/cried-in-the-dark.html','music/the-whole-brand.html',
+  'beats/index.html','catalogue/index.html','services/index.html'
+]){
+  const clean=stripExecutable(html[p]||'');
+  const count=(clean.match(/<h1\b/gi)||[]).length;
+  if(count!==1)fail(p+': direct indexed route must contain exactly one H1; found '+count);
+}
+
 // Basic accessibility and external-link safety.
 for(const [file,src] of Object.entries(html)){
   const clean=stripExecutable(src);
