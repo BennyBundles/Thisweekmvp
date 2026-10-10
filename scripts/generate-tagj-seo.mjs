@@ -110,6 +110,9 @@ const ensureInstallMeta=src=>{
   add('<link rel="icon" type="image/png" sizes="32x32" href="/tagj-assets/icons/favicon-32.png">',/<link\b[^>]*rel=["']icon["'][^>]*sizes=["']32x32["']/i);
   add('<link rel="apple-touch-icon" sizes="180x180" href="/tagj-assets/icons/apple-touch-icon.png">',/<link\b[^>]*rel=["']apple-touch-icon["']/i);
   add('<meta name="apple-mobile-web-app-title" content="Benny Bundles">',/<meta\b[^>]*name=["']apple-mobile-web-app-title["']/i);
+  add('<meta name="apple-mobile-web-app-capable" content="yes">',/<meta\b[^>]*name=["']apple-mobile-web-app-capable["']/i);
+  add('<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">',/<meta\b[^>]*name=["']apple-mobile-web-app-status-bar-style["']/i);
+  add('<meta name="mobile-web-app-capable" content="yes">',/<meta\b[^>]*name=["']mobile-web-app-capable["']/i);
   return src;
 };
 
