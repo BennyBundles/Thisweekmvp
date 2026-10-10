@@ -306,6 +306,23 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   if(!html['404.html'].includes("['/artist','/artist.html']"))fail('404.html: clean artist route must recover to physical HTML');
 }
 
+// V15.32: release video rich-result integrity.
+for(const p of ['music/wanted-me-gone.html','music/hold-something.html','music/cant-crop-karma.html','music/freestyle.html','music/cried-in-the-dark.html','music/the-whole-brand.html']){
+  const src=html[p];
+  const blocks=[...src.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
+  const music=blocks.map(m=>{try{return JSON.parse(m[1])}catch(_){return null}}).find(x=>x?.['@type']==='MusicRecording');
+  if(!music){fail(p+': MusicRecording schema missing');continue}
+  const videos=Array.isArray(music.subjectOf)?music.subjectOf:[music.subjectOf].filter(Boolean);
+  if(!videos.length)fail(p+': VideoObject subjectOf missing');
+  for(const v of videos){
+    if(v?.['@type']!=='VideoObject')fail(p+': subjectOf must be VideoObject');
+    if(!v?.thumbnailUrl)fail(p+': VideoObject missing thumbnailUrl');
+    if(!v?.uploadDate)fail(p+': VideoObject missing uploadDate');
+    if(!v?.embedUrl)fail(p+': VideoObject missing embedUrl');
+    if(v?.contentUrl&&/youtu(?:\.be|be\.com)/i.test(v.contentUrl))fail(p+': YouTube watch URL must not be used as VideoObject contentUrl');
+  }
+}
+
 finish();
 function finish(){
   if(failures.length){
