@@ -15,7 +15,7 @@ const warnings=[];
 const htmlFiles=[
   'index.html','preview.html','full.html','tagj.html','artist.html','producer.html','creative.html',
   'campaign.html','contact.html','licensing.html','press.html','404.html',
-  'network/index.html','network/bsf-tone-066.html','network/t311y-demon-life.html',
+  'network/index.html','network/billyen.html','network/bsf-tone-066.html','network/t311y-demon-life.html',
   'creative/index.html','creative/portfolio.html','creative/case-bsf-tone-066.html','creative/case-t311y-demon-life.html',
   'music/index.html','music/wanted-me-gone.html','music/cant-crop-karma.html','music/hold-something.html',
   'music/freestyle.html','music/cried-in-the-dark.html','music/the-whole-brand.html',
@@ -80,6 +80,8 @@ if(!html['campaign.html'].includes('id="campaignCaption"')||!html['campaign.html
 if(!html['artist.html'].includes('href="campaign.html"'))fail('artist.html: current campaign route missing');
 if(!html['index.html'].includes('class="home-release-signal" href="campaign.html"'))fail('index.html: home current-release signal must enter campaign loop');
 if(!html['producer.html'].includes('id="featuredBeatGrid"')||!html['producer.html'].includes("new Audio(beat.previewUrl)"))fail('producer.html: featured Beat audition rail missing');
+if(!html['artist.html'].includes('href="network/billyen.html"')||!html['network/index.html'].includes('href="billyen.html"'))fail('BillYen direct network surface missing');
+if(!html['network/billyen.html'].includes('billyen-profile-schema')||!html['network/billyen.html'].includes('https://youtube.com/@billyenthebuilder')||!html['network/billyen.html'].includes('oDa5fa3Zet8'))fail('BillYen profile verified identity/link contract missing');
 
 // Current campaign must stay internally consistent across promotional surfaces.
 {
@@ -180,7 +182,7 @@ if(matrix.length!==22)fail(`License matrix expected 22 beat rows; found ${matrix
 
 const catalog=parsed['tagj-data/catalog.v1.json'];
 const profiles=catalog?.networkProfiles||[];
-for(const id of ['bsf-tone-066','t311y-demon-life']){
+for(const id of ['billyen','bsf-tone-066','t311y-demon-life']){
   const p=profiles.find(x=>x.id===id);
   if(!p)fail(`Missing network profile: ${id}`);
   else if(!p.directRoute||!exists(p.directRoute))fail(`Network profile ${id} has missing directRoute: ${p.directRoute||'(none)'}`);
@@ -376,7 +378,7 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
 }
 
 // V15.35: third-party video must remain click-to-play.
-for(const p of ['campaign.html','music/wanted-me-gone.html','music/hold-something.html','music/cant-crop-karma.html','music/freestyle.html','music/cried-in-the-dark.html','music/the-whole-brand.html']){
+for(const p of ['campaign.html','network/billyen.html','music/wanted-me-gone.html','music/hold-something.html','music/cant-crop-karma.html','music/freestyle.html','music/cried-in-the-dark.html','music/the-whole-brand.html']){
   const src=html[p];
   if(/<iframe\b[^>]*\s+src=["']https:\/\/www\.youtube-nocookie\.com\/embed\//i.test(src))fail(p+': eager YouTube iframe source must remain removed');
   if(!src.includes('data-video-src="https://www.youtube-nocookie.com/embed/'))fail(p+': deferred verified video source missing');
