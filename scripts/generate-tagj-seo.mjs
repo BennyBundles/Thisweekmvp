@@ -108,15 +108,17 @@ const absolutizeStructuredData=(src,origin,isHome=false)=>src.replace(
   }
 );
 
-const ensureInstallMeta=src=>{
-  const add=(tag,re)=>{ if(!re.test(src)) src=src.replace(/<\/head>/i,tag+'</head>'); };
-  add('<link rel="manifest" href="/site.webmanifest">',/<link\b[^>]*rel=["']manifest["']/i);
-  add('<link rel="icon" type="image/png" sizes="32x32" href="/tagj-assets/icons/favicon-32.png">',/<link\b[^>]*rel=["']icon["'][^>]*sizes=["']32x32["']/i);
-  add('<link rel="apple-touch-icon" sizes="180x180" href="/tagj-assets/icons/apple-touch-icon.png">',/<link\b[^>]*rel=["']apple-touch-icon["']/i);
-  add('<meta name="apple-mobile-web-app-title" content="Benny Bundles">',/<meta\b[^>]*name=["']apple-mobile-web-app-title["']/i);
-  add('<meta name="apple-mobile-web-app-capable" content="yes">',/<meta\b[^>]*name=["']apple-mobile-web-app-capable["']/i);
-  add('<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">',/<meta\b[^>]*name=["']apple-mobile-web-app-status-bar-style["']/i);
-  add('<meta name="mobile-web-app-capable" content="yes">',/<meta\b[^>]*name=["']mobile-web-app-capable["']/i);
+const ensureInstallMeta=(src,file)=>{
+  const depth=String(file||'').split('/').length-1;
+  const prefix='../'.repeat(Math.max(0,depth));
+  const set=(tag,re)=>{ src=re.test(src)?src.replace(re,tag):src.replace(/<\/head>/i,tag+'</head>'); };
+  set('<link rel="manifest" href="'+prefix+'site.webmanifest">',/<link\b[^>]*rel=["']manifest["'][^>]*>/i);
+  set('<link rel="icon" type="image/png" sizes="32x32" href="'+prefix+'tagj-assets\/icons\/favicon-32.png">',/<link\b[^>]*rel=["']icon["'][^>]*sizes=["']32x32["'][^>]*>/i);
+  set('<link rel="apple-touch-icon" sizes="180x180" href="'+prefix+'tagj-assets\/icons\/apple-touch-icon.png">',/<link\b[^>]*rel=["']apple-touch-icon["'][^>]*>/i);
+  set('<meta name="apple-mobile-web-app-title" content="Benny Bundles">',/<meta\b[^>]*name=["']apple-mobile-web-app-title["'][^>]*>/i);
+  set('<meta name="apple-mobile-web-app-capable" content="yes">',/<meta\b[^>]*name=["']apple-mobile-web-app-capable["'][^>]*>/i);
+  set('<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">',/<meta\b[^>]*name=["']apple-mobile-web-app-status-bar-style["'][^>]*>/i);
+  set('<meta name="mobile-web-app-capable" content="yes">',/<meta\b[^>]*name=["']mobile-web-app-capable["'][^>]*>/i);
   return src;
 };
 
@@ -179,7 +181,8 @@ const htmlFiles=walkHtml(dist);
 // Default-deny indexing. Public mode explicitly promotes only canonical routes below.
 for(const p of htmlFiles){
   let src=fs.readFileSync(p,'utf8');
-  src=ensureInstallMeta(src);
+  const rel=path.relative(dist,p).replaceAll(path.sep,'/');
+  src=ensureInstallMeta(src,rel);
   src=ensureSocialMeta(src);
   src=upsertHead(
     src,
