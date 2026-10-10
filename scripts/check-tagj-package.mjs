@@ -176,6 +176,11 @@ if(fileSet.has('tagj-data/beat-catalog.v1.json')){
     }
   }catch(err){ failures.push('Unable to validate packaged beat previews: '+err.message); }
 }
+const nonAudioBytes=files
+  .filter(p=>!/tagj-assets[\\/]beat-previews[\\/].+\.mp3$/i.test(rel(p)))
+  .reduce((n,p)=>n+fs.statSync(p).size,0);
+if(nonAudioBytes>9*1048576) failures.push('Non-audio TAGJ package exceeds 9 MB performance budget: '+(nonAudioBytes/1048576).toFixed(1)+' MB');
+
 const packagedPreviewCount=[...fileSet].filter(p=>/^tagj-assets\/beat-previews\/beat-\d{3}\.mp3$/.test(p)).length;
 if(packagedPreviewCount>0 && packagedPreviewCount!==22) failures.push('Package contains a partial site-hosted beat preview set: '+packagedPreviewCount+'/22');
 
