@@ -26,6 +26,7 @@ on:
       - "tagj-data/**"
       - "legal/**"
       - "scripts/build-tagj-preview.sh"
+      - "scripts/prepare-tagj-release-candidate.sh"
       - "scripts/check-tagj-static.mjs"
       - "scripts/check-tagj-package.mjs"
       - "scripts/generate-tagj-seo.mjs"
