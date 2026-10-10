@@ -367,6 +367,14 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   if(!html['404.html'].includes("['/campaign','/campaign.html']")||!html['404.html'].includes("['/now','/campaign.html']"))fail('404.html: campaign /now clean-route recovery missing');
 }
 
+// V15.35: shared runtime route portability.
+{
+  const runtime=read('tagj-assets/runtime-stability.js');
+  if(!runtime.includes("const sitePath=(p='')"))fail('runtime: site-base route resolver missing');
+  if(!runtime.includes('<b>Current Campaign</b>'))fail('runtime global map must include Current Campaign');
+  if(runtime.includes('href="/artist"')||runtime.includes('href="/producer"')||runtime.includes("fetch('/tagj-data/"))fail('runtime: root-absolute navigation/data dependency breaks subpath hosts');
+}
+
 // V15.35: third-party video must remain click-to-play.
 for(const p of ['campaign.html','music/wanted-me-gone.html','music/hold-something.html','music/cant-crop-karma.html','music/freestyle.html','music/cried-in-the-dark.html','music/the-whole-brand.html']){
   const src=html[p];
