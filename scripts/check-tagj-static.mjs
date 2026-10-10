@@ -14,7 +14,7 @@ const failures=[];
 const warnings=[];
 const htmlFiles=[
   'index.html','preview.html','full.html','tagj.html','artist.html','producer.html','creative.html',
-  'contact.html','licensing.html','404.html',
+  'contact.html','licensing.html','press.html','404.html',
   'network/index.html','network/bsf-tone-066.html','network/t311y-demon-life.html',
   'creative/index.html','creative/portfolio.html','creative/case-bsf-tone-066.html','creative/case-t311y-demon-life.html',
   'music/index.html','music/wanted-me-gone.html','music/cant-crop-karma.html','music/hold-something.html',
@@ -191,7 +191,7 @@ if(devil&&!devil.repositoryPath)warnings.push("Devil's Playground: verified Driv
 
 // Build must ship the dedicated subsites, direct network pages, data, legal docs and network assets.
 const build=read('scripts/build-tagj-preview.sh');
-for(const token of ['index.html preview.html full.html tagj.html artist.html producer.html creative.html contact.html licensing.html 404.html','cp network/*.html .tagj-dist/network/','cp music/*.html .tagj-dist/music/','cp beats/*.html .tagj-dist/beats/','cp catalogue/*.html .tagj-dist/catalogue/','cp services/*.html .tagj-dist/services/','cp creative/*.html .tagj-dist/creative/','cp tagj-assets/*.js .tagj-dist/tagj-assets/','cp tagj-assets/media/* .tagj-dist/tagj-assets/media/','tagj-assets/beat-previews/*.mp3','cp -R tagj-assets/network/* .tagj-dist/tagj-assets/network/','cp tagj-data/* .tagj-dist/tagj-data/','cp legal/* .tagj-dist/legal/']){
+for(const token of ['index.html preview.html full.html tagj.html artist.html producer.html creative.html contact.html licensing.html press.html 404.html','cp network/*.html .tagj-dist/network/','cp music/*.html .tagj-dist/music/','cp beats/*.html .tagj-dist/beats/','cp catalogue/*.html .tagj-dist/catalogue/','cp services/*.html .tagj-dist/services/','cp creative/*.html .tagj-dist/creative/','cp tagj-assets/*.js .tagj-dist/tagj-assets/','cp tagj-assets/media/* .tagj-dist/tagj-assets/media/','tagj-assets/beat-previews/*.mp3','cp -R tagj-assets/network/* .tagj-dist/tagj-assets/network/','cp tagj-data/* .tagj-dist/tagj-data/','cp legal/* .tagj-dist/legal/']){
   if(!build.includes(token))fail(`Build script missing expected shipping rule: ${token}`);
 }
 
@@ -251,6 +251,7 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   if(!html['artist.html'].includes('bennyHeroAsset')||!html['artist.html'].includes('benny-artist-hero.webp'))fail('artist.html: drop-in hero asset hook missing');
   if(!html['index.html'].includes('tagj-home-entity-schema'))fail('index.html: home entity graph missing');
   if(!html['artist.html'].includes('id="about"')||!html['artist.html'].includes('id="verified-releases"'))fail('artist.html: artist-first entity structure missing');
+  if(!html['press.html'].includes('id="benny-epk-schema"'))fail('press.html: EPK schema missing');
   if(!html['artist.html'].includes('Benny Bundles — Artist, Producer & Engineer | TAGJ'))fail('artist.html: artist-first title metadata missing');
   for(const p of ['producer.html','creative.html','tagj.html','full.html']){
     if(!html[p].includes('data-tagj-entity-v1531'))fail(p+': V15.32 entity marker missing');
@@ -296,7 +297,7 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   for(const bad of ['/index.html','/full.html','/tagj.html','/artist.html','/producer.html','/creative.html','/contact.html','/licensing.html']){
     if((vc.redirects||[]).some(x=>x.source===bad))fail('vercel.json: physical HTML must load directly without redirect: '+bad);
   }
-  for(const pair of [['/artist','/artist.html'],['/producer','/producer.html'],['/creative','/creative.html'],['/full','/full.html'],['/network','/network/index.html'],['/services','/services/index.html']]){
+  for(const pair of [['/artist','/artist.html'],['/producer','/producer.html'],['/creative','/creative.html'],['/full','/full.html'],['/press','/press.html'],['/network','/network/index.html'],['/services','/services/index.html']]){
     if(!(vc.rewrites||[]).some(x=>x.source===pair[0]&&x.destination===pair[1]))fail('vercel.json: clean-route compatibility rewrite missing '+pair[0]);
   }
   if(!(vc.redirects||[]).some(x=>x.source==='/preview'&&x.destination==='/'))fail('vercel.json: /preview must redirect to root');
