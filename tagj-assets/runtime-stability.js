@@ -23,6 +23,32 @@
   // This avoids redirect/rewrite races and prevents client JS from trapping taps.
   root.classList.add('tagj-native-nav-runtime');
 
+  // Producer-only transparent playback status. This is progressive enhancement:
+  // if data loading fails, the static Producer page remains fully usable.
+  if(/\/producer(?:\.html)?\/?$/.test(location.pathname)){
+    const hero=d.querySelector('main .hero');
+    if(hero&&!d.querySelector('.studio-status')){
+      const section=d.createElement('section');
+      section.className='studio-status';
+      section.id='tagj-studio-status-runtime';
+      section.setAttribute('aria-label','Studio status');
+      section.innerHTML='<div class="wrap"><div class="studio-console"><div class="studio-readout"><small><i class="studio-led"></i>Beat Vault playback</small><b data-preview-mode>Drive fallback ready</b><span><span data-local-preview-count>0</span> of 22 local mobile previews</span></div><div class="studio-readout"><small>Catalogue</small><b><span data-beat-count>22</span> beats</b><span>Source-backed records</span></div><div class="studio-readout"><small>Workflow</small><b>Review before delivery</b><span>Scope stays explicit</span></div></div></div>';
+      hero.insertAdjacentElement('afterend',section);
+      Promise.allSettled([
+        fetch('/tagj-data/beat-catalog.v1.json',{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()),
+        fetch('/tagj-data/beat-preview-status.v1.json',{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject())
+      ]).then(([catalog,status])=>{
+        if(catalog.status==='fulfilled')section.querySelectorAll('[data-beat-count]').forEach(el=>el.textContent=catalog.value.beats?.length||22);
+        if(status.status==='fulfilled'){
+          const s=status.value,count=Number(s.localPreviewCount||0);
+          const label=s.preferredMode==='local'?'All local previews ready':s.preferredMode==='hybrid'?'Hybrid local + Drive playback':'Drive fallback ready';
+          section.querySelectorAll('[data-local-preview-count]').forEach(el=>el.textContent=count);
+          section.querySelectorAll('[data-preview-mode]').forEach(el=>el.textContent=label);
+        }
+      }).catch(()=>{});
+    }
+  }
+
   const syncVisibility=()=>root.classList.toggle('tagj-runtime-paused',d.hidden);
   d.addEventListener('visibilitychange',syncVisibility,{passive:true});
   syncVisibility();
