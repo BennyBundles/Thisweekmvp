@@ -31,7 +31,7 @@ const read=(p)=>fs.readFileSync(path.join(root,p),'utf8');
 const exists=(p)=>fs.existsSync(path.join(root,p));
 const fail=(x)=>failures.push(x);
 
-for(const p of [...htmlFiles,...jsonFiles,'scripts/build-tagj-preview.sh','scripts/check-tagj-package.mjs','tagj-assets/runtime-stability.js','tagj-assets/index-v1528.js','tagj-assets/full-v1528.js','tagj-assets/index-v1528.css','tagj-assets/full-v1528.css','vercel.json']){
+for(const p of [...htmlFiles,...jsonFiles,'scripts/build-tagj-preview.sh','scripts/check-tagj-package.mjs','scripts/generate-tagj-seo.mjs','tagj-assets/runtime-stability.js','tagj-assets/index-v1528.js','tagj-assets/full-v1528.js','tagj-assets/index-v1528.css','tagj-assets/full-v1528.css','vercel.json']){
   if(!exists(p))fail(`Missing required file: ${p}`);
 }
 if(failures.length)finish();
@@ -229,6 +229,9 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   }
   if(!build.includes('.tagj-dist/tagj-assets/a??.css'))fail('build: obsolete micro-CSS cleanup missing');
   if(!build.includes("printf 'V15.31'"))fail('build: VERSION.txt is not V15.31');
+  if(!build.includes('generate-tagj-seo.mjs'))fail('build: environment-aware SEO generator missing');
+  const seoScript=read('scripts/generate-tagj-seo.mjs');
+  if(!seoScript.includes('TAGJ_PUBLIC_ORIGIN')||!seoScript.includes('noindex,nofollow,noarchive'))fail('SEO generator: protected/public mode contract missing');
   if(!build.includes('tagj-public-assets-ready.zip'))fail('build: one-file public asset bundle support missing');
   if(!html['artist.html'].includes('bennyHeroAsset')||!html['artist.html'].includes('benny-artist-hero.webp'))fail('artist.html: drop-in hero asset hook missing');
   if(!html['index.html'].includes('tagj-home-entity-schema'))fail('index.html: home entity graph missing');
@@ -257,6 +260,16 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
 
   const vc=JSON.parse(read('vercel.json'));
   const globalHeaders=(vc.headers||[]).find(x=>x.source==='/(.*)')?.headers||[];
+  for(const pair of [
+    ['/music/wanted-me-gone','/music/wanted-me-gone.html'],
+    ['/music/hold-something','/music/hold-something.html'],
+    ['/music/cant-crop-karma','/music/cant-crop-karma.html'],
+    ['/music/freestyle','/music/freestyle.html'],
+    ['/music/cried-in-the-dark','/music/cried-in-the-dark.html'],
+    ['/music/the-whole-brand','/music/the-whole-brand.html']
+  ]){
+    if(!(vc.rewrites||[]).some(x=>x.source===pair[0]&&x.destination===pair[1]))fail('vercel.json: clean release rewrite missing '+pair[0]);
+  }
   for(const key of ['X-Content-Type-Options','Referrer-Policy','Permissions-Policy']){
     if(!globalHeaders.some(x=>x.key===key))fail('vercel.json: baseline security header missing '+key);
   }
