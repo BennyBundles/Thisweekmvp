@@ -3,19 +3,15 @@
   "baseline": "V15.38",
   "updatedAt": "2026-10-10",
   "previewLaunch": {
-    "status": "source_green_deploy_pending",
+    "status": "deployed_verified",
     "sourceVersion": "V15.38",
-    "deployedBaseline": "V15.34",
+    "deployedBaseline": "V15.38",
     "branchAlias": "https://bennybundles-artist-preview-git-tagj-v12-preview-brief2delivery.vercel.app",
     "indexing": "noindex",
     "protection": "retained",
-    "blocker": {
-      "id": "vercel-api-deployment-quota",
-      "owner": "platform",
-      "blockingForCode": false,
-      "blockingForPreviewFreshness": true,
-      "detail": "The V15.38 source baseline includes Beat Vault 22/22 local previews, authentic first-party Benny portrait, first-class Season 1/VST growth routes, and current QA hardening. Deploy once after the Vercel Hobby API quota permits; do not churn intermediate deployments."
-    }
+    "deploymentSha": "64c70d9e09e7d614db95affe30f6705a665fc081",
+    "deploymentId": "dpl_EsXTUfJsqGrBmi68dfe9cNmViY33",
+    "verifiedAt": "2026-10-10"
   },
   "publicLaunch": {
     "status": "awaiting_activation_decision",
