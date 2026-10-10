@@ -23,7 +23,7 @@ const htmlFiles=[
 ];
 const jsonFiles=[
   'tagj-data/business.v1.json','tagj-data/catalog.v1.json','tagj-data/link-registry.v1.json',
-  'tagj-data/network-assets.v1.json','tagj-data/beat-catalog.v1.json',
+  'tagj-data/network-assets.v1.json','tagj-data/current-campaign.v1.json','tagj-data/beat-catalog.v1.json',
   'tagj-data/beat-license-matrix.v1.json','tagj-data/license-system.v1.json',
   'tagj-data/request-schema.v1.json','tagj-data/workflow.v1.json'
 ];
@@ -80,6 +80,23 @@ if(!html['campaign.html'].includes('id="campaignCaption"')||!html['campaign.html
 if(!html['artist.html'].includes('href="campaign.html"'))fail('artist.html: current campaign route missing');
 if(!html['index.html'].includes('class="home-release-signal" href="campaign.html"'))fail('index.html: home current-release signal must enter campaign loop');
 if(!html['producer.html'].includes('id="featuredBeatGrid"')||!html['producer.html'].includes("new Audio(beat.previewUrl)"))fail('producer.html: featured Beat audition rail missing');
+
+// Current campaign must stay internally consistent across promotional surfaces.
+{
+  const campaign=parsed['tagj-data/current-campaign.v1.json'];
+  if(campaign?.schemaVersion!==1)fail('Current campaign config schemaVersion must be 1');
+  if(campaign?.status!=='active')fail('Current campaign config must remain active');
+  const release=campaign?.release||{};
+  if(!release.id||!release.title||!release.releaseDate||!release.releasePath||!release.campaignPath||!release.evergreenPath)fail('Current campaign release identity is incomplete');
+  if(release.campaignPath!=='/campaign'||release.evergreenPath!=='/now')fail('Current campaign route contract changed unexpectedly');
+  const campaignHtml=html['campaign.html'];
+  if(release.title&&!campaignHtml.includes(release.title))fail('campaign.html: current title drifted from campaign config');
+  if(release.releaseDate&&!campaignHtml.includes(release.releaseDate))fail('campaign.html: release date drifted from campaign config');
+  if(release.artworkPath&&!campaignHtml.includes(release.artworkPath.replace(/^\//,'')))fail('campaign.html: artwork drifted from campaign config');
+  const youtubeId=String(release.officialVideoUrl||'').match(/youtu\.be\/([^?&/]+)/)?.[1];
+  if(youtubeId&&!campaignHtml.includes(youtubeId))fail('campaign.html: official video drifted from campaign config');
+  if(release.title&&!html['index.html'].toLowerCase().includes(release.title.toLowerCase()))fail('index.html: current release signal drifted from campaign config');
+}
 
 // Basic accessibility and external-link safety.
 for(const [file,src] of Object.entries(html)){
