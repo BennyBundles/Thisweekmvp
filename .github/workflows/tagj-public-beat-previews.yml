@@ -44,6 +44,12 @@ jobs:
           while IFS='|' read -r beat_id drive_id; do
             [ -n "$beat_id" ] || continue
             echo "::group::$beat_id"
+            if [ -f "tagj-assets/beat-previews/$beat_id.mp3" ]; then
+              echo "Local preview already exists; preserving it."
+              success=$((success+1))
+              echo "::endgroup::"
+              continue
+            fi
             rm -f /tmp/tagj-source.wav
             if timeout 90 gdown "$drive_id" -O /tmp/tagj-source.wav </dev/null; then
               if ffmpeg -nostdin -hide_banner -loglevel error -y -ss 15 -i /tmp/tagj-source.wav -t 30 -vn \
