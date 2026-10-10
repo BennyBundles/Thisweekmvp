@@ -5,6 +5,7 @@ on:
     branches: ["tagj-v12-preview"]
     paths:
       - "tagj-private-preview-seed.zip"
+      - ".github/workflows/tagj-private-preview-finalize.yml"
 
 permissions:
   contents: write
@@ -81,8 +82,8 @@ jobs:
                   "bitrateKbps":128,
                   "sourceOffsetSeconds":15
               }
-              beat["previewAvailability"]="site_hosted"
-              beat["previewDelivery"]="local_preview"
+              beat["previewAvailability"]="local"
+              beat["previewDelivery"]="site_hosted_mp3"
               beat["publicPlaybackStatus"]="site_hosted_preview_ready"
           catalog_path.write_text(json.dumps(catalog,indent=2,ensure_ascii=False)+"\n")
 
