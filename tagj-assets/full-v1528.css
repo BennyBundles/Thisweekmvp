@@ -649,10 +649,10 @@ body:not([data-current-world]) .v143-request-fab,body[data-current-world="home"]
 .artist-current-head p{max-width:600px;font-size:10px;line-height:1.55;color:#a99d95;margin:0}
 .artist-current-head>a{font:800 8px ui-monospace,Menlo,monospace;letter-spacing:.11em;text-transform:uppercase;border:1px solid rgba(255,255,255,.16);padding:12px 14px;border-radius:999px;white-space:nowrap}
 .artist-current-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
-.artist-current-grid>a{min-height:116px;border:1px solid rgba(255,255,255,.10);border-radius:15px;padding:15px;background:rgba(10,8,8,.72);display:flex;flex-direction:column;justify-content:flex-end;transition:transform .28s,border-color .28s,background .28s}
+.artist-current-grid>a{min-height:168px;border:1px solid rgba(255,255,255,.10);border-radius:15px;padding:15px;background:linear-gradient(180deg,rgba(5,7,9,.08) 24%,rgba(5,7,9,.94) 86%),var(--thumb),rgba(10,8,8,.72);background-size:cover;background-position:center;display:flex;flex-direction:column;justify-content:flex-end;transition:transform .28s,border-color .28s,background .28s;position:relative;overflow:hidden}
 .artist-current-grid>a:hover,.artist-current-grid>a:focus-visible{transform:translateY(-3px);border-color:rgba(202,84,75,.58);background:rgba(33,16,15,.88)}
 .artist-current-grid small{font:800 7px ui-monospace,Menlo,monospace;letter-spacing:.14em;color:#c35b55}
 .artist-current-grid b{font-size:18px;margin:7px 0 5px}
 .artist-current-grid span{font-size:9px;color:#9f958f}
-@media(max-width:760px){.artist-current-v1531{margin:0 14px 28px;padding:18px}.artist-current-head{align-items:flex-start;flex-direction:column;gap:12px}.artist-current-grid{grid-template-columns:1fr 1fr}.artist-current-grid>a{min-height:104px}}
-@media(max-width:430px){.artist-current-grid{grid-template-columns:1fr}.artist-current-grid>a{min-height:92px}}
+@media(max-width:760px){.artist-current-v1531{margin:0 14px 28px;padding:18px}.artist-current-head{align-items:flex-start;flex-direction:column;gap:12px}.artist-current-grid{grid-template-columns:1fr 1fr}.artist-current-grid>a{min-height:150px}}
+@media(max-width:430px){.artist-current-grid{grid-template-columns:1fr}.artist-current-grid>a{min-height:136px}}
