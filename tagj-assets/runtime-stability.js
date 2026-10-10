@@ -7,6 +7,17 @@
   const isIOS=/iP(?:hone|ad|od)/.test(navigator.userAgent)||(/Macintosh/.test(navigator.userAgent)&&navigator.maxTouchPoints>1);
   const lowMemory=!!((navigator.deviceMemory&&navigator.deviceMemory<=4)||isIOS);
   root.classList.toggle('tagj-low-memory',lowMemory);
+  root.dataset.tagjRuntime='15.32';
+
+  const mainTarget=d.querySelector('main,#home,.home-shell,.subsite');
+  if(mainTarget){
+    if(!mainTarget.id)mainTarget.id='tagj-main';
+    const skip=d.createElement('a');
+    skip.className='tagj-skip-link';
+    skip.href='#'+mainTarget.id;
+    skip.textContent='Skip to content';
+    d.body.prepend(skip);
+  }
 
   // Keep navigation native. Static HTML links remain the source of truth on every host.
   // This avoids redirect/rewrite races and prevents client JS from trapping taps.
@@ -34,6 +45,7 @@
   const style=d.createElement('style');
   style.textContent=[
     '@view-transition{navigation:auto}',
+    '.tagj-skip-link{position:fixed;z-index:10000;left:12px;top:12px;padding:10px 12px;background:#fff;color:#05080c;font:800 12px/1 system-ui,sans-serif;text-decoration:none;border-radius:4px;transform:translateY(-160%);transition:transform .16s ease}.tagj-skip-link:focus{transform:translateY(0)}',
     '@keyframes tagj-vt-out{to{opacity:.78;transform:scale(.997)}}',
     '@keyframes tagj-vt-in{from{opacity:.72;transform:scale(1.003)}}',
     '::view-transition-old(root){animation:tagj-vt-out .16s ease-out both}',
@@ -42,7 +54,7 @@
     '[id]{scroll-margin-top:84px}',
     '.btn,.nav a,.top nav a,button,.actions a,.subnav a,.v13-depth-nav a,.world-route{touch-action:manipulation}',
     '@media(pointer:coarse){button,.btn,.nav a,.top nav a{min-height:44px}}',
-    '@media(prefers-reduced-motion:reduce){::view-transition-old(root),::view-transition-new(root){animation:none!important}}',
+    '@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}::view-transition-old(root),::view-transition-new(root){animation:none!important}.tagj-skip-link{transition:none}}',
     'html.tagj-runtime-paused *,html.tagj-runtime-paused *::before,html.tagj-runtime-paused *::after{animation-play-state:paused!important}',
     '.tagj-offscreen *,.tagj-offscreen *::before,.tagj-offscreen *::after{animation-play-state:paused!important}',
     'html.tagj-nav-pending{cursor:progress}',
