@@ -179,6 +179,7 @@ if(fileSet.has('build-manifest.json')){
     if(bm.currentCampaignRoute!==campaign.release?.campaignPath||bm.evergreenCampaignRoute!==campaign.release?.evergreenPath) failures.push('build manifest campaign route mismatch');
     if(bm.localBeatPreviewCount!==preview.localPreviewCount||bm.expectedBeatPreviewCount!==preview.expectedPreviewCount||bm.beatPreviewMode!==preview.preferredMode) failures.push('build manifest Beat Vault state mismatch');
     if(bm.launch?.previewStatus!==gates.previewLaunch?.status||bm.launch?.publicStatus!==gates.publicLaunch?.status) failures.push('build manifest launch status mismatch');
+    if(bm.launch?.sourceVersion!==gates.previewLaunch?.sourceVersion||bm.launch?.deployedBaseline!==gates.previewLaunch?.deployedBaseline||bm.launch?.previewFreshnessBlocker!==(gates.previewLaunch?.blocker?.id||null)) failures.push('build manifest preview freshness mismatch');
     const expectedBlockers=(gates.publicLaunch?.blockers||[]).filter(x=>x.blocking).map(x=>x.id);
     if(JSON.stringify(bm.launch?.publicBlockers||[])!==JSON.stringify(expectedBlockers)) failures.push('build manifest public blocker list mismatch');
     for(const route of ['/now','/season1','/vst','/subscribe','/press','/contact']) if(!(bm.growthRoutes||[]).includes(route)) failures.push('build manifest missing growth route '+route);
