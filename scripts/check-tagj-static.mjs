@@ -14,7 +14,7 @@ const failures=[];
 const warnings=[];
 const htmlFiles=[
   'index.html','preview.html','full.html','tagj.html','artist.html','producer.html','creative.html',
-  'campaign.html','contact.html','licensing.html','press.html','404.html',
+  'campaign.html','season1.html','vst.html','contact.html','licensing.html','press.html','404.html',
   'network/index.html','network/billyen.html','network/bsf-tone-066.html','network/t311y-demon-life.html',
   'creative/index.html','creative/portfolio.html','creative/case-bsf-tone-066.html','creative/case-t311y-demon-life.html',
   'music/index.html','music/wanted-me-gone.html','music/cant-crop-karma.html','music/hold-something.html',
@@ -93,8 +93,12 @@ if(!html['network/billyen.html'].includes('billyen-profile-schema')||!html['netw
 if(!html['tagj.html'].includes('id="season-one"')||!html['tagj.html'].includes('id="tagjWaitlistForm"')||!html['tagj.html'].includes('Nothing is transmitted automatically'))fail('TAGJ Season 1 waitlist privacy contract missing');
 if(!html['tagj.html'].includes('Preferred Season 1 direction')||!html['tagj.html'].includes('name="direction"')||!html['tagj.html'].includes('id="copySeasonOneLink"'))fail('TAGJ Season 1 product-signal controls missing');
 if(!html['tagj.html'].includes('free-shirt drawing')||!html['tagj.html'].includes('official rules'))fail('TAGJ free-shirt promotion must remain pre-launch and rules-gated');
+if(!html['season1.html'].includes('id="seasonOneForm"')||!html['season1.html'].includes('Preferred Season 1 direction')||!html['season1.html'].includes('Nothing is transmitted automatically'))fail('season1.html: dedicated first-access contract missing');
+if(!html['season1.html'].includes('free-shirt drawing')||!html['season1.html'].includes('official rules')||!html['season1.html'].includes('not a purchase, reservation, or giveaway entry'))fail('season1.html: giveaway / commerce truthfulness contract missing');
 if(!html['producer.html'].includes('id="producer-tools"')||!html['producer.html'].includes('Melody VST')||!html['producer.html'].includes('No fake download'))fail('Producer’s Tools / VST development surface missing or misleading');
 if(!html['producer.html'].includes('id="vstBetaForm"')||!html['producer.html'].includes('Melody VST development roadmap')||!html['producer.html'].includes('Primary DAW')||!html['producer.html'].includes('Workflow problem:'))fail('Producer VST beta research contract missing');
+if(!html['vst.html'].includes('id="vstResearchForm"')||!html['vst.html'].includes('MELODY')||!html['vst.html'].includes('Primary DAW')||!html['vst.html'].includes('What slows you down when building melodies?'))fail('vst.html: dedicated VST research contract missing');
+if(!html['vst.html'].includes('There is no public Melody VST download yet')||!html['vst.html'].includes('No fake download.'))fail('vst.html: truthful release gate missing');
 for(const p of ['artist.html','campaign.html']) if(!html[p].includes('id="youtube-subscribe"')||!html[p].includes('https://www.youtube.com/@bennybundles?sub_confirmation=1')) fail(p+': YouTube subscribe climax missing');
 
 {
@@ -159,7 +163,7 @@ for(const p of ['artist.html','campaign.html']) if(!html[p].includes('id="youtub
 {
   const runtime=read('tagj-assets/runtime-stability.js');
   if(!runtime.includes('window.TAGJAttribution')||!runtime.includes("utm_source")||!runtime.includes("referrer:safeReferrer"))fail('runtime: privacy-preserving attribution helper missing');
-  for(const p of ['tagj.html','producer.html']){
+  for(const p of ['tagj.html','producer.html','season1.html','vst.html']){
     if(!html[p].includes('Attribution source:'))fail(p+': user-reviewed conversion handoff lacks attribution context');
   }
   if(!html['tagj.html'].includes('id="copyWaitlistRequest"')||!html['tagj.html'].includes('Nothing is transmitted automatically'))fail('tagj.html: waitlist privacy/copy fallback missing');
@@ -445,7 +449,7 @@ for(const forbidden of ['business.v1.json','launch-gates.v1.json','sample-review
   for(const bad of ['/index.html','/full.html','/tagj.html','/artist.html','/producer.html','/creative.html','/contact.html','/licensing.html']){
     if((vc.redirects||[]).some(x=>x.source===bad))fail('vercel.json: physical HTML must load directly without redirect: '+bad);
   }
-  for(const pair of [['/artist','/artist.html'],['/producer','/producer.html'],['/creative','/creative.html'],['/full','/full.html'],['/press','/press.html'],['/network','/network/index.html'],['/services','/services/index.html']]){
+  for(const pair of [['/artist','/artist.html'],['/producer','/producer.html'],['/creative','/creative.html'],['/full','/full.html'],['/press','/press.html'],['/season1','/season1.html'],['/vst','/vst.html'],['/network','/network/index.html'],['/services','/services/index.html']]){
     if(!(vc.rewrites||[]).some(x=>x.source===pair[0]&&x.destination===pair[1]))fail('vercel.json: clean-route compatibility rewrite missing '+pair[0]);
   }
   const fallbackPairs=new Map([...html['404.html'].matchAll(/\['(\/[^']*)','([^']+)'\]/g)].map(m=>[m[1],m[2]]));
@@ -470,16 +474,17 @@ for(const forbidden of ['business.v1.json','launch-gates.v1.json','sample-review
 
 {
   const search=read('tagj-assets/index-v1528.js');
-  for(const token of ['TAGJ Season 1 Waitlist','Producer’s Tools / VST Lab','YouTube Subscribe','BillYen Direct Profile']) if(!search.includes(token))fail('growth surfaces missing from ecosystem search: '+token);
+  for(const token of ['TAGJ Season 1','Melody VST Lab','YouTube Subscribe','BillYen Direct Profile']) if(!search.includes(token))fail('growth surfaces missing from ecosystem search: '+token);
 }
 
 // V15.37: evergreen promotion shortcuts.
 {
   const vc=JSON.parse(read('vercel.json'));
-  for(const [source,destination] of [['/season1','/tagj#season-one'],['/vst','/producer#producer-tools'],['/subscribe','/artist#youtube-subscribe']]){
-    if(!(vc.redirects||[]).some(x=>x.source===source&&x.destination===destination&&x.permanent===false))fail('Evergreen promo shortcut missing: '+source);
+  for(const [source,destination] of [['/season1','/season1.html'],['/vst','/vst.html']]){
+    if(!(vc.rewrites||[]).some(x=>x.source===source&&x.destination===destination))fail('First-class growth rewrite missing: '+source);
   }
-  for(const token of ["['/season1','/tagj.html#season-one']","['/vst','/producer.html#producer-tools']","['/subscribe','/artist.html#youtube-subscribe']"])if(!html['404.html'].includes(token))fail('404.html: static-host promo shortcut missing '+token);
+  if(!(vc.redirects||[]).some(x=>x.source==='/subscribe'&&x.destination==='/artist#youtube-subscribe'&&x.permanent===false))fail('Evergreen subscribe shortcut missing');
+  for(const token of ["['/season1','/season1.html']","['/vst','/vst.html']","['/subscribe','/artist.html#youtube-subscribe']"])if(!html['404.html'].includes(token))fail('404.html: static-host promo shortcut missing '+token);
 }
 
 // V15.37: shared runtime route portability.
