@@ -83,8 +83,10 @@ if(!html['producer.html'].includes('id="featuredBeatGrid"')||!html['producer.htm
 if(!html['artist.html'].includes('href="network/billyen.html"')||!html['network/index.html'].includes('href="billyen.html"'))fail('BillYen direct network surface missing');
 if(!html['network/billyen.html'].includes('billyen-profile-schema')||!html['network/billyen.html'].includes('https://youtube.com/@billyenthebuilder')||!html['network/billyen.html'].includes('oDa5fa3Zet8'))fail('BillYen profile verified identity/link contract missing');
 if(!html['tagj.html'].includes('id="season-one"')||!html['tagj.html'].includes('id="tagjWaitlistForm"')||!html['tagj.html'].includes('Your information is not transmitted until you review and send that email'))fail('TAGJ Season 1 waitlist contract missing');
+if(!html['tagj.html'].includes('Preferred Season 1 direction')||!html['tagj.html'].includes('name="direction"')||!html['tagj.html'].includes('id="copySeasonOneLink"'))fail('TAGJ Season 1 product-signal controls missing');
 if(!html['tagj.html'].includes('free-shirt drawing')||!html['tagj.html'].includes('official rules'))fail('TAGJ free-shirt promotion must remain pre-launch and rules-gated');
 if(!html['producer.html'].includes('id="producer-tools"')||!html['producer.html'].includes('Melody VST')||!html['producer.html'].includes('No fake download'))fail('Producer’s Tools / VST development surface missing or misleading');
+if(!html['producer.html'].includes('id="vstBetaForm"')||!html['producer.html'].includes('Melody VST development roadmap')||!html['producer.html'].includes('Primary DAW')||!html['producer.html'].includes('Workflow problem:'))fail('Producer VST beta research contract missing');
 for(const p of ['artist.html','campaign.html']) if(!html[p].includes('id="youtube-subscribe"')||!html[p].includes('https://www.youtube.com/@bennybundles?sub_confirmation=1')) fail(p+': YouTube subscribe climax missing');
 
 {
