@@ -370,7 +370,7 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
 // V15.35: third-party video must remain click-to-play.
 for(const p of ['campaign.html','music/wanted-me-gone.html','music/hold-something.html','music/cant-crop-karma.html','music/freestyle.html','music/cried-in-the-dark.html','music/the-whole-brand.html']){
   const src=html[p];
-  if(/<iframe\b[^>]*\bsrc=["']https:\/\/www\.youtube-nocookie\.com\/embed\//i.test(src))fail(p+': eager YouTube iframe source must remain removed');
+  if(/<iframe\b[^>]*\s+src=["']https:\/\/www\.youtube-nocookie\.com\/embed\//i.test(src))fail(p+': eager YouTube iframe source must remain removed');
   if(!src.includes('data-video-src="https://www.youtube-nocookie.com/embed/'))fail(p+': deferred verified video source missing');
   const expected=p==='campaign.html'?'tagj-assets/deferred-video.js':'../tagj-assets/deferred-video.js';
   if(!src.includes(expected))fail(p+': deferred-video runtime missing');
