@@ -34,34 +34,69 @@
 <section class="section alt"><div class="wrap"><div class="kicker">30-SECOND SUPPORT LOOP</div><h2>Three useful actions.</h2><div class="mission"><article class="step"><small>01 / Watch</small><b>Complete the video.</b><p>Use the verified official video above or open it directly on YouTube.</p><a class="btn" href="https://youtu.be/QyweiAeVUW8" target="_blank" rel="noopener">Open YouTube ↗</a></article><article class="step"><small>02 / Share</small><b>Send one person.</b><p>Use the native share sheet on iPhone or copy the campaign caption below.</p><button class="btn" type="button" data-share>Share now</button></article><article class="step"><small>03 / Follow</small><b>Stay with the run.</b><p>Follow an official Benny Bundles profile so the next release has a direct path back.</p><a class="btn" href="#follow">Official profiles ↓</a></article></div></div></section>
 <section class="section" id="share"><div class="wrap"><div class="kicker">COPY-READY PROMOTION</div><h2>Make sharing frictionless.</h2><div class="copy-grid"><article class="copy-card"><div class="kicker">GENERAL CAPTION</div><h3>Current release copy.</h3><pre class="promo-copy" id="campaignCaption">Benny Bundles — “Wanted Me Gone.” Official video out now. Produced, mixed, mastered, shot and edited by Benny Bundles through TAGJ.
 
-#BennyBundles #WantedMeGone #TAGJ #IndependentArtist #NewMusic</pre><div class="actions"><button class="btn primary" type="button" data-copy="campaignCaption">Copy caption</button><button class="btn" type="button" data-share>Share release</button><button class="btn" type="button" data-copy-now>Copy evergreen /now link</button></div><div class="status" id="campaignStatus" role="status" aria-live="polite"></div></article><article class="copy-card"><div class="kicker">PRESS / CREATOR CONTEXT</div><h3>Use verified facts.</h3><p class="lede">For press, playlists, reaction content or collaborator outreach, use the official EPK and release dossier rather than reconstructing credits from social posts.</p><div class="actions"><a class="btn primary" href="press.html">Official EPK</a><a class="btn" href="music/wanted-me-gone.html">Credits / dossier</a><a class="btn" href="contact.html">Business contact</a></div></article></div></div></section>
+#BennyBundles #WantedMeGone #TAGJ #IndependentArtist #NewMusic</pre><div class="actions"><button class="btn primary" type="button" data-copy="campaignCaption">Copy caption</button><button class="btn" type="button" data-channel-copy="instagram">Instagram copy</button><button class="btn" type="button" data-channel-copy="facebook">Facebook copy</button><button class="btn" type="button" data-channel-copy="bluesky">Bluesky copy</button><button class="btn" type="button" data-channel-copy="youtubeCommunity">YouTube copy</button><button class="btn" type="button" data-share>Share release</button><button class="btn" type="button" data-copy-now>Copy evergreen /now link</button></div><div class="status" id="campaignStatus" role="status" aria-live="polite"></div></article><article class="copy-card"><div class="kicker">PRESS / CREATOR CONTEXT</div><h3>Use verified facts.</h3><p class="lede">For press, playlists, reaction content or collaborator outreach, use the official EPK and release dossier rather than reconstructing credits from social posts.</p><div class="actions"><a class="btn primary" href="press.html">Official EPK</a><a class="btn" href="music/wanted-me-gone.html">Credits / dossier</a><a class="btn" href="contact.html">Business contact</a></div></article></div></div></section>
 <section class="section alt" id="follow"><div class="wrap"><div class="kicker">OFFICIAL ARTIST DESTINATIONS</div><h2>Follow the source.</h2><div class="profile-grid"><a class="profile" rel="me noopener" href="https://open.spotify.com/artist/7B0YUXsyJgA56DagjkbeGh" target="_blank"><small>Streaming</small><b>Spotify</b><span>Official artist profile ↗</span></a><a class="profile" rel="me noopener" href="https://music.apple.com/us/artist/benny-bundles/1730543318" target="_blank"><small>Streaming</small><b>Apple Music</b><span>Official artist profile ↗</span></a><a class="profile" rel="me noopener" href="https://www.youtube.com/@bennybundles" target="_blank"><small>Video</small><b>YouTube</b><span>Official channel ↗</span></a><a class="profile" rel="me noopener" href="https://m.soundcloud.com/benny-bundles" target="_blank"><small>Archive / streaming</small><b>SoundCloud</b><span>Official artist destination ↗</span></a><a class="profile" rel="me noopener" href="https://unitedmasters.com/a/benny-bundles" target="_blank"><small>Artist page</small><b>UnitedMasters</b><span>Official artist destination ↗</span></a><a class="profile" rel="me noopener" href="https://www.instagram.com/ben_alexander96/" target="_blank"><small>Social</small><b>Instagram</b><span>Official Benny Bundles profile ↗</span></a></div></div></section>
 <section class="section"><div class="wrap"><div class="press-band"><div><div class="kicker">PRESS / PLAYLIST / FEATURES / COLLABORATION</div><strong>Use the official source.</strong><p>The EPK has the current bio, dated 2026 release run, verified profiles and first-party credits. Business inquiries route directly to the existing TAGJ contact system.</p></div><div class="actions"><a class="btn primary" href="press.html">Open EPK</a><a class="btn" href="contact.html">Contact</a></div></div></div></section>
 </main>
 <footer class="footer"><div class="wrap">Wanted Me Gone / Benny Bundles / TAGJ — current campaign room.</div></footer>
 <script>
-document.addEventListener('click',async e=>{
-  const status=document.getElementById('campaignStatus');
-  const share=e.target.closest?.('[data-share]');
-  if(share){
-    const data={title:'Wanted Me Gone — Benny Bundles',text:'Benny Bundles — Wanted Me Gone. Official video out now.',url:new URL('/now',location.href).href};
-    try{
-      if(navigator.share){await navigator.share(data);if(status)status.textContent='Share sheet opened';}
-      else{await navigator.clipboard.writeText(data.url);if(status)status.textContent='Release link copied';}
-    }catch(err){if(err?.name!=='AbortError'&&status)status.textContent='Share unavailable — use the copy caption button';}
-  }
-  const copy=e.target.closest?.('[data-copy]');
-  if(copy){
-    const el=document.getElementById(copy.dataset.copy);
-    if(!el)return;
-    try{await navigator.clipboard.writeText(el.textContent.trim());if(status)status.textContent='Campaign caption copied';}
-    catch(_){if(status)status.textContent='Copy unavailable — select the caption manually';}
-  }
-  if(e.target.closest?.('[data-copy-now]')){
-    try{await navigator.clipboard.writeText(new URL('/now',location.href).href);if(status)status.textContent='Evergreen /now link copied';}
-    catch(_){if(status)status.textContent='Copy unavailable — use the campaign URL';}
-  }
-});
+(()=>{
+  const fallback={
+    release:{title:'Wanted Me Gone',artist:'Benny Bundles',evergreenPath:'/now'},
+    attributionLinks:{direct:'/now?utm_source=direct&utm_medium=share&utm_campaign=wanted_me_gone'},
+    copy:{instagram:document.getElementById('campaignCaption')?.textContent?.trim()||''}
+  };
+  let campaign=fallback;
+  const base=()=>new URL('./',location.href);
+  const localUrl=path=>new URL(String(path||'/now').replace(/^\//,''),base()).href;
+  const resolveTracked=(key='direct')=>localUrl(campaign.attributionLinks?.[key]||campaign.release?.evergreenPath||'/now');
+  fetch(new URL('tagj-data/current-campaign.v1.json',base()),{cache:'no-store'})
+    .then(r=>r.ok?r.json():Promise.reject(new Error('campaign data unavailable')))
+    .then(data=>{campaign=data||fallback})
+    .catch(()=>{});
+
+  document.addEventListener('click',async e=>{
+    const status=document.getElementById('campaignStatus');
+    const share=e.target.closest?.('[data-share]');
+    if(share){
+      const title=campaign.release?.title||'Wanted Me Gone';
+      const artist=campaign.release?.artist||'Benny Bundles';
+      const data={title:title+' — '+artist,text:campaign.copy?.short||artist+' — '+title+'. Official video out now.',url:resolveTracked('direct')};
+      try{
+        if(navigator.share){await navigator.share(data);if(status)status.textContent='Share sheet opened';}
+        else{await navigator.clipboard.writeText(data.url);if(status)status.textContent='Release link copied';}
+      }catch(err){if(err?.name!=='AbortError'&&status)status.textContent='Share unavailable — use a copy button';}
+      return;
+    }
+
+    const channel=e.target.closest?.('[data-channel-copy]');
+    if(channel){
+      const key=channel.dataset.channelCopy;
+      const el=document.getElementById('campaignCaption');
+      let text=campaign.copy?.[key]||campaign.copy?.instagram||el?.textContent||'';
+      const trackedKey=key==='youtubeCommunity'?'youtube':key;
+      const tracked=resolveTracked(trackedKey);
+      if(key!=='instagram') text=String(text).replace(/(?:https?:\/\/\S+)?\/now\b/g,tracked);
+      if(el)el.textContent=String(text).trim();
+      if(status)status.textContent=(key==='youtubeCommunity'?'YouTube':key.charAt(0).toUpperCase()+key.slice(1))+' copy loaded';
+      return;
+    }
+
+    const copy=e.target.closest?.('[data-copy]');
+    if(copy){
+      const el=document.getElementById(copy.dataset.copy);
+      if(!el)return;
+      try{await navigator.clipboard.writeText(el.textContent.trim());if(status)status.textContent='Campaign caption copied';}
+      catch(_){if(status)status.textContent='Copy unavailable — select the caption manually';}
+      return;
+    }
+
+    if(e.target.closest?.('[data-copy-now]')){
+      try{await navigator.clipboard.writeText(localUrl(campaign.release?.evergreenPath||'/now'));if(status)status.textContent='Evergreen /now link copied';}
+      catch(_){if(status)status.textContent='Copy unavailable — use the campaign URL';}
+    }
+  });
+})();
 </script>
 <script src="tagj-assets/runtime-stability.js" defer></script>
 </body>
