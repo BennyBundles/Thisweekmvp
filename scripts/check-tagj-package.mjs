@@ -109,6 +109,9 @@ if(fileSet.has('tagj-data/beat-catalog.v1.json')){
     }
   }catch(err){ failures.push('Unable to validate packaged beat previews: '+err.message); }
 }
+const packagedPreviewCount=[...fileSet].filter(p=>/^tagj-assets\/beat-previews\/beat-\d{3}\.mp3$/.test(p)).length;
+if(packagedPreviewCount>0 && packagedPreviewCount!==22) failures.push('Package contains a partial site-hosted beat preview set: '+packagedPreviewCount+'/22');
+if(packagedPreviewCount===22 && !fileSet.has('tagj-assets/media/benny-artist-hero.webp')) failures.push('Full public asset bundle is missing benny-artist-hero.webp');
 
 if(failures.length){
   console.error('TAGJ package check FAILED');
