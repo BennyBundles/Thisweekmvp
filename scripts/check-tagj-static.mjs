@@ -92,7 +92,7 @@ for(const p of ['artist.html','campaign.html']) if(!html[p].includes('id="youtub
 {
   const manifest=JSON.parse(read('site.webmanifest'));
   if(manifest.id!=='./'||manifest.start_url!=='./?resume=1'||manifest.scope!=='./')fail('site.webmanifest: portable webmanifest contract missing');
-  for(const url of ['campaign','artist','beats','press'])if(!(manifest.shortcuts||[]).some(x=>x.url===url))fail('site.webmanifest: missing portable shortcut '+url);
+  for(const url of ['campaign','season1','vst','artist','beats','press'])if(!(manifest.shortcuts||[]).some(x=>x.url===url))fail('site.webmanifest: missing portable shortcut '+url);
   for(const icon of [...(manifest.icons||[]),...(manifest.shortcuts||[]).flatMap(x=>x.icons||[])])if(String(icon.src||'').startsWith('/'))fail('site.webmanifest: root-absolute icon breaks project-subpath hosting');
 }
 
