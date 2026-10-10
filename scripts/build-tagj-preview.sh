@@ -99,6 +99,9 @@ const manifest={
   beatPreviewMode:previews.preferredMode,
   launch:{
     previewStatus:gates.previewLaunch?.status||null,
+    sourceVersion:gates.previewLaunch?.sourceVersion||null,
+    deployedBaseline:gates.previewLaunch?.deployedBaseline||null,
+    previewFreshnessBlocker:gates.previewLaunch?.blocker?.id||null,
     publicStatus:gates.publicLaunch?.status||null,
     publicBlockers:(gates.publicLaunch?.blockers||[]).filter(x=>x.blocking).map(x=>x.id)
   },
