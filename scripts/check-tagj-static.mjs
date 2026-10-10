@@ -448,6 +448,7 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   const runtime=read('tagj-assets/runtime-stability.js');
   if(!runtime.includes("const sitePath=(p='')"))fail('runtime: site-base route resolver missing');
   if(!runtime.includes('<b>Current Campaign</b>'))fail('runtime global map must include Current Campaign');
+  for(const route of ['season1','vst','subscribe']) if(!runtime.includes("sitePath('"+route+"')"))fail('runtime: global MAP growth shortcut missing '+route);
   if(runtime.includes('href="/artist"')||runtime.includes('href="/producer"')||runtime.includes("fetch('/tagj-data/"))fail('runtime: root-absolute navigation/data dependency breaks subpath hosts');
 }
 
