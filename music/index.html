@@ -24,16 +24,8 @@
    const links=verifiedLinks(window.__tagjReleaseRegistry?.releases?.[r.id]);
    const card=document.createElement('article');card.className='release'+(isCurrent?' current':'');
    const type=(r.type||'release').replaceAll('_',' ');
-   const youtube=links.find(l=>/youtu(?:\.be|be\.com)/i.test(l.url||''));
-   const videoId=(()=>{
-     if(!youtube)return null;
-     try{
-       const u=new URL(youtube.url);
-       if(u.hostname==='youtu.be')return u.pathname.slice(1).split('/')[0]||null;
-       return u.searchParams.get('v')||u.pathname.match(/\/(?:embed|shorts)\/([^/?#]+)/)?.[1]||null;
-     }catch(_){return null}
-   })();
-   const cover=videoId?'<div class="release-cover"><img src="https://i.ytimg.com/vi/'+encodeURIComponent(videoId)+'/hqdefault.jpg" alt="'+r.name+' official video thumbnail" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div>':'';
+   const poster=r.directRoute?('../tagj-assets/releases/'+String(r.directRoute).split('/').pop().replace(/\.html$/i,'.webp')):'';
+   const cover=isCurrent&&poster?'<div class="release-cover"><img src="'+poster+'" alt="'+r.name+' official release poster" loading="lazy" decoding="async"></div>':'';
    card.innerHTML=cover+'<div class="release-body"><small></small><h3></h3><div class="date"></div><p></p><div class="actions"></div><span class="pending"></span></div>';
    card.querySelector('small').textContent=isCurrent?'verified '+type:type;
    card.querySelector('h3').textContent=r.name;
