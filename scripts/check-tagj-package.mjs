@@ -61,7 +61,7 @@ for(const oldCss of ['tagj-assets/index-v1527.css','tagj-assets/full-v1527.css',
 }
 
 for(const required of [
-  'index.html','preview.html','full.html','artist.html','producer.html','creative.html',
+  'index.html','preview.html','full.html','artist.html','producer.html','creative.html','press.html',
   'creative/index.html','creative/portfolio.html','creative/case-bsf-tone-066.html','creative/case-t311y-demon-life.html',
   'network/index.html','network/bsf-tone-066.html','network/t311y-demon-life.html',
   'tagj-assets/runtime-stability.js','tagj-assets/index-v1528.js','tagj-assets/full-v1528.js','tagj-assets/index-v1528.css','tagj-assets/full-v1528.css','tagj-sw.js',
@@ -71,7 +71,7 @@ for(const required of [
 }
 
 const mobileNavPages=[
-  'tagj.html','artist.html','producer.html','creative.html','contact.html','licensing.html',
+  'tagj.html','artist.html','producer.html','creative.html','contact.html','licensing.html','press.html',
   'network/index.html','network/bsf-tone-066.html','network/t311y-demon-life.html',
   'services/index.html','music/index.html','catalogue/index.html','beats/index.html',
   'creative/index.html','creative/portfolio.html','creative/case-bsf-tone-066.html','creative/case-t311y-demon-life.html','404.html',
@@ -111,7 +111,7 @@ else if(publicOrigin){
   if(!read('robots.txt').includes('Allow: /')) failures.push('Public robots.txt must allow crawling');
   if(!fileSet.has('sitemap.xml')) failures.push('Public build is missing sitemap.xml');
   const publicRoutes=[
-    'index.html','full.html','artist.html','producer.html','creative.html','tagj.html','contact.html','licensing.html',
+    'index.html','full.html','artist.html','producer.html','creative.html','tagj.html','contact.html','press.html','licensing.html',
     'services/index.html','beats/index.html','catalogue/index.html','music/index.html',
     'music/wanted-me-gone.html','music/hold-something.html','music/cant-crop-karma.html','music/freestyle.html',
     'music/cried-in-the-dark.html','music/the-whole-brand.html','network/index.html','network/bsf-tone-066.html',
