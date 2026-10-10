@@ -21,20 +21,20 @@
       ]
     },
     "completedRequestDeliveryEmail": {
-      "value": "prodbybundlez@gmail.com",
-      "visibility": "internal",
+      "value": "prodbybundles@yahoo.com",
+      "visibility": "public",
       "purpose": [
         "completed request delivery",
         "request workflow destination"
       ],
-      "note": "Do not expose publicly unless explicitly approved."
+      "note": "Unified with the public business address in V15.37; no separate internal delivery address is exposed in current source."
     }
   },
   "requestRouting": {
-    "destinationEmail": "prodbybundlez@gmail.com",
+    "destinationEmail": "prodbybundles@yahoo.com",
     "publicReplyTo": "prodbybundles@yahoo.com",
     "backendConnected": false,
-    "note": "The final request-wizard action opens a pre-addressed email to the internal delivery address. The site must not claim submission or delivery until the user sends the message. Replace with server-side delivery when a mail/backend provider is connected.",
+    "note": "Current request flows use a user-reviewed device mailto handoff to the public business address. No backend submission or payment occurs.",
     "deliveryMode": "device_mailto_handoff",
     "deliveryState": "user_must_send_from_mail_client"
   }
