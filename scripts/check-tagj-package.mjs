@@ -160,6 +160,10 @@ else if(publicOrigin){
     if(/<meta\b[^>]*name=["']robots["']/i.test(src)) failures.push(p+': canonical public route must not remain noindex');
     if(!/<link\b[^>]*rel=["']canonical["']/i.test(src)) failures.push(p+': public canonical link missing');
     if(!/<meta\b[^>]*property=["']og:url["']/i.test(src)) failures.push(p+': public og:url missing');
+    if(!src.includes('<meta property="og:site_name" content="Benny Bundles × TAGJ">')) failures.push(p+': public og:site_name missing');
+    if(!src.includes('<meta property="og:locale" content="en_US">')) failures.push(p+': public og:locale missing');
+    if(!src.includes('rel="alternate" type="application/rss+xml"')||!src.includes(publicOrigin+'/releases.xml')) failures.push(p+': public RSS autodiscovery missing');
+    if(!src.includes('rel="author" href="'+publicOrigin+'/artist"')) failures.push(p+': public canonical artist link missing');
     for(const m of src.matchAll(/<meta\b[^>]*(?:property=["']og:image["']|name=["']twitter:image["'])[^>]*content=["']([^"']+)["'][^>]*>/gi)){
       if(m[1].startsWith('/')) failures.push(p+': public social image must be absolute');
     }
