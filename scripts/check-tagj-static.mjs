@@ -77,6 +77,13 @@ for(const [file,src] of Object.entries(html)){
 }
 
 if(!html['campaign.html'].includes('id="campaignCaption"')||!html['campaign.html'].includes('data-share')||!html['campaign.html'].includes('campaign-schema'))fail('campaign.html: current campaign controls missing');
+{
+  const raw=(html['campaign.html'].match(/<script\b[^>]*id=["']campaign-schema["'][^>]*>([\s\S]*?)<\/script>/i)||[])[1];
+  const schema=raw?JSON.parse(raw):null;
+  const video=schema?.about?.subjectOf;
+  if(schema?.about?.byArtist?.url!=='/artist'||schema?.publisher?.url!=='/tagj')fail('campaign.html: canonical artist/publisher metadata missing');
+  if(video?.['@type']!=='VideoObject'||video?.creator?.url!=='/artist'||!video?.description||!video?.thumbnailUrl||!video?.uploadDate||!video?.embedUrl)fail('campaign.html: VideoObject creator metadata missing');
+}
 if(!html['artist.html'].includes('href="campaign.html"'))fail('artist.html: current campaign route missing');
 if(!html['index.html'].includes('class="home-release-signal" href="campaign.html"'))fail('index.html: home current-release signal must enter campaign loop');
 if(!html['producer.html'].includes('id="featuredBeatGrid"')||!html['producer.html'].includes("new Audio(beat.previewUrl)"))fail('producer.html: featured Beat audition rail missing');
