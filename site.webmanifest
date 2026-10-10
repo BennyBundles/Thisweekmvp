@@ -2,9 +2,9 @@
   "name": "Benny Bundles × TAGJ",
   "short_name": "Benny Bundles",
   "description": "Official Benny Bundles artist, producer, engineer and TAGJ creative ecosystem.",
-  "id": "/",
-  "start_url": "/?resume=1",
-  "scope": "/",
+  "id": "./",
+  "start_url": "./?resume=1",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#05080c",
   "theme_color": "#05080c",
@@ -16,19 +16,19 @@
   ],
   "icons": [
     {
-      "src": "/tagj-assets/icons/icon-192.png",
+      "src": "tagj-assets/icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/tagj-assets/icons/icon-512.png",
+      "src": "tagj-assets/icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/tagj-assets/icons/icon-512-maskable.png",
+      "src": "tagj-assets/icons/icon-512-maskable.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
@@ -39,10 +39,10 @@
       "name": "Current Campaign",
       "short_name": "Campaign",
       "description": "Watch and share the current Benny Bundles release.",
-      "url": "/campaign",
+      "url": "campaign",
       "icons": [
         {
-          "src": "/tagj-assets/icons/icon-192.png",
+          "src": "tagj-assets/icons/icon-192.png",
           "sizes": "192x192",
           "type": "image/png"
         }
@@ -52,10 +52,10 @@
       "name": "Benny Bundles Artist",
       "short_name": "Artist",
       "description": "Open the official Benny Bundles artist hub.",
-      "url": "/artist",
+      "url": "artist",
       "icons": [
         {
-          "src": "/tagj-assets/icons/icon-192.png",
+          "src": "tagj-assets/icons/icon-192.png",
           "sizes": "192x192",
           "type": "image/png"
         }
@@ -65,10 +65,10 @@
       "name": "Beat Vault",
       "short_name": "Beats",
       "description": "Audition Benny Bundles original beat previews.",
-      "url": "/beats",
+      "url": "beats",
       "icons": [
         {
-          "src": "/tagj-assets/icons/icon-192.png",
+          "src": "tagj-assets/icons/icon-192.png",
           "sizes": "192x192",
           "type": "image/png"
         }
@@ -78,10 +78,10 @@
       "name": "Benny Bundles EPK",
       "short_name": "EPK",
       "description": "Open the official Benny Bundles electronic press kit.",
-      "url": "/press",
+      "url": "press",
       "icons": [
         {
-          "src": "/tagj-assets/icons/icon-192.png",
+          "src": "tagj-assets/icons/icon-192.png",
           "sizes": "192x192",
           "type": "image/png"
         }
