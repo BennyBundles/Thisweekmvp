@@ -92,4 +92,5 @@ jobs:
             exit 0
           fi
           git commit -m "Ingest optimized Benny release posters"
+          git pull --rebase origin tagj-v12-preview
           git push origin HEAD:tagj-v12-preview
