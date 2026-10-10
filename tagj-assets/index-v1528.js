@@ -118,15 +118,17 @@ document.documentElement.classList.add('js');
 
   const worlds = {
     tagj:{accent:'#d5bd7f',title:"TAGJ / That's A Good Jawn",copy:'Fashion, product design, catalogue, custom requests and the TAGJ story.'},
-    artist:{accent:'#b85751',title:'Benny Bundles / Artist',copy:'Music, videos, streaming, releases, features, appearances and collaborations.'},
+    artist:{accent:'#b85751',title:'Benny Bundles / Artist',copy:'Verified releases, official artist links, videos, collaborations and the current music archive.'},
     producer:{accent:'#e58a43',title:'Benny Bundles / Producer + Engineer',copy:'Beats, recording, production, mixing, mastering, credits and session requests.'},
-    creative:{accent:'#8166ee',title:'TAGJ / Creative Services',copy:'Cover art, music videos, lyric visualizers, shorts, YouTube services and bundles.'}
+    creative:{accent:'#8166ee',title:'TAGJ / Creative Services',copy:'Cover art, music video, lyric visualizers, short-form content and release systems.'}
   };
 
   const searchIndex = [
     ['TAGJ Product Catalogue','Development catalogue for footwear, apparel and accessories with explicit commerce status','catalogue/index.html','TAGJ','#d5bd7f','tagj product catalogue footwear apparel accessories concepts development inventory'],
     ['TAGJ × Benny Bundles Services','Creative, production, recording, mixing, mastering and engineering directory','services/index.html','BUSINESS','#9fb2bc','services creative production recording mixing mastering engineering rates quotes'],
     ['Benny Bundles Music Archive','Release records, verified videos and campaign dossiers','music/index.html','ARTIST','#b85751','benny bundles music archive releases songs videos catalogue'],
+    ['Benny Bundles','Official Benny Bundles identity, artist roles and verified destinations','artist.html#about','ARTIST','#b85751','benny bundles artist producer engineer creative director official identity profile'],
+    ['Benny Bundles 2026 Releases','Verified 2026 release pages in current order','artist.html#verified-releases','ARTIST','#b85751','benny bundles 2026 releases wanted me gone hold something cant crop karma freestyle cried in the dark whole brand'],
     ['Wanted Me Gone','Benny Bundles official video release page, September 14 2026','music/wanted-me-gone.html','ARTIST','#b85751','wanted me gone benny bundles official video september 14 2026'],
     ['Can’t Crop Karma','Benny Bundles official video release page, August 13 2026','music/cant-crop-karma.html','ARTIST','#b85751','cant crop karma benny bundles official video august 13 2026'],
     ['Hold Something','Benny Bundles official music video and lyric visualizer release page','music/hold-something.html','ARTIST','#b85751','hold something benny bundles official music video lyric visualizer august 22 2026'],
