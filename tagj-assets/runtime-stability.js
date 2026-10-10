@@ -19,6 +19,23 @@
     d.body.prepend(skip);
   }
 
+  const cleanPath=location.pathname.replace(/\/+$/,'')||'/';
+  if(!['/','/index.html'].includes(cleanPath)){
+    const mapButton=d.createElement('button');
+    mapButton.type='button';mapButton.className='tagj-map-trigger';mapButton.textContent='MAP';
+    mapButton.setAttribute('aria-label','Open TAGJ site map');mapButton.setAttribute('aria-expanded','false');
+    const map=d.createElement('div');map.id='tagj-global-map';map.className='tagj-map-overlay';map.setAttribute('aria-hidden','true');
+    map.innerHTML='<div class="tagj-map-panel" role="dialog" aria-modal="true" aria-label="TAGJ site map"><div class="tagj-map-head"><div><small>BENNY BUNDLES × TAGJ</small><b>Jump between worlds.</b></div><button type="button" class="tagj-map-close" aria-label="Close site map">×</button></div><nav class="tagj-map-grid"><a href="/"><small>00 / CENTER</small><b>Four-World Hub</b><span>Start here</span></a><a href="/artist"><small>01 / PRIMARY</small><b>Benny Bundles</b><span>Artist identity</span></a><a href="/music"><small>02 / RELEASES</small><b>Music</b><span>2026 run + archive</span></a><a href="/producer"><small>03 / STUDIO</small><b>Producer / Engineer</b><span>Production + sessions</span></a><a href="/beats"><small>04 / AUDIO</small><b>Beat Vault</b><span>Preview + licensing</span></a><a href="/creative"><small>05 / VISUAL</small><b>Creative</b><span>Campaign + client proof</span></a><a href="/tagj"><small>06 / DESIGN</small><b>TAGJ</b><span>Fashion + product</span></a><a href="/press"><small>07 / PRESS</small><b>EPK</b><span>Official fact source</span></a><a href="/contact"><small>08 / WORK</small><b>Contact</b><span>Route an inquiry</span></a></nav></div>';
+    let mapLastFocus=null;
+    const openMap=()=>{mapLastFocus=d.activeElement;map.classList.add('open');map.setAttribute('aria-hidden','false');mapButton.setAttribute('aria-expanded','true');d.body.style.overflow='hidden';map.querySelector('.tagj-map-close')?.focus()};
+    const closeMap=()=>{map.classList.remove('open');map.setAttribute('aria-hidden','true');mapButton.setAttribute('aria-expanded','false');d.body.style.overflow='';mapLastFocus?.focus?.()};
+    mapButton.addEventListener('click',openMap);
+    map.querySelector('.tagj-map-close')?.addEventListener('click',closeMap);
+    map.addEventListener('click',e=>{if(e.target===map)closeMap()});
+    addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();map.classList.contains('open')?closeMap():openMap()}else if(e.key==='Escape'&&map.classList.contains('open'))closeMap()});
+    d.body.append(mapButton,map);
+  }
+
   // Keep navigation native. Static HTML links remain the source of truth on every host.
   // This avoids redirect/rewrite races and prevents client JS from trapping taps.
   root.classList.add('tagj-native-nav-runtime');
@@ -88,7 +105,16 @@
     'html.tagj-nav-pending{cursor:progress}',
     '@supports(content-visibility:auto){main>section,.deep,.section,.v13-section,.v145-section,.v147-section{content-visibility:auto;contain-intrinsic-size:auto 820px}}',
     'html.tagj-low-memory .tagj-offscreen{contain:layout style paint}',
-    'html.tagj-low-memory video:not(.intro-video),html.tagj-low-memory audio{content-visibility:auto}'
+    'html.tagj-low-memory video:not(.intro-video),html.tagj-low-memory audio{content-visibility:auto}',
+    '.tagj-map-trigger{position:fixed;z-index:2147483000;right:max(14px,env(safe-area-inset-right));bottom:max(14px,calc(env(safe-area-inset-bottom) + 8px));height:42px;min-width:54px;padding:0 13px;border:1px solid rgba(255,255,255,.2);border-radius:999px;background:rgba(5,9,12,.82);color:#eef3f6;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);font:850 8px ui-monospace,Menlo,monospace;letter-spacing:.15em;cursor:pointer;box-shadow:0 12px 36px rgba(0,0,0,.26)}',
+    '.tagj-map-trigger:hover,.tagj-map-trigger:focus-visible{border-color:rgba(255,255,255,.52);background:#111820}',
+    '.tagj-map-overlay{position:fixed;z-index:2147483001;inset:0;display:grid;place-items:center;padding:18px;background:rgba(1,4,6,.76);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .22s,visibility .22s}.tagj-map-overlay.open{opacity:1;visibility:visible;pointer-events:auto}',
+    '.tagj-map-panel{width:min(760px,94vw);max-height:min(720px,88svh);overflow:auto;border:1px solid rgba(255,255,255,.16);border-radius:22px;background:#071014;color:#eaf0f3;box-shadow:0 36px 100px rgba(0,0,0,.5);padding:18px}',
+    '.tagj-map-head{display:flex;align-items:start;justify-content:space-between;gap:20px;padding:4px 3px 15px}.tagj-map-head small{display:block;font:800 7px ui-monospace,Menlo,monospace;letter-spacing:.16em;color:#809099}.tagj-map-head b{display:block;margin-top:5px;font-size:24px;letter-spacing:-.04em}.tagj-map-close{width:40px;height:40px;border:1px solid rgba(255,255,255,.18);border-radius:50%;background:transparent;color:inherit;font-size:22px;cursor:pointer}',
+    '.tagj-map-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.tagj-map-grid a{min-height:108px;border:1px solid rgba(255,255,255,.10);border-radius:14px;padding:14px;display:flex;flex-direction:column;justify-content:flex-end;background:#0a1217;color:#eaf0f3;text-decoration:none;transition:transform .22s,border-color .22s,background .22s}.tagj-map-grid a:hover,.tagj-map-grid a:focus-visible{transform:translateY(-2px);border-color:rgba(229,138,67,.6);background:#111a20}.tagj-map-grid small{font:800 7px ui-monospace,Menlo,monospace;letter-spacing:.13em;color:#7d8c94}.tagj-map-grid b{font-size:17px;margin-top:6px}.tagj-map-grid span{font-size:8px;color:#839198;margin-top:5px}',
+    '@media(max-width:620px){.tagj-map-grid{grid-template-columns:1fr 1fr}.tagj-map-trigger{height:44px;min-width:58px}.tagj-map-panel{padding:14px}.tagj-map-grid a{min-height:94px}}',
+    '@media(max-width:390px){.tagj-map-grid{grid-template-columns:1fr}.tagj-map-grid a{min-height:76px}}',
+    '@media(prefers-reduced-motion:reduce){.tagj-map-overlay,.tagj-map-grid a{transition:none!important}}'
   ].join('');
   d.head.appendChild(style);
 
