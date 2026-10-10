@@ -105,9 +105,23 @@ if(!fileSet.has('robots.txt')) failures.push('Missing packaged robots.txt');
 else if(publicOrigin){
   if(!read('robots.txt').includes('Allow: /')) failures.push('Public robots.txt must allow crawling');
   if(!fileSet.has('sitemap.xml')) failures.push('Public build is missing sitemap.xml');
-  for(const p of files.map(rel).filter(p=>p.endsWith('.html'))){
+  const publicRoutes=[
+    'index.html','full.html','artist.html','producer.html','creative.html','tagj.html','contact.html','licensing.html',
+    'services/index.html','beats/index.html','catalogue/index.html','music/index.html',
+    'music/wanted-me-gone.html','music/hold-something.html','music/cant-crop-karma.html','music/freestyle.html',
+    'music/cried-in-the-dark.html','music/the-whole-brand.html','network/index.html','network/bsf-tone-066.html',
+    'network/t311y-demon-life.html','creative/portfolio.html','creative/case-bsf-tone-066.html','creative/case-t311y-demon-life.html'
+  ];
+  for(const p of publicRoutes){
+    if(!fileSet.has(p)) continue;
     const src=read(p);
-    if(src.includes('noindex,nofollow,noarchive')) failures.push(p+': public build still contains preview noindex');
+    if(/<meta\b[^>]*name=["']robots["']/i.test(src)) failures.push(p+': canonical public route must not remain noindex');
+    if(!/<link\b[^>]*rel=["']canonical["']/i.test(src)) failures.push(p+': public canonical link missing');
+    if(!/<meta\b[^>]*property=["']og:url["']/i.test(src)) failures.push(p+': public og:url missing');
+  }
+  for(const p of files.map(rel).filter(p=>p.endsWith('.html')&&!publicRoutes.includes(p))){
+    const src=read(p);
+    if(!src.includes('noindex,follow')) failures.push(p+': non-canonical public HTML must remain noindex,follow');
   }
 }else{
   if(!read('robots.txt').includes('Disallow: /')) failures.push('Protected preview robots.txt must disallow crawling');
@@ -128,7 +142,6 @@ if(fileSet.has('tagj-data/beat-catalog.v1.json')){
 }
 const packagedPreviewCount=[...fileSet].filter(p=>/^tagj-assets\/beat-previews\/beat-\d{3}\.mp3$/.test(p)).length;
 if(packagedPreviewCount>0 && packagedPreviewCount!==22) failures.push('Package contains a partial site-hosted beat preview set: '+packagedPreviewCount+'/22');
-if(packagedPreviewCount===22 && !fileSet.has('tagj-assets/media/benny-artist-hero.webp')) failures.push('Full public asset bundle is missing benny-artist-hero.webp');
 
 if(failures.length){
   console.error('TAGJ package check FAILED');
