@@ -1,1 +1,1 @@
-TAGJ V12 preview branch complete. Static Vercel build configuration is present.
+TAGJ V15.38 protected preview is QA-green, deployed, verified, and noindex. Public/indexable activation remains a separate explicit launch decision.
