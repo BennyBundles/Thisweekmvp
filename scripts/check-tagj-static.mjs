@@ -465,6 +465,7 @@ for(const forbidden of ['business.v1.json','launch-gates.v1.json','sample-review
   if(!/tagj-404-self-heal/.test(html['404.html']))fail('404.html: route self-heal missing');
   if(!html['404.html'].includes("['/artist','/artist.html']"))fail('404.html: clean artist route must recover to physical HTML');
   if(!html['404.html'].includes("['/campaign','/campaign.html']")||!html['404.html'].includes("['/now','/campaign.html']"))fail('404.html: campaign /now clean-route recovery missing');
+  if(!html['404.html'].includes('location.search')||!html['404.html'].includes('location.hash'))fail('404.html: static-host recovery must preserve query attribution and anchors');
 }
 
 {
