@@ -114,6 +114,10 @@
     {
       "source": "/music/the-whole-brand",
       "destination": "/music/the-whole-brand.html"
+    },
+    {
+      "source": "/press",
+      "destination": "/press.html"
     }
   ],
   "headers": [
