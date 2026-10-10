@@ -105,13 +105,6 @@ jobs:
               raise SystemExit("Expected hybrid Beat Vault QA invariant not found")
           qa_path.write_text(qa.replace(old,new))
 
-          harvest_path=Path(".github/workflows/tagj-public-beat-previews.yml")
-          harvest=harvest_path.read_text()
-          marker='            echo "::group::$beat_id"\n            rm -f /tmp/tagj-source.wav\n'
-          replacement='            echo "::group::$beat_id"\n            if [ -f "tagj-assets/beat-previews/$beat_id.mp3" ]; then\n              echo "Local preview already exists; preserving it."\n              success=$((success+1))\n              echo "::endgroup::"\n              continue\n            fi\n            rm -f /tmp/tagj-source.wav\n'
-          if marker in harvest:
-              harvest=harvest.replace(marker,replacement)
-          harvest_path.write_text(harvest)
           PY
 
       - name: Validate final 22 of 22 source and package
@@ -137,9 +130,8 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add tagj-assets/beat-previews tagj-data/beat-catalog.v1.json tagj-data/launch-gates.v1.json scripts/check-tagj-static.mjs .github/workflows/tagj-public-beat-previews.yml
+          git add tagj-assets/beat-previews tagj-data/beat-catalog.v1.json tagj-data/launch-gates.v1.json scripts/check-tagj-static.mjs
           git rm -f tagj-private-preview-seed.zip
-          git rm -f .github/workflows/tagj-private-preview-finalize.yml
           git commit -m "Complete Beat Vault site-hosted previews 22 of 22"
           git pull --rebase origin tagj-v12-preview
           git push origin HEAD:tagj-v12-preview
