@@ -38,6 +38,7 @@ if(failures.length)finish();
 
 const html=Object.fromEntries(htmlFiles.map(p=>[p,read(p)]));
 const parsed={};
+try{JSON.parse(read('site.webmanifest'))}catch(err){fail('site.webmanifest: invalid JSON: '+err.message)}
 for(const p of jsonFiles){
   try{parsed[p]=JSON.parse(read(p));}catch(e){fail(`Invalid JSON ${p}: ${e.message}`)}
 }
@@ -204,7 +205,7 @@ if(devil&&!devil.repositoryPath)warnings.push("Devil's Playground: verified Driv
 
 // Build must ship the dedicated subsites, direct network pages, data, legal docs and network assets.
 const build=read('scripts/build-tagj-preview.sh');
-for(const token of ['index.html preview.html full.html tagj.html artist.html producer.html creative.html contact.html licensing.html press.html 404.html','cp network/*.html .tagj-dist/network/','cp music/*.html .tagj-dist/music/','cp beats/*.html .tagj-dist/beats/','cp catalogue/*.html .tagj-dist/catalogue/','cp services/*.html .tagj-dist/services/','cp creative/*.html .tagj-dist/creative/','cp tagj-assets/*.js .tagj-dist/tagj-assets/','cp tagj-assets/media/* .tagj-dist/tagj-assets/media/','cp tagj-assets/releases/*.webp .tagj-dist/tagj-assets/releases/','tagj-assets/beat-previews/*.mp3','cp -R tagj-assets/network/* .tagj-dist/tagj-assets/network/','cp tagj-data/* .tagj-dist/tagj-data/','cp legal/* .tagj-dist/legal/']){
+for(const token of ['index.html preview.html full.html tagj.html artist.html producer.html creative.html contact.html licensing.html press.html 404.html','cp network/*.html .tagj-dist/network/','cp music/*.html .tagj-dist/music/','cp beats/*.html .tagj-dist/beats/','cp catalogue/*.html .tagj-dist/catalogue/','cp services/*.html .tagj-dist/services/','cp creative/*.html .tagj-dist/creative/','cp tagj-assets/*.js .tagj-dist/tagj-assets/','cp tagj-assets/media/* .tagj-dist/tagj-assets/media/','cp tagj-assets/icons/*.png .tagj-dist/tagj-assets/icons/','cp tagj-assets/releases/*.webp .tagj-dist/tagj-assets/releases/','tagj-assets/beat-previews/*.mp3','cp -R tagj-assets/network/* .tagj-dist/tagj-assets/network/','cp tagj-data/* .tagj-dist/tagj-data/','cp legal/* .tagj-dist/legal/']){
   if(!build.includes(token))fail(`Build script missing expected shipping rule: ${token}`);
 }
 
@@ -255,6 +256,7 @@ for(const token of ['index.html preview.html full.html tagj.html artist.html pro
   if(!build.includes('.tagj-dist/tagj-assets/a??.css'))fail('build: obsolete micro-CSS cleanup missing');
   if(!build.includes("printf 'V15.32'"))fail('build: VERSION.txt is not V15.32');
   if(!build.includes('generate-tagj-seo.mjs'))fail('build: environment-aware SEO generator missing');
+  if(!build.includes('site.webmanifest'))fail('build: site.webmanifest shipping rule missing');
   if(!build.includes('beat-preview-status.v1.json'))fail('build: Beat Vault preview capability manifest generation missing');
   if(!html['beats/index.html'].includes('beat-preview-status.v1.json'))fail('beats/index.html: build-aware preview capability fetch missing');
   if(!read('tagj-assets/full-v1528.js').includes('beat-preview-status.v1.json'))fail('full-v1528.js: build-aware Beat Vault preview capability fetch missing');
