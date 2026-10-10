@@ -140,6 +140,18 @@ for(const b of beats){
   if(!exists(previewPath))fail(`${b.id}: previewUrl points to missing file ${b.previewUrl}`);
   if(!/\.mp3$/i.test(previewPath))fail(`${b.id}: site-hosted preview must be MP3`);
 }
+for(const b of beats){
+  if(b.previewUrl){
+    if(b.previewAvailability!=='local')fail(`${b.id}: previewAvailability must be local when previewUrl exists`);
+    if(b.previewDelivery!=='site_hosted_mp3')fail(`${b.id}: previewDelivery must identify site-hosted MP3`);
+  }else{
+    if(b.previewAvailability!=='drive_restricted')fail(`${b.id}: missing local preview must be explicitly marked drive_restricted`);
+    if(b.previewDelivery!=='no_public_browser_preview')fail(`${b.id}: restricted preview delivery state missing`);
+  }
+}
+if(!html['beats/index.html'].includes('Preview Restricted'))fail('Beat Catalogue: restricted-preview UI missing');
+const fullJs=read('tagj-assets/full-v1528.js');
+if(!fullJs.includes("previewAvailability==='drive_restricted'")||!fullJs.includes('restricted beats labeled'))fail('Full Beat Vault: hybrid/restricted playback logic missing');
 
 const matrix=parsed['tagj-data/beat-license-matrix.v1.json']?.beats||[];
 if(matrix.length!==22)fail(`License matrix expected 22 beat rows; found ${matrix.length}`);
