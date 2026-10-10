@@ -917,6 +917,250 @@ async function registerSandboxWebhooks(): Promise<AnyRecord> {
   };
 }
 
+
+async function certificationEvidenceStatus(
+  admin: ReturnType<typeof createClient>,
+  userId: string,
+) {
+  const [
+    connectionsResult, providerAccountsResult, customerResult, depositsResult, transfersResult,
+    cardsResult, cardAuthsResult, journalsResult, switchesResult, paymentsResult, casesResult,
+  ] = await Promise.all([
+    admin.from("tw_provider_connections")
+      .select("id,provider,status,last_success_at,created_at")
+      .eq("user_id", userId).eq("provider", "plaid")
+      .order("created_at", { ascending: false }).limit(20),
+    admin.from("tw_provider_accounts")
+      .select("id,connection_id,status,created_at")
+      .eq("user_id", userId).order("created_at", { ascending: false }).limit(100),
+    admin.from("tw_money_customers")
+      .select("id,banking_provider,onboarding_state,kyc_state,provider_application_status")
+      .eq("user_id", userId).maybeSingle(),
+    admin.from("tw_money_deposit_accounts")
+      .select("id,provider,status,created_at")
+      .eq("user_id", userId).order("created_at", { ascending: false }).limit(50),
+    admin.from("tw_money_transfers")
+      .select("id,transfer_type,rail,state,provider,settled_at,updated_at")
+      .eq("user_id", userId).order("updated_at", { ascending: false }).limit(100),
+    admin.from("tw_money_virtual_cards")
+      .select("id,provider,status,created_at")
+      .eq("user_id", userId).order("created_at", { ascending: false }).limit(50),
+    admin.from("tw_money_card_authorizations")
+      .select("id,provider,decision,state,hold_journal_id,settlement_journal_id,reversed_at,settled_at,requested_at")
+      .eq("user_id", userId).order("requested_at", { ascending: false }).limit(150),
+    admin.from("tw_money_journals")
+      .select("id,event_type,provider,provider_event_id,created_at")
+      .eq("user_id", userId).order("created_at", { ascending: false }).limit(250),
+    admin.from("tw_money_direct_deposit_switches")
+      .select("id,provider,state,confirmed_at,created_at")
+      .eq("user_id", userId).order("created_at", { ascending: false }).limit(50),
+    admin.from("tw_money_bill_payments")
+      .select("id,provider,state,provider_payment_id,paid_at,updated_at")
+      .eq("user_id", userId).order("updated_at", { ascending: false }).limit(100),
+    admin.from("tw_ops_cases")
+      .select("id,case_type,state,provider,related_transfer_id,related_card_authorization_id,resolved_at,updated_at")
+      .eq("user_id", userId).order("updated_at", { ascending: false }).limit(150),
+  ]);
+
+  const checks = [
+    connectionsResult, providerAccountsResult, customerResult, depositsResult, transfersResult,
+    cardsResult, cardAuthsResult, journalsResult, switchesResult, paymentsResult, casesResult,
+  ];
+  if (checks.some((x) => x.error)) throw new Error("certification_evidence_read_failed");
+
+  const connections = (connectionsResult.data || []) as AnyRecord[];
+  const providerAccounts = (providerAccountsResult.data || []) as AnyRecord[];
+  const customer = customerResult.data as AnyRecord | null;
+  const deposits = (depositsResult.data || []) as AnyRecord[];
+  const transfers = (transfersResult.data || []) as AnyRecord[];
+  const cards = (cardsResult.data || []) as AnyRecord[];
+  const cardAuths = (cardAuthsResult.data || []) as AnyRecord[];
+  const journals = (journalsResult.data || []) as AnyRecord[];
+  const switches = (switchesResult.data || []) as AnyRecord[];
+  const payments = (paymentsResult.data || []) as AnyRecord[];
+  const cases = (casesResult.data || []) as AnyRecord[];
+
+  const plaidConnection = connections.find((x) =>
+    safeText(x.provider, 30) === "plaid" && safeText(x.status, 30) === "active"
+  );
+  const plaidAccount = plaidConnection
+    ? providerAccounts.find((x) =>
+        String(x.connection_id || "") === String(plaidConnection.id || "") &&
+        safeText(x.status, 30) === "active"
+      )
+    : null;
+  const unitDeposit = deposits.find((x) =>
+    safeText(x.provider, 30) === "unit" && safeText(x.status, 30) === "open"
+  );
+  const unitReady = !!customer &&
+    safeText(customer.banking_provider, 30) === "unit" &&
+    safeText(customer.onboarding_state, 30) === "approved" &&
+    safeText(customer.kyc_state, 30) === "verified" &&
+    !!unitDeposit;
+  const achFundingJournal = journals.find((x) =>
+    safeText(x.event_type, 80) === "unit_ach_credit_settlement" &&
+    safeText(x.provider, 30) === "unit"
+  );
+  const activeCard = cards.find((x) =>
+    safeText(x.provider, 30) === "unit" && safeText(x.status, 30) === "active"
+  );
+  const heldAuth = cardAuths.find((x) =>
+    safeText(x.provider, 30) === "unit" &&
+    safeText(x.decision, 30) === "approved" &&
+    !!x.hold_journal_id
+  );
+  const settledAuth = cardAuths.find((x) =>
+    safeText(x.provider, 30) === "unit" &&
+    safeText(x.state, 30) === "settled" &&
+    !!x.settlement_journal_id &&
+    !!x.settled_at
+  );
+  const reversedAuth = cardAuths.find((x) =>
+    safeText(x.provider, 30) === "unit" &&
+    safeText(x.state, 30) === "reversed" &&
+    !!x.reversed_at
+  );
+  const confirmedSwitch = switches.find((x) =>
+    safeText(x.provider, 30) === "pinwheel" &&
+    safeText(x.state, 30) === "confirmed" &&
+    !!x.confirmed_at
+  );
+  const paidMethod = payments.find((x) =>
+    safeText(x.provider, 30) === "method" &&
+    safeText(x.state, 30) === "paid" &&
+    !!x.provider_payment_id &&
+    !!x.paid_at
+  );
+  const transferById = new Map(transfers.map((x) => [String(x.id || ""), x]));
+  const achReturnCase = cases.find((x) => {
+    if (safeText(x.case_type, 40) !== "ach_return") return false;
+    if (!["resolved", "closed"].includes(safeText(x.state, 40))) return false;
+    const transfer = transferById.get(String(x.related_transfer_id || ""));
+    return !!transfer && safeText(transfer.state, 40) === "returned";
+  });
+  const disputeCase = cases.find((x) =>
+    ["card_dispute", "card_refund"].includes(safeText(x.case_type, 40)) &&
+    ["resolved", "closed"].includes(safeText(x.state, 40)) &&
+    !!x.related_card_authorization_id
+  );
+
+  const item = (
+    requirementKey: string,
+    ready: boolean,
+    row: AnyRecord | null | undefined,
+    safeSummary: string,
+    pendingReason: string,
+  ) => ({
+    requirementKey,
+    ready,
+    evidenceRef: ready && row?.id ? "thisweek-db:" + requirementKey + ":" + String(row.id) : null,
+    safeSummary: ready ? safeSummary : null,
+    pendingReason: ready ? null : pendingReason,
+  });
+
+  const requirements = [
+    {
+      requirementKey: "provider_preflight",
+      ready: false,
+      evidenceRef: null,
+      safeSummary: null,
+      pendingReason: "Run the live provider credential preflight; this check is intentionally not inferred from stored rows.",
+    },
+    {
+      requirementKey: "sandbox_webhook_registration",
+      ready: false,
+      evidenceRef: null,
+      safeSummary: null,
+      pendingReason: "Run provider webhook registration; current provider registrations are verified live.",
+    },
+    item(
+      "plaid_bank_connection",
+      !!plaidConnection && !!plaidAccount,
+      plaidConnection,
+      "Active Plaid Sandbox connection with at least one active normalized account.",
+      "Complete Plaid Hosted Link and finalize the connection.",
+    ),
+    item(
+      "unit_onboarding_account",
+      unitReady,
+      unitDeposit,
+      "Unit Sandbox customer is approved/verified and an open Unit deposit account exists.",
+      "Complete Unit Sandbox onboarding/KYC and create an open deposit account.",
+    ),
+    item(
+      "ach_funding",
+      !!achFundingJournal,
+      achFundingJournal,
+      "A signed Unit ACH credit event posted a unit_ach_credit_settlement ledger journal.",
+      "Complete Sandbox ACH funding and wait for the signed Unit settlement event.",
+    ),
+    item(
+      "card_issue",
+      !!activeCard,
+      activeCard,
+      "An active Unit Sandbox virtual card is persisted.",
+      "Issue a Unit Sandbox virtual card.",
+    ),
+    item(
+      "card_authorization_hold",
+      !!heldAuth,
+      heldAuth,
+      "An approved Unit authorization has a persisted hold journal.",
+      "Run a Sandbox card authorization that is approved and creates an envelope hold.",
+    ),
+    item(
+      "card_settlement",
+      !!settledAuth,
+      settledAuth,
+      "A Unit card authorization reached settled state with a persisted settlement journal.",
+      "Allow a Sandbox card authorization to settle through signed provider events.",
+    ),
+    item(
+      "card_reversal",
+      !!reversedAuth,
+      reversedAuth,
+      "A Unit card authorization reached reversed state with a recorded reversal timestamp.",
+      "Exercise a Sandbox card reversal through signed provider events.",
+    ),
+    item(
+      "pinwheel_direct_deposit_switch",
+      !!confirmedSwitch,
+      confirmedSwitch,
+      "A Pinwheel direct-deposit switch reached confirmed state through the signed webhook path.",
+      "Complete the Pinwheel Sandbox flow and wait for confirmation.",
+    ),
+    item(
+      "method_bill_payment",
+      !!paidMethod,
+      paidMethod,
+      "A Method dev bill payment reached paid state with a provider payment reference.",
+      "Complete a Method dev payment and wait for paid state.",
+    ),
+    item(
+      "ach_return_lifecycle",
+      !!achReturnCase,
+      achReturnCase,
+      "A Unit ACH return is paired to a returned transfer and its operational case is resolved/closed.",
+      "Trigger a real Unit Sandbox ACH return, then complete the operational case lifecycle.",
+    ),
+    item(
+      "card_dispute_refund",
+      !!disputeCase,
+      disputeCase,
+      "A Unit card dispute/refund case is resolved/closed and remains linked to the card authorization.",
+      "Run and resolve a Unit Sandbox dispute/refund lifecycle.",
+    ),
+  ];
+
+  return {
+    mode: MONEY_EXECUTION_MODE,
+    generatedAt: new Date().toISOString(),
+    readyCount: requirements.filter((x) => x.ready).length,
+    totalCount: requirements.length,
+    requirements,
+  };
+}
+
 async function bootstrapMoney(admin: ReturnType<typeof createClient>, userId: string) {
   let { data: customer, error: customerReadError } = await admin
     .from("tw_money_customers")
@@ -1787,7 +2031,7 @@ Deno.serve(async (req: Request) => {
   const action = safeText(body.action, 80);
 
   try {
-    const productionReadOnlyActions = new Set(["status","provider_preflight","risk_status","summary","ops_status"]);
+    const productionReadOnlyActions = new Set(["status","provider_preflight","risk_status","summary","ops_status","certification_evidence_status"]);
     if (MONEY_EXECUTION_MODE === "production" && !productionReadOnlyActions.has(action)) {
       const legal = await admin.rpc("tw_user_production_legal_ready",{p_user_id:user.id});
       if (legal.error || legal.data !== true) {
@@ -1839,6 +2083,11 @@ Deno.serve(async (req: Request) => {
           productionRequiresDatabaseReleaseInterlock: true,
         },
       });
+    }
+
+    if (action === "certification_evidence_status") {
+      const result = await certificationEvidenceStatus(admin, user.id);
+      return json(origin, 200, { ok: true, evidence: result });
     }
 
     if (action === "provider_preflight") {
