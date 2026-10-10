@@ -34,6 +34,13 @@ cp tagj-assets/intro/intro-poster-v149.jpg tagj-assets/intro/intro-clip-for-webs
 cp tagj-assets/media/* .tagj-dist/tagj-assets/media/
 if ls tagj-assets/beat-previews/*.mp3 >/dev/null 2>&1; then cp tagj-assets/beat-previews/*.mp3 .tagj-dist/tagj-assets/beat-previews/; fi
 cp -R tagj-assets/network/* .tagj-dist/tagj-assets/network/
+# Prune heavyweight raster originals when an optimized same-basename WebP is
+# present. This keeps the source archive reversible while the deploy package
+# ships only the canonical optimized visual.
+find .tagj-dist/tagj-assets/media .tagj-dist/tagj-assets/network -type f \( -name '*.jpg' -o -name '*.jpeg' -o -name '*.png' \) | while IFS= read -r old; do
+  stem=${old%.*}
+  if [ -f "${stem}.webp" ]; then rm -f "$old"; fi
+done
 # Remove unreferenced duplicate network binaries from the deploy package only.
 rm -f .tagj-dist/tagj-assets/network/bsf-tone-066/profile-01.png
 rm -f .tagj-dist/tagj-assets/network/t311y-demon-life/profile-01.jpg
