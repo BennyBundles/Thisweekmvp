@@ -490,7 +490,7 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
  }
  function refreshWizard(){
    steps.forEach((s,i)=>s.classList.toggle('active',i===step));progress.forEach((x,i)=>x.classList.toggle('on',i<=step));
-   q('#v143WizardBack').style.visibility=step===0?'hidden':'visible';q('#v143WizardNext').textContent=step===steps.length-1?'Copy brief':'Next';q('#v143ShareBrief').style.display=step===steps.length-1?'inline-block':'none';if(step===steps.length-1)review.textContent=briefText()
+   q('#v143WizardBack').style.visibility=step===0?'hidden':'visible';q('#v143WizardNext').textContent=step===steps.length-1?'Copy brief':'Next';q('#v143ShareBrief').style.display=step===steps.length-1?'inline-block':'none';const emailBtn=q('#v1530EmailBrief');if(emailBtn)emailBtn.style.display=step===steps.length-1?'inline-block':'none';if(step===steps.length-1)review.textContent=briefText()
  }
  function openWizard(preset){
    if(preset&&[...type.options].some(o=>o.value===preset||o.text===preset))type.value=preset;
@@ -505,6 +505,7 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
  q('#v143WizardNext')?.addEventListener('click',async()=>{if(step<steps.length-1){step++;refreshWizard();return}const ok=await copyText(briefText());q('#v143WizardNext').textContent=ok?'Copied':'Copy failed'});
  q('#v143SaveDraft')?.addEventListener('click',()=>{safeStore.set('tagjBennyRequestDraftV143',JSON.stringify(formObject()));q('#v143SaveDraft').textContent='Draft saved';setTimeout(()=>q('#v143SaveDraft').textContent='Save draft',1300)});
  q('#v143ShareBrief')?.addEventListener('click',async()=>{const txt=briefText();if(navigator.share){try{await navigator.share({title:'TAGJ × Benny Bundles request brief',text:txt});return}catch(_){}}const ok=await copyText(txt);q('#v143ShareBrief').textContent=ok?'Copied':'Share unavailable'});
+ q('#v1530EmailBrief')?.addEventListener('click',()=>{const d=formObject();const subject='TAGJ / Benny Bundles — '+(d.requestType||'Project inquiry')+(d.projectTitle?' — '+d.projectTitle:'');const body=briefText().replace('PREVIEW STATUS: prepared locally; no backend submission or payment has occurred.','EMAIL HANDOFF: review this message, then send it from your mail app. No payment has occurred.');location.href='mailto:prodbybundles@yahoo.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body)});
  const draft=safeStore.get('tagjBennyRequestDraftV143');if(draft){try{const d=JSON.parse(draft);Object.entries(d).forEach(([k,v])=>{const el=form.elements.namedItem(k);if(el)el.value=v})}catch(_){}}
  form?.addEventListener('input',()=>{if(step===steps.length-1)review.textContent=briefText()});
  refreshWizard();
