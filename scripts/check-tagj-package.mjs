@@ -112,6 +112,14 @@ if(!fileSet.has('robots.txt')) failures.push('Missing packaged robots.txt');
 else if(publicOrigin){
   if(!read('robots.txt').includes('Allow: /')) failures.push('Public robots.txt must allow crawling');
   if(!fileSet.has('sitemap.xml')) failures.push('Public build is missing sitemap.xml');
+  if(!fileSet.has('releases.xml')) failures.push('Public build is missing releases.xml');
+  else{
+    const rss=read('releases.xml');
+    if(!rss.includes('<title>Benny Bundles Releases</title>')) failures.push('Release RSS title missing');
+    for(const slug of ['wanted-me-gone','hold-something','cant-crop-karma','freestyle','cried-in-the-dark','the-whole-brand']){
+      if(!rss.includes(publicOrigin+'/music/'+slug)) failures.push('Release RSS missing '+slug);
+    }
+  }
   if(!fileSet.has('llms.txt')) failures.push('Public build is missing llms.txt');
   else{
     const llms=read('llms.txt');
@@ -156,6 +164,7 @@ else if(publicOrigin){
   if(!read('robots.txt').includes('Disallow: /')) failures.push('Protected preview robots.txt must disallow crawling');
   if(fileSet.has('sitemap.xml')) failures.push('Protected preview must not ship a sitemap.xml');
   if(fileSet.has('llms.txt')) failures.push('Protected preview must not ship llms.txt');
+  if(fileSet.has('releases.xml')) failures.push('Protected preview must not ship releases.xml');
   for(const p of files.map(rel).filter(p=>p.endsWith('.html'))){
     if(!read(p).includes('noindex,nofollow,noarchive')) failures.push(p+': protected preview robots meta is missing');
   }
