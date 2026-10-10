@@ -64,7 +64,7 @@ printf '{"schemaVersion":1,"expectedPreviewCount":22,"localPreviewCount":%s,"loc
 cp legal/* .tagj-dist/legal/
 
 node scripts/generate-tagj-seo.mjs
-printf 'V15.36' > .tagj-dist/VERSION.txt
+printf 'V15.37' > .tagj-dist/VERSION.txt
 node - <<'NODE'
 const fs=require('fs');
 const campaign=JSON.parse(fs.readFileSync('tagj-data/current-campaign.v1.json','utf8'));
@@ -72,7 +72,7 @@ const previews=JSON.parse(fs.readFileSync('.tagj-dist/tagj-data/beat-preview-sta
 const manifest={
   schemaVersion:1,
   product:'Benny Bundles × TAGJ',
-  version:'V15.36',
+  version:'V15.37',
   mode:process.env.TAGJ_PUBLIC_ORIGIN?'public':'protected-preview',
   commit:process.env.VERCEL_GIT_COMMIT_SHA||process.env.GITHUB_SHA||null,
   campaignId:campaign.campaignId||null,
