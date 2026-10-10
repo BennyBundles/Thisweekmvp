@@ -99,6 +99,16 @@ for(const p of files.map(rel).filter(p=>p.endsWith('.html'))){
 }
 if(!fileSet.has('VERSION.txt')) failures.push('Missing packaged VERSION.txt');
 else if(read('VERSION.txt').trim()!=='V15.30') failures.push('VERSION.txt must identify the current V15.30 baseline');
+if(fileSet.has('tagj-data/beat-catalog.v1.json')){
+  try{
+    const beatCatalog=JSON.parse(read('tagj-data/beat-catalog.v1.json'));
+    for(const beat of beatCatalog.beats||[]){
+      if(!beat.previewUrl)continue;
+      const packaged=String(beat.previewUrl).replace(/^\//,'');
+      if(!fileSet.has(packaged)) failures.push(`Packaged beat preview missing: ${packaged}`);
+    }
+  }catch(err){ failures.push('Unable to validate packaged beat previews: '+err.message); }
+}
 
 if(failures.length){
   console.error('TAGJ package check FAILED');
