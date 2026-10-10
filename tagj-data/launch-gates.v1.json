@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "baseline": "V15.36",
+  "updatedAt": "2026-10-10",
+  "previewLaunch": {
+    "status": "ready_when_ci_green",
+    "blockers": []
+  },
+  "publicLaunch": {
+    "status": "blocked",
+    "blockers": [
+      {
+        "id": "vercel-api-deployment-quota",
+        "owner": "platform",
+        "status": "waiting_external_reset",
+        "blocking": true,
+        "detail": "The isolated Vercel Hobby project reached its API deployment limit during this pass. Source remains deploy-ready; do not burn additional deploy attempts until the limit resets."
+      },
+      {
+        "id": "canonical-public-origin",
+        "owner": "project",
+        "status": "pending_confirmation",
+        "blocking": true,
+        "detail": "Public SEO mode requires a stable production origin so canonical URLs, sitemap, robots, RSS, security.txt and structured data resolve to one permanent host."
+      }
+    ]
+  },
+  "featureGates": [
+    {
+      "id": "season-one-giveaway",
+      "status": "prelaunch",
+      "blockingForSite": false,
+      "blockingForGiveawayActivation": true,
+      "detail": "Waitlist may collect interest via user-sent email. Free-shirt drawing entries must not open until official rules, dates and eligibility terms are published."
+    },
+    {
+      "id": "beat-vault-local-preview-coverage",
+      "status": "partial",
+      "blockingForSite": false,
+      "localPreviewCount": 18,
+      "expectedPreviewCount": 22,
+      "restrictedBeatIds": [
+        "beat-009",
+        "beat-017",
+        "beat-018",
+        "beat-019"
+      ],
+      "detail": "Remaining sources are Drive-restricted and the connected GitHub writer cannot commit binary MP3 bytes. Catalogue fallback remains explicit."
+    },
+    {
+      "id": "billyen-source-binaries",
+      "status": "pending_binary_ingest",
+      "blockingForSite": false,
+      "detail": "Approved BillYen source assets are documented but not present as repository binaries. Direct profile uses a deliberate typographic fallback rather than generated or unrelated photography."
+    },
+    {
+      "id": "web-analytics",
+      "status": "optional_not_enabled",
+      "blockingForSite": false,
+      "detail": "Vercel Web Analytics is optional. Current connector can read analytics but cannot enable the project-level feature."
+    }
+  ]
+}
