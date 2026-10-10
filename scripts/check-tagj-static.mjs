@@ -101,9 +101,15 @@ for(const p of ['artist.html','campaign.html']) if(!html[p].includes('id="youtub
   if(gates?.schemaVersion!==1)fail('launch-gates.v1.json schemaVersion must be 1');
   if(gates?.baseline!=='V15.37')fail('launch gates baseline mismatch');
   const beatGate=(gates?.featureGates||[]).find(x=>x.id==='beat-vault-local-preview-coverage');
-  if(!beatGate||beatGate.localPreviewCount!==18||beatGate.expectedPreviewCount!==22)fail('launch gates Beat Vault coverage must declare 18/22');
+  if(!beatGate||beatGate.status!=='hybrid'||beatGate.localPreviewCount!==18||beatGate.expectedPreviewCount!==22)fail('launch gates Beat Vault coverage must declare hybrid 18/22');
   const giveaway=(gates?.featureGates||[]).find(x=>x.id==='season-one-giveaway');
   if(!giveaway||giveaway.blockingForGiveawayActivation!==true)fail('launch gates must keep Season 1 drawing rules-gated');
+  const seasonSignal=(gates?.featureGates||[]).find(x=>x.id==='season-one-product-signal');
+  if(!seasonSignal||seasonSignal.status!=='active_zero_backend')fail('launch gates must declare active Season 1 product signal');
+  const vstResearch=(gates?.featureGates||[]).find(x=>x.id==='melody-vst-beta-research');
+  if(!vstResearch||vstResearch.status!=='active_zero_backend')fail('launch gates must declare active Melody VST beta research');
+  const hero=(gates?.featureGates||[]).find(x=>x.id==='benny-hero-portrait');
+  if(!hero||hero.status!=='source_reference_recovered_binary_missing'||hero.blockingForSite!==false)fail('launch gates must declare non-blocking Benny hero portrait fallback');
 }
 
 // Current campaign must stay internally consistent across promotional surfaces.
