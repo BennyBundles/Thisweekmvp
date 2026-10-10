@@ -48,7 +48,13 @@ rm -f .tagj-dist/tagj-assets/network/bsf-tone-066/profile-01.png
 rm -f .tagj-dist/tagj-assets/network/t311y-demon-life/profile-01.jpg
 rm -f .tagj-dist/tagj-assets/network/t311y-demon-life/tdc-logo.jpg
 rm -f .tagj-dist/tagj-assets/network/t311y-demon-life/jimmy-blast-off.png
-cp tagj-data/* .tagj-dist/tagj-data/
+cp \
+  tagj-data/beat-catalog.v1.json \
+  tagj-data/catalog.v1.json \
+  tagj-data/current-campaign.v1.json \
+  tagj-data/license-system.v1.json \
+  tagj-data/link-registry.v1.json \
+  .tagj-dist/tagj-data/
 preview_count=$(find .tagj-dist/tagj-assets/beat-previews -maxdepth 1 -type f -name 'beat-*.mp3' | wc -l | tr -d ' ')
 if [ "$preview_count" = "22" ]; then
   preview_ready=true
@@ -61,7 +67,13 @@ else
   preview_mode=drive_fallback
 fi
 printf '{"schemaVersion":1,"expectedPreviewCount":22,"localPreviewCount":%s,"localPreviewsReady":%s,"preferredMode":"%s"}\n' "$preview_count" "$preview_ready" "$preview_mode" > .tagj-dist/tagj-data/beat-preview-status.v1.json
-cp legal/* .tagj-dist/legal/
+cp \
+  legal/BEAT_LICENSE_BASIC_MP3_DRAFT.md \
+  legal/BEAT_LICENSE_PREMIUM_WAV_DRAFT.md \
+  legal/BEAT_LICENSE_TRACKOUT_PRO_DRAFT.md \
+  legal/BEAT_LICENSE_UNLIMITED_DRAFT.md \
+  legal/BEAT_LICENSE_EXCLUSIVE_DRAFT.md \
+  .tagj-dist/legal/
 
 node scripts/generate-tagj-seo.mjs
 printf 'V15.37' > .tagj-dist/VERSION.txt
