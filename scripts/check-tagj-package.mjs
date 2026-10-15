@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
+import vm from 'node:vm';
 
 const root=path.resolve('.tagj-dist');
 const failures=[];
@@ -89,6 +90,33 @@ if(fileSet.has(beatCatalogPath)){
     if(packaged.length!==22) failures.push('Expected 22 packaged MP3s; found '+packaged.length);
   }catch(e){failures.push('Could not validate 22-sample audio manifest: '+e.message)}
 }else failures.push('Missing packaged beat catalogue');
+
+// Pass 2: compile the real shipped playback scripts; no JS execution or side effects.
+for(const p of ['tagj-assets/index-v1528.js','tagj-assets/full-v1528.js','tagj-assets/restoration-pass1.js']){
+  if(!fileSet.has(p)){failures.push('Missing browser JavaScript '+p);continue;}
+  try{new vm.Script(read(p),{filename:p})}catch(e){failures.push('Browser JS syntax error in '+p+': '+e.message)}
+}
+for(const p of ['music/index.html','beats/index.html']){
+  if(!fileSet.has(p))continue;
+  for(const m of read(p).matchAll(/<script\\b(?![^>]*\\bsrc=)[^>]*>([\\s\\S]*?)<\\/script>/gi)){
+    if(!m[1].trim())continue;
+    try{new vm.Script(m[1],{filename:p+' inline'})}catch(e){failures.push('Inline media player syntax error in '+p+': '+e.message)}
+  }
+}
+// Only preexisting verified YouTube source records may become embedded videos.
+const linkRegistryPath='tagj-data/link-registry.v1.json';
+if(fileSet.has(linkRegistryPath)){
+  try{
+    const registry=JSON.parse(read(linkRegistryPath));
+    const vids=Object.entries(registry.releases||{}).flatMap(([k,v])=>
+      ['youtubeVideo','youtubeLyricVisualizer'].map(type=>v[type])
+        .filter(x=>x?.status==='verified'&&x?.url).map(x=>x.url));
+    if(vids.length!==7)failures.push('Expected 7 preverified YouTube video links, found '+vids.length);
+    for(const u of vids)if(!/^https:\\/\\/youtu\\.be\\/[A-Za-z0-9_-]{11}(?:[?&#]|$)/.test(u)&&
+       !/^https:\\/\\/(?:www\\.)?youtube\\.com\\/watch\\?v=[A-Za-z0-9_-]{11}(?:[?&#]|$)/.test(u))
+       failures.push('Unsupported YouTube video URL: '+u);
+  }catch(e){failures.push('Verified video registry check failed: '+e.message)}
+}else failures.push('Missing verified video link registry');
 
 if(failures.length){
   console.error('TAGJ package check FAILED');
