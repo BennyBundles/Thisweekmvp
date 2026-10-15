@@ -98,7 +98,7 @@ for(const p of ['tagj-assets/index-v1528.js','tagj-assets/full-v1528.js','tagj-a
 }
 for(const p of ['music/index.html','beats/index.html']){
   if(!fileSet.has(p))continue;
-  for(const m of read(p).matchAll(/<script\\b(?![^>]*\\bsrc=)[^>]*>([\\s\\S]*?)<\\/script>/gi)){
+  for(const m of read(p).matchAll(/<script\b(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/gi)){
     if(!m[1].trim())continue;
     try{new vm.Script(m[1],{filename:p+' inline'})}catch(e){failures.push('Inline media player syntax error in '+p+': '+e.message)}
   }
@@ -112,9 +112,14 @@ if(fileSet.has(linkRegistryPath)){
       ['youtubeVideo','youtubeLyricVisualizer'].map(type=>v[type])
         .filter(x=>x?.status==='verified'&&x?.url).map(x=>x.url));
     if(vids.length!==7)failures.push('Expected 7 preverified YouTube video links, found '+vids.length);
-    for(const u of vids)if(!/^https:\\/\\/youtu\\.be\\/[A-Za-z0-9_-]{11}(?:[?&#]|$)/.test(u)&&
-       !/^https:\\/\\/(?:www\\.)?youtube\\.com\\/watch\\?v=[A-Za-z0-9_-]{11}(?:[?&#]|$)/.test(u))
-       failures.push('Unsupported YouTube video URL: '+u);
+    for(const address of vids){
+      try{
+        const u=new URL(address);
+        const id=u.hostname==='youtu.be'?u.pathname.slice(1):(['youtube.com','www.youtube.com'].includes(u.hostname)&&u.pathname==='/watch'?u.searchParams.get('v'):'');
+        const valid=id&&id.length===11&&[...id].every(ch=>'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-'.includes(ch));
+        if(!valid)failures.push('Unsupported verified YouTube video URL: '+address);
+      }catch(e){failures.push('Invalid verified YouTube URL: '+address)}
+    }
   }catch(e){failures.push('Verified video registry check failed: '+e.message)}
 }else failures.push('Missing verified video link registry');
 
