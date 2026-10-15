@@ -64,6 +64,32 @@ for(const required of [
   if(!fileSet.has(required)) failures.push('Missing packaged critical file: '+required);
 }
 
+// Media manifest regression gate: every owned beat gets one playable packaged sample.
+const beatCatalogPath='tagj-data/beat-catalog.v1.json';
+if(fileSet.has(beatCatalogPath)){
+  try{
+    const parsed=JSON.parse(read(beatCatalogPath));
+    const beats=Array.isArray(parsed.beats)?parsed.beats:[];
+    if(beats.length!==22) failures.push('Expected 22 catalogued beats; found '+beats.length);
+    const paths=new Set();
+    for(const beat of beats){
+      const clip=(beat.previewUrl||'').replace(/^\/+/, '');
+      if(!/^tagj-assets\/beat-previews\/beat-\d{3}\.mp3$/.test(clip)) failures.push('Invalid audio preview path for '+beat.id+': '+clip);
+      if(clip!=='tagj-assets/beat-previews/'+beat.id+'.mp3') failures.push('Audio sample ID mismatch for '+beat.id);
+      if(paths.has(clip)) failures.push('Duplicate beat preview path '+clip);
+      paths.add(clip);
+      if(!fileSet.has(clip)){failures.push('Missing packaged music sample '+clip);continue;}
+      const bytes=fs.readFileSync(path.join(root,clip));
+      if(bytes.length<100_000) failures.push('Audio sample too short/empty: '+clip);
+      const isId3=bytes.toString('ascii',0,3)==='ID3';
+      const isMp3Frame=bytes[0]===0xff&&(bytes[1]&0xe0)===0xe0;
+      if(!isId3&&!isMp3Frame) failures.push('Music sample missing MP3 signature: '+clip);
+    }
+    const packaged=files.map(rel).filter(p=>/^tagj-assets\/beat-previews\/beat-\d{3}\.mp3$/.test(p));
+    if(packaged.length!==22) failures.push('Expected 22 packaged MP3s; found '+packaged.length);
+  }catch(e){failures.push('Could not validate 22-sample audio manifest: '+e.message)}
+}else failures.push('Missing packaged beat catalogue');
+
 if(failures.length){
   console.error('TAGJ package check FAILED');
   failures.forEach(x=>console.error(' - '+x));
