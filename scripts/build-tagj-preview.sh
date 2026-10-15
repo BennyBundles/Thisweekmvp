@@ -13,6 +13,9 @@ cp services/*.html .tagj-dist/services/
 cp creative/*.html .tagj-dist/creative/
 cp tagj-assets/*.css .tagj-dist/tagj-assets/
 cp tagj-assets/*.js .tagj-dist/tagj-assets/
+# Include all 22 first-party music samples in the isolated development deploy.
+mkdir -p .tagj-dist/tagj-assets/beat-previews
+cp tagj-assets/beat-previews/beat-*.mp3 .tagj-dist/tagj-assets/beat-previews/
 # Remove obsolete CSS fragments from the deploy package. V15.28 ships one
 # consolidated stylesheet per large shell to cut render-blocking requests.
 rm -f .tagj-dist/tagj-assets/a??.css
