@@ -49,10 +49,13 @@
     const btn=event.target.closest?.('[data-v143-wizard]');
     if(!btn)return;
     const preset=btn.getAttribute('data-v143-wizard');
-    if(preset&&preset!=='General Contact')return;
+    // Record generic intent once, so changing a world without reload
+    // does not turn a previously generic button into an explicit service.
+    if(preset==='General Contact')btn.setAttribute('data-restoration-generic','1');
+    if(!btn.hasAttribute('data-restoration-generic'))return;
     const locationHash=window.location.hash||'';
-    const mapped=worldDefaults.find(([expr])=>expr.test(locationHash))?.[1];
-    if(mapped)btn.setAttribute('data-v143-wizard',mapped);
+    const mapped=worldDefaults.find(([expr])=>expr.test(locationHash))?.[1]||'General Contact';
+    btn.setAttribute('data-v143-wizard',mapped);
     clearNotice();
   },true);
   // Only dynamic request-specific selects with a visible "Select..." placeholder
