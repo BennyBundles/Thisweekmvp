@@ -3,7 +3,7 @@
   "generatedFor": "TAGJ × Benny Bundles Producer / Engineer world",
   "producer": "Bundles (Benny Bundles)",
   "sourcePolicy": "All records originate from Google Drive audio files supplied by Benny. BPM, key, licensing, pricing and availability remain null/unconfirmed until explicitly supplied or separately verified.",
-  "publicPlaybackPolicy": "Drive source IDs are retained for traceability. Direct browser streaming is considered provisional until verified on the deployed site, especially on iPhone/Safari.",
+  "publicPlaybackPolicy": "First-party MP3 sample assets are provided for intentional tap-to-play audition; full files and original Drive source IDs are retained. Preview-asset HTTP checks and cross-browser play tests are independent quality gates. No automatic playback.",
   "count": 22,
   "beats": [
     {
@@ -36,7 +36,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "first_party_site_sample_browser_validation_pending",
       "originalWorkingTitle": "B3 V.1 T.01",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -138,6 +138,14 @@
         "fileName": "beat-001 - Pressure Glass - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 71503606,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
+      },
+      "previewUrl": "/tagj-assets/beat-previews/beat-001.mp3",
+      "preview": {
+        "type": "first_party_excerpt",
+        "format": "mp3",
+        "playbackStatus": "first_party_asset_imported_browser_validation_pending",
+        "origin": "Existing Benny Bundles repository samples",
+        "fullTrackSource": "source.viewerUrl"
       }
     },
     {
@@ -170,7 +178,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "first_party_site_sample_browser_validation_pending",
       "originalWorkingTitle": "dopbeat2",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -272,6 +280,14 @@
         "fileName": "beat-002 - Low Light - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 93745341,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
+      },
+      "previewUrl": "/tagj-assets/beat-previews/beat-002.mp3",
+      "preview": {
+        "type": "first_party_excerpt",
+        "format": "mp3",
+        "playbackStatus": "first_party_asset_imported_browser_validation_pending",
+        "origin": "Existing Benny Bundles repository samples",
+        "fullTrackSource": "source.viewerUrl"
       }
     },
     {
@@ -304,7 +320,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "first_party_site_sample_browser_validation_pending",
       "originalWorkingTitle": "slams",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -406,6 +422,14 @@
         "fileName": "beat-003 - Heavy Weather - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 80638994,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
+      },
+      "previewUrl": "/tagj-assets/beat-previews/beat-003.mp3",
+      "preview": {
+        "type": "first_party_excerpt",
+        "format": "mp3",
+        "playbackStatus": "first_party_asset_imported_browser_validation_pending",
+        "origin": "Existing Benny Bundles repository samples",
+        "fullTrackSource": "source.viewerUrl"
       }
     },
     {
@@ -438,7 +462,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "first_party_site_sample_browser_validation_pending",
       "originalWorkingTitle": "doperthanthelast1",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -540,6 +564,14 @@
         "fileName": "beat-004 - Last One Better - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 33448248,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
+      },
+      "previewUrl": "/tagj-assets/beat-previews/beat-004.mp3",
+      "preview": {
+        "type": "first_party_excerpt",
+        "format": "mp3",
+        "playbackStatus": "first_party_asset_imported_browser_validation_pending",
+        "origin": "Existing Benny Bundles repository samples",
+        "fullTrackSource": "source.viewerUrl"
       }
     },
     {
@@ -572,7 +604,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "first_party_site_sample_browser_validation_pending",
       "originalWorkingTitle": "dope metal type b3at",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -674,6 +706,14 @@
         "fileName": "beat-005 - Iron Gospel - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 35834379,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
+      },
+      "previewUrl": "/tagj-assets/beat-previews/beat-005.mp3",
+      "preview": {
+        "type": "first_party_excerpt",
+        "format": "mp3",
+        "playbackStatus": "first_party_asset_imported_browser_validation_pending",
+        "origin": "Existing Benny Bundles repository samples",
+        "fullTrackSource": "source.viewerUrl"
       }
     },
     {
@@ -706,7 +746,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "first_party_site_sample_browser_validation_pending",
       "originalWorkingTitle": "beat for dt",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -809,6 +849,14 @@
         "fileName": "beat-006 - Cold Receiver - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 48103206,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
+      },
+      "previewUrl": "/tagj-assets/beat-previews/beat-006.mp3",
+      "preview": {
+        "type": "first_party_excerpt",
+        "format": "mp3",
+        "playbackStatus": "first_party_asset_imported_browser_validation_pending",
+        "origin": "Existing Benny Bundles repository samples",
+        "fullTrackSource": "source.viewerUrl"
       }
     },
     {
@@ -841,7 +889,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "first_party_site_sample_browser_validation_pending",
       "originalWorkingTitle": "1_2023",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -943,6 +991,14 @@
         "fileName": "beat-007 - Night Ledger - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 56169878,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
+      },
+      "previewUrl": "/tagj-assets/beat-previews/beat-007.mp3",
+      "preview": {
+        "type": "first_party_excerpt",
+        "format": "mp3",
+        "playbackStatus": "first_party_asset_imported_browser_validation_pending",
+        "origin": "Existing Benny Bundles repository samples",
+        "fullTrackSource": "source.viewerUrl"
       }
     },
     {
@@ -975,7 +1031,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "first_party_site_sample_browser_validation_pending",
       "originalWorkingTitle": "DARK Trap No Samples BEAT 2024 #1,077",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -1077,6 +1133,14 @@
         "fileName": "beat-008 - No Witnesses - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 54902594,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
+      },
+      "previewUrl": "/tagj-assets/beat-previews/beat-008.mp3",
+      "preview": {
+        "type": "first_party_excerpt",
+        "format": "mp3",
+        "playbackStatus": "first_party_asset_imported_browser_validation_pending",
+        "origin": "Existing Benny Bundles repository samples",
+        "fullTrackSource": "source.viewerUrl"
       }
     },
     {
@@ -1123,7 +1187,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "first_party_site_sample_browser_validation_pending",
       "originalWorkingTitle": "8888",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -1250,6 +1314,14 @@
         "fileName": "beat-009 - Four Eights - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 78024935,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
+      },
+      "previewUrl": "/tagj-assets/beat-previews/beat-009.mp3",
+      "preview": {
+        "type": "first_party_excerpt",
+        "format": "mp3",
+        "playbackStatus": "first_party_asset_imported_browser_validation_pending",
+        "origin": "Existing Benny Bundles repository samples",
+        "fullTrackSource": "source.viewerUrl"
       }
     },
     {
@@ -1282,7 +1354,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "first_party_site_sample_browser_validation_pending",
       "originalWorkingTitle": "Benjamin Unfinished Symphony",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -1384,6 +1456,14 @@
         "fileName": "beat-010 - Unfinished Marble - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 52120531,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
+      },
+      "previewUrl": "/tagj-assets/beat-previews/beat-010.mp3",
+      "preview": {
+        "type": "first_party_excerpt",
+        "format": "mp3",
+        "playbackStatus": "first_party_asset_imported_browser_validation_pending",
+        "origin": "Existing Benny Bundles repository samples",
+        "fullTrackSource": "source.viewerUrl"
       }
     },
     {
@@ -1416,7 +1496,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "first_party_site_sample_browser_validation_pending",
       "originalWorkingTitle": "West Coast Beat Prod by Bundles",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -1518,6 +1598,14 @@
         "fileName": "beat-011 - Pacific Pressure - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 57872044,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
+      },
+      "previewUrl": "/tagj-assets/beat-previews/beat-011.mp3",
+      "preview": {
+        "type": "first_party_excerpt",
+        "format": "mp3",
+        "playbackStatus": "first_party_asset_imported_browser_validation_pending",
+        "origin": "Existing Benny Bundles repository samples",
+        "fullTrackSource": "source.viewerUrl"
       }
     },
     {
@@ -1550,7 +1638,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "first_party_site_sample_browser_validation_pending",
       "originalWorkingTitle": "EDMM",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -1652,6 +1740,14 @@
         "fileName": "beat-012 - Neon Circuit - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 40756712,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
+      },
+      "previewUrl": "/tagj-assets/beat-previews/beat-012.mp3",
+      "preview": {
+        "type": "first_party_excerpt",
+        "format": "mp3",
+        "playbackStatus": "first_party_asset_imported_browser_validation_pending",
+        "origin": "Existing Benny Bundles repository samples",
+        "fullTrackSource": "source.viewerUrl"
       }
     },
     {
@@ -1684,7 +1780,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "first_party_site_sample_browser_validation_pending",
       "originalWorkingTitle": "intense",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -1786,6 +1882,14 @@
         "fileName": "beat-013 - Redline - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 78292013,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
+      },
+      "previewUrl": "/tagj-assets/beat-previews/beat-013.mp3",
+      "preview": {
+        "type": "first_party_excerpt",
+        "format": "mp3",
+        "playbackStatus": "first_party_asset_imported_browser_validation_pending",
+        "origin": "Existing Benny Bundles repository samples",
+        "fullTrackSource": "source.viewerUrl"
       }
     },
     {
@@ -1818,7 +1922,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "first_party_site_sample_browser_validation_pending",
       "originalWorkingTitle": "sarahs beat 3",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -1921,6 +2025,14 @@
         "fileName": "beat-014 - Soft Armor - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 59713977,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
+      },
+      "previewUrl": "/tagj-assets/beat-previews/beat-014.mp3",
+      "preview": {
+        "type": "first_party_excerpt",
+        "format": "mp3",
+        "playbackStatus": "first_party_asset_imported_browser_validation_pending",
+        "origin": "Existing Benny Bundles repository samples",
+        "fullTrackSource": "source.viewerUrl"
       }
     },
     {
@@ -1953,7 +2065,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "first_party_site_sample_browser_validation_pending",
       "originalWorkingTitle": "hts beat remix 23",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -2056,6 +2168,14 @@
         "fileName": "beat-015 - Half Truths - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 83427985,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
+      },
+      "previewUrl": "/tagj-assets/beat-previews/beat-015.mp3",
+      "preview": {
+        "type": "first_party_excerpt",
+        "format": "mp3",
+        "playbackStatus": "first_party_asset_imported_browser_validation_pending",
+        "origin": "Existing Benny Bundles repository samples",
+        "fullTrackSource": "source.viewerUrl"
       }
     },
     {
@@ -2088,7 +2208,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "first_party_site_sample_browser_validation_pending",
       "originalWorkingTitle": "darktrap",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -2190,6 +2310,14 @@
         "fileName": "beat-016 - Black Ledger - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 79228084,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
+      },
+      "previewUrl": "/tagj-assets/beat-previews/beat-016.mp3",
+      "preview": {
+        "type": "first_party_excerpt",
+        "format": "mp3",
+        "playbackStatus": "first_party_asset_imported_browser_validation_pending",
+        "origin": "Existing Benny Bundles repository samples",
+        "fullTrackSource": "source.viewerUrl"
       }
     },
     {
@@ -2236,7 +2364,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "first_party_site_sample_browser_validation_pending",
       "originalWorkingTitle": "tghhhhgfdd",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -2363,6 +2491,14 @@
         "fileName": "beat-017 - Basement Gold - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 81627773,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
+      },
+      "previewUrl": "/tagj-assets/beat-previews/beat-017.mp3",
+      "preview": {
+        "type": "first_party_excerpt",
+        "format": "mp3",
+        "playbackStatus": "first_party_asset_imported_browser_validation_pending",
+        "origin": "Existing Benny Bundles repository samples",
+        "fullTrackSource": "source.viewerUrl"
       }
     },
     {
@@ -2409,7 +2545,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "first_party_site_sample_browser_validation_pending",
       "originalWorkingTitle": "untitled722",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -2536,6 +2672,14 @@
         "fileName": "beat-018 - Long Way Home - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 92647003,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
+      },
+      "previewUrl": "/tagj-assets/beat-previews/beat-018.mp3",
+      "preview": {
+        "type": "first_party_excerpt",
+        "format": "mp3",
+        "playbackStatus": "first_party_asset_imported_browser_validation_pending",
+        "origin": "Existing Benny Bundles repository samples",
+        "fullTrackSource": "source.viewerUrl"
       }
     },
     {
@@ -2582,7 +2726,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "first_party_site_sample_browser_validation_pending",
       "originalWorkingTitle": "juice",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -2709,6 +2853,14 @@
         "fileName": "beat-019 - Daylight Run - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 56297305,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
+      },
+      "previewUrl": "/tagj-assets/beat-previews/beat-019.mp3",
+      "preview": {
+        "type": "first_party_excerpt",
+        "format": "mp3",
+        "playbackStatus": "first_party_asset_imported_browser_validation_pending",
+        "origin": "Existing Benny Bundles repository samples",
+        "fullTrackSource": "source.viewerUrl"
       }
     },
     {
@@ -2741,7 +2893,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "first_party_site_sample_browser_validation_pending",
       "originalWorkingTitle": "2_2023",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -2843,6 +2995,14 @@
         "fileName": "beat-020 - Clean Money - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 78460239,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
+      },
+      "previewUrl": "/tagj-assets/beat-previews/beat-020.mp3",
+      "preview": {
+        "type": "first_party_excerpt",
+        "format": "mp3",
+        "playbackStatus": "first_party_asset_imported_browser_validation_pending",
+        "origin": "Existing Benny Bundles repository samples",
+        "fullTrackSource": "source.viewerUrl"
       }
     },
     {
@@ -2875,7 +3035,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "first_party_site_sample_browser_validation_pending",
       "originalWorkingTitle": "4_2023",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -2977,6 +3137,14 @@
         "fileName": "beat-021 - Pressure Point - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 61922192,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
+      },
+      "previewUrl": "/tagj-assets/beat-previews/beat-021.mp3",
+      "preview": {
+        "type": "first_party_excerpt",
+        "format": "mp3",
+        "playbackStatus": "first_party_asset_imported_browser_validation_pending",
+        "origin": "Existing Benny Bundles repository samples",
+        "fullTrackSource": "source.viewerUrl"
       }
     },
     {
@@ -3009,7 +3177,7 @@
       "displayPrice": null,
       "salePrice": null,
       "stripePriceId": null,
-      "publicPlaybackStatus": "drive_backed_candidate_unverified_in_public_browser",
+      "publicPlaybackStatus": "first_party_site_sample_browser_validation_pending",
       "originalWorkingTitle": "3_2023",
       "titleStatus": "audio-analysis-assigned_v159",
       "analysis": {
@@ -3111,6 +3279,14 @@
         "fileName": "beat-022 - Slow Motion Gold - DERIVED TRACKOUTS FLAC.zip",
         "fileSizeBytes": 46512019,
         "disclosure": "Algorithmically derived separation stems from the stereo master; not original DAW multitracks and may contain separation bleed/artifacts."
+      },
+      "previewUrl": "/tagj-assets/beat-previews/beat-022.mp3",
+      "preview": {
+        "type": "first_party_excerpt",
+        "format": "mp3",
+        "playbackStatus": "first_party_asset_imported_browser_validation_pending",
+        "origin": "Existing Benny Bundles repository samples",
+        "fullTrackSource": "source.viewerUrl"
       }
     }
   ],

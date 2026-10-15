@@ -27,6 +27,25 @@
      card.querySelector('p').textContent=r.artist?('Artist: '+r.artist+'. TAGJ release/campaign record.'):'TAGJ release/campaign record.';
      const actions=card.querySelector('.actions');
      links.forEach((l,i)=>{const a=document.createElement('a');a.className='btn verified';a.href=l.url;a.target='_blank';a.rel='noopener';a.textContent=l.label||(i===0?'Open verified media':'Verified link');actions.appendChild(a)});
+     // Play only existing verified YouTube video IDs; keep original outgoing links as the fallback.
+     const validatedVideo=registry.releases?.[r.id]?.youtubeVideo;
+     const videoId=validatedVideo?.status==='verified'&&typeof validatedVideo.url==='string'
+       ?(validatedVideo.url.match(/^https:\/\/(?:youtu\.be\/|(?:www\.)?youtube\.com\/watch\?v=)([A-Za-z0-9_-]{11})(?:[?&#]|$)/)?.[1]||null):null;
+     if(videoId){
+       const trigger=document.createElement('button');trigger.type='button';trigger.className='btn';
+       trigger.textContent='Play video here';trigger.setAttribute('aria-expanded','false');
+       const holder=document.createElement('div');holder.hidden=true;holder.style.cssText='margin-top:12px;aspect-ratio:16 / 9;background:#080b0d;border:1px solid #38434d';
+       trigger.addEventListener('click',()=>{
+         if(!holder.hidden){holder.hidden=true;holder.replaceChildren();trigger.textContent='Play video here';trigger.setAttribute('aria-expanded','false');return;}
+         const frame=document.createElement('iframe');frame.title=r.name+' official video';
+         frame.src='https://www.youtube-nocookie.com/embed/'+videoId+'?rel=0';
+         frame.allow='accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share';
+         frame.allowFullscreen=true;frame.loading='lazy';
+         frame.style.cssText='width:100%;height:100%;border:0';
+         holder.replaceChildren(frame);holder.hidden=false;trigger.textContent='Close video';trigger.setAttribute('aria-expanded','true');
+       });
+       actions.appendChild(trigger);actions.after(holder);
+     }
      if(r.directRoute){const a=document.createElement('a');a.className='btn';a.href='../'+r.directRoute;a.textContent='Release page';actions.appendChild(a)}
      if(r.route){const a=document.createElement('a');a.className='btn';a.href='../full.html'+r.route;a.textContent='Full dossier';actions.appendChild(a)}
      const pending=card.querySelector('.pending');

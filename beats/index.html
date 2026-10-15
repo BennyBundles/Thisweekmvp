@@ -9,7 +9,7 @@
 <script>
 (()=>{
  const grid=document.getElementById('grid'),search=document.getElementById('search'),count=document.getElementById('count');
- let beats=[],activePreview=null;
+ let beats=[],activePreview=null,activeButton=null,activeAudio=null;
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const price=(b,k,fallback)=>b.pricing?.[k]??fallback;
  function openVault(b){
@@ -17,6 +17,7 @@
    location.href='../full.html#producer-beat-vault-v158';
  }
  function render(){
+   if(activeAudio){activeAudio.pause();activeAudio=null;}activePreview=null;activeButton=null;
    const q=(search.value||'').trim().toLowerCase();
    const rows=beats.filter(b=>{
      const a=b.analysis||{};
@@ -35,12 +36,32 @@
      const tiers=[['Basic',price(b,'basicMp3',29)],['Premium',price(b,'premiumWav',49)],['Trackout',price(b,'trackoutPro',99)],['Unlimited',price(b,'unlimited',149)],['Exclusive','from $'+price(b,'exclusiveMinimumOffer',499)]];
      card.querySelector('.pricing').innerHTML=tiers.map(([n,p])=>'<div class="price"><small>'+n+'</small><b>'+(/^from/.test(String(p))?esc(p):'$'+esc(p))+'</b></div>').join('');
      const actions=card.querySelector('.actions'),preview=card.querySelector('.beat-preview');
-     const play=document.createElement('button');play.type='button';play.className='btn primary';play.textContent='Play Preview';play.addEventListener('click',()=>{
-       if(activePreview&&activePreview!==preview){activePreview.hidden=true;activePreview.innerHTML=''}
-       if(!preview.hidden){preview.hidden=true;preview.innerHTML='';activePreview=null;play.textContent='Play Preview';return}
-       const id=b.source?.driveId;if(!id)return;
-       preview.innerHTML='<iframe title="'+esc(b.title)+' beat preview" src="https://drive.google.com/file/d/'+encodeURIComponent(id)+'/preview" allow="autoplay" loading="lazy" referrerpolicy="no-referrer"></iframe>';
-       preview.hidden=false;activePreview=preview;play.textContent='Close Preview';
+     const play=document.createElement('button');play.type='button';play.className='btn primary';play.textContent='Play sample';play.setAttribute('aria-expanded','false');play.addEventListener('click',()=>{
+       if(activeAudio){activeAudio.pause();activeAudio=null;}
+       if(activePreview&&activePreview!==preview){activePreview.hidden=true;activePreview.replaceChildren();if(activeButton){activeButton.textContent='Play sample';activeButton.setAttribute('aria-expanded','false');}}
+       if(!preview.hidden){preview.hidden=true;preview.replaceChildren();activePreview=null;activeButton=null;play.textContent='Play sample';play.setAttribute('aria-expanded','false');return;}
+       preview.replaceChildren();
+       const local=b.previewUrl;
+       if(local){
+         const player=document.createElement('audio');
+         player.controls=true;player.preload='none';player.src=local;
+         player.setAttribute('aria-label',b.title+' audio sample');
+         player.style.cssText='width:100%;min-height:45px';
+         const caption=document.createElement('p');
+         caption.textContent='First-party audio sample. Tap play in the audio player. For the full source, use Drive source.';
+         caption.style.cssText='font-size:12px;line-height:1.5;margin:7px 0;color:#b6bdc5';
+         player.addEventListener('error',()=>{caption.textContent='This audio sample could not load. Use Drive source as a fallback.'});
+         preview.append(player,caption);activeAudio=player;
+       }else if(b.source?.driveId){
+         const frame=document.createElement('iframe');
+         frame.title=b.title+' Drive source preview';frame.loading='lazy';
+         frame.referrerPolicy='no-referrer';
+         frame.allow='autoplay';frame.src='https://drive.google.com/file/d/'+encodeURIComponent(b.source.driveId)+'/preview';
+         preview.appendChild(frame);
+       }else{
+         preview.textContent='No sample is available for this record.';
+       }
+       preview.hidden=false;activePreview=preview;activeButton=play;play.textContent='Close sample';play.setAttribute('aria-expanded','true');
      });actions.appendChild(play);
      const primary=document.createElement('button');primary.type='button';primary.className='btn';primary.textContent='Select in Beat Vault';primary.addEventListener('click',()=>openVault(b));actions.appendChild(primary);
      if(b.source?.viewerUrl){const source=document.createElement('a');source.className='btn';source.href=b.source.viewerUrl;source.target='_blank';source.rel='noopener';source.textContent='Drive source';actions.appendChild(source)}

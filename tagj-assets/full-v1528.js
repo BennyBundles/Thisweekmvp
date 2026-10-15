@@ -1092,7 +1092,7 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
    const localPreview=b.previewUrl||b.preview?.url||null;
    if(localPreview&&audio){
      audio.src=localPreview;audio.hidden=false;audio.load();
-     status.textContent='Site-hosted preview ready. Tap play to audition.';
+     status.textContent='First-party beat sample ready. Tap play to audition; the full recording remains on Drive.';
    }else if(b.source?.driveId&&driveFrame){
      driveFrame.title=b.title+' beat preview';
      driveFrame.src='https://drive.google.com/file/d/'+encodeURIComponent(b.source.driveId)+'/preview';
@@ -1109,7 +1109,7 @@ const cs=document.querySelector('.command-search input');if(cs){const links=[...
  audio?.addEventListener('play',()=>wave?.classList.add('playing'));
  audio?.addEventListener('pause',()=>wave?.classList.remove('playing'));
  audio?.addEventListener('ended',()=>wave?.classList.remove('playing'));
- audio?.addEventListener('error',()=>{wave?.classList.remove('playing');if(selected)status.textContent='The site-hosted audio preview could not load. Use the embedded Drive player or “Open Drive source.”'});
+ audio?.addEventListener('error',()=>{wave?.classList.remove('playing');if(!selected)return;status.textContent='The first-party beat sample could not load. Open Drive source as a fallback.';if(selected.source?.driveId&&driveFrame){driveFrame.title=selected.title+' fallback source';driveFrame.src='https://drive.google.com/file/d/'+encodeURIComponent(selected.source.driveId)+'/preview';if(drivePreview)drivePreview.hidden=false;}});
  request?.addEventListener('click',()=>{if(!selected)return;setTimeout(()=>{const p=q('#v143ProjectTitle');if(p&&!p.value)p.value=selected.title;const n=q('#v143Notes');if(n&&!n.value)n.value='Selected beat: '+selected.title+' / source '+selected.id;},0)},true);
  search?.addEventListener('input',()=>render(search.value));
  fetch('tagj-data/beat-catalog.v1.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('catalog');return r.json()}).then(data=>{
