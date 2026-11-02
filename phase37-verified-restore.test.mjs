@@ -284,6 +284,65 @@ test('byte-size verification unavailable fails closed before any raw restore wri
 
 test('raw restore implementation uses UTF-8 bytes rather than UTF-16 string length',()=>{
   assert.match(source,/byteEncoder=new TextEncoder\(\)/);
-  assert.match(source,/byteEncoder\.encode\(value\)\.byteLength/);
+  assert.match(source,/rawBackupUtf8Bytes\(value,byteEncoder/);
+  assert.match(source,/new Uint8Array\(16\*1024\)/);
   assert.doesNotMatch(source,/totalLength\+=key\.length\+value\.length/);
+});
+
+
+test('modern Safari UTF-8 path reuses 16 KiB scratch and avoids encode allocations',()=>{
+ const h=boot();
+ let maxBuffer=0,calls=0;
+ h.ctx.TextEncoder=class extends TextEncoder{
+   encode(){throw new Error('allocating encode must not run on supported browsers');}
+   encodeInto(value,destination){
+     maxBuffer=Math.max(maxBuffer,destination.byteLength);calls++;
+     return super.encodeInto(value,destination);
+   }
+ };
+ const b=h.backup();
+ b.localStorage['thisweek.uiPrefs.v1']=JSON.stringify({note:'🪙 '.repeat(10000)});
+ assert.equal(h.apply(b).keyCount,3);
+ assert.ok(calls>3,'should encode incrementally');
+ assert.equal(maxBuffer,16*1024);
+ assert.equal(h.disk.get('thisweek.uiPrefs.v1'),b.localStorage['thisweek.uiPrefs.v1']);
+});
+
+test('older TextEncoder without encodeInto uses correct byte-based fallback',()=>{
+ const h=boot();
+ h.ctx.TextEncoder=class{
+   encode(value){return new TextEncoder().encode(value);}
+ };
+ const b=h.backup();
+ b.localStorage['thisweek.uiPrefs.v1']=JSON.stringify({note:'中文 🎵'});
+ assert.equal(h.apply(b).keyCount,3);
+ assert.equal(h.disk.get('thisweek.uiPrefs.v1'),b.localStorage['thisweek.uiPrefs.v1']);
+});
+
+test('exact UTF-8 boundary and next-byte overflow preserve correct results',()=>{
+ const h=boot();
+ const text='🪙'.repeat(100)+'中éA';
+ h.ctx.testValue=text;
+ const correct=new TextEncoder().encode(text).byteLength;
+ assert.equal(h.exec('rawBackupUtf8Bytes(testValue,new TextEncoder(),'+correct+',new Uint8Array(16*1024))'),correct);
+ assert.equal(h.exec('rawBackupUtf8Bytes(testValue,new TextEncoder(),'+(correct-1)+',new Uint8Array(16*1024))'),correct);
+ assert.equal(h.exec('rawBackupUtf8Bytes(testValue,new TextEncoder(),'+(correct+2)+',new Uint8Array(16*1024))'),correct);
+});
+
+test('malformed encoder encodeInto with zero progress fails closed and performs no restore',()=>{
+ const h=boot();
+ h.ctx.TextEncoder=class{
+   encodeInto(){return {read:0,written:0};}
+   encode(value){return new TextEncoder().encode(value);}
+ };
+ assert.throws(()=>h.apply(h.backup()),/cannot safely verify raw backup byte length/);
+ assert.equal(h.disk.size,0);
+});
+
+test('unpaired UTF-16 surrogate has the correct replacement-character byte count',()=>{
+ const h=boot(),s='first\uD800last';
+ h.ctx.testValue=s;
+ const correct=new TextEncoder().encode(s).byteLength;
+ assert.equal(h.exec('rawBackupUtf8Bytes(testValue,new TextEncoder(),'+correct+',new Uint8Array(16*1024))'),correct);
+ assert.equal(correct,12);
 });
