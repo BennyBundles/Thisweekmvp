@@ -11,7 +11,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: "pages-production"
+  # PR checks cannot cancel or replace the protected production Pages workflow.
+  group: ${{ github.event_name == 'pull_request' && format('pages-pr-{0}', github.event.pull_request.number) || 'pages-production' }}
   cancel-in-progress: true
 
 jobs:
