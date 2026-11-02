@@ -4,7 +4,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
-import {fileURLToPath} from 'node:url';
+import {fileURLToPath,pathToFileURL} from 'node:url';
+import {loadStagedRouteDigests,STAGED_ROUTE_FILES} from './verify-deployed-release.mjs';
 
 const root=fileURLToPath(new URL('.',import.meta.url));
 const site=path.join(root,'_site');
@@ -118,7 +119,7 @@ test('parity audit rejects stale, missing and extra public assets',()=>{
   assert.match(parityFailures(a,b).join(' '),/unapproved GitHub Pages output: leaked-private.env/);
 });
 
-test('actual Vercel and GitHub Pages staging yield identical bytes for every public route',()=>{
+test('actual Vercel and GitHub Pages staging yield identical bytes for every public route',async()=>{
   try{
     stagePreview();
     const preview=snapshot();
@@ -136,6 +137,12 @@ test('actual Vercel and GitHub Pages staging yield identical bytes for every pub
       RELEASE_SHA:sha,RELEASE_RUN_ID:runId,VERCEL_ENV:''
     });
     const pages=snapshot();
+    const staged=await loadStagedRouteDigests(pathToFileURL(site+path.sep));
+    assert.equal(Object.keys(staged).length,21,'audit must cover all 20 public files and release.json');
+    for(const [route,rel] of Object.entries(STAGED_ROUTE_FILES)){
+      assert.equal(staged[route],sha256(pages.get(rel)),
+        'local Pages staged route manifest differs from actual bytes: '+route);
+    }
     assert.deepEqual(parityFailures(preview,pages),[],
       'Do not publish a different route or asset set to Pages vs Vercel');
     const release=receipt(pages,'release.json');
