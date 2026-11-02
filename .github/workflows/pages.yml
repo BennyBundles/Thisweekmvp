@@ -10,9 +10,11 @@ on:
 permissions:
   contents: read
 
+# Keep PR checks isolated from one another and from the serialized production release queue.
+# A new PR push may cancel only older runs of that same PR, never a production deployment.
 concurrency:
-  group: "pages-production"
-  cancel-in-progress: true
+  group: ${{ github.event_name == 'pull_request' && format('pages-pr-{0}', github.event.pull_request.number) || 'pages-production' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   validate:
@@ -80,7 +82,8 @@ jobs:
         run: node legal-check.mjs legal/sandbox/index.html
 
   deploy:
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    # A manual dispatch on a feature branch must never publish to production.
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     needs: validate
     permissions:
       contents: read
