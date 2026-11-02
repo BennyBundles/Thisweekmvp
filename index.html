@@ -5384,7 +5384,7 @@ function showStoragePersistenceWarning(kind='write'){
   const warning=kind==='conflict'
     ? 'Another This Week tab changed your Plan. This tab cannot safely save over it. A raw backup contains only previously saved data, not unsaved edits. Note your unsaved edits separately before reloading.'
     : kind==='read'
-    ? 'Stored Plan data cannot be read safely (or requires a newer version). Saves are blocked to avoid overwriting it. Any backup may be incomplete; inspect readable data before a reset.'
+    ? 'Stored Plan data cannot be read safely (or requires a newer version), and saves are blocked to avoid overwriting it. Any backup may be incomplete; inspect readable data before a reset.'
     : 'Your latest Plan change could not be saved to this browser and may disappear after a reload. A raw backup contains only previously saved data; note this unsaved change separately.';
   const existing=document.getElementById('thisweek-storage-failure');
   if(existing){
