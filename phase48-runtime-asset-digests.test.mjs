@@ -68,7 +68,7 @@ function harness({mutate={},cryptoEnabled=true}={}){
   await Promise.all(jobs);
   return response;
  }
- return {f,caches,stores,stats,emit,offline(v){offline=v},request(relative='./'){return {
+ return {f,caches,stores,stats,emit,offline(v){offline=v},changeShell(content){mutate.shell=content},request(relative='./'){return {
    url:new URL(relative,rootUrl).href,mode:'navigate',method:'GET'}},cleanup(){fs.rmSync(f.dir,{recursive:true,force:true})}};
 }
 async function using(opts,fn){const h=harness(opts);try{return await fn(h)}finally{h.cleanup()}}
@@ -99,13 +99,14 @@ test('published worker fails closed if required Web Crypto is unavailable',async
 test('online CDN shell drift cannot overwrite the last verified offline shell',async()=>using({},async h=>{
  await h.emit('install');const name=[...h.stores.keys()][0];const original=await h.stores.get(name).get(rootUrl).text();
  h.stats.cached.length=0;
- h.f.source;
- // An invalid newer response still reaches online users but is never accepted for offline cache.
- const bad=harness({mutate:{shell:SHELL+'<!-- CDN drift -->'}});
- try{
-  await bad.emit('install').then(()=>{throw Error('unexpected valid install')}).catch(()=>{});
- }finally{bad.cleanup()}
+ h.changeShell(SHELL+'<!-- CDN drift -->');
+ const live=await h.emit('fetch',h.request('./?mode=demo'));
+ assert.match(await live.text(),/CDN drift/);
+ assert.equal(h.stats.cached.length,0,'drifted response must never be cached');
  assert.equal(await h.stores.get(name).get(rootUrl).text(),original);
+ h.offline(true);
+ const offline=await h.emit('fetch',h.request('./?mode=demo'));
+ assert.equal(await offline.text(),original);
 }));
 test('offline shell remains available when current-generation network is down',async()=>using({},async h=>{
  await h.emit('install');
