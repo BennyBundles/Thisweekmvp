@@ -21,6 +21,7 @@ const offlineWorker="const CACHE_PREFIX='this-week-public-preview-';"+
 const expectedWorkerSha=createHash('sha256').update(offlineWorker,'utf8').digest('hex');
 const canonical=(u)=>{const x=new URL(u);return x.pathname.endsWith('/')?x.pathname:x.pathname};
 function transport({mutate=(path,body)=>body,status=()=>200,finalUrl=u=>u,
+ bytes=(path,body)=>new TextEncoder().encode(body),
  contentType=path=>path.endsWith('manifest.webmanifest')?'application/manifest+json':
  path.endsWith('.svg')?'image/svg+xml':path.endsWith('.json')?'application/json':
  path.endsWith('.js')?'application/javascript':'text/html'}={}){
@@ -31,13 +32,16 @@ function transport({mutate=(path,body)=>body,status=()=>200,finalUrl=u=>u,
  bodies.set('/Thisweekmvp/public-preview/sw.js',offlineWorker);
  return async u=>{
   const path=new URL(u).pathname;
-  const body=mutate(path,bodies.get(path));
-  return {status:status(path),url:finalUrl(u),type:'basic',redirected:false,headers:{get:k=>k==='content-type'?contentType(path):null},text:async()=>body};
+  const body=mutate(path,bodies.get(path),u);
+  return {status:status(path),url:finalUrl(u),type:'basic',redirected:false,
+   headers:{get:k=>k==='content-type'?contentType(path,u):null},
+   text:async()=>body,
+   arrayBuffer:async()=>Uint8Array.from(bytes(path,body,u)).buffer};
  };
 }
 const run=opts=>verifyOnce({baseUrl:base,expectedSha:sha,config,expectedWorkerSha,fetchImpl:transport(opts)});
 test('exact candidate identity, every published route, and script CSP pass', async()=>{
- const result=await run();assert.equal(result.commit,sha);assert.equal(result.checkedAssets,21);assert.equal(result.assetDigestCount,3);
+ const result=await run();assert.equal(result.commit,sha);assert.equal(result.checkedAssets,25);assert.equal(result.offlineUrlVariants,2);assert.equal(result.assetDigestCount,3);
 });
 test('manifest does not accept an unrelated SHA in metadata',()=>{
  const j=manifest();j.commit=old;j.otherNote=sha;assert.throws(()=>verifyManifest(j,sha,config),/commit differs/);
@@ -129,4 +133,28 @@ test('an authentic worker and matching local staged worker SHA-256 remain valid'
  assert.deepEqual(verifyPublishedOfflineAssets({
   shell:offlineShell,manifest:offlineManifest,icon:offlineIcon,worker:offlineWorker,
   expectedWorkerSha}),{assetDigestCount:3});
+});
+
+test('uncached worker install URL drift fails even when cache-busted audit probe passes',async()=>{
+ await assert.rejects(run({mutate:(path,body,url)=>
+  path.endsWith('/public-preview/')&&!new URL(url).searchParams.has('v')
+   ? body+'<!-- unversioned stale CDN HTML -->':body}),/Live offline shell does not match/);
+});
+test('unversioned worker changes must fail independently of cache-busted worker probe',async()=>{
+ await assert.rejects(run({mutate:(path,body,url)=>
+  path.endsWith('/public-preview/sw.js')&&!new URL(url).searchParams.has('v')
+   ? body+'\\n// direct worker drift':body}),/does not match trusted staged worker SHA-256/);
+});
+test('raw corrupt UTF-8 cannot be silently normalized before byte attestation',async()=>{
+ await assert.rejects(run({bytes:(path,body,url)=>
+  path.endsWith('manifest.webmanifest')&&!new URL(url).searchParams.has('v')
+   ? Uint8Array.from([0x7b,0x22,0x78,0x22,0x3a,0xc3,0x28,0x7d])
+   : new TextEncoder().encode(body)}),/Invalid UTF-8/);
+});
+test('direct unversioned manifest MIME mismatch blocks release despite valid versioned asset',async()=>{
+ await assert.rejects(run({contentType:(path,url)=>
+  path.endsWith('manifest.webmanifest')&&!new URL(url).searchParams.has('v')
+  ? 'text/html' : path.endsWith('manifest.webmanifest')?'application/manifest+json'
+   :path.endsWith('.svg')?'image/svg+xml':path.endsWith('.json')?'application/json':
+    path.endsWith('.js')?'application/javascript':'text/html'}),/Wrong direct offline manifest MIME/);
 });
