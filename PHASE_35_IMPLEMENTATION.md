@@ -15,7 +15,7 @@ Phase 35 adds a fail-closed validator that parses the manifest, validates the **
 ## Work delivered
 
 - `verify-deployed-release.mjs`: dependency-free Node 22 script. Inputs: deployed Pages URL and full expected commit SHA. Verifies 17 assets plus `release.json`; retry bounded to 12.
-- `verify-deployed-release.test.mjs`: 16 offline mock-transport tests covering valid deployments and bad commit, stale short SHA, schema/rollback drift, 404, missing route, malformed/mistyped manifest, redirect, weakened CSP and bounded retries.
+- `verify-deployed-release.test.mjs`: 17 offline mock-transport tests covering valid deployments and bad commit, stale short SHA, schema/rollback drift, 404, missing route, malformed/mistyped manifest, redirect, weakened CSP, tampered inline scripts with stale CSP hashes, and bounded retries.
 - `.github/workflows/pages.yml`:
   - Validation now runs for PRs targeting main, **without deploying PR code**.
   - Permissions at workflow level reduced to `contents: read`; deploy privileges granted only to the push/dispatch deploy job.
