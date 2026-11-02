@@ -18,6 +18,7 @@ const assetDigests=Object.fromEntries(Object.entries({shell:offlineShell,manifes
 const offlineWorker="const CACHE_PREFIX='this-week-public-preview-';"+
   "const CACHE_NAME=CACHE_PREFIX+'b"+'b'.repeat(64)+"';"+
   "const EXPECTED_ASSET_SHA256=Object.freeze("+JSON.stringify(assetDigests)+");";
+const expectedWorkerSha=createHash('sha256').update(offlineWorker,'utf8').digest('hex');
 const canonical=(u)=>{const x=new URL(u);return x.pathname.endsWith('/')?x.pathname:x.pathname};
 function transport({mutate=(path,body)=>body,status=()=>200,finalUrl=u=>u,
  contentType=path=>path.endsWith('manifest.webmanifest')?'application/manifest+json':
@@ -34,7 +35,7 @@ function transport({mutate=(path,body)=>body,status=()=>200,finalUrl=u=>u,
   return {status:status(path),url:finalUrl(u),type:'basic',redirected:false,headers:{get:k=>k==='content-type'?contentType(path):null},text:async()=>body};
  };
 }
-const run=opts=>verifyOnce({baseUrl:base,expectedSha:sha,config,fetchImpl:transport(opts)});
+const run=opts=>verifyOnce({baseUrl:base,expectedSha:sha,config,expectedWorkerSha,fetchImpl:transport(opts)});
 test('exact candidate identity, every published route, and script CSP pass', async()=>{
  const result=await run();assert.equal(result.commit,sha);assert.equal(result.checkedAssets,21);assert.equal(result.assetDigestCount,3);
 });
@@ -59,12 +60,12 @@ test('HTTP credentials and escaping base are rejected',()=>{
 });
 test('eventual consistency retry only passes after exact match',async()=>{
  let c=0;const f=transport({mutate:(p,b)=>p.endsWith('release.json')&&c++===0?JSON.stringify({...manifest(),commit:old}):b});
- const result=await auditDeployment({baseUrl:base,expectedSha:sha,config,fetchImpl:f,attempts:2,delayMs:0,sleep:async()=>{}});
+ const result=await auditDeployment({baseUrl:base,expectedSha:sha,config,expectedWorkerSha,fetchImpl:f,attempts:2,delayMs:0,sleep:async()=>{}});
  assert.equal(result.commit,sha);
 });
 test('persistent release mismatch exhausts bounded retries',async()=>{
  let calls=0;const f=async u=>{calls++;return transport({mutate:(p,b)=>p.endsWith('release.json')?JSON.stringify({...manifest(),commit:old}):b})(u)};
- await assert.rejects(auditDeployment({baseUrl:base,expectedSha:sha,config,fetchImpl:f,attempts:2,delayMs:0,sleep:async()=>{}}),/after 2 attempt/);
+ await assert.rejects(auditDeployment({baseUrl:base,expectedSha:sha,config,expectedWorkerSha,fetchImpl:f,attempts:2,delayMs:0,sleep:async()=>{}}),/after 2 attempt/);
  assert.equal(calls,2);
 });
 
@@ -92,5 +93,40 @@ test('offline worker missing with HTTP 404 prevents release verification',async(
  await assert.rejects(run({status:p=>p.endsWith('sw.js')?404:200}),/HTTP 404/);
 });
 test('exported verifier directly detects mismatched asset digest',()=>{
- assert.throws(()=>verifyPublishedOfflineAssets({shell:offlineShell+'x',manifest:offlineManifest,icon:offlineIcon,worker:offlineWorker}),/Live offline shell/);
+ assert.throws(()=>verifyPublishedOfflineAssets({shell:offlineShell+'x',manifest:offlineManifest,icon:offlineIcon,worker:offlineWorker,expectedWorkerSha}),/Live offline shell/);
+});
+
+
+test('served worker with extra executable code fails trusted staged worker attestation',async()=>{
+ const altered=offlineWorker+'\nself.addEventListener("fetch",()=>{});';
+ await assert.rejects(run({mutate:(p,b)=>p.endsWith('/public-preview/sw.js')?altered:b}),
+   /does not match trusted staged worker SHA-256/);
+});
+
+test('served worker cannot self-attest a forged digest map with appended code',async()=>{
+ const altered=offlineWorker+'\n// valid-looking SHA-256 map above does not authenticate these bytes';
+ await assert.rejects(run({mutate:(p,b)=>p.endsWith('/public-preview/sw.js')?altered:b}),
+   /does not match trusted staged worker SHA-256/);
+});
+
+test('release verification fails closed without independently trusted worker digest',async()=>{
+ let called=false;
+ await assert.rejects(verifyOnce({baseUrl:base,expectedSha:sha,config,
+  fetchImpl:()=>{called=true;throw Error('network should not be called');}}),
+  /Trusted staged offline worker SHA-256 is required/);
+ assert.equal(called,false);
+});
+
+test('malformed trusted worker digests cannot silently disable verification',()=>{
+ for(const bad of ['',null,'0'.repeat(63),'z'.repeat(64)]){
+  assert.throws(()=>verifyPublishedOfflineAssets({
+   shell:offlineShell,manifest:offlineManifest,icon:offlineIcon,worker:offlineWorker,
+   expectedWorkerSha:bad}),/Expected trusted staged offline worker SHA-256 is required/);
+ }
+});
+
+test('an authentic worker and matching local staged worker SHA-256 remain valid',()=>{
+ assert.deepEqual(verifyPublishedOfflineAssets({
+  shell:offlineShell,manifest:offlineManifest,icon:offlineIcon,worker:offlineWorker,
+  expectedWorkerSha}),{assetDigestCount:3});
 });
