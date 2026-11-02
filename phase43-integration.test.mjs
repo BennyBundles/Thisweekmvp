@@ -60,7 +60,7 @@ test('offline service worker stays scoped to preview shell',()=>{
  assert.match(sw,/if\(request\.method!=='GET'\)return/);
  assert.match(sw,/if\(url\.origin!==ROOT_URL\.origin\)return/);
  assert.match(sw,/if\(url\.pathname!==SHELL_PATH&&url\.pathname!==SHELL_PATH\+'index\.html'\)return/);
- assert.match(sw,/safeStaticResponse\(response\)/);
+ assert.match(sw,/safeResponse\(response,url\)/);
  assert.match(sw,/event\.waitUntil\(saveToCache/);
 });
 test('integrated PWA regression suite contains current offline poison defenses',()=>{
