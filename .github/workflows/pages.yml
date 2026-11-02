@@ -10,10 +10,11 @@ on:
 permissions:
   contents: read
 
+# PR checks and non-main manual dispatches are isolated from the production deployment queue.
+# Cancel superseded PR validation, but never cancel a production deploy in progress.
 concurrency:
-  # PR checks cannot cancel or replace the protected production Pages workflow.
-  group: ${{ github.event_name == 'pull_request' && format('pages-pr-{0}', github.event.pull_request.number) || 'pages-production' }}
-  cancel-in-progress: true
+  group: ${{ github.event_name == 'pull_request' && format('pages-pr-{0}', github.event.pull_request.number) || (github.ref != 'refs/heads/main' && format('pages-dispatch-{0}', github.ref)) || 'pages-production' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   validate:
@@ -58,6 +59,9 @@ jobs:
           test -s _site/preview-build.json
           test ! -e _site/release.json
 
+      - name: Test production Pages CI isolation and notification noise containment
+        run: node --test phase40-ci-isolation.test.mjs
+
       - name: Phase 0 static regression check
         run: node phase0-static-check.mjs
 
@@ -94,7 +98,7 @@ jobs:
         run: node legal-check.mjs legal/sandbox/index.html
 
   deploy:
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     needs: validate
     permissions:
       contents: read
