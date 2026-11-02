@@ -70,7 +70,10 @@ export function assetUrl(base, path, sha){
   url.searchParams.set('v',sha.slice(0,8));
   return url;
 }
-export function verifyPublishedOfflineAssets({shell,manifest,icon,worker}){
+export function verifyPublishedOfflineAssets({shell,manifest,icon,worker,expectedWorkerSha}){
+  demand(/^[a-f0-9]{64}$/.test(expectedWorkerSha||''), 'Expected trusted staged offline worker SHA-256 is required');
+  const observedWorkerSha=createHash('sha256').update(worker,'utf8').digest('hex');
+  demand(observedWorkerSha===expectedWorkerSha, 'Published offline worker does not match trusted staged worker SHA-256');
   const m=worker.match(/const EXPECTED_ASSET_SHA256=Object\.freeze\((\{[^\n]+\})\);/);
   demand(m && m[1], 'Published offline worker has no injected asset SHA-256 digest map');
   let declared;
@@ -85,8 +88,9 @@ export function verifyPublishedOfflineAssets({shell,manifest,icon,worker}){
   }
   return {assetDigestCount:3};
 }
-export async function verifyOnce({baseUrl,expectedSha,config,fetchImpl=fetch}){
+export async function verifyOnce({baseUrl,expectedSha,config,expectedWorkerSha,fetchImpl=fetch}){
   demand(SHA.test(expectedSha), 'Expected commit SHA is invalid');
+  demand(/^[a-f0-9]{64}$/.test(expectedWorkerSha||''), 'Trusted staged offline worker SHA-256 is required before fetching');
   const root=new URL(baseUrl);
   const read=async(path, marker)=>{
     const url=assetUrl(baseUrl,path,expectedSha);
@@ -120,14 +124,14 @@ export async function verifyOnce({baseUrl,expectedSha,config,fetchImpl=fetch}){
   demand(/\bimage\/svg\+xml\b/i.test(offlineIcon.contentType), 'Wrong offline icon MIME');
   demand(/\b(?:javascript|ecmascript)\b/i.test(offlineWorker.contentType), 'Wrong offline worker MIME');
   const integrity=verifyPublishedOfflineAssets({shell:previewShell,manifest:offlineManifest.body,
-    icon:offlineIcon.body,worker:offlineWorker.body});
+    icon:offlineIcon.body,worker:offlineWorker.body,expectedWorkerSha});
   return {...receipt, checkedAssets:REQUIRED_ASSETS.length+4, ...integrity, origin:root.origin};
 }
-export async function auditDeployment({baseUrl,expectedSha,config,fetchImpl=fetch,attempts=3,delayMs=1000,sleep=ms=>new Promise(r=>setTimeout(r,ms))}){
+export async function auditDeployment({baseUrl,expectedSha,config,expectedWorkerSha,fetchImpl=fetch,attempts=3,delayMs=1000,sleep=ms=>new Promise(r=>setTimeout(r,ms))}){
   demand(Number.isInteger(attempts)&&attempts>=1&&attempts<=12,'Invalid retry count');
   let last;
   for(let attempt=1;attempt<=attempts;attempt++){
-    try{return await verifyOnce({baseUrl,expectedSha,config,fetchImpl})}
+    try{return await verifyOnce({baseUrl,expectedSha,config,expectedWorkerSha,fetchImpl})}
     catch(error){last=error;if(attempt<attempts)await sleep(delayMs)}
   }
   throw new Error(`Release verification failed after ${attempts} attempt(s): ${last?.message}`);
@@ -138,7 +142,11 @@ if(process.argv[1] && import.meta.url===pathToFileURL(process.argv[1]).href){
   const cfg=JSON.parse(await readFile(new URL('./release.config.json',import.meta.url),'utf8'));
   try{
     demand(baseUrl&&expectedSha, 'Usage: node verify-deployed-release.mjs <base-url> <40-character-sha>');
-    const outcome=await auditDeployment({baseUrl,expectedSha,config:cfg,attempts:12,delayMs:5000});
+    // Local artifact is generated and stamp-verified in the same protected deploy job.
+    // Never trust a worker-provided digest map as its own authenticity evidence.
+    const stagedWorker=await readFile(new URL('./_site/public-preview/sw.js',import.meta.url));
+    const expectedWorkerSha=createHash('sha256').update(stagedWorker).digest('hex');
+    const outcome=await auditDeployment({baseUrl,expectedSha,config:cfg,expectedWorkerSha,attempts:12,delayMs:5000});
     process.stdout.write('Validated exact This Week Pages release: '+JSON.stringify(outcome)+'\n');
   }catch(e){console.error('FAIL CLOSED:',e.message);process.exitCode=1}
 }
