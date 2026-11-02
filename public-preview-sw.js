@@ -1,6 +1,6 @@
 // This Week demo PWA only. Never cache financial data or cross-origin requests.
 const CACHE_PREFIX='this-week-public-preview-';
-const CACHE_NAME=CACHE_PREFIX+'v2';
+const CACHE_NAME=CACHE_PREFIX+'v3';
 const ROOT_URL=new URL('./',self.registration.scope);
 const SHELL_URL=ROOT_URL.href;
 const SHELL_PATH=ROOT_URL.pathname;
