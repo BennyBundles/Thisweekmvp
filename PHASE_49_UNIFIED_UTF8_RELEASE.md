@@ -36,3 +36,25 @@ Official references:
 - Manual review of full cumulative diff against Phase 34 production, including financial security and CSP.
 - Physical iPhone Safari restore and rollback using **fictional** data, including emoji/CJK boundary cases and offline restart, with zero silent storage loss.
 - Before any separate production release, verify the production manifest SHA and every route independently. Live money gating remains locked.
+
+
+## Follow-on bounded-memory UTF-8 sizing pass
+
+**Research:** Modern Safari and other mainstream browsers support `TextEncoder.encodeInto(input, output)`, which returns the exact number of UTF-16 source units read and UTF-8 bytes written. The supplied buffer is reusable. MDN notes the API's potential performance advantage over `encode()` and that output is never shorter than the source's UTF-16 code-unit length: https://developer.mozilla.org/en-US/docs/Web/API/TextEncoder/encodeInto.
+
+The initial Phase 49 solution correctly rejected oversized Unicode but allocated a complete `Uint8Array` for each encoded storage value. On memory-constrained mobile browsers, this adds a temporary multi-megabyte allocation near the 4 MiB restore bound.
+
+**Implemented on this review branch:**
+- Added `rawBackupUtf8Bytes(text, encoder, remaining, scratch)`, which counts exact UTF-8 bytes using reusable **16 KiB** `Uint8Array` storage and `encodeInto` progress counters. Each already-allowlisted key and value is checked separately against the remaining restore budget before any mutation.
+- Added a conservative lower bound: if `text.length` already exceeds remaining budget, reject before encoding. The bound is safe because UTF-8 byte count is never below UTF-16 code-unit count.
+- Preserve the precise `encode()` fallback for browser engines without `encodeInto`; never fall back to `String.length`. Missing or nonprogressing encoders fail closed.
+- Add five new direct production-source regression tests covering no full-buffer allocation on the modern path, legacy compatibility, exact byte boundaries, nonprogressing encoder rejection, and unpaired-surrogate replacement bytes.
+- Preserve the 4 MiB cap and existing exact allowlist, credential scan, rollback, race quarantine, and empty-workspace restoration.
+
+**Memory qualification:** The **output byte buffer** is 16 KiB on the `encodeInto` path; `String.slice()` can still create transient substrings depending on the engine. No claim of a strict total-heap memory cap, speedup or iPhone Safari profiling result is made. The raw file upload, JSON parsing and browser-local storage quotas also require separate real-device QA.
+
+### Updated acceptance
+
+- New and existing source-bound tests pass at the exact commit, with PR `deploy=skipped`.
+- Test UTF-8 memory usage on actual Safari via Web Inspector when practical; compare peak heap/latency for large fictional Unicode backups under `encode()` versus `encodeInto()` without claiming a gain before measurement.
+- Keep the draft unmerged while newer overlapping integrated candidate changes are reconciled.
