@@ -45,6 +45,9 @@ jobs:
       - name: Unit-test explicit raw Plan recovery and rollback
         run: node --test phase37-verified-restore.test.mjs
 
+      - name: Unit-test fail-closed secure backup export and salvage labeling
+        run: node --test phase38-secure-export.test.mjs
+
       - name: Unit-test static Vercel preview builder
         run: node --test test-stage-preview.mjs
 
