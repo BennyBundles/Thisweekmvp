@@ -97,13 +97,13 @@ test('published worker fails closed if required Web Crypto is unavailable',async
  assert.equal(h.stats.skipped,0);
 }));
 test('online CDN shell drift cannot overwrite the last verified offline shell',async()=>using({},async h=>{
- await h.emit('install');const name=[...h.stores.keys()][0];const original=await h.stores.get(name).get(rootUrl).text();
+ await h.emit('install');const name=[...h.stores.keys()][0];const original=await h.stores.get(name).get(rootUrl).clone().text();
  h.stats.cached.length=0;
  h.changeShell(SHELL+'<!-- CDN drift -->');
  const live=await h.emit('fetch',h.request('./?mode=demo'));
  assert.match(await live.text(),/CDN drift/);
  assert.equal(h.stats.cached.length,0,'drifted response must never be cached');
- assert.equal(await h.stores.get(name).get(rootUrl).text(),original);
+ assert.equal(await h.stores.get(name).get(rootUrl).clone().text(),original);
  h.offline(true);
  const offline=await h.emit('fetch',h.request('./?mode=demo'));
  assert.equal(await offline.text(),original);
