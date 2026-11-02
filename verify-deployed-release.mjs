@@ -48,19 +48,38 @@ export function verifyManifest(json, sha, config){
 }
 export function verifyIndexCsp(html){
   demand(html.includes('<title>This Week</title>'), 'Wrong home page');
-  const policy=html.match(/<meta\s+http-equiv="Content-Security-Policy"\s+content="([^"]+)"/i)?.[1];
-  demand(Boolean(policy), 'Missing production CSP');
-  const source=policy.split(';').map(s=>s.trim()).find(s=>s.startsWith('script-src ')) || '';
-  const hashes=[...source.matchAll(/'sha256-([^']+)'/g)].map(m=>m[1]);
-  demand(source.includes("'self'") && hashes.length===2, 'Expected two hashed scripts');
+  const metas=[...html.matchAll(/<meta\s+http-equiv="Content-Security-Policy"\s+content="([^"]+)"/gi)];
+  demand(metas.length===1, 'Expected exactly one production CSP meta policy');
+  // CSP3: the FIRST occurrence of a repeated directive is enforced; a later
+  // "connect-src 'none'" string cannot repair an earlier "connect-src *".
+  // Reject duplicates rather than accidentally auditing an ignored directive.
+  const directives=new Map();
+  for(const part of metas[0][1].split(';')){
+    const tokens=part.trim().split(/\s+/).filter(Boolean);
+    if(!tokens.length)continue;
+    const name=tokens.shift().toLowerCase();
+    demand(!directives.has(name), 'Duplicate CSP directive: '+name);
+    directives.set(name,tokens);
+  }
+  const scriptSources=directives.get('script-src')||[];
+  demand(!scriptSources.includes("'unsafe-inline'")&&!scriptSources.includes("'unsafe-eval'"),
+    'Unsafe script execution policy');
+  const hashes=scriptSources.filter(s=>/^'sha256-[A-Za-z0-9+/]+={0,2}'$/.test(s))
+    .map(s=>s.slice(8,-1));
+  demand(scriptSources.length===3 && scriptSources.includes("'self'") && hashes.length===2,
+    'Expected two hashed scripts and no external script sources');
   const scripts=[...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/gi)].map(m=>m[1]);
   demand(scripts.length===2, 'Expected exactly two inline scripts');
   const real=scripts.map(script=>createHash('sha256').update(script,'utf8').digest('base64'));
   demand(real.every(hash=>hashes.includes(hash)), 'CSP script hashes do not match deployed scripts');
-  demand(!source.includes('unsafe-inline') && !source.includes('unsafe-eval'), 'Unsafe script execution policy');
-  demand(/(?:^|;)\s*connect-src 'none'(?:;|$)/.test(policy), 'Production money/client networking unexpectedly enabled');
-  demand(/(?:^|;)\s*object-src 'none'(?:;|$)/.test(policy), 'Object embedding must be blocked');
+  const exactlyNone=name=>{
+    const values=directives.get(name);
+    return values?.length===1&&values[0]==="'none'";
+  };
+  demand(exactlyNone('connect-src'), 'Production money/client networking unexpectedly enabled');
+  demand(exactlyNone('object-src'), 'Object embedding must be blocked');
 }
+
 export function assetUrl(base, path, sha, versioned=true){
   const origin=new URL(base);
   demand(origin.protocol==='https:' && !origin.username && !origin.password && !origin.search && !origin.hash, 'Base must be a clean HTTPS URL');
