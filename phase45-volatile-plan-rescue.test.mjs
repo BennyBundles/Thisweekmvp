@@ -126,6 +126,13 @@ test('successful deliberate reset clears all tentative recovery drafts',()=>{
  assert.equal(h.exec('blockedPlanDraftSerialized'),null);
  assert.throws(()=>h.exec('buildVolatilePlanRescue()'),/No in-memory Plan/);
 });
+test('existing warning works with browser HTMLCollection lacking Array.prototype.some',()=>{
+ const h=harness();h.denyWrite(true);h.write(h.plan(100));
+ const panel=h.elements.get('thisweek-storage-failure');
+ panel.children={0:panel.children[0],1:panel.children[1],2:panel.children[2],length:3};
+ assert.doesNotThrow(()=>h.exec("showStoragePersistenceWarning('conflict')"));
+ assert.equal(panel.children.length,3);
+});
 test('rescue cannot upload, modify persistent Plan, or export session bearer tokens',()=>{
  assert.doesNotMatch(rescue,/\bfetch\s*\(|XMLHttpRequest|sendBeacon|localStorage\.setItem|sessionStorage/);
  assert.match(rescue,/confirmSensitiveExport/);

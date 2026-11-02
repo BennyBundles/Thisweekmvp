@@ -5381,7 +5381,7 @@ function safeLocalStorageRemove(key){
 }
 function appendPlanRescueControl(panel,message){
   if(!(volatileStateSerialized||blockedPlanDraftSerialized)||
-     (panel.children||[]).some(child=>child.id==='thisweek-volatile-rescue'))return;
+     Array.from(panel.children||[]).some(child=>child.id==='thisweek-volatile-rescue'))return;
   const rescue=document.createElement('button');
   rescue.id='thisweek-volatile-rescue';
   rescue.type='button';
