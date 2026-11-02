@@ -139,10 +139,10 @@ export async function verifyOnce({baseUrl,expectedSha,config,expectedWorkerSha,f
     worker:await read('/public-preview/sw.js',null,false)
   };
   for(const [kind,assets] of Object.entries({versioned,direct})){
-    demand(/^text\\/html(?:;|$)/i.test(assets.shell.contentType), 'Wrong '+kind+' offline shell MIME');
-    demand(/\\b(?:manifest\\+json|application\\/json)\\b/i.test(assets.manifest.contentType), 'Wrong '+kind+' offline manifest MIME');
-    demand(/\\bimage\\/svg\\+xml\\b/i.test(assets.icon.contentType), 'Wrong '+kind+' offline icon MIME');
-    demand(/\\b(?:javascript|ecmascript)\\b/i.test(assets.worker.contentType), 'Wrong '+kind+' offline worker MIME');
+    demand(/^text\/html(?:;|$)/i.test(assets.shell.contentType), 'Wrong '+kind+' offline shell MIME');
+    demand(/\b(?:manifest\+json|application\/json)\b/i.test(assets.manifest.contentType), 'Wrong '+kind+' offline manifest MIME');
+    demand(/\bimage\/svg\+xml\b/i.test(assets.icon.contentType), 'Wrong '+kind+' offline icon MIME');
+    demand(/\b(?:javascript|ecmascript)\b/i.test(assets.worker.contentType), 'Wrong '+kind+' offline worker MIME');
     verifyPublishedOfflineAssets({
       shell:assets.shell.bytes,manifest:assets.manifest.bytes,icon:assets.icon.bytes,
       worker:assets.worker.body,workerBytes:assets.worker.bytes,expectedWorkerSha
