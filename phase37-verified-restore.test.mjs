@@ -35,7 +35,7 @@ function boot(){
  };
  const sessionStorage={get length(){return sessions.size},key(n){return [...sessions.keys()][n]??null},getItem(k){return sessions.get(k)??null}};
  const defs=Object.entries(keys).map(([k,v])=>'const '+k+'='+JSON.stringify(v)+';').join('\n');
- const ctx=vm.createContext({localStorage,sessionStorage,console,warnings});
+ const ctx=vm.createContext({localStorage,sessionStorage,console,warnings,TextEncoder});
  vm.runInContext(defs+'\nconst CORE_SCHEMA_VERSION=3;\nlet persistedStateQuarantine=null;\nfunction showStoragePersistenceWarning(kind){warnings.push(kind)}\n'+source,ctx);
  const exec=x=>vm.runInContext(x,ctx);
  const state=()=>({
@@ -254,4 +254,36 @@ test('restore source guards rollback keys by exact expected bytes',()=>{
  assert.match(source,/current!==expectedRestoreValue/);
  assert.match(source,/if\(current===null\)continue/);
  assert.doesNotMatch(source,/for\(const key of added\.reverse\(\)\)/);
+});
+
+test('UTF-8 byte cap rejects a Unicode backup that looks smaller in UTF-16 code units',()=>{
+  const h=boot(),b=h.backup();
+  // 1.15 million emoji: ~2.3M UTF-16 code units but ~4.6M UTF-8 bytes.
+  const payload=JSON.stringify({note:'🪙'.repeat(1_150_000)});
+  assert.ok(payload.length<4*1024*1024);
+  assert.ok(new TextEncoder().encode(payload).byteLength>4*1024*1024);
+  b.localStorage['thisweek.uiPrefs.v1']=payload;
+  assert.throws(()=>h.apply(b),/4 MB restoration limit/);
+  assert.equal(h.disk.size,0,'oversized Unicode backup must never modify storage');
+});
+
+test('normal small multibyte UTF-8 optional preferences remain restorable',()=>{
+  const h=boot(),b=h.backup();
+  b.localStorage['thisweek.uiPrefs.v1']=JSON.stringify({description:'中文 🎵 é â'});
+  const summary=h.apply(b);
+  assert.equal(summary.keyCount,3);
+  assert.equal(h.disk.get('thisweek.uiPrefs.v1'),b.localStorage['thisweek.uiPrefs.v1']);
+});
+
+test('byte-size verification unavailable fails closed before any raw restore writes',()=>{
+  const h=boot(),b=h.backup();
+  h.ctx.TextEncoder=undefined;
+  assert.throws(()=>h.apply(b),/cannot safely verify raw backup byte length/);
+  assert.equal(h.disk.size,0);
+});
+
+test('raw restore implementation uses UTF-8 bytes rather than UTF-16 string length',()=>{
+  assert.match(source,/byteEncoder=new TextEncoder\(\)/);
+  assert.match(source,/byteEncoder\.encode\(value\)\.byteLength/);
+  assert.doesNotMatch(source,/totalLength\+=key\.length\+value\.length/);
 });
