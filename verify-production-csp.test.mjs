@@ -56,7 +56,9 @@ test('CSP that appears after a script fails even if its own text is correct',()=
     const withoutMeta=html.replace(meta,'');
     const originalScript=withoutMeta.match(/<script[^>]*>[\s\S]*?<\/script>/i)?.[0];
     assert.ok(originalScript,'expected existing script in staged HTML');
-    fs.writeFileSync(file,withoutMeta.replace(originalScript,originalScript+meta));
+    // Use callback replacement: JS source contains $-sequences interpreted
+    // as replacement tokens by String.replace when passed as a string.
+    fs.writeFileSync(file,withoutMeta.replace(originalScript,()=>originalScript+meta));
     const r=check(file);
     assert.notEqual(r.status,0);
     assert.match(r.stderr,/Production CSP appears after a potentially active resource/);
