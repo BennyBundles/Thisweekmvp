@@ -45,6 +45,16 @@ jobs:
       - name: Unit-test explicit raw Plan recovery and rollback
         run: node --test phase37-verified-restore.test.mjs
 
+      - name: Unit-test static Vercel preview builder
+        run: node --test test-stage-preview.mjs
+
+      - name: Stage and audit preview assets without publishing
+        run: |
+          set -euo pipefail
+          VERCEL_ENV=preview node stage-preview.mjs
+          test -s _site/preview-build.json
+          test ! -e _site/release.json
+
       - name: Phase 0 static regression check
         run: node phase0-static-check.mjs
 
