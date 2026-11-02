@@ -431,7 +431,11 @@ if(workflow){
   requireText('Pages workflow must deploy _site artifact',workflow,'path: "_site"');
   requireText('Pages workflow must use deterministic production staging',workflow,'node prepare-site.mjs index.html _site/index.html');
   requireText('Pages workflow validation must stage production HTML first',workflow,'node prepare-site.mjs index.html index.production.html');
-  requireText('Pages workflow must cancel stale in-progress production runs',workflow,'cancel-in-progress: true');
+  requireText('Pages workflow must isolate PR concurrency from production',workflow,"format('pages-pr-{0}', github.event.pull_request.number)");
+  requireText('Pages workflow must serialize production releases',workflow,"|| 'pages-production'");
+  requireText('Pages workflow must cancel only superseded PR runs',workflow,"cancel-in-progress: ${{ github.event_name == 'pull_request' }}");
+  requireText('Pages workflow must restrict manual release to main',workflow,"if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')");
+  forbidText('Pages workflow must not allow unconditional cancellations',workflow,'cancel-in-progress: true');
 }
 
 if(config){
