@@ -51,7 +51,10 @@ function harness({fetchImpl=()=>Promise.resolve(new Response('online',{status:20
       tracking.installFetches.push({url:request,redirect:options?.redirect,cache:options?.cache});
       return installFetchImpl
         ?installFetchImpl(request,options)
-        :Promise.resolve(new Response('install:'+request,{
+        :Promise.resolve(new Response(
+          'install:'+request+(request===ROOT
+            ? "<title>This Week — Public Release Preview</title>thisweek.publicPreview.state.v2 channel:'public-release-preview'"
+            : ''),{
           status:200,headers:{'content-type':'text/html; charset=utf-8'}
         }));
     }
@@ -208,4 +211,13 @@ test('install requests exact same-origin assets with redirects disabled',async()
     assert.equal(item.cache,'no-store');
     assert.ok(item.url.startsWith(ROOT));
   }
+});
+
+test('same-origin HTTP 200 HTML login page cannot poison offline installation',async()=>{
+  const h=harness({installFetchImpl:async()=>new Response(
+    '<html><title>Sign in</title><h1>Login required</h1></html>',
+    {status:200,headers:{'content-type':'text/html'}})});
+  await assert.rejects(h.emit('install'),/Offline shell identity mismatch/);
+  assert.equal(h.tracking.skipped,0);
+  assert.equal(h.cacheStores.size,0);
 });
