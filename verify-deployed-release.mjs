@@ -5,6 +5,7 @@
  * Run: node verify-deployed-release.mjs https://bennybundles.github.io/Thisweekmvp/ <full-sha>
  */
 import {readFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
 import {pathToFileURL} from 'node:url';
 
 const SHA=/^[0-9a-f]{40}$/;
@@ -50,7 +51,12 @@ export function verifyIndexCsp(html){
   const policy=html.match(/<meta\s+http-equiv="Content-Security-Policy"\s+content="([^"]+)"/i)?.[1];
   demand(Boolean(policy), 'Missing production CSP');
   const source=policy.split(';').map(s=>s.trim()).find(s=>s.startsWith('script-src ')) || '';
-  demand(source.includes("'self'") && (source.match(/'sha256-[^']+'/g)||[]).length===2, 'Expected two hashed scripts');
+  const hashes=[...source.matchAll(/'sha256-([^']+)'/g)].map(m=>m[1]);
+  demand(source.includes("'self'") && hashes.length===2, 'Expected two hashed scripts');
+  const scripts=[...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/gi)].map(m=>m[1]);
+  demand(scripts.length===2, 'Expected exactly two inline scripts');
+  const real=scripts.map(script=>createHash('sha256').update(script,'utf8').digest('base64'));
+  demand(real.every(hash=>hashes.includes(hash)), 'CSP script hashes do not match deployed scripts');
   demand(!source.includes('unsafe-inline') && !source.includes('unsafe-eval'), 'Unsafe script execution policy');
   demand(/(?:^|;)\s*connect-src 'none'(?:;|$)/.test(policy), 'Production money/client networking unexpectedly enabled');
   demand(/(?:^|;)\s*object-src 'none'(?:;|$)/.test(policy), 'Object embedding must be blocked');
