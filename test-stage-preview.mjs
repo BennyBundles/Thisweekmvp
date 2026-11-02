@@ -25,11 +25,11 @@ function fixture(){
 const [src,dst]=process.argv.slice(2);
 fs.mkdirSync(path.dirname(dst),{recursive:true});fs.copyFileSync(src,dst);`;
   for(const name of ['prepare-site.mjs','prepare-public-preview.mjs'])
-    fs.writeFileSync(path.join(root,name),'process.exit(0);');
+    fs.writeFileSync(path.join(root,name),mock);
   for(const name of ['public-preview-check.mjs','money-lab-check.mjs',
     'account-check.mjs','ops-check.mjs','phase34-check.mjs','phase34c-check.mjs',
     'support-check.mjs','legal-check.mjs'])
-    fs.writeFileSync(path.join(root,name),\"process.exit(0);\\n\");
+    fs.writeFileSync(path.join(root,name),'process.exit(0);');
   return root;
 }
 function run(root,vars={}){
