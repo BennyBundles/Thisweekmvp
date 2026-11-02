@@ -1,15 +1,18 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
 import {auditDeployment, verifyOnce, verifyManifest, verifyIndexCsp, assetUrl, REQUIRED_ASSETS} from './verify-deployed-release.mjs';
 const sha='ab4336e55faf04235d57a5a389c5f816a477c61e';
 const old='8913aed99abd1106f346028a74e41acaa2e93bfe';
 const base='https://bennybundles.github.io/Thisweekmvp/';
 const config={release:'v0.15.0-phase15',rollbackCommit:'351a052ba214d4813b296b4cd3dc7965e695b6e1',rollbackBranch:'rollback/phase15-pre-release-2026-09-18',stateSchema:3,portableSchema:1};
 const manifest=()=>({application:'This Week',channel:'production',commit:sha,shortCommit:sha.slice(0,8),release:config.release,rollbackCommit:config.rollbackCommit,rollbackBranch:config.rollbackBranch,stateSchema:3,portableSchema:1,workflowRunId:'12345',deployedAt:'2026-11-02T12:00:00Z'});
-const csp='<meta http-equiv="Content-Security-Policy" content="default-src \'self\'; script-src \'self\' \'sha256-abc=\' \'sha256-def=\'; connect-src \'none\'; object-src \'none\'">';
+const scripts='<script>const a=1;</script><script>const b=2;</script>';
+const hashes=['const a=1;','const b=2;'].map(x=>createHash('sha256').update(x).digest('base64'));
+const csp='<meta http-equiv="Content-Security-Policy" content="default-src \'self\'; script-src \'self\' '+hashes.map(h=>"'sha256-"+h+"'").join(' ')+'; connect-src \'none\'; object-src \'none\'">';
 const canonical=(u)=>{const x=new URL(u);return x.pathname.endsWith('/')?x.pathname:x.pathname};
 function transport({mutate=(path,body)=>body,status=()=>200,finalUrl=u=>u,contentType=path=>path.endsWith('.json')?'application/json':path.endsWith('.js')?'application/javascript':'text/html'}={}){
- const bodies=new Map(REQUIRED_ASSETS.map(([path,mark])=>[canonical(assetUrl(base,path,sha)),path==='/'?'<title>This Week</title>'+csp:mark]));
+ const bodies=new Map(REQUIRED_ASSETS.map(([path,mark])=>[canonical(assetUrl(base,path,sha)),path==='/'?'<title>This Week</title>'+csp+scripts:mark]));
  bodies.set('/Thisweekmvp/release.json',JSON.stringify(manifest()));
  return async u=>{
   const path=new URL(u).pathname;
@@ -33,8 +36,9 @@ test('missing required asset marker fails',async()=>{await assert.rejects(run({m
 test('malformed JSON fails',async()=>{await assert.rejects(run({mutate:(p,b)=>p.endsWith('release.json')?'{invalid':b}),/invalid JSON/)});
 test('content type must be JSON for release manifest',async()=>{await assert.rejects(run({contentType:()=> 'text/html'}),/not JSON/)});
 test('redirect to other origin fails',async()=>{await assert.rejects(run({finalUrl:u=>u.replace('bennybundles.github.io','attacker.example')}),/Unexpected response URL/)});
-test('production CSP cannot permit client networking',()=>{assert.throws(()=>verifyIndexCsp('<title>This Week</title>'+csp.replace("connect-src 'none'","connect-src *")),/client networking/)});
-test('production CSP cannot permit unsafe-inline scripts',()=>{assert.throws(()=>verifyIndexCsp('<title>This Week</title>'+csp.replace("script-src 'self'","script-src 'self' 'unsafe-inline'")),/Unsafe script/)});
+test('production CSP cannot permit client networking',()=>{assert.throws(()=>verifyIndexCsp('<title>This Week</title>'+csp.replace("connect-src 'none'","connect-src *")+scripts),/client networking/)});
+test('production CSP cannot permit unsafe-inline scripts',()=>{assert.throws(()=>verifyIndexCsp('<title>This Week</title>'+csp.replace("script-src 'self'","script-src 'self' 'unsafe-inline'")+scripts),/Unsafe script/)});
+test('script changed without corresponding CSP hash fails',()=>{assert.throws(()=>verifyIndexCsp('<title>This Week</title>'+csp+scripts.replace('const a=1;','const a=999;')),/hashes do not match/)});
 test('HTTP credentials and escaping base are rejected',()=>{
  assert.throws(()=>assetUrl('http://example.com/Thisweekmvp/','/',sha),/clean HTTPS/);
  assert.throws(()=>assetUrl('https://bennybundles.github.io/Thisweekmvp/','/../bad',sha),/escaped release base/);
