@@ -59,5 +59,5 @@ test('backup code performs no upload or third-party network call',()=>{
  assert(!/\bfetch\s*\(/.test(source));
  assert(!/XMLHttpRequest/.test(source));
  assert(!/sendBeacon/.test(source));
- assert.match(html,/Raw backups deliberately exclude all sessionStorage values/);
+ assert.match(html,/Raw backups include only explicitly supported local Plan keys/);
 });
