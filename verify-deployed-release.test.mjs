@@ -1,7 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {auditDeployment, verifyOnce, verifyManifest, verifyIndexCsp, verifyPublishedOfflineAssets, assetUrl, REQUIRED_ASSETS, readBoundedResponseBytes} from './verify-deployed-release.mjs';
+import fs from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+import {auditDeployment, verifyOnce, verifyManifest, verifyIndexCsp, verifyPublishedOfflineAssets, assetUrl, REQUIRED_ASSETS, readBoundedResponseBytes, STAGED_ROUTE_FILES,
+  requireTrustedRouteDigests, loadStagedRouteDigests} from './verify-deployed-release.mjs';
 const sha='ab4336e55faf04235d57a5a389c5f816a477c61e';
 const old='8913aed99abd1106f346028a74e41acaa2e93bfe';
 const base='https://bennybundles.github.io/Thisweekmvp/';
@@ -20,16 +24,30 @@ const offlineWorker="const CACHE_PREFIX='this-week-public-preview-';"+
   "const EXPECTED_ASSET_SHA256=Object.freeze("+JSON.stringify(assetDigests)+");";
 const expectedWorkerSha=createHash('sha256').update(offlineWorker,'utf8').digest('hex');
 const canonical=(u)=>{const x=new URL(u);return x.pathname.endsWith('/')?x.pathname:x.pathname};
-function transport({mutate=(path,body)=>body,status=()=>200,finalUrl=u=>u,
- bytes=(path,body)=>new TextEncoder().encode(body),
- contentType=path=>path.endsWith('manifest.webmanifest')?'application/manifest+json':
- path.endsWith('.svg')?'image/svg+xml':path.endsWith('.json')?'application/json':
- path.endsWith('.js')?'application/javascript':'text/html'}={}){
+function fixtureBodies(){
  const bodies=new Map(REQUIRED_ASSETS.map(([path,mark])=>[canonical(assetUrl(base,path,sha)),path==='/'?'<title>This Week</title>'+csp+scripts:mark]));
  bodies.set('/Thisweekmvp/release.json',JSON.stringify(manifest()));
  bodies.set('/Thisweekmvp/public-preview/manifest.webmanifest',offlineManifest);
  bodies.set('/Thisweekmvp/public-preview/icon.svg',offlineIcon);
  bodies.set('/Thisweekmvp/public-preview/sw.js',offlineWorker);
+ return bodies;
+}
+function fixtureStagedDigests(){
+ const bodies=fixtureBodies();
+ return Object.fromEntries(Object.keys(STAGED_ROUTE_FILES).map(route=>{
+   const name=assetUrl(base,route,sha,false).pathname;
+   const body=bodies.get(name);
+   assert.equal(typeof body,'string','fixture missing staged route '+route);
+   return [route,createHash('sha256').update(body,'utf8').digest('hex')];
+ }));
+}
+const trustedStaged=fixtureStagedDigests();
+function transport({mutate=(path,body)=>body,status=()=>200,finalUrl=u=>u,
+ bytes=(path,body)=>new TextEncoder().encode(body),
+ contentType=path=>path.endsWith('manifest.webmanifest')?'application/manifest+json':
+ path.endsWith('.svg')?'image/svg+xml':path.endsWith('.json')?'application/json':
+ path.endsWith('.js')?'application/javascript':'text/html'}={}){
+ const bodies=fixtureBodies();
  return async u=>{
   const path=new URL(u).pathname;
   const body=mutate(path,bodies.get(path),u);
@@ -39,9 +57,10 @@ function transport({mutate=(path,body)=>body,status=()=>200,finalUrl=u=>u,
    body:new ReadableStream({start(controller){controller.enqueue(payload);controller.close();}})};
  };
 }
-const run=opts=>verifyOnce({baseUrl:base,expectedSha:sha,config,expectedWorkerSha,fetchImpl:transport(opts)});
+const run=(opts,expectedRouteDigests=trustedStaged)=>verifyOnce({baseUrl:base,expectedSha:sha,config,
+  expectedWorkerSha,expectedRouteDigests,fetchImpl:transport(opts)});
 test('exact candidate identity, every published route, and script CSP pass', async()=>{
- const result=await run();assert.equal(result.commit,sha);assert.equal(result.checkedAssets,25);assert.equal(result.offlineUrlVariants,2);assert.equal(result.assetDigestCount,3);
+ const result=await run();assert.equal(result.commit,sha);assert.equal(result.checkedAssets,25);assert.equal(result.offlineUrlVariants,2);assert.equal(result.assetDigestCount,3);assert.equal(result.exactRouteDigests,21);
 });
 test('manifest does not accept an unrelated SHA in metadata',()=>{
  const j=manifest();j.commit=old;j.otherNote=sha;assert.throws(()=>verifyManifest(j,sha,config),/commit differs/);
@@ -51,8 +70,12 @@ test('wrong state schema fails',()=>{const j=manifest();j.stateSchema=4;assert.t
 test('wrong rollback identity fails',()=>{const j=manifest();j.rollbackCommit=old;assert.throws(()=>verifyManifest(j,sha,config),/Rollback commit/)});
 test('missing workflow run ID fails',()=>{const j=manifest();j.workflowRunId='';assert.throws(()=>verifyManifest(j,sha,config),/Workflow run/)});
 test('HTTP 404 fails rather than reading GitHub error page',async()=>{await assert.rejects(run({status:p=>p.endsWith('/account/')?404:200}),/HTTP 404/)});
-test('missing required asset marker fails',async()=>{await assert.rejects(run({mutate:(p,b)=>p.endsWith('/ops/release/app.js')?'not the expected gateway':b}),/route marker/)});
-test('malformed JSON fails',async()=>{await assert.rejects(run({mutate:(p,b)=>p.endsWith('release.json')?'{invalid':b}),/invalid JSON/)});
+test('missing required asset marker fails',async()=>{await assert.rejects(run({mutate:(p,b)=>p.endsWith('/ops/release/app.js')?'not the expected gateway':b}),/Live route bytes/)});
+test('malformed JSON fails even when corrupt bytes match staged digest',async()=>{
+  const broken='{invalid';
+  const expected={...trustedStaged,'/release.json':createHash('sha256').update(broken).digest('hex')};
+  await assert.rejects(run({mutate:(p,b)=>p.endsWith('release.json')?broken:b},expected),/invalid JSON/);
+});
 test('content type must be JSON for release manifest',async()=>{await assert.rejects(run({contentType:()=> 'text/html'}),/not JSON/)});
 test('redirect to other origin fails',async()=>{await assert.rejects(run({finalUrl:u=>u.replace('bennybundles.github.io','attacker.example')}),/Unexpected response URL/)});
 test('CSP keeps the complete audited policy with all restrictions',()=>{
@@ -153,30 +176,32 @@ test('HTTP credentials and escaping base are rejected',()=>{
 });
 test('eventual consistency retry only passes after exact match',async()=>{
  let c=0;const f=transport({mutate:(p,b)=>p.endsWith('release.json')&&c++===0?JSON.stringify({...manifest(),commit:old}):b});
- const result=await auditDeployment({baseUrl:base,expectedSha:sha,config,expectedWorkerSha,fetchImpl:f,attempts:2,delayMs:0,sleep:async()=>{}});
+ const result=await auditDeployment({baseUrl:base,expectedSha:sha,config,expectedWorkerSha,
+  expectedRouteDigests:trustedStaged,fetchImpl:f,attempts:2,delayMs:0,sleep:async()=>{}});
  assert.equal(result.commit,sha);
 });
 test('persistent release mismatch exhausts bounded retries',async()=>{
  let calls=0;const f=async u=>{calls++;return transport({mutate:(p,b)=>p.endsWith('release.json')?JSON.stringify({...manifest(),commit:old}):b})(u)};
- await assert.rejects(auditDeployment({baseUrl:base,expectedSha:sha,config,expectedWorkerSha,fetchImpl:f,attempts:2,delayMs:0,sleep:async()=>{}}),/after 2 attempt/);
+ await assert.rejects(auditDeployment({baseUrl:base,expectedSha:sha,config,expectedWorkerSha,
+  expectedRouteDigests:trustedStaged,fetchImpl:f,attempts:2,delayMs:0,sleep:async()=>{}}),/after 2 attempt/);
  assert.equal(calls,2);
 });
 
 test('CDN serving stale but recognizable offline HTML must block release',async()=>{
- await assert.rejects(run({mutate:(p,b)=>p.endsWith('/public-preview/')?b+'<!-- old shell -->':b}),/Live offline shell does not match/);
+ await assert.rejects(run({mutate:(p,b)=>p.endsWith('/public-preview/')?b+'<!-- old shell -->':b}),/Live route bytes/);
 });
 test('well formed offline webmanifest with a different byte sequence blocks release',async()=>{
- await assert.rejects(run({mutate:(p,b)=>p.endsWith('manifest.webmanifest')?b+' ':b}),/Live offline manifest does not match/);
+ await assert.rejects(run({mutate:(p,b)=>p.endsWith('manifest.webmanifest')?b+' ':b}),/Live route bytes/);
 });
 test('correct-looking SVG changed in transit blocks release',async()=>{
- await assert.rejects(run({mutate:(p,b)=>p.endsWith('icon.svg')?b+'\n':b}),/Live offline icon does not match/);
+ await assert.rejects(run({mutate:(p,b)=>p.endsWith('icon.svg')?b+'\n':b}),/Live route bytes/);
 });
 test('missing or manually-versioned worker cannot pass live release audit',async()=>{
- await assert.rejects(run({mutate:(p,b)=>p.endsWith('sw.js')?"const CACHE_NAME='v4';":b}),/does not match trusted staged worker SHA-256/);
+ await assert.rejects(run({mutate:(p,b)=>p.endsWith('sw.js')?"const CACHE_NAME='v4';":b}),/Live route bytes|does not match trusted staged worker SHA-256/);
 });
 test('maliciously mismatched published worker mapping blocks release',async()=>{
  const forged=offlineWorker.replace(assetDigests.shell,'a'.repeat(64));
- await assert.rejects(run({mutate:(p,b)=>p.endsWith('sw.js')?forged:b}),/does not match trusted staged worker SHA-256/);
+ await assert.rejects(run({mutate:(p,b)=>p.endsWith('sw.js')?forged:b}),/Live route bytes|does not match trusted staged worker SHA-256/);
 });
 test('wrong MIME on the published worker fails closed',async()=>{
  await assert.rejects(run({contentType:path=>path.endsWith('sw.js')?'text/html':path.endsWith('.svg')?'image/svg+xml':
@@ -193,13 +218,13 @@ test('exported verifier directly detects mismatched asset digest',()=>{
 test('served worker with extra executable code fails trusted staged worker attestation',async()=>{
  const altered=offlineWorker+'\nself.addEventListener("fetch",()=>{});';
  await assert.rejects(run({mutate:(p,b)=>p.endsWith('/public-preview/sw.js')?altered:b}),
-   /does not match trusted staged worker SHA-256/);
+   /Live route bytes|does not match trusted staged worker SHA-256/);
 });
 
 test('served worker cannot self-attest a forged digest map with appended code',async()=>{
  const altered=offlineWorker+'\n// valid-looking SHA-256 map above does not authenticate these bytes';
  await assert.rejects(run({mutate:(p,b)=>p.endsWith('/public-preview/sw.js')?altered:b}),
-   /does not match trusted staged worker SHA-256/);
+   /Live route bytes|does not match trusted staged worker SHA-256/);
 });
 
 test('release verification fails closed without independently trusted worker digest',async()=>{
@@ -227,12 +252,12 @@ test('an authentic worker and matching local staged worker SHA-256 remain valid'
 test('uncached worker install URL drift fails even when cache-busted audit probe passes',async()=>{
  await assert.rejects(run({mutate:(path,body,url)=>
   path.endsWith('/public-preview/')&&!new URL(url).searchParams.has('v')
-   ? body+'<!-- unversioned stale CDN HTML -->':body}),/Live offline shell does not match/);
+   ? body+'<!-- unversioned stale CDN HTML -->':body}),/Live route bytes/);
 });
 test('unversioned worker changes must fail independently of cache-busted worker probe',async()=>{
  await assert.rejects(run({mutate:(path,body,url)=>
   path.endsWith('/public-preview/sw.js')&&!new URL(url).searchParams.has('v')
-   ? body+'\\n// direct worker drift':body}),/does not match trusted staged worker SHA-256/);
+   ? body+'\\n// direct worker drift':body}),/Live route bytes|does not match trusted staged worker SHA-256/);
 });
 test('raw corrupt UTF-8 cannot be silently normalized before byte attestation',async()=>{
  await assert.rejects(run({bytes:(path,body,url)=>
@@ -344,3 +369,51 @@ for(const target of offlinePaths){
   }
  }
 }
+
+test('staged public allowlist has exactly 20 static routes and release receipt',()=>{
+ assert.equal(Object.keys(STAGED_ROUTE_FILES).length,21);
+ assert.equal(Object.keys(trustedStaged).length,21);
+ assert.equal(requireTrustedRouteDigests(trustedStaged),trustedStaged);
+});
+test('missing or extra trusted route digest fails before any network request',async()=>{
+ for(const bad of [
+  Object.fromEntries(Object.entries(trustedStaged).filter(([k])=>k!=='/support/app.js')),
+  {...trustedStaged,'/unapproved/':'a'.repeat(64)},
+  {...trustedStaged,'/support/app.js':'b'.repeat(63)}
+ ]){
+  let fetched=false;
+  await assert.rejects(verifyOnce({baseUrl:base,expectedSha:sha,config,expectedWorkerSha,
+   expectedRouteDigests:bad,fetchImpl:()=>{fetched=true;throw Error('unexpected fetch')}}),
+   /Staged route digest|Malformed trusted staged route/);
+  assert.equal(fetched,false);
+ }
+});
+test('unchanged route markers do not permit stale Money Lab JavaScript bytes',async()=>{
+ await assert.rejects(run({mutate:(p,b)=>p.endsWith('/money-lab/app.js')?b+'\n// stale CDN code':b}),
+   /Live route bytes differ from trusted staged artifact: \/money-lab\/app.js/);
+});
+test('unchanged visible Support marker cannot conceal stale support HTML',async()=>{
+ await assert.rejects(run({mutate:(p,b)=>p.endsWith('/support/')?b+'<!-- stale support page -->':b}),
+   /Live route bytes differ from trusted staged artifact: \/support\//);
+});
+test('release.json with correct commit but extra stale metadata is byte-rejected',async()=>{
+ await assert.rejects(run({mutate:(p,b)=>p.endsWith('/release.json')
+  ? JSON.stringify({...manifest(),unapproved:'stale'}) : b}),
+  /Live route bytes differ from trusted staged artifact: \/release.json/);
+});
+test('independently staged file bytes establish route hashes and symlinks are refused',async()=>{
+ const dir=await fs.mkdtemp(path.join(os.tmpdir(),'thisweek-route-digests-'));
+ try{
+  for(const [route,rel] of Object.entries(STAGED_ROUTE_FILES)){
+   const full=path.join(dir,rel);
+   await fs.mkdir(path.dirname(full),{recursive:true});
+   const source=fixtureBodies().get(assetUrl(base,route,sha,false).pathname);
+   await fs.writeFile(full,source);
+  }
+  const root=new URL('file://'+dir+'/');
+  assert.deepEqual({...await loadStagedRouteDigests(root)},trustedStaged);
+  await fs.unlink(path.join(dir,'support','app.js'));
+  await fs.symlink(path.join(dir,'support','index.html'),path.join(dir,'support','app.js'));
+  await assert.rejects(loadStagedRouteDigests(root),/Missing, symlinked/);
+ }finally{await fs.rm(dir,{recursive:true,force:true})}
+});
