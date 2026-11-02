@@ -432,7 +432,12 @@ if(workflow){
   requireText('Pages workflow must use deterministic production staging',workflow,'node prepare-site.mjs index.html _site/index.html');
   requireText('Pages workflow validation must stage production HTML first',workflow,'node prepare-site.mjs index.html index.production.html');
   requireText('Pages PR checks must have their own concurrency group',workflow,"format('pages-pr-{0}', github.event.pull_request.number)");
-  requireText('Pages production must use its own concurrency group',workflow,"|| 'pages-production'");
+  requireText('Each non-PR workflow validation must not displace a pending production release',workflow,"format('pages-run-{0}', github.run_id)");
+  requireText('Production publishing must have a dedicated deployment concurrency group',workflow,'group: thisweek-pages-production-deploy');
+  requireText('Production publish queue must preserve pending releases',workflow,'queue: max');
+  requireText('Production publishes must never cancel an active release',workflow,'cancel-in-progress: false');
+  requireText('Production publishing must reject a stale SHA',workflow,'Reject stale main SHA before production publish');
+  requireText('Stale release guard must compare current main commit',workflow,'git ls-remote --exit-code origin refs/heads/main');
   requireText('Only superseded PR checks may be cancelled',workflow,"cancel-in-progress: ${{ github.event_name == 'pull_request' }}");
   requireText('Manual Pages release must run from main',workflow,"if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')");
   forbidText('Production Pages runs must not be cancelled unconditionally',workflow,'cancel-in-progress: true');
