@@ -38,6 +38,9 @@ jobs:
       - name: Unit-test browser-local Plan durability under storage failures
         run: node --test phase36-data-durability.test.mjs
 
+      - name: Unit-test safe financial backup without authentication secrets
+        run: node --test phase36-backup-security.test.mjs
+
       - name: Phase 0 static regression check
         run: node phase0-static-check.mjs
 
