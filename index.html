@@ -6951,9 +6951,38 @@ function validatedRawLocalBackup(source){
     if(state.config[name]!=null&&!Array.isArray(state.config[name]))throw new Error('Invalid Plan category collection: '+name);
   }
   for(const row of state.transactions||[]){
-    if(!row||!Number.isSafeInteger(row.amount)||row.amount<0)
-      throw new Error('Backup has an invalid transaction amount.');
+    if(!row||typeof row!=='object'||typeof row.weekId!=='string'||!Number.isSafeInteger(row.amount)||row.amount<0)
+      throw new Error('Backup has an invalid transaction amount or week.');
   }
+  for(const week of state.weeks||[]){
+    if(!week||typeof week!=='object'||typeof week.id!=='string'||!Number.isFinite(Date.parse(week.start))||!Number.isFinite(Date.parse(week.end)))
+      throw new Error('Backup has invalid weekly history dates or identifiers.');
+    for(const balance of week.balances||[]){
+      if(!balance||!['allocated','spent','remaining'].every(k=>Number.isSafeInteger(balance[k])))
+        throw new Error('Backup has invalid category ledger amounts.');
+    }
+    for(const bill of week.billAllocations||[]){
+      if(!bill||!['weeklyRequired','contributed','requiredByToday'].every(k=>Number.isSafeInteger(bill[k])))
+        throw new Error('Backup has invalid bill-protection amounts.');
+    }
+  }
+  for(const category of [...(state.config.bills||[]),...(state.config.livingNeeds||[]),...(state.config.discretionary||[])]){
+    if(!category||typeof category!=='object')throw new Error('Backup has invalid category data.');
+    for(const k of ['amount','weeklyLimit','ebtOffset']){
+      if(category[k]!=null&&!Number.isSafeInteger(category[k]))throw new Error('Backup has invalid category money amounts.');
+    }
+  }
+  const unsafeFields=['__proto__','prototype','constructor'];
+  const inspect=(value,depth=0)=>{
+    if(depth>24)throw new Error('Backup is too deeply nested.');
+    if(Array.isArray(value)){for(const v of value)inspect(v,depth+1);return;}
+    if(!value||typeof value!=='object')return;
+    for(const [k,v] of Object.entries(value)){
+      if(unsafeFields.includes(k))throw new Error('Backup contains an unsafe object property.');
+      inspect(v,depth+1);
+    }
+  };
+  inspect(state);
   for(const [key,value] of entries){
     if(key===STATE_KEY||key===USER_ID_KEY)continue;
     if(key===PRECHECK_HINT_KEY||key===FIN_EVENT_KEY)continue; // These short-lived UI hints may be plain text.
@@ -6981,8 +7010,8 @@ function restoreVerifiedRawLocalBackup(source){
     entries.push([STATE_KEY,source.localStorage[STATE_KEY]]);
     for(const [key,value] of entries){
       if(localStorage.getItem(key)!==null)throw new Error('A competing browser tab changed storage. Restore aborted.');
+      added.push(key); // Include a key even if the write succeeds but subsequently throws.
       localStorage.setItem(key,value);
-      added.push(key);
       if(localStorage.getItem(key)!==value)throw new Error('Browser failed to verify the restored key.');
     }
     return validated.summary;
