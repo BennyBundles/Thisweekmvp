@@ -11,7 +11,12 @@ const MAX_SHELL_CHARS=2_000_000;
 
 function safeResponse(response,url){
   if(!response||!response.ok||response.status!==200||response.redirected)return false;
-  if(response.url&&new URL(response.url).href!==url)return false;
+  // A valid-looking cached Response from another origin or route is never trusted.
+  if(response.url){
+    const actual=new URL(response.url),expected=new URL(url);
+    if(actual.origin!==ROOT_URL.origin||actual.pathname!==expected.pathname||
+      actual.href!==expected.href)return false;
+  }
   return true;
 }
 function typeIs(response,mime){
