@@ -10,7 +10,7 @@ test('full dependency stack Phase35–42 executes in PR validation',()=>{
  for(const name of ['verify-deployed-release.test.mjs','phase36-data-durability.test.mjs',
   'phase36-backup-security.test.mjs','phase44-multitab-durability.test.mjs','phase45-volatile-plan-rescue.test.mjs','phase37-verified-restore.test.mjs',
   'phase38-secure-export.test.mjs','test-stage-preview.mjs','phase48-runtime-asset-digests.test.mjs',
-  'phase41-pages-queue.test.mjs','public-preview-sw.test.mjs',
+  'phase41-pages-queue.test.mjs','public-preview-sw.test.mjs','phase54-artifact-parity.test.mjs',
   'phase43-integration.test.mjs']){
   assert.ok(w.includes('node --test '+name),name);
  }
