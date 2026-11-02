@@ -7057,6 +7057,28 @@ function downloadVolatilePlanRescue(){
 // Phase 37: exact-key raw Plan backup restore. This is NOT portable-schema import or cloud sync.
 const RAW_RESTORE_MAX_BYTES=4*1024*1024;
 const RAW_RESTORE_KEYS=RAW_BACKUP_EXPORT_KEYS;
+// Count exact UTF-8 bytes while avoiding a multi-megabyte temporary Uint8Array
+// on modern Safari. The scratch buffer is reused across allowlisted entries.
+function rawBackupUtf8Bytes(text,encoder,remaining,scratch){
+  if(text.length>remaining)return remaining+1; // UTF-8 is never shorter than UTF-16 code-unit count.
+  if(scratch){
+    let offset=0,total=0;
+    while(offset<text.length){
+      const part=encoder.encodeInto(text.slice(offset),scratch);
+      if(!part||!Number.isInteger(part.read)||part.read<=0||
+         !Number.isInteger(part.written)||part.written<=0||part.written>scratch.length)
+        throw new Error('Browser cannot safely verify raw backup byte length.');
+      offset+=part.read;total+=part.written;
+      if(total>remaining)return remaining+1;
+    }
+    return total;
+  }
+  // Compatibility fallback when encodeInto is unavailable; never fall back to
+  // UTF-16 string length, which undercounts emoji/CJK backup contents.
+  if(typeof encoder.encode!=='function')
+    throw new Error('Browser cannot safely verify raw backup byte length.');
+  return encoder.encode(text).byteLength;
+}
 let rawRestoreInProgress=false;
 function validatedRawLocalBackup(source){
   if(!source||typeof source!=='object'||Array.isArray(source))throw new Error('Backup must be a JSON object.');
@@ -7076,12 +7098,16 @@ function validatedRawLocalBackup(source){
   if(typeof TextEncoder!=='function')
     throw new Error('Browser cannot safely verify raw backup byte length.');
   const byteEncoder=new TextEncoder();
+  const byteScratch=typeof byteEncoder.encodeInto==='function'?new Uint8Array(16*1024):null;
   let totalBytes=0;
   for(const [key,value] of entries){
     if(!allowed.has(key)||!isRawBackupSafeLocalKey(key))
       throw new Error('Backup contains an unknown or sensitive storage key.');
     if(typeof value!=='string')throw new Error('Backup contains a non-string storage value.');
-    totalBytes+=byteEncoder.encode(key).byteLength+byteEncoder.encode(value).byteLength;
+    totalBytes+=rawBackupUtf8Bytes(key,byteEncoder,RAW_RESTORE_MAX_BYTES-totalBytes,byteScratch);
+    if(totalBytes>RAW_RESTORE_MAX_BYTES)
+      throw new Error('Backup contents exceed the 4 MB restoration limit.');
+    totalBytes+=rawBackupUtf8Bytes(value,byteEncoder,RAW_RESTORE_MAX_BYTES-totalBytes,byteScratch);
     if(totalBytes>RAW_RESTORE_MAX_BYTES)
       throw new Error('Backup contents exceed the 4 MB restoration limit.');
   }
