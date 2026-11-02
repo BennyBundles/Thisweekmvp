@@ -55,6 +55,40 @@ test('missing required asset marker fails',async()=>{await assert.rejects(run({m
 test('malformed JSON fails',async()=>{await assert.rejects(run({mutate:(p,b)=>p.endsWith('release.json')?'{invalid':b}),/invalid JSON/)});
 test('content type must be JSON for release manifest',async()=>{await assert.rejects(run({contentType:()=> 'text/html'}),/not JSON/)});
 test('redirect to other origin fails',async()=>{await assert.rejects(run({finalUrl:u=>u.replace('bennybundles.github.io','attacker.example')}),/Unexpected response URL/)});
+test('CSP rejects an earlier permissive connect-src whose later none is browser-ignored',()=>{
+ const altered=csp.replace("connect-src 'none'","connect-src *; connect-src 'none'");
+ assert.throws(()=>verifyIndexCsp('<title>This Week</title>'+altered+scripts),
+   /Duplicate CSP directive: connect-src/);
+});
+test('CSP rejects duplicate object-src with earlier permissive content',()=>{
+ const altered=csp.replace("object-src 'none'","object-src *; object-src 'none'");
+ assert.throws(()=>verifyIndexCsp('<title>This Week</title>'+altered+scripts),
+   /Duplicate CSP directive: object-src/);
+});
+test('CSP rejects case-insensitive duplicate network directives',()=>{
+ const altered=csp.replace("connect-src 'none'","CoNnEcT-sRc *; connect-src 'none'");
+ assert.throws(()=>verifyIndexCsp('<title>This Week</title>'+altered+scripts),
+   /Duplicate CSP directive: connect-src/);
+});
+test('CSP rejects unapproved remote script host alongside otherwise valid hashes',()=>{
+ const altered=csp.replace("script-src 'self'","script-src 'self' https://untrusted.example");
+ assert.throws(()=>verifyIndexCsp('<title>This Week</title>'+altered+scripts),
+   /no external script sources/);
+});
+test('CSP rejects wildcard script sources even when inline hashes still match',()=>{
+ const altered=csp.replace("script-src 'self'","script-src 'self' *");
+ assert.throws(()=>verifyIndexCsp('<title>This Week</title>'+altered+scripts),
+   /no external script sources/);
+});
+test('CSP rejects duplicate meta policies instead of only auditing one',()=>{
+ assert.throws(()=>verifyIndexCsp('<title>This Week</title>'+csp+csp+scripts),
+   /exactly one production CSP meta policy/);
+});
+test('CSP rejects connect-src none combined with extra allowed origins',()=>{
+ const altered=csp.replace("connect-src 'none'","connect-src 'none' https:");
+ assert.throws(()=>verifyIndexCsp('<title>This Week</title>'+altered+scripts),
+   /client networking unexpectedly enabled/);
+});
 test('production CSP cannot permit client networking',()=>{assert.throws(()=>verifyIndexCsp('<title>This Week</title>'+csp.replace("connect-src 'none'","connect-src *")+scripts),/client networking/)});
 test('production CSP cannot permit unsafe-inline scripts',()=>{assert.throws(()=>verifyIndexCsp('<title>This Week</title>'+csp.replace("script-src 'self'","script-src 'self' 'unsafe-inline'")+scripts),/Unsafe script/)});
 test('script changed without corresponding CSP hash fails',()=>{assert.throws(()=>verifyIndexCsp('<title>This Week</title>'+csp+scripts.replace('const a=1;','const a=999;')),/hashes do not match/)});
