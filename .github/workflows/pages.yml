@@ -10,10 +10,10 @@ on:
 permissions:
   contents: read
 
+# Keep PR validation debounce independent from production release scheduling.
+# Non-PR runs do not share workflow-level concurrency (including feature dispatch).
 concurrency:
-  # PR checks cannot cancel or replace the protected production Pages workflow.
-  group: ${{ github.event_name == 'pull_request' && format('pages-pr-{0}', github.event.pull_request.number) || 'pages-production' }}
-  # Cancel only superseded builds for the same PR; never cancel an in-flight Pages release.
+  group: ${{ github.event_name == 'pull_request' && format('pages-pr-{0}', github.event.pull_request.number) || format('pages-run-{0}', github.run_id) }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
@@ -99,6 +99,12 @@ jobs:
     # A manual dispatch on a review branch must never publish to production.
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     needs: validate
+    # The default single pending slot drops older pending deployments; max keeps
+    # up to 100 queued releases. A stale-main SHA guard below prevents rollback.
+    concurrency:
+      group: thisweek-pages-production-deploy
+      cancel-in-progress: false
+      queue: max
     permissions:
       contents: read
       pages: write
@@ -202,6 +208,17 @@ jobs:
         uses: actions/upload-pages-artifact@v4
         with:
           path: "_site"
+
+      - name: Reject stale main SHA before production publish
+        env:
+          EXPECTED_RELEASE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          current_main_sha="$(git ls-remote --exit-code origin refs/heads/main | cut -f1)"
+          if [ -z "$current_main_sha" ] || [ "$current_main_sha" != "$EXPECTED_RELEASE_SHA" ]; then
+            echo "::error::Current main is ${current_main_sha:-unavailable}; refusing stale release $EXPECTED_RELEASE_SHA"
+            exit 1
+          fi
 
       - name: Deploy to GitHub Pages
         id: deployment
