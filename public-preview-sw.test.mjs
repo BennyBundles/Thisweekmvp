@@ -134,7 +134,8 @@ test('404 navigation never overwrites offline shell',async()=>{
   }});
   await h.emit('install');
   const bad=await h.emit('fetch',h.request('./'));
-  assert.equal(bad.response.status,404);
+  assert.equal(bad.response.status,200);
+  assert.match(await bad.response.text(),/This Week — Public Release Preview/);
   assert.equal(h.tracking.puts.length,0);
   network=null;
   const recovered=await h.emit('fetch',h.request('./'));
@@ -250,7 +251,7 @@ test('install quota failure rolls back partial cache and leaves previous cache u
   assert.equal(h.cacheStores.has('this-week-public-preview-v2'),true);
 });
 
-test('HTTP 200 login navigation is shown online but never cached as offline shell',async()=>{
+test('HTTP 200 login navigation is rejected online and known-good shell is served instead',async()=>{
   let response=new Response('sign in',{status:200,headers:{'content-type':'text/html'}});
   const h=harness({fetchImpl:async()=>{
     if(!response)throw new Error('offline');
@@ -258,7 +259,7 @@ test('HTTP 200 login navigation is shown online but never cached as offline shel
   }});
   await h.emit('install');
   const current=await h.emit('fetch',h.request('./'));
-  assert.equal(await current.response.text(),'sign in');
+  assert.match(await current.response.text(),/This Week — Public Release Preview/);
   assert.equal(h.tracking.puts.length,0);
   response=null;
   const offline=await h.emit('fetch',h.request('./'));
@@ -280,7 +281,8 @@ test('offline fallback rejects a locally corrupted current-version shell',async(
   await h.emit('install');
   h.cacheStores.get('this-week-public-preview-v4').set(ROOT,
     new Response('<title>Sign In</title>',{status:200,headers:{'content-type':'text/html'}}));
-  await assert.rejects(h.emit('fetch',h.request('./')),/offline/);
+  const failed=await h.emit('fetch',h.request('./'));
+  assert.equal(failed.response.type,'error');
   assert.equal(h.cacheStores.get('this-week-public-preview-v4').has(ROOT),false);
 });
 
@@ -290,7 +292,7 @@ test('invalid static asset cannot enter cache when network returns a 200 HTML lo
   const url=ROOT+'icon.svg';
   h.cacheStores.get('this-week-public-preview-v4').delete(url);
   const response=await h.emit('fetch',h.request('./icon.svg','same-origin'));
-  assert.equal(await response.response.text(),'login');
+  assert.equal(response.response.type,'error');
   assert.equal(h.cacheStores.get('this-week-public-preview-v4').has(url),false);
 });
 
@@ -319,7 +321,8 @@ test('cross-origin cached 200 HTML with spoofed preview markers is rejected offl
     async text(){return SHELL_MARKER;}
   };
   h.cacheStores.get('this-week-public-preview-v4').set(ROOT,forged);
-  await assert.rejects(h.emit('fetch',h.request('./')),/offline/);
+  const failed=await h.emit('fetch',h.request('./'));
+  assert.equal(failed.response.type,'error');
   assert.equal(h.cacheStores.get('this-week-public-preview-v4').has(ROOT),false);
 });
 
@@ -333,7 +336,8 @@ test('wrong-path cached 200 HTML with authentic-looking text is rejected offline
     async text(){return SHELL_MARKER;}
   };
   h.cacheStores.get('this-week-public-preview-v4').set(ROOT,forged);
-  await assert.rejects(h.emit('fetch',h.request('./')),/offline/);
+  const failed=await h.emit('fetch',h.request('./'));
+  assert.equal(failed.response.type,'error');
 });
 
 
