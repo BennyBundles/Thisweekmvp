@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 const html=readFileSync(new URL('./index.html',import.meta.url),'utf8');
 const start=html.indexOf('function isRawBackupSafeLocalKey(');
-const end=html.indexOf('function clearAllThisWeekLocalData(',start);
+const end=html.indexOf('// Phase 37: exact-key raw Plan backup restore.',start);
 assert(start>0 && end>start, 'Raw backup functions must be present');
 const source=html.slice(start,end);
 function run(){
