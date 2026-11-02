@@ -5321,6 +5321,7 @@ let volatileState=null;
 let volatileStateSerialized=null;
 let lastPersistedStateSerialized=null;
 let persistedStateQuarantine=null;
+let blockedPlanDraftSerialized=null;
 
 function quarantinePlanStorage(reason,kind='read'){
   persistedStateQuarantine=persistedStateQuarantine||reason;
@@ -5378,6 +5379,20 @@ function safeLocalStorageRemove(key){
     return true;}
   catch(e){runtimeStorageHealth.available=false;runtimeStorageHealth.lastError=e?.message||'Storage remove failed';runtimeStorageHealth.lastFailureAt=nowIso();return false;}
 }
+function appendPlanRescueControl(panel,message){
+  if(!(volatileStateSerialized||blockedPlanDraftSerialized)||
+     (panel.children||[]).some(child=>child.id==='thisweek-volatile-rescue'))return;
+  const rescue=document.createElement('button');
+  rescue.id='thisweek-volatile-rescue';
+  rescue.type='button';
+  rescue.textContent='Save in-memory Plan for manual recovery';
+  rescue.style.cssText='display:block;min-height:44px;width:100%;margin-top:7px;padding:8px 12px;background:#ffffff;color:#3b1720;border:1px solid #ffffff;border-radius:9px;font:700 14px/1.3 system-ui,sans-serif;cursor:pointer';
+  rescue.addEventListener?.('click',()=>{
+    try{downloadVolatilePlanRescue();}
+    catch(e){message.textContent='Recovery file could not be created: '+(e?.message||'Unknown error')+'. Keep this tab open and record your edits manually.';}
+  });
+  panel.appendChild(rescue);
+}
 function showStoragePersistenceWarning(kind='write'){
   // Display only after an actual failed write. A successful read does not establish durability.
   if(typeof document==='undefined'||!document.body)return;
@@ -5389,6 +5404,7 @@ function showStoragePersistenceWarning(kind='write'){
   const existing=document.getElementById('thisweek-storage-failure');
   if(existing){
     if(existing.children&&existing.children[0])existing.children[0].textContent=warning;
+    appendPlanRescueControl(existing,existing.children?.[0]);
     return;
   }
   const panel=document.createElement('aside');
@@ -5403,17 +5419,7 @@ function showStoragePersistenceWarning(kind='write'){
   link.textContent='Open Privacy & Local Data to export';
   link.style.cssText='display:inline-block;margin-top:8px;color:#ffffff;text-decoration:underline;min-height:40px;line-height:40px';
   panel.append(message,link);
-  if(volatileStateSerialized){
-    const rescue=document.createElement('button');
-    rescue.type='button';
-    rescue.textContent='Save in-memory Plan for manual recovery';
-    rescue.style.cssText='display:block;min-height:44px;width:100%;margin-top:7px;padding:8px 12px;background:#ffffff;color:#3b1720;border:1px solid #ffffff;border-radius:9px;font:700 14px/1.3 system-ui,sans-serif;cursor:pointer';
-    rescue.addEventListener?.('click',()=>{
-      try{downloadVolatilePlanRescue();}
-      catch(e){message.textContent='Recovery file could not be created: '+(e?.message||'Unknown error')+'. Keep this tab open and record your edits manually.';}
-    });
-    panel.append(rescue);
-  }
+  appendPlanRescueControl(panel,message);
   document.body.appendChild(panel);
 }
 function clearStoragePersistenceWarning(){
@@ -5506,6 +5512,14 @@ function readState(){
 }
 function writeState(state){
   if(persistedStateQuarantine){
+    // A blocked edit may be newer than the last volatile copy. Preserve it only
+    // as separately labeled review evidence, never as the authoritative Plan.
+    blockedPlanDraftSerialized=null;
+    try{
+      const candidate=JSON.stringify(state);
+      if(typeof candidate==='string'&&candidate.length<=4*1024*1024)
+        blockedPlanDraftSerialized=candidate;
+    }catch{}
     runtimeStorageHealth.available=false;
     showStoragePersistenceWarning(persistedStateQuarantine.startsWith('Another tab')?'conflict':'read');
     return state;
@@ -5545,14 +5559,15 @@ function writeState(state){
   return state;
 }
 function clearState(){
-  volatileState=null;volatileStateSerialized=null;lastPersistedStateSerialized=null;volatileUserId=null;
-  runtimePerf.revision++;
   const stateRemoved=safeLocalStorageRemove(STATE_KEY),userRemoved=safeLocalStorageRemove(USER_ID_KEY);
   if(stateRemoved&&userRemoved){
+    volatileState=null;volatileStateSerialized=null;blockedPlanDraftSerialized=null;
+    lastPersistedStateSerialized=null;volatileUserId=null;
+    runtimePerf.revision++;
     persistedStateQuarantine=null;
     runtimeStorageHealth.available=runtimeStorageHealth.readable&&runtimeStorageHealth.writable;
     clearStoragePersistenceWarning();
-  }
+  }else quarantinePlanStorage('Local Plan reset was incomplete. Financial data remains unverified.');
 }
 
 function formatCents(cents) {
@@ -6993,11 +7008,12 @@ function downloadRawLocalDataExport(){
 // Not a restorable raw backup, auto-sync mechanism, or payment receipt.
 const VOLATILE_PLAN_RESCUE_MAX_BYTES=4*1024*1024;
 function buildVolatilePlanRescue(){
-  if(!volatileStateSerialized)throw new Error('No in-memory Plan is available.');
-  if(volatileStateSerialized.length>VOLATILE_PLAN_RESCUE_MAX_BYTES)
+  const source=blockedPlanDraftSerialized||volatileStateSerialized;
+  if(!source)throw new Error('No in-memory Plan is available.');
+  if(source.length>VOLATILE_PLAN_RESCUE_MAX_BYTES)
     throw new Error('In-memory Plan is larger than the 4 MB emergency recovery limit.');
   let state;
-  try{state=JSON.parse(volatileStateSerialized);}
+  try{state=JSON.parse(source);}
   catch{throw new Error('In-memory Plan cannot be safely parsed.');}
   if(!state||typeof state!=='object'||Array.isArray(state)||
      typeof state.userId!=='string'||!state.userId||
@@ -7010,6 +7026,7 @@ function buildVolatilePlanRescue(){
     schemaVersion:1,
     capturedAt:nowIso(),
     status:'unverified_in_memory_only',
+    origin:blockedPlanDraftSerialized?'blocked_conflict_draft':'volatile_unsaved_change',
     warning:'Manual review only. This is NOT a restorable raw backup, NOT proof of a saved transaction, and is NOT uploaded. It may conflict with newer edits in another tab.',
     state
   };
@@ -7180,9 +7197,6 @@ function clearAllThisWeekLocalData(){
   for(const key of beforeLocal.keys)safeLocalStorageRemove(key);
   for(const key of beforeSession.keys){try{sessionStorage.removeItem(key);}catch{}}
   const afterLocal=inspectAppStorageNamespace(localStorage),afterSession=inspectAppStorageNamespace(sessionStorage);
-  volatileUserId=null;volatileState=null;volatileStateSerialized=null;lastPersistedStateSerialized=null;
-  uiPrefsCache=null;connectedDataCache=null;savingsGoalsCache=null;savingsGoalsCacheRevision=-1;
-  historySummaryCache={revision:-1,data:null};connectionImportPreview=null;runtimePerf.revision++;
   const result={
     success:beforeLocal.available&&beforeSession.available&&afterLocal.available&&afterSession.available&&afterLocal.keys.length===0&&afterSession.keys.length===0,
     storageAccessible:beforeLocal.available&&beforeSession.available&&afterLocal.available&&afterSession.available,
@@ -7191,10 +7205,13 @@ function clearAllThisWeekLocalData(){
     errors:[beforeLocal.error,beforeSession.error,afterLocal.error,afterSession.error].filter(Boolean)
   };
   if(result.success){
+    volatileUserId=null;volatileState=null;volatileStateSerialized=null;blockedPlanDraftSerialized=null;lastPersistedStateSerialized=null;
+    uiPrefsCache=null;connectedDataCache=null;savingsGoalsCache=null;savingsGoalsCacheRevision=-1;
+    historySummaryCache={revision:-1,data:null};connectionImportPreview=null;runtimePerf.revision++;
     persistedStateQuarantine=null;
     runtimeStorageHealth.available=runtimeStorageHealth.readable&&runtimeStorageHealth.writable;
     clearStoragePersistenceWarning();
-  }
+  }else quarantinePlanStorage('Verified deletion failed. Keep this tab open and preserve any unsaved changes.');
   return result;
 }
 function normalizeConnectedRecord(r={}){

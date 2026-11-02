@@ -94,6 +94,38 @@ test('recovery is bounded to 4 MB',()=>{
  const h=harness();h.exec("volatileStateSerialized='x'.repeat(4*1024*1024+1)");
  assert.throws(()=>h.exec('buildVolatilePlanRescue()'),/larger than the 4 MB/);
 });
+test('a quarantined multi-tab edit saves the attempted newer Plan separately from the older in-memory copy',()=>{
+ const h=harness();h.write(h.plan(100));
+ h.exec("quarantinePlanStorage('Another tab changed your financial Plan.','conflict')");
+ h.write(h.plan(900));
+ const result=JSON.parse(h.exec('buildVolatilePlanRescue().json'));
+ assert.equal(result.origin,'blocked_conflict_draft');
+ assert.equal(result.state.config.payProfile.netPayAmount,900);
+ assert.equal(JSON.parse(h.disk.get('thisweek.state.v2')).config.payProfile.netPayAmount,100);
+});
+test('rescue button becomes available if a previously empty quarantined tab receives a blocked edit',()=>{
+ const h=harness();h.exec("quarantinePlanStorage('Stored Plan unreadable')");
+ assert.equal(h.elements.get('thisweek-storage-failure').children.filter(x=>x.tag==='button').length,0);
+ h.write(h.plan(555));
+ const panel=h.elements.get('thisweek-storage-failure');
+ assert.equal(panel.children.filter(x=>x.tag==='button').length,1);
+ assert.equal(JSON.parse(h.exec('buildVolatilePlanRescue().json')).state.config.payProfile.netPayAmount,555);
+});
+test('failed local reset preserves attempted unsaved edits for manual recovery',()=>{
+ const h=harness();h.denyWrite(true);h.write(h.plan(42));
+ h.ctx.localStorage.removeItem=()=>{throw Error('removal denied')};
+ h.exec('clearState()');
+ assert.equal(JSON.parse(h.exec('buildVolatilePlanRescue().json')).state.config.payProfile.netPayAmount,42);
+ assert.ok(h.exec('persistedStateQuarantine'));
+});
+test('successful deliberate reset clears all tentative recovery drafts',()=>{
+ const h=harness();h.write(h.plan(100));
+ h.exec("quarantinePlanStorage('Another tab changed your financial Plan.','conflict')");
+ h.write(h.plan(900));
+ h.exec('clearState()');
+ assert.equal(h.exec('blockedPlanDraftSerialized'),null);
+ assert.throws(()=>h.exec('buildVolatilePlanRescue()'),/No in-memory Plan/);
+});
 test('rescue cannot upload, modify persistent Plan, or export session bearer tokens',()=>{
  assert.doesNotMatch(rescue,/\bfetch\s*\(|XMLHttpRequest|sendBeacon|localStorage\.setItem|sessionStorage/);
  assert.match(rescue,/confirmSensitiveExport/);

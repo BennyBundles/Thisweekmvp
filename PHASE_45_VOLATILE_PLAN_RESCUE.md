@@ -19,3 +19,6 @@ Sources:
 
 ## Caveats
 The emergency file is neither a verified transaction record nor an automatic restoration/merge file. It intentionally cannot be imported through the raw-backup restore path, which avoids overwriting the other tab's changes. If the tab is already closed, volatile changes may be irretrievable. Download success and iPhone Share Sheet need physical testing. This does not replace transactional concurrency or remote backup.
+
+## Phase 46 recursive findings
+An earlier rescue saved the pre-conflict volatile Plan but **not** a later user edit refused under multi-tab quarantine. Blocked write attempts now retain a separate tentative draft for manual review, labeled `blocked_conflict_draft`, and do not touch the authoritative stored Plan. A warning that appears before an edit can acquire a rescue button later. Failed local deletion no longer discards the last in-memory rescue; success explicitly clears it. New regression cases verify all four scenarios. The resulting recovery export is still not automatically importable or proof of a paid transaction.
