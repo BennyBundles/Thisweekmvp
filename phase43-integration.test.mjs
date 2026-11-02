@@ -89,3 +89,14 @@ test('independent security checks are present and not being intentionally skippe
  // Only permanent bypasses of validation are forbidden here.
  assert.match(w,/Run.*release smoke check|Production release smoke check/);
 });
+
+test('Phase 47 content-addressed offline artifacts bind Vercel and Pages equally',()=>{
+ const stamp=read('stamp-preview-service-worker.mjs');
+ assert.match(stamp,/createHash\('sha256'\)/);
+ assert.match(stamp,/worker-source/);
+ assert.match(preview,/call\('stamp-preview-service-worker\.mjs',\.\.\.stampArgs\)/);
+ assert.match(preview,/call\('stamp-preview-service-worker\.mjs','--verify',\.\.\.stampArgs\)/);
+ assert.match(w,/node --test stamp-preview-service-worker\.test\.mjs/);
+ assert.match(w,/node stamp-preview-service-worker\.mjs _site\/public-preview\/index\.html/);
+ assert.match(w,/node stamp-preview-service-worker\.mjs --verify _site\/public-preview\/index\.html/);
+});
