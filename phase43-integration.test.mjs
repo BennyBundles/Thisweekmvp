@@ -118,7 +118,10 @@ test('reviewed raw restore applies UTF-8 byte accounting without losing rollback
  assert.match(shell,/totalBytes\+=rawBackupUtf8Bytes\(key,byteEncoder/);
  assert.match(shell,/totalBytes\+=rawBackupUtf8Bytes\(value,byteEncoder/);
  assert.match(shell,/new Uint8Array\(16\*1024\)/);
- assert.match(shell,/encoder\.encodeInto\(text\.slice\(offset\),scratch\)/);
+ assert.match(shell,/const maxUnits=Math\.min\(4096,Math\.floor\(scratch\.length\/3\)\)/);
+ assert.match(shell,/text\.slice\(offset,end\)/);
+ assert.match(shell,/last>=0xD800&&last<=0xDBFF/);
+ assert.match(shell,/part\.read!==chunk\.length/);
  assert.match(shell,/return encoder\.encode\(text\)\.byteLength/);
  assert.doesNotMatch(shell,/totalLength\+=key\.length\+value\.length/);
  const tests=read('phase37-verified-restore.test.mjs');
