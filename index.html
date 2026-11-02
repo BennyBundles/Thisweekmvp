@@ -5391,7 +5391,7 @@ function appendPlanRescueControl(panel,message){
     try{downloadVolatilePlanRescue();}
     catch(e){message.textContent='Recovery file could not be created: '+(e?.message||'Unknown error')+'. Keep this tab open and record your edits manually.';}
   });
-  panel.appendChild(rescue);
+  panel.append(rescue);
 }
 function showStoragePersistenceWarning(kind='write'){
   // Display only after an actual failed write. A successful read does not establish durability.
