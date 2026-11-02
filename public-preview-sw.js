@@ -1,6 +1,6 @@
 // This Week demo-only offline PWA. Never cache personal plans or provider responses.
 const CACHE_PREFIX='this-week-public-preview-';
-const CACHE_NAME=CACHE_PREFIX+'v3';
+const CACHE_NAME=CACHE_PREFIX+'v4';
 const ROOT_URL=new URL('./',self.registration.scope);
 const SHELL_URL=ROOT_URL.href;
 const SHELL_PATH=ROOT_URL.pathname;
@@ -66,6 +66,11 @@ self.addEventListener('install',event=>{
   event.waitUntil((async()=>{
     // Do not trust cache.addAll's successful HTTP result as an authentic shell:
     // 200 login/maintenance pages and redirected assets must fail before activation.
+    // An installing replacement can share a cache namespace with the active
+    // worker. Never mutate or delete a pre-existing current-version cache.
+    // This makes failed updates safe even if a developer forgets a version bump.
+    const cacheAlreadyExisted=(await caches.keys()).includes(CACHE_NAME);
+    let createdCache=false;
     try{
       const verified=[];
       for(const url of [SHELL_URL,MANIFEST_URL,ICON_URL]){
@@ -77,12 +82,26 @@ self.addEventListener('install',event=>{
         verified.push([url,response]);
       }
       const cache=await caches.open(CACHE_NAME);
-      for(const [url,response] of verified)await cache.put(url,response);
+      if(cacheAlreadyExisted){
+        // The old active worker can still be serving v4 while the new one
+        // installs. Leave its last known good offline snapshot untouched.
+        for(const url of [SHELL_URL,MANIFEST_URL,ICON_URL]){
+          const existing=await cache.match(url);
+          const accepted=url===SHELL_URL
+            ? await validShell(existing,url)
+            : await validAsset(existing,url);
+          if(!accepted)throw new Error('Existing offline cache must not be overwritten: '+url);
+        }
+      }else{
+        createdCache=true;
+        for(const [url,response] of verified)await cache.put(url,response);
+      }
       // Only activate after the complete, independently validated cache is durable.
       await self.skipWaiting();
     }catch(error){
-      // Partial writes must not be promoted or retained as an installable cache.
-      try{await caches.delete(CACHE_NAME);}catch{}
+      // Never delete the active worker's cache after a failed same-version
+      // update. Roll back only a cache created by this installation.
+      if(createdCache){try{await caches.delete(CACHE_NAME);}catch{}}
       throw error;
     }
   })());

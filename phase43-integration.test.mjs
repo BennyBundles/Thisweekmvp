@@ -50,12 +50,14 @@ test('preview links stay within deployment sibling routes',()=>{
  assert.match(vp,/Support Center/);
 });
 test('offline service worker stays scoped to preview shell',()=>{
- assert.match(sw,/CACHE_NAME=CACHE_PREFIX\+'v3'/);
+ assert.match(sw,/CACHE_NAME=CACHE_PREFIX\+'v4'/);
  assert.match(sw,/async function validShell\(response,url\)/);
  assert.match(sw,/async function validAsset\(response,url\)/);
  assert.match(sw,/redirect:'error',cache:'no-store'/);
  assert.match(sw,/Unverified offline preview install asset/);
  assert.match(sw,/await caches.delete\(CACHE_NAME\)/);
+ assert.match(sw,/cacheAlreadyExisted/);
+ assert.match(sw,/if\(createdCache\)/);
  assert.match(sw,/const cache=await caches.open\(CACHE_NAME\)/);
  assert.match(sw,/if\(request\.method!=='GET'\)return/);
  assert.match(sw,/if\(url\.origin!==ROOT_URL\.origin\)return/);
