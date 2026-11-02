@@ -346,3 +346,44 @@ test('unpaired UTF-16 surrogate has the correct replacement-character byte count
  assert.equal(h.exec('rawBackupUtf8Bytes(testValue,new TextEncoder(),'+correct+',new Uint8Array(16*1024))'),correct);
  assert.equal(correct,12);
 });
+
+
+test('large Safari raw backup is encoded in bounded substrings, not repeated full tails',()=>{
+  const h=boot();let maxInput=0,totalInput=0,calls=0;
+  h.ctx.TextEncoder=class extends TextEncoder{
+    encode(){throw new Error('unexpected full allocation');}
+    encodeInto(value,destination){
+      maxInput=Math.max(maxInput,value.length);
+      totalInput+=value.length;calls++;
+      return super.encodeInto(value,destination);
+    }
+  };
+  const b=h.backup();
+  b.localStorage['thisweek.uiPrefs.v1']=JSON.stringify({note:'🪙'.repeat(300_000)});
+  assert.equal(h.apply(b).keyCount,3);
+  assert.ok(calls>100);
+  assert.ok(maxInput<=4096,'no multi-megabyte suffix may be handed to encodeInto');
+  assert.ok(totalInput<1_000_000,'source input windows must be linear in backup length');
+  assert.equal(h.disk.get('thisweek.uiPrefs.v1'),b.localStorage['thisweek.uiPrefs.v1']);
+});
+
+test('emoji crossing a 4096-code-unit window boundary retains exact UTF-8 bytes',()=>{
+  const h=boot();
+  for(const length of [4094,4095,4096,8190,8191,8192]){
+    const str='A'.repeat(length)+'🪙中文é'+String.fromCharCode(0xD800)+'tail';
+    const expected=new TextEncoder().encode(str).byteLength;
+    h.ctx.testValue=str;
+    const value=h.exec('rawBackupUtf8Bytes(testValue,new TextEncoder(),'+expected+',new Uint8Array(16*1024))');
+    assert.equal(value,expected,'incorrect UTF-8 encoding at window '+length);
+  }
+});
+
+test('malformed encoder with partial positive progress fails closed before restoring',()=>{
+  const h=boot();
+  h.ctx.TextEncoder=class{
+    encodeInto(value){return {read:Math.max(1,value.length-1),written:1};}
+    encode(value){return new TextEncoder().encode(value);}
+  };
+  assert.throws(()=>h.apply(h.backup()),/cannot safely verify raw backup byte length/);
+  assert.equal(h.disk.size,0);
+});
