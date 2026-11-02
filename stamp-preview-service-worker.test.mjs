@@ -5,6 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
+import {createHash} from 'node:crypto';
 
 const script=fileURLToPath(new URL('./stamp-preview-service-worker.mjs',import.meta.url));
 const MARKER="const CACHE_NAME=CACHE_PREFIX+'v4';";
@@ -15,7 +16,7 @@ function fixture(){
   fs.writeFileSync(paths[0],'<title>This Week — Public Release Preview</title>');
   fs.writeFileSync(paths[1],'{"name":"This Week","scope":"./"}');
   fs.writeFileSync(paths[2],'<svg xmlns="http://www.w3.org/2000/svg"></svg>');
-  fs.writeFileSync(paths[3],"const CACHE_PREFIX='this-week-public-preview-';\n"+MARKER+"\n");
+  fs.writeFileSync(paths[3],"const CACHE_PREFIX='this-week-public-preview-';\n"+MARKER+"\nconst EXPECTED_ASSET_SHA256=null;\n");
   return {root,paths};
 }
 function run(paths,verify=false){
@@ -89,4 +90,37 @@ test('rendered worker is syntactically valid JavaScript',()=>within(({paths})=>{
   const worker=stamped(paths);
   assert.doesNotThrow(()=>new Function(worker));
   assert.doesNotMatch(worker,/CACHE_NAME=CACHE_PREFIX\+'v4'/);
+  assert.match(worker,/EXPECTED_ASSET_SHA256=Object\.freeze\(/);
+  assert.doesNotMatch(worker,/EXPECTED_ASSET_SHA256=null/);
+}));
+
+
+test('stamped digests equal independent Node SHA-256 of every artifact',()=>within(({paths})=>{
+  const worker=stamped(paths);
+  const marker=worker.match(/const EXPECTED_ASSET_SHA256=Object\.freeze\((\{[^\n]+\})\);/);
+  assert.ok(marker,'embedded digests must be present');
+  const expected=JSON.parse(marker[1]);
+  for(const [name,path] of [['shell',paths[0]],['manifest',paths[1]],['icon',paths[2]]]){
+    const actual=createHash('sha256').update(fs.readFileSync(path)).digest('hex');
+    assert.equal(expected[name],actual);
+  }
+}));
+test('verify detects altered embedded digest even with correct cache identity',()=>within(({paths})=>{
+  const worker=stamped(paths);
+  const altered=worker.replace(/("shell":")[a-f0-9]{64}/,'$1'+'0'.repeat(64));
+  assert.notEqual(worker,altered);
+  fs.writeFileSync(paths[4],altered);
+  const check=run(paths,true);
+  assert.notEqual(check.status,0);
+  assert.match(check.stderr,/does not match exact staged assets/);
+}));
+test('missing or duplicate digest sentinel fails closed before publishing',()=>within(({paths})=>{
+  const template=fs.readFileSync(paths[3],'utf8');
+  for(const altered of [template.replace('const EXPECTED_ASSET_SHA256=null;',''),
+    template+'const EXPECTED_ASSET_SHA256=null;']){
+    fs.writeFileSync(paths[3],altered);
+    const result=run(paths);
+    assert.notEqual(result.status,0);
+    assert.match(result.stderr,/digest sentinel/);
+  }
 }));
