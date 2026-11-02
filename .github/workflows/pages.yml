@@ -10,10 +10,11 @@ on:
 permissions:
   contents: read
 
-# Keep PR checks isolated from one another and from the serialized production release queue.
-# A new PR push may cancel only older runs of that same PR, never a production deployment.
+# Isolate PR checks and non-main manual dispatches from the production release queue.
+# A non-main dispatch must not replace a pending main release in the concurrency group.
+# Cancel only older in-progress runs of the same PR; never an active production release.
 concurrency:
-  group: ${{ github.event_name == 'pull_request' && format('pages-pr-{0}', github.event.pull_request.number) || 'pages-production' }}
+  group: ${{ github.event_name == 'pull_request' && format('pages-pr-{0}', github.event.pull_request.number) || (github.ref != 'refs/heads/main' && format('pages-dispatch-{0}', github.ref)) || 'pages-production' }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
