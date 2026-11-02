@@ -309,6 +309,54 @@ export async function auditDeployment({baseUrl,expectedSha,config,expectedWorker
   throw new Error(`Release verification failed after ${attempts} attempt(s): ${last?.message}`);
 }
 
+
+/**
+ * Prove an exact release at two separate observations. An eventually correct
+ * first pass is not sufficient evidence that the same origin stays coherent.
+ * The first sweep retains bounded propagation retries; the second sweep is
+ * deliberately strict, with no retry that could hide a transient regression.
+ * This is observational consistency, NOT multi-edge CDN convergence.
+ */
+export async function auditStableDeployment({
+  baseUrl,expectedSha,config,expectedWorkerSha,expectedRouteDigests,
+  fetchImpl=fetch,attempts=12,delayMs=5000,stabilityDelayMs=3000,
+  sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms)),
+  now=()=>new Date().toISOString()
+}){
+  demand(Number.isInteger(stabilityDelayMs)&&stabilityDelayMs>=0&&stabilityDelayMs<=60_000,
+    'Invalid stability observation interval');
+  // Independent trust inputs are validated before making any requests.
+  demand(SHA.test(expectedSha), 'Expected commit SHA is invalid');
+  demand(/^[a-f0-9]{64}$/.test(expectedWorkerSha||''),
+    'Trusted staged offline worker SHA-256 is required before fetching');
+  const trusted=requireTrustedRouteDigests(expectedRouteDigests);
+  demand(trusted['/public-preview/sw.js']===expectedWorkerSha,
+    'Staged worker SHA differs from trusted all-route digest');
+  const params={baseUrl,expectedSha,config,expectedWorkerSha,
+    expectedRouteDigests:trusted,fetchImpl};
+  const first=await auditDeployment({...params,attempts,delayMs,sleep});
+  const firstVerifiedAt=now();
+  demand(typeof firstVerifiedAt==='string'&&!Number.isNaN(Date.parse(firstVerifiedAt)),
+    'First observation timestamp is invalid');
+  await sleep(stabilityDelayMs);
+  let second;
+  try{second=await verifyOnce(params)}
+  catch(error){throw new Error('Stable release second observation failed: '+error.message)}
+  const secondVerifiedAt=now();
+  demand(typeof secondVerifiedAt==='string'&&!Number.isNaN(Date.parse(secondVerifiedAt)),
+    'Second observation timestamp is invalid');
+  for(const key of ['commit','release','workflowRunId','origin','checkedAssets',
+    'exactRouteDigests','assetDigestCount','offlineUrlVariants']){
+    demand(first[key]===second[key],
+      'Stable release identity changed between observations: '+key);
+  }
+  const fingerprint=createHash('sha256').update(JSON.stringify(
+    Object.entries(trusted).sort(([a],[b])=>a.localeCompare(b)))).digest('hex');
+  return {...second,observationCount:2,stabilityDelayMs,
+    observationTimes:[firstVerifiedAt,secondVerifiedAt],
+    trustedRouteSetSha256:fingerprint,expectedWorkerSha};
+}
+
 if(process.argv[1] && import.meta.url===pathToFileURL(process.argv[1]).href){
   const [baseUrl,expectedSha]=process.argv.slice(2);
   const cfg=JSON.parse(await readFile(new URL('./release.config.json',import.meta.url),'utf8'));
@@ -321,8 +369,8 @@ if(process.argv[1] && import.meta.url===pathToFileURL(process.argv[1]).href){
     const expectedRouteDigests=await loadStagedRouteDigests();
     demand(expectedRouteDigests['/public-preview/sw.js']===expectedWorkerSha,
       'Trusted worker SHA differs from staged all-route manifest');
-    const outcome=await auditDeployment({baseUrl,expectedSha,config:cfg,expectedWorkerSha,
-      expectedRouteDigests,attempts:12,delayMs:5000});
+    const outcome=await auditStableDeployment({baseUrl,expectedSha,config:cfg,expectedWorkerSha,
+      expectedRouteDigests,attempts:12,delayMs:5000,stabilityDelayMs:3000});
     process.stdout.write('Validated exact This Week Pages release: '+JSON.stringify(outcome)+'\n');
   }catch(e){console.error('FAIL CLOSED:',e.message);process.exitCode=1}
 }
