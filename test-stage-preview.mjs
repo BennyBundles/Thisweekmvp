@@ -126,3 +126,78 @@ test('staged PWA fingerprint changes after a different shell build',()=>within(r
   const after=fs.readFileSync(path.join(root,'_site/public-preview/sw.js'),'utf8');
   assert.notEqual(after,prior);
 }));
+
+
+const buildArtifacts=root=>fs.readdirSync(root)
+  .filter(name=>name.startsWith('.thisweek-preview-rollback-'));
+test('late route-validation failure restores previous preview byte-for-byte',()=>within(root=>{
+  const site=path.join(root,'_site');
+  fs.mkdirSync(site);fs.writeFileSync(path.join(site,'old-preview'),'previous verified bytes');
+  const previous=fs.readFileSync(path.join(site,'old-preview'));
+  fs.writeFileSync(path.join(root,'public-preview-check.mjs'),
+    "console.error('LATE_ROUTE_FAILURE');process.exit(1);");
+  const r=run(root);
+  assert.notEqual(r.status,0);
+  assert.match(r.stderr,/LATE_ROUTE_FAILURE/);
+  assert.deepEqual(fs.readFileSync(path.join(site,'old-preview')),previous);
+  assert.deepEqual(fs.readdirSync(site),['old-preview']);
+  assert.equal(fs.existsSync(path.join(root,'.thisweek-preview-build.lock')),false);
+  assert.deepEqual(buildArtifacts(root),[]);
+}));
+test('late validation failure with no existing preview removes all partial build output',()=>within(root=>{
+  const site=path.join(root,'_site');
+  fs.writeFileSync(path.join(root,'legal-check.mjs'),
+    "console.error('FINAL_VALIDATOR_FAILURE');process.exit(1);");
+  const r=run(root);
+  assert.notEqual(r.status,0);
+  assert.match(r.stderr,/FINAL_VALIDATOR_FAILURE/);
+  assert.equal(fs.existsSync(site),false);
+  assert.equal(fs.existsSync(path.join(root,'.thisweek-preview-build.lock')),false);
+  assert.deepEqual(buildArtifacts(root),[]);
+}));
+test('a verified previous build survives a later failed rebuild unchanged',()=>within(root=>{
+  const site=path.join(root,'_site');
+  const good=run(root,{VERCEL_GIT_COMMIT_SHA:'b'.repeat(40)});
+  assert.equal(good.status,0,good.stderr);
+  const manifest=fs.readFileSync(path.join(site,'preview-build.json'));
+  const worker=fs.readFileSync(path.join(site,'public-preview/sw.js'));
+  fs.writeFileSync(path.join(root,'money-lab-check.mjs'),
+    "console.error('FAILED_REBUILD');process.exit(1);");
+  const broken=run(root);
+  assert.notEqual(broken.status,0);
+  assert.deepEqual(fs.readFileSync(path.join(site,'preview-build.json')),manifest);
+  assert.deepEqual(fs.readFileSync(path.join(site,'public-preview/sw.js')),worker);
+  assert.deepEqual(buildArtifacts(root),[]);
+}));
+test('successful rebuild removes old artifacts and rollback directory',()=>within(root=>{
+  const site=path.join(root,'_site');
+  fs.mkdirSync(site);fs.writeFileSync(path.join(site,'obsolete'),'old data');
+  const r=run(root);
+  assert.equal(r.status,0,r.stderr);
+  assert.equal(fs.existsSync(path.join(site,'obsolete')),false);
+  assert.ok(fs.statSync(path.join(site,'preview-build.json')).size>0);
+  assert.equal(fs.existsSync(path.join(root,'.thisweek-preview-build.lock')),false);
+  assert.deepEqual(buildArtifacts(root),[]);
+}));
+test('exclusive build lock rejects overlapping writers without altering artifact',()=>within(root=>{
+  const site=path.join(root,'_site');fs.mkdirSync(site);
+  fs.writeFileSync(path.join(site,'keep'),'original');
+  fs.writeFileSync(path.join(root,'.thisweek-preview-build.lock'),'another builder');
+  const r=run(root);
+  assert.notEqual(r.status,0);
+  assert.match(r.stderr,/EEXIST/);
+  assert.equal(fs.readFileSync(path.join(site,'keep'),'utf8'),'original');
+  assert.equal(fs.readFileSync(path.join(root,'.thisweek-preview-build.lock'),'utf8'),'another builder');
+  assert.deepEqual(buildArtifacts(root),[]);
+}));
+test('preview builder rejects symlink artifact output without following it',()=>within(root=>{
+  const intended=path.join(root,'external-store');
+  fs.mkdirSync(intended);fs.writeFileSync(path.join(intended,'sentinel'),'untouched');
+  fs.symlinkSync(intended,path.join(root,'_site'));
+  const r=run(root);
+  assert.notEqual(r.status,0);
+  assert.match(r.stderr,/Unsafe existing preview output/);
+  assert.equal(fs.readFileSync(path.join(intended,'sentinel'),'utf8'),'untouched');
+  assert.equal(fs.lstatSync(path.join(root,'_site')).isSymbolicLink(),true);
+  assert.equal(fs.existsSync(path.join(root,'.thisweek-preview-build.lock')),false);
+}));
