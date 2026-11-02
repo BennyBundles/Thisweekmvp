@@ -31,11 +31,25 @@ need('Phase 20 money disabled',"executionMode:'disabled'");
 need('Phase 20 reward inactive',"rewardMode:'sandbox_template_inactive'");
 need('Phase 21 signed webhook status',"webhookMode:'signed_receivers_deployed'");
 need('Phase 21 card authorization status',"cardAuthorizationMode:'controller_deployed_execution_locked'");
-need('Phase 21 Money Lab link','href="./money-lab/"');
+need('Phase 21 Money Lab sibling link','href="../money-lab/"');
 need('Phase 22 sandbox chain',"sandboxChain:'plaid_unit_pinwheel_method'");
 need('Phase 22 chain credential gate',"sandboxChainMode:'deployed_credentials_required'");
-need('Phase 23 Account Center link',"externalTool('./account/'");
-need('Phase 28 Support Center link',"externalTool('./support/'");
+need('Phase 23 Account Center sibling link',"externalTool('../account/'");
+need('Phase 28 Support Center sibling link',"externalTool('../support/'");
+// Assert the actual browser URL resolution, not just string presence. In both
+// deployments the preview is one directory below the sibling tools.
+for (const prefix of ['/', '/Thisweekmvp/']) {
+  const origin = 'https://example.test' + prefix + 'public-preview/';
+  for (const route of ['money-lab/', 'account/', 'support/']) {
+    const resolved = new URL('../' + route, origin);
+    const expected = prefix + route;
+    if (resolved.pathname !== expected) failures.push('broken sibling link for ' + expected);
+  }
+}
+forbid('Money Lab points inside isolated preview', 'href="./money-lab/"');
+forbid('Account Center points inside isolated preview', "externalTool('./account/'");
+forbid('Support Center points inside isolated preview', "externalTool('./support/'");
+
 forbid('production state key leaked','"thisweek.state.v2"');
 forbid('production user key leaked','"thisweek.userId"');
 
