@@ -9,7 +9,7 @@ const config={release:'v0.15.0-phase15',rollbackCommit:'351a052ba214d4813b296b4c
 const manifest=()=>({application:'This Week',channel:'production',commit:sha,shortCommit:sha.slice(0,8),release:config.release,rollbackCommit:config.rollbackCommit,rollbackBranch:config.rollbackBranch,stateSchema:3,portableSchema:1,workflowRunId:'12345',deployedAt:'2026-11-02T12:00:00Z'});
 const scripts='<script>const a=1;</script><script>const b=2;</script>';
 const hashes=['const a=1;','const b=2;'].map(x=>createHash('sha256').update(x).digest('base64'));
-const csp='<meta http-equiv="Content-Security-Policy" content="default-src \'self\'; script-src \'self\' '+hashes.map(h=>"'sha256-"+h+"'").join(' ')+'; connect-src \'none\'; object-src \'none\'">';
+const csp='<meta http-equiv="Content-Security-Policy" content="default-src \'self\'; script-src \'self\' '+hashes.map(h=>"'sha256-"+h+"'").join(' ')+'; script-src-attr \'none\'; style-src \'self\' \'unsafe-inline\'; img-src \'self\' data: blob:; font-src \'self\' data:; connect-src \'none\'; media-src \'self\' data: blob:; object-src \'none\'; base-uri \'none\'; form-action \'none\'; frame-src \'none\'; child-src \'none\'; worker-src \'none\'; manifest-src \'self\'; upgrade-insecure-requests">';
 const offlineShell='thisweek.publicPreview.state.v2';
 const offlineManifest=JSON.stringify({name:'This Week',scope:'./',start_url:'./?mode=demo'});
 const offlineIcon='<svg xmlns="http://www.w3.org/2000/svg"></svg>';
@@ -55,6 +55,61 @@ test('missing required asset marker fails',async()=>{await assert.rejects(run({m
 test('malformed JSON fails',async()=>{await assert.rejects(run({mutate:(p,b)=>p.endsWith('release.json')?'{invalid':b}),/invalid JSON/)});
 test('content type must be JSON for release manifest',async()=>{await assert.rejects(run({contentType:()=> 'text/html'}),/not JSON/)});
 test('redirect to other origin fails',async()=>{await assert.rejects(run({finalUrl:u=>u.replace('bennybundles.github.io','attacker.example')}),/Unexpected response URL/)});
+test('CSP keeps the complete audited policy with all restrictions',()=>{
+ assert.doesNotThrow(()=>verifyIndexCsp('<title>This Week</title>'+csp+scripts));
+});
+test('CSP rejects permissive default-src despite strict connect-src',()=>{
+ const bad=csp.replace("default-src 'self'","default-src *");
+ assert.throws(()=>verifyIndexCsp('<title>This Week</title>'+bad+scripts),
+  /CSP directive differs from audited production policy: default-src/);
+});
+test('CSP rejects network-capable form-action',()=>{
+ const bad=csp.replace("form-action 'none'","form-action https:");
+ assert.throws(()=>verifyIndexCsp('<title>This Week</title>'+bad+scripts),
+  /CSP directive differs from audited production policy: form-action/);
+});
+test('CSP rejects external base-uri replacement',()=>{
+ const bad=csp.replace("base-uri 'none'","base-uri https:");
+ assert.throws(()=>verifyIndexCsp('<title>This Week</title>'+bad+scripts),
+  /CSP directive differs from audited production policy: base-uri/);
+});
+test('CSP rejects loosened worker-src, even though connect-src is none',()=>{
+ const bad=csp.replace("worker-src 'none'","worker-src 'self'");
+ assert.throws(()=>verifyIndexCsp('<title>This Week</title>'+bad+scripts),
+  /CSP directive differs from audited production policy: worker-src/);
+});
+test('CSP rejects externally accessible frame-src and media-src',()=>{
+ for(const [a,b,name] of [
+   ["frame-src 'none'","frame-src https:",'frame-src'],
+   ["media-src 'self' data: blob:","media-src *",'media-src']
+ ]){
+  assert.throws(()=>verifyIndexCsp('<title>This Week</title>'+csp.replace(a,b)+scripts),
+   new RegExp('CSP directive differs from audited production policy: '+name));
+ }
+});
+test('CSP rejects external image destination and script-src-attr bypass',()=>{
+ for(const [a,b,name] of [
+   ["img-src 'self' data: blob:","img-src *",'img-src'],
+   ["script-src-attr 'none'","script-src-attr 'unsafe-inline'",'script-src-attr']
+ ]){
+  assert.throws(()=>verifyIndexCsp('<title>This Week</title>'+csp.replace(a,b)+scripts),
+   new RegExp('CSP directive differs from audited production policy: '+name));
+ }
+});
+test('CSP rejects removed upgrade-insecure-requests directive',()=>{
+ const bad=csp.replace('; upgrade-insecure-requests','');
+ assert.throws(()=>verifyIndexCsp('<title>This Week</title>'+bad+scripts),
+  /CSP directive set differs from audited production policy/);
+});
+test('CSP rejects meta policy appearing after an executable script',()=>{
+ assert.throws(()=>verifyIndexCsp('<title>This Week</title>'+scripts+csp),
+  /Production CSP appears after a potentially active resource/);
+});
+test('CSP rejects unexpected unreviewed directive',()=>{
+ const bad=csp.replace('; connect-src','; prefetch-src *; connect-src');
+ assert.throws(()=>verifyIndexCsp('<title>This Week</title>'+bad+scripts),
+  /CSP directive set differs from audited production policy/);
+});
 test('CSP rejects an earlier permissive connect-src whose later none is browser-ignored',()=>{
  const altered=csp.replace("connect-src 'none'","connect-src *; connect-src 'none'");
  assert.throws(()=>verifyIndexCsp('<title>This Week</title>'+altered+scripts),
