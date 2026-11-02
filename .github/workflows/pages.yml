@@ -41,6 +41,9 @@ jobs:
       - name: Unit-test browser-local Plan durability under storage failures
         run: node --test phase36-data-durability.test.mjs
 
+      - name: Guard multi-tab financial Plan writes and lost-update conflicts
+        run: node --test phase44-multitab-durability.test.mjs
+
       - name: Unit-test safe financial backup without authentication secrets
         run: node --test phase36-backup-security.test.mjs
 

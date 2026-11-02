@@ -5322,6 +5322,25 @@ let volatileStateSerialized=null;
 let lastPersistedStateSerialized=null;
 let persistedStateQuarantine=null;
 
+function quarantinePlanStorage(reason,kind='read'){
+  persistedStateQuarantine=persistedStateQuarantine||reason;
+  runtimeStorageHealth.available=false;
+  runtimeStorageHealth.lastError=persistedStateQuarantine;
+  runtimeStorageHealth.lastFailureAt=nowIso();
+  showStoragePersistenceWarning(kind);
+}
+function handleExternalPlanStorageChange(event){
+  if((event.key!==STATE_KEY&&event.key!==null)||
+     (event.storageArea&&event.storageArea!==localStorage))return;
+  let latest;
+  try{latest=localStorage.getItem(STATE_KEY);}
+  catch(e){quarantinePlanStorage(e?.message||'Stored Plan became unreadable');return;}
+  if(latest!==lastPersistedStateSerialized)
+    quarantinePlanStorage('Another tab changed your financial Plan. This tab cannot safely save until reviewed.','conflict');
+}
+if(typeof window!=='undefined'&&typeof window.addEventListener==='function')
+  window.addEventListener('storage',handleExternalPlanStorageChange);
+
 function noteCache(hit){if(hit)runtimePerf.cacheHits++;else runtimePerf.cacheMisses++;}
 function safeLocalStorageGet(key){
   try{
@@ -5334,6 +5353,7 @@ function safeLocalStorageGet(key){
     runtimeStorageHealth.available=false;
     runtimeStorageHealth.lastError=e?.message||'Storage unavailable';
     runtimeStorageHealth.lastFailureAt=nowIso();
+    if(key===STATE_KEY)quarantinePlanStorage('Saved financial Plan is unreadable: '+(e?.message||'storage access failed'));
     return null;
   }
 }
@@ -5353,7 +5373,9 @@ function safeLocalStorageSet(key,value){
   }
 }
 function safeLocalStorageRemove(key){
-  try{localStorage.removeItem(key);runtimeStorageHealth.available=true;return true;}
+  try{localStorage.removeItem(key);
+    runtimeStorageHealth.available=runtimeStorageHealth.readable&&runtimeStorageHealth.writable&&!persistedStateQuarantine;
+    return true;}
   catch(e){runtimeStorageHealth.available=false;runtimeStorageHealth.lastError=e?.message||'Storage remove failed';runtimeStorageHealth.lastFailureAt=nowIso();return false;}
 }
 function showStoragePersistenceWarning(kind='write'){
@@ -5365,7 +5387,9 @@ function showStoragePersistenceWarning(kind='write'){
   panel.setAttribute('aria-label','This Week storage failure');
   panel.style.cssText='position:fixed;top:calc(12px + env(safe-area-inset-top));left:12px;right:12px;max-width:560px;margin:0 auto;z-index:9999;background:#3b1720;color:#fff2f4;border:2px solid #fda4af;border-radius:14px;padding:13px 15px;font:600 14px/1.45 system-ui,sans-serif;box-shadow:0 10px 35px rgba(0,0,0,.45)';
   const message=document.createElement('div');
-  message.textContent=kind==='read'
+  message.textContent=kind==='conflict'
+    ? 'Another This Week tab changed your financial Plan. Saves from this tab are blocked to prevent lost transactions. Export unsaved work before closing this tab, then reload after checking other tabs.'
+    : kind==='read'
     ? 'Stored Plan data cannot be safely read (or uses a newer schema). To avoid overwriting it, Plan saves are blocked. Open Privacy & Local Data and export all local keys before any reset.'
     : 'Your latest Plan change could not be saved to this browser. It may disappear after a reload. Export a backup before closing this tab.';
   const link=document.createElement('a');
@@ -5459,18 +5483,14 @@ function readState(){
     volatileState=clone(parsed);volatileStateSerialized=JSON.stringify(parsed);lastPersistedStateSerialized=raw;
     return parsed;
   }catch(e){
-    persistedStateQuarantine=e?.message||'Stored Plan is unreadable';
-    runtimeStorageHealth.available=false;
-    runtimeStorageHealth.lastError=persistedStateQuarantine;
-    runtimeStorageHealth.lastFailureAt=nowIso();
-    showStoragePersistenceWarning('read');
+    quarantinePlanStorage(e?.message||'Stored Plan is unreadable');
     return volatileState?clone(volatileState):null;
   }
 }
 function writeState(state){
   if(persistedStateQuarantine){
     runtimeStorageHealth.available=false;
-    showStoragePersistenceWarning('read');
+    showStoragePersistenceWarning(persistedStateQuarantine.startsWith('Another tab')?'conflict':'read');
     return state;
   }
   const normalized=normalizeRuntimeState(state);
@@ -5487,6 +5507,19 @@ function writeState(state){
   try{volatileState=JSON.parse(serialized);}catch{volatileState=clone(normalized);}
   if(changed)runtimePerf.revision++;
   if(serialized!==lastPersistedStateSerialized){
+    // Optimistic conflict check; localStorage does not provide atomic compare-and-swap.
+    let live;
+    try{
+      live=localStorage.getItem(STATE_KEY);
+      runtimeStorageHealth.readable=true;
+    }catch(e){
+      quarantinePlanStorage('Cannot verify the current stored Plan: '+(e?.message||'storage access failed'));
+      return state;
+    }
+    if(live!==lastPersistedStateSerialized){
+      quarantinePlanStorage('Another tab changed your financial Plan. This tab cannot safely save until reviewed.','conflict');
+      return state;
+    }
     if(safeLocalStorageSet(STATE_KEY,serialized)){
       lastPersistedStateSerialized=serialized;
       clearStoragePersistenceWarning();

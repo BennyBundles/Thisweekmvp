@@ -8,7 +8,7 @@ const sw=read('public-preview-sw.js'), shell=read('index.html');
 const prep=read('prepare-public-preview.mjs'), vp=read('public-preview-check.mjs');
 test('full dependency stack Phase35–42 executes in PR validation',()=>{
  for(const name of ['verify-deployed-release.test.mjs','phase36-data-durability.test.mjs',
-  'phase36-backup-security.test.mjs','phase37-verified-restore.test.mjs',
+  'phase36-backup-security.test.mjs','phase44-multitab-durability.test.mjs','phase37-verified-restore.test.mjs',
   'phase38-secure-export.test.mjs','test-stage-preview.mjs',
   'phase41-pages-queue.test.mjs','public-preview-sw.test.mjs',
   'phase43-integration.test.mjs']){
