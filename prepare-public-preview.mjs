@@ -25,6 +25,19 @@ for(const key of storageKeys){
   html=html.replaceAll(key,key.replace('thisweek.','thisweek.publicPreview.'));
 }
 
+// Standalone preview lives under /public-preview/. Its sibling tools live one level
+// higher. Preserve the /Thisweekmvp/ prefix on GitHub Pages and the root on Vercel.
+const siblingRoutes = [
+  ['href="./money-lab/"', 'href="../money-lab/"'],
+  ["externalTool('./account/'", "externalTool('../account/'"],
+  ["externalTool('./support/'", "externalTool('../support/'"]
+];
+for (const [source, destination] of siblingRoutes) {
+  const count = html.split(source).length - 1;
+  if (count !== 1) throw new Error('Expected exactly one preview sibling route ' + source + '; found ' + count);
+  html = html.replace(source, destination);
+}
+
 html=html.replace(/<title>[^<]*<\/title>/,'<title>This Week — Public Release Preview</title>');
 html=html.replace('worker-src \'none\'',"worker-src 'self'");
 
