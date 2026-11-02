@@ -1,6 +1,12 @@
 // This Week demo-only offline PWA. Never cache personal plans or provider responses.
 const CACHE_PREFIX='this-week-public-preview-';
 const CACHE_NAME=CACHE_PREFIX+'v4';
+/**
+ * Template is deliberately unbound for isolated source tests; build staging
+ * MUST replace this exact sentinel with SHA-256 of each staged asset.
+ * Stamped worker fails closed on any digest mismatch or unavailable Web Crypto.
+ */
+const EXPECTED_ASSET_SHA256=null;
 const ROOT_URL=new URL('./',self.registration.scope);
 const SHELL_URL=ROOT_URL.href;
 const SHELL_PATH=ROOT_URL.pathname;
@@ -8,6 +14,34 @@ const MANIFEST_URL=new URL('manifest.webmanifest',ROOT_URL).href;
 const ICON_URL=new URL('icon.svg',ROOT_URL).href;
 const STATIC_PATHS=new Set([new URL(MANIFEST_URL).pathname,new URL(ICON_URL).pathname]);
 const MAX_SHELL_CHARS=2_000_000;
+
+const MAX_ASSET_BYTES=Object.freeze({shell:4_000_000,manifest:16_384,icon:131_072});
+
+async function matchesBuildDigest(response,url) {
+  // The raw authoring template remains exercisable in isolated VM tests only.
+  // Build staging enforces that this sentinel is replaced before deployment.
+  if(EXPECTED_ASSET_SHA256===null)return true;
+  if(typeof crypto==='undefined'||!crypto.subtle||!crypto.subtle.digest)return false;
+  const expectedUrl=new URL(url,ROOT_URL);
+  const key=expectedUrl.pathname===SHELL_PATH||expectedUrl.pathname===SHELL_PATH+'index.html'
+    ? 'shell' : expectedUrl.pathname===new URL(MANIFEST_URL).pathname
+    ? 'manifest' : expectedUrl.pathname===new URL(ICON_URL).pathname
+    ? 'icon' : null;
+  if(!key)return false;
+  const expected=EXPECTED_ASSET_SHA256[key];
+  if(!/^[a-f0-9]{64}$/.test(expected||''))return false;
+  try{
+    const declared=Number(response.headers?.get('content-length')||'0');
+    if(declared>MAX_ASSET_BYTES[key])return false;
+    const bytes=await response.clone().arrayBuffer();
+    if(!bytes.byteLength||bytes.byteLength>MAX_ASSET_BYTES[key])return false;
+    const digest=await crypto.subtle.digest('SHA-256',bytes);
+    const actual=Array.from(new Uint8Array(digest))
+      .map(b=>b.toString(16).padStart(2,'0')).join('');
+    return actual===expected;
+  }catch{return false;}
+}
+
 
 function safeResponse(response,url){
   if(!response||!response.ok||response.status!==200||response.redirected)return false;
@@ -31,7 +65,8 @@ async function validShell(response,url){
     return html.length<=MAX_SHELL_CHARS
       && html.includes('This Week — Public Release Preview')
       && html.includes('thisweek.publicPreview.state.v2')
-      && html.includes("connect-src 'none'");
+      && html.includes("connect-src 'none'")
+      && await matchesBuildDigest(response,url);
   }catch{return false;}
 }
 async function validAsset(response,url){
@@ -43,13 +78,15 @@ async function validAsset(response,url){
       if(body.length>16_384)return false;
       const m=JSON.parse(body);
       return m&&typeof m.name==='string'&&m.name.includes('This Week')
-        && m.scope==='./'&&m.start_url==='./?mode=demo';
+        && m.scope==='./'&&m.start_url==='./?mode=demo'
+        && await matchesBuildDigest(response,url);
     }
     if(url===ICON_URL){
       if(!typeIs(response,'image/svg+xml'))return false;
       const svg=await response.clone().text();
       return svg.length<=131_072&&/<svg[\s>]/i.test(svg)
-        && /<\/svg\s*>/i.test(svg)&&!/<script[\s>]/i.test(svg);
+        && /<\/svg\s*>/i.test(svg)&&!/<script[\s>]/i.test(svg)
+        && await matchesBuildDigest(response,url);
     }
   }catch{return false;}
   return false;
