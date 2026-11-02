@@ -248,14 +248,14 @@ export async function verifyOnce({baseUrl,expectedSha,config,expectedWorkerSha,e
     // Read bounded post-content-decoding bytes as the worker would digest.
     // Response.text() is lossy for malformed UTF-8 and cannot prove byte identity.
     const bytes=await readBoundedResponseBytes(result,2_000_000);
+    let body;
+    try{body=new TextDecoder('utf-8',{fatal:true}).decode(bytes)}
+    catch{throw new Error(`Invalid UTF-8 at ${path}`)}
     const route=path.split('?')[0];
     demand(Object.hasOwn(STAGED_ROUTE_FILES,route), 'Unapproved live release route: '+route);
     const actualHash=createHash('sha256').update(bytes).digest('hex');
     demand(actualHash===trustedRoutes[route],
-      'Live route bytes differ from trusted staged artifact: '+route);
-    let body;
-    try{body=new TextDecoder('utf-8',{fatal:true}).decode(bytes)}
-    catch{throw new Error(`Invalid UTF-8 at ${path}`)}
+      'Live route bytes differ from trusted staged artifact: '+route)
     if(marker)demand(body.includes(marker), `Missing expected route marker at ${path}`);
     return {body,bytes,contentType:result.headers.get('content-type')||''};
   };
