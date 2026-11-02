@@ -103,6 +103,36 @@ test('a storage failure does not upload data or start network access',()=>{
  assert(!implementation.includes('fetch('));
  assert(!implementation.includes('XMLHttpRequest'));
 });
+test('corrupt stored financial state is preserved and no new write overwrites it',()=>{
+ const t=harness();
+ t.disk.set('thisweek.state.v2','{BROKEN');
+ assert.equal(t.exec('readState()'),null);
+ assert.equal(t.exec('runtimeStorageHealth.available'),false);
+ assert.match(t.elements.get('thisweek-storage-failure').children[0].textContent,/saves are blocked/);
+ t.ctx.input=t.state(30000);t.exec('writeState(input)');
+ assert.equal(t.disk.get('thisweek.state.v2'),'{BROKEN');
+ assert.equal(t.exec('runtimeStorageHealth.available'),false);
+ t.exec("safeLocalStorageGet('thisweek.state.v2')");
+ assert.equal(t.exec('runtimeStorageHealth.available'),false);
+});
+test('a future-schema persisted Plan cannot be overwritten by older code',()=>{
+ const t=harness();
+ t.disk.set('thisweek.state.v2',JSON.stringify({...t.state(90),schemaVersion:999}));
+ assert.equal(t.exec('readState()'),null);
+ t.ctx.input=t.state(100);t.exec('writeState(input)');
+ assert.equal(JSON.parse(t.disk.get('thisweek.state.v2')).schemaVersion,999);
+ assert.match(t.exec('persistedStateQuarantine'),/newer schema/);
+});
+test('explicit verified clear releases read quarantine and permits fresh plan',()=>{
+ const t=harness();
+ t.disk.set('thisweek.state.v2','{BROKEN');
+ t.exec('readState()');
+ t.exec('clearState()');
+ assert.equal(t.exec('persistedStateQuarantine'),null);
+ assert.equal(t.elements.size,0);
+ t.ctx.input=t.state(550);t.exec('writeState(input)');
+ assert.equal(JSON.parse(t.disk.get('thisweek.state.v2')).config.payProfile.netPayAmount,550);
+});
 test('Privacy copy accurately states that backups are not automatic',()=>{
  assert.match(html,/Browser-managed, not permanent/);
  assert.match(html,/No automatic cloud backup is enabled/);
