@@ -6902,6 +6902,103 @@ function downloadRawLocalDataExport(){
   a.href=url;a.download='this-week-local-data-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();
   setTimeout(()=>URL.revokeObjectURL(url),1500);return json.length;
 }
+// Phase 37: exact-key raw Plan backup restore. This is NOT portable-schema import or cloud sync.
+const RAW_RESTORE_MAX_BYTES=4*1024*1024;
+const RAW_RESTORE_KEYS=Object.freeze([
+  USER_ID_KEY,STATE_KEY,UI_PREFS_KEY,POWER_PREFS_KEY,SAVINGS_GOALS_KEY,
+  CONNECTED_DATA_KEY,RECOMMENDATION_PREFS_KEY,SCENARIO_DRAFT_KEY,
+  LOCAL_ANALYTICS_KEY,FLEX_CAPS_KEY,PRECHECK_HINT_KEY,FIN_EVENT_KEY
+]);
+let rawRestoreInProgress=false;
+function validatedRawLocalBackup(source){
+  if(!source||typeof source!=='object'||Array.isArray(source))throw new Error('Backup must be a JSON object.');
+  if(source.schema!=='thisweek.local-data-export'||source.schemaVersion!==1)
+    throw new Error('This is not a supported raw This Week backup. Portable snapshots cannot be directly restored.');
+  if(!source.localStorage||typeof source.localStorage!=='object'||Array.isArray(source.localStorage))
+    throw new Error('Backup has no localStorage data.');
+  if(source.sessionStorage&&(!Object.keys(source.sessionStorage).length===false))
+    throw new Error('Backup contains session data and cannot be restored.');
+  const entries=Object.entries(source.localStorage);
+  if(!entries.length||entries.length>RAW_RESTORE_KEYS.length)
+    throw new Error('Backup contains an invalid number of keys.');
+  const allowed=new Set(RAW_RESTORE_KEYS);
+  let totalLength=0;
+  for(const [key,value] of entries){
+    if(!allowed.has(key)||!isRawBackupSafeLocalKey(key))
+      throw new Error('Backup contains an unknown or sensitive storage key.');
+    if(typeof value!=='string')throw new Error('Backup contains a non-string storage value.');
+    totalLength+=key.length+value.length;
+    if(totalLength>RAW_RESTORE_MAX_BYTES)
+      throw new Error('Backup contents exceed the 4 MB restoration limit.');
+  }
+  const rawState=source.localStorage[STATE_KEY];
+  if(typeof rawState!=='string')throw new Error('Backup is missing the core financial Plan.');
+  let state;
+  try{state=JSON.parse(rawState)}catch{throw new Error('Backup Plan JSON is damaged.')}
+  if(!state||typeof state!=='object'||Array.isArray(state)||!state.config||typeof state.config!=='object'||Array.isArray(state.config))
+    throw new Error('Backup Plan configuration is invalid.');
+  const version=inferCoreSchemaVersion(state);
+  if(!Number.isInteger(version)||version<1||version>CORE_SCHEMA_VERSION)
+    throw new Error('Backup Plan uses an unsupported schema version.');
+  if(!state.userId||typeof state.userId!=='string'||state.userId.length>200||!state.config.payProfile||!Number.isSafeInteger(state.config.payProfile.netPayAmount)||state.config.payProfile.netPayAmount<0)
+    throw new Error('Backup Plan user or income data is invalid.');
+  if(source.localStorage[USER_ID_KEY]!==state.userId)
+    throw new Error('Backup user identifier does not match the Plan.');
+  for(const name of ['weeks','transactions','adjustments','importedExternalIds']){
+    if(state[name]!=null&&!Array.isArray(state[name]))throw new Error('Invalid Plan collection: '+name);
+  }
+  for(const name of ['bills','livingNeeds','discretionary']){
+    if(state.config[name]!=null&&!Array.isArray(state.config[name]))throw new Error('Invalid Plan category collection: '+name);
+  }
+  for(const row of state.transactions||[]){
+    if(!row||!Number.isSafeInteger(row.amount)||row.amount<0)
+      throw new Error('Backup has an invalid transaction amount.');
+  }
+  for(const [key,value] of entries){
+    if(key===STATE_KEY||key===USER_ID_KEY)continue;
+    try{JSON.parse(value)}catch{throw new Error('Malformed JSON for optional backup data: '+key)}
+  }
+  if(scanObjectForSensitiveFieldNames(state).length)
+    throw new Error('Backup contains possible credentials and requires manual review.');
+  return {entries,summary:{schemaVersion:version,weekCount:(state.weeks||[]).length,transactionCount:(state.transactions||[]).length,keyCount:entries.length}};
+}
+function inspectRawBackupRestoreTarget(){
+  const local=inspectAppStorageNamespace(localStorage),session=inspectAppStorageNamespace(sessionStorage);
+  if(!local.available||!session.available)throw new Error('Browser storage cannot be inspected safely.');
+  if(local.keys.length||session.keys.length||persistedStateQuarantine)
+    throw new Error('Restore is allowed only into an empty This Week browser workspace. Export existing data first; do not merge Plans.');
+}
+function restoreVerifiedRawLocalBackup(source){
+  if(rawRestoreInProgress)throw new Error('A restore is already running.');
+  const validated=validatedRawLocalBackup(source);
+  inspectRawBackupRestoreTarget();
+  rawRestoreInProgress=true;
+  const added=[];
+  try{
+    // Restore the core Plan last, so a partial interrupted write does not activate it.
+    const entries=validated.entries.filter(([key])=>key!==STATE_KEY);
+    entries.push([STATE_KEY,source.localStorage[STATE_KEY]]);
+    for(const [key,value] of entries){
+      if(localStorage.getItem(key)!==null)throw new Error('A competing browser tab changed storage. Restore aborted.');
+      localStorage.setItem(key,value);
+      added.push(key);
+      if(localStorage.getItem(key)!==value)throw new Error('Browser failed to verify the restored key.');
+    }
+    return validated.summary;
+  }catch(e){
+    const rollbackErrors=[];
+    for(const key of added.reverse()){
+      try{localStorage.removeItem(key);if(localStorage.getItem(key)!==null)rollbackErrors.push(key)}
+      catch{rollbackErrors.push(key)}
+    }
+    if(rollbackErrors.length){
+      persistedStateQuarantine='Partial restore requires inspection';
+      showStoragePersistenceWarning('read');
+      throw new Error('Restore failed and rollback could not be verified. No further Plan writes are permitted.');
+    }
+    throw new Error('Restore safely aborted and rolled back: '+(e?.message||'storage failure'));
+  }finally{rawRestoreInProgress=false}
+}
 function clearAllThisWeekLocalData(){
   const beforeLocal=inspectAppStorageNamespace(localStorage),beforeSession=inspectAppStorageNamespace(sessionStorage);
   for(const key of beforeLocal.keys)safeLocalStorageRemove(key);
