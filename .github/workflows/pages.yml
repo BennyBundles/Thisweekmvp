@@ -34,9 +34,13 @@ jobs:
           set -euo pipefail
           node prepare-site.mjs index.html index.production.html
           mv index.production.html index.html
+          node verify-production-csp.mjs index.html
 
       - name: Unit-test exact release evidence verifier
         run: node --test verify-deployed-release.test.mjs
+
+      - name: Verify fail-closed production CSP staging on synthetic fixtures
+        run: node --test verify-production-csp.test.mjs
 
       - name: Unit-test browser-local Plan durability under storage failures
         run: node --test phase36-data-durability.test.mjs
@@ -157,6 +161,7 @@ jobs:
           mkdir -p _site
 
           node prepare-site.mjs index.html _site/index.html
+          node verify-production-csp.mjs _site/index.html
           touch _site/.nojekyll
 
           mkdir -p _site/public-preview
