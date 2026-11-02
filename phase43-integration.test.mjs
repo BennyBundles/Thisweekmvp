@@ -50,12 +50,28 @@ test('preview links stay within deployment sibling routes',()=>{
  assert.match(vp,/Support Center/);
 });
 test('offline service worker stays scoped to preview shell',()=>{
- assert.match(sw,/CACHE_NAME=CACHE_PREFIX\+'v2'/);
+ assert.match(sw,/CACHE_NAME=CACHE_PREFIX\+'v3'/);
+ assert.match(sw,/async function validShell\(response,url\)/);
+ assert.match(sw,/async function validAsset\(response,url\)/);
+ assert.match(sw,/redirect:'error',cache:'no-store'/);
+ assert.match(sw,/Unverified offline preview install asset/);
+ assert.match(sw,/await caches.delete\(CACHE_NAME\)/);
+ assert.match(sw,/const cache=await caches.open\(CACHE_NAME\)/);
  assert.match(sw,/if\(request\.method!=='GET'\)return/);
  assert.match(sw,/if\(url\.origin!==ROOT_URL\.origin\)return/);
  assert.match(sw,/if\(url\.pathname!==SHELL_PATH&&url\.pathname!==SHELL_PATH\+'index\.html'\)return/);
  assert.match(sw,/safeStaticResponse\(response\)/);
  assert.match(sw,/event\.waitUntil\(saveToCache/);
+});
+test('integrated PWA regression suite contains current offline poison defenses',()=>{
+ const source=read('public-preview-sw.test.mjs');
+ for(const name of [
+  'wrong-path cached 200 HTML',
+  'cross-origin cached 200 HTML',
+  'locally corrupted current-version shell',
+  'invalid static asset cannot enter cache',
+  'same-origin HTTP redirect cannot be accepted'
+ ])assert.ok(source.includes(name),'missing test: '+name);
 });
 test('financial backup requires exact whitelist and no session restoration',()=>{
  assert.match(shell,/const RAW_BACKUP_EXPORT_KEYS=Object\.freeze/);
