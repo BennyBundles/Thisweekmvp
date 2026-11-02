@@ -82,17 +82,19 @@ function harness({fetchImpl=()=>Promise.resolve(new Response('online',{status:20
 test('install caches only the known public shell and two static assets',async()=>{
   const h=harness();await h.emit('install');
   assert.equal(h.tracking.skipped,1);
-  assert.deepEqual([...h.cacheStores.keys()],['this-week-public-preview-v2']);
+  assert.deepEqual([...h.cacheStores.keys()],['this-week-public-preview-v3']);
   assert.equal([...h.cacheStores.values()][0].size,3);
 });
 
 test('activate deletes stale preview versions but no other product caches',async()=>{
   const h=harness();await h.emit('install');
   h.cacheStores.set('this-week-public-preview-v1',new Map());
+  h.cacheStores.set('this-week-public-preview-v2',new Map());
   h.cacheStores.set('other-product-cache',new Map());
   await h.emit('activate');
   assert.equal(h.cacheStores.has('this-week-public-preview-v1'),false);
-  assert.equal(h.cacheStores.has('this-week-public-preview-v2'),true);
+  assert.equal(h.cacheStores.has('this-week-public-preview-v2'),false);
+  assert.equal(h.cacheStores.has('this-week-public-preview-v3'),true);
   assert.equal(h.cacheStores.has('other-product-cache'),true);
   assert.equal(h.tracking.claimed,1);
 });
