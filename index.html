@@ -7063,9 +7063,24 @@ function rawBackupUtf8Bytes(text,encoder,remaining,scratch){
   if(text.length>remaining)return remaining+1; // UTF-8 is never shorter than UTF-16 code-unit count.
   if(scratch){
     let offset=0,total=0;
+    // Bound each substring too: passing the entire remaining multi-megabyte
+    // suffix to encodeInto() leaves substring allocation/copying behavior to
+    // the browser engine, which is especially risky on memory-limited Safari.
+    // At most three UTF-8 bytes per UTF-16 code unit guarantees a complete
+    // chunk fits the reusable 16 KiB buffer without allocating a new buffer.
+    const maxUnits=Math.min(4096,Math.floor(scratch.length/3));
+    if(maxUnits<2)throw new Error('Browser cannot safely verify raw backup byte length.');
     while(offset<text.length){
-      const part=encoder.encodeInto(text.slice(offset),scratch);
-      if(!part||!Number.isInteger(part.read)||part.read<=0||
+      let end=Math.min(offset+maxUnits,text.length);
+      // Preserve UTF-16 surrogate pairs at the chunk boundary so emojis
+      // count as four UTF-8 bytes, not two replacement characters.
+      if(end<text.length){
+        const last=text.charCodeAt(end-1);
+        if(last>=0xD800&&last<=0xDBFF)end--;
+      }
+      const chunk=text.slice(offset,end);
+      const part=encoder.encodeInto(chunk,scratch);
+      if(!part||!Number.isInteger(part.read)||part.read!==chunk.length||
          !Number.isInteger(part.written)||part.written<=0||part.written>scratch.length)
         throw new Error('Browser cannot safely verify raw backup byte length.');
       offset+=part.read;total+=part.written;
