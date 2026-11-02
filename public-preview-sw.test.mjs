@@ -6,9 +6,9 @@ import vm from 'node:vm';
 const SOURCE=fs.readFileSync(new URL('./public-preview-sw.js',import.meta.url),'utf8');
 const ROOT='https://example.test/Thisweekmvp/public-preview/';
 
-function harness({fetchImpl=()=>Promise.resolve(new Response('online',{status:200})),failPut=false}={}){
+function harness({fetchImpl=()=>Promise.resolve(new Response('online',{status:200})),installFetchImpl=null,failPut=false}={}){
   const listeners=new Map(),cacheStores=new Map();
-  const tracking={fetches:[],claimed:0,skipped:0,puts:[]};
+  const tracking={fetches:[],installFetches:[],claimed:0,skipped:0,puts:[]};
   const requestUrl=key=>new URL(typeof key==='string'?key:key.url,ROOT).href;
   const getStore=name=>{
     if(!cacheStores.has(name))cacheStores.set(name,new Map());
@@ -23,8 +23,8 @@ function harness({fetchImpl=()=>Promise.resolve(new Response('online',{status:20
             new Response('preinstalled:'+requestUrl(key),{status:200}));
         },
         async put(key,response){
-          if(failPut)throw new Error('quota exceeded');
-          tracking.puts.push(requestUrl(key));
+          if(failPut&&tracking.skipped>0)throw new Error('quota exceeded');
+          if(tracking.skipped>0)tracking.puts.push(requestUrl(key));
           store.set(requestUrl(key),response);
         }
       };
@@ -46,7 +46,15 @@ function harness({fetchImpl=()=>Promise.resolve(new Response('online',{status:20
     skipWaiting(){tracking.skipped++;return Promise.resolve();},
     clients:{claim(){tracking.claimed++;return Promise.resolve();}}
   };
-  const fetch=request=>{
+  const fetch=(request,options)=>{
+    if(typeof request==='string'){
+      tracking.installFetches.push({url:request,redirect:options?.redirect,cache:options?.cache});
+      return installFetchImpl
+        ?installFetchImpl(request,options)
+        :Promise.resolve(new Response('install:'+request,{
+          status:200,headers:{'content-type':'text/html; charset=utf-8'}
+        }));
+    }
     tracking.fetches.push(request.url);
     return fetchImpl(request);
   };
@@ -167,4 +175,35 @@ test('CacheStorage quota errors cannot prevent successful network navigation',as
   const result=await h.emit('fetch',h.request('./'));
   assert.equal(result.response.status,200);
   assert.equal(await result.response.text(),'online');
+});
+
+test('install rejects redirected shell and leaves old worker active',async()=>{
+  const h=harness({installFetchImpl:async(url)=>({
+    ok:true,status:200,redirected:true,url,headers:{get:()=> 'text/html'}
+  })});
+  await assert.rejects(h.emit('install'),/Unsafe offline preview install asset/);
+  assert.equal(h.tracking.skipped,0);
+  assert.equal(h.cacheStores.size,0);
+});
+test('install rejects server error without caching a partial offline shell',async()=>{
+  const h=harness({installFetchImpl:async(url)=>new Response('maintenance',{status:503})});
+  await assert.rejects(h.emit('install'),/Unsafe offline preview install asset/);
+  assert.equal(h.cacheStores.size,0);
+  assert.equal(h.tracking.skipped,0);
+});
+test('install rejects wrong shell content type before activation',async()=>{
+  const h=harness({installFetchImpl:async()=>new Response('login',{status:200,
+    headers:{'content-type':'text/plain'}})});
+  await assert.rejects(h.emit('install'),/Offline shell is not HTML/);
+  assert.equal(h.tracking.skipped,0);
+});
+test('install requests exact same-origin assets with redirects disabled',async()=>{
+  const h=harness();
+  await h.emit('install');
+  assert.equal(h.tracking.installFetches.length,3);
+  for(const item of h.tracking.installFetches){
+    assert.equal(item.redirect,'error');
+    assert.equal(item.cache,'no-store');
+    assert.ok(item.url.startsWith(ROOT));
+  }
 });
