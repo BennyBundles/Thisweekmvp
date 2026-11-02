@@ -79,11 +79,11 @@ test('correct-looking SVG changed in transit blocks release',async()=>{
  await assert.rejects(run({mutate:(p,b)=>p.endsWith('icon.svg')?b+'\n':b}),/Live offline icon does not match/);
 });
 test('missing or manually-versioned worker cannot pass live release audit',async()=>{
- await assert.rejects(run({mutate:(p,b)=>p.endsWith('sw.js')?"const CACHE_NAME='v4';":b}),/no injected asset SHA-256/);
+ await assert.rejects(run({mutate:(p,b)=>p.endsWith('sw.js')?"const CACHE_NAME='v4';":b}),/does not match trusted staged worker SHA-256/);
 });
 test('maliciously mismatched published worker mapping blocks release',async()=>{
  const forged=offlineWorker.replace(assetDigests.shell,'a'.repeat(64));
- await assert.rejects(run({mutate:(p,b)=>p.endsWith('sw.js')?forged:b}),/Live offline shell does not match/);
+ await assert.rejects(run({mutate:(p,b)=>p.endsWith('sw.js')?forged:b}),/does not match trusted staged worker SHA-256/);
 });
 test('wrong MIME on the published worker fails closed',async()=>{
  await assert.rejects(run({contentType:path=>path.endsWith('sw.js')?'text/html':path.endsWith('.svg')?'image/svg+xml':
