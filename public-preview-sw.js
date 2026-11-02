@@ -25,8 +25,25 @@ function saveToCache(key,response){
 
 self.addEventListener('install',event=>{
   event.waitUntil((async()=>{
+    // Cache.addAll() accepts a successful redirect or a 200 login page.
+    // Check every destination before trusting anything as an offline shell.
+    const resources=[SHELL_URL,MANIFEST_URL,ICON_URL];
+    const verified=[];
+    for(const url of resources){
+      const response=await fetch(url,{redirect:'error',cache:'no-store'});
+      if(!safeStaticResponse(response)||
+         (response.url&&new URL(response.url).href!==url)){
+        throw new Error('Unsafe offline preview install asset: '+url);
+      }
+      if(url===SHELL_URL){
+        const type=response.headers?.get('content-type');
+        if(type&&!/^text\/html(?:\s*;|\s*$)/i.test(type))
+          throw new Error('Offline shell is not HTML');
+      }
+      verified.push([url,response]);
+    }
     const cache=await caches.open(CACHE_NAME);
-    await cache.addAll([SHELL_URL,MANIFEST_URL,ICON_URL]);
+    await Promise.all(verified.map(([url,response])=>cache.put(url,response)));
     await self.skipWaiting();
   })());
 });
