@@ -39,6 +39,11 @@ self.addEventListener('install',event=>{
         const type=response.headers?.get('content-type');
         if(type&&!/^text\/html(?:\s*;|\s*$)/i.test(type))
           throw new Error('Offline shell is not HTML');
+        const shell=await response.clone().text();
+        if(!shell.includes('<title>This Week — Public Release Preview</title>')||
+           !shell.includes('thisweek.publicPreview.state.v2')||
+           !shell.includes("channel:'public-release-preview'"))
+          throw new Error('Offline shell identity mismatch');
       }
       verified.push([url,response]);
     }
