@@ -31,6 +31,9 @@ const [src,dst]=process.argv.slice(2);
 fs.mkdirSync(path.dirname(dst),{recursive:true});fs.copyFileSync(src,dst);`;
   for(const name of ['prepare-site.mjs','prepare-public-preview.mjs'])
     fs.writeFileSync(path.join(root,name),mock);
+  // The isolated builder fixture uses synthetic HTML. Test the real CSP
+  // validator independently and require this hook's execution here.
+  fs.writeFileSync(path.join(root,'verify-production-csp.mjs'),'process.exit(0);');
   for(const name of ['public-preview-check.mjs','money-lab-check.mjs',
     'account-check.mjs','ops-check.mjs','phase34-check.mjs','phase34c-check.mjs',
     'support-check.mjs','legal-check.mjs'])
@@ -50,6 +53,14 @@ test('stages 20 hash-identified preview assets with no production manifest',()=>
   assert.equal(data.channel,'preview');assert.equal(Object.keys(data.assets).length,20);
   assert.equal(fs.existsSync(path.join(out,'release.json')),false);
   assert.equal(fs.existsSync(path.join(out,'ops/release/app.js')),true);
+}));
+test('staging fails closed when production CSP preflight rejects an artifact',()=>within(root=>{
+  fs.writeFileSync(path.join(root,'verify-production-csp.mjs'),
+    "console.error('CSP_PREFLIGHT_REJECTED');process.exit(1);");
+  const r=run(root);
+  assert.notEqual(r.status,0);
+  assert.match(r.stderr,/CSP_PREFLIGHT_REJECTED/);
+  assert.match(r.stderr,/verify-production-csp.mjs failed/);
 }));
 test('required source missing fails without deleting prior output',()=>within(root=>{
   fs.rmSync(path.join(root,'account/app.js'));
