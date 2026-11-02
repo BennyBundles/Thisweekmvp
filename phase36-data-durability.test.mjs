@@ -25,6 +25,8 @@ function harness(){
    return {tag,id:'',attributes:{},style:{},children:[],textContent:'',href:'',
      setAttribute(k,v){this.attributes[k]=v},
      append(...c){this.children.push(...c)},
+     appendChild(child){this.children.push(child)},
+     addEventListener(){},
      remove(){elements.delete(this.id)}
    };
  }
