@@ -41,6 +41,9 @@ jobs:
       - name: Unit-test safe financial backup without authentication secrets
         run: node --test phase36-backup-security.test.mjs
 
+      - name: Unit-test explicit raw Plan recovery and rollback
+        run: node --test phase37-verified-restore.test.mjs
+
       - name: Phase 0 static regression check
         run: node phase0-static-check.mjs
 
