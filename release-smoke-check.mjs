@@ -13,6 +13,7 @@ const phase0=requireFile('phase0-static-check.mjs');
 const policy=requireFile('RELEASE_POLICY.md');
 const checklist=requireFile('RELEASE_CHECKLIST.md');
 const prep=requireFile('prepare-site.mjs');
+const deployedVerifier=requireFile('verify-deployed-release.mjs');
 const phase19Doc=requireFile('PHASE_19_IMPLEMENTATION.md');
 const phase19Schema=requireFile('supabase/phase19/provider_schema.sql');
 const phase19Gateway=requireFile('supabase/functions/thisweek-provider-gateway/index.ts');
@@ -446,6 +447,16 @@ if(workflow){
   forbidText('Production Pages runs must not be cancelled unconditionally',workflow,'cancel-in-progress: true');
 }
 
+if(deployedVerifier){
+  requireText('Published offline worker must match independently staged release bytes',
+    deployedVerifier,'Published offline worker does not match trusted staged worker SHA-256');
+  requireText('Release audit must read staged worker from protected Pages job',
+    deployedVerifier,"new URL('./_site/public-preview/sw.js',import.meta.url)");
+  requireText('Worker release audit requires SHA-256 from stage',
+    deployedVerifier,"createHash('sha256').update(stagedWorker).digest('hex')");
+  requireText('Release verification must reject missing trusted worker checksum',
+    deployedVerifier,'Trusted staged offline worker SHA-256 is required before fetching');
+}
 if(config){
   for(const k of ['release','channel','rollbackCommit','rollbackBranch','stableBranch','releaseRecord','stateSchema','portableSchema','migrationNotes']){
     if(config[k]===undefined||config[k]===null||config[k]==='')failures.push('release config missing '+k);
