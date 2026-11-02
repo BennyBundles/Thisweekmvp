@@ -6986,7 +6986,10 @@ function validatedRawLocalBackup(source){
   for(const [key,value] of entries){
     if(key===STATE_KEY||key===USER_ID_KEY)continue;
     if(key===PRECHECK_HINT_KEY||key===FIN_EVENT_KEY)continue; // These short-lived UI hints may be plain text.
-    try{JSON.parse(value)}catch{throw new Error('Malformed JSON for optional backup data: '+key)}
+    let parsed;
+    try{parsed=JSON.parse(value)}catch{throw new Error('Malformed JSON for optional backup data: '+key)}
+    inspect(parsed);
+    if(scanObjectForSensitiveFieldNames(parsed).length)throw new Error('Optional backup data contains possible credentials.');
   }
   if(scanObjectForSensitiveFieldNames(state).length)
     throw new Error('Backup contains possible credentials and requires manual review.');
