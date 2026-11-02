@@ -104,3 +104,21 @@ test('Phase 46 exact build artifact fingerprint protects Vercel and Pages equall
  assert.match(w,/node stamp-preview-service-worker\.mjs --verify _site\/public-preview\/index\.html/);
  assert.match(hashTest,/changing shell alone creates distinct cache generation/);
 });
+
+
+test('Phase 47 stamped runtime checks SHA-256 fetched bytes not just HTML markers',()=>{
+ const stamp=read('stamp-preview-service-worker.mjs');
+ const actual=read('phase47-live-asset-digest.test.mjs');
+ assert.match(sw,/const EXPECTED_ASSET_SHA256=null;/);
+ assert.match(sw,/async function matchesBuildDigest\(response,url\)/);
+ assert.match(sw,/crypto\.subtle\.digest\('SHA-256',bytes\)/);
+ assert.match(sw,/await matchesBuildDigest\(response,url\)/);
+ assert.match(stamp,/const digestMarker='const EXPECTED_ASSET_SHA256=null;'/);
+ assert.match(stamp,/assetDigests\[label\]=createHash\('sha256'\)/);
+ assert.match(w,/node --test phase47-live-asset-digest\.test\.mjs/);
+ for(const x of ['marker-preserving HTML byte alteration',
+   'valid JSON manifest changed','valid SVG icon','tampered offline cache',
+   'Web Crypto unavailable']){
+   assert.ok(actual.includes(x),'Missing adversarial runtime test: '+x);
+ }
+});
