@@ -178,3 +178,12 @@ test('full export then restore round-trip preserves synthetic financial Plan exa
  assert.equal(result.transactionCount,1);
  for(const [key,value] of Object.entries(original.localStorage))assert.equal(h.disk.get(key),value);
 });
+
+test('unsafe properties and possible secrets in optional JSON are rejected',()=>{
+ const h=boot(),b=h.backup();
+ b.localStorage['thisweek.uiPrefs.v1']='{"__proto__":{"polluted":true}}';
+ assert.throws(()=>h.check(b),/unsafe object property/);
+ b.localStorage['thisweek.uiPrefs.v1']='{"accessToken":"secret"}';
+ assert.throws(()=>h.check(b),/possible credentials/);
+ assert.equal(h.disk.size,0);
+});
