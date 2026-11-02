@@ -21,6 +21,11 @@ function fixture(){
     const file=path.join(root,rel);fs.mkdirSync(path.dirname(file),{recursive:true});
     fs.writeFileSync(file,'fixture '+rel);
   }
+  // Artifact stamping is mandatory even in isolated fixture builds.
+  fs.copyFileSync(fileURLToPath(new URL('./stamp-preview-service-worker.mjs',import.meta.url)),
+    path.join(root,'stamp-preview-service-worker.mjs'));
+  fs.writeFileSync(path.join(root,'public-preview-sw.js'),
+    "const CACHE_PREFIX='this-week-public-preview-';\nconst CACHE_NAME=CACHE_PREFIX+'v4';\n");
   const mock=`import fs from 'node:fs';import path from 'node:path';
 const [src,dst]=process.argv.slice(2);
 fs.mkdirSync(path.dirname(dst),{recursive:true});fs.copyFileSync(src,dst);`;
@@ -85,4 +90,28 @@ test('actual staged route validator failure rejects build',()=>within(root=>{
   assert.notEqual(r.status,0);
   assert.match(r.stderr,/BROKEN_SIBLING_LINK/);
   assert.match(r.stderr,/public-preview-check.mjs failed/);
+}));
+
+
+test('staged PWA worker cache identity matches exact staged assets',()=>within(root=>{
+  const r=run(root);assert.equal(r.status,0,r.stderr);
+  const built=fs.readFileSync(path.join(root,'_site/public-preview/sw.js'),'utf8');
+  assert.match(built,/CACHE_NAME=CACHE_PREFIX\+'b[a-f0-9]{64}'/);
+  assert.doesNotMatch(built,/CACHE_NAME=CACHE_PREFIX\+'v4'/);
+  const check=spawnSync(process.execPath,[path.join(root,'stamp-preview-service-worker.mjs'),'--verify',
+    path.join(root,'_site/public-preview/index.html'),
+    path.join(root,'_site/public-preview/manifest.webmanifest'),
+    path.join(root,'_site/public-preview/icon.svg'),
+    path.join(root,'public-preview-sw.js'),
+    path.join(root,'_site/public-preview/sw.js')],{cwd:root,encoding:'utf8'});
+  assert.equal(check.status,0,check.stderr);
+}));
+
+test('staged PWA fingerprint changes after a different shell build',()=>within(root=>{
+  const first=run(root);assert.equal(first.status,0,first.stderr);
+  const prior=fs.readFileSync(path.join(root,'_site/public-preview/sw.js'),'utf8');
+  fs.writeFileSync(path.join(root,'index.html'),'updated fixture source');
+  const second=run(root);assert.equal(second.status,0,second.stderr);
+  const after=fs.readFileSync(path.join(root,'_site/public-preview/sw.js'),'utf8');
+  assert.notEqual(after,prior);
 }));

@@ -55,7 +55,8 @@ try {
   if(process.env.VERCEL_ENV==='production')throw new Error('Production is owned by GitHub Pages; preview-only build blocked');
   if(out!==path.join(root,'_site'))throw new Error('Unsafe artifact directory');
   for(const [src]of assets)requireFile(src);
-  for(const f of ['index.html','prepare-site.mjs','prepare-public-preview.mjs',...validators.map(x=>x[0])])requireFile(f);
+  for(const f of ['index.html','prepare-site.mjs','prepare-public-preview.mjs',
+    'stamp-preview-service-worker.mjs',...validators.map(x=>x[0])])requireFile(f);
   fs.rmSync(out,{recursive:true,force:true});fs.mkdirSync(out,{recursive:true});
   call('prepare-site.mjs','index.html','_site/index.html');
   call('prepare-public-preview.mjs','index.html','_site/public-preview.source.html');
@@ -66,6 +67,13 @@ try {
     fs.mkdirSync(path.dirname(dest),{recursive:true});
     fs.copyFileSync(requireFile(src),dest);
   }
+  // Ensure each artifact's worker is byte-bound to its exact staged assets,
+  // rather than a hand-maintained cache version number.
+  const stampArgs=['_site/public-preview/index.html',
+    '_site/public-preview/manifest.webmanifest','_site/public-preview/icon.svg',
+    'public-preview-sw.js','_site/public-preview/sw.js'];
+  call('stamp-preview-service-worker.mjs',...stampArgs);
+  call('stamp-preview-service-worker.mjs','--verify',...stampArgs);
   // All route validators must be present and pass on the staged artifact.
   // Never silently skip a security check if a file was accidentally removed.
   for(const [script,...args] of validators)call(script,...args);
