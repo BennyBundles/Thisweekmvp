@@ -112,3 +112,14 @@ test('Phase 48 staged offline worker enforces exact response-byte SHA-256',()=>{
  assert.match(sw,/matchesBuiltBytes\(response,'icon'/);
  assert.match(w,/node --test phase48-runtime-asset-digests\.test\.mjs/);
 });
+
+test('reviewed raw restore applies UTF-8 byte accounting without losing rollback gates',()=>{
+ assert.match(shell,/if\(typeof TextEncoder!=='function'\)/);
+ assert.match(shell,/totalBytes\+=byteEncoder\.encode\(key\)\.byteLength\+byteEncoder\.encode\(value\)\.byteLength/);
+ assert.doesNotMatch(shell,/totalLength\+=key\.length\+value\.length/);
+ const tests=read('phase37-verified-restore.test.mjs');
+ for(const marker of ['UTF-8 byte cap rejects','small multibyte UTF-8','byte-size verification unavailable',
+   'restore source guards rollback keys by exact expected bytes']){
+   assert.ok(tests.includes(marker),'Missing restore regression: '+marker);
+ }
+});
