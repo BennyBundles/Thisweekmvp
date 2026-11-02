@@ -4,7 +4,7 @@ import {createHash} from 'node:crypto';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import {auditDeployment, verifyOnce, verifyManifest, verifyIndexCsp, verifyPublishedOfflineAssets, assetUrl, REQUIRED_ASSETS, readBoundedResponseBytes, STAGED_ROUTE_FILES,
+import {auditStableDeployment, auditDeployment, verifyOnce, verifyManifest, verifyIndexCsp, verifyPublishedOfflineAssets, assetUrl, REQUIRED_ASSETS, readBoundedResponseBytes, STAGED_ROUTE_FILES,
   requireTrustedRouteDigests, loadStagedRouteDigests} from './verify-deployed-release.mjs';
 const sha='ab4336e55faf04235d57a5a389c5f816a477c61e';
 const old='8913aed99abd1106f346028a74e41acaa2e93bfe';
@@ -416,4 +416,91 @@ test('independently staged file bytes establish route hashes and symlinks are re
   await fs.symlink(path.join(dir,'support','index.html'),path.join(dir,'support','app.js'));
   await assert.rejects(loadStagedRouteDigests(root),/Missing, symlinked/);
  }finally{await fs.rm(dir,{recursive:true,force:true})}
+});
+
+const stableArgs=(fetchImpl=transport())=>({
+ baseUrl:base,expectedSha:sha,config,expectedWorkerSha,
+ expectedRouteDigests:trustedStaged,fetchImpl,attempts:1,delayMs:0,stabilityDelayMs:100
+});
+test('two-pass release attestation succeeds only with both complete byte-matching snapshots',async()=>{
+ const waits=[],times=['2026-11-02T17:00:00.000Z','2026-11-02T17:00:00.100Z'];
+ let clock=0,requests=0;
+ const ordinary=transport();
+ const outcome=await auditStableDeployment({...stableArgs(async(...args)=>{
+   requests++;return ordinary(...args);
+ }),sleep:async(ms)=>waits.push(ms),now:()=>times[clock++]});
+ assert.equal(outcome.observationCount,2);
+ assert.deepEqual(outcome.observationTimes,times);
+ assert.deepEqual(waits,[100]);
+ assert.equal(outcome.commit,sha);
+ assert.equal(outcome.workflowRunId,'12345');
+ assert.equal(outcome.checkedAssets,25);
+ assert.equal(outcome.exactRouteDigests,21);
+ assert.equal(outcome.expectedWorkerSha,expectedWorkerSha);
+ assert.match(outcome.trustedRouteSetSha256,/^[0-9a-f]{64}$/);
+ assert.equal(requests,50,'each observation must re-fetch all 25 HTTP URLs');
+});
+test('a second-pass stale JavaScript file blocks release instead of accepting the first snapshot',async()=>{
+ let sweeps=0,requests=0;
+ const injected=transport({mutate:(p,b)=>{
+   if(p.endsWith('/release.json'))sweeps++;
+   if(sweeps===2&&p.endsWith('/ops/app.js'))return b+'\\n// stale second observation';
+   return b;
+ }});
+ await assert.rejects(auditStableDeployment({...stableArgs(async(...args)=>{
+   requests++;return injected(...args);
+ }),sleep:async()=>{}}),/Stable release second observation failed: Live route bytes differ/);
+ assert.equal(sweeps,2,'do not hide the failed second snapshot behind retries');
+ assert.ok(requests>25&&requests<50,'the second sweep must stop on the bad asset');
+});
+test('mixed offline URL bytes appearing only on the second snapshot fail closed',async()=>{
+ let sweeps=0;
+ const injected=transport({mutate:(p,b,url)=>{
+  if(p.endsWith('/release.json'))sweeps++;
+  if(sweeps===2&&p.endsWith('/public-preview/icon.svg')&&!new URL(url).searchParams.has('v'))
+    return b+'\\n<!-- second sweep CDN drift -->';
+  return b;
+ }});
+ await assert.rejects(auditStableDeployment({...stableArgs(injected),sleep:async()=>{}}),
+   /Stable release second observation failed: Live route bytes differ/);
+ assert.equal(sweeps,2);
+});
+test('first-pass eventual-consistency retry is allowed but second snapshot is strict',async()=>{
+ let sweeps=0,delays=[];
+ const injected=transport({mutate:(p,b)=>{
+  if(p.endsWith('/release.json')){
+   sweeps++;if(sweeps===1)return JSON.stringify({...manifest(),commit:old});
+  }
+  return b;
+ }});
+ const result=await auditStableDeployment({...stableArgs(injected),attempts:2,delayMs:7,
+  stabilityDelayMs:101,sleep:async ms=>{delays.push(ms)}});
+ assert.equal(sweeps,3,'one failed first snapshot plus two successful snapshots');
+ assert.deepEqual(delays,[7,101]);
+ assert.equal(result.observationCount,2);
+});
+test('bad observation interval and untrusted route map reject before network use',async()=>{
+ for(const delay of [-1,1.5,60_001,'5',null]){
+  let queried=0;
+  await assert.rejects(auditStableDeployment({...stableArgs(async()=>{
+    queried++;throw new Error('unexpected fetch');
+  }),stabilityDelayMs:delay}),/Invalid stability observation interval/);
+  assert.equal(queried,0);
+ }
+ let queried=0;
+ await assert.rejects(auditStableDeployment({...stableArgs(async()=>{
+  queried++;throw new Error('unexpected fetch');
+ }),expectedRouteDigests:{...trustedStaged,'/ops/app.js':'0'.repeat(64)},
+ expectedWorkerSha:'0'.repeat(64)}),/Staged worker SHA differs/);
+ assert.equal(queried,0);
+});
+test('failed initial snapshot never advertises stable release success',async()=>{
+ let requests=0,waits=0;
+ const bad=transport({status:p=>p.endsWith('release.json')?503:200});
+ await assert.rejects(auditStableDeployment({...stableArgs(async(...args)=>{
+  requests++;return bad(...args);
+ }),attempts:2,delayMs:4,sleep:async()=>{waits++}}),
+ /Release verification failed after 2 attempt/);
+ assert.equal(requests,2);
+ assert.equal(waits,1,'no second observation wait after initial verification failure');
 });
