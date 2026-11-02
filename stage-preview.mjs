@@ -10,6 +10,13 @@ import {createHash} from 'node:crypto';
 
 const root=process.cwd();
 const out=path.resolve(root,'_site');
+const lockPath=path.resolve(root,'.thisweek-preview-build.lock');
+let lockFd=null,backupRoot=null,backupMoved=false,workStarted=false,buildSucceeded=false;
+function cleanBuildLock(){
+  if(lockFd!==null){
+    try{fs.closeSync(lockFd)}finally{fs.rmSync(lockPath,{force:true});lockFd=null}
+  }
+}
 const assets=[
   ['preview.html','preview.html'],
   ['public-preview-manifest.webmanifest','public-preview/manifest.webmanifest'],
@@ -57,7 +64,20 @@ try {
   for(const [src]of assets)requireFile(src);
   for(const f of ['index.html','prepare-site.mjs','prepare-public-preview.mjs',
     'stamp-preview-service-worker.mjs','verify-production-csp.mjs',...validators.map(x=>x[0])])requireFile(f);
-  fs.rmSync(out,{recursive:true,force:true});fs.mkdirSync(out,{recursive:true});
+  // A successful preflight must not destroy a previously verified preview.
+  // Serialize all writers in this checkout; no automatic stale-lock takeover.
+  lockFd=fs.openSync(lockPath,'wx',0o600);
+  fs.writeSync(lockFd,String(process.pid)+'\\n');
+  if(fs.existsSync(out)){
+    const stat=fs.lstatSync(out);
+    if(!stat.isDirectory()||stat.isSymbolicLink())
+      throw new Error('Unsafe existing preview output: not a real directory');
+    backupRoot=fs.mkdtempSync(path.join(root,'.thisweek-preview-rollback-'));
+    fs.renameSync(out,path.join(backupRoot,'_site'));
+    backupMoved=true;
+  }
+  fs.mkdirSync(out,{recursive:true});
+  workStarted=true;
   call('prepare-site.mjs','index.html','_site/index.html');
   call('verify-production-csp.mjs','_site/index.html');
   call('prepare-public-preview.mjs','index.html','_site/public-preview.source.html');
@@ -91,6 +111,30 @@ try {
   const manifest={schema:'thisweek.preview-artifact.v1',channel:'preview',sourceCommit:identity,
     sourceBranch:process.env.VERCEL_GIT_COMMIT_REF||null,assets:hashes};
   fs.writeFileSync(path.join(out,'preview-build.json'),JSON.stringify(manifest,null,2)+'\n');
+  buildSucceeded=true;
   console.log(JSON.stringify({status:'PASS',channel:'preview',assets:paths.length,commit:identity,
     manifestHash:hash(path.join(out,'preview-build.json'))}));
-}catch(e){console.error('PREVIEW_BUILD_FAILED: '+(e?.message||e));process.exitCode=1;}
+}catch(e){
+  // A failed security check must never leave partial assets as a deployable
+  // preview. Restore the exact previous artifact when one existed.
+  let rollbackFailure=null;
+  try{
+    if(workStarted)fs.rmSync(out,{recursive:true,force:true});
+    if(backupMoved){
+      fs.renameSync(path.join(backupRoot,'_site'),out);
+      backupMoved=false;
+    }
+  }catch(rollbackError){rollbackFailure=rollbackError}
+  console.error('PREVIEW_BUILD_FAILED: '+(e?.message||e));
+  if(rollbackFailure)console.error('PREVIEW_ROLLBACK_FAILED: '+rollbackFailure.message+
+    '; previous artifact retained at '+backupRoot);
+  process.exitCode=1;
+}finally{
+  // Never delete the sole remaining backup after an unsuccessful rollback.
+  if(backupRoot&&!backupMoved){
+    try{fs.rmSync(backupRoot,{recursive:true,force:true})}
+    catch(e){console.error('PREVIEW_BACKUP_CLEANUP_FAILED: '+e.message);process.exitCode=1}
+  }
+  try{cleanBuildLock()}
+  catch(e){console.error('PREVIEW_LOCK_CLEANUP_FAILED: '+e.message);process.exitCode=1}
+}
