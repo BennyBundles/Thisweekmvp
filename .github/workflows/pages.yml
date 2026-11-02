@@ -56,6 +56,9 @@ jobs:
       - name: Unit-test static Vercel preview builder
         run: node --test test-stage-preview.mjs
 
+      - name: Unit-test content-addressed offline build fingerprint
+        run: node --test stamp-preview-service-worker.test.mjs
+
       - name: Verify integrated release safety contract
         run: node --test phase43-integration.test.mjs
 
@@ -155,6 +158,8 @@ jobs:
           cp public-preview-sw.js _site/public-preview/sw.js
           cp public-preview-icon.svg _site/public-preview/icon.svg
           cp preview.html _site/preview.html
+          node stamp-preview-service-worker.mjs _site/public-preview/index.html _site/public-preview/manifest.webmanifest _site/public-preview/icon.svg public-preview-sw.js _site/public-preview/sw.js
+          node stamp-preview-service-worker.mjs --verify _site/public-preview/index.html _site/public-preview/manifest.webmanifest _site/public-preview/icon.svg public-preview-sw.js _site/public-preview/sw.js
           node public-preview-check.mjs _site/public-preview/index.html
 
           mkdir -p _site/money-lab
