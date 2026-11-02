@@ -53,6 +53,9 @@ jobs:
       - name: Unit-test static Vercel preview builder
         run: node --test test-stage-preview.mjs
 
+      - name: Unit-test FIFO production queue and stale main release guard
+        run: node --test phase41-pages-queue.test.mjs
+
       - name: Stage and audit preview assets without publishing
         run: |
           set -euo pipefail
