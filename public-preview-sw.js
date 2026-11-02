@@ -14,8 +14,7 @@ function safeResponse(response,url){
   // A valid-looking cached Response from another origin or route is never trusted.
   if(response.url){
     const actual=new URL(response.url),expected=new URL(url);
-    if(actual.origin!==ROOT_URL.origin||actual.pathname!==expected.pathname||
-      actual.href!==expected.href)return false;
+    if(actual.origin!==ROOT_URL.origin||actual.pathname!==expected.pathname)return false;
   }
   return true;
 }
@@ -107,7 +106,7 @@ self.addEventListener('fetch',event=>{
       try{
         const response=await fetch(request);
         // Only an authentic preview shell may replace the last offline shell.
-        if(await validShell(response,response.url||url.href)){
+        if(await validShell(response,url.href)){
           event.waitUntil(saveToCache(SHELL_URL,response.clone()));
         }
         return response;
@@ -115,7 +114,7 @@ self.addEventListener('fetch',event=>{
         const cache=await caches.open(CACHE_NAME);
         const offline=await cache.match(SHELL_URL);
         // A poisoned entry from any older version is never a valid fallback.
-        if(offline&&await validShell(offline,offline.url||SHELL_URL))return offline;
+        if(offline&&await validShell(offline,SHELL_URL))return offline;
         if(offline)await cache.delete(SHELL_URL).catch(()=>{});
         throw error;
       }
@@ -125,9 +124,9 @@ self.addEventListener('fetch',event=>{
   if(!STATIC_PATHS.has(url.pathname))return;
   event.respondWith((async()=>{
     const hit=await currentCacheResponse(request);
-    if(hit&&await validAsset(hit,hit.url||url.href))return hit;
+    if(hit&&await validAsset(hit,url.href))return hit;
     const response=await fetch(request);
-    if(await validAsset(response,response.url||url.href))
+    if(await validAsset(response,url.href))
       event.waitUntil(saveToCache(request,response.clone()));
     return response;
   })());
