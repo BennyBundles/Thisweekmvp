@@ -9,7 +9,7 @@ const prep=read('prepare-public-preview.mjs'), vp=read('public-preview-check.mjs
 test('full dependency stack Phase35–42 executes in PR validation',()=>{
  for(const name of ['verify-deployed-release.test.mjs','phase36-data-durability.test.mjs',
   'phase36-backup-security.test.mjs','phase44-multitab-durability.test.mjs','phase45-volatile-plan-rescue.test.mjs','phase37-verified-restore.test.mjs',
-  'phase38-secure-export.test.mjs','test-stage-preview.mjs',
+  'phase38-secure-export.test.mjs','test-stage-preview.mjs','phase48-runtime-asset-digests.test.mjs',
   'phase41-pages-queue.test.mjs','public-preview-sw.test.mjs',
   'phase43-integration.test.mjs']){
   assert.ok(w.includes('node --test '+name),name);
@@ -99,4 +99,16 @@ test('Phase 47 content-addressed offline artifacts bind Vercel and Pages equally
  assert.match(w,/node --test stamp-preview-service-worker\.test\.mjs/);
  assert.match(w,/node stamp-preview-service-worker\.mjs _site\/public-preview\/index\.html/);
  assert.match(w,/node stamp-preview-service-worker\.mjs --verify _site\/public-preview\/index\.html/);
+});
+
+test('Phase 48 staged offline worker enforces exact response-byte SHA-256',()=>{
+ const stamp=read('stamp-preview-service-worker.mjs');
+ assert.match(stamp,/expectedAssetDigests/);
+ assert.match(stamp,/const EXPECTED_ASSET_SHA256=Object\.freeze/);
+ assert.match(sw,/async function matchesBuiltBytes/);
+ assert.match(sw,/self\.crypto\?\.subtle\?\.digest/);
+ assert.match(sw,/matchesBuiltBytes\(response,'shell'/);
+ assert.match(sw,/matchesBuiltBytes\(response,'manifest'/);
+ assert.match(sw,/matchesBuiltBytes\(response,'icon'/);
+ assert.match(w,/node --test phase48-runtime-asset-digests\.test\.mjs/);
 });

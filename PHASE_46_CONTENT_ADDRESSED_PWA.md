@@ -48,3 +48,11 @@ Relevant external references:
 
 ## Consolidation
 Integrated into the existing draft PR #22 alongside the independent Phase 45 in-memory Plan rescue. The original PR #25 remains review history, not a second release target.
+
+## Phase 48 — verify live downloaded bytes, not just cache names
+
+Source research: [SubtleCrypto.digest](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest) is supported in secure Web Workers, and [service worker install/update lifecycle](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers) allows old caches to remain active until an update is installed. A fingerprinted cache name alone is insufficient if a CDN serves stale, correctly structured shell HTML during rollout.
+
+The stamped worker now contains three **individual** SHA-256 digests for the exact published shell, manifest and icon. During install, cache refresh, and offline fallback validation, the worker hashes decoded response bytes via Worker Web Crypto and refuses mismatches, missing crypto, redirected or wrong-content responses. The raw source template has null digests for isolated legacy tests only: all GitHub Pages and Vercel publication steps stamp and verify the worker and cannot publish the template through the documented paths.
+
+Adversarial Node Worker tests exercise valid install; stale-but-valid HTML/manifest/icon; cryptographic API failure; and runtime cache-poison resistance. Integrity digests remain unkeyed—this prevents accidental stale deployments, not an attacker controlling both page origin and worker. The actual iOS Safari device and CDN propagation are not certified by simulation.

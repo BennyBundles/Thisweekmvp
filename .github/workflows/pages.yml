@@ -62,6 +62,9 @@ jobs:
       - name: Verify content-addressed offline preview worker
         run: node --test stamp-preview-service-worker.test.mjs
 
+      - name: Simulate deployed offline asset digests and CDN drift
+        run: node --test phase48-runtime-asset-digests.test.mjs
+
       - name: Verify integrated release safety contract
         run: node --test phase43-integration.test.mjs
 
