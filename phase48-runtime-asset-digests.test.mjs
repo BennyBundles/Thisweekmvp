@@ -101,7 +101,7 @@ test('online CDN shell drift cannot overwrite the last verified offline shell',a
  h.stats.cached.length=0;
  h.changeShell(SHELL+'<!-- CDN drift -->');
  const live=await h.emit('fetch',h.request('./?mode=demo'));
- assert.match(await live.text(),/CDN drift/);
+ assert.equal(await live.text(),original,'valid cached shell must be served instead of drifted HTTP 200');
  assert.equal(h.stats.cached.length,0,'drifted response must never be cached');
  assert.equal(await h.stores.get(name).get(rootUrl).clone().text(),original);
  h.offline(true);
@@ -117,4 +117,22 @@ test('offline shell remains available when current-generation network is down',a
 test('a verified worker never contains the template-only null asset digest mapping',async()=>using({},async h=>{
  assert.doesNotMatch(h.f.source,/const EXPECTED_ASSET_SHA256=null/);
  assert.match(h.f.source,/CACHE_NAME=CACHE_PREFIX\+'b[a-f0-9]{64}'/);
+}));
+
+test('recognizable but invalid HTTP 200 shell fails closed when no verified cache exists',async()=>using({
+ mutate:{shell:SHELL+'<!-- mixed CDN generation -->'}
+},async h=>{
+ const response=await h.emit('fetch',h.request('./?mode=demo'));
+ assert.equal(response.type,'error');
+ assert.equal(response.status,0);
+ assert.equal(h.stats.cached.length,0);
+}));
+test('invalid first-load manifest cannot be served when no verified static cache exists',async()=>using({
+ mutate:{manifest:manifest+' '}
+},async h=>{
+ const response=await h.emit('fetch',{
+  url:new URL('manifest.webmanifest',rootUrl).href,mode:'cors',method:'GET'});
+ assert.equal(response.type,'error');
+ assert.equal(response.status,0);
+ assert.equal(h.stats.cached.length,0);
 }));
