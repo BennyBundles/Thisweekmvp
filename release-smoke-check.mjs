@@ -431,6 +431,9 @@ if(workflow){
   requireText('Pages workflow must deploy _site artifact',workflow,'path: "_site"');
   requireText('Pages workflow must use deterministic production staging',workflow,'node prepare-site.mjs index.html _site/index.html');
   requireText('Pages workflow validation must stage production HTML first',workflow,'node prepare-site.mjs index.html index.production.html');
+  requireText('Pages release must stamp offline cache against exact staged assets',workflow,'node stamp-preview-service-worker.mjs _site/public-preview/index.html');
+  requireText('Pages release must verify stamped worker before publish',workflow,'node stamp-preview-service-worker.mjs --verify _site/public-preview/index.html');
+  requireText('Pages PR CI must test cache fingerprint source',workflow,'node --test stamp-preview-service-worker.test.mjs');
   requireText('Pages PR checks must have their own concurrency group',workflow,"format('pages-pr-{0}', github.event.pull_request.number)");
   requireText('Each non-PR workflow validation must not displace a pending production release',workflow,"format('pages-run-{0}', github.run_id)");
   requireText('Production publishing must have a dedicated deployment concurrency group',workflow,'group: thisweek-pages-production-deploy');
