@@ -3,10 +3,14 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 const html=readFileSync(new URL('./index.html',import.meta.url),'utf8');
-const start=html.indexOf('function isRawBackupSafeLocalKey(');
+const start=html.indexOf('const RAW_BACKUP_EXPORT_KEYS=');
 const end=html.indexOf('// Phase 37: exact-key raw Plan backup restore.',start);
 assert(start>0 && end>start, 'Raw backup functions must be present');
 const source=html.slice(start,end);
+const secretStart=html.indexOf('function scanObjectForSensitiveFieldNames(');
+const secretEnd=html.indexOf('function clientSecretAudit(',secretStart);
+assert(secretStart>=0&&secretEnd>secretStart);
+const inspector=html.slice(secretStart,secretEnd);
 function run(){
  const saved={},local={
   'thisweek.state.v2':'{"budget":100}',
@@ -27,7 +31,7 @@ function run(){
   setTimeout:()=>{},
  };
  vm.createContext(ctx);
- vm.runInContext(source,ctx);
+ vm.runInContext(inspector+'\n'+source,ctx);
  vm.runInContext('downloadRawLocalDataExport()',ctx);
  return {data:JSON.parse(saved.payload),serialized:saved.payload,ctx,local};
 }
