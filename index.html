@@ -6904,13 +6904,19 @@ function clearAllThisWeekLocalData(){
   volatileUserId=null;volatileState=null;volatileStateSerialized=null;lastPersistedStateSerialized=null;
   uiPrefsCache=null;connectedDataCache=null;savingsGoalsCache=null;savingsGoalsCacheRevision=-1;
   historySummaryCache={revision:-1,data:null};connectionImportPreview=null;runtimePerf.revision++;
-  return {
+  const result={
     success:beforeLocal.available&&beforeSession.available&&afterLocal.available&&afterSession.available&&afterLocal.keys.length===0&&afterSession.keys.length===0,
     storageAccessible:beforeLocal.available&&beforeSession.available&&afterLocal.available&&afterSession.available,
     removed:beforeLocal.keys.length+beforeSession.keys.length-afterLocal.keys.length-afterSession.keys.length,
     remaining:[...afterLocal.keys,...afterSession.keys],
     errors:[beforeLocal.error,beforeSession.error,afterLocal.error,afterSession.error].filter(Boolean)
   };
+  if(result.success){
+    persistedStateQuarantine=null;
+    runtimeStorageHealth.available=runtimeStorageHealth.readable&&runtimeStorageHealth.writable;
+    clearStoragePersistenceWarning();
+  }
+  return result;
 }
 function normalizeConnectedRecord(r={}){
   const reconciled=!!r.reconciled;
