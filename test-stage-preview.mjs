@@ -25,7 +25,7 @@ function fixture(){
   fs.copyFileSync(fileURLToPath(new URL('./stamp-preview-service-worker.mjs',import.meta.url)),
     path.join(root,'stamp-preview-service-worker.mjs'));
   fs.writeFileSync(path.join(root,'public-preview-sw.js'),
-    "const CACHE_PREFIX='this-week-public-preview-';\nconst CACHE_NAME=CACHE_PREFIX+'v4';\n");
+    "const CACHE_PREFIX='this-week-public-preview-';\nconst CACHE_NAME=CACHE_PREFIX+'v4';\nconst EXPECTED_ASSET_SHA256=null;\n");
   const mock=`import fs from 'node:fs';import path from 'node:path';
 const [src,dst]=process.argv.slice(2);
 fs.mkdirSync(path.dirname(dst),{recursive:true});fs.copyFileSync(src,dst);`;
@@ -47,6 +47,9 @@ function within(callback){
 test('stages 20 hash-identified preview assets with no production manifest',()=>within(root=>{
   const r=run(root);assert.equal(r.status,0,r.stderr);
   const out=path.join(root,'_site'),data=JSON.parse(fs.readFileSync(path.join(out,'preview-build.json'),'utf8'));
+  const worker=fs.readFileSync(path.join(out,'public-preview/sw.js'),'utf8');
+  assert.match(worker,/const EXPECTED_ASSET_SHA256=Object\.freeze\(/);
+  assert.doesNotMatch(worker,/const EXPECTED_ASSET_SHA256=null/);
   assert.equal(data.channel,'preview');assert.equal(Object.keys(data.assets).length,20);
   assert.equal(fs.existsSync(path.join(out,'release.json')),false);
   assert.equal(fs.existsSync(path.join(out,'ops/release/app.js')),true);
@@ -114,4 +117,17 @@ test('staged PWA fingerprint changes after a different shell build',()=>within(r
   const second=run(root);assert.equal(second.status,0,second.stderr);
   const after=fs.readFileSync(path.join(root,'_site/public-preview/sw.js'),'utf8');
   assert.notEqual(after,prior);
+}));
+
+
+test('digest stamp fails closed if the mock Service Worker source omits its marker',()=>within(root=>{
+  const file=path.join(root,'public-preview-sw.js');
+  const source=fs.readFileSync(file,'utf8');
+  fs.writeFileSync(file,source.replace('const EXPECTED_ASSET_SHA256=null;',''));
+  const result=run(root);
+  assert.notEqual(result.status,0);
+  assert.match(result.stderr,/Expected a single unstamped SHA-256 asset digest marker/);
+  assert.equal(fs.existsSync(path.join(root,'_site/public-preview/sw.js')),true);
+  // Source copy is never treated as verified public output on failure.
+  assert.equal(fs.existsSync(path.join(root,'_site/preview-build.json')),false);
 }));
