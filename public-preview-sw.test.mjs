@@ -72,7 +72,7 @@ function harness({fetchImpl=()=>Promise.resolve(sampleResponse(ROOT,'online')),i
     tracking.fetches.push(request.url);
     return fetchImpl(request);
   };
-  vm.runInNewContext(SOURCE,{self,caches,fetch,URL,Set,Promise},
+  vm.runInNewContext(SOURCE,{self,caches,fetch,URL,Set,Promise,Response},
     {filename:'public-preview-sw.js'});
   async function emit(type,request){
     const jobs=[];
