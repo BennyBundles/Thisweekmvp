@@ -158,3 +158,23 @@ test('restore source never fetches data or invokes server side providers',()=>{
  assert(!/XMLHttpRequest/.test(source));
  assert(!/sendBeacon/.test(source));
 });
+
+test('full export then restore round-trip preserves synthetic financial Plan exactly',()=>{
+ const h=boot(),original=h.backup();
+ for(const [key,value] of Object.entries(original.localStorage))h.disk.set(key,value);
+ let downloaded='';
+ h.ctx.localDataInventory=()=>({local:[...h.disk.keys()].map(key=>({key})),session:[]});
+ h.ctx.safeLocalStorageGet=key=>h.disk.get(key);
+ h.ctx.nowIso=()=> '2026-11-02T14:00:00Z';
+ h.ctx.Blob=class {constructor(parts){downloaded=parts.join('')}};
+ h.ctx.URL={createObjectURL:()=> 'blob:synthetic',revokeObjectURL:()=>{}};
+ h.ctx.document={createElement:()=>({click(){},remove(){}}),body:{appendChild(){}}};
+ h.ctx.setTimeout=()=>{};
+ h.exec('downloadRawLocalDataExport()');
+ const backup=JSON.parse(downloaded);
+ assert.equal(backup.sessionStorage && Object.keys(backup.sessionStorage).length,0);
+ h.disk.clear();
+ const result=h.apply(backup);
+ assert.equal(result.transactionCount,1);
+ for(const [key,value] of Object.entries(original.localStorage))assert.equal(h.disk.get(key),value);
+});
