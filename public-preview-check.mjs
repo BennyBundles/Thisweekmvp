@@ -31,11 +31,23 @@ need('Phase 20 money disabled',"executionMode:'disabled'");
 need('Phase 20 reward inactive',"rewardMode:'sandbox_template_inactive'");
 need('Phase 21 signed webhook status',"webhookMode:'signed_receivers_deployed'");
 need('Phase 21 card authorization status',"cardAuthorizationMode:'controller_deployed_execution_locked'");
-need('Phase 21 Money Lab link','href="./money-lab/"');
+need('Phase 21 Money Lab sibling link','href="../money-lab/"');
 need('Phase 22 sandbox chain',"sandboxChain:'plaid_unit_pinwheel_method'");
 need('Phase 22 chain credential gate',"sandboxChainMode:'deployed_credentials_required'");
-need('Phase 23 Account Center link',"externalTool('./account/'");
-need('Phase 28 Support Center link',"externalTool('./support/'");
+need('Phase 23 Account Center sibling link',"externalTool('../account/'");
+need('Phase 28 Support Center sibling link',"externalTool('../support/'");
+// Verify relative URLs from both the Vercel root and GitHub Pages project subpath.
+for(const base of ['/', '/Thisweekmvp/']){
+  const page=new URL(base+'public-preview/','https://example.test');
+  for(const rel of ['money-lab/','account/','support/']){
+    if(new URL('../'+rel,page).pathname!==base+rel)
+      failures.push('Preview sibling route does not resolve: '+base+rel);
+  }
+}
+forbid('Money Lab must not resolve under /public-preview/','href="./money-lab/"');
+forbid('Account Center must not resolve under /public-preview/',"externalTool('./account/'");
+forbid('Support Center must not resolve under /public-preview/',"externalTool('./support/'");
+
 forbid('production state key leaked','"thisweek.state.v2"');
 forbid('production user key leaked','"thisweek.userId"');
 

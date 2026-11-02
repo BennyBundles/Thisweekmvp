@@ -25,6 +25,18 @@ for(const key of storageKeys){
   html=html.replaceAll(key,key.replace('thisweek.','thisweek.publicPreview.'));
 }
 
+// The standalone PWA is hosted under /public-preview/ on Vercel and Pages.
+// Sibling routes must go one level up; original production HTML is unaffected.
+for (const [from,to] of [
+  ['href="./money-lab/"','href="../money-lab/"'],
+  ["externalTool('./account/'","externalTool('../account/'"],
+  ["externalTool('./support/'","externalTool('../support/'"]
+]) {
+  const n=html.split(from).length-1;
+  if(n!==1)throw new Error('Preview route signature missing or ambiguous: '+from);
+  html=html.replace(from,to);
+}
+
 html=html.replace(/<title>[^<]*<\/title>/,'<title>This Week — Public Release Preview</title>');
 html=html.replace('worker-src \'none\'',"worker-src 'self'");
 
