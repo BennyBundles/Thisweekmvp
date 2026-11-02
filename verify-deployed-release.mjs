@@ -4,7 +4,7 @@
  * No Supabase credentials, provider calls, financial mutations, or writes.
  * Run: node verify-deployed-release.mjs https://bennybundles.github.io/Thisweekmvp/ <full-sha>
  */
-import {readFile} from 'node:fs/promises';
+import {readFile,lstat} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {pathToFileURL} from 'node:url';
 
@@ -30,6 +30,60 @@ export const REQUIRED_ASSETS=Object.freeze([
 ]);
 
 function demand(ok, message){if(!ok)throw new Error(message);}
+
+/**
+ * The only public routes eligible for release. Keys are server request paths;
+ * values are exact file names in the independently staged Pages artifact.
+ * Every one of the 20 static routes, plus release.json, is covered.
+ */
+export const STAGED_ROUTE_FILES=Object.freeze({
+  '/':'index.html',
+  '/preview.html':'preview.html',
+  '/public-preview/':'public-preview/index.html',
+  '/public-preview/manifest.webmanifest':'public-preview/manifest.webmanifest',
+  '/public-preview/sw.js':'public-preview/sw.js',
+  '/public-preview/icon.svg':'public-preview/icon.svg',
+  '/money-lab/':'money-lab/index.html',
+  '/money-lab/app.js':'money-lab/app.js',
+  '/account/':'account/index.html',
+  '/account/app.js':'account/app.js',
+  '/account/release-config.js':'account/release-config.js',
+  '/ops/':'ops/index.html',
+  '/ops/app.js':'ops/app.js',
+  '/ops/release/':'ops/release/index.html',
+  '/ops/release/app.js':'ops/release/app.js',
+  '/ops/bootstrap/':'ops/bootstrap/index.html',
+  '/ops/bootstrap/app.js':'ops/bootstrap/app.js',
+  '/support/':'support/index.html',
+  '/support/app.js':'support/app.js',
+  '/legal/sandbox/':'legal/sandbox/index.html',
+  '/release.json':'release.json'
+});
+export function requireTrustedRouteDigests(digests){
+  demand(digests&&typeof digests==='object'&&!Array.isArray(digests),
+    'Independent staged route digests required');
+  const expected=Object.keys(STAGED_ROUTE_FILES).sort();
+  const actual=Object.keys(digests).sort();
+  demand(actual.length===expected.length&&actual.every((path,i)=>path===expected[i]),
+    'Staged route digest map must contain exactly the approved public routes');
+  for(const path of expected)
+    demand(/^[0-9a-f]{64}$/.test(digests[path]||''),
+      'Malformed trusted staged route SHA-256 at '+path);
+  return digests;
+}
+export async function loadStagedRouteDigests(siteBase=new URL('./_site/',import.meta.url)){
+  const digests=Object.create(null);
+  for(const [route,rel] of Object.entries(STAGED_ROUTE_FILES)){
+    const file=new URL(rel,siteBase);
+    // Never follow symlinked staged paths when establishing trusted build bytes.
+    const stat=await lstat(file);
+    demand(stat.isFile()&&stat.size>0&&stat.size<=2_000_000,
+      'Missing, symlinked, empty or oversized staged route: '+route);
+    digests[route]=createHash('sha256').update(await readFile(file)).digest('hex');
+  }
+  return requireTrustedRouteDigests(digests);
+}
+
 export function verifyManifest(json, sha, config){
   demand(SHA.test(sha), 'Expected commit must be a full lowercase SHA-1');
   demand(json && typeof json === 'object' && !Array.isArray(json), 'Manifest must be an object');
@@ -177,9 +231,10 @@ export async function readBoundedResponseBytes(response, maxBytes=2_000_000){
   }
 }
 
-export async function verifyOnce({baseUrl,expectedSha,config,expectedWorkerSha,fetchImpl=fetch}){
+export async function verifyOnce({baseUrl,expectedSha,config,expectedWorkerSha,expectedRouteDigests,fetchImpl=fetch}){
   demand(SHA.test(expectedSha), 'Expected commit SHA is invalid');
   demand(/^[a-f0-9]{64}$/.test(expectedWorkerSha||''), 'Trusted staged offline worker SHA-256 is required before fetching');
+  const trustedRoutes=requireTrustedRouteDigests(expectedRouteDigests);
   const root=new URL(baseUrl);
   const read=async(path, marker, versioned=true)=>{
     const url=assetUrl(baseUrl,path,expectedSha,versioned);
@@ -193,6 +248,11 @@ export async function verifyOnce({baseUrl,expectedSha,config,expectedWorkerSha,f
     // Read bounded post-content-decoding bytes as the worker would digest.
     // Response.text() is lossy for malformed UTF-8 and cannot prove byte identity.
     const bytes=await readBoundedResponseBytes(result,2_000_000);
+    const route=path.split('?')[0];
+    demand(Object.hasOwn(STAGED_ROUTE_FILES,route), 'Unapproved live release route: '+route);
+    const actualHash=createHash('sha256').update(bytes).digest('hex');
+    demand(actualHash===trustedRoutes[route],
+      'Live route bytes differ from trusted staged artifact: '+route);
     let body;
     try{body=new TextDecoder('utf-8',{fatal:true}).decode(bytes)}
     catch{throw new Error(`Invalid UTF-8 at ${path}`)}
@@ -235,14 +295,15 @@ export async function verifyOnce({baseUrl,expectedSha,config,expectedWorkerSha,f
       worker:assets.worker.body,workerBytes:assets.worker.bytes,expectedWorkerSha
     });
   }
-  return {...receipt, checkedAssets:REQUIRED_ASSETS.length+8, assetDigestCount:3,
+  return {...receipt, checkedAssets:REQUIRED_ASSETS.length+8,
+    exactRouteDigests:Object.keys(trustedRoutes).length, assetDigestCount:3,
     offlineUrlVariants:2, origin:root.origin};
 }
-export async function auditDeployment({baseUrl,expectedSha,config,expectedWorkerSha,fetchImpl=fetch,attempts=3,delayMs=1000,sleep=ms=>new Promise(r=>setTimeout(r,ms))}){
+export async function auditDeployment({baseUrl,expectedSha,config,expectedWorkerSha,expectedRouteDigests,fetchImpl=fetch,attempts=3,delayMs=1000,sleep=ms=>new Promise(r=>setTimeout(r,ms))}){
   demand(Number.isInteger(attempts)&&attempts>=1&&attempts<=12,'Invalid retry count');
   let last;
   for(let attempt=1;attempt<=attempts;attempt++){
-    try{return await verifyOnce({baseUrl,expectedSha,config,expectedWorkerSha,fetchImpl})}
+    try{return await verifyOnce({baseUrl,expectedSha,config,expectedWorkerSha,expectedRouteDigests,fetchImpl})}
     catch(error){last=error;if(attempt<attempts)await sleep(delayMs)}
   }
   throw new Error(`Release verification failed after ${attempts} attempt(s): ${last?.message}`);
@@ -257,7 +318,11 @@ if(process.argv[1] && import.meta.url===pathToFileURL(process.argv[1]).href){
     // Never trust a worker-provided digest map as its own authenticity evidence.
     const stagedWorker=await readFile(new URL('./_site/public-preview/sw.js',import.meta.url));
     const expectedWorkerSha=createHash('sha256').update(stagedWorker).digest('hex');
-    const outcome=await auditDeployment({baseUrl,expectedSha,config:cfg,expectedWorkerSha,attempts:12,delayMs:5000});
+    const expectedRouteDigests=await loadStagedRouteDigests();
+    demand(expectedRouteDigests['/public-preview/sw.js']===expectedWorkerSha,
+      'Trusted worker SHA differs from staged all-route manifest');
+    const outcome=await auditDeployment({baseUrl,expectedSha,config:cfg,expectedWorkerSha,
+      expectedRouteDigests,attempts:12,delayMs:5000});
     process.stdout.write('Validated exact This Week Pages release: '+JSON.stringify(outcome)+'\n');
   }catch(e){console.error('FAIL CLOSED:',e.message);process.exitCode=1}
 }
