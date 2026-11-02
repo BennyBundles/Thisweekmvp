@@ -26,6 +26,10 @@ const [src,dst]=process.argv.slice(2);
 fs.mkdirSync(path.dirname(dst),{recursive:true});fs.copyFileSync(src,dst);`;
   for(const name of ['prepare-site.mjs','prepare-public-preview.mjs'])
     fs.writeFileSync(path.join(root,name),mock);
+  for(const name of ['public-preview-check.mjs','money-lab-check.mjs',
+    'account-check.mjs','ops-check.mjs','phase34-check.mjs','phase34c-check.mjs',
+    'support-check.mjs','legal-check.mjs'])
+    fs.writeFileSync(path.join(root,name),'process.exit(0);');
   return root;
 }
 function run(root,vars={}){
@@ -63,4 +67,22 @@ test('exact source SHA and branch are recorded without invention',()=>within(roo
 test('invalid source SHA remains null and cannot attest a commit',()=>within(root=>{
   const r=run(root,{VERCEL_GIT_COMMIT_SHA:'short-sha'});assert.equal(r.status,0,r.stderr);
   assert.equal(JSON.parse(fs.readFileSync(path.join(root,'_site/preview-build.json'),'utf8')).sourceCommit,null);
+}));
+
+test('missing mandatory route validator rejects build and preserves prior output',()=>within(root=>{
+  fs.rmSync(path.join(root,'public-preview-check.mjs'));
+  fs.mkdirSync(path.join(root,'_site'));
+  fs.writeFileSync(path.join(root,'_site/keep'),'previous preview');
+  const r=run(root);
+  assert.notEqual(r.status,0);
+  assert.match(r.stderr,/Required source missing: public-preview-check.mjs/);
+  assert.equal(fs.readFileSync(path.join(root,'_site/keep'),'utf8'),'previous preview');
+}));
+test('actual staged route validator failure rejects build',()=>within(root=>{
+  fs.writeFileSync(path.join(root,'public-preview-check.mjs'),
+    "console.error('BROKEN_SIBLING_LINK');process.exit(1);");
+  const r=run(root);
+  assert.notEqual(r.status,0);
+  assert.match(r.stderr,/BROKEN_SIBLING_LINK/);
+  assert.match(r.stderr,/public-preview-check.mjs failed/);
 }));

@@ -41,11 +41,21 @@ function call(script,...args){
   if(result.status!==0)throw new Error(script+' failed with '+(result.status??result.error?.message));
 }
 function hash(file){return createHash('sha256').update(fs.readFileSync(file)).digest('hex');}
+const validators=[
+  ['public-preview-check.mjs','_site/public-preview/index.html'],
+  ['money-lab-check.mjs','_site/money-lab/index.html','_site/money-lab/app.js'],
+  ['account-check.mjs','_site/account/index.html','_site/account/app.js','_site/account/release-config.js'],
+  ['ops-check.mjs','_site/ops/index.html','_site/ops/app.js'],
+  ['phase34-check.mjs'],
+  ['phase34c-check.mjs'],
+  ['support-check.mjs','_site/support/index.html','_site/support/app.js'],
+  ['legal-check.mjs','_site/legal/sandbox/index.html'],
+];
 try {
   if(process.env.VERCEL_ENV==='production')throw new Error('Production is owned by GitHub Pages; preview-only build blocked');
   if(out!==path.join(root,'_site'))throw new Error('Unsafe artifact directory');
   for(const [src]of assets)requireFile(src);
-  for(const f of ['index.html','prepare-site.mjs','prepare-public-preview.mjs'])requireFile(f);
+  for(const f of ['index.html','prepare-site.mjs','prepare-public-preview.mjs',...validators.map(x=>x[0])])requireFile(f);
   fs.rmSync(out,{recursive:true,force:true});fs.mkdirSync(out,{recursive:true});
   call('prepare-site.mjs','index.html','_site/index.html');
   call('prepare-public-preview.mjs','index.html','_site/public-preview.source.html');
@@ -56,6 +66,9 @@ try {
     fs.mkdirSync(path.dirname(dest),{recursive:true});
     fs.copyFileSync(requireFile(src),dest);
   }
+  // All route validators must be present and pass on the staged artifact.
+  // Never silently skip a security check if a file was accidentally removed.
+  for(const [script,...args] of validators)call(script,...args);
   const paths=['index.html','public-preview/index.html',...assets.map(x=>x[1])];
   const hashes={};
   for(const rel of paths){
