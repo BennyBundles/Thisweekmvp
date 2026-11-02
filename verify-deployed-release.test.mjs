@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {auditDeployment, verifyOnce, verifyManifest, verifyIndexCsp, verifyPublishedOfflineAssets, assetUrl, REQUIRED_ASSETS} from './verify-deployed-release.mjs';
+import {auditDeployment, verifyOnce, verifyManifest, verifyIndexCsp, verifyPublishedOfflineAssets, assetUrl, REQUIRED_ASSETS, readBoundedResponseBytes} from './verify-deployed-release.mjs';
 const sha='ab4336e55faf04235d57a5a389c5f816a477c61e';
 const old='8913aed99abd1106f346028a74e41acaa2e93bfe';
 const base='https://bennybundles.github.io/Thisweekmvp/';
@@ -33,10 +33,10 @@ function transport({mutate=(path,body)=>body,status=()=>200,finalUrl=u=>u,
  return async u=>{
   const path=new URL(u).pathname;
   const body=mutate(path,bodies.get(path),u);
-  return {status:status(path),url:finalUrl(u),type:'basic',redirected:false,
+  const payload=Uint8Array.from(bytes(path,body,u));
+  return {status:status(path,u),url:finalUrl(u),type:'basic',redirected:false,
    headers:{get:k=>k==='content-type'?contentType(path,u):null},
-   text:async()=>body,
-   arrayBuffer:async()=>Uint8Array.from(bytes(path,body,u)).buffer};
+   body:new ReadableStream({start(controller){controller.enqueue(payload);controller.close();}})};
  };
 }
 const run=opts=>verifyOnce({baseUrl:base,expectedSha:sha,config,expectedWorkerSha,fetchImpl:transport(opts)});
@@ -247,3 +247,100 @@ test('direct unversioned manifest MIME mismatch blocks release despite valid ver
    :path.endsWith('.svg')?'image/svg+xml':path.endsWith('.json')?'application/json':
     path.endsWith('.js')?'application/javascript':'text/html'}),/Wrong direct offline manifest MIME/);
 });
+
+test('bounded stream enforces byte cap before buffering a misleading Content-Length',async()=>{
+ let canceled=0,reads=0;
+ const fake={body:{getReader(){return{
+  async read(){reads++;return {done:false,value:new Uint8Array(12)};},
+  cancel(){canceled++;return Promise.resolve();},
+  releaseLock(){}
+ }}}};
+ await assert.rejects(readBoundedResponseBytes(fake,10),/Oversized streamed asset/);
+ assert.equal(reads,1,'reject on first oversized chunk');
+ assert.equal(canceled,1,'attempt to cancel rejected transport');
+});
+test('bounded reader concatenates real streaming chunks without changing digests',async()=>{
+ const input=Buffer.from('alpha🔥漢字beta','utf8');
+ const parts=[input.subarray(0,3),input.subarray(3,7),input.subarray(7)];
+ const body=new ReadableStream({start(c){for(const p of parts)c.enqueue(p);c.close()}});
+ const result=await readBoundedResponseBytes({body},input.byteLength);
+ assert.deepEqual(result,input);
+ assert.equal(createHash('sha256').update(result).digest('hex'),createHash('sha256').update(input).digest('hex'));
+});
+test('bounded reader rejects missing stream rather than using unbounded arrayBuffer fallback',async()=>{
+ await assert.rejects(readBoundedResponseBytes({arrayBuffer:()=>new ArrayBuffer(4)}),
+   /Readable response body required/);
+});
+test('bounded reader rejects fragmented body exceeding the cumulative cap',async()=>{
+ let canceled=false;
+ const bytes=[new Uint8Array(5),new Uint8Array(5),new Uint8Array(1)];
+ const fake={body:{getReader(){let i=0;return {
+  async read(){return i<bytes.length?{done:false,value:bytes[i++]}:{done:true};},
+  cancel(){canceled=true;return Promise.resolve()},
+  releaseLock(){}
+ }}}};
+ await assert.rejects(readBoundedResponseBytes(fake,10),/Oversized streamed asset/);
+ assert.equal(canceled,true);
+});
+test('bounded reader rejects a non-byte payload without silently converting it',async()=>{
+ const fake={body:{getReader(){return {
+  async read(){return {done:false,value:'not bytes'};},
+  cancel(){return Promise.resolve()},
+  releaseLock(){}
+ }}}};
+ await assert.rejects(readBoundedResponseBytes(fake,10),/Non-byte/);
+});
+test('bounded reader rejects empty finished streams',async()=>{
+ const body=new ReadableStream({start(controller){controller.close()}});
+ await assert.rejects(readBoundedResponseBytes({body},32),/Empty streamed asset/);
+});
+
+// Six release probes (3 assets x 2 URL variants), attacked in five independent
+// modes each. Every attack must fail the entire read-only release attestation.
+const offlinePaths=[
+ '/Thisweekmvp/public-preview/',
+ '/Thisweekmvp/public-preview/manifest.webmanifest',
+ '/Thisweekmvp/public-preview/icon.svg'
+];
+const driftModes=['changed-bytes','wrong-mime','not-found','redirect','invalid-utf8'];
+for(const target of offlinePaths){
+ for(const variant of ['versioned','direct']){
+  for(const drift of driftModes){
+   test('mixed-CDN release attestation rejects '+target+' '+variant+' '+drift,async()=>{
+    let altered=0;
+    const matches=(path,url)=>{
+     const query=new URL(url).searchParams;
+     const versioned=query.has('v');
+     return path===target&&(variant==='versioned'?versioned:!versioned);
+    };
+    const opts={
+     mutate:(path,body,url)=>{
+      if(matches(path,url)&&drift==='changed-bytes'){altered++;return body+' '; }
+      return body;
+     },
+     status:(path,url)=>{
+      if(matches(path,url)&&drift==='not-found'){altered++;return 404;}
+      return 200;
+     },
+     finalUrl:url=>{
+      const path=new URL(url).pathname;
+      if(matches(path,url)&&drift==='redirect'){altered++;return url.replace('bennybundles.github.io','untrusted.invalid');}
+      return url;
+     },
+     contentType:(path,url)=>{
+      if(matches(path,url)&&drift==='wrong-mime'){altered++;return 'text/plain';}
+      return path.endsWith('manifest.webmanifest')?'application/manifest+json':
+        path.endsWith('icon.svg')?'image/svg+xml':path.endsWith('.json')?'application/json':
+        path.endsWith('.js')?'application/javascript':'text/html';
+     },
+     bytes:(path,body,url)=>{
+      if(matches(path,url)&&drift==='invalid-utf8'){altered++;return Uint8Array.of(0xc3,0x28);}
+      return new TextEncoder().encode(body);
+     }
+    };
+    await assert.rejects(run(opts));
+    assert.ok(altered>0,'attack must reach exact intended asset and URL variant');
+   });
+  }
+ }
+}
