@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {auditDeployment, verifyOnce, verifyManifest, verifyIndexCsp, assetUrl, REQUIRED_ASSETS} from './verify-deployed-release.mjs';
+import {auditDeployment, verifyOnce, verifyManifest, verifyIndexCsp, verifyPublishedOfflineAssets, assetUrl, REQUIRED_ASSETS} from './verify-deployed-release.mjs';
 const sha='ab4336e55faf04235d57a5a389c5f816a477c61e';
 const old='8913aed99abd1106f346028a74e41acaa2e93bfe';
 const base='https://bennybundles.github.io/Thisweekmvp/';
@@ -10,10 +10,24 @@ const manifest=()=>({application:'This Week',channel:'production',commit:sha,sho
 const scripts='<script>const a=1;</script><script>const b=2;</script>';
 const hashes=['const a=1;','const b=2;'].map(x=>createHash('sha256').update(x).digest('base64'));
 const csp='<meta http-equiv="Content-Security-Policy" content="default-src \'self\'; script-src \'self\' '+hashes.map(h=>"'sha256-"+h+"'").join(' ')+'; connect-src \'none\'; object-src \'none\'">';
+const offlineShell='thisweek.publicPreview.state.v2';
+const offlineManifest=JSON.stringify({name:'This Week',scope:'./',start_url:'./?mode=demo'});
+const offlineIcon='<svg xmlns="http://www.w3.org/2000/svg"></svg>';
+const assetDigests=Object.fromEntries(Object.entries({shell:offlineShell,manifest:offlineManifest,icon:offlineIcon})
+  .map(([k,v])=>[k,createHash('sha256').update(v).digest('hex')]));
+const offlineWorker="const CACHE_PREFIX='this-week-public-preview-';"+
+  "const CACHE_NAME=CACHE_PREFIX+'b"+'b'.repeat(64)+"';"+
+  "const EXPECTED_ASSET_SHA256=Object.freeze("+JSON.stringify(assetDigests)+");";
 const canonical=(u)=>{const x=new URL(u);return x.pathname.endsWith('/')?x.pathname:x.pathname};
-function transport({mutate=(path,body)=>body,status=()=>200,finalUrl=u=>u,contentType=path=>path.endsWith('.json')?'application/json':path.endsWith('.js')?'application/javascript':'text/html'}={}){
+function transport({mutate=(path,body)=>body,status=()=>200,finalUrl=u=>u,
+ contentType=path=>path.endsWith('manifest.webmanifest')?'application/manifest+json':
+ path.endsWith('.svg')?'image/svg+xml':path.endsWith('.json')?'application/json':
+ path.endsWith('.js')?'application/javascript':'text/html'}={}){
  const bodies=new Map(REQUIRED_ASSETS.map(([path,mark])=>[canonical(assetUrl(base,path,sha)),path==='/'?'<title>This Week</title>'+csp+scripts:mark]));
  bodies.set('/Thisweekmvp/release.json',JSON.stringify(manifest()));
+ bodies.set('/Thisweekmvp/public-preview/manifest.webmanifest',offlineManifest);
+ bodies.set('/Thisweekmvp/public-preview/icon.svg',offlineIcon);
+ bodies.set('/Thisweekmvp/public-preview/sw.js',offlineWorker);
  return async u=>{
   const path=new URL(u).pathname;
   const body=mutate(path,bodies.get(path));
@@ -22,7 +36,7 @@ function transport({mutate=(path,body)=>body,status=()=>200,finalUrl=u=>u,conten
 }
 const run=opts=>verifyOnce({baseUrl:base,expectedSha:sha,config,fetchImpl:transport(opts)});
 test('exact candidate identity, every published route, and script CSP pass', async()=>{
- const result=await run();assert.equal(result.commit,sha);assert.equal(result.checkedAssets,18);
+ const result=await run();assert.equal(result.commit,sha);assert.equal(result.checkedAssets,21);assert.equal(result.assetDigestCount,3);
 });
 test('manifest does not accept an unrelated SHA in metadata',()=>{
  const j=manifest();j.commit=old;j.otherNote=sha;assert.throws(()=>verifyManifest(j,sha,config),/commit differs/);
@@ -52,4 +66,31 @@ test('persistent release mismatch exhausts bounded retries',async()=>{
  let calls=0;const f=async u=>{calls++;return transport({mutate:(p,b)=>p.endsWith('release.json')?JSON.stringify({...manifest(),commit:old}):b})(u)};
  await assert.rejects(auditDeployment({baseUrl:base,expectedSha:sha,config,fetchImpl:f,attempts:2,delayMs:0,sleep:async()=>{}}),/after 2 attempt/);
  assert.equal(calls,2);
+});
+
+test('CDN serving stale but recognizable offline HTML must block release',async()=>{
+ await assert.rejects(run({mutate:(p,b)=>p.endsWith('/public-preview/')?b+'<!-- old shell -->':b}),/Live offline shell does not match/);
+});
+test('well formed offline webmanifest with a different byte sequence blocks release',async()=>{
+ await assert.rejects(run({mutate:(p,b)=>p.endsWith('manifest.webmanifest')?b+' ':b}),/Live offline manifest does not match/);
+});
+test('correct-looking SVG changed in transit blocks release',async()=>{
+ await assert.rejects(run({mutate:(p,b)=>p.endsWith('icon.svg')?b+'\n':b}),/Live offline icon does not match/);
+});
+test('missing or manually-versioned worker cannot pass live release audit',async()=>{
+ await assert.rejects(run({mutate:(p,b)=>p.endsWith('sw.js')?"const CACHE_NAME='v4';":b}),/no injected asset SHA-256/);
+});
+test('maliciously mismatched published worker mapping blocks release',async()=>{
+ const forged=offlineWorker.replace(assetDigests.shell,'a'.repeat(64));
+ await assert.rejects(run({mutate:(p,b)=>p.endsWith('sw.js')?forged:b}),/Live offline shell does not match/);
+});
+test('wrong MIME on the published worker fails closed',async()=>{
+ await assert.rejects(run({contentType:path=>path.endsWith('sw.js')?'text/html':path.endsWith('.svg')?'image/svg+xml':
+ path.endsWith('manifest.webmanifest')?'application/manifest+json':path.endsWith('.json')?'application/json':'text/html'}),/Wrong offline worker MIME/);
+});
+test('offline worker missing with HTTP 404 prevents release verification',async()=>{
+ await assert.rejects(run({status:p=>p.endsWith('sw.js')?404:200}),/HTTP 404/);
+});
+test('exported verifier directly detects mismatched asset digest',()=>{
+ assert.throws(()=>verifyPublishedOfflineAssets({shell:offlineShell+'x',manifest:offlineManifest,icon:offlineIcon,worker:offlineWorker}),/Live offline shell/);
 });
