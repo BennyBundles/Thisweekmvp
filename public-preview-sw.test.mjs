@@ -401,3 +401,48 @@ test('successful newer version activation cleans legacy cache after preflight',a
   assert.equal(h.cacheStores.has('this-week-public-preview-v3'),false);
   assert.equal(h.cacheStores.has('this-week-public-preview-v4'),true);
 });
+
+
+test('activation refuses to delete an older offline cache when the new icon is evicted',async()=>{
+  const h=harness();
+  await h.emit('install');
+  const older='this-week-public-preview-v3';
+  h.cacheStores.set(older,new Map([[ROOT,sampleResponse(ROOT,'older safe shell')]]));
+  h.cacheStores.get('this-week-public-preview-v4').delete(ROOT+'icon.svg');
+  await assert.rejects(h.emit('activate'),/Refusing older offline cache deletion: incomplete active snapshot/);
+  assert.equal(h.cacheStores.has(older),true,'must preserve the previous cache generation');
+  assert.equal(h.tracking.claimed,0,'must not claim clients after failed integrity preflight');
+});
+
+test('activation preserves an older offline cache if the new shell is corrupted after installation',async()=>{
+  const h=harness();
+  await h.emit('install');
+  const older='this-week-public-preview-v3';
+  h.cacheStores.set(older,new Map([[ROOT,sampleResponse(ROOT,'older safe shell')]]));
+  h.cacheStores.get('this-week-public-preview-v4').set(ROOT,
+    new Response('<html>Sign in instead of This Week</html>',{status:200,headers:{'content-type':'text/html'}}));
+  await assert.rejects(h.emit('activate'),/Refusing older offline cache deletion: incomplete active snapshot/);
+  assert.equal(h.cacheStores.has(older),true);
+  assert.equal(h.tracking.claimed,0);
+});
+
+test('activation preserves older offline cache when new manifest bytes no longer validate',async()=>{
+  const h=harness();
+  await h.emit('install');
+  const older='this-week-public-preview-v3';
+  h.cacheStores.set(older,new Map([[ROOT,sampleResponse(ROOT,'older safe shell')]]));
+  h.cacheStores.get('this-week-public-preview-v4').set(ROOT+'manifest.webmanifest',
+    new Response('{"name":"wrong"}',{status:200,headers:{'content-type':'application/manifest+json'}}));
+  await assert.rejects(h.emit('activate'),/Refusing older offline cache deletion: incomplete active snapshot/);
+  assert.equal(h.cacheStores.has(older),true);
+  assert.equal(h.tracking.claimed,0);
+});
+
+test('source requires verified active snapshot before cleaning obsolete caches',()=>{
+ const source=SOURCE.slice(SOURCE.indexOf("self.addEventListener('activate'"),SOURCE.indexOf("self.addEventListener('fetch'"));
+ assert.match(source,/for\(const url of \[SHELL_URL,MANIFEST_URL,ICON_URL\]\)/);
+ assert.match(source,/await validShell\(response,url\)/);
+ assert.match(source,/await validAsset\(response,url\)/);
+ assert.ok(source.indexOf("if(!accepted)throw")<source.indexOf("await Promise.all(names.filter("));
+ assert.ok(source.indexOf("await Promise.all(names.filter(")<source.indexOf("await self.clients.claim()"));
+});

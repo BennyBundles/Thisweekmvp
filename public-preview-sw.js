@@ -127,6 +127,18 @@ self.addEventListener('install',event=>{
 });
 self.addEventListener('activate',event=>{
   event.waitUntil((async()=>{
+    // The verified install snapshot may be removed or damaged before activate
+    // (e.g., storage pressure or a failed background update on iOS Safari).
+    // Preserve previously working cache generations unless ALL current assets
+    // are still present and match their release-specific content identities.
+    const current=await caches.open(CACHE_NAME);
+    for(const url of [SHELL_URL,MANIFEST_URL,ICON_URL]){
+      const response=await current.match(url);
+      const accepted=url===SHELL_URL
+        ? await validShell(response,url)
+        : await validAsset(response,url);
+      if(!accepted)throw new Error('Refusing older offline cache deletion: incomplete active snapshot '+url);
+    }
     const names=await caches.keys();
     await Promise.all(names.filter(x=>x.startsWith(CACHE_PREFIX)&&x!==CACHE_NAME)
       .map(x=>caches.delete(x)));
