@@ -70,6 +70,21 @@ export function assetUrl(base, path, sha){
   url.searchParams.set('v',sha.slice(0,8));
   return url;
 }
+export function verifyPublishedOfflineAssets({shell,manifest,icon,worker}){
+  const m=worker.match(/const EXPECTED_ASSET_SHA256=Object\.freeze\((\{[^\n]+\})\);/);
+  demand(m && m[1], 'Published offline worker has no injected asset SHA-256 digest map');
+  let declared;
+  try{declared=JSON.parse(m[1])}catch{throw new Error('Published offline worker digest map is not JSON')}
+  demand(Object.keys(declared).sort().join(',')==='icon,manifest,shell', 'Offline digest map contains unexpected assets');
+  demand(/const CACHE_NAME=CACHE_PREFIX\+'b[a-f0-9]{64}';/.test(worker), 'Published offline worker has no content-addressed cache');
+  demand(!worker.includes('const EXPECTED_ASSET_SHA256=null;'), 'Unstamped worker template was published');
+  for(const [key,body] of Object.entries({shell,manifest,icon})){
+    demand(/^[a-f0-9]{64}$/.test(declared[key]||''), 'Malformed offline SHA-256 for '+key);
+    const actual=createHash('sha256').update(body,'utf8').digest('hex');
+    demand(actual===declared[key], 'Live offline '+key+' does not match worker digest (possible CDN drift)');
+  }
+  return {assetDigestCount:3};
+}
 export async function verifyOnce({baseUrl,expectedSha,config,fetchImpl=fetch}){
   demand(SHA.test(expectedSha), 'Expected commit SHA is invalid');
   const root=new URL(baseUrl);
@@ -93,8 +108,20 @@ export async function verifyOnce({baseUrl,expectedSha,config,fetchImpl=fetch}){
   const home=await read('/',REQUIRED_ASSETS[0][1]);
   verifyIndexCsp(home.body);
   // Sequential fetch avoids large bursts on free Pages hosting.
-  for(const [path,marker] of REQUIRED_ASSETS.slice(1)) await read(path,marker);
-  return {...receipt, checkedAssets:REQUIRED_ASSETS.length+1, origin:root.origin};
+  let previewShell=null;
+  for(const [path,marker] of REQUIRED_ASSETS.slice(1)){
+    const value=await read(path,marker);
+    if(path==='/public-preview/?mode=demo')previewShell=value.body;
+  }
+  const offlineManifest=await read('/public-preview/manifest.webmanifest');
+  const offlineIcon=await read('/public-preview/icon.svg');
+  const offlineWorker=await read('/public-preview/sw.js');
+  demand(/\b(?:manifest\+json|application\/json)\b/i.test(offlineManifest.contentType), 'Wrong offline manifest MIME');
+  demand(/\bimage\/svg\+xml\b/i.test(offlineIcon.contentType), 'Wrong offline icon MIME');
+  demand(/\b(?:javascript|ecmascript)\b/i.test(offlineWorker.contentType), 'Wrong offline worker MIME');
+  const integrity=verifyPublishedOfflineAssets({shell:previewShell,manifest:offlineManifest.body,
+    icon:offlineIcon.body,worker:offlineWorker.body});
+  return {...receipt, checkedAssets:REQUIRED_ASSETS.length+4, ...integrity, origin:root.origin};
 }
 export async function auditDeployment({baseUrl,expectedSha,config,fetchImpl=fetch,attempts=3,delayMs=1000,sleep=ms=>new Promise(r=>setTimeout(r,ms))}){
   demand(Number.isInteger(attempts)&&attempts>=1&&attempts<=12,'Invalid retry count');
