@@ -91,7 +91,7 @@ test('maliciously mismatched published worker mapping blocks release',async()=>{
 });
 test('wrong MIME on the published worker fails closed',async()=>{
  await assert.rejects(run({contentType:path=>path.endsWith('sw.js')?'text/html':path.endsWith('.svg')?'image/svg+xml':
- path.endsWith('manifest.webmanifest')?'application/manifest+json':path.endsWith('.json')?'application/json':'text/html'}),/Wrong offline worker MIME/);
+ path.endsWith('manifest.webmanifest')?'application/manifest+json':path.endsWith('.json')?'application/json':'text/html'}),/Wrong versioned offline worker MIME/);
 });
 test('offline worker missing with HTTP 404 prevents release verification',async()=>{
  await assert.rejects(run({status:p=>p.endsWith('sw.js')?404:200}),/HTTP 404/);
