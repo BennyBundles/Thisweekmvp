@@ -56,6 +56,20 @@ try {
     fs.mkdirSync(path.dirname(dest),{recursive:true});
     fs.copyFileSync(requireFile(src),dest);
   }
+  // Run the same static route and security validators used by GitHub Pages.
+  // These checks execute against the actual staged preview, not the source files.
+  const validators=[
+    ['public-preview-check.mjs','_site/public-preview/index.html'],
+    ['money-lab-check.mjs','_site/money-lab/index.html','_site/money-lab/app.js'],
+    ['account-check.mjs','_site/account/index.html','_site/account/app.js','_site/account/release-config.js'],
+    ['ops-check.mjs','_site/ops/index.html','_site/ops/app.js'],
+    ['phase34-check.mjs'],['phase34c-check.mjs'],
+    ['support-check.mjs','_site/support/index.html','_site/support/app.js'],
+    ['legal-check.mjs','_site/legal/sandbox/index.html']
+  ];
+  for(const [script,...args]of validators){
+    if(fs.existsSync(path.join(root,script)))call(script,...args);
+  }
   const paths=['index.html','public-preview/index.html',...assets.map(x=>x[1])];
   const hashes={};
   for(const rel of paths){
