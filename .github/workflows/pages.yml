@@ -59,6 +59,9 @@ jobs:
       - name: Unit-test content-addressed offline build fingerprint
         run: node --test stamp-preview-service-worker.test.mjs
 
+      - name: Unit-test exact downloaded asset SHA-256 enforcement
+        run: node --test phase47-live-asset-digest.test.mjs
+
       - name: Verify integrated release safety contract
         run: node --test phase43-integration.test.mjs
 
