@@ -307,3 +307,31 @@ test('precache requires all three exact resources and known MIME types',async()=
   assert.deepEqual([...m.keys()],[ROOT,ROOT+'manifest.webmanifest',ROOT+'icon.svg']);
   assert.match(await m.get(ROOT).text(),/thisweek.publicPreview.state.v2/);
 });
+
+
+test('cross-origin cached 200 HTML with spoofed preview markers is rejected offline',async()=>{
+  const h=harness({fetchImpl:async()=>{throw new Error('offline');}});
+  await h.emit('install');
+  const forged={ok:true,status:200,redirected:false,
+    url:'https://elsewhere.test/Thisweekmvp/public-preview/',
+    headers:{get:()=> 'text/html'},
+    clone(){return this;},
+    async text(){return SHELL_MARKER;}
+  };
+  h.cacheStores.get('this-week-public-preview-v3').set(ROOT,forged);
+  await assert.rejects(h.emit('fetch',h.request('./')),/offline/);
+  assert.equal(h.cacheStores.get('this-week-public-preview-v3').has(ROOT),false);
+});
+
+test('wrong-path cached 200 HTML with authentic-looking text is rejected offline',async()=>{
+  const h=harness({fetchImpl:async()=>{throw new Error('offline');}});
+  await h.emit('install');
+  const forged={ok:true,status:200,redirected:false,
+    url:ROOT+'sign-in',
+    headers:{get:()=> 'text/html'},
+    clone(){return this;},
+    async text(){return SHELL_MARKER;}
+  };
+  h.cacheStores.get('this-week-public-preview-v3').set(ROOT,forged);
+  await assert.rejects(h.emit('fetch',h.request('./')),/offline/);
+});
