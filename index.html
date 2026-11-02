@@ -5320,13 +5320,14 @@ let volatileUserId=null;
 let volatileState=null;
 let volatileStateSerialized=null;
 let lastPersistedStateSerialized=null;
+let persistedStateQuarantine=null;
 
 function noteCache(hit){if(hit)runtimePerf.cacheHits++;else runtimePerf.cacheMisses++;}
 function safeLocalStorageGet(key){
   try{
     const v=localStorage.getItem(key);
     runtimeStorageHealth.readable=true;
-    runtimeStorageHealth.available=runtimeStorageHealth.writable;
+    runtimeStorageHealth.available=runtimeStorageHealth.writable&&!persistedStateQuarantine;
     return v;
   }catch(e){
     runtimeStorageHealth.readable=false;
@@ -5340,7 +5341,7 @@ function safeLocalStorageSet(key,value){
   try{
     localStorage.setItem(key,value);
     runtimeStorageHealth.writable=true;
-    runtimeStorageHealth.available=runtimeStorageHealth.readable;
+    runtimeStorageHealth.available=runtimeStorageHealth.readable&&!persistedStateQuarantine;
     runtimePerf.storageWrites++;
     return true;
   }catch(e){
@@ -5355,7 +5356,7 @@ function safeLocalStorageRemove(key){
   try{localStorage.removeItem(key);runtimeStorageHealth.available=true;return true;}
   catch(e){runtimeStorageHealth.available=false;runtimeStorageHealth.lastError=e?.message||'Storage remove failed';runtimeStorageHealth.lastFailureAt=nowIso();return false;}
 }
-function showStoragePersistenceWarning(){
+function showStoragePersistenceWarning(kind='write'){
   // Display only after an actual failed write. A successful read does not establish durability.
   if(typeof document==='undefined'||!document.body||document.getElementById('thisweek-storage-failure'))return;
   const panel=document.createElement('aside');
@@ -5364,7 +5365,9 @@ function showStoragePersistenceWarning(){
   panel.setAttribute('aria-label','This Week storage failure');
   panel.style.cssText='position:fixed;top:calc(12px + env(safe-area-inset-top));left:12px;right:12px;max-width:560px;margin:0 auto;z-index:9999;background:#3b1720;color:#fff2f4;border:2px solid #fda4af;border-radius:14px;padding:13px 15px;font:600 14px/1.45 system-ui,sans-serif;box-shadow:0 10px 35px rgba(0,0,0,.45)';
   const message=document.createElement('div');
-  message.textContent='Your latest Plan change could not be saved to this browser. It may disappear after a reload. Export a backup before closing this tab.';
+  message.textContent=kind==='read'
+    ? 'Stored Plan data cannot be safely read (or uses a newer schema). To avoid overwriting it, Plan saves are blocked. Open Privacy & Local Data and export all local keys before any reset.'
+    : 'Your latest Plan change could not be saved to this browser. It may disappear after a reload. Export a backup before closing this tab.';
   const link=document.createElement('a');
   link.href='#privacy';
   link.textContent='Open Privacy & Local Data to export';
@@ -5448,12 +5451,28 @@ function readState(){
   const raw=safeLocalStorageGet(STATE_KEY);
   if(!raw)return volatileState?clone(volatileState):null;
   try{
-    const parsed=normalizeRuntimeState(JSON.parse(raw));
+    const source=JSON.parse(raw);
+    if(!source||typeof source!=='object'||Array.isArray(source))throw new Error('Stored Plan is not a valid object');
+    if(inferCoreSchemaVersion(source)>CORE_SCHEMA_VERSION)throw new Error('Stored Plan requires a newer schema');
+    const parsed=normalizeRuntimeState(source);
+    if(!parsed||!parsed.config||typeof parsed.config!=='object')throw new Error('Stored Plan configuration is missing');
     volatileState=clone(parsed);volatileStateSerialized=JSON.stringify(parsed);lastPersistedStateSerialized=raw;
     return parsed;
-  }catch{return volatileState?clone(volatileState):null;}
+  }catch(e){
+    persistedStateQuarantine=e?.message||'Stored Plan is unreadable';
+    runtimeStorageHealth.available=false;
+    runtimeStorageHealth.lastError=persistedStateQuarantine;
+    runtimeStorageHealth.lastFailureAt=nowIso();
+    showStoragePersistenceWarning('read');
+    return volatileState?clone(volatileState):null;
+  }
 }
 function writeState(state){
+  if(persistedStateQuarantine){
+    runtimeStorageHealth.available=false;
+    showStoragePersistenceWarning('read');
+    return state;
+  }
   const normalized=normalizeRuntimeState(state);
   let serialized;
   try{serialized=JSON.stringify(normalized);}catch(e){
@@ -5478,7 +5497,12 @@ function writeState(state){
 function clearState(){
   volatileState=null;volatileStateSerialized=null;lastPersistedStateSerialized=null;volatileUserId=null;
   runtimePerf.revision++;
-  safeLocalStorageRemove(STATE_KEY);safeLocalStorageRemove(USER_ID_KEY);
+  const stateRemoved=safeLocalStorageRemove(STATE_KEY),userRemoved=safeLocalStorageRemove(USER_ID_KEY);
+  if(stateRemoved&&userRemoved){
+    persistedStateQuarantine=null;
+    runtimeStorageHealth.available=runtimeStorageHealth.readable&&runtimeStorageHealth.writable;
+    clearStoragePersistenceWarning();
+  }
 }
 
 function formatCents(cents) {
