@@ -7070,13 +7070,19 @@ function validatedRawLocalBackup(source){
   if(!entries.length||entries.length>RAW_RESTORE_KEYS.length)
     throw new Error('Backup contains an invalid number of keys.');
   const allowed=new Set(RAW_RESTORE_KEYS);
-  let totalLength=0;
+  // JavaScript string length counts UTF-16 code units, not browser storage
+  // bytes. A backup of emoji/CJK text can be much larger than its length.
+  // Fail closed rather than silently bypass the 4 MB restoration safety cap.
+  if(typeof TextEncoder!=='function')
+    throw new Error('Browser cannot safely verify raw backup byte length.');
+  const byteEncoder=new TextEncoder();
+  let totalBytes=0;
   for(const [key,value] of entries){
     if(!allowed.has(key)||!isRawBackupSafeLocalKey(key))
       throw new Error('Backup contains an unknown or sensitive storage key.');
     if(typeof value!=='string')throw new Error('Backup contains a non-string storage value.');
-    totalLength+=key.length+value.length;
-    if(totalLength>RAW_RESTORE_MAX_BYTES)
+    totalBytes+=byteEncoder.encode(key).byteLength+byteEncoder.encode(value).byteLength;
+    if(totalBytes>RAW_RESTORE_MAX_BYTES)
       throw new Error('Backup contents exceed the 4 MB restoration limit.');
   }
   const rawState=source.localStorage[STATE_KEY];
