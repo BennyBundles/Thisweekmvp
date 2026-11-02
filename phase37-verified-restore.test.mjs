@@ -13,7 +13,7 @@ const source=[
   excerpt('function inferCoreSchemaVersion(', 'function migrateCoreStateV1ToV2('),
   excerpt('function inspectAppStorageNamespace(', 'function appStorageKeys('),
   excerpt('function scanObjectForSensitiveFieldNames(', 'function clientSecretAudit('),
-  excerpt('function isRawBackupSafeLocalKey(', 'function clearAllThisWeekLocalData(')
+  excerpt('const RAW_BACKUP_EXPORT_KEYS=', 'function clearAllThisWeekLocalData(')
 ].join('\n');
 const keys={
  USER_ID_KEY:'thisweek.userId',STATE_KEY:'thisweek.state.v2',
