@@ -3,12 +3,12 @@ name: Deploy This Week to GitHub Pages
 on:
   push:
     branches: ["main"]
+  pull_request:
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: "pages-production"
@@ -31,6 +31,9 @@ jobs:
           set -euo pipefail
           node prepare-site.mjs index.html index.production.html
           mv index.production.html index.html
+
+      - name: Unit-test exact release evidence verifier
+        run: node --test verify-deployed-release.test.mjs
 
       - name: Phase 0 static regression check
         run: node phase0-static-check.mjs
@@ -68,7 +71,12 @@ jobs:
         run: node legal-check.mjs legal/sandbox/index.html
 
   deploy:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     needs: validate
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -171,6 +179,12 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Fail-closed deployed release and route integrity audit
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+          RELEASE_SHA: ${{ github.sha }}
+        run: node verify-deployed-release.mjs "${PAGE_URL%/}/" "${RELEASE_SHA}"
 
       - name: Verify deployed release
         env:
