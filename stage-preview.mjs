@@ -56,9 +56,10 @@ try {
   if(out!==path.join(root,'_site'))throw new Error('Unsafe artifact directory');
   for(const [src]of assets)requireFile(src);
   for(const f of ['index.html','prepare-site.mjs','prepare-public-preview.mjs',
-    'stamp-preview-service-worker.mjs',...validators.map(x=>x[0])])requireFile(f);
+    'stamp-preview-service-worker.mjs','verify-production-csp.mjs',...validators.map(x=>x[0])])requireFile(f);
   fs.rmSync(out,{recursive:true,force:true});fs.mkdirSync(out,{recursive:true});
   call('prepare-site.mjs','index.html','_site/index.html');
+  call('verify-production-csp.mjs','_site/index.html');
   call('prepare-public-preview.mjs','index.html','_site/public-preview.source.html');
   call('prepare-site.mjs','_site/public-preview.source.html','_site/public-preview/index.html');
   fs.rmSync(path.join(out,'public-preview.source.html'),{force:true});
