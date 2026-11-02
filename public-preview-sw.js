@@ -158,16 +158,19 @@ self.addEventListener('fetch',event=>{
         // Only an authentic preview shell may replace the last offline shell.
         if(await validShell(response,url.href)){
           event.waitUntil(saveToCache(SHELL_URL,response.clone()));
+          return response;
         }
-        return response;
+        // A CDN can return a successful HTTP 200 with bytes from another
+        // release. Do not display that unverified page just because it is online.
       }catch(error){
-        const cache=await caches.open(CACHE_NAME);
-        const offline=await cache.match(SHELL_URL);
-        // A poisoned entry from any older version is never a valid fallback.
-        if(offline&&await validShell(offline,SHELL_URL))return offline;
-        if(offline)await cache.delete(SHELL_URL).catch(()=>{});
-        throw error;
+        // Both network failure and invalid network content use the same
+        // release-verified fallback, without returning the untrusted bytes.
       }
+      const cache=await caches.open(CACHE_NAME);
+      const offline=await cache.match(SHELL_URL);
+      if(offline&&await validShell(offline,SHELL_URL))return offline;
+      if(offline)await cache.delete(SHELL_URL).catch(()=>{});
+      return Response.error();
     })());
     return;
   }
@@ -176,8 +179,11 @@ self.addEventListener('fetch',event=>{
     const hit=await currentCacheResponse(request);
     if(hit&&await validAsset(hit,url.href))return hit;
     const response=await fetch(request);
-    if(await validAsset(response,url.href))
+    if(await validAsset(response,url.href)){
       event.waitUntil(saveToCache(request,response.clone()));
-    return response;
+      return response;
+    }
+    // Never hand an invalid first-load manifest or icon to the page.
+    return Response.error();
   })());
 });
