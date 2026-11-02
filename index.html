@@ -6916,7 +6916,7 @@ function validatedRawLocalBackup(source){
     throw new Error('This is not a supported raw This Week backup. Portable snapshots cannot be directly restored.');
   if(!source.localStorage||typeof source.localStorage!=='object'||Array.isArray(source.localStorage))
     throw new Error('Backup has no localStorage data.');
-  if(source.sessionStorage&&(!Object.keys(source.sessionStorage).length===false))
+  if(source.sessionStorage&&(typeof source.sessionStorage!=='object'||Array.isArray(source.sessionStorage)||Object.keys(source.sessionStorage).length!==0))
     throw new Error('Backup contains session data and cannot be restored.');
   const entries=Object.entries(source.localStorage);
   if(!entries.length||entries.length>RAW_RESTORE_KEYS.length)
@@ -6956,6 +6956,7 @@ function validatedRawLocalBackup(source){
   }
   for(const [key,value] of entries){
     if(key===STATE_KEY||key===USER_ID_KEY)continue;
+    if(key===PRECHECK_HINT_KEY||key===FIN_EVENT_KEY)continue; // These short-lived UI hints may be plain text.
     try{JSON.parse(value)}catch{throw new Error('Malformed JSON for optional backup data: '+key)}
   }
   if(scanObjectForSensitiveFieldNames(state).length)
@@ -8939,6 +8940,7 @@ function renderLocalAnalytics(){
 function renderPrivacy(){
   shellMeta('Trust','Privacy & Local Data','Understand, export, and control the data stored by This Week in this browser','<a class="text-action" href="#details">Back</a>');nav('privacy');
   const draw=()=>{
+    let pendingRawRestore=null;
     const inventory=localDataInventory(),audit=clientSecretAudit();
     const all=[...inventory.local.map(x=>({...x,scope:'Persistent'})),...inventory.session.map(x=>({...x,scope:'Session'}))];
     const totalBytes=all.reduce((n,x)=>n+x.bytes,0),hasPlan=!!readState(),storageInspectable=inventory.localAvailable&&inventory.sessionAvailable;
@@ -8976,6 +8978,15 @@ function renderPrivacy(){
         <div class="world-note">Exports are created locally when requested. The app does not automatically upload the resulting file. Raw backups deliberately exclude all sessionStorage values and known authentication, token, or secret keys.</div>
       </section>
 
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Restore</span><h2>Recover a local Plan from a raw backup</h2><div class="section-caption">Only This Week raw local-data-export v1 JSON files can be restored. A portable normalized export is not an importable backup. Restore never merges or overwrites an existing workspace.</div></div></div>
+        <label class="field-label" for="rawRestoreFile">Choose raw This Week backup (.json, max 4 MB)</label>
+        <input id="rawRestoreFile" class="text-field" type="file" accept=".json,application/json" aria-describedby="rawRestoreResult">
+        <div class="world-note" id="rawRestoreResult" role="status" aria-live="polite">No file selected. Your financial data stays on this device while previewing.</div>
+        <div class="field-group" style="margin-top:10px"><label class="field-label" for="rawRestorePhrase">Type RESTORE after reviewing the backup summary</label><input id="rawRestorePhrase" class="text-field" autocomplete="off" autocapitalize="characters" placeholder="RESTORE"></div>
+        <button class="btn btn-primary" id="rawRestoreApply" disabled>Restore into empty browser workspace</button>
+        <div class="world-note">Existing This Week local or session state blocks restore. To preserve data, export what is already here before any deliberate deletion. A completed restore reloads the app.</div>
+      </section>
+
       <section class="section"><div class="section-head"><div><span class="section-kicker">Trust checks</span><h2>Verify the local security boundaries</h2><div class="section-caption">Read-only checks for import handling, local credential fields, Phase 19 activation gating, export boundaries, and destructive-action confirmation.</div></div><button class="btn btn-secondary" id="runTrustAudit">Run trust checks</button></div>
         <div class="backend-contract" id="trustAuditResults"><div class="schema-row"><div><strong>Not run yet</strong><span>Run the checks to inspect this browser's current local trust boundaries.</span></div><span class="schema-badge">ready</span></div></div>
       </section>
@@ -8988,6 +8999,42 @@ function renderPrivacy(){
 
     document.getElementById('privacyPortableExport')?.addEventListener('click',()=>{if(!confirmSensitiveExport('Normalized financial-data export'))return;const bytes=downloadPortableDataExport();toast('Normalized data exported · '+(bytes/1024).toFixed(1)+' KB');});
     document.getElementById('privacyRawExport')?.addEventListener('click',()=>{if(!confirmSensitiveExport('Raw local-data export'))return;const bytes=downloadRawLocalDataExport();toast('Local data export created · '+(bytes/1024).toFixed(1)+' KB');});
+    const restoreFile=document.getElementById('rawRestoreFile'),restorePhrase=document.getElementById('rawRestorePhrase'),restoreButton=document.getElementById('rawRestoreApply'),restoreResult=document.getElementById('rawRestoreResult');
+    const refreshRestoreButton=()=>{if(restoreButton)restoreButton.disabled=!pendingRawRestore||restorePhrase?.value.trim()!=='RESTORE';};
+    restorePhrase?.addEventListener('input',refreshRestoreButton);
+    restoreFile?.addEventListener('change',async()=>{
+      pendingRawRestore=null;
+      if(restorePhrase)restorePhrase.value='';
+      refreshRestoreButton();
+      const file=restoreFile.files?.[0];
+      if(!file){if(restoreResult)restoreResult.textContent='No backup file selected.';return;}
+      if(!file.name.toLowerCase().endsWith('.json')||file.size<=0||file.size>RAW_RESTORE_MAX_BYTES){
+        if(restoreResult)restoreResult.textContent='Invalid backup file. Choose a nonempty JSON file no larger than 4 MB.';
+        return;
+      }
+      try{
+        const source=JSON.parse(await file.text()),validated=validatedRawLocalBackup(source);
+        let targetStatus='This browser is empty and can accept the backup.';
+        try{inspectRawBackupRestoreTarget()}catch(e){targetStatus=e.message;}
+        pendingRawRestore=source;
+        if(restoreResult)restoreResult.textContent='Verified raw backup: '+validated.summary.weekCount+' weeks, '+validated.summary.transactionCount+' transactions, '+validated.summary.keyCount+' local data keys, core v'+validated.summary.schemaVersion+'. '+targetStatus;
+        refreshRestoreButton();
+      }catch(e){if(restoreResult)restoreResult.textContent='Backup rejected: '+(e?.message||'invalid file');}
+    });
+    restoreButton?.addEventListener('click',()=>{
+      if(!pendingRawRestore||restorePhrase?.value.trim()!=='RESTORE')return;
+      try{
+        inspectRawBackupRestoreTarget();
+        if(!confirmHighImpactMutation('Restore this verified raw Plan backup into this empty browser workspace? This does not merge Plans and will reload the app.'))return;
+        restoreVerifiedRawLocalBackup(pendingRawRestore);
+        pendingRawRestore=null;
+        location.hash='home';
+        location.reload();
+      }catch(e){
+        if(restoreResult)restoreResult.textContent='Restore not completed: '+(e?.message||'unexpected storage failure');
+        refreshRestoreButton();
+      }
+    });
     document.getElementById('runTrustAudit')?.addEventListener('click',()=>{
       const box=document.getElementById('trustAuditResults'),audit=runPhase14TrustAudit();
       if(box)box.innerHTML=audit.tests.map(t=>`<div class="schema-row"><div><strong>${escapeHtml(t.name)}</strong><span>${escapeHtml(t.detail)}</span></div><span class="schema-badge">${t.pass?'pass':'review'}</span></div>`).join('');
