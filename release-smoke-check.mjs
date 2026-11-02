@@ -13,6 +13,8 @@ const phase0=requireFile('phase0-static-check.mjs');
 const policy=requireFile('RELEASE_POLICY.md');
 const checklist=requireFile('RELEASE_CHECKLIST.md');
 const prep=requireFile('prepare-site.mjs');
+const preflightCsp=requireFile('verify-production-csp.mjs');
+const previewBuilder=requireFile('stage-preview.mjs');
 const deployedVerifier=requireFile('verify-deployed-release.mjs');
 const phase19Doc=requireFile('PHASE_19_IMPLEMENTATION.md');
 const phase19Schema=requireFile('supabase/phase19/provider_schema.sql');
@@ -425,6 +427,9 @@ if(phase19Gateway)requireText('Provider gateway rejects revoked session',phase19
 
 if(workflow){
   requireText('Pages workflow must deploy only main',workflow,'branches: ["main"]');
+  requireText('CI must unit-test the CSP staging gate',workflow,'node --test verify-production-csp.test.mjs');
+  requireText('CI must verify CSP before validation can succeed',workflow,'node verify-production-csp.mjs index.html');
+  requireText('Pages deploy must verify staged CSP before artifact upload',workflow,'node verify-production-csp.mjs _site/index.html');
   requireText('Pages workflow must run phase0 static check',workflow,'node phase0-static-check.mjs');
   requireText('Pages workflow must run release smoke check',workflow,'node release-smoke-check.mjs');
   requireText('Pages release must stamp offline cache against exact staged assets',workflow,'node stamp-preview-service-worker.mjs _site/public-preview/index.html');
@@ -457,6 +462,8 @@ if(deployedVerifier){
   requireText('Release verification must reject missing trusted worker checksum',
     deployedVerifier,'Trusted staged offline worker SHA-256 is required before fetching');
 }
+if(preflightCsp)requireText('Staged CSP preflight must import actual release verifier',preflightCsp,'verifyIndexCsp');
+if(previewBuilder)requireText('Vercel staging must verify the exact HTML CSP',previewBuilder,"call('verify-production-csp.mjs','_site/index.html')");
 if(config){
   for(const k of ['release','channel','rollbackCommit','rollbackBranch','stableBranch','releaseRecord','stateSchema','portableSchema','migrationNotes']){
     if(config[k]===undefined||config[k]===null||config[k]==='')failures.push('release config missing '+k);
