@@ -140,6 +140,43 @@ export function verifyPublishedOfflineAssets({shell,manifest,icon,worker,workerB
   }
   return {assetDigestCount:3};
 }
+/**
+ * Bound incremental body consumption instead of calling response.arrayBuffer(),
+ * which otherwise buffers an arbitrarily large HTTP body before size validation.
+ * The underlying stream still controls the size of any individual delivered chunk.
+ * Reject missing streaming support rather than silently using an unbounded fallback.
+ */
+export async function readBoundedResponseBytes(response, maxBytes=2_000_000){
+  demand(Number.isSafeInteger(maxBytes)&&maxBytes>0&&maxBytes<=2_000_000,
+    'Invalid response-byte limit');
+  demand(response?.body&&typeof response.body.getReader==='function',
+    'Readable response body required for bounded verification');
+  const reader=response.body.getReader();
+  const chunks=[];
+  let total=0, complete=false;
+  try{
+    while(true){
+      const {value,done}=await reader.read();
+      if(done){complete=true;break;}
+      demand(value instanceof Uint8Array, 'Non-byte response stream chunk');
+      demand(value.byteLength<=maxBytes-total, 'Oversized streamed asset');
+      if(value.byteLength){
+        chunks.push(Buffer.from(value));
+        total+=value.byteLength;
+      }
+    }
+    demand(total>0, 'Empty streamed asset');
+    return Buffer.concat(chunks,total);
+  }catch(error){
+    // Cancellation is best effort; do not wait indefinitely for an adversarial
+    // stream to acknowledge cancellation when the security check already failed.
+    try{Promise.resolve(reader.cancel()).catch(()=>{});}catch{}
+    throw error;
+  }finally{
+    try{reader.releaseLock();}catch{}
+  }
+}
+
 export async function verifyOnce({baseUrl,expectedSha,config,expectedWorkerSha,fetchImpl=fetch}){
   demand(SHA.test(expectedSha), 'Expected commit SHA is invalid');
   demand(/^[a-f0-9]{64}$/.test(expectedWorkerSha||''), 'Trusted staged offline worker SHA-256 is required before fetching');
@@ -153,11 +190,9 @@ export async function verifyOnce({baseUrl,expectedSha,config,expectedWorkerSha,f
     const declaredLength=Number(result.headers.get('content-length')||0);
     demand(Number.isFinite(declaredLength)&&declaredLength>=0&&declaredLength<=2_000_000,
       `Invalid or oversized Content-Length at ${path}`);
-    // Read the same post-content-decoding bytes the service worker would digest.
-    // Response.text() is lossy for malformed UTF-8 and must not be used as proof.
-    const bytes=new Uint8Array(await result.arrayBuffer());
-    demand(bytes.byteLength>0&&bytes.byteLength<=2_000_000,
-      `Empty or oversized asset at ${path}`);
+    // Read bounded post-content-decoding bytes as the worker would digest.
+    // Response.text() is lossy for malformed UTF-8 and cannot prove byte identity.
+    const bytes=await readBoundedResponseBytes(result,2_000_000);
     let body;
     try{body=new TextDecoder('utf-8',{fatal:true}).decode(bytes)}
     catch{throw new Error(`Invalid UTF-8 at ${path}`)}
