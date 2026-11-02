@@ -5403,6 +5403,17 @@ function showStoragePersistenceWarning(kind='write'){
   link.textContent='Open Privacy & Local Data to export';
   link.style.cssText='display:inline-block;margin-top:8px;color:#ffffff;text-decoration:underline;min-height:40px;line-height:40px';
   panel.append(message,link);
+  if(volatileStateSerialized){
+    const rescue=document.createElement('button');
+    rescue.type='button';
+    rescue.textContent='Save in-memory Plan for manual recovery';
+    rescue.style.cssText='display:block;min-height:44px;width:100%;margin-top:7px;padding:8px 12px;background:#ffffff;color:#3b1720;border:1px solid #ffffff;border-radius:9px;font:700 14px/1.3 system-ui,sans-serif;cursor:pointer';
+    rescue.addEventListener?.('click',()=>{
+      try{downloadVolatilePlanRescue();}
+      catch(e){message.textContent='Recovery file could not be created: '+(e?.message||'Unknown error')+'. Keep this tab open and record your edits manually.';}
+    });
+    panel.appendChild(rescue);
+  }
   document.body.appendChild(panel);
 }
 function clearStoragePersistenceWarning(){
@@ -6977,6 +6988,54 @@ function downloadRawLocalDataExport(){
   const json=JSON.stringify(payload,null,2),blob=new Blob([json],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
   a.href=url;a.download='this-week-local-data-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();
   setTimeout(()=>URL.revokeObjectURL(url),1500);return json.length;
+}
+// Phase 45: voluntary in-memory Plan evidence for writes browser storage could not persist.
+// Not a restorable raw backup, auto-sync mechanism, or payment receipt.
+const VOLATILE_PLAN_RESCUE_MAX_BYTES=4*1024*1024;
+function buildVolatilePlanRescue(){
+  if(!volatileStateSerialized)throw new Error('No in-memory Plan is available.');
+  if(volatileStateSerialized.length>VOLATILE_PLAN_RESCUE_MAX_BYTES)
+    throw new Error('In-memory Plan is larger than the 4 MB emergency recovery limit.');
+  let state;
+  try{state=JSON.parse(volatileStateSerialized);}
+  catch{throw new Error('In-memory Plan cannot be safely parsed.');}
+  if(!state||typeof state!=='object'||Array.isArray(state)||
+     typeof state.userId!=='string'||!state.userId||
+     !state.config||typeof state.config!=='object'||Array.isArray(state.config))
+    throw new Error('In-memory Plan has no valid user or Plan configuration.');
+  if(scanObjectForSensitiveFieldNames(state).length)
+    throw new Error('Possible credentials detected inside in-memory Plan. Cannot export automatically.');
+  const envelope={
+    schema:'thisweek.volatile-plan-review.v1',
+    schemaVersion:1,
+    capturedAt:nowIso(),
+    status:'unverified_in_memory_only',
+    warning:'Manual review only. This is NOT a restorable raw backup, NOT proof of a saved transaction, and is NOT uploaded. It may conflict with newer edits in another tab.',
+    state
+  };
+  const json=JSON.stringify(envelope,null,2);
+  const bytes=typeof TextEncoder==='function'
+    ? new TextEncoder().encode(json).length
+    : json.length*2;
+  if(bytes>VOLATILE_PLAN_RESCUE_MAX_BYTES)
+    throw new Error('Emergency Plan JSON exceeds the 4 MB recovery limit.');
+  return {json,bytes,schema:envelope.schema};
+}
+function downloadVolatilePlanRescue(){
+  const recovery=buildVolatilePlanRescue();
+  if(!confirmSensitiveExport('In-memory Plan recovery file (manual review only)'))return false;
+  const blob=new Blob([recovery.json],{type:'application/json;charset=utf-8'});
+  const objectUrl=URL.createObjectURL(blob),anchor=document.createElement('a');
+  try{
+    anchor.href=objectUrl;
+    anchor.download='this-week-UNSAVED-manual-review-'+nowIso().slice(0,10)+'.json';
+    document.body.appendChild(anchor);
+    anchor.click();
+  }finally{
+    anchor.remove();
+    setTimeout(()=>URL.revokeObjectURL(objectUrl),60_000);
+  }
+  return recovery.bytes;
 }
 // Phase 37: exact-key raw Plan backup restore. This is NOT portable-schema import or cloud sync.
 const RAW_RESTORE_MAX_BYTES=4*1024*1024;
