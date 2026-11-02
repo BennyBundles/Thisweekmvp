@@ -20,3 +20,6 @@ This is optimistic concurrency, NOT an atomic compare-and-swap. Two truly simult
 
 ## Review gates
 New + prior CI tests pass on the exact commit, GitHub Pages `deploy` is skipped, no production main change, no financial providers enabled. Review cumulative Phase 43 PR #22 and run iPhone Safari synthetic-data multi-tab acceptance before considering release.
+
+## Recursive quality correction
+The warning previously said to export unsaved changes, but the raw backup feature exports persisted keys only. This pass removes that inaccurate claim, explains that unsaved edits must be recorded separately, and updates the existing on-screen warning if a storage failure escalates to a multi-tab conflict. A synthetic regression test covers both behaviors.

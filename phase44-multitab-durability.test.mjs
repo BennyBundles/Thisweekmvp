@@ -110,6 +110,15 @@ test('explicit verified reset clears quarantine and allows a new deliberate Plan
  t.write(900);
  assert.equal(JSON.parse(t.shared.get('thisweek.state.v2')).config.payProfile.netPayAmount,900);
 });
+test('storage warnings do not falsely claim that unsaved changes appear in raw backups',()=>{
+ const t=h();t.setDenyWrite(true);t.write(123);
+ const panel=t.alerts.get('thisweek-storage-failure');
+ assert.match(panel.children[0].textContent,/only previously saved data/);
+ t.exec("showStoragePersistenceWarning('conflict')");
+ assert.equal(t.alerts.size,1);
+ assert.match(panel.children[0].textContent,/Another This Week tab/);
+ assert.match(panel.children[0].textContent,/not unsaved edits/);
+});
 test('the live implementation does not open provider or network connections for conflict checks',()=>{
  assert.doesNotMatch(source,/\bfetch\s*\(/);
  assert.doesNotMatch(source,/XMLHttpRequest/);
