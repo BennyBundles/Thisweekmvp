@@ -25,7 +25,7 @@ function fixture(){
   fs.copyFileSync(fileURLToPath(new URL('./stamp-preview-service-worker.mjs',import.meta.url)),
     path.join(root,'stamp-preview-service-worker.mjs'));
   fs.writeFileSync(path.join(root,'public-preview-sw.js'),
-    "const CACHE_PREFIX='this-week-public-preview-';\nconst CACHE_NAME=CACHE_PREFIX+'v4';\n");
+    "const CACHE_PREFIX='this-week-public-preview-';\nconst CACHE_NAME=CACHE_PREFIX+'v4';\nconst EXPECTED_ASSET_SHA256=null;\n");
   const mock=`import fs from 'node:fs';import path from 'node:path';
 const [src,dst]=process.argv.slice(2);
 fs.mkdirSync(path.dirname(dst),{recursive:true});fs.copyFileSync(src,dst);`;
