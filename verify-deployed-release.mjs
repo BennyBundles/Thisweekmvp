@@ -78,6 +78,39 @@ export function verifyIndexCsp(html){
   };
   demand(exactlyNone('connect-src'), 'Production money/client networking unexpectedly enabled');
   demand(exactlyNone('object-src'), 'Object embedding must be blocked');
+  // The demo is intentionally static and has a fixed security policy. Require
+  // an exact audited policy rather than accepting a newly widened specialized
+  // directive that bypasses default-src's fallback.
+  const expected={
+    'default-src':["'self'"],
+    'script-src-attr':["'none'"],
+    'style-src':["'self'","'unsafe-inline'"],
+    'img-src':["'self'","data:","blob:"],
+    'font-src':["'self'","data:"],
+    'media-src':["'self'","data:","blob:"],
+    'base-uri':["'none'"],
+    'form-action':["'none'"],
+    'frame-src':["'none'"],
+    'child-src':["'none'"],
+    'worker-src':["'none'"],
+    'manifest-src':["'self'"],
+    'upgrade-insecure-requests':[]
+  };
+  const allowed=new Set([...Object.keys(expected),'script-src','connect-src','object-src']);
+  demand(directives.size===allowed.size&&[...directives.keys()].every(k=>allowed.has(k)),
+    'CSP directive set differs from audited production policy');
+  for(const [name,tokens] of Object.entries(expected)){
+    const actual=directives.get(name);
+    demand(Array.isArray(actual)&&actual.length===tokens.length &&
+      new Set(actual).size===tokens.length && tokens.every(x=>actual.includes(x)),
+      'CSP directive differs from audited production policy: '+name);
+  }
+  // A meta CSP only becomes effective when the parser reaches it. It cannot
+  // retroactively protect scripts, links or other content already parsed.
+  const metaAt=html.indexOf(metas[0][0]);
+  const earlier=html.slice(0,metaAt);
+  demand(!/<(?:script|link|iframe|object|embed)\b/i.test(earlier),
+    'Production CSP appears after a potentially active resource');
 }
 
 export function assetUrl(base, path, sha, versioned=true){
