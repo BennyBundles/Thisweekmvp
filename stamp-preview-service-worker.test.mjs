@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {createHash} from 'node:crypto';
 import os from 'node:os';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
@@ -8,6 +9,7 @@ import {fileURLToPath} from 'node:url';
 
 const script=fileURLToPath(new URL('./stamp-preview-service-worker.mjs',import.meta.url));
 const MARKER="const CACHE_NAME=CACHE_PREFIX+'v4';";
+const DIGEST_MARKER="const EXPECTED_ASSET_SHA256=null;";
 function fixture(){
   const root=fs.mkdtempSync(path.join(os.tmpdir(),'thisweek-pwa-fingerprint-'));
   const names=['shell.html','manifest.webmanifest','icon.svg','template.js','sw.js'];
@@ -15,7 +17,7 @@ function fixture(){
   fs.writeFileSync(paths[0],'<title>This Week — Public Release Preview</title>');
   fs.writeFileSync(paths[1],'{"name":"This Week","scope":"./"}');
   fs.writeFileSync(paths[2],'<svg xmlns="http://www.w3.org/2000/svg"></svg>');
-  fs.writeFileSync(paths[3],"const CACHE_PREFIX='this-week-public-preview-';\n"+MARKER+"\n");
+  fs.writeFileSync(paths[3],"const CACHE_PREFIX='this-week-public-preview-';\n"+MARKER+"\n"+DIGEST_MARKER+"\n");
   return {root,paths};
 }
 function run(paths,verify=false){
@@ -89,4 +91,21 @@ test('rendered worker is syntactically valid JavaScript',()=>within(({paths})=>{
   const worker=stamped(paths);
   assert.doesNotThrow(()=>new Function(worker));
   assert.doesNotMatch(worker,/CACHE_NAME=CACHE_PREFIX\+'v4'/);
+}));
+
+test('stamped worker pins SHA-256 for all three exact offline assets',()=>within(({paths})=>{
+ const actual=stamped(paths);
+ for(const key of ['shell','manifest','icon']){
+  const wanted=key==='shell'?paths[0]:key==='manifest'?paths[1]:paths[2];
+  const digest=createHash('sha256').update(fs.readFileSync(wanted)).digest('hex');
+  assert.match(actual,new RegExp('"'+key+'":"'+digest+'"'));
+ }
+ assert.doesNotMatch(actual,/EXPECTED_ASSET_SHA256=null/);
+}));
+test('missing or repeated digest injection marker fails closed',()=>within(({paths})=>{
+ const original=fs.readFileSync(paths[3],'utf8');
+ for(const content of [original.replace(DIGEST_MARKER,''),original+DIGEST_MARKER]){
+  fs.writeFileSync(paths[3],content);
+  assert.notEqual(run(paths).status,0);
+ }
 }));

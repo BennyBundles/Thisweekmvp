@@ -27,14 +27,24 @@ for(const [label,path] of inputs){
   hash.update(bytes);
 }
 const fingerprint=hash.digest('hex');
+const expectedAssetDigests={
+  shell:createHash('sha256').update(fs.readFileSync(shellPath)).digest('hex'),
+  manifest:createHash('sha256').update(fs.readFileSync(manifestPath)).digest('hex'),
+  icon:createHash('sha256').update(fs.readFileSync(iconPath)).digest('hex')
+};
 const source=fs.readFileSync(sourcePath,'utf8');
 const marker="const CACHE_NAME=CACHE_PREFIX+'v4';";
 if(source.split(marker).length!==2)
   throw new Error('Expected exact v4 Service Worker source marker once');
+const digestMarker='const EXPECTED_ASSET_SHA256=null;';
+if(source.split(digestMarker).length!==2)
+  throw new Error('Expected a single unstamped SHA-256 asset digest marker');
 const stamped=source.replace(marker,
-  "const CACHE_NAME=CACHE_PREFIX+'b"+fingerprint+"';");
-if(!stamped.includes("CACHE_PREFIX+'b"+fingerprint+"'"))
-  throw new Error('Offline cache fingerprint substitution failed');
+  "const CACHE_NAME=CACHE_PREFIX+'b"+fingerprint+"';")
+  .replace(digestMarker,'const EXPECTED_ASSET_SHA256=Object.freeze('+JSON.stringify(expectedAssetDigests)+');');
+if(!stamped.includes("CACHE_PREFIX+'b"+fingerprint+"'")||
+   !stamped.includes('const EXPECTED_ASSET_SHA256=Object.freeze('))
+  throw new Error('Offline cache or asset digest substitution failed');
 if(verify){
   if(!fs.existsSync(outPath)||fs.readFileSync(outPath,'utf8')!==stamped)
     throw new Error('Offline worker does not match exact staged assets: '+outPath);

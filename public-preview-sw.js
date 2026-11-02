@@ -1,6 +1,8 @@
 // This Week demo-only offline PWA. Never cache personal plans or provider responses.
 const CACHE_PREFIX='this-week-public-preview-';
 const CACHE_NAME=CACHE_PREFIX+'v4';
+// Build inserts exact staged shell/manifest/icon hashes. Null is template-only for isolated source tests.
+const EXPECTED_ASSET_SHA256=null;
 const ROOT_URL=new URL('./',self.registration.scope);
 const SHELL_URL=ROOT_URL.href;
 const SHELL_PATH=ROOT_URL.pathname;
@@ -18,6 +20,20 @@ function safeResponse(response,url){
   }
   return true;
 }
+async function matchesBuiltBytes(response,key,maxBytes){
+  // Null exists only in repository template unit tests. Published workers are
+  // stamp-verified and always include an exact SHA-256 map for these assets.
+  if(EXPECTED_ASSET_SHA256===null)return true;
+  const expected=EXPECTED_ASSET_SHA256[key];
+  if(!/^[a-f0-9]{64}$/.test(expected||'')||!self.crypto?.subtle?.digest)return false;
+  try{
+    const bytes=await response.clone().arrayBuffer();
+    if(bytes.byteLength>maxBytes)return false;
+    const raw=await self.crypto.subtle.digest('SHA-256',bytes);
+    const actual=Array.from(new Uint8Array(raw)).map(v=>v.toString(16).padStart(2,'0')).join('');
+    return actual===expected;
+  }catch{return false;}
+}
 function typeIs(response,mime){
   const type=response.headers?.get('content-type')||'';
   return type.toLowerCase().split(';')[0].trim()===mime;
@@ -31,7 +47,8 @@ async function validShell(response,url){
     return html.length<=MAX_SHELL_CHARS
       && html.includes('This Week — Public Release Preview')
       && html.includes('thisweek.publicPreview.state.v2')
-      && html.includes("connect-src 'none'");
+      && html.includes("connect-src 'none'")
+      && await matchesBuiltBytes(response,'shell',MAX_SHELL_CHARS*4);
   }catch{return false;}
 }
 async function validAsset(response,url){
@@ -43,13 +60,15 @@ async function validAsset(response,url){
       if(body.length>16_384)return false;
       const m=JSON.parse(body);
       return m&&typeof m.name==='string'&&m.name.includes('This Week')
-        && m.scope==='./'&&m.start_url==='./?mode=demo';
+        && m.scope==='./'&&m.start_url==='./?mode=demo'
+        && await matchesBuiltBytes(response,'manifest',16_384*4);
     }
     if(url===ICON_URL){
       if(!typeIs(response,'image/svg+xml'))return false;
       const svg=await response.clone().text();
       return svg.length<=131_072&&/<svg[\s>]/i.test(svg)
-        && /<\/svg\s*>/i.test(svg)&&!/<script[\s>]/i.test(svg);
+        && /<\/svg\s*>/i.test(svg)&&!/<script[\s>]/i.test(svg)
+        && await matchesBuiltBytes(response,'icon',131_072*4);
     }
   }catch{return false;}
   return false;
