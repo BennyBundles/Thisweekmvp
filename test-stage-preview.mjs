@@ -25,7 +25,7 @@ function fixture(){
 const [src,dst]=process.argv.slice(2);
 fs.mkdirSync(path.dirname(dst),{recursive:true});fs.copyFileSync(src,dst);`;
   for(const name of ['prepare-site.mjs','prepare-public-preview.mjs'])
-    fs.writeFileSync(path.join(root,name),mock);
+    fs.writeFileSync(path.join(root,name),'process.exit(0);');
   for(const name of ['public-preview-check.mjs','money-lab-check.mjs',
     'account-check.mjs','ops-check.mjs','phase34-check.mjs','phase34c-check.mjs',
     'support-check.mjs','legal-check.mjs'])
@@ -70,7 +70,7 @@ test('invalid source SHA remains null and cannot attest a commit',()=>within(roo
 }));
 
 test('rejects a staged preview when an actual route validator fails',()=>within(root=>{
-  fs.writeFileSync(path.join(root,'public-preview-check.mjs'),\"console.error('BROKEN_SIBLING_LINK');process.exit(1);\\n\");
+  fs.writeFileSync(path.join(root,'public-preview-check.mjs'),"console.error('BROKEN_SIBLING_LINK');process.exit(1);");
   const r=run(root);
   assert.notEqual(r.status,0);assert.match(r.stderr,/BROKEN_SIBLING_LINK/);
   assert.match(r.stderr,/public-preview-check.mjs failed/);
