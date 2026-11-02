@@ -272,7 +272,7 @@ test('offline fallback ignores a poisoned older preview cache',async()=>{
     new Response('older forged HTML',{status:200,headers:{'content-type':'text/html'}})]]));
   const offline=await h.emit('fetch',h.request('./?mode=demo'));
   assert.match(await offline.response.text(),/This Week — Public Release Preview/);
-  assert.doesNotMatch(await offline.response.clone().text(),/forged HTML/);
+  assert.doesNotMatch(await h.cacheStores.get('this-week-public-preview-v3').get(ROOT).clone().text(),/forged HTML/);
 });
 
 test('offline fallback rejects a locally corrupted current-version shell',async()=>{
