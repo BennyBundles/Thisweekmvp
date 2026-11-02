@@ -50,9 +50,13 @@ test('a stale permissive duplicate connect-src fails on the actual staged file',
 });
 test('CSP that appears after a script fails even if its own text is correct',()=>{
   withStaged(file=>{
-    modify(file,
+    const html=fs.readFileSync(file,'utf8');
+    const originalScript=html.match(/<script[^>]*>[\s\S]*?<\/script>/i)?.[0];
+    assert.ok(originalScript,'expected existing script in staged HTML');
+    const moved=html.replace(originalScript,'').replace(
       '<meta http-equiv="Content-Security-Policy"',
-      '<script>const early=1;</script><meta http-equiv="Content-Security-Policy"');
+      originalScript+'<meta http-equiv="Content-Security-Policy"');
+    fs.writeFileSync(file,moved);
     const r=check(file);
     assert.notEqual(r.status,0);
     assert.match(r.stderr,/Production CSP appears after a potentially active resource/);
