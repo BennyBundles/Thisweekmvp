@@ -5,6 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
+import {createHash} from 'node:crypto';
 
 const script=fileURLToPath(new URL('./stage-preview.mjs',import.meta.url));
 const assetSources=[
@@ -25,7 +26,7 @@ function fixture(){
   fs.copyFileSync(fileURLToPath(new URL('./stamp-preview-service-worker.mjs',import.meta.url)),
     path.join(root,'stamp-preview-service-worker.mjs'));
   fs.writeFileSync(path.join(root,'public-preview-sw.js'),
-    "const CACHE_PREFIX='this-week-public-preview-';\nconst CACHE_NAME=CACHE_PREFIX+'v4';\n");
+    "const CACHE_PREFIX='this-week-public-preview-';\nconst CACHE_NAME=CACHE_PREFIX+'v4';\nconst EXPECTED_ASSET_SHA256=null;\n");
   const mock=`import fs from 'node:fs';import path from 'node:path';
 const [src,dst]=process.argv.slice(2);
 fs.mkdirSync(path.dirname(dst),{recursive:true});fs.copyFileSync(src,dst);`;
@@ -114,4 +115,18 @@ test('staged PWA fingerprint changes after a different shell build',()=>within(r
   const second=run(root);assert.equal(second.status,0,second.stderr);
   const after=fs.readFileSync(path.join(root,'_site/public-preview/sw.js'),'utf8');
   assert.notEqual(after,prior);
+}));
+
+
+test('staged service worker embeds matching SHA-256 values for exact staged assets',()=>within(root=>{
+  const r=run(root);assert.equal(r.status,0,r.stderr);
+  const sw=fs.readFileSync(path.join(root,'_site/public-preview/sw.js'),'utf8');
+  const marker=sw.match(/const EXPECTED_ASSET_SHA256=Object\.freeze\((\{[^\n]+\})\);/);
+  assert.ok(marker);
+  const expected=JSON.parse(marker[1]);
+  for(const [key,file]of [['shell','index.html'],['manifest','manifest.webmanifest'],['icon','icon.svg']]){
+    const actual=createHash('sha256')
+      .update(fs.readFileSync(path.join(root,'_site/public-preview',file))).digest('hex');
+    assert.equal(actual,expected[key]);
+  }
 }));
