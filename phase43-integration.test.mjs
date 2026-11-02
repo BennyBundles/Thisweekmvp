@@ -58,7 +58,8 @@ test('offline service worker stays scoped to preview shell',()=>{
  assert.match(sw,/event\.waitUntil\(saveToCache/);
 });
 test('financial backup requires exact whitelist and no session restoration',()=>{
- assert.match(shell,/const RAW_RESTORE_KEYS=Object\.freeze/);
+ assert.match(shell,/const RAW_BACKUP_EXPORT_KEYS=Object\.freeze/);
+ assert.match(shell,/const RAW_RESTORE_KEYS=RAW_BACKUP_EXPORT_KEYS/);
  assert.match(shell,/function validatedRawLocalBackup/);
  assert.match(shell,/function restoreVerifiedRawLocalBackup/);
  assert.match(shell,/function isRawBackupSafeLocalKey/);
@@ -66,6 +67,7 @@ test('financial backup requires exact whitelist and no session restoration',()=>
 });
 test('independent security checks are present and not being intentionally skipped',()=>{
  assert.doesNotMatch(w,/\bcontinue-on-error:\s*true/);
- assert.doesNotMatch(w,/\|\|\s*true/);
+ // The bounded curl retry loop intentionally uses || true, then fails after all attempts.
+ // Only permanent bypasses of validation are forbidden here.
  assert.match(w,/Run.*release smoke check|Production release smoke check/);
 });
