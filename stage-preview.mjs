@@ -11,7 +11,7 @@ import {createHash} from 'node:crypto';
 const root=process.cwd();
 const out=path.resolve(root,'_site');
 const lockPath=path.resolve(root,'.thisweek-preview-build.lock');
-let lockFd=null,backupRoot=null,backupMoved=false,workStarted=false,buildSucceeded=false;
+let lockFd=null,backupRoot=null,backupMoved=false,workStarted=false;
 function cleanBuildLock(){
   if(lockFd!==null){
     try{fs.closeSync(lockFd)}finally{fs.rmSync(lockPath,{force:true});lockFd=null}
@@ -76,8 +76,8 @@ try {
     fs.renameSync(out,path.join(backupRoot,'_site'));
     backupMoved=true;
   }
-  fs.mkdirSync(out,{recursive:true});
   workStarted=true;
+  fs.mkdirSync(out,{recursive:true});
   call('prepare-site.mjs','index.html','_site/index.html');
   call('verify-production-csp.mjs','_site/index.html');
   call('prepare-public-preview.mjs','index.html','_site/public-preview.source.html');
@@ -111,7 +111,6 @@ try {
   const manifest={schema:'thisweek.preview-artifact.v1',channel:'preview',sourceCommit:identity,
     sourceBranch:process.env.VERCEL_GIT_COMMIT_REF||null,assets:hashes};
   fs.writeFileSync(path.join(out,'preview-build.json'),JSON.stringify(manifest,null,2)+'\n');
-  buildSucceeded=true;
   console.log(JSON.stringify({status:'PASS',channel:'preview',assets:paths.length,commit:identity,
     manifestHash:hash(path.join(out,'preview-build.json'))}));
 }catch(e){
