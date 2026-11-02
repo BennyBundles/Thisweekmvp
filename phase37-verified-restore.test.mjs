@@ -187,3 +187,71 @@ test('unsafe properties and possible secrets in optional JSON are rejected',()=>
  assert.throws(()=>h.check(b),/possible credentials/);
  assert.equal(h.disk.size,0);
 });
+
+
+test('rollback preserves a different value written by a competing tab',()=>{
+ const h=boot(),b=h.backup(),original=h.localStorage.setItem.bind(h.localStorage);
+ const competing='{"motion":"from-another-tab"}';
+ h.localStorage.setItem=function(key,value){
+   original(key,value);
+   if(key==='thisweek.state.v2'){
+     h.disk.set('thisweek.uiPrefs.v1',competing);
+     throw Error('interrupted final Plan write');
+   }
+ };
+ assert.throws(()=>h.apply(b),/rollback could not be verified/);
+ assert.equal(h.disk.get('thisweek.uiPrefs.v1'),competing);
+ assert.equal(h.disk.has('thisweek.userId'),false);
+ assert.equal(h.disk.has('thisweek.state.v2'),false);
+ assert.equal(h.exec('persistedStateQuarantine'),'Partial restore requires inspection');
+ assert(h.warnings.includes('read'));
+});
+
+test('rollback preserves a competing tab Plan overwrite and quarantines restore',()=>{
+ const h=boot(),b=h.backup(),original=h.localStorage.setItem.bind(h.localStorage);
+ const competing='{"schemaVersion":3,"userId":"other-tab"}';
+ h.localStorage.setItem=function(key,value){
+   original(key,value);
+   if(key==='thisweek.state.v2'){
+     h.disk.set('thisweek.state.v2',competing);
+     throw Error('interrupted after competing Plan update');
+   }
+ };
+ assert.throws(()=>h.apply(b),/rollback could not be verified/);
+ assert.equal(h.disk.get('thisweek.state.v2'),competing);
+ assert.equal(h.disk.has('thisweek.userId'),false);
+ assert.equal(h.disk.has('thisweek.uiPrefs.v1'),false);
+ assert.equal(h.exec('persistedStateQuarantine'),'Partial restore requires inspection');
+});
+
+test('rollback tolerates an already removed restored key without false quarantine',()=>{
+ const h=boot(),b=h.backup(),original=h.localStorage.setItem.bind(h.localStorage);
+ h.localStorage.setItem=function(key,value){
+   original(key,value);
+   if(key==='thisweek.state.v2'){
+     h.disk.delete('thisweek.uiPrefs.v1');
+     throw Error('interrupted final write');
+   }
+ };
+ assert.throws(()=>h.apply(b),/safely aborted and rolled back/);
+ assert.equal(h.disk.size,0);
+ assert.equal(h.exec('persistedStateQuarantine'),null);
+});
+
+test('rollback skips a key whose setItem failed without writing any value',()=>{
+ const h=boot(),b=h.backup(),original=h.localStorage.setItem.bind(h.localStorage);
+ h.localStorage.setItem=function(key,value){
+   if(key==='thisweek.state.v2')throw Error('pre-write storage failure');
+   return original(key,value);
+ };
+ assert.throws(()=>h.apply(b),/safely aborted and rolled back/);
+ assert.equal(h.disk.size,0);
+ assert.equal(h.exec('persistedStateQuarantine'),null);
+});
+
+test('restore source guards rollback keys by exact expected bytes',()=>{
+ assert.match(source,/added\.push\(\[key,value\]\)/);
+ assert.match(source,/current!==expectedRestoreValue/);
+ assert.match(source,/if\(current===null\)continue/);
+ assert.doesNotMatch(source,/for\(const key of added\.reverse\(\)\)/);
+});

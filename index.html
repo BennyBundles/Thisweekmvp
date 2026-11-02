@@ -7085,16 +7085,28 @@ function restoreVerifiedRawLocalBackup(source){
     entries.push([STATE_KEY,source.localStorage[STATE_KEY]]);
     for(const [key,value] of entries){
       if(localStorage.getItem(key)!==null)throw new Error('A competing browser tab changed storage. Restore aborted.');
-      added.push(key); // Include a key even if the write succeeds but subsequently throws.
+      // Remember the exact written bytes, including a write followed by an exception.
+      // A later rollback must never erase a different value from another open tab.
+      added.push([key,value]);
       localStorage.setItem(key,value);
       if(localStorage.getItem(key)!==value)throw new Error('Browser failed to verify the restored key.');
     }
     return validated.summary;
   }catch(e){
     const rollbackErrors=[];
-    for(const key of added.reverse()){
-      try{localStorage.removeItem(key);if(localStorage.getItem(key)!==null)rollbackErrors.push(key)}
-      catch{rollbackErrors.push(key)}
+    for(const [key,expectedRestoreValue] of added.reverse()){
+      try{
+        const current=localStorage.getItem(key);
+        if(current===null)continue; // Already removed by browser or another tab.
+        if(current!==expectedRestoreValue){
+          // A different, newer value now occupies this key. Do not delete it.
+          rollbackErrors.push(key);
+          continue;
+        }
+        // Best effort: localStorage does not support compare-and-delete atomically.
+        localStorage.removeItem(key);
+        if(localStorage.getItem(key)!==null)rollbackErrors.push(key);
+      }catch{rollbackErrors.push(key)}
     }
     if(rollbackErrors.length){
       persistedStateQuarantine='Partial restore requires inspection';
