@@ -127,7 +127,7 @@ test('404 navigation never overwrites offline shell',async()=>{
   network=null;
   const recovered=await h.emit('fetch',h.request('./'));
   assert.equal(recovered.response.status,200);
-  assert.match(await recovered.response.text(),/preinstalled:/);
+  assert.match(await recovered.response.text(),/install:/);
 });
 
 test('server failures and redirects cannot poison cached shell',async()=>{
@@ -166,9 +166,9 @@ test('cross-origin, POST and unrelated requests bypass service worker',async()=>
 test('manifest and icon cache-first requests work without network',async()=>{
   const h=harness();await h.emit('install');
   const manifest=await h.emit('fetch',h.request('./manifest.webmanifest','same-origin'));
-  assert.match(await manifest.response.text(),/preinstalled:/);
+  assert.match(await manifest.response.text(),/install:/);
   const icon=await h.emit('fetch',h.request('./icon.svg','same-origin'));
-  assert.match(await icon.response.text(),/preinstalled:/);
+  assert.match(await icon.response.text(),/install:/);
   assert.equal(h.tracking.fetches.length,0);
 });
 
