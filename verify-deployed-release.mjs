@@ -61,18 +61,18 @@ export function verifyIndexCsp(html){
   demand(/(?:^|;)\s*connect-src 'none'(?:;|$)/.test(policy), 'Production money/client networking unexpectedly enabled');
   demand(/(?:^|;)\s*object-src 'none'(?:;|$)/.test(policy), 'Object embedding must be blocked');
 }
-export function assetUrl(base, path, sha){
+export function assetUrl(base, path, sha, versioned=true){
   const origin=new URL(base);
   demand(origin.protocol==='https:' && !origin.username && !origin.password && !origin.search && !origin.hash, 'Base must be a clean HTTPS URL');
   demand(origin.pathname.endsWith('/'), 'Base must end in /');
   const url=new URL(path.replace(/^\//,''),origin);
   demand(url.origin===origin.origin && url.pathname.startsWith(origin.pathname), 'Asset escaped release base');
-  url.searchParams.set('v',sha.slice(0,8));
+  if(versioned)url.searchParams.set('v',sha.slice(0,8));
   return url;
 }
-export function verifyPublishedOfflineAssets({shell,manifest,icon,worker,expectedWorkerSha}){
+export function verifyPublishedOfflineAssets({shell,manifest,icon,worker,workerBytes=worker,expectedWorkerSha}){
   demand(/^[a-f0-9]{64}$/.test(expectedWorkerSha||''), 'Expected trusted staged offline worker SHA-256 is required');
-  const observedWorkerSha=createHash('sha256').update(worker,'utf8').digest('hex');
+  const observedWorkerSha=createHash('sha256').update(workerBytes).digest('hex');
   demand(observedWorkerSha===expectedWorkerSha, 'Published offline worker does not match trusted staged worker SHA-256');
   const m=worker.match(/const EXPECTED_ASSET_SHA256=Object\.freeze\((\{[^\n]+\})\);/);
   demand(m && m[1], 'Published offline worker has no injected asset SHA-256 digest map');
@@ -92,18 +92,25 @@ export async function verifyOnce({baseUrl,expectedSha,config,expectedWorkerSha,f
   demand(SHA.test(expectedSha), 'Expected commit SHA is invalid');
   demand(/^[a-f0-9]{64}$/.test(expectedWorkerSha||''), 'Trusted staged offline worker SHA-256 is required before fetching');
   const root=new URL(baseUrl);
-  const read=async(path, marker)=>{
-    const url=assetUrl(baseUrl,path,expectedSha);
+  const read=async(path, marker, versioned=true)=>{
+    const url=assetUrl(baseUrl,path,expectedSha,versioned);
     const result=await fetchImpl(url.href,{redirect:'manual',cache:'no-store',signal:AbortSignal.timeout(15000)});
     demand(result.status===200, `HTTP ${result.status} at ${path}`);
     demand(result.type!=='opaqueredirect' && !result.redirected, `Redirect at ${path}`);
     demand(new URL(result.url).origin===root.origin && new URL(result.url).pathname===url.pathname, `Unexpected response URL at ${path}`);
     const declaredLength=Number(result.headers.get('content-length')||0);
-    demand(declaredLength<=2_000_000, `Asset too large at ${path}`);
-    const body=await result.text();
-    demand(body.length>0 && body.length<=2_000_000, `Empty or oversized asset at ${path}`);
+    demand(Number.isFinite(declaredLength)&&declaredLength>=0&&declaredLength<=2_000_000,
+      `Invalid or oversized Content-Length at ${path}`);
+    // Read the same post-content-decoding bytes the service worker would digest.
+    // Response.text() is lossy for malformed UTF-8 and must not be used as proof.
+    const bytes=new Uint8Array(await result.arrayBuffer());
+    demand(bytes.byteLength>0&&bytes.byteLength<=2_000_000,
+      `Empty or oversized asset at ${path}`);
+    let body;
+    try{body=new TextDecoder('utf-8',{fatal:true}).decode(bytes)}
+    catch{throw new Error(`Invalid UTF-8 at ${path}`)}
     if(marker)demand(body.includes(marker), `Missing expected route marker at ${path}`);
-    return {body,contentType:result.headers.get('content-type')||''};
+    return {body,bytes,contentType:result.headers.get('content-type')||''};
   };
   const manifest=await read('/release.json');
   demand(/\bjson\b/i.test(manifest.contentType), 'Release manifest was not JSON');
@@ -115,17 +122,34 @@ export async function verifyOnce({baseUrl,expectedSha,config,expectedWorkerSha,f
   let previewShell=null;
   for(const [path,marker] of REQUIRED_ASSETS.slice(1)){
     const value=await read(path,marker);
-    if(path==='/public-preview/?mode=demo')previewShell=value.body;
+    if(path==='/public-preview/?mode=demo')previewShell=value;
   }
-  const offlineManifest=await read('/public-preview/manifest.webmanifest');
-  const offlineIcon=await read('/public-preview/icon.svg');
-  const offlineWorker=await read('/public-preview/sw.js');
-  demand(/\b(?:manifest\+json|application\/json)\b/i.test(offlineManifest.contentType), 'Wrong offline manifest MIME');
-  demand(/\bimage\/svg\+xml\b/i.test(offlineIcon.contentType), 'Wrong offline icon MIME');
-  demand(/\b(?:javascript|ecmascript)\b/i.test(offlineWorker.contentType), 'Wrong offline worker MIME');
-  const integrity=verifyPublishedOfflineAssets({shell:previewShell,manifest:offlineManifest.body,
-    icon:offlineIcon.body,worker:offlineWorker.body,expectedWorkerSha});
-  return {...receipt, checkedAssets:REQUIRED_ASSETS.length+4, ...integrity, origin:root.origin};
+  // Audit both cache-busted route probes AND the exact unversioned URLs
+  // fetched by the installing worker. CDN variants may not share the same bytes.
+  const versioned={
+    shell:previewShell,
+    manifest:await read('/public-preview/manifest.webmanifest'),
+    icon:await read('/public-preview/icon.svg'),
+    worker:await read('/public-preview/sw.js')
+  };
+  const direct={
+    shell:await read('/public-preview/', 'thisweek.publicPreview.state.v2',false),
+    manifest:await read('/public-preview/manifest.webmanifest',null,false),
+    icon:await read('/public-preview/icon.svg',null,false),
+    worker:await read('/public-preview/sw.js',null,false)
+  };
+  for(const [kind,assets] of Object.entries({versioned,direct})){
+    demand(/^text\\/html(?:;|$)/i.test(assets.shell.contentType), 'Wrong '+kind+' offline shell MIME');
+    demand(/\\b(?:manifest\\+json|application\\/json)\\b/i.test(assets.manifest.contentType), 'Wrong '+kind+' offline manifest MIME');
+    demand(/\\bimage\\/svg\\+xml\\b/i.test(assets.icon.contentType), 'Wrong '+kind+' offline icon MIME');
+    demand(/\\b(?:javascript|ecmascript)\\b/i.test(assets.worker.contentType), 'Wrong '+kind+' offline worker MIME');
+    verifyPublishedOfflineAssets({
+      shell:assets.shell.bytes,manifest:assets.manifest.bytes,icon:assets.icon.bytes,
+      worker:assets.worker.body,workerBytes:assets.worker.bytes,expectedWorkerSha
+    });
+  }
+  return {...receipt, checkedAssets:REQUIRED_ASSETS.length+8, assetDigestCount:3,
+    offlineUrlVariants:2, origin:root.origin};
 }
 export async function auditDeployment({baseUrl,expectedSha,config,expectedWorkerSha,fetchImpl=fetch,attempts=3,delayMs=1000,sleep=ms=>new Promise(r=>setTimeout(r,ms))}){
   demand(Number.isInteger(attempts)&&attempts>=1&&attempts<=12,'Invalid retry count');
