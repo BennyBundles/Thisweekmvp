@@ -6883,14 +6883,20 @@ function runPhase14TrustAudit(){
 function confirmSensitiveExport(label){
   return confirmHighImpactMutation(label+' can contain sensitive financial information and will be saved outside This Week. Continue?');
 }
+function isRawBackupSafeLocalKey(key){
+  // Never export authentication sessions, token/secret/credential keys or short-lived session state.
+  return /^thisweek\./.test(key)&&!/(?:^|\.)(?:auth|session|token|secret|credential)(?:\.|$)/i.test(key);
+}
 function downloadRawLocalDataExport(){
-  const inventory=localDataInventory(),payload={
+  const inventory=localDataInventory(),safeLocal=inventory.local.filter(x=>isRawBackupSafeLocalKey(x.key)),payload={
     schema:'thisweek.local-data-export',
     schemaVersion:1,
     exportedAt:nowIso(),
     warning:'Sensitive financial data. This export is not uploaded by This Week.',
-    localStorage:Object.fromEntries(inventory.local.map(x=>[x.key,safeLocalStorageGet(x.key)])),
-    sessionStorage:Object.fromEntries(inventory.session.map(x=>{let v=null;try{v=sessionStorage.getItem(x.key);}catch{}return [x.key,v];}))
+    localStorage:Object.fromEntries(safeLocal.map(x=>[x.key,safeLocalStorageGet(x.key)])),
+    // Session storage can contain short-lived bearer tokens. Never include it in downloadable backups.
+    sessionStorage:{},
+    excluded:{sessionStorageKeys:inventory.session.length,sensitiveLocalKeys:inventory.local.length-safeLocal.length}
   };
   const json=JSON.stringify(payload,null,2),blob=new Blob([json],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
   a.href=url;a.download='this-week-local-data-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();
@@ -8870,7 +8876,7 @@ function renderPrivacy(){
 
       <section class="section"><div class="section-head"><div><span class="section-kicker">Export</span><h2>Take a copy before changing devices or deleting data</h2><div class="section-caption">Downloaded files can contain sensitive financial information and are no longer controlled by This Week after download. Store or delete them accordingly.</div></div></div>
         <div class="action-row">${hasPlan?'<button class="btn btn-primary" id="privacyPortableExport">Export normalized financial data</button>':''}<button class="btn btn-secondary" id="privacyRawExport">Export all local This Week keys</button><a class="btn btn-secondary" href="#data-model">Open Data Model</a></div>
-        <div class="world-note">Exports are created locally when requested. The app does not automatically upload the resulting file.</div>
+        <div class="world-note">Exports are created locally when requested. The app does not automatically upload the resulting file. Raw backups deliberately exclude all sessionStorage values and known authentication, token, or secret keys.</div>
       </section>
 
       <section class="section"><div class="section-head"><div><span class="section-kicker">Trust checks</span><h2>Verify the local security boundaries</h2><div class="section-caption">Read-only checks for import handling, local credential fields, Phase 19 activation gating, export boundaries, and destructive-action confirmation.</div></div><button class="btn btn-secondary" id="runTrustAudit">Run trust checks</button></div>
