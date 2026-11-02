@@ -5412,7 +5412,7 @@ function showStoragePersistenceWarning(kind='write'){
       try{downloadVolatilePlanRescue();}
       catch(e){message.textContent='Recovery file could not be created: '+(e?.message||'Unknown error')+'. Keep this tab open and record your edits manually.';}
     });
-    panel.appendChild(rescue);
+    panel.append(rescue);
   }
   document.body.appendChild(panel);
 }
