@@ -11,7 +11,7 @@ import {createHash} from 'node:crypto';
 const root=process.cwd();
 const out=path.resolve(root,'_site');
 const lockPath=path.resolve(root,'.thisweek-preview-build.lock');
-let lockFd=null,backupRoot=null,backupMoved=false,workStarted=false;
+let lockFd=null,backupRoot=null,backupMoved=false,workStarted=false,buildSucceeded=false;
 function cleanBuildLock(){
   if(lockFd!==null){
     try{fs.closeSync(lockFd)}finally{fs.rmSync(lockPath,{force:true});lockFd=null}
@@ -113,6 +113,7 @@ try {
   fs.writeFileSync(path.join(out,'preview-build.json'),JSON.stringify(manifest,null,2)+'\n');
   console.log(JSON.stringify({status:'PASS',channel:'preview',assets:paths.length,commit:identity,
     manifestHash:hash(path.join(out,'preview-build.json'))}));
+  buildSucceeded=true;
 }catch(e){
   // A failed security check must never leave partial assets as a deployable
   // preview. Restore the exact previous artifact when one existed.
@@ -130,7 +131,7 @@ try {
   process.exitCode=1;
 }finally{
   // Never delete the sole remaining backup after an unsuccessful rollback.
-  if(backupRoot&&!backupMoved){
+  if(backupRoot&&(buildSucceeded||!backupMoved)){
     try{fs.rmSync(backupRoot,{recursive:true,force:true})}
     catch(e){console.error('PREVIEW_BACKUP_CLEANUP_FAILED: '+e.message);process.exitCode=1}
   }
