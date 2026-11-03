@@ -5315,24 +5315,115 @@ function clone(v){
 function nowIso() { return new Date().toISOString(); }
 
 const runtimePerf={revision:0,route:{},cacheHits:0,cacheMisses:0,longTasks:0,storageWrites:0,storageWriteSkips:0};
-const runtimeStorageHealth={available:true,lastError:null,lastFailureAt:null};
+const runtimeStorageHealth={available:true,readable:true,writable:true,lastError:null,lastFailureAt:null};
 let volatileUserId=null;
 let volatileState=null;
 let volatileStateSerialized=null;
 let lastPersistedStateSerialized=null;
+let persistedStateQuarantine=null;
+let blockedPlanDraftSerialized=null;
+
+function quarantinePlanStorage(reason,kind='read'){
+  persistedStateQuarantine=persistedStateQuarantine||reason;
+  runtimeStorageHealth.available=false;
+  runtimeStorageHealth.lastError=persistedStateQuarantine;
+  runtimeStorageHealth.lastFailureAt=nowIso();
+  showStoragePersistenceWarning(kind);
+}
+function handleExternalPlanStorageChange(event){
+  if((event.key!==STATE_KEY&&event.key!==null)||
+     (event.storageArea&&event.storageArea!==localStorage))return;
+  let latest;
+  try{latest=localStorage.getItem(STATE_KEY);}
+  catch(e){quarantinePlanStorage(e?.message||'Stored Plan became unreadable');return;}
+  if(latest!==lastPersistedStateSerialized)
+    quarantinePlanStorage('Another tab changed your financial Plan. This tab cannot safely save until reviewed.','conflict');
+}
+if(typeof window!=='undefined'&&typeof window.addEventListener==='function')
+  window.addEventListener('storage',handleExternalPlanStorageChange);
 
 function noteCache(hit){if(hit)runtimePerf.cacheHits++;else runtimePerf.cacheMisses++;}
 function safeLocalStorageGet(key){
-  try{const v=localStorage.getItem(key);runtimeStorageHealth.available=true;return v;}
-  catch(e){runtimeStorageHealth.available=false;runtimeStorageHealth.lastError=e?.message||'Storage unavailable';runtimeStorageHealth.lastFailureAt=nowIso();return null;}
+  try{
+    const v=localStorage.getItem(key);
+    runtimeStorageHealth.readable=true;
+    runtimeStorageHealth.available=runtimeStorageHealth.writable&&!persistedStateQuarantine;
+    return v;
+  }catch(e){
+    runtimeStorageHealth.readable=false;
+    runtimeStorageHealth.available=false;
+    runtimeStorageHealth.lastError=e?.message||'Storage unavailable';
+    runtimeStorageHealth.lastFailureAt=nowIso();
+    if(key===STATE_KEY)quarantinePlanStorage('Saved financial Plan is unreadable: '+(e?.message||'storage access failed'));
+    return null;
+  }
 }
 function safeLocalStorageSet(key,value){
-  try{localStorage.setItem(key,value);runtimeStorageHealth.available=true;runtimePerf.storageWrites++;return true;}
-  catch(e){runtimeStorageHealth.available=false;runtimeStorageHealth.lastError=e?.message||'Storage write failed';runtimeStorageHealth.lastFailureAt=nowIso();return false;}
+  try{
+    localStorage.setItem(key,value);
+    runtimeStorageHealth.writable=true;
+    runtimeStorageHealth.available=runtimeStorageHealth.readable&&!persistedStateQuarantine;
+    runtimePerf.storageWrites++;
+    return true;
+  }catch(e){
+    runtimeStorageHealth.writable=false;
+    runtimeStorageHealth.available=false;
+    runtimeStorageHealth.lastError=e?.message||'Storage write failed';
+    runtimeStorageHealth.lastFailureAt=nowIso();
+    return false;
+  }
 }
 function safeLocalStorageRemove(key){
-  try{localStorage.removeItem(key);runtimeStorageHealth.available=true;return true;}
+  try{localStorage.removeItem(key);
+    runtimeStorageHealth.available=runtimeStorageHealth.readable&&runtimeStorageHealth.writable&&!persistedStateQuarantine;
+    return true;}
   catch(e){runtimeStorageHealth.available=false;runtimeStorageHealth.lastError=e?.message||'Storage remove failed';runtimeStorageHealth.lastFailureAt=nowIso();return false;}
+}
+function appendPlanRescueControl(panel,message){
+  if(!(volatileStateSerialized||blockedPlanDraftSerialized)||
+     Array.from(panel.children||[]).some(child=>child.id==='thisweek-volatile-rescue'))return;
+  const rescue=document.createElement('button');
+  rescue.id='thisweek-volatile-rescue';
+  rescue.type='button';
+  rescue.textContent='Save in-memory Plan for manual recovery';
+  rescue.style.cssText='display:block;min-height:44px;width:100%;margin-top:7px;padding:8px 12px;background:#ffffff;color:#3b1720;border:1px solid #ffffff;border-radius:9px;font:700 14px/1.3 system-ui,sans-serif;cursor:pointer';
+  rescue.addEventListener?.('click',()=>{
+    try{downloadVolatilePlanRescue();}
+    catch(e){message.textContent='Recovery file could not be created: '+(e?.message||'Unknown error')+'. Keep this tab open and record your edits manually.';}
+  });
+  panel.append(rescue);
+}
+function showStoragePersistenceWarning(kind='write'){
+  // Display only after an actual failed write. A successful read does not establish durability.
+  if(typeof document==='undefined'||!document.body)return;
+  const warning=kind==='conflict'
+    ? 'Another This Week tab changed your Plan. This tab cannot safely save over it. A raw backup contains only previously saved data, not unsaved edits. Note your unsaved edits separately before reloading.'
+    : kind==='read'
+    ? 'Stored Plan data cannot be read safely (or requires a newer version), and saves are blocked to avoid overwriting it. Any backup may be incomplete; inspect readable data before a reset.'
+    : 'Your latest Plan change could not be saved to this browser and may disappear after a reload. A raw backup contains only previously saved data; note this unsaved change separately.';
+  const existing=document.getElementById('thisweek-storage-failure');
+  if(existing){
+    if(existing.children&&existing.children[0])existing.children[0].textContent=warning;
+    appendPlanRescueControl(existing,existing.children?.[0]);
+    return;
+  }
+  const panel=document.createElement('aside');
+  panel.id='thisweek-storage-failure';
+  panel.setAttribute('role','alert');
+  panel.setAttribute('aria-label','This Week storage failure');
+  panel.style.cssText='position:fixed;top:calc(12px + env(safe-area-inset-top));left:12px;right:12px;max-width:560px;margin:0 auto;z-index:9999;background:#3b1720;color:#fff2f4;border:2px solid #fda4af;border-radius:14px;padding:13px 15px;font:600 14px/1.45 system-ui,sans-serif;box-shadow:0 10px 35px rgba(0,0,0,.45)';
+  const message=document.createElement('div');
+  message.textContent=warning;
+  const link=document.createElement('a');
+  link.href='#privacy';
+  link.textContent='Open Privacy & Local Data to export';
+  link.style.cssText='display:inline-block;margin-top:8px;color:#ffffff;text-decoration:underline;min-height:40px;line-height:40px';
+  panel.append(message,link);
+  appendPlanRescueControl(panel,message);
+  document.body.appendChild(panel);
+}
+function clearStoragePersistenceWarning(){
+  if(typeof document!=='undefined')document.getElementById('thisweek-storage-failure')?.remove();
 }
 function inferCoreSchemaVersion(state){
   const explicit=Number(state?.schemaVersion||0);
@@ -5407,28 +5498,76 @@ function readState(){
   const raw=safeLocalStorageGet(STATE_KEY);
   if(!raw)return volatileState?clone(volatileState):null;
   try{
-    const parsed=normalizeRuntimeState(JSON.parse(raw));
+    const source=JSON.parse(raw);
+    if(!source||typeof source!=='object'||Array.isArray(source))throw new Error('Stored Plan is not a valid object');
+    if(inferCoreSchemaVersion(source)>CORE_SCHEMA_VERSION)throw new Error('Stored Plan requires a newer schema');
+    const parsed=normalizeRuntimeState(source);
+    if(!parsed||!parsed.config||typeof parsed.config!=='object')throw new Error('Stored Plan configuration is missing');
     volatileState=clone(parsed);volatileStateSerialized=JSON.stringify(parsed);lastPersistedStateSerialized=raw;
     return parsed;
-  }catch{return volatileState?clone(volatileState):null;}
+  }catch(e){
+    quarantinePlanStorage(e?.message||'Stored Plan is unreadable');
+    return volatileState?clone(volatileState):null;
+  }
 }
 function writeState(state){
+  if(persistedStateQuarantine){
+    // A blocked edit may be newer than the last volatile copy. Preserve it only
+    // as separately labeled review evidence, never as the authoritative Plan.
+    blockedPlanDraftSerialized=null;
+    try{
+      const candidate=JSON.stringify(state);
+      if(typeof candidate==='string'&&candidate.length<=4*1024*1024)
+        blockedPlanDraftSerialized=candidate;
+    }catch{}
+    runtimeStorageHealth.available=false;
+    showStoragePersistenceWarning(persistedStateQuarantine.startsWith('Another tab')?'conflict':'read');
+    return state;
+  }
   const normalized=normalizeRuntimeState(state);
   let serialized;
-  try{serialized=JSON.stringify(normalized);}catch{return state;}
+  try{serialized=JSON.stringify(normalized);}catch(e){
+    runtimeStorageHealth.available=false;
+    runtimeStorageHealth.lastError=e?.message||'State serialization failed';
+    runtimeStorageHealth.lastFailureAt=nowIso();
+    showStoragePersistenceWarning();
+    return state;
+  }
   const changed=serialized!==volatileStateSerialized;
   volatileStateSerialized=serialized;
   try{volatileState=JSON.parse(serialized);}catch{volatileState=clone(normalized);}
   if(changed)runtimePerf.revision++;
   if(serialized!==lastPersistedStateSerialized){
-    if(safeLocalStorageSet(STATE_KEY,serialized))lastPersistedStateSerialized=serialized;
+    // Optimistic conflict check; localStorage does not provide atomic compare-and-swap.
+    let live;
+    try{
+      live=localStorage.getItem(STATE_KEY);
+      runtimeStorageHealth.readable=true;
+    }catch(e){
+      quarantinePlanStorage('Cannot verify the current stored Plan: '+(e?.message||'storage access failed'));
+      return state;
+    }
+    if(live!==lastPersistedStateSerialized){
+      quarantinePlanStorage('Another tab changed your financial Plan. This tab cannot safely save until reviewed.','conflict');
+      return state;
+    }
+    if(safeLocalStorageSet(STATE_KEY,serialized)){
+      lastPersistedStateSerialized=serialized;
+      clearStoragePersistenceWarning();
+    }else showStoragePersistenceWarning();
   }else runtimePerf.storageWriteSkips++;
   return state;
 }
 function clearState(){
-  volatileState=null;volatileStateSerialized=null;lastPersistedStateSerialized=null;volatileUserId=null;
-  runtimePerf.revision++;
-  safeLocalStorageRemove(STATE_KEY);safeLocalStorageRemove(USER_ID_KEY);
+  const stateRemoved=safeLocalStorageRemove(STATE_KEY),userRemoved=safeLocalStorageRemove(USER_ID_KEY);
+  if(stateRemoved&&userRemoved){
+    volatileState=null;volatileStateSerialized=null;blockedPlanDraftSerialized=null;
+    lastPersistedStateSerialized=null;volatileUserId=null;
+    runtimePerf.revision++;
+    persistedStateQuarantine=null;
+    runtimeStorageHealth.available=runtimeStorageHealth.readable&&runtimeStorageHealth.writable;
+    clearStoragePersistenceWarning();
+  }else quarantinePlanStorage('Local Plan reset was incomplete. Financial data remains unverified.');
 }
 
 function formatCents(cents) {
@@ -6809,34 +6948,318 @@ function runPhase14TrustAudit(){
 function confirmSensitiveExport(label){
   return confirmHighImpactMutation(label+' can contain sensitive financial information and will be saved outside This Week. Continue?');
 }
+const RAW_BACKUP_EXPORT_KEYS=Object.freeze([
+  'thisweek.userId','thisweek.state.v2','thisweek.uiPrefs.v1',
+  'thisweek.powerPrefs.v1','thisweek.savingsGoals.v1','thisweek.connectedData.v1',
+  'thisweek.recommendations.v1','thisweek.scenarioDraft.v1',
+  'thisweek.analytics.v1','thisweek.flexCaps.v1','thisweek.precheckHint.v1',
+  'thisweek.finEvent.v1'
+]);
+function isRawBackupSafeLocalKey(key){
+  // Exact allowlist prevents an unrelated or future credential-bearing This Week key from being exported.
+  return RAW_BACKUP_EXPORT_KEYS.includes(key);
+}
+function inspectRawBackupExportEntry(key,value){
+  if(typeof value!=='string')throw new Error('Cannot safely export unreadable local data: '+key+'.');
+  if(key==='thisweek.userId'||key==='thisweek.precheckHint.v1'||key==='thisweek.finEvent.v1')return value;
+  try{
+    const parsed=JSON.parse(value);
+    if(parsed&&typeof parsed==='object'&&scanObjectForSensitiveFieldNames(parsed).length)
+      throw new Error('Potential credential field found in '+key+'. Remove credentials from local state before exporting.');
+  }catch(e){
+    if(e instanceof SyntaxError && key==='thisweek.state.v2'){
+      // Preserve a damaged core Plan for manual recovery, but never label it as a valid restorable Plan.
+      return value;
+    }
+    throw e;
+  }
+  return value;
+}
 function downloadRawLocalDataExport(){
-  const inventory=localDataInventory(),payload={
+  const inventory=localDataInventory();
+  if(inventory.localAvailable===false)throw new Error('Browser storage cannot be inspected. No backup file was created.');
+  const safeLocal=inventory.local.filter(x=>isRawBackupSafeLocalKey(x.key));
+  const localValues={};
+  for(const item of safeLocal){
+    const value=safeLocalStorageGet(item.key);
+    localValues[item.key]=inspectRawBackupExportEntry(item.key,value);
+  }
+  const rawPlan=localValues['thisweek.state.v2'];
+  let validCorePlan=false;
+  if(rawPlan){
+    try{const p=JSON.parse(rawPlan);validCorePlan=!!p?.config&&typeof p?.userId==='string';}catch{}
+  }
+  const payload={
     schema:'thisweek.local-data-export',
     schemaVersion:1,
     exportedAt:nowIso(),
     warning:'Sensitive financial data. This export is not uploaded by This Week.',
-    localStorage:Object.fromEntries(inventory.local.map(x=>[x.key,safeLocalStorageGet(x.key)])),
-    sessionStorage:Object.fromEntries(inventory.session.map(x=>{let v=null;try{v=sessionStorage.getItem(x.key);}catch{}return [x.key,v];}))
+    localStorage:localValues,
+    // Session storage may contain bearer tokens, so never read its values into this backup.
+    sessionStorage:{},
+    dataHealth:validCorePlan?'core_plan_parsed':'core_plan_missing_or_unreadable',
+    excluded:{sessionStorageKeys:inventory.session.length,sensitiveLocalKeys:inventory.local.length-safeLocal.length}
   };
   const json=JSON.stringify(payload,null,2),blob=new Blob([json],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
   a.href=url;a.download='this-week-local-data-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();
   setTimeout(()=>URL.revokeObjectURL(url),1500);return json.length;
+}
+// Phase 45: voluntary in-memory Plan evidence for writes browser storage could not persist.
+// Not a restorable raw backup, auto-sync mechanism, or payment receipt.
+const VOLATILE_PLAN_RESCUE_MAX_BYTES=4*1024*1024;
+function buildVolatilePlanRescue(){
+  const source=blockedPlanDraftSerialized||volatileStateSerialized;
+  if(!source)throw new Error('No in-memory Plan is available.');
+  if(source.length>VOLATILE_PLAN_RESCUE_MAX_BYTES)
+    throw new Error('In-memory Plan is larger than the 4 MB emergency recovery limit.');
+  let state;
+  try{state=JSON.parse(source);}
+  catch{throw new Error('In-memory Plan cannot be safely parsed.');}
+  if(!state||typeof state!=='object'||Array.isArray(state)||
+     typeof state.userId!=='string'||!state.userId||
+     !state.config||typeof state.config!=='object'||Array.isArray(state.config))
+    throw new Error('In-memory Plan has no valid user or Plan configuration.');
+  if(scanObjectForSensitiveFieldNames(state).length)
+    throw new Error('Possible credentials detected inside in-memory Plan. Cannot export automatically.');
+  const envelope={
+    schema:'thisweek.volatile-plan-review.v1',
+    schemaVersion:1,
+    capturedAt:nowIso(),
+    status:'unverified_in_memory_only',
+    origin:blockedPlanDraftSerialized?'blocked_conflict_draft':'volatile_unsaved_change',
+    warning:'Manual review only. This is NOT a restorable raw backup, NOT proof of a saved transaction, and is NOT uploaded. It may conflict with newer edits in another tab.',
+    state
+  };
+  const json=JSON.stringify(envelope,null,2);
+  const bytes=typeof TextEncoder==='function'
+    ? new TextEncoder().encode(json).length
+    : json.length*2;
+  if(bytes>VOLATILE_PLAN_RESCUE_MAX_BYTES)
+    throw new Error('Emergency Plan JSON exceeds the 4 MB recovery limit.');
+  return {json,bytes,schema:envelope.schema};
+}
+function downloadVolatilePlanRescue(){
+  const recovery=buildVolatilePlanRescue();
+  if(!confirmSensitiveExport('In-memory Plan recovery file (manual review only)'))return false;
+  const blob=new Blob([recovery.json],{type:'application/json;charset=utf-8'});
+  const objectUrl=URL.createObjectURL(blob),anchor=document.createElement('a');
+  try{
+    anchor.href=objectUrl;
+    anchor.download='this-week-UNSAVED-manual-review-'+nowIso().slice(0,10)+'.json';
+    document.body.appendChild(anchor);
+    anchor.click();
+  }finally{
+    anchor.remove();
+    setTimeout(()=>URL.revokeObjectURL(objectUrl),60_000);
+  }
+  return recovery.bytes;
+}
+// Phase 37: exact-key raw Plan backup restore. This is NOT portable-schema import or cloud sync.
+const RAW_RESTORE_MAX_BYTES=4*1024*1024;
+const RAW_RESTORE_KEYS=RAW_BACKUP_EXPORT_KEYS;
+// Count exact UTF-8 bytes while avoiding a multi-megabyte temporary Uint8Array
+// on modern Safari. The scratch buffer is reused across allowlisted entries.
+function rawBackupUtf8Bytes(text,encoder,remaining,scratch){
+  if(text.length>remaining)return remaining+1; // UTF-8 is never shorter than UTF-16 code-unit count.
+  if(scratch){
+    let offset=0,total=0;
+    // Bound each substring too: passing the entire remaining multi-megabyte
+    // suffix to encodeInto() leaves substring allocation/copying behavior to
+    // the browser engine, which is especially risky on memory-limited Safari.
+    // At most three UTF-8 bytes per UTF-16 code unit guarantees a complete
+    // chunk fits the reusable 16 KiB buffer without allocating a new buffer.
+    const maxUnits=Math.min(4096,Math.floor(scratch.length/3));
+    if(maxUnits<2)throw new Error('Browser cannot safely verify raw backup byte length.');
+    while(offset<text.length){
+      let end=Math.min(offset+maxUnits,text.length);
+      // Preserve UTF-16 surrogate pairs at the chunk boundary so emojis
+      // count as four UTF-8 bytes, not two replacement characters.
+      if(end<text.length){
+        const last=text.charCodeAt(end-1);
+        if(last>=0xD800&&last<=0xDBFF)end--;
+      }
+      const chunk=text.slice(offset,end);
+      const part=encoder.encodeInto(chunk,scratch);
+      if(!part||!Number.isInteger(part.read)||part.read!==chunk.length||
+         !Number.isInteger(part.written)||part.written<=0||part.written>scratch.length)
+        throw new Error('Browser cannot safely verify raw backup byte length.');
+      offset+=part.read;total+=part.written;
+      if(total>remaining)return remaining+1;
+    }
+    return total;
+  }
+  // Compatibility fallback when encodeInto is unavailable; never fall back to
+  // UTF-16 string length, which undercounts emoji/CJK backup contents.
+  if(typeof encoder.encode!=='function')
+    throw new Error('Browser cannot safely verify raw backup byte length.');
+  return encoder.encode(text).byteLength;
+}
+let rawRestoreInProgress=false;
+function validatedRawLocalBackup(source){
+  if(!source||typeof source!=='object'||Array.isArray(source))throw new Error('Backup must be a JSON object.');
+  if(source.schema!=='thisweek.local-data-export'||source.schemaVersion!==1)
+    throw new Error('This is not a supported raw This Week backup. Portable snapshots cannot be directly restored.');
+  if(!source.localStorage||typeof source.localStorage!=='object'||Array.isArray(source.localStorage))
+    throw new Error('Backup has no localStorage data.');
+  if(source.sessionStorage&&(typeof source.sessionStorage!=='object'||Array.isArray(source.sessionStorage)||Object.keys(source.sessionStorage).length!==0))
+    throw new Error('Backup contains session data and cannot be restored.');
+  const entries=Object.entries(source.localStorage);
+  if(!entries.length||entries.length>RAW_RESTORE_KEYS.length)
+    throw new Error('Backup contains an invalid number of keys.');
+  const allowed=new Set(RAW_RESTORE_KEYS);
+  // JavaScript string length counts UTF-16 code units, not browser storage
+  // bytes. A backup of emoji/CJK text can be much larger than its length.
+  // Fail closed rather than silently bypass the 4 MB restoration safety cap.
+  if(typeof TextEncoder!=='function')
+    throw new Error('Browser cannot safely verify raw backup byte length.');
+  const byteEncoder=new TextEncoder();
+  const byteScratch=typeof byteEncoder.encodeInto==='function'?new Uint8Array(16*1024):null;
+  let totalBytes=0;
+  for(const [key,value] of entries){
+    if(!allowed.has(key)||!isRawBackupSafeLocalKey(key))
+      throw new Error('Backup contains an unknown or sensitive storage key.');
+    if(typeof value!=='string')throw new Error('Backup contains a non-string storage value.');
+    totalBytes+=rawBackupUtf8Bytes(key,byteEncoder,RAW_RESTORE_MAX_BYTES-totalBytes,byteScratch);
+    if(totalBytes>RAW_RESTORE_MAX_BYTES)
+      throw new Error('Backup contents exceed the 4 MB restoration limit.');
+    totalBytes+=rawBackupUtf8Bytes(value,byteEncoder,RAW_RESTORE_MAX_BYTES-totalBytes,byteScratch);
+    if(totalBytes>RAW_RESTORE_MAX_BYTES)
+      throw new Error('Backup contents exceed the 4 MB restoration limit.');
+  }
+  const rawState=source.localStorage[STATE_KEY];
+  if(typeof rawState!=='string')throw new Error('Backup is missing the core financial Plan.');
+  let state;
+  try{state=JSON.parse(rawState)}catch{throw new Error('Backup Plan JSON is damaged.')}
+  if(!state||typeof state!=='object'||Array.isArray(state)||!state.config||typeof state.config!=='object'||Array.isArray(state.config))
+    throw new Error('Backup Plan configuration is invalid.');
+  const version=inferCoreSchemaVersion(state);
+  if(!Number.isInteger(version)||version<1||version>CORE_SCHEMA_VERSION)
+    throw new Error('Backup Plan uses an unsupported schema version.');
+  if(!state.userId||typeof state.userId!=='string'||state.userId.length>200||!state.config.payProfile||!Number.isSafeInteger(state.config.payProfile.netPayAmount)||state.config.payProfile.netPayAmount<0)
+    throw new Error('Backup Plan user or income data is invalid.');
+  if(source.localStorage[USER_ID_KEY]!==state.userId)
+    throw new Error('Backup user identifier does not match the Plan.');
+  for(const name of ['weeks','transactions','adjustments','importedExternalIds']){
+    if(state[name]!=null&&!Array.isArray(state[name]))throw new Error('Invalid Plan collection: '+name);
+  }
+  for(const name of ['bills','livingNeeds','discretionary']){
+    if(state.config[name]!=null&&!Array.isArray(state.config[name]))throw new Error('Invalid Plan category collection: '+name);
+  }
+  for(const row of state.transactions||[]){
+    if(!row||typeof row!=='object'||typeof row.weekId!=='string'||!Number.isSafeInteger(row.amount)||row.amount<0)
+      throw new Error('Backup has an invalid transaction amount or week.');
+  }
+  for(const week of state.weeks||[]){
+    if(!week||typeof week!=='object'||typeof week.id!=='string'||!Number.isFinite(Date.parse(week.start))||!Number.isFinite(Date.parse(week.end)))
+      throw new Error('Backup has invalid weekly history dates or identifiers.');
+    for(const balance of week.balances||[]){
+      if(!balance||!['allocated','spent','remaining'].every(k=>Number.isSafeInteger(balance[k])))
+        throw new Error('Backup has invalid category ledger amounts.');
+    }
+    for(const bill of week.billAllocations||[]){
+      if(!bill||!['weeklyRequired','contributed','requiredByToday'].every(k=>Number.isSafeInteger(bill[k])))
+        throw new Error('Backup has invalid bill-protection amounts.');
+    }
+  }
+  for(const category of [...(state.config.bills||[]),...(state.config.livingNeeds||[]),...(state.config.discretionary||[])]){
+    if(!category||typeof category!=='object')throw new Error('Backup has invalid category data.');
+    for(const k of ['amount','weeklyLimit','ebtOffset']){
+      if(category[k]!=null&&!Number.isSafeInteger(category[k]))throw new Error('Backup has invalid category money amounts.');
+    }
+  }
+  const unsafeFields=['__proto__','prototype','constructor'];
+  const inspect=(value,depth=0)=>{
+    if(depth>24)throw new Error('Backup is too deeply nested.');
+    if(Array.isArray(value)){for(const v of value)inspect(v,depth+1);return;}
+    if(!value||typeof value!=='object')return;
+    for(const [k,v] of Object.entries(value)){
+      if(unsafeFields.includes(k))throw new Error('Backup contains an unsafe object property.');
+      inspect(v,depth+1);
+    }
+  };
+  inspect(state);
+  for(const [key,value] of entries){
+    if(key===STATE_KEY||key===USER_ID_KEY)continue;
+    if(key===PRECHECK_HINT_KEY||key===FIN_EVENT_KEY)continue; // These short-lived UI hints may be plain text.
+    let parsed;
+    try{parsed=JSON.parse(value)}catch{throw new Error('Malformed JSON for optional backup data: '+key)}
+    inspect(parsed);
+    if(scanObjectForSensitiveFieldNames(parsed).length)throw new Error('Optional backup data contains possible credentials.');
+  }
+  if(scanObjectForSensitiveFieldNames(state).length)
+    throw new Error('Backup contains possible credentials and requires manual review.');
+  return {entries,summary:{schemaVersion:version,weekCount:(state.weeks||[]).length,transactionCount:(state.transactions||[]).length,keyCount:entries.length}};
+}
+function inspectRawBackupRestoreTarget(){
+  const local=inspectAppStorageNamespace(localStorage),session=inspectAppStorageNamespace(sessionStorage);
+  if(!local.available||!session.available)throw new Error('Browser storage cannot be inspected safely.');
+  if(local.keys.length||session.keys.length||persistedStateQuarantine)
+    throw new Error('Restore is allowed only into an empty This Week browser workspace. Export existing data first; do not merge Plans.');
+}
+function restoreVerifiedRawLocalBackup(source){
+  if(rawRestoreInProgress)throw new Error('A restore is already running.');
+  const validated=validatedRawLocalBackup(source);
+  inspectRawBackupRestoreTarget();
+  rawRestoreInProgress=true;
+  const added=[];
+  try{
+    // Restore the core Plan last, so a partial interrupted write does not activate it.
+    const entries=validated.entries.filter(([key])=>key!==STATE_KEY);
+    entries.push([STATE_KEY,source.localStorage[STATE_KEY]]);
+    for(const [key,value] of entries){
+      if(localStorage.getItem(key)!==null)throw new Error('A competing browser tab changed storage. Restore aborted.');
+      // Remember the exact written bytes, including a write followed by an exception.
+      // A later rollback must never erase a different value from another open tab.
+      added.push([key,value]);
+      localStorage.setItem(key,value);
+      if(localStorage.getItem(key)!==value)throw new Error('Browser failed to verify the restored key.');
+    }
+    return validated.summary;
+  }catch(e){
+    const rollbackErrors=[];
+    for(const [key,expectedRestoreValue] of added.reverse()){
+      try{
+        const current=localStorage.getItem(key);
+        if(current===null)continue; // Already removed by browser or another tab.
+        if(current!==expectedRestoreValue){
+          // A different, newer value now occupies this key. Do not delete it.
+          rollbackErrors.push(key);
+          continue;
+        }
+        // Best effort: localStorage does not support compare-and-delete atomically.
+        localStorage.removeItem(key);
+        if(localStorage.getItem(key)!==null)rollbackErrors.push(key);
+      }catch{rollbackErrors.push(key)}
+    }
+    if(rollbackErrors.length){
+      persistedStateQuarantine='Partial restore requires inspection';
+      showStoragePersistenceWarning('read');
+      throw new Error('Restore failed and rollback could not be verified. No further Plan writes are permitted.');
+    }
+    throw new Error('Restore safely aborted and rolled back: '+(e?.message||'storage failure'));
+  }finally{rawRestoreInProgress=false}
 }
 function clearAllThisWeekLocalData(){
   const beforeLocal=inspectAppStorageNamespace(localStorage),beforeSession=inspectAppStorageNamespace(sessionStorage);
   for(const key of beforeLocal.keys)safeLocalStorageRemove(key);
   for(const key of beforeSession.keys){try{sessionStorage.removeItem(key);}catch{}}
   const afterLocal=inspectAppStorageNamespace(localStorage),afterSession=inspectAppStorageNamespace(sessionStorage);
-  volatileUserId=null;volatileState=null;volatileStateSerialized=null;lastPersistedStateSerialized=null;
-  uiPrefsCache=null;connectedDataCache=null;savingsGoalsCache=null;savingsGoalsCacheRevision=-1;
-  historySummaryCache={revision:-1,data:null};connectionImportPreview=null;runtimePerf.revision++;
-  return {
+  const result={
     success:beforeLocal.available&&beforeSession.available&&afterLocal.available&&afterSession.available&&afterLocal.keys.length===0&&afterSession.keys.length===0,
     storageAccessible:beforeLocal.available&&beforeSession.available&&afterLocal.available&&afterSession.available,
     removed:beforeLocal.keys.length+beforeSession.keys.length-afterLocal.keys.length-afterSession.keys.length,
     remaining:[...afterLocal.keys,...afterSession.keys],
     errors:[beforeLocal.error,beforeSession.error,afterLocal.error,afterSession.error].filter(Boolean)
   };
+  if(result.success){
+    volatileUserId=null;volatileState=null;volatileStateSerialized=null;blockedPlanDraftSerialized=null;lastPersistedStateSerialized=null;
+    uiPrefsCache=null;connectedDataCache=null;savingsGoalsCache=null;savingsGoalsCacheRevision=-1;
+    historySummaryCache={revision:-1,data:null};connectionImportPreview=null;runtimePerf.revision++;
+    persistedStateQuarantine=null;
+    runtimeStorageHealth.available=runtimeStorageHealth.readable&&runtimeStorageHealth.writable;
+    clearStoragePersistenceWarning();
+  }else quarantinePlanStorage('Verified deletion failed. Keep this tab open and preserve any unsaved changes.');
+  return result;
 }
 function normalizeConnectedRecord(r={}){
   const reconciled=!!r.reconciled;
@@ -8756,6 +9179,7 @@ function renderLocalAnalytics(){
 function renderPrivacy(){
   shellMeta('Trust','Privacy & Local Data','Understand, export, and control the data stored by This Week in this browser','<a class="text-action" href="#details">Back</a>');nav('privacy');
   const draw=()=>{
+    let pendingRawRestore=null;
     const inventory=localDataInventory(),audit=clientSecretAudit();
     const all=[...inventory.local.map(x=>({...x,scope:'Persistent'})),...inventory.session.map(x=>({...x,scope:'Session'}))];
     const totalBytes=all.reduce((n,x)=>n+x.bytes,0),hasPlan=!!readState(),storageInspectable=inventory.localAvailable&&inventory.sessionAvailable;
@@ -8777,7 +9201,7 @@ function renderPrivacy(){
           <div class="trust-card"><small>Provider credentials</small><strong>${audit.pass?'No sensitive credential fields detected':'Review local storage'}</strong><span>${audit.pass?'The client-side data audit found no token/password/secret-shaped fields in This Week local JSON.':escapeHtml(audit.findings.join(' · '))}</span></div>
           <div class="trust-card"><small>Phase 19 provider plane</small><strong>Backend provisioned · provider inactive</strong><span>Provider consent, connections, sync cursors, external accounts/transactions, and encrypted provider-token references are isolated under This Week resources inside BennyBundles’s Project. The weekly Plan remains browser-local.</span></div>
           <div class="trust-card"><small>Imports</small><strong>Text-only local parsing</strong><span>Files are capped at 5 MB and 10,000 data rows. Imported strings are normalized, control characters are removed, lengths are capped, and UI output is escaped.</span></div>
-          <div class="trust-card"><small>Retention</small><strong>Local until you clear or delete it</strong><span>Core plan/history remains in browser storage until changed or deleted. Connected Data limits audit history to the most recent 120 actions and import batches to the most recent 40.</span></div>
+          <div class="trust-card"><small>Retention</small><strong>Browser-managed, not permanent</strong><span>Core plan/history is stored in this browser, but browser policies, low disk space, or device cleanup can remove it without notice. Export backups regularly. No automatic cloud backup is enabled. Connected Data limits audit history to the most recent 120 actions and import batches to the most recent 40.</span></div>
           <div class="trust-card"><small>At-rest protection</small><strong>No app-level storage encryption</strong><span>This Week does not encrypt localStorage itself. Anyone with access to this browser profile or an unlocked device may be able to access the stored app data.</span></div>
           <div class="trust-card"><small>Inactive view</small><strong>Financial screen masks when hidden</strong><span>A best-effort privacy curtain covers the app when the browser marks the page inactive. It cannot guarantee how every operating system captures app-switcher previews.</span></div>
           <div class="trust-card"><small>Execution</small><strong>Imported text is not code</strong><span>Merchant names, file names, notes, and audit descriptions are treated as text. Import processing does not evaluate scripts or HTML from transaction files.</span></div>
@@ -8790,7 +9214,16 @@ function renderPrivacy(){
 
       <section class="section"><div class="section-head"><div><span class="section-kicker">Export</span><h2>Take a copy before changing devices or deleting data</h2><div class="section-caption">Downloaded files can contain sensitive financial information and are no longer controlled by This Week after download. Store or delete them accordingly.</div></div></div>
         <div class="action-row">${hasPlan?'<button class="btn btn-primary" id="privacyPortableExport">Export normalized financial data</button>':''}<button class="btn btn-secondary" id="privacyRawExport">Export all local This Week keys</button><a class="btn btn-secondary" href="#data-model">Open Data Model</a></div>
-        <div class="world-note">Exports are created locally when requested. The app does not automatically upload the resulting file.</div>
+        <div class="world-note">Exports are created locally when requested. The app does not automatically upload the resulting file. Raw backups include only explicitly supported local Plan keys. All sessionStorage values and credential-named keys are excluded. Damaged backup exports are for manual recovery only and may not be restorable.</div>
+      </section>
+
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Restore</span><h2>Recover a local Plan from a raw backup</h2><div class="section-caption">Only This Week raw local-data-export v1 JSON files can be restored. A portable normalized export is not an importable backup. Restore never merges or overwrites an existing workspace.</div></div></div>
+        <label class="field-label" for="rawRestoreFile">Choose raw This Week backup (.json, max 4 MB)</label>
+        <input id="rawRestoreFile" class="text-field" type="file" accept=".json,application/json" aria-describedby="rawRestoreResult">
+        <div class="world-note" id="rawRestoreResult" role="status" aria-live="polite">No file selected. Your financial data stays on this device while previewing.</div>
+        <div class="field-group" style="margin-top:10px"><label class="field-label" for="rawRestorePhrase">Type RESTORE after reviewing the backup summary</label><input id="rawRestorePhrase" class="text-field" autocomplete="off" autocapitalize="characters" placeholder="RESTORE"></div>
+        <button class="btn btn-primary" id="rawRestoreApply" disabled>Restore into empty browser workspace</button>
+        <div class="world-note">Existing This Week local or session state blocks restore. To preserve data, export what is already here before any deliberate deletion. A completed restore reloads the app.</div>
       </section>
 
       <section class="section"><div class="section-head"><div><span class="section-kicker">Trust checks</span><h2>Verify the local security boundaries</h2><div class="section-caption">Read-only checks for import handling, local credential fields, Phase 19 activation gating, export boundaries, and destructive-action confirmation.</div></div><button class="btn btn-secondary" id="runTrustAudit">Run trust checks</button></div>
@@ -8805,6 +9238,42 @@ function renderPrivacy(){
 
     document.getElementById('privacyPortableExport')?.addEventListener('click',()=>{if(!confirmSensitiveExport('Normalized financial-data export'))return;const bytes=downloadPortableDataExport();toast('Normalized data exported · '+(bytes/1024).toFixed(1)+' KB');});
     document.getElementById('privacyRawExport')?.addEventListener('click',()=>{if(!confirmSensitiveExport('Raw local-data export'))return;const bytes=downloadRawLocalDataExport();toast('Local data export created · '+(bytes/1024).toFixed(1)+' KB');});
+    const restoreFile=document.getElementById('rawRestoreFile'),restorePhrase=document.getElementById('rawRestorePhrase'),restoreButton=document.getElementById('rawRestoreApply'),restoreResult=document.getElementById('rawRestoreResult');
+    const refreshRestoreButton=()=>{if(restoreButton)restoreButton.disabled=!pendingRawRestore||restorePhrase?.value.trim()!=='RESTORE';};
+    restorePhrase?.addEventListener('input',refreshRestoreButton);
+    restoreFile?.addEventListener('change',async()=>{
+      pendingRawRestore=null;
+      if(restorePhrase)restorePhrase.value='';
+      refreshRestoreButton();
+      const file=restoreFile.files?.[0];
+      if(!file){if(restoreResult)restoreResult.textContent='No backup file selected.';return;}
+      if(!file.name.toLowerCase().endsWith('.json')||file.size<=0||file.size>RAW_RESTORE_MAX_BYTES){
+        if(restoreResult)restoreResult.textContent='Invalid backup file. Choose a nonempty JSON file no larger than 4 MB.';
+        return;
+      }
+      try{
+        const source=JSON.parse(await file.text()),validated=validatedRawLocalBackup(source);
+        let targetStatus='This browser is empty and can accept the backup.';
+        try{inspectRawBackupRestoreTarget()}catch(e){targetStatus=e.message;}
+        pendingRawRestore=source;
+        if(restoreResult)restoreResult.textContent='Verified raw backup: '+validated.summary.weekCount+' weeks, '+validated.summary.transactionCount+' transactions, '+validated.summary.keyCount+' local data keys, core v'+validated.summary.schemaVersion+'. '+targetStatus;
+        refreshRestoreButton();
+      }catch(e){if(restoreResult)restoreResult.textContent='Backup rejected: '+(e?.message||'invalid file');}
+    });
+    restoreButton?.addEventListener('click',()=>{
+      if(!pendingRawRestore||restorePhrase?.value.trim()!=='RESTORE')return;
+      try{
+        inspectRawBackupRestoreTarget();
+        if(!confirmHighImpactMutation('Restore this verified raw Plan backup into this empty browser workspace? This does not merge Plans and will reload the app.'))return;
+        restoreVerifiedRawLocalBackup(pendingRawRestore);
+        pendingRawRestore=null;
+        location.hash='home';
+        location.reload();
+      }catch(e){
+        if(restoreResult)restoreResult.textContent='Restore not completed: '+(e?.message||'unexpected storage failure');
+        refreshRestoreButton();
+      }
+    });
     document.getElementById('runTrustAudit')?.addEventListener('click',()=>{
       const box=document.getElementById('trustAuditResults'),audit=runPhase14TrustAudit();
       if(box)box.innerHTML=audit.tests.map(t=>`<div class="schema-row"><div><strong>${escapeHtml(t.name)}</strong><span>${escapeHtml(t.detail)}</span></div><span class="schema-badge">${t.pass?'pass':'review'}</span></div>`).join('');
