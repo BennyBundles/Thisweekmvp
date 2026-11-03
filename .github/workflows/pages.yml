@@ -78,6 +78,9 @@ jobs:
       - name: Regression-test offline PWA CacheStorage integrity
         run: node --test public-preview-sw.test.mjs
 
+      - name: Regression-test Safari offline readiness reporting
+        run: node --test phase58-offline-readiness.test.mjs
+
       - name: Stage and audit preview assets without publishing
         run: |
           set -euo pipefail

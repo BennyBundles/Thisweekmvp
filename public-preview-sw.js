@@ -145,6 +145,33 @@ self.addEventListener('activate',event=>{
     await self.clients.claim();
   })());
 });
+// Read-only current-build integrity handshake, with no personal Plan data.
+async function offlineSnapshotStatus(){
+  try{
+    const cache=await caches.open(CACHE_NAME);
+    const items=[
+      ['SHELL',SHELL_URL,validShell],
+      ['MANIFEST',MANIFEST_URL,validAsset],
+      ['ICON',ICON_URL,validAsset]
+    ];
+    for(const [key,url,validator] of items){
+      const response=await cache.match(url);
+      if(!response)return {ready:false,code:key+'_MISSING'};
+      if(!await validator(response,url))return {ready:false,code:key+'_INVALID'};
+    }
+    return {ready:true,code:'READY'};
+  }catch{return {ready:false,code:'CACHE_UNREADABLE'};}
+}
+self.addEventListener('message',event=>{
+  if(event.data?.type!=='THISWEEK_OFFLINE_CHECK')return;
+  const port=event.ports?.[0];
+  if(!port)return;
+  event.waitUntil((async()=>{
+    const result=await offlineSnapshotStatus();
+    port.postMessage({type:'THISWEEK_OFFLINE_STATUS',scope:ROOT_URL.href,...result});
+  })());
+});
+
 self.addEventListener('fetch',event=>{
   const request=event.request;
   if(request.method!=='GET')return;

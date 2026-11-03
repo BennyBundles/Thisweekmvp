@@ -78,6 +78,8 @@ function harness({fetchImpl=()=>Promise.resolve(sampleResponse(ROOT,'online')),i
     const jobs=[];
     const event={
       request,
+      data:request?.data,
+      ports:request?.ports,
       waitUntil(promise){jobs.push(Promise.resolve(promise));},
       respondWith(promise){this.responsePromise=Promise.resolve(promise);}
     };
@@ -449,4 +451,36 @@ test('source requires verified active snapshot before cleaning obsolete caches',
  assert.match(source,/await validAsset\(response,url\)/);
  assert.ok(source.indexOf("if(!accepted)throw")<source.indexOf("await Promise.all(names.filter("));
  assert.ok(source.indexOf("await Promise.all(names.filter(")<source.indexOf("await self.clients.claim()"));
+});
+
+
+test('current Worker can attest verified offline shell and asset cache through a read-only message',async()=>{
+ const h=harness();await h.emit('install');const messages=[];
+ await h.emit('message',{data:{type:'THISWEEK_OFFLINE_CHECK'},ports:[{postMessage(x){messages.push(x);}}]});
+ assert.equal(messages.length,1);
+ assert.equal(messages[0].ready,true);
+ assert.equal(messages[0].code,'READY');
+ assert.equal(messages[0].scope,ROOT);
+ assert.doesNotMatch(JSON.stringify(messages[0]),/userId|token|Plan/);
+});
+test('offline status identifies missing shell without a false READY result',async()=>{
+ const h=harness();await h.emit('install');
+ h.cacheStores.get('this-week-public-preview-v4').delete(ROOT);
+ const messages=[];
+ await h.emit('message',{data:{type:'THISWEEK_OFFLINE_CHECK'},ports:[{postMessage(x){messages.push(x);}}]});
+ assert.equal(messages[0].ready,false);assert.equal(messages[0].code,'SHELL_MISSING');
+});
+test('offline status rejects invalid cached manifest',async()=>{
+ const h=harness();await h.emit('install');
+ h.cacheStores.get('this-week-public-preview-v4').set(ROOT+'manifest.webmanifest',
+   new Response('{"name":"wrong"}',{status:200,headers:{'content-type':'application/manifest+json'}}));
+ const messages=[];
+ await h.emit('message',{data:{type:'THISWEEK_OFFLINE_CHECK'},ports:[{postMessage(x){messages.push(x);}}]});
+ assert.equal(messages[0].ready,false);assert.equal(messages[0].code,'MANIFEST_INVALID');
+});
+test('unknown offline message and missing MessagePort cannot alter cache',async()=>{
+ const h=harness();await h.emit('install');const sent=[];
+ await h.emit('message',{data:{type:'NOT_THISWEEK'},ports:[{postMessage(x){sent.push(x);}}]});
+ await h.emit('message',{data:{type:'THISWEEK_OFFLINE_CHECK'},ports:[]});
+ assert.equal(sent.length,0);assert.equal(h.tracking.puts.length,0);
 });
