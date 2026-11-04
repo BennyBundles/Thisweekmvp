@@ -150,7 +150,7 @@ test('new simple financial flow keeps canonical money save path and progressive 
     'initCinematicSetupWizard(current)',
     'twWizardIncome','twWizardRent','twWizardPhone','twWizardSavings',
     "by('savePlan').click()",
-    'class="tw-onboard-advanced"',
+    "full.className='tw-onboard-advanced'",
     'class="tw-onboard-step"',
     'tw-onboard-step[hidden],.tw-onboard-error[hidden]'
   ])assert.ok(html.includes(marker),marker);
