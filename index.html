@@ -5968,6 +5968,50 @@ body[data-density="rich"] .tw-world-gallery-heading h3{font-size:clamp(1.4rem,3.
 @media(prefers-reduced-motion:reduce){.tw-stage-enter{transition:none!important}.tw-stage-enter:hover{transform:none}}
 body[data-motion="reduced"] .tw-stage-enter{transition:none}
 
+
+/* PASS 6 — genuine mobile screenshot corrections
+   The extra trust disclosure is a separate grid row, never an implicit row
+   after the 1fr track; otherwise the scene starts hundreds of pixels too low. */
+.zen-home.tw-home-ready{
+  grid-template-rows:auto auto minmax(420px,1fr) auto;
+  align-content:stretch;
+}
+.tw-home-ready .tw-source-trust{
+  margin:0;
+  padding:0 10px 1px;
+  line-height:1.35;
+  font-size:.68rem;
+  color:#bbcbbf;
+}
+.tw-home-ready .zen-scene{margin:0;min-height:420px}
+.tw-offline-panel{
+  display:flex;align-items:center;justify-content:space-between;gap:9px;
+  min-height:44px;margin:6px 13px 7px;
+  padding:7px 11px;border:1px solid rgba(225,181,102,.4);border-radius:13px;
+  background:linear-gradient(115deg,rgba(24,43,44,.94),rgba(9,26,32,.96));
+  color:#e6e6da;font:600 12px/1.35 system-ui,-apple-system,sans-serif
+}
+.tw-offline-panel span{min-width:0;overflow-wrap:anywhere}
+.tw-offline-panel[data-state="ready"]{border-color:rgba(105,207,161,.4)}
+.tw-offline-panel[data-state="error"]{border-color:rgba(228,184,118,.45)}
+.tw-offline-panel[data-state="checking"]{border-color:rgba(153,185,178,.32)}
+.tw-offline-retry{
+  flex:0 0 auto;min-width:78px;min-height:42px;
+  padding:7px 9px;border-radius:10px;
+  background:rgba(222,184,122,.12);
+  border:1px solid rgba(229,195,141,.46);
+  color:#f3e3c2;font:750 12px system-ui,-apple-system,sans-serif
+}
+@media(max-width:430px){
+  .zen-home.tw-home-ready{grid-template-rows:auto auto minmax(420px,1fr) auto}
+  .tw-home-ready .tw-source-trust{font-size:.66rem;padding-inline:4px}
+  .tw-offline-panel{margin:5px 10px 6px;padding:6px 8px;font-size:11px;gap:6px}
+  .tw-offline-retry{min-width:68px;font-size:11px;padding-inline:7px}
+}
+@media(prefers-reduced-motion:reduce){
+  .tw-offline-panel,.tw-offline-retry{transition:none!important}
+}
+
 </style></head><body><a class="skip-link" href="#app">Skip to main content</a><div class="sr-only" id="routeAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div><div class="privacy-curtain" id="privacyCurtain" aria-hidden="true"><div><div class="privacy-curtain-mark">TW</div><strong>Financial view hidden</strong><span>This Week masks the page while it is inactive. This is a best-effort browser privacy layer, not a guarantee about operating-system snapshots.</span></div></div><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M11 22L24 59L40 34L56 59L69 22" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="square"/><path d="M12 13H68" stroke="currentColor" stroke-width="1.5" opacity=".65"/><circle cx="12" cy="13" r="2" fill="currentColor"/><circle cx="21" cy="13" r="2" fill="currentColor"/><circle cx="30" cy="13" r="2" fill="currentColor"/><circle cx="40" cy="13" r="2" fill="#77d2ad"/><circle cx="50" cy="13" r="2" fill="currentColor"/><circle cx="59" cy="13" r="2" fill="currentColor"/><circle cx="68" cy="13" r="2" fill="currentColor"/></svg></div><div><span class="tw-endorsement">Good Jawn Financial</span><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><section class="tw-cinematic-stage" aria-label="Good Jawn Financial experience">
   <div class="tw-stage-visuals" aria-hidden="true"><div class="tw-scene tw-scene--vault"><svg class="tw-scene-image" viewBox="0 0 1440 380" preserveAspectRatio="xMidYMid slice" role="presentation" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs><linearGradient id="tv-dark" x2=".8" y2="1"><stop stop-color="#0d1016"/><stop offset=".55" stop-color="#2a1b14"/><stop offset="1" stop-color="#050b10"/></linearGradient><radialGradient id="tv-gold"><stop stop-color="#f9df9c"/><stop offset=".27" stop-color="#a77432"/><stop offset=".65" stop-color="#2d2219"/><stop offset=".83" stop-color="#c59850"/><stop offset="1" stop-color="#111319"/></radialGradient><linearGradient id="tv-edge"><stop stop-color="#684920"/><stop offset=".35" stop-color="#fce3a3"/><stop offset=".58" stop-color="#8a5728"/><stop offset="1" stop-color="#d6af69"/></linearGradient><pattern id="tv-boxes" width="90" height="42" patternUnits="userSpaceOnUse"><rect x="2" y="2" width="86" height="38" rx="2" fill="#211b1b" stroke="#b68a4d" stroke-opacity=".6" stroke-width="1.6"/><path d="M6 9H83" stroke="#f3d69e" stroke-opacity=".32"/><circle cx="45" cy="22" r="5" fill="#513b23" stroke="#d7a86b" stroke-width="1.2"/><path d="M42 22H48" stroke="#f9d99d"/></pattern><clipPath id="tv-left"><path d="M0 0H500L570 380H0Z"/></clipPath><clipPath id="tv-right"><path d="M1440 0H1120L1040 380H1440Z"/></clipPath></defs>
@@ -9125,7 +9169,7 @@ async function renderHome(){
     const sourceLabel=connected.total?`${connected.unreconciled} imported item${connected.unreconciled===1?'':'s'} to review`:'Data & imports';
     const worlds=phase2HomeWorlds(p,d,state),attentionOverride=phase2AttentionOverride(worlds,d,command);
     document.body.dataset.financialState=(command.severity==='critical'||command.severity==='important')?'attention':'stable';
-    root.innerHTML=`<div class="zen-home">
+    root.innerHTML=`<div class="zen-home tw-home-ready">
       <div class="zen-topline">
         <span class="zen-week">${weekWindow(p.week.start,p.week.end)}</span>
         <a class="zen-source" href="#connections" aria-label="${escapeHtml(sourceLabel)}" title="${escapeHtml(sourceLabel)}">
