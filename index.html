@@ -5641,6 +5641,70 @@ body[data-view="home"] .zen-core::before{background:conic-gradient(#dbba76 0 var
 @media(prefers-reduced-motion:reduce){.tw-scene{transition:none!important;transform:none!important}.tw-cinematic-stage *{animation:none!important}}
 body[data-motion="reduced"] .tw-scene,body[data-motion="calm"] .tw-scene{transition:none!important;transform:none!important}
 
+
+/* FOUR WORLD SELECTOR — real hash navigation to existing financial routes */
+.tw-world-gallery{margin:13px 0 18px;padding:13px;border-radius:22px;overflow:hidden;border:1px solid rgba(226,194,133,.27);background:linear-gradient(142deg,rgba(18,35,38,.94),rgba(7,17,23,.98));box-shadow:0 22px 48px rgba(0,0,0,.24),inset 0 1px 0 rgba(248,229,183,.08)}
+.tw-world-gallery-heading{display:flex;gap:12px;align-items:flex-end;justify-content:space-between;padding:2px 3px 12px}
+.tw-world-gallery-heading span{font-size:.56rem;letter-spacing:.15em;color:#d7b779;font-weight:850}
+.tw-world-gallery-heading h3{margin:4px 0 0;font-family:Georgia,'Times New Roman',serif;font-size:clamp(1.22rem,3vw,1.8rem);font-weight:500;letter-spacing:-.035em;color:#f3ebd8}
+.tw-world-gallery-heading small{max-width:180px;color:#9aada9;font-size:.52rem;line-height:1.35;letter-spacing:.12em;text-align:right}
+.tw-world-gallery-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.tw-world-card{
+  position:relative;isolation:isolate;overflow:hidden;min-width:0;
+  min-height:152px;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-end;
+  color:#f7eedc;text-decoration:none;border:1px solid rgba(218,182,117,.23);
+  background:#0b1b21;border-radius:16px;
+  transition:transform .24s cubic-bezier(.2,.8,.2,1),box-shadow .24s ease,border-color .24s ease
+}
+.tw-world-card:hover{transform:translateY(-3px);border-color:rgba(241,205,142,.57);box-shadow:0 17px 25px rgba(0,0,0,.28)}
+.tw-world-card:active{transform:translateY(-1px)}
+.tw-world-mini{position:absolute;inset:0;overflow:hidden;z-index:-1}
+.tw-world-mini::before,.tw-world-mini::after{content:"";position:absolute;pointer-events:none}
+.tw-world-card[data-art-world="vault"] .tw-world-mini{
+  background:radial-gradient(ellipse at 55% 15%,rgba(255,213,127,.35),transparent 49%),linear-gradient(145deg,#21160e,#30251b 55%,#090f14)
+}
+.tw-world-card[data-art-world="vault"] .tw-world-mini::before{
+  width:135px;height:135px;right:-5px;top:-43px;border-radius:50%;
+  background:repeating-radial-gradient(circle,transparent 0 12px,rgba(251,211,142,.34) 13px 14px,transparent 15px 23px),conic-gradient(from 30deg,#211c1c,#c7a15e,#2c241f,#e3bf82,#211c1c);
+  box-shadow:0 0 0 8px rgba(185,134,65,.1),0 10px 40px rgba(0,0,0,.5)
+}
+.tw-world-card[data-art-world="observatory"] .tw-world-mini{
+  background:radial-gradient(circle at 76% 12%,rgba(126,72,248,.7),transparent 35%),radial-gradient(ellipse at 54% 55%,rgba(45,96,195,.65),transparent 56%),#0a1330
+}
+.tw-world-card[data-art-world="observatory"] .tw-world-mini::before{
+  width:180px;height:75px;right:-18px;top:3px;border:3px solid rgba(156,189,255,.65);
+  box-shadow:0 0 17px rgba(123,101,247,.7),inset 0 0 20px rgba(123,101,247,.45);
+  transform:rotate(-23deg);border-radius:50%
+}
+.tw-world-card[data-art-world="capital"] .tw-world-mini{
+  background:repeating-linear-gradient(95deg,transparent 0 31px,rgba(109,238,234,.12) 32px 33px,transparent 34px 49px),linear-gradient(130deg,#06131e,#153947 58%,#08272c)
+}
+.tw-world-card[data-art-world="capital"] .tw-world-mini::before{
+  inset:21px -26px -15px 28%;transform:skewX(-20deg);
+  background:repeating-linear-gradient(0deg,transparent 0 24px,rgba(91,213,238,.23) 25px 26px),
+             repeating-linear-gradient(90deg,rgba(7,19,28,.55) 0 26px,rgba(51,121,143,.6) 27px 29px);
+  border-left:2px solid rgba(96,246,241,.55)
+}
+.tw-world-card[data-art-world="ledger"] .tw-world-mini{
+  background:radial-gradient(ellipse at 73% 0%,rgba(215,225,146,.55),transparent 45%),
+  radial-gradient(ellipse at 26% 49%,rgba(48,154,93,.8),transparent 65%),linear-gradient(135deg,#061f19,#24583b 58%,#0a2b2a)
+}
+.tw-world-card[data-art-world="ledger"] .tw-world-mini::before{
+  width:140px;height:185px;top:-78px;right:-5px;border:4px solid rgba(227,224,165,.55);border-radius:50% 50% 4% 4%;
+  box-shadow:-36px 0 0 -31px rgba(233,221,164,.5),-70px 20px 0 -65px rgba(233,221,164,.5)
+}
+.tw-world-symbol{position:absolute;right:12px;top:9px;font-family:Georgia,serif;color:#f8d8a0;font-size:1.5rem;opacity:.8;text-shadow:0 0 14px rgba(255,211,131,.4)}
+.tw-world-card-copy{padding:18px 12px 13px;background:linear-gradient(0deg,rgba(3,12,17,.92),rgba(3,12,17,.7) 76%,transparent)}
+.tw-world-card-copy strong{display:block;font-family:Georgia,'Times New Roman',serif;letter-spacing:.055em;font-size:clamp(.8rem,1.2vw,1.06rem);font-weight:600;text-shadow:0 2px 13px rgba(0,0,0,.8)}
+.tw-world-card-copy small{display:block;margin-top:3px;color:#e3d9c4;font-size:.64rem;letter-spacing:.02em}
+.tw-world-card-arrow{position:absolute;right:9px;bottom:15px;font-size:.95rem;color:#ffe0a2}
+.tw-world-gallery-footnote{margin:10px 4px 0;color:#9db2a8;font-size:.62rem;line-height:1.5}
+.nav-link .nav-icon svg{display:block;width:22px;height:22px}
+@media(min-width:800px){.tw-world-gallery-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.tw-world-card{min-height:184px}.tw-world-gallery{padding:17px}.tw-world-gallery-heading{padding-bottom:15px}}
+@media(max-width:430px){.tw-world-gallery{margin:10px 0 14px;padding:10px;border-radius:18px}.tw-world-card{min-height:136px}.tw-world-card-copy{padding:15px 10px 12px}.tw-world-card-copy strong{font-size:.79rem}.tw-world-gallery-heading small{display:none}}
+@media(prefers-reduced-motion:reduce){.tw-world-card{transition:none!important}.tw-world-card:hover{transform:none}}
+body[data-motion="reduced"] .tw-world-card{transition:none!important}
+
 </style></head><body><a class="skip-link" href="#app">Skip to main content</a><div class="sr-only" id="routeAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div><div class="privacy-curtain" id="privacyCurtain" aria-hidden="true"><div><div class="privacy-curtain-mark">TW</div><strong>Financial view hidden</strong><span>This Week masks the page while it is inactive. This is a best-effort browser privacy layer, not a guarantee about operating-system snapshots.</span></div></div><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M11 22L24 59L40 34L56 59L69 22" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="square"/><path d="M12 13H68" stroke="currentColor" stroke-width="1.5" opacity=".65"/><circle cx="12" cy="13" r="2" fill="currentColor"/><circle cx="21" cy="13" r="2" fill="currentColor"/><circle cx="30" cy="13" r="2" fill="currentColor"/><circle cx="40" cy="13" r="2" fill="#77d2ad"/><circle cx="50" cy="13" r="2" fill="currentColor"/><circle cx="59" cy="13" r="2" fill="currentColor"/><circle cx="68" cy="13" r="2" fill="currentColor"/></svg></div><div><span class="tw-endorsement">Good Jawn Financial</span><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><section class="tw-cinematic-stage" aria-label="Good Jawn Financial experience">
   <div class="tw-stage-visuals" aria-hidden="true"><div class="tw-scene tw-scene--vault"><svg class="tw-scene-image" viewBox="0 0 1440 380" preserveAspectRatio="xMidYMid slice" role="presentation" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs><linearGradient id="tv-dark" x2=".8" y2="1"><stop stop-color="#0d1016"/><stop offset=".55" stop-color="#2a1b14"/><stop offset="1" stop-color="#050b10"/></linearGradient><radialGradient id="tv-gold"><stop stop-color="#f9df9c"/><stop offset=".27" stop-color="#a77432"/><stop offset=".65" stop-color="#2d2219"/><stop offset=".83" stop-color="#c59850"/><stop offset="1" stop-color="#111319"/></radialGradient><linearGradient id="tv-edge"><stop stop-color="#684920"/><stop offset=".35" stop-color="#fce3a3"/><stop offset=".58" stop-color="#8a5728"/><stop offset="1" stop-color="#d6af69"/></linearGradient><pattern id="tv-boxes" width="90" height="42" patternUnits="userSpaceOnUse"><rect x="2" y="2" width="86" height="38" rx="2" fill="#211b1b" stroke="#b68a4d" stroke-opacity=".6" stroke-width="1.6"/><path d="M6 9H83" stroke="#f3d69e" stroke-opacity=".32"/><circle cx="45" cy="22" r="5" fill="#513b23" stroke="#d7a86b" stroke-width="1.2"/><path d="M42 22H48" stroke="#f9d99d"/></pattern><clipPath id="tv-left"><path d="M0 0H500L570 380H0Z"/></clipPath><clipPath id="tv-right"><path d="M1440 0H1120L1040 380H1440Z"/></clipPath></defs>
@@ -5697,7 +5761,7 @@ body[data-motion="reduced"] .tw-scene,body[data-motion="calm"] .tw-scene{transit
     </section>
   </div>
   <noscript><div class="inline-note" style="margin:16px"><span>ⓘ</span><span>JavaScript is disabled in this viewer, so this page is showing the full static Home preview.</span></div></noscript>
-</main><aside class="tw-advanced-zone" aria-label="Optional advanced functionality"><details><summary>Advanced tools and integrations</summary><div class="tw-advanced-body"><p>Optional workspace for technical tools. Your everyday budgeting plan remains separate from any money-provider sandbox.</p><nav class="tw-advanced-links" aria-label="Advanced tools"><a href="#qa">Device diagnostics <span aria-hidden="true">›</span></a><a href="#performance">Performance <span aria-hidden="true">›</span></a><a href="#data-model">Data model <span aria-hidden="true">›</span></a><a href="#privacy">Privacy & backup <span aria-hidden="true">›</span></a><a href="#analytics">Local insights <span aria-hidden="true">›</span></a><a href="#money">Money infrastructure <span aria-hidden="true">›</span></a><a href="#future">Architecture guide <span aria-hidden="true">›</span></a><a href="#preferences">Display preferences <span aria-hidden="true">›</span></a></nav><p class="tw-advanced-note">Advanced tools are opt-in navigation, not an authorization bypass. Money execution remains restricted by the existing server and release controls.</p></div></details></aside><nav class="bottom-nav" aria-label="Primary"><a class="nav-link active" data-route="home" href="#home"><span class="nav-icon">⌂</span><span>Home</span></a><a class="nav-link" data-route="log" href="#log"><span class="nav-icon">＋</span><span>Add Spend</span></a><a class="nav-link" data-route="details" href="#details"><span class="nav-icon">≣</span><span>Explore</span></a><a class="nav-link" data-route="plan" href="#setup"><span class="nav-icon">⚙</span><span>Plan</span></a></nav><div class="finance-dock" id="financeDock"><div class="dock-state"><span class="dock-led"></span><div class="dock-copy"><strong id="dockTitle">Weekly plan active</strong><span id="dockSub">Local financial workspace</span></div></div><span class="dock-secure">Private</span></div></div><script>// This Week - browser-persistent preview runtime.
+</main><aside class="tw-advanced-zone" aria-label="Optional advanced functionality"><details><summary>Advanced tools and integrations</summary><div class="tw-advanced-body"><p>Optional workspace for technical tools. Your everyday budgeting plan remains separate from any money-provider sandbox.</p><nav class="tw-advanced-links" aria-label="Advanced tools"><a href="#qa">Device diagnostics <span aria-hidden="true">›</span></a><a href="#performance">Performance <span aria-hidden="true">›</span></a><a href="#data-model">Data model <span aria-hidden="true">›</span></a><a href="#privacy">Privacy & backup <span aria-hidden="true">›</span></a><a href="#analytics">Local insights <span aria-hidden="true">›</span></a><a href="#money">Money infrastructure <span aria-hidden="true">›</span></a><a href="#future">Architecture guide <span aria-hidden="true">›</span></a><a href="#preferences">Display preferences <span aria-hidden="true">›</span></a></nav><p class="tw-advanced-note">Advanced tools are opt-in navigation, not an authorization bypass. Money execution remains restricted by the existing server and release controls.</p></div></details></aside><nav class="bottom-nav" aria-label="Primary"><a class="nav-link active" data-route="home" href="#home"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" aria-hidden="true"><path d="m3.2 11 8.8-7.5 8.8 7.5v8.5a1 1 0 0 1-1 1H4.2a1 1 0 0 1-1-1Z"/><path d="M9 20.5v-7h6v7"/></svg></span><span>Home</span></a><a class="nav-link" data-route="log" href="#log"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M7 12h10"/></svg></span><span>Add Spend</span></a><a class="nav-link" data-route="details" href="#details"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.4 8.8 3.2 6.2 4.5-7.5-1.7 8.9Z"/></svg></span><span>Explore</span></a><a class="nav-link" data-route="plan" href="#setup"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="15" rx="2"/><path d="M7.5 3.3V8M16.5 3.3V8M3.5 10.2h17M8 15l2.4 2.4 5.5-5.5"/></svg></span><span>Plan</span></a></nav><div class="finance-dock" id="financeDock"><div class="dock-state"><span class="dock-led"></span><div class="dock-copy"><strong id="dockTitle">Weekly plan active</strong><span id="dockSub">Local financial workspace</span></div></div><span class="dock-secure">Private</span></div></div><script>// This Week - browser-persistent preview runtime.
 // Data is stored in localStorage so the Vercel preview stays usable without a server database.
 
 const USER_ID_KEY = "thisweek.userId";
@@ -8952,6 +9016,16 @@ async function renderDetails(){
         <a href="#bills"><span class="tw-quick-symbol" aria-hidden="true">▤</span><span><strong>Review bills</strong><small>Know what is due</small></span></a>
         <a href="#savings"><span class="tw-quick-symbol" aria-hidden="true">↗</span><span><strong>Savings goals</strong><small>See your progress</small></span></a>
       </section>
+      <section class="tw-world-gallery" aria-labelledby="twWorldsTitle">
+  <div class="tw-world-gallery-heading"><div><span>FOUR CONNECTED EXPERIENCES</span><h3 id="twWorldsTitle">Step into your financial world.</h3></div><small>SELECT A WORLD · EXPLORE WITHOUT LOSING YOUR PLAN</small></div>
+  <div class="tw-world-gallery-grid">
+    <a class="tw-world-card" data-art-world="vault" href="#bills"><span class="tw-world-mini" aria-hidden="true"><span class="tw-world-symbol">◉</span></span><span class="tw-world-card-copy"><strong>THE VAULT</strong><small>Bills · Protection</small></span><span class="tw-world-card-arrow" aria-hidden="true">↗</span></a>
+    <a class="tw-world-card" data-art-world="observatory" href="#insights"><span class="tw-world-mini" aria-hidden="true"><span class="tw-world-symbol">✧</span></span><span class="tw-world-card-copy"><strong>THE OBSERVATORY</strong><small>Insights · Forecasts</small></span><span class="tw-world-card-arrow" aria-hidden="true">↗</span></a>
+    <a class="tw-world-card" data-art-world="capital" href="#precheck"><span class="tw-world-mini" aria-hidden="true"><span class="tw-world-symbol">⌁</span></span><span class="tw-world-card-copy"><strong>THE CAPITAL</strong><small>Cash flow · Choices</small></span><span class="tw-world-card-arrow" aria-hidden="true">↗</span></a>
+    <a class="tw-world-card" data-art-world="ledger" href="#savings"><span class="tw-world-mini" aria-hidden="true"><span class="tw-world-symbol">❖</span></span><span class="tw-world-card-copy"><strong>THE LEDGER</strong><small>Savings · Growth</small></span><span class="tw-world-card-arrow" aria-hidden="true">↗</span></a>
+  </div>
+  <p class="tw-world-gallery-footnote">Your existing planning data follows you between these spaces. The worlds are views and tools, not separate bank accounts.</p>
+</section>
       ${powerDock}
 
       <div class="system-map-groups">
