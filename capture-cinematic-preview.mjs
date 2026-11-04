@@ -109,6 +109,9 @@ try{
     const state=await inspect();
     if(!state.stage||!state.worlds.some(x=>x.includes('tw-scene--'+target.world)))report.errors.push(target.route+': incorrect visual scene');
     if(state.scrollWidth>state.width+4)report.errors.push(target.route+': document horizontal overflow '+state.scrollWidth+' > '+state.width);
+    const navigation=await evaluate("(()=>{const links=[...document.querySelectorAll('.bottom-nav .nav-link')];return {count:links.length,rows:[...new Set(links.map(x=>Math.round(x.getBoundingClientRect().top)))].length}})()");
+    if(navigation.count!==5||navigation.rows!==1)report.errors.push(target.route+': bottom navigation wraps into '+navigation.rows+' rows, tabs='+navigation.count);
+
     if(target.route==='home'&&(state.homeTrustGap===null||state.homeTrustGap>24||state.homeTrustGap<0))report.errors.push('Home: excessive vertical gap between disclosure and overview: '+state.homeTrustGap+'px');
     if(target.route==='home'&&state.trustedContext&&state.serviceWorkerSupported&&state.offlineMessage.includes('browser does not support this setup'))report.errors.push('Home: localhost incorrectly rejected as insecure for offline testing');
     if(/Unable to open|Build a plan first|Unexpected local rendering error/i.test(state.appText))report.errors.push(target.route+': error/empty Plan fallback');
