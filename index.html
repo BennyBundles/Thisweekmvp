@@ -9152,7 +9152,7 @@ async function renderHome(){
   nav('home');
   const userId=getStoredUserId();
   if(!userId){
-    root.innerHTML=`<div class="zen-home"><div class="zen-topline"><span class="zen-week">Weekly planning</span></div><div class="zen-fallback"><div><strong>Build your weekly plan.</strong><span>Set pay, bills, savings, and spending lanes once. Home will reduce it to one simple weekly decision surface.</span><a class="btn btn-primary" href="#setup">Build Plan</a></div></div><a class="zen-command" href="#setup"><span class="zen-command-main"><span class="zen-command-icon">→</span><span class="zen-command-copy"><small>Start here</small><strong>Create your plan</strong></span></span><span class="zen-command-arrow">›</span></a></div>`;
+    root.innerHTML='<section class="tw-entry"><div class="tw-entry-crest" aria-hidden="true">GJ<span>.</span></div><span class="tw-entry-kicker">GOOD JAWN FINANCIAL · THIS WEEK</span><h2>Your money.<br>Your week.<br><em>Your move.</em></h2><p>Start with your income, your bills and a savings target. All the powerful features can come later.</p><div class="tw-entry-roadmap"><span>01 INCOME</span><span>02 BILLS</span><span>03 GROWTH</span></div><a class="tw-gold-button" href="#setup">Build My Week →</a><p class="tw-entry-privacy">Private weekly planning. No bank connection required.</p></section>';
     return;
   }
   try{
@@ -10435,7 +10435,82 @@ function renderSetup(){
   const bpMap={netPay:'bpIncome',rent:'bpBills',phone:'bpBills',groceries:'bpSpending',gas:'bpSpending',eating:'bpSpending',fun:'bpSpending',savings:'bpSavings'};
   Object.keys(bpMap).forEach(id=>q(id)?.addEventListener('input',()=>{updateBlueprint();const el=q(bpMap[id]);if(el){el.classList.remove('flash');requestAnimationFrame(()=>el.classList.add('flash'));}}));
   updateBlueprint();
+  initCinematicSetupWizard(current);
   q('savePlan').onclick=async()=>{ const fields=['netPay','savings','rent','phone','groceries','gas','eating','fun'], box=q('setupErr'); if(fields.some(x=>!valid(x))||cents('netPay')<=0){box.innerHTML=errBox('Enter valid dollar amounts. Net pay must be greater than $0.');return;} const rd=Number(q('rentDay').value),pd=Number(q('phoneDay').value); if(rd<1||rd>28||pd<1||pd>28){box.innerHTML=errBox('Use a due day from 1 to 28 for this preview.');return;} if(current&&!confirmHighImpactMutation('Save these Plan changes? Future weekly calculations will use the updated income, bills, categories, savings target, and week rhythm.'))return; const due=day=>{const n=new Date(),d=new Date(n.getFullYear(),n.getMonth(),day,17);if(d<n)d.setMonth(d.getMonth()+1);return d.toISOString();}; const preset={userId:current?.userId||getStoredUserId()||undefined,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||'America/New_York',weekAnchorDow:Number(q('weekDay').value),weekAnchorMinutes:Number(q('weekHour').value)*60,payProfile:{netPayAmount:cents('netPay'),payFrequency:q('payFrequency').value,payAnchorAt:new Date().toISOString()},bills:[{name:'Housing',amount:cents('rent'),frequency:'monthly',dueDate:due(rd)},{name:'Phone',amount:cents('phone'),frequency:'monthly',dueDate:due(pd)}],livingNeeds:[{name:'Groceries',weeklyLimit:cents('groceries'),ebtOffset:0},{name:'Gas / Transit',weeklyLimit:cents('gas'),ebtOffset:0}],discretionary:[{name:'Eating Out',weeklyLimit:cents('eating')},{name:'Fun',weeklyLimit:cents('fun')}],savingsRule:{weeklyAmount:cents('savings'),active:cents('savings')>0}}; const btn=q('savePlan');btn.disabled=true;btn.textContent='Building your week...';try{const r=await apiRequest('/setup',{method:'POST',body:JSON.stringify(preset)});setStoredUserId(r.userId);await apiRequest('/week/current',{method:'POST',body:JSON.stringify({userId:r.userId})});location.hash='home';}catch(e){btn.disabled=false;btn.textContent='Save & Open Dashboard';box.innerHTML=errBox(e.message);} };
+}
+
+
+/* Simplified guided setup mirrors the canonical, validated plan inputs.
+   The existing savePlan handler remains the sole writer of money state. */
+function initCinematicSetupWizard(existing){
+  const stack=root.querySelector('.fade-stack');if(!stack)return;
+  const wizard=document.createElement('section');wizard.className='tw-onboard';
+  wizard.setAttribute('aria-label','Create your week in three steps');
+  wizard.innerHTML=[
+    '<header class="tw-onboard-hero"><span class="tw-onboard-overline">THIS WEEK · GOOD JAWN FINANCIAL</span><h2>Build a better week.</h2><p>Three questions. One clear plan.</p>',
+    '<div class="tw-onboard-meter" aria-label="Setup progress"><b class="active"></b><b></b><b></b></div></header>',
+    '<div class="tw-onboard-step" data-tw-step="0"><span>01 / 03 · INCOME</span><h3>What comes in?</h3>',
+    '<label for="twWizardIncome">Take-home pay</label><div class="tw-wizard-amount"><span>$</span><input type="number" id="twWizardIncome" min="0" step=".01" inputmode="decimal" placeholder="0.00" required></div>',
+    '<label for="twWizardFrequency">Paid how often?</label><select id="twWizardFrequency"><option value="weekly">Weekly</option><option value="biweekly">Every two weeks</option><option value="monthly">Monthly</option></select></div>',
+    '<div class="tw-onboard-step" data-tw-step="1" hidden><span>02 / 03 · BILLS</span><h3>What must be paid?</h3>',
+    '<label for="twWizardRent">Housing each month</label><div class="tw-wizard-amount"><span>$</span><input type="number" id="twWizardRent" min="0" step=".01" inputmode="decimal" placeholder="0.00"></div>',
+    '<label for="twWizardPhone">Phone each month</label><div class="tw-wizard-amount"><span>$</span><input type="number" id="twWizardPhone" min="0" step=".01" inputmode="decimal" placeholder="0.00"></div></div>',
+    '<div class="tw-onboard-step" data-tw-step="2" hidden><span>03 / 03 · GROWTH</span><h3>What can you set aside?</h3>',
+    '<label for="twWizardSavings">Weekly savings target</label><div class="tw-wizard-amount"><span>$</span><input type="number" id="twWizardSavings" min="0" step=".01" inputmode="decimal" placeholder="0.00"></div>',
+    '<p class="tw-onboard-hint">Optional. Saving is a goal in your plan, not a bank transfer.</p><p id="twWizardSummary" class="tw-wizard-summary"></p></div>',
+    '<p class="tw-onboard-error" id="twWizardError" role="alert" hidden></p>',
+    '<div class="tw-onboard-actions"><button id="twWizardBack" type="button" hidden>Back</button><button class="tw-gold-button" type="button" id="twWizardNext">Continue →</button><button class="tw-gold-button" type="button" id="twWizardSave" hidden>Open My Week →</button></div>',
+    '<p class="tw-onboard-disclosure">You can change the full plan at any time. No bank connection is required.</p>'
+  ].join('');
+  const full=document.createElement('details');full.className='tw-onboard-advanced';
+  full.innerHTML='<summary>More settings and the original plan editor <span aria-hidden="true">+</span></summary><div class="tw-onboard-advanced-content"></div>';
+  const fullBody=full.querySelector('.tw-onboard-advanced-content');
+  [...stack.children].forEach(el=>fullBody.append(el));
+  stack.prepend(wizard);
+  stack.append(full);
+  const by=id=>document.getElementById(id);
+  const fields=[['twWizardIncome','netPay'],['twWizardFrequency','payFrequency'],['twWizardRent','rent'],['twWizardPhone','phone'],['twWizardSavings','savings']];
+  const current=!!existing?.config;
+  for(const [simple,original] of fields){
+    const src=by(original),dst=by(simple);
+    if(!src||!dst)throw Error('Setup field missing: '+original);
+    dst.value=current?src.value:(simple==='twWizardFrequency'?src.value:'');
+    dst.addEventListener('input',()=>{src.value=dst.value;src.dispatchEvent(new Event('input',{bubbles:true}));by('twWizardError').hidden=true;});
+    dst.addEventListener('change',()=>{src.value=dst.value;src.dispatchEvent(new Event('change',{bubbles:true}));});
+  }
+  let step=0;
+  const show=n=>{
+    step=n;
+    stack.querySelectorAll('.tw-onboard-step').forEach((el,i)=>{el.hidden=i!==n;});
+    stack.querySelectorAll('.tw-onboard-meter b').forEach((el,i)=>el.classList.toggle('active',i<=n));
+    by('twWizardBack').hidden=n===0;by('twWizardNext').hidden=n===2;by('twWizardSave').hidden=n!==2;by('twWizardError').hidden=true;
+    if(n===2)by('twWizardSummary').textContent='Take-home pay '+formatCents(Math.round(Number(by('twWizardIncome').value||0)*100))+'; bills '+formatCents(Math.round((Number(by('twWizardRent').value||0)+Number(by('twWizardPhone').value||0))*100))+' monthly; savings '+formatCents(Math.round(Number(by('twWizardSavings').value||0)*100))+' weekly.';
+  };
+  const validate=()=>{
+    const ids=step===0?['twWizardIncome']:step===1?['twWizardRent','twWizardPhone']:['twWizardSavings'];
+    for(const id of ids){
+      const input=by(id),number=Number(input.value);
+      if(!input.value.trim()||!Number.isFinite(number)||number<0||(step===0&&number<=0)){
+        by('twWizardError').textContent='Please enter a valid amount. Take-home pay must be greater than zero.';
+        by('twWizardError').hidden=false;input.focus();return false;
+      }
+    }
+    return true;
+  };
+  by('twWizardBack').addEventListener('click',()=>show(Math.max(0,step-1)));
+  by('twWizardNext').addEventListener('click',()=>{if(validate())show(Math.min(2,step+1));});
+  by('twWizardSave').addEventListener('click',()=>{
+    if(!validate())return;
+    if(!Number.isFinite(Number(by('twWizardIncome').value))||Number(by('twWizardIncome').value)<=0){show(0);validate();return;}
+    by('savePlan').click();
+  });
+  full.addEventListener('toggle',()=>{
+    if(!full.open){
+      for(const [simple,original] of fields)by(simple).value=by(original).value;
+      if(step===2)show(2);
+    }
+  });
+  show(0);
 }
 
 const PERF_STORAGE_SOFT_BYTES=2*1024*1024;
