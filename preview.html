@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#040a12">
+<meta name="theme-color" content="#071115">
 <title>This Week — Public Release Preview</title>
 <style>
 :root{--bg:#040a12;--panel:#081421;--line:rgba(177,206,221,.14);--text:#edf7fb;--soft:#91aab5;--mint:#6ee7b7;--aqua:#67e8f9;--gold:#f6d784}
@@ -15,6 +15,21 @@ body{min-height:100dvh;display:flex;flex-direction:column}
 .release-strip{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;padding:8px 12px;border-bottom:1px solid var(--line);background:rgba(8,20,33,.7);font-size:.62rem;color:var(--soft);letter-spacing:.03em}.release-strip span{padding:5px 8px;border:1px solid var(--line);border-radius:999px}.release-strip .good{color:#b7f7d9;border-color:rgba(110,231,183,.2)}
 .stage{flex:1;display:grid;place-items:center;padding:16px 12px 22px}.device-shell{width:min(430px,100%);height:calc(100dvh - 128px);min-height:640px;max-height:900px;border-radius:36px;padding:8px;background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.018));border:1px solid rgba(255,255,255,.10);box-shadow:0 34px 90px rgba(0,0,0,.46),inset 0 1px 0 rgba(255,255,255,.08);transition:width .4s cubic-bezier(.2,.8,.2,1),height .4s cubic-bezier(.2,.8,.2,1),border-radius .35s ease}.device-shell.full{width:min(100%,1180px);height:calc(100dvh - 128px);max-height:none;border-radius:24px}.frame-wrap{width:100%;height:100%;overflow:hidden;border-radius:29px;background:#050d16;position:relative}.device-shell.full .frame-wrap{border-radius:18px}iframe{width:100%;height:100%;border:0;background:#050d16;display:block}
 @media(max-width:760px){.preview-bar{align-items:flex-start}.brand-copy small{display:none}.brand-copy strong{font-size:.8rem}.tools{gap:5px}button,a.tool{padding:7px 9px;font-size:.61rem}.release-strip{justify-content:flex-start;overflow:auto;flex-wrap:nowrap}.stage{padding:0}.device-shell,.device-shell.full{width:100%;height:calc(100dvh - 116px);min-height:0;max-height:none;border-radius:0;padding:0;border:0;box-shadow:none}.frame-wrap,.device-shell.full .frame-wrap{border-radius:0}}
+
+/* GOOD JAWN FINANCIAL — PREVIEW FRAME */
+:root{--bg:#071115;--panel:#10252a;--line:rgba(201,205,193,.19);--text:#f1f0e9;--soft:#b3c2bd;--mint:#68d4a8;--aqua:#9ac0c2;--gold:#d4b781}
+html,body{background:linear-gradient(145deg,#071115,#0b1b23 58%,#081715)}
+.preview-bar{background:rgba(10,25,30,.96);border-color:rgba(212,183,129,.2)}
+.mark{background:linear-gradient(145deg,#183b35,#0c2021);border-color:rgba(212,183,129,.42);color:#e5cf9c}
+.brand-copy small{color:#d4b781}
+button,a.tool{border-color:rgba(202,207,190,.26);border-radius:12px;min-height:42px}
+button.active{background:rgba(212,183,129,.13);border-color:rgba(212,183,129,.5);color:#f0dbb2}
+.release-strip{background:#0d1e22}
+.device-shell{border:1px solid rgba(212,183,129,.36);background:linear-gradient(145deg,rgba(212,183,129,.14),rgba(229,231,216,.025))}
+.frame-wrap,iframe{background:#071115}
+:where(button,a):focus-visible{outline:2px solid #f0d29b;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.device-shell{transition:none}}
+
 </style>
 </head>
 <body>
