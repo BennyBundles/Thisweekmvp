@@ -23,8 +23,10 @@ const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 if(!existsSync(path.join(root,'public-preview','index.html')))throw new Error('First run: VERCEL_ENV=preview node stage-preview.mjs');
 await rm(out,{recursive:true,force:true});
 await mkdir(out,{recursive:true});
+let denyOriginRequests=false;
 const server=http.createServer(async(req,res)=>{
   try{
+    if(denyOriginRequests){res.writeHead(503,{'Content-Type':'text/plain'});res.end('Offline QA denies origin network');return;}
     const url=new URL(req.url,'http://127.0.0.1');
     let filename=path.resolve(root,'.'+decodeURIComponent(url.pathname));
     if(!filename.startsWith(root+path.sep)&&filename!==root){res.writeHead(403);res.end();return;}
@@ -123,6 +125,38 @@ try{
   await writeFile(path.join(out,'09-desktop-home.png'),Buffer.from(desktopShot.data,'base64'));
   report.desktop=desktop;
   if(desktop.scrollWidth>desktop.width+4)report.errors.push('Desktop: horizontal overflow');
+  // Re-enter the real installable app while the origin is unreachable.
+  // This proves the currently controlling worker can recover verified cached
+  // shell bytes rather than trusting a stale 503/CDN response.
+  await cdp('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:2,mobile:true});
+  await cdp('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:1});
+  const beforeOffline=await inspect();
+  if(!beforeOffline.offlineMessage.includes('Offline ready')){
+    report.errors.push('Offline: ready state was not confirmed before network isolation');
+  }else{
+    await cdp('Network.enable');
+    denyOriginRequests=true;
+    await cdp('Network.emulateNetworkConditions',{
+      offline:true,latency:0,downloadThroughput:0,uploadThroughput:0
+    });
+    try{
+      const navigation=await cdp('Page.navigate',{url:base+'/public-preview/?mode=demo#home'});
+      if(navigation.errorText)report.errors.push('Offline: navigation failed '+navigation.errorText);
+      await waitRoute('home');
+      await sleep(400);
+      const recovered=await inspect();
+      report.offlineReload={...recovered,originRequestsDenied:true};
+      if(!recovered.appText.includes('Weekly planning figures'))
+        report.errors.push('Offline: cached app did not recover weekly planning content');
+      if(recovered.scrollWidth>recovered.width+4)
+        report.errors.push('Offline: recovered page has horizontal overflow');
+      console.log('[offline-reload]',recovered.route,recovered.appText.slice(0,70));
+    }catch(error){report.errors.push('Offline: '+error.message);}
+    finally{
+      denyOriginRequests=false;
+      await cdp('Network.emulateNetworkConditions',{offline:false,latency:0,downloadThroughput:0,uploadThroughput:0});
+    }
+  }
   await writeFile(path.join(out,'report.json'),JSON.stringify(report,null,2)+'\n');
   if(report.errors.length)throw new Error('Browser QA failures:\n'+report.errors.join('\n'));
   console.log('BROWSER_PREVIEW_QA_PASS: '+report.pages.length+' mobile pages, desktop home, zero page-wide overflow');
