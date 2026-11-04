@@ -103,7 +103,7 @@ test('four original cinematic worlds are embedded for offline navigation',()=>{
 
 test('four experience portals navigate to live established routes',()=>{
   const html=read('./index.html');
-  for(const route of ['bills','insights','precheck','savings']){
+  for(const route of ['bills','insights','capital','savings']){
     assert.ok(html.includes('class="tw-world-card"')&&html.includes('href="#'+route+'"'),route+' destination');
     assert.ok(html.includes("if(r==='"+route+"')") || html.includes("else if(r==='"+route+"')"),route+' route handler');
   }
@@ -140,4 +140,49 @@ test('offline readiness supports secure loopback preview and uses compact brand 
   assert.ok(builder.includes("Offline installed but not controlling this tab"));
   assert.match(html,/\.tw-offline-panel\{/);
   assert.match(html,/\.tw-offline-retry\{/);
+});
+
+
+test('new simple financial flow keeps canonical money save path and progressive disclosure',()=>{
+  const html=read('./index.html');
+  for(const marker of [
+    'function initCinematicSetupWizard(existing)',
+    'initCinematicSetupWizard(current)',
+    'twWizardIncome','twWizardRent','twWizardPhone','twWizardSavings',
+    "by('savePlan').click()",
+    'class="tw-onboard-advanced"',
+    'class="tw-onboard-step"',
+    'tw-onboard-step[hidden],.tw-onboard-error[hidden]'
+  ])assert.ok(html.includes(marker),marker);
+  assert.match(html,/class="tw-entry"/);
+  assert.match(html,/Build My Week/);
+});
+test('plan-grounded Good Jawn Guide exposes only local, non-execution answers',()=>{
+  const html=read('./index.html');
+  assert.match(html,/async function renderAssist\(\)/);
+  assert.match(html,/else if\(r==='assist'\)await renderAssist\(\)/);
+  assert.match(html,/data-route="assist" href="#assist"/);
+  for(const q of ['How did I do?','Where can I save?','What is next?'])assert.ok(html.includes(q),q);
+  assert.ok(html.includes('No transfers are executed.'));
+  assert.ok(html.includes("output.textContent=answer("));
+});
+test('Capital page reuses real plan categories and local transactions',()=>{
+  const html=read('./index.html');
+  assert.match(html,/async function renderCapital\(\)/);
+  assert.match(html,/else if\(r==='capital'\)await renderCapital\(\)/);
+  assert.ok(html.includes("readState()?.transactions||[]"));
+  assert.ok(html.includes("p.week?.id"));
+  assert.ok(html.includes("map(x=>({...x,type:'LIVING'}))"));
+  assert.ok(html.includes('data-art-world="capital" href="#capital"'));
+  assert.ok(html.includes('Plan amount, not a verified bank balance'));
+});
+test('selected original screen-art is embedded and offline safe',()=>{
+  const html=read('./index.html');
+  assert.match(html,/REAL CINEMATIC WORLD ATLAS V1/);
+  assert.match(html,/--tw-world-atlas:url\("data:image\/webp;base64,/);
+  assert.ok(html.includes('.tw-scene--vault::before'));
+  assert.ok(html.includes('.tw-scene--capital::before'));
+  assert.ok(html.includes('.tw-scene--ledger::before'));
+  assert.ok(html.includes('.tw-scene--observatory::before'));
+  assert.ok(html.includes('prefers-reduced-motion:reduce'));
 });
