@@ -63,15 +63,18 @@ test('task-first Explore screen has four direct actions and optional developer t
 });
 test('contextual route navigation links only to established hash routes and respects compact home',()=>{
   const html=read('./index.html');
-  assert.match(html,/id="twRouteShortcuts" aria-label="Related tools" hidden/);
-  assert.match(html,/function renderContextNavigation\(routeName\)/);
-  assert.match(html,/renderContextNavigation(r)/);
-  assert.match(html,/bar.hidden=!items/);
-  assert.match(html,/bar.replaceChildren()/);
-  assert.match(html,/aria-current="page"/);
-  assert.match(html,/.tw-route-shortcuts[hidden]{display:none}/);
-  assert.match(html,/scroll-snap-type:x proximity/);
-  assert.match(html,/Weekly planning figures, not a bank account balance/);
+  const exact=[
+    'id="twRouteShortcuts" aria-label="Related tools" hidden',
+    'function renderContextNavigation(routeName)',
+    'renderContextNavigation(r)',
+    'bar.hidden=!items',
+    'bar.replaceChildren()',
+    'aria-current="page"',
+    '.tw-route-shortcuts[hidden]{display:none}',
+    'scroll-snap-type:x proximity',
+    'Weekly planning figures, not a bank account balance'
+  ];
+  for(const marker of exact)assert.ok(html.includes(marker),marker);
 });
 test('non-active money services are labeled as future and sandbox only',()=>{
   const html=read('./index.html');
