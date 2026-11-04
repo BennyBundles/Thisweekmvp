@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-8u6u2tvmg7aVimJUYOucCuGH2C5ts/lWMV0wA/4nNvw=' 'sha256-f7BIXgDCc5z0BfDzZf+AuOqqu/3QrcJ5bWSFAZUWGx8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'none'; media-src 'self' data: blob:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; child-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests"><meta name="theme-color" content="#081221"><title>This Week</title><style>:root {
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-8u6u2tvmg7aVimJUYOucCuGH2C5ts/lWMV0wA/4nNvw=' 'sha256-f7BIXgDCc5z0BfDzZf+AuOqqu/3QrcJ5bWSFAZUWGx8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'none'; media-src 'self' data: blob:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; child-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests"><meta name="theme-color" content="#071115"><title>This Week</title><style>:root {
   --bg: #07111f;
   --bg-alt: #0b1730;
   --panel: rgba(11, 25, 48, 0.82);
@@ -5276,7 +5276,229 @@ body[data-motion="reduced"] .state-spinner{
   .provider-flow-step{text-align:left}
 }
 
-</style></head><body><a class="skip-link" href="#app">Skip to main content</a><div class="sr-only" id="routeAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div><div class="privacy-curtain" id="privacyCurtain" aria-hidden="true"><div><div class="privacy-curtain-mark">TW</div><strong>Financial view hidden</strong><span>This Week masks the page while it is inactive. This is a best-effort browser privacy layer, not a guarantee about operating-system snapshots.</span></div></div><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app" tabindex="-1">
+
+
+/* GOOD JAWN FINANCIAL — EXECUTIVE SHELL (presentation only)
+   Source of truth for amounts, route handling, privacy, and persistence remains
+   the original application runtime. No banking claims are made by this theme. */
+:root{
+  --tw-exec-obsidian:#071115;
+  --tw-exec-navy:#0d2029;
+  --tw-exec-gold:#d4b781;
+  --tw-exec-emerald:#65caa4;
+  --tw-exec-ivory:#f1f0e9;
+  --tw-exec-border:rgba(198,202,193,.16);
+  --bg:#071115;
+  --bg-alt:#0d2029;
+  --panel:rgba(14,31,37,.91);
+  --panel-strong:rgba(14,32,39,.97);
+  --panel-soft:rgba(235,239,229,.045);
+  --line:rgba(188,203,194,.16);
+  --line-strong:rgba(204,202,186,.28);
+  --text:#f1f0e9;
+  --text-soft:#b1c2c0;
+  --text-faint:#869b9b;
+  --green:#68d4a8;
+  --green-2:#65caa4;
+  --teal:#70d3bb;
+  --cyan:#93bacc;
+  --violet:#a7a2c5;
+  --amber:#d4b781;
+  --chip:rgba(230,235,219,.06);
+  --grad-main:linear-gradient(140deg,#112a30,#12282e 42%,#183d3e);
+  --grad-accent:linear-gradient(105deg,#c19d65,#ecdbaf 52%,#c6aa76);
+  --shadow-xl:0 28px 64px rgba(0,0,0,.38);
+  --shadow-lg:0 14px 38px rgba(0,0,0,.28);
+}
+html{scroll-behavior:smooth;color-scheme:dark}
+body{
+  --tw-world-halo:rgba(101,202,164,.09);
+  background:
+    radial-gradient(ellipse 83% 32% at 52% -16%,var(--tw-world-halo),transparent 75%),
+    radial-gradient(ellipse 50% 60% at 109% 85%,rgba(212,183,129,.045),transparent 80%),
+    linear-gradient(155deg,#070d12 0%,#0b1720 42%,#091715 100%);
+  color:var(--tw-exec-ivory)
+}
+body[data-view="bills"],body[data-view="bill-pay"],body[data-view="cards"]{--tw-world-halo:rgba(212,183,129,.12)}
+body[data-view="insights"],body[data-view="scenario"],body[data-view="future"],body[data-view="performance"]{--tw-world-halo:rgba(113,151,218,.11)}
+body[data-view="log"],body[data-view="details"],body[data-view="money"],body[data-view="connections"],body[data-view="history"]{--tw-world-halo:rgba(190,151,113,.09)}
+body[data-view="savings"],body[data-view="essentials"],body[data-view="setup"],body[data-view="reset"]{--tw-world-halo:rgba(103,207,150,.12)}
+body::before,body::after{opacity:.2;filter:blur(50px);animation-duration:25s}
+::selection{background:#b5a070;color:#071115}
+.screen{isolation:isolate}
+.topbar{padding:calc(12px + env(safe-area-inset-top,0px)) 14px 10px;backdrop-filter:blur(12px)}
+.topbar-inner{
+  border:1px solid rgba(212,183,129,.20);
+  border-radius:22px;
+  padding:12px 14px;
+  background:linear-gradient(117deg,rgba(20,38,44,.96),rgba(9,21,27,.97));
+  box-shadow:0 2px 0 rgba(228,199,146,.09) inset,0 16px 36px rgba(0,0,0,.22)
+}
+.topbar-inner::before{background:rgba(199,173,112,.08);opacity:.6}
+.brand-block{min-width:0}
+.brand-block>div:last-child{min-width:0}
+.brand-mark{
+  flex:0 0 auto;width:42px;height:42px;border-radius:14px;
+  border:1px solid rgba(228,203,154,.40);
+  color:#ecd7ad;
+  background:linear-gradient(144deg,#1e3c3b,#112524 64%,#0c171c);
+  box-shadow:inset 0 1px 0 rgba(250,239,213,.17),0 8px 22px rgba(0,0,0,.2)
+}
+.brand-mark svg{width:30px;height:30px}
+.tw-endorsement{
+  display:block;color:var(--tw-exec-gold);
+  letter-spacing:.15em;font-size:.53rem;font-weight:800;
+  text-transform:uppercase;line-height:1.25;margin-bottom:3px
+}
+.brand-kicker{color:#a5cabc;font-size:.56rem;letter-spacing:.09em;margin-bottom:2px;font-weight:700}
+.topbar h1{font-size:clamp(.98rem,3.8vw,1.24rem);letter-spacing:-.025em;line-height:1.18}
+.brand-subtitle{font-size:.69rem;color:#a9b6b4;line-height:1.3}
+#app{width:100%;min-width:0;padding-bottom:max(110px,calc(88px + env(safe-area-inset-bottom,0px)))}
+#app:focus{outline:none}
+:where(.hero-card,.home-command,.studio-hero,.section,.form-card,.summary-card-full,.warning-card,.empty-card,.system-map-hero,.system-tool,.precheck-stage,.scenario-stage,.connection-stage,.provider-readiness,.trust-card,.savings-board,.runway-board,.flex-board,.observatory,.zen-scene){
+  border-color:var(--tw-exec-border);
+  box-shadow:0 14px 38px rgba(0,0,0,.17),inset 0 1px 0 rgba(244,227,198,.035)
+}
+:where(.section,.form-card,.summary-card-full,.warning-card,.empty-card,.system-tool,.trust-card){
+  background-color:rgba(14,30,36,.48)
+}
+:where(.studio-hero,.system-map-hero,.hero-card,.home-command){
+  position:relative;overflow:hidden
+}
+:where(.studio-hero,.system-map-hero,.hero-card,.home-command)::after{
+  content:"";position:absolute;inset:0 0 auto 0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(212,183,129,.35),transparent);
+  pointer-events:none
+}
+:where(.studio-hero,.system-map-hero) h2{letter-spacing:-.035em}
+:where(.btn,.btn-primary,.btn-secondary,.text-action,.system-tool,.nav-link,button,input,select,textarea){
+  -webkit-tap-highlight-color:transparent
+}
+:where(.btn,.btn-primary,.btn-secondary,.text-action,.system-tool,button){
+  touch-action:manipulation
+}
+:where(.btn,.btn-primary,.btn-secondary,button):not(.zen-zone):not(.zen-attention-child){
+  min-height:42px
+}
+:where(input,select,textarea){max-width:100%;font-size:max(16px,1rem)}
+:where(a,button,input,select,textarea,summary):focus-visible{
+  outline:2px solid #e5c994;outline-offset:3px
+}
+:where(.btn-primary,button.btn-primary,.btn.btn-primary){
+  color:#102222;
+  background:linear-gradient(115deg,#b99461,#f1dca8 55%,#d0a86e);
+  border-color:rgba(242,217,164,.55);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 6px 18px rgba(0,0,0,.2)
+}
+:where(.btn-secondary,.btn.btn-secondary){
+  background:rgba(221,226,211,.06);border-color:rgba(203,207,192,.22);color:#ecf0e9
+}
+.bottom-nav{
+  bottom:calc(10px + env(safe-area-inset-bottom,0px));
+  width:min(480px,calc(100% - 20px));
+  padding:7px;gap:4px;
+  border-radius:22px;
+  border:1px solid rgba(212,183,129,.22);
+  background:linear-gradient(125deg,rgba(14,32,37,.98),rgba(7,18,23,.98));
+  box-shadow:0 22px 60px rgba(0,0,0,.45),inset 0 1px 0 rgba(252,235,204,.06);
+  backdrop-filter:blur(22px)
+}
+.nav-link{
+  min-height:58px;min-width:0;justify-content:center;
+  border-radius:16px;font-weight:750;letter-spacing:.015em;
+  text-transform:none;font-size:.67rem;gap:3px;padding:6px 2px;
+  transition:background-color .2s ease,color .2s ease,transform .2s ease
+}
+.nav-link .nav-icon{
+  width:30px;height:26px;border:none;background:transparent;
+  font-size:1.05rem;color:#bdc7c0
+}
+.nav-link.active{
+  background:linear-gradient(145deg,rgba(211,187,142,.15),rgba(78,145,126,.08));
+  color:#f1e5cb;
+  box-shadow:inset 0 0 0 1px rgba(220,194,143,.2)
+}
+.nav-link.active .nav-icon{
+  border:none;background:transparent;color:#e1c58e
+}
+.nav-link:hover{transform:translateY(-1px)}
+#app>*,.studio-stack,.system-map-shell{min-width:0}
+:where(.studio-stat,.system-map-stat,.trust-card,.summary-card-full) strong{
+  font-variant-numeric:tabular-nums
+}
+:where(.studio-summary,.trust-grid,.system-map-overview,.data-model-summary){
+  min-width:0
+}
+.tw-advanced-zone{display:none;margin:0 14px 120px;align-self:stretch}
+body[data-route="details"] .tw-advanced-zone{display:block}
+.tw-advanced-zone details{
+  border:1px solid rgba(212,183,129,.18);
+  border-radius:18px;background:rgba(12,26,32,.90);overflow:hidden
+}
+.tw-advanced-zone summary{
+  cursor:pointer;list-style:none;padding:15px 17px;color:#ddc59b;
+  font-size:.81rem;font-weight:750;display:flex;align-items:center;
+  justify-content:space-between;min-height:48px
+}
+.tw-advanced-zone summary::-webkit-details-marker{display:none}
+.tw-advanced-zone summary::after{content:"+";font-size:1.15rem}
+.tw-advanced-zone details[open] summary::after{content:"−"}
+.tw-advanced-body{padding:0 15px 16px;border-top:1px solid rgba(212,183,129,.12)}
+.tw-advanced-body p{margin:12px 0;color:#bdccc7;font-size:.75rem;line-height:1.55}
+.tw-advanced-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.tw-advanced-links a{
+  display:flex;align-items:center;justify-content:space-between;
+  color:#eaece3;text-decoration:none;border:1px solid rgba(203,207,192,.16);
+  background:rgba(230,234,219,.04);border-radius:12px;min-height:48px;
+  padding:10px 12px;font-size:.75rem
+}
+.tw-advanced-links a:hover,.tw-advanced-links a:focus-visible{border-color:rgba(212,183,129,.55)}
+.tw-advanced-note{font-size:.64rem;color:#b3c2bd;line-height:1.5;margin-top:12px}
+body[data-motion="cinematic"] #app>.studio-stack,
+body[data-motion="cinematic"] #app>.system-map-shell,
+body[data-motion="cinematic"] #app>.zen-home,
+body[data-motion="dynamic"] #app>.studio-stack,
+body[data-motion="dynamic"] #app>.system-map-shell{
+  animation:twExecReveal .32s cubic-bezier(.2,.7,.2,1) both
+}
+@keyframes twExecReveal{
+  from{opacity:.65;transform:translateY(7px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@media(min-width:800px){
+  .screen{max-width:1050px}
+  #app{max-width:100%;margin:auto}
+  .zen-home{max-width:570px;margin-inline:auto}
+  .topbar{padding-inline:22px}
+  .topbar-inner{max-width:1030px;margin:auto;padding:18px 22px}
+  .tw-advanced-zone{max-width:1010px;margin-inline:22px}
+  .bottom-nav{width:min(540px,calc(100% - 36px));bottom:16px}
+}
+@media(max-width:430px){
+  .screen{width:100%;max-width:100%}
+  .topbar{padding:calc(8px + env(safe-area-inset-top,0px)) 10px 8px}
+  .topbar-inner{padding:10px 11px;gap:6px;border-radius:18px}
+  .brand-block{gap:8px}
+  .brand-mark{width:36px;height:36px;border-radius:12px}
+  .brand-mark svg{width:26px;height:26px}
+  .tw-endorsement{font-size:.46rem;letter-spacing:.10em}
+  .brand-kicker{font-size:.5rem}
+  .brand-subtitle{font-size:.62rem}
+  .topbar h1{font-size:.96rem}
+  .tw-advanced-zone{margin-inline:10px}
+}
+@media(max-width:360px){.tw-advanced-links{grid-template-columns:1fr}.nav-link{font-size:.62rem}}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  body::before,body::after{animation:none!important}
+  #app>.studio-stack,#app>.system-map-shell,#app>.zen-home{animation:none!important;transform:none!important}
+  .nav-link{transition:none}
+}
+body[data-motion="reduced"] #app>.studio-stack,
+body[data-motion="reduced"] #app>.system-map-shell,
+body[data-motion="reduced"] #app>.zen-home{animation:none!important;transform:none!important}
+
+</style></head><body><a class="skip-link" href="#app">Skip to main content</a><div class="sr-only" id="routeAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div><div class="privacy-curtain" id="privacyCurtain" aria-hidden="true"><div><div class="privacy-curtain-mark">TW</div><strong>Financial view hidden</strong><span>This Week masks the page while it is inactive. This is a best-effort browser privacy layer, not a guarantee about operating-system snapshots.</span></div></div><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M11 22L24 59L40 34L56 59L69 22" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="square"/><path d="M12 13H68" stroke="currentColor" stroke-width="1.5" opacity=".65"/><circle cx="12" cy="13" r="2" fill="currentColor"/><circle cx="21" cy="13" r="2" fill="currentColor"/><circle cx="30" cy="13" r="2" fill="currentColor"/><circle cx="40" cy="13" r="2" fill="#77d2ad"/><circle cx="50" cy="13" r="2" fill="currentColor"/><circle cx="59" cy="13" r="2" fill="currentColor"/><circle cx="68" cy="13" r="2" fill="currentColor"/></svg></div><div><span class="tw-endorsement">Good Jawn Financial</span><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app" tabindex="-1">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="zen-home">
       <div class="zen-topline"><span class="zen-week">Current budgeting week</span></div>
@@ -5292,7 +5514,7 @@ body[data-motion="reduced"] .state-spinner{
     </section>
   </div>
   <noscript><div class="inline-note" style="margin:16px"><span>ⓘ</span><span>JavaScript is disabled in this viewer, so this page is showing the full static Home preview.</span></div></noscript>
-</main><nav class="bottom-nav" aria-label="Primary"><a class="nav-link active" data-route="home" href="#home"><span class="nav-icon">⌂</span><span>Home</span></a><a class="nav-link" data-route="log" href="#log"><span class="nav-icon">＋</span><span>Add Spend</span></a><a class="nav-link" data-route="details" href="#details"><span class="nav-icon">≣</span><span>Details</span></a><a class="nav-link" data-route="plan" href="#setup"><span class="nav-icon">⚙</span><span>Plan</span></a></nav><div class="finance-dock" id="financeDock"><div class="dock-state"><span class="dock-led"></span><div class="dock-copy"><strong id="dockTitle">Weekly plan active</strong><span id="dockSub">Local financial workspace</span></div></div><span class="dock-secure">Private</span></div></div><script>// This Week - browser-persistent preview runtime.
+</main><aside class="tw-advanced-zone" aria-label="Optional advanced functionality"><details><summary>Advanced tools and integrations</summary><div class="tw-advanced-body"><p>Optional workspace for technical tools. Your everyday budgeting plan remains separate from any money-provider sandbox.</p><nav class="tw-advanced-links" aria-label="Advanced tools"><a href="#qa">Device diagnostics <span aria-hidden="true">›</span></a><a href="#performance">Performance <span aria-hidden="true">›</span></a><a href="#data-model">Data model <span aria-hidden="true">›</span></a><a href="#privacy">Privacy & backup <span aria-hidden="true">›</span></a><a href="#analytics">Local insights <span aria-hidden="true">›</span></a><a href="./money-lab/">Money sandbox <span aria-hidden="true">›</span></a><a href="./ops/">Release operations <span aria-hidden="true">›</span></a><a href="#preferences">Display preferences <span aria-hidden="true">›</span></a></nav><p class="tw-advanced-note">Advanced tools are opt-in navigation, not an authorization bypass. Money execution remains restricted by the existing server and release controls.</p></div></details></aside><nav class="bottom-nav" aria-label="Primary"><a class="nav-link active" data-route="home" href="#home"><span class="nav-icon">⌂</span><span>Home</span></a><a class="nav-link" data-route="log" href="#log"><span class="nav-icon">＋</span><span>Add Spend</span></a><a class="nav-link" data-route="details" href="#details"><span class="nav-icon">≣</span><span>Explore</span></a><a class="nav-link" data-route="plan" href="#setup"><span class="nav-icon">⚙</span><span>Plan</span></a></nav><div class="finance-dock" id="financeDock"><div class="dock-state"><span class="dock-led"></span><div class="dock-copy"><strong id="dockTitle">Weekly plan active</strong><span id="dockSub">Local financial workspace</span></div></div><span class="dock-secure">Private</span></div></div><script>// This Week - browser-persistent preview runtime.
 // Data is stored in localStorage so the Vercel preview stays usable without a server database.
 
 const USER_ID_KEY = "thisweek.userId";
