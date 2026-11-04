@@ -5498,7 +5498,33 @@ body[data-motion="reduced"] #app>.studio-stack,
 body[data-motion="reduced"] #app>.system-map-shell,
 body[data-motion="reduced"] #app>.zen-home{animation:none!important;transform:none!important}
 
-</style></head><body><a class="skip-link" href="#app">Skip to main content</a><div class="sr-only" id="routeAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div><div class="privacy-curtain" id="privacyCurtain" aria-hidden="true"><div><div class="privacy-curtain-mark">TW</div><strong>Financial view hidden</strong><span>This Week masks the page while it is inactive. This is a best-effort browser privacy layer, not a guarantee about operating-system snapshots.</span></div></div><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M11 22L24 59L40 34L56 59L69 22" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="square"/><path d="M12 13H68" stroke="currentColor" stroke-width="1.5" opacity=".65"/><circle cx="12" cy="13" r="2" fill="currentColor"/><circle cx="21" cy="13" r="2" fill="currentColor"/><circle cx="30" cy="13" r="2" fill="currentColor"/><circle cx="40" cy="13" r="2" fill="#77d2ad"/><circle cx="50" cy="13" r="2" fill="currentColor"/><circle cx="59" cy="13" r="2" fill="currentColor"/><circle cx="68" cy="13" r="2" fill="currentColor"/></svg></div><div><span class="tw-endorsement">Good Jawn Financial</span><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app" tabindex="-1">
+
+/* EXECUTIVE UX PASS 2: connected routes and task-first discovery. */
+.tw-route-shortcuts{display:flex;align-items:center;gap:7px;min-width:0;max-width:100%;padding:4px 13px 11px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tw-route-shortcuts::-webkit-scrollbar{display:none}
+.tw-route-shortcuts[hidden]{display:none}
+.tw-route-shortcuts a{flex:0 0 auto;min-height:42px;display:inline-flex;align-items:center;justify-content:center;scroll-snap-align:start;white-space:nowrap;padding:9px 13px;border:1px solid rgba(204,201,185,.18);border-radius:12px;background:rgba(224,228,212,.038);color:#c8d4cd;font-size:.72rem;font-weight:700;text-decoration:none;transition:background-color .18s ease,border-color .18s ease,color .18s ease}
+.tw-route-shortcuts a.active{color:#f5e7c7;background:rgba(212,183,129,.13);border-color:rgba(212,183,129,.42)}
+.tw-route-shortcuts a:hover{border-color:rgba(212,183,129,.38)}
+.tw-quick-tasks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0;min-width:0}
+.tw-quick-tasks a{min-width:0;min-height:74px;display:flex;gap:10px;align-items:center;padding:12px;border:1px solid rgba(208,208,195,.17);border-radius:17px;background:linear-gradient(135deg,rgba(30,49,50,.85),rgba(11,26,31,.94));box-shadow:inset 0 1px 0 rgba(243,230,202,.07);color:#f1f0e9;text-decoration:none;touch-action:manipulation}
+.tw-quick-symbol{width:32px;height:32px;flex:0 0 32px;border-radius:11px;display:grid;place-items:center;font-size:1rem;font-weight:850;color:#e8d0a2;border:1px solid rgba(212,183,129,.23);background:rgba(212,183,129,.07)}
+.tw-quick-tasks a span:last-child{min-width:0}
+.tw-quick-tasks strong{display:block;font-size:.75rem;line-height:1.2;letter-spacing:-.015em}
+.tw-quick-tasks small{display:block;margin-top:4px;color:#b0c2bc;font-size:.65rem;line-height:1.3}
+.tw-quick-tasks a:hover{border-color:rgba(212,183,129,.42)}
+.tw-source-trust{color:#b7c9bf;font-size:.64rem;line-height:1.45;padding:2px 12px 0;margin:0 0 3px}
+.tw-source-trust a{color:#ead5a7;text-underline-offset:3px}
+body[data-view="bills"] .studio-hero,body[data-view="bill-pay"] .studio-hero,body[data-view="cards"] .studio-hero{border-color:rgba(212,183,129,.24);background-image:radial-gradient(ellipse at 82% 0,rgba(212,183,129,.12),transparent 52%),linear-gradient(147deg,rgba(21,40,43,.96),rgba(10,22,29,.98))}
+body[data-view="insights"] .studio-hero,body[data-view="scenario"] .studio-hero,body[data-view="performance"] .studio-hero{border-color:rgba(125,164,197,.25);background-image:radial-gradient(ellipse at 75% -15%,rgba(73,126,196,.15),transparent 60%),linear-gradient(147deg,rgba(13,29,47,.96),rgba(9,22,31,.98))}
+body[data-view="essentials"] .studio-hero,body[data-view="savings"] .studio-hero,body[data-view="setup"] .studio-hero{border-color:rgba(113,193,156,.22);background-image:radial-gradient(ellipse at 84% -12%,rgba(88,176,128,.14),transparent 58%),linear-gradient(147deg,rgba(13,39,34,.96),rgba(9,23,29,.98))}
+body[data-view="lifestyle"] .studio-hero,body[data-view="history"] .studio-hero,body[data-view="connections"] .studio-hero{border-color:rgba(180,155,126,.21);background-image:radial-gradient(ellipse at 84% -12%,rgba(180,144,101,.12),transparent 58%),linear-gradient(147deg,rgba(34,34,33,.96),rgba(14,24,29,.98))}
+@media(min-width:800px){.tw-route-shortcuts{justify-content:center;padding:5px 20px 16px}.tw-quick-tasks{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:390px){.tw-quick-tasks a{padding:10px;gap:8px;min-height:72px}.tw-quick-symbol{width:28px;height:28px;flex-basis:28px}.tw-quick-tasks strong{font-size:.72rem}.tw-quick-tasks small{font-size:.61rem}}
+@media(prefers-reduced-motion:reduce){.tw-route-shortcuts a{transition:none}}
+body[data-motion="reduced"] .tw-route-shortcuts a{transition:none}
+
+</style></head><body><a class="skip-link" href="#app">Skip to main content</a><div class="sr-only" id="routeAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div><div class="privacy-curtain" id="privacyCurtain" aria-hidden="true"><div><div class="privacy-curtain-mark">TW</div><strong>Financial view hidden</strong><span>This Week masks the page while it is inactive. This is a best-effort browser privacy layer, not a guarantee about operating-system snapshots.</span></div></div><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M11 22L24 59L40 34L56 59L69 22" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="square"/><path d="M12 13H68" stroke="currentColor" stroke-width="1.5" opacity=".65"/><circle cx="12" cy="13" r="2" fill="currentColor"/><circle cx="21" cy="13" r="2" fill="currentColor"/><circle cx="30" cy="13" r="2" fill="currentColor"/><circle cx="40" cy="13" r="2" fill="#77d2ad"/><circle cx="50" cy="13" r="2" fill="currentColor"/><circle cx="59" cy="13" r="2" fill="currentColor"/><circle cx="68" cy="13" r="2" fill="currentColor"/></svg></div><div><span class="tw-endorsement">Good Jawn Financial</span><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><nav class="tw-route-shortcuts" id="twRouteShortcuts" aria-label="Related tools" hidden></nav><main id="app" tabindex="-1">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="zen-home">
       <div class="zen-topline"><span class="zen-week">Current budgeting week</span></div>
@@ -8624,6 +8650,7 @@ async function renderHome(){
         </a>
       </div>
 
+      <div class="tw-source-trust" role="note">Weekly planning figures, not a bank account balance. <a href="#privacy">Data &amp; privacy</a></div>
       <div class="zen-scene" id="zenScene" aria-label="Weekly financial overview. Tap a category once to peek, then again to enter its studio.">
         <svg class="zen-flow" viewBox="0 0 360 420" aria-hidden="true">
           <path class="bed" d="M180 210 C140 165 103 120 62 72"/><path class="bed" d="M180 210 C220 165 257 120 298 72"/><path class="bed" d="M180 210 C140 255 103 300 62 348"/><path class="bed" d="M180 210 C220 255 257 300 298 348"/>
@@ -8696,12 +8723,12 @@ async function renderDetails(){
         ].join('')
       },
       {
-        id:'money',eyebrow:'Money layer',title:'Move and control real money',copy:'Bank accounts, payroll, bill payment, rewards, and category cards live here without crowding Home.',
+        id:'money',eyebrow:'Future money services',title:'Money infrastructure · Sandbox',copy:'Explore account, payroll, payment, and card concepts. No live financial execution is enabled.',
         html:[
           tool('money','Money','Money Center','See the server ledger, account layer, provider readiness, and safety boundaries.','Foundation','#67e8f9',semanticIcon('link')),
-          tool('direct-deposit','Payroll','Direct Deposit','Switch all or part of a paycheck into a future This Week deposit account.','Payroll','#6ee7b7',semanticIcon('goal')),
-          tool('bill-pay','Payments','Bill Pay','Authorize and route liability payments without treating a planned bill as already paid.','Payments','#60a5fa',semanticIcon('purchase')),
-          tool('cards','Cards','Category Cards','Issue category- or bill-scoped virtual cards after the banking program is approved.','Cards','#f6d784',semanticIcon('shopping'))
+          tool('direct-deposit','Payroll','Direct Deposit','Explore the future payroll-switching workflow; no live switching is enabled.','Payroll','#6ee7b7',semanticIcon('goal')),
+          tool('bill-pay','Payments','Bill Pay','Explore guarded payment capabilities; planned bills are not payments.','Payments','#60a5fa',semanticIcon('purchase')),
+          tool('cards','Cards','Category Cards','Explore proposed category cards; card issuing is not active.','Cards','#f6d784',semanticIcon('shopping'))
         ].join('')
       },
       {
@@ -8721,18 +8748,15 @@ async function renderDetails(){
         ].join('')
       },
       {
-        id:'settings',eyebrow:'System & settings',title:'Control how the app works',copy:'Change the plan, presentation, or inspect the architecture without altering Home.',
+        id:'settings',eyebrow:'Settings & support',title:'Control your workspace',copy:'Manage your plan, presentation, privacy, support, and account. Technical tools are optional below.',
         html:[
           tool('setup','Plan','Edit weekly structure','Change pay, bills, categories, savings, and week rhythm.','Plan','#72d6aa',semanticIcon('plan')),
           tool('preferences','Presentation','Motion, density & contrast','Control how much information and movement the interface shows.','Display','#f0a7d3',semanticIcon('settings')),
-          tool('future','Architecture','System Architecture','See how adaptive constellations, choreography, and connected data fit together.','Guide','#9fc8d1',semanticIcon('architecture')),
-          tool('qa','Quality','Device QA','Run mobile viewport, overflow, touch, storage, parser, and static-runtime checks on this device.','QA','#67e8f9',semanticIcon('settings')),
-          tool('performance','Runtime','Performance & Resilience','Inspect render timing, storage growth, adaptive tier, and derived-cache behavior.','Health','#72d6aa',semanticIcon('analysis')),
-          tool('data-model','Data model','Data Model & Export','Inspect normalized entities, provider contracts, provenance, and portable JSON serialization.','Schema','#9fc8d1',semanticIcon('architecture')),
+
           tool('privacy','Trust','Privacy & Local Data','See where financial data lives, what is imported, export it, or delete This Week data from this browser.','Local','#67e8f9',semanticIcon('settings')),
           externalTool('./account/','Identity','Account & Security','Sign in, recover access, manage MFA, sessions, and cloud-account deletion.','Security','#6ee7b7',semanticIcon('settings')),
           externalTool('./support/','Help','Support & Disputes','Report a money issue, account-access problem, transfer, bill-pay, card, or direct-deposit concern.','Support','#67e8f9',semanticIcon('settings')),
-          tool('analytics','Local insights','Usage Insights','Optional aggregate counters that stay in this browser and help evaluate workflow friction without tracking time or financial amounts.','Optional','#c4b5fd',semanticIcon('analysis'))
+
         ].join('')
       }
     ];
@@ -8750,9 +8774,9 @@ async function renderDetails(){
 
     root.innerHTML=`<div class="system-map-shell">
       <section class="system-map-hero">
-        <span class="system-map-kicker">Details = map, not dashboard</span>
-        <h2>Everything advanced has a predictable place.</h2>
-        <p>Home stays compact. Details organizes the deeper system. Studios handle focused work.</p>
+        <span class="system-map-kicker">YOUR FINANCIAL WORKSPACE</span>
+        <h2>Choose your next move.</h2>
+        <p>Handle everyday money tasks first. Explore deeper tools only when you need them. Values shown here come from your weekly plan—not a bank balance.</p>
         <div class="system-map-overview">
           <div class="system-map-stat"><small>Available</small><strong>${formatCents(p.available)}</strong></div>
           <div class="system-map-stat"><small>Spent</small><strong>${formatCents(st.spent)}</strong></div>
@@ -8764,6 +8788,12 @@ async function renderDetails(){
           <input id="systemToolSearch" type="search" placeholder="Find a tool or task" autocomplete="off" aria-label="Find a tool or task">
           <span id="systemSearchCount">All tools</span>
         </label>
+      </section>
+      <section class="tw-quick-tasks" aria-label="Popular money tasks">
+        <a href="#log"><span class="tw-quick-symbol" aria-hidden="true">+</span><span><strong>Add spending</strong><small>Record a transaction</small></span></a>
+        <a href="#precheck"><span class="tw-quick-symbol" aria-hidden="true">✓</span><span><strong>Check a purchase</strong><small>Plan before you spend</small></span></a>
+        <a href="#bills"><span class="tw-quick-symbol" aria-hidden="true">▤</span><span><strong>Review bills</strong><small>Know what is due</small></span></a>
+        <a href="#savings"><span class="tw-quick-symbol" aria-hidden="true">↗</span><span><strong>Savings goals</strong><small>See your progress</small></span></a>
       </section>
       ${powerDock}
 
@@ -9947,6 +9977,28 @@ const routeScrollPositions=new Map();
 let historyTraversalPending=false;
 try{history.scrollRestoration='manual';}catch{}
 
+
+/* Contextual navigation uses existing routes and never writes financial state. */
+function renderContextNavigation(routeName){
+  const bar=document.getElementById('twRouteShortcuts');if(!bar)return;
+  const groupByRoute={
+    log:'spending',precheck:'spending',bills:'weekly',essentials:'weekly',lifestyle:'weekly',savings:'weekly',
+    setup:'planning',scenario:'planning',reset:'planning',insights:'review',history:'review',connections:'review',
+    money:'money','direct-deposit':'money','bill-pay':'money',cards:'money',preferences:'system',
+    privacy:'system',future:'system',qa:'system',performance:'system','data-model':'system',analytics:'system'};
+  const byGroup={
+    spending:[['Add spending','log'],['Check purchase','precheck'],['History','history'],['Explore','details']],
+    weekly:[['Bills','bills'],['Essentials','essentials'],['Lifestyle','lifestyle'],['Savings','savings']],
+    planning:[['Weekly plan','setup'],['Scenarios','scenario'],['Savings','savings'],['Explore','details']],
+    review:[['Insights','insights'],['History','history'],['Imports','connections'],['Explore','details']],
+    money:[['Money center','money'],['Imports','connections'],['Privacy','privacy'],['Explore','details']],
+    system:[['Presentation','preferences'],['Privacy','privacy'],['Explore','details']]};
+  const items=byGroup[groupByRoute[routeName]];
+  bar.hidden=!items;if(!items){bar.replaceChildren();return;}
+  bar.innerHTML=items.map(([label,target])=>'<a href="#'+target+'"'+
+    (target===routeName?' class="active" aria-current="page"':'')+'>'+label+'</a>').join('');
+}
+
 function routeAccessibleName(routeName){
   return ({home:'Home',log:'Add Spending',details:'Details',insights:'Advanced Insights',bills:'Bill Protection Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex Studio',savings:'Savings Goal Studio',precheck:'Purchase Pre-check',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data Center',money:'Money Center','direct-deposit':'Direct Deposit','bill-pay':'Bill Pay',cards:'Category Cards',preferences:'Presentation and Accessibility',future:'System Architecture',qa:'Device QA',performance:'Performance and Resilience','data-model':'Data Model and Export',privacy:'Privacy and Local Data',analytics:'Local Usage Insights',reset:'New Week',setup:'Plan'})[routeName]||'Home';
 }
@@ -9963,6 +10015,7 @@ async function render(){
   applyUiPrefs();applyRuntimePerformanceTier();bindSystemPreferenceListeners();bindMobileViewportController();bindLongTaskObserver();bindPrivacyCurtain();bindPowerKeyboard();
   const r=route(),routeChanged=lastRenderedRoute!==null&&lastRenderedRoute!==r;
   document.body.dataset.view=r;
+  renderContextNavigation(r);
   root.setAttribute('aria-busy','true');
   const phase17LoadingTimer=setTimeout(()=>{
     if(lastRenderedRoute!==r)root.innerHTML=loadingState('Loading '+routeDisplayName(r),'Preparing the requested workspace.');
