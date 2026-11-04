@@ -1,22 +1,28 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">This Week — seven-day W</title>
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0b2230"/>
-      <stop offset=".55" stop-color="#0a1824"/>
-      <stop offset="1" stop-color="#06111a"/>
+    <linearGradient id="night" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#163238"/>
+      <stop offset=".52" stop-color="#0a1d25"/>
+      <stop offset="1" stop-color="#071115"/>
     </linearGradient>
-    <linearGradient id="a" x1=".1" y1=".1" x2=".9" y2=".9">
-      <stop offset="0" stop-color="#f6d784"/>
-      <stop offset=".48" stop-color="#6ee7b7"/>
-      <stop offset="1" stop-color="#67e8f9"/>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2=".9">
+      <stop offset="0" stop-color="#b7955f"/>
+      <stop offset=".48" stop-color="#f1ddb1"/>
+      <stop offset="1" stop-color="#c4a172"/>
     </linearGradient>
   </defs>
-  <rect width="512" height="512" rx="122" fill="url(#g)"/>
-  <rect x="42" y="42" width="428" height="428" rx="100" fill="none" stroke="#ffffff" stroke-opacity=".08" stroke-width="3"/>
-  <path d="M121 157h270M121 211h270" stroke="#ffffff" stroke-opacity=".13" stroke-width="7" stroke-linecap="round"/>
-  <path d="M143 303c36-82 76-82 113 0s77 82 113 0" fill="none" stroke="url(#a)" stroke-width="28" stroke-linecap="round"/>
-  <circle cx="143" cy="303" r="16" fill="#f6d784"/>
-  <circle cx="256" cy="303" r="16" fill="#6ee7b7"/>
-  <circle cx="369" cy="303" r="16" fill="#67e8f9"/>
-  <text x="256" y="424" text-anchor="middle" fill="#edf7fb" font-family="system-ui,-apple-system,Segoe UI,sans-serif" font-size="54" font-weight="800" letter-spacing="-2">THIS WEEK</text>
+  <rect width="512" height="512" rx="114" fill="url(#night)"/>
+  <rect x="34" y="34" width="444" height="444" rx="94" stroke="#d4b781" stroke-opacity=".35" stroke-width="3" fill="none"/>
+  <path d="M122 181 L176 330 L257 226 L333 330 L390 181" fill="none" stroke="url(#metal)" stroke-width="26" stroke-linejoin="round" stroke-linecap="square"/>
+  <path d="M122 141 H390" fill="none" stroke="#f1ddb1" stroke-opacity=".58" stroke-width="4"/>
+  <circle cx="122" cy="141" r="9" fill="#dfc590"/>
+  <circle cx="167" cy="141" r="9" fill="#dfc590"/>
+  <circle cx="212" cy="141" r="9" fill="#dfc590"/>
+  <circle cx="257" cy="141" r="9" fill="#72d4af"/>
+  <circle cx="302" cy="141" r="9" fill="#dfc590"/>
+  <circle cx="347" cy="141" r="9" fill="#dfc590"/>
+  <circle cx="390" cy="141" r="9" fill="#dfc590"/>
+  <path d="M128 374H384" stroke="#d4b781" stroke-opacity=".24" stroke-width="2"/>
+  <text x="256" y="424" fill="#f1f0e9" text-anchor="middle" font-family="system-ui,-apple-system,Segoe UI,sans-serif" font-size="43" font-weight="750" letter-spacing="3">THIS WEEK</text>
 </svg>
