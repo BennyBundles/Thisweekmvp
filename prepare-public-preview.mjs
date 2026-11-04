@@ -120,20 +120,21 @@ if(PUBLIC_PREVIEW_MODE==='demo')seedPublicReleaseDemo();
 // and the current release's exact offline cache has been verified.
 const offlinePanel=document.createElement('section');
 offlinePanel.id='thisweek-offline-readiness';
+offlinePanel.className='tw-offline-panel';
 offlinePanel.setAttribute('role','status');
 offlinePanel.setAttribute('aria-live','polite');
-offlinePanel.style.cssText='margin:8px 16px 10px;padding:10px 12px;background:#122739;border:1px solid #5e8093;border-radius:14px;color:#fff;font:600 13px system-ui,sans-serif;display:flex;align-items:center;justify-content:space-between;gap:8px;';
+// Presentation is controlled by existing theme CSS, not hard-coded colors.
 const offlineLabel=document.createElement('span');
 offlineLabel.textContent='Offline: checking setup…';
 const offlineRetry=document.createElement('button');
 offlineRetry.type='button';
 offlineRetry.textContent='Check again';
-offlineRetry.style.cssText='background:#183b50;color:#fff;border:1px solid #729bb0;border-radius:10px;padding:8px 9px;font:600 12px system-ui,sans-serif;min-height:36px;';
+offlineRetry.className='tw-offline-retry';
 offlinePanel.append(offlineLabel,offlineRetry);
 document.querySelector('.topbar')?.insertAdjacentElement('afterend',offlinePanel);
 function offlineSetStatus(kind,detail){
   offlinePanel.dataset.state=kind;
-  offlinePanel.style.borderColor=kind==='ready'?'#3acda5':kind==='checking'?'#5e8093':'#f0ba78';
+  // data-state determines color; the accessibility status message is retained.
   offlineLabel.textContent=detail;
 }
 function offlineDeadline(promise,ms){
@@ -167,8 +168,9 @@ let offlineProbeSerial=0;
 async function checkPublicOfflineReadiness(){
   const seq=++offlineProbeSerial;
   offlineSetStatus('checking','Offline: checking setup…');
-  if(!('serviceWorker' in navigator)||location.protocol!=='https:'){
-    offlineSetStatus('error','Offline not ready: browser does not support this setup');
+  // Trusted local loopback origins support service workers; use browser security verdict.
+  if(!('serviceWorker' in navigator)||!globalThis.isSecureContext){
+    offlineSetStatus('error','Offline not ready: secure HTTPS or localhost is required');
     return;
   }
   if(!navigator.onLine&&!navigator.serviceWorker.controller){
