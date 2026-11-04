@@ -16,7 +16,9 @@ const targets=[
   {route:'bills',world:'vault',name:'05-vault-bills'},
   {route:'insights',world:'observatory',name:'06-observatory-insights'},
   {route:'savings',world:'ledger',name:'07-ledger-savings'},
-  {route:'precheck',world:'capital',name:'08-precheck'}
+  {route:'precheck',world:'capital',name:'08-precheck'},
+  {route:'capital',world:'capital',name:'09-capital'},
+  {route:'assist',world:'observatory',name:'10-assist'}
 ];
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.svg':'image/svg+xml','.json':'application/json','.webmanifest':'application/manifest+json','.css':'text/css','.png':'image/png'};
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
@@ -111,6 +113,20 @@ try{
     if(target.route==='home'&&state.trustedContext&&state.serviceWorkerSupported&&state.offlineMessage.includes('browser does not support this setup'))report.errors.push('Home: localhost incorrectly rejected as insecure for offline testing');
     if(/Unable to open|Build a plan first|Unexpected local rendering error/i.test(state.appText))report.errors.push(target.route+': error/empty Plan fallback');
     if(target.route==='details'&&state.visibleGallery!==4)report.errors.push('Explore: four world portal links not visible');
+    if(target.route==='setup'){
+      const wizard=await evaluate("({visible:!!document.querySelector('.tw-onboard'),advancedClosed:!document.querySelector('.tw-onboard-advanced')?.open,step:Number(document.querySelector('.tw-onboard-step:not([hidden])')?.dataset?.twStep||0),savePresent:!!document.querySelector('#savePlan')})");
+      if(!wizard.visible||!wizard.advancedClosed||wizard.step!==0||!wizard.savePresent)report.errors.push('Plan: three-step wizard failed progressive-disclosure check');
+      const nextState=await evaluate("(()=>{document.getElementById('twWizardNext')?.click();return Number(document.querySelector('.tw-onboard-step:not([hidden])')?.dataset?.twStep||0)})()");
+      if(nextState!==1)report.errors.push('Plan: wizard did not advance to bills step');
+    }
+    if(target.route==='capital'){
+      const value=await evaluate("({categories:document.querySelectorAll('.tw-capital-row').length,add:!!document.querySelector('.tw-capital-actions a[href=\"#log\"]'),balance:!!document.querySelector('.tw-capital-balance strong')})");
+      if(!value.categories||!value.add||!value.balance)report.errors.push('Capital: real budget, categories or Add Spend action missing');
+    }
+    if(target.route==='assist'){
+      const result=await evaluate("(()=>{const button=document.querySelector('[data-guide]');button?.click();return {hasGuide:!!document.querySelector('.tw-guide'),response:document.querySelector('#twGuideAnswer')?.textContent||'',input:!!document.querySelector('#twGuideInput')}})()");
+      if(!result.hasGuide||!result.input||result.response.length<30||result.response.includes('Choose a question'))report.errors.push('Assist: suggested question does not produce plan guidance');
+    }
     const shot=await cdp('Page.captureScreenshot',{format:'png',captureBeyondViewport:false,fromSurface:true});
     await writeFile(path.join(out,target.name+'.png'),Buffer.from(shot.data,'base64'));
     report.pages.push({...target,...state,screenshot:target.name+'.png'});
@@ -122,7 +138,7 @@ try{
   await waitRoute('home');await sleep(850);
   const desktop=await inspect();
   const desktopShot=await cdp('Page.captureScreenshot',{format:'png',captureBeyondViewport:false,fromSurface:true});
-  await writeFile(path.join(out,'09-desktop-home.png'),Buffer.from(desktopShot.data,'base64'));
+  await writeFile(path.join(out,'11-desktop-home.png'),Buffer.from(desktopShot.data,'base64'));
   report.desktop=desktop;
   if(desktop.scrollWidth>desktop.width+4)report.errors.push('Desktop: horizontal overflow');
   // Re-enter the real installable app while the origin is unreachable.
