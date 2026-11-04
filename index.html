@@ -5573,6 +5573,7 @@ body[data-motion="reduced"] .tw-route-shortcuts a{transition:none}
 }
 .tw-cinematic-stage::after{content:"";position:absolute;z-index:2;top:-1px;right:10%;width:50%;height:1px;opacity:.8;background:linear-gradient(90deg,transparent,#ffe7ae,transparent)}
 body[data-view="home"] .tw-scene--capital,
+body[data-view="capital"] .tw-scene--capital,
 body[data-view="details"] .tw-scene--capital,
 body[data-view="log"] .tw-scene--capital,
 body[data-view="precheck"] .tw-scene--capital,
@@ -5598,6 +5599,7 @@ body[data-view="preferences"] .tw-scene--ledger{opacity:1;transform:scale(1)}
 body[data-view="home"] .tw-stage-world::before{content:"FINANCIAL COMMAND CENTER"}
 body[data-view="details"] .tw-stage-world::before{content:"EXPLORE YOUR WORLDS"}
 body[data-view="log"] .tw-stage-world::before{content:"SPENDING"}
+body[data-view="capital"] .tw-stage-world::before{content:"THE CAPITAL · MONEY"}
 body[data-view="precheck"] .tw-stage-world::before{content:"PRE-CHECK"}
 body[data-view="history"] .tw-stage-world::before{content:"YOUR HISTORY"}
 body[data-view="connections"] .tw-stage-world::before{content:"CONNECTED DATA"}
@@ -6847,7 +6849,7 @@ function emptyState(title,message='',actionHtml=''){return systemState('empty',t
 function loadingState(title='Loading…',message='Preparing this view.'){return '<div class="state-page-wrap">'+systemState('loading',title,message,'','page')+'</div>';}
 function pageState(kind,title,message='',actionHtml=''){return '<div class="state-page-wrap">'+systemState(kind,title,message,actionHtml,'page')+'</div>';}
 function routeDisplayName(r){
-  return ({home:'Home',log:'Add Spending',details:'Details',assist:'Good Jawn Guide',insights:'Advanced Insights',bills:'Bills Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex',savings:'Savings Goal Studio',precheck:'Can I Spend This?',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data',money:'Money Center','direct-deposit':'Direct Deposit','bill-pay':'Bill Pay',cards:'Category Cards',preferences:'Presentation',qa:'Device QA',performance:'Performance','data-model':'Data Model',privacy:'Privacy',analytics:'Usage Insights',future:'System Architecture',reset:'New Week',setup:'Plan'})[r]||'This Week';
+  return ({home:'Home',log:'Add Spending',details:'Details',assist:'Good Jawn Guide',capital:'The Capital',insights:'Advanced Insights',bills:'Bills Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex',savings:'Savings Goal Studio',precheck:'Can I Spend This?',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data',money:'Money Center','direct-deposit':'Direct Deposit','bill-pay':'Bill Pay',cards:'Category Cards',preferences:'Presentation',qa:'Device QA',performance:'Performance','data-model':'Data Model',privacy:'Privacy',analytics:'Usage Insights',future:'System Architecture',reset:'New Week',setup:'Plan'})[r]||'This Week';
 }
 function errBox(msg){ return msg?inlineState('error','Needs attention',msg):''; }
 
@@ -9260,6 +9262,38 @@ async function renderAssist(){
   }catch(e){root.innerHTML=pageState('error','Guide unavailable',e?.message||'Could not load your plan.');}
 }
 
+
+/* Capital: clear weekly spending experience over existing Plan and transaction data. */
+async function renderCapital(){
+  shellMeta('Money','The Capital','Your real weekly planning figures in one place','<a class="text-action" href="#log">Add Spend</a>');
+  nav('capital');
+  const id=getStoredUserId();
+  if(!id){root.innerHTML=pageState('empty','Your money plan starts here.','Create a week before viewing cash flow.','<a class="tw-gold-button" href="#setup">Build My Week →</a>');return;}
+  try{
+    const p=await apiRequest('/week/current?userId='+encodeURIComponent(id));
+    const lanes=[...(p.essentials||[]),...(p.forYou||[])];
+    const allocated=lanes.reduce((sum,c)=>sum+Math.max(0,c.allocated||0),0);
+    const spent=lanes.reduce((sum,c)=>sum+Math.max(0,(c.allocated||0)-(c.remaining||0)),0);
+    const catById=new Map(lanes.map(c=>[c.id,c.name]));
+    const entries=(readState()?.transactions||[]).filter(t=>t.weekId===p.week?.id).slice().sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||''))).slice(0,5);
+    const categories=lanes.map(c=>{
+      const amount=Math.max(0,(c.allocated||0)-(c.remaining||0));
+      const pct=(c.allocated||0)>0?Math.min(100,Math.max(0,Math.round(amount/Math.max(1,c.allocated)*100))):0;
+      return '<a class="tw-capital-row" href="#'+(c.type==='LIVING'?'essentials':'lifestyle')+'"><span class="tw-capital-category"><strong>'+escapeHtml(c.name)+'</strong><small>'+formatCents(amount)+' spent · '+pct+'% of this lane</small></span><span class="tw-capital-bar" aria-hidden="true" style="--pct:'+pct+'%"><i></i></span><span class="tw-capital-arrow" aria-hidden="true">↗</span></a>';
+    }).join('');
+    root.innerHTML=[
+      '<div class="tw-capital"><header class="tw-capital-lede"><span class="tw-section-label">THE CAPITAL · YOUR WEEK</span><h2>Money, without the maze.</h2>',
+      '<div class="tw-capital-balance"><small>Available in your weekly plan</small><strong>'+formatCents(p.available||0)+'</strong><span>Plan amount, not a verified bank balance</span></div></header>',
+      '<div class="tw-capital-kpis"><div><small>Allocated lanes</small><strong>'+formatCents(allocated)+'</strong></div><div><small>Recorded spending</small><strong>'+formatCents(spent)+'</strong></div></div>',
+      '<section class="tw-capital-card"><div class="tw-card-heading"><div><span>YOUR WEEKLY MONEY</span><h3>Spending lanes</h3></div><a href="#setup">Edit Plan ↗</a></div>',
+      (categories||'<p class="tw-capital-empty">No categories configured yet.</p>'),'</section>',
+      '<section class="tw-capital-card"><div class="tw-card-heading"><div><span>RECENT ACTIVITY</span><h3>Recorded expenses</h3></div><a href="#history">History ↗</a></div>',
+      (entries.length?entries.map(t=>'<div class="tw-capital-transaction"><span><strong>'+escapeHtml(t.note||catById.get(t.categoryId)||'Expense')+'</strong><small>'+escapeHtml(catById.get(t.categoryId)||'Spending')+'</small></span><strong>−'+formatCents(t.amount||0)+'</strong></div>').join(''):'<p class="tw-capital-empty">Your first recorded purchase will appear here.</p>'),
+      '</section><nav class="tw-capital-actions" aria-label="Money actions"><a class="tw-gold-button" href="#log">+ Add spending</a><a href="#precheck">Check a purchase ↗</a><a href="#connections">Review imports ↗</a></nav></div>'
+    ].join('');
+  }catch(e){root.innerHTML=pageState('error','Money overview unavailable',e?.message||'Could not read this week.');}
+}
+
 async function renderDetails(){
   shellMeta('Details','System Map','Choose the layer you want without loading every tool onto Home','<a class="text-action" href="#home">Home</a>');
   nav('details');
@@ -9364,7 +9398,7 @@ async function renderDetails(){
   <div class="tw-world-gallery-grid">
     <a class="tw-world-card" data-art-world="vault" href="#bills"><span class="tw-world-mini" aria-hidden="true"><span class="tw-world-symbol">◉</span></span><span class="tw-world-card-copy"><strong>THE VAULT</strong><small>Bills · Protection</small><em class="tw-world-live ${attentionBills?'is-attention':'is-good'}">${attentionBills?attentionBills+' bill'+(attentionBills===1?'':'s')+' to review':'Bills on track'}</em></span><span class="tw-world-card-arrow" aria-hidden="true">↗</span></a>
     <a class="tw-world-card" data-art-world="observatory" href="#insights"><span class="tw-world-mini" aria-hidden="true"><span class="tw-world-symbol">✧</span></span><span class="tw-world-card-copy"><strong>THE OBSERVATORY</strong><small>Insights · Forecasts</small><em class="tw-world-live">${escapeHtml(signals.healthLabel)} · weekly plan</em></span><span class="tw-world-card-arrow" aria-hidden="true">↗</span></a>
-    <a class="tw-world-card" data-art-world="capital" href="#precheck"><span class="tw-world-mini" aria-hidden="true"><span class="tw-world-symbol">⌁</span></span><span class="tw-world-card-copy"><strong>THE CAPITAL</strong><small>Cash flow · Choices</small><em class="tw-world-live">${formatCents(p.available)} planned available</em></span><span class="tw-world-card-arrow" aria-hidden="true">↗</span></a>
+    <a class="tw-world-card" data-art-world="capital" href="#capital"><span class="tw-world-mini" aria-hidden="true"><span class="tw-world-symbol">⌁</span></span><span class="tw-world-card-copy"><strong>THE CAPITAL</strong><small>Cash flow · Choices</small><em class="tw-world-live">${formatCents(p.available)} planned available</em></span><span class="tw-world-card-arrow" aria-hidden="true">↗</span></a>
     <a class="tw-world-card" data-art-world="ledger" href="#savings"><span class="tw-world-mini" aria-hidden="true"><span class="tw-world-symbol">❖</span></span><span class="tw-world-card-copy"><strong>THE LEDGER</strong><small>Savings · Growth</small><em class="tw-world-live">${formatCents(p.savingsThisWeek||0)} this week</em></span><span class="tw-world-card-arrow" aria-hidden="true">↗</span></a>
   </div>
   <p class="tw-world-gallery-footnote">Your existing planning data follows you between these spaces. The worlds are views and tools, not separate bank accounts.</p>
@@ -10631,7 +10665,7 @@ try{history.scrollRestoration='manual';}catch{}
 function renderContextNavigation(routeName){
   const bar=document.getElementById('twRouteShortcuts');if(!bar)return;
   const groupByRoute={
-    log:'spending',precheck:'spending',bills:'weekly',essentials:'weekly',lifestyle:'weekly',savings:'weekly',
+    log:'spending',precheck:'spending',capital:'spending',bills:'weekly',essentials:'weekly',lifestyle:'weekly',savings:'weekly',
     setup:'planning',scenario:'planning',reset:'planning',insights:'review',history:'review',connections:'review',
     money:'money','direct-deposit':'money','bill-pay':'money',cards:'money',preferences:'system',
     privacy:'system',future:'system',qa:'system',performance:'system','data-model':'system',analytics:'system'};
@@ -10649,7 +10683,7 @@ function renderContextNavigation(routeName){
 }
 
 function routeAccessibleName(routeName){
-  return ({home:'Home',log:'Add Spending',details:'Details',assist:'Good Jawn Guide',insights:'Advanced Insights',bills:'Bill Protection Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex Studio',savings:'Savings Goal Studio',precheck:'Purchase Pre-check',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data Center',money:'Money Center','direct-deposit':'Direct Deposit','bill-pay':'Bill Pay',cards:'Category Cards',preferences:'Presentation and Accessibility',future:'System Architecture',qa:'Device QA',performance:'Performance and Resilience','data-model':'Data Model and Export',privacy:'Privacy and Local Data',analytics:'Local Usage Insights',reset:'New Week',setup:'Plan'})[routeName]||'Home';
+  return ({home:'Home',log:'Add Spending',details:'Details',assist:'Good Jawn Guide',capital:'The Capital',insights:'Advanced Insights',bills:'Bill Protection Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex Studio',savings:'Savings Goal Studio',precheck:'Purchase Pre-check',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data Center',money:'Money Center','direct-deposit':'Direct Deposit','bill-pay':'Bill Pay',cards:'Category Cards',preferences:'Presentation and Accessibility',future:'System Architecture',qa:'Device QA',performance:'Performance and Resilience','data-model':'Data Model and Export',privacy:'Privacy and Local Data',analytics:'Local Usage Insights',reset:'New Week',setup:'Plan'})[routeName]||'Home';
 }
 function announceRoute(routeName,focusMain=true){
   const announcer=document.getElementById('routeAnnouncer'),main=document.getElementById('app');
@@ -10675,6 +10709,7 @@ async function render(){
   else if(r==='details')await renderDetails();
   else if(r==='insights')await renderInsights();
   else if(r==='assist')await renderAssist();
+  else if(r==='capital')await renderCapital();
   else if(r==='bills')await renderBillsStudio();
   else if(r==='essentials')await renderEssentialsStudio();
   else if(r==='lifestyle')await renderLifestyleStudio();
