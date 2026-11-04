@@ -94,6 +94,18 @@ jobs:
       - name: Test executive visual shell and advanced navigation contracts
         run: node --test executive-design.test.mjs
 
+      - name: Browser-render actual mobile and desktop design previews
+        run: node capture-cinematic-preview.mjs
+
+      - name: Attach real rendered screenshots and QA report to the pull request run
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: thisweek-cinematic-browser-preview
+          path: browser-preview/
+          if-no-files-found: warn
+          retention-days: 7
+
       - name: Phase 0 static regression check
         run: node phase0-static-check.mjs
 
