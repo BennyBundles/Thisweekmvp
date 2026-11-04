@@ -96,7 +96,7 @@ try{
     }
     throw new Error('Timed out rendering '+route);
   };
-  const inspect=()=>evaluate("(()=>({title:document.title,route:document.body?.dataset?.view,width:window.innerWidth,scrollWidth:document.documentElement.scrollWidth,appText:document.querySelector('#app')?.innerText?.slice(0,180)||'',stage:!!document.querySelector('.tw-cinematic-stage'),worlds:[...document.querySelectorAll('.tw-scene')].filter(el=>Number(getComputedStyle(el).opacity)>.8).map(el=>el.className),visibleGallery:[...document.querySelectorAll('.tw-world-gallery a')].filter(el=>getComputedStyle(el).display!=='none').length,advancedCollapsed:!document.querySelector('.tw-advanced-zone details')?.open}))()");
+  const inspect=()=>evaluate("(()=>({title:document.title,route:document.body?.dataset?.view,width:window.innerWidth,scrollWidth:document.documentElement.scrollWidth,appText:document.querySelector('#app')?.innerText?.slice(0,180)||'',stage:!!document.querySelector('.tw-cinematic-stage'),worlds:[...document.querySelectorAll('.tw-scene')].filter(el=>Number(getComputedStyle(el).opacity)>.8).map(el=>el.className),visibleGallery:[...document.querySelectorAll('.tw-world-gallery a')].filter(el=>getComputedStyle(el).display!=='none').length,advancedCollapsed:!document.querySelector('.tw-advanced-zone details')?.open,homeTrustGap:(()=>{const trust=document.querySelector('.tw-home-ready .tw-source-trust');const scene=document.querySelector('.tw-home-ready .zen-scene');return trust&&scene?Math.round(scene.getBoundingClientRect().top-trust.getBoundingClientRect().bottom):null})(),offlineMessage:document.querySelector('#thisweek-offline-readiness')?.innerText?.slice(0,140)||'',trustedContext:globalThis.isSecureContext,serviceWorkerSupported:'serviceWorker' in navigator}))()");
   const report={origin:'review branch, staged isolated public preview',demo:true,mobile,pages:[],errors:[]};
   for(const target of targets){
     if(target.route!=='home')await evaluate('location.hash='+JSON.stringify('#'+target.route));
@@ -105,6 +105,8 @@ try{
     const state=await inspect();
     if(!state.stage||!state.worlds.some(x=>x.includes('tw-scene--'+target.world)))report.errors.push(target.route+': incorrect visual scene');
     if(state.scrollWidth>state.width+4)report.errors.push(target.route+': document horizontal overflow '+state.scrollWidth+' > '+state.width);
+    if(target.route==='home'&&(state.homeTrustGap===null||state.homeTrustGap>24||state.homeTrustGap<0))report.errors.push('Home: excessive vertical gap between disclosure and overview: '+state.homeTrustGap+'px');
+    if(target.route==='home'&&state.trustedContext&&state.serviceWorkerSupported&&state.offlineMessage.includes('browser does not support this setup'))report.errors.push('Home: localhost incorrectly rejected as insecure for offline testing');
     if(/Unable to open|Build a plan first|Unexpected local rendering error/i.test(state.appText))report.errors.push(target.route+': error/empty Plan fallback');
     if(target.route==='details'&&state.visibleGallery!==4)report.errors.push('Explore: four world portal links not visible');
     const shot=await cdp('Page.captureScreenshot',{format:'png',captureBeyondViewport:false,fromSurface:true});
