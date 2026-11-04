@@ -9523,7 +9523,7 @@ async function renderCapital(){
   if(!id){root.innerHTML=pageState('empty','Your money plan starts here.','Create a week before viewing cash flow.','<a class="tw-gold-button" href="#setup">Build My Week →</a>');return;}
   try{
     const p=await apiRequest('/week/current?userId='+encodeURIComponent(id));
-    const lanes=[...(p.essentials||[]),...(p.forYou||[])];
+    const lanes=[...(p.essentials||[]).map(x=>({...x,type:'LIVING'})),...(p.forYou||[]).map(x=>({...x,type:'DISCRETIONARY'}))];
     const allocated=lanes.reduce((sum,c)=>sum+Math.max(0,c.allocated||0),0);
     const spent=lanes.reduce((sum,c)=>sum+Math.max(0,(c.allocated||0)-(c.remaining||0)),0);
     const catById=new Map(lanes.map(c=>[c.id,c.name]));
