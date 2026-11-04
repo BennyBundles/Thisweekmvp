@@ -122,3 +122,22 @@ test('the stage preserves reduced-motion settings and adds no new public network
   assert.match(html,/body\[data-view="bills"\] \.tw-scene--vault/);
   assert.match(html,/body\[data-view="home"\] \.tw-scene--capital/);
 });
+
+test('ready Home grid has four explicit tracks for the trust disclosure',()=>{
+  const html=read('./index.html');
+  assert.match(html,/class="zen-home tw-home-ready"/);
+  assert.match(html,/\.zen-home\.tw-home-ready\{\s*grid-template-rows:auto auto minmax\(420px,1fr\) auto;/);
+  assert.match(html,/\.tw-home-ready \.tw-source-trust/);
+  assert.match(html,/\.tw-home-ready \.zen-scene\{margin:0;min-height:420px\}/);
+});
+test('offline readiness supports secure loopback preview and uses compact brand styling',()=>{
+  const html=read('./index.html');
+  const builder=read('./prepare-public-preview.mjs');
+  assert.ok(builder.includes("offlinePanel.className='tw-offline-panel'"));
+  assert.ok(builder.includes("offlineRetry.className='tw-offline-retry'"));
+  assert.ok(builder.includes("!globalThis.isSecureContext"));
+  assert.ok(!builder.includes("location.protocol!=='https:'"));
+  assert.ok(builder.includes("Offline installed but not controlling this tab"));
+  assert.match(html,/\.tw-offline-panel\{/);
+  assert.match(html,/\.tw-offline-retry\{/);
+});
