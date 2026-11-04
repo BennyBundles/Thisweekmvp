@@ -83,3 +83,42 @@ test('non-active money services are labeled as future and sandbox only',()=>{
   assert.match(html,/no live switching is enabled/);
   assert.match(html,/card issuing is not active/);
 });
+
+test('four original cinematic worlds are embedded for offline navigation',()=>{
+  const html=read('./index.html');
+  for(const id of ['vault','observatory','capital','ledger']){
+    assert.ok(html.includes('class="tw-scene tw-scene--'+id+'"'),id+' scene markup');
+    assert.ok(html.includes('data-art-world="'+id+'"'),id+' selectable world card');
+  }
+  assert.match(html,/CINEMATIC BRAND WORLD PASS 3/);
+  assert.match(html,/aria-label="Good Jawn Financial experience"/);
+  assert.match(html,/Good Jawn,<br>Good Money\./);
+  assert.match(html,/TAGJ \/ GOOD JAWN FINANCIAL/);
+  assert.ok(html.includes('class="tw-stage-visuals" aria-hidden="true"'));
+  assert.match(html,/role="presentation" focusable="false"/);
+  const svgOpens=(html.match(/<svg\b/g)||[]).length;
+  const svgCloses=(html.match(/<\/svg>/g)||[]).length;
+  assert.equal(svgOpens,svgCloses,'all inline vector art stays syntactically balanced');
+});
+
+test('four experience portals navigate to live established routes',()=>{
+  const html=read('./index.html');
+  for(const route of ['bills','insights','precheck','savings']){
+    assert.ok(html.includes('class="tw-world-card"')&&html.includes('href="#'+route+'"'),route+' destination');
+    assert.ok(html.includes("if(r==='"+route+"')") || html.includes("else if(r==='"+route+"')"),route+' route handler');
+  }
+  assert.match(html,/The worlds are views and tools, not separate bank accounts/);
+  assert.match(html,/class="tw-world-gallery"/);
+});
+
+test('the stage preserves reduced-motion settings and adds no new public network dependency',()=>{
+  const html=read('./index.html');
+  assert.match(html,/@media\(prefers-reduced-motion:reduce\)\{\.tw-scene\{transition:none!important/);
+  assert.match(html,/body\[data-motion="reduced"\] \.tw-scene/);
+  assert.match(html,/\.tw-stage-visuals/);
+  assert.match(html,/\.tw-cinematic-stage/);
+  assert.match(html,/body\[data-view="savings"\] \.tw-scene--ledger/);
+  assert.match(html,/body\[data-view="insights"\] \.tw-scene--observatory/);
+  assert.match(html,/body\[data-view="bills"\] \.tw-scene--vault/);
+  assert.match(html,/body\[data-view="home"\] \.tw-scene--capital/);
+});
