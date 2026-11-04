@@ -64,7 +64,7 @@ test('task-first Explore screen has four direct actions and optional developer t
 test('contextual route navigation links only to established hash routes and respects compact home',()=>{
   const html=read('./index.html');
   assert.match(html,/id="twRouteShortcuts" aria-label="Related tools" hidden/);
-  assert.match(html,/function renderContextNavigation(routeName)/);
+  assert.match(html,/function renderContextNavigation\(routeName\)/);
   assert.match(html,/renderContextNavigation(r)/);
   assert.match(html,/bar.hidden=!items/);
   assert.match(html,/bar.replaceChildren()/);
