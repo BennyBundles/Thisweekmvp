@@ -192,7 +192,7 @@ async function checkPublicOfflineReadiness(){
     if(seq!==offlineProbeSerial)return;
     if(!answer.ready||answer.scope!==expectedScope)
       throw new Error(answer.code||'INVALID_OFFLINE_CACHE');
-    offlineSetStatus('ready','Offline ready — you can test Airplane Mode');
+    offlineSetStatus('ready','Offline ready · Verified cache');
   }catch(error){
     if(seq!==offlineProbeSerial)return;
     const code=String(error?.name==='SecurityError'?'SECURITY_ERROR':
