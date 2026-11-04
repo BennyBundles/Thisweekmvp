@@ -186,3 +186,14 @@ test('selected original screen-art is embedded and offline safe',()=>{
   assert.ok(html.includes('.tw-scene--observatory::before'));
   assert.ok(html.includes('prefers-reduced-motion:reduce'));
 });
+
+test('five primary destinations share one mobile navigation row',()=>{
+  const html=read('./index.html');
+  const qa=read('./capture-cinematic-preview.mjs');
+  const builder=read('./prepare-public-preview.mjs');
+  assert.ok(html.includes('grid-template-columns:repeat(5,minmax(0,1fr))!important'));
+  for(const route of ['home','log','details','setup','assist'])assert.ok(html.includes('data-route="'+(route==='setup'?'plan':route)+'"'),route);
+  assert.ok(qa.includes("navigation.count!==5||navigation.rows!==1"));
+  assert.ok(builder.includes('Offline ready · Verified cache'));
+  assert.ok(html.includes('.tw-offline-panel[data-state="ready"] .tw-offline-retry{display:none}'));
+});
