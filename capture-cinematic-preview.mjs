@@ -176,6 +176,25 @@ try{
       await cdp('Network.emulateNetworkConditions',{offline:false,latency:0,downloadThroughput:0,uploadThroughput:0});
     }
   }
+
+  // Exercise the truly empty first-run journey separately from seeded demo state.
+  await cdp('Page.navigate',{url:base+'/public-preview/?reset=1&mode=empty#home'});
+  await sleep(900);
+  await waitRoute('home');
+  const firstRun=await evaluate("({hasWelcome:!!document.querySelector('.tw-entry'),startAction:!!document.querySelector('.tw-entry a[href=\\\"#setup\\\"]'),hasBankClaim:!!document.querySelector('.tw-entry a[href=\\\"#money\\\"]')})");
+  if(!firstRun.hasWelcome||!firstRun.startAction||firstRun.hasBankClaim)
+    report.errors.push('First run: expected minimal three-step welcome and no live banking claim');
+  const welcomeShot=await cdp('Page.captureScreenshot',{format:'png',captureBeyondViewport:false,fromSurface:true});
+  await writeFile(path.join(out,'12-first-run-home.png'),Buffer.from(welcomeShot.data,'base64'));
+  await evaluate('location.hash="#setup"');
+  await waitRoute('setup');await sleep(300);
+  const firstSetup=await evaluate("({input:document.querySelector('#twWizardIncome')?.value,step:Number(document.querySelector('.tw-onboard-step:not([hidden])')?.dataset?.twStep||0),advancedClosed:!document.querySelector('.tw-onboard-advanced')?.open})");
+  if(firstSetup.input!==''||firstSetup.step!==0||!firstSetup.advancedClosed)
+    report.errors.push('First run: guided setup must start with an empty pay field and advanced controls collapsed');
+  const setupShot=await cdp('Page.captureScreenshot',{format:'png',captureBeyondViewport:false,fromSurface:true});
+  await writeFile(path.join(out,'13-first-run-setup.png'),Buffer.from(setupShot.data,'base64'));
+  report.firstRun={...firstRun,setup:firstSetup};
+
   await writeFile(path.join(out,'report.json'),JSON.stringify(report,null,2)+'\n');
   if(report.errors.length)throw new Error('Browser QA failures:\n'+report.errors.join('\n'));
   console.log('BROWSER_PREVIEW_QA_PASS: '+report.pages.length+' mobile pages, desktop home, zero page-wide overflow');
