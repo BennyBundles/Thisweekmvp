@@ -5913,6 +5913,61 @@ body[data-motion="dynamic"] .tw-electric-flow path{
 body[data-motion="reduced"] .tw-stage-laser::after,
 body[data-motion="reduced"] .tw-electric-flow path{animation:none!important}
 
+
+
+/* PASS 5 — interactive branded navigation, data-aware portals and user-controlled immersion */
+.tw-stage-enter{
+  position:absolute;z-index:5;right:20px;bottom:31px;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:43px;padding:8px 14px;border:1px solid rgba(242,202,133,.57);
+  border-radius:11px;text-decoration:none;font-size:.72rem;font-weight:800;letter-spacing:.05em;
+  color:#101d1d;background:linear-gradient(115deg,#c59e63,#f5dba4 53%,#c9a36e);
+  box-shadow:inset 0 1px 0 rgba(255,247,224,.65),0 9px 20px rgba(0,0,0,.25);
+  transition:transform .22s ease,box-shadow .22s ease
+}
+.tw-stage-enter span{font-size:1.1rem;line-height:1}
+.tw-stage-enter:hover,.tw-stage-enter:focus-visible{transform:translateY(-2px);box-shadow:0 13px 27px rgba(0,0,0,.35)}
+.tw-stage-enter:focus-visible{outline:3px solid #faf0d2;outline-offset:3px}
+.tw-stage-world{right:20px;bottom:82px;color:#ead8b5}
+.tw-world-card-copy{display:grid;gap:3px}
+.tw-world-live{
+  display:block;min-height:15px;max-width:100%;
+  margin-top:4px;font-style:normal;font-size:.66rem;line-height:1.3;
+  color:#c4e9d9;font-weight:700;letter-spacing:0;
+  text-wrap:balance;overflow-wrap:anywhere
+}
+.tw-world-live.is-attention{color:#f7d68b}
+.tw-world-live.is-good{color:#a5e0b8}
+.tw-world-card{min-height:167px}
+body[data-density="compact"] .tw-cinematic-stage{height:clamp(130px,19vw,202px)}
+body[data-density="balanced"] .tw-cinematic-stage{height:clamp(154px,22vw,239px)}
+body[data-density="rich"] .tw-cinematic-stage{height:clamp(198px,27vw,310px)}
+body[data-density="rich"] .tw-stage-slogan{font-size:clamp(1.5rem,4vw,3.15rem)}
+body[data-density="rich"] .tw-world-card{min-height:189px}
+body[data-density="rich"] .tw-world-gallery{padding:16px}
+body[data-density="rich"] .tw-world-gallery-heading h3{font-size:clamp(1.4rem,3.3vw,2rem)}
+@media(max-width:430px){
+  body[data-density="compact"] .tw-cinematic-stage{height:148px}
+  body[data-density="balanced"] .tw-cinematic-stage{height:166px}
+  body[data-density="rich"] .tw-cinematic-stage{height:205px}
+  .tw-stage-enter{right:12px;bottom:15px;min-height:44px;padding:7px 10px;font-size:.64rem}
+  .tw-stage-world{right:12px;bottom:66px;font-size:.5rem;letter-spacing:.07em}
+  .tw-world-card{min-height:149px}
+  .tw-world-live{font-size:.65rem;line-height:1.2}
+  body[data-density="rich"] .tw-world-card{min-height:175px}
+}
+@media(max-width:360px){
+  .tw-stage-enter{right:9px;min-height:42px;padding:7px 9px}
+  .tw-world-card-copy strong{font-size:.75rem}
+  .tw-world-card-copy small,.tw-world-live{font-size:.62rem}
+}
+@media(min-width:800px){
+  .tw-stage-enter{right:32px;bottom:29px;font-size:.77rem}
+  .tw-stage-world{right:34px;bottom:85px}
+}
+@media(prefers-reduced-motion:reduce){.tw-stage-enter{transition:none!important}.tw-stage-enter:hover{transform:none}}
+body[data-motion="reduced"] .tw-stage-enter{transition:none}
+
 </style></head><body><a class="skip-link" href="#app">Skip to main content</a><div class="sr-only" id="routeAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div><div class="privacy-curtain" id="privacyCurtain" aria-hidden="true"><div><div class="privacy-curtain-mark">TW</div><strong>Financial view hidden</strong><span>This Week masks the page while it is inactive. This is a best-effort browser privacy layer, not a guarantee about operating-system snapshots.</span></div></div><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M11 22L24 59L40 34L56 59L69 22" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="square"/><path d="M12 13H68" stroke="currentColor" stroke-width="1.5" opacity=".65"/><circle cx="12" cy="13" r="2" fill="currentColor"/><circle cx="21" cy="13" r="2" fill="currentColor"/><circle cx="30" cy="13" r="2" fill="currentColor"/><circle cx="40" cy="13" r="2" fill="#77d2ad"/><circle cx="50" cy="13" r="2" fill="currentColor"/><circle cx="59" cy="13" r="2" fill="currentColor"/><circle cx="68" cy="13" r="2" fill="currentColor"/></svg></div><div><span class="tw-endorsement">Good Jawn Financial</span><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><section class="tw-cinematic-stage" aria-label="Good Jawn Financial experience">
   <div class="tw-stage-visuals" aria-hidden="true"><div class="tw-scene tw-scene--vault"><svg class="tw-scene-image" viewBox="0 0 1440 380" preserveAspectRatio="xMidYMid slice" role="presentation" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs><linearGradient id="tv-dark" x2=".8" y2="1"><stop stop-color="#0d1016"/><stop offset=".55" stop-color="#2a1b14"/><stop offset="1" stop-color="#050b10"/></linearGradient><radialGradient id="tv-gold"><stop stop-color="#f9df9c"/><stop offset=".27" stop-color="#a77432"/><stop offset=".65" stop-color="#2d2219"/><stop offset=".83" stop-color="#c59850"/><stop offset="1" stop-color="#111319"/></radialGradient><linearGradient id="tv-edge"><stop stop-color="#684920"/><stop offset=".35" stop-color="#fce3a3"/><stop offset=".58" stop-color="#8a5728"/><stop offset="1" stop-color="#d6af69"/></linearGradient><pattern id="tv-boxes" width="90" height="42" patternUnits="userSpaceOnUse"><rect x="2" y="2" width="86" height="38" rx="2" fill="#211b1b" stroke="#b68a4d" stroke-opacity=".6" stroke-width="1.6"/><path d="M6 9H83" stroke="#f3d69e" stroke-opacity=".32"/><circle cx="45" cy="22" r="5" fill="#513b23" stroke="#d7a86b" stroke-width="1.2"/><path d="M42 22H48" stroke="#f9d99d"/></pattern><clipPath id="tv-left"><path d="M0 0H500L570 380H0Z"/></clipPath><clipPath id="tv-right"><path d="M1440 0H1120L1040 380H1440Z"/></clipPath></defs>
@@ -5950,7 +6005,7 @@ body[data-motion="reduced"] .tw-electric-flow path{animation:none!important}
   <div class="tw-stage-layout">
     <div class="tw-stage-identity"><span class="tw-stage-parent">TAGJ / GOOD JAWN FINANCIAL</span><strong class="tw-stage-slogan">Good Jawn,<br>Good Money.</strong><span class="tw-stage-strap">THIS WEEK · PLAN / MANAGE / GROW</span></div>
     <span class="tw-stage-gj" aria-hidden="true">GJ<span>.</span></span>
-    <span class="tw-stage-world" aria-hidden="true"></span>
+    <span class="tw-stage-world" aria-hidden="true"></span><a class="tw-stage-enter" href="#details" aria-label="Explore This Week financial worlds">Explore worlds <span aria-hidden="true">↗</span></a>
   </div>
   <div class="tw-stage-laser" aria-hidden="true"></div>
 </section><nav class="tw-route-shortcuts" id="twRouteShortcuts" aria-label="Related tools" hidden></nav><main id="app" tabindex="-1">
@@ -9227,10 +9282,10 @@ async function renderDetails(){
       <section class="tw-world-gallery" aria-labelledby="twWorldsTitle">
   <div class="tw-world-gallery-heading"><div><span>FOUR CONNECTED EXPERIENCES</span><h3 id="twWorldsTitle">Step into your financial world.</h3></div><small>SELECT A WORLD · EXPLORE WITHOUT LOSING YOUR PLAN</small></div>
   <div class="tw-world-gallery-grid">
-    <a class="tw-world-card" data-art-world="vault" href="#bills"><span class="tw-world-mini" aria-hidden="true"><span class="tw-world-symbol">◉</span></span><span class="tw-world-card-copy"><strong>THE VAULT</strong><small>Bills · Protection</small></span><span class="tw-world-card-arrow" aria-hidden="true">↗</span></a>
-    <a class="tw-world-card" data-art-world="observatory" href="#insights"><span class="tw-world-mini" aria-hidden="true"><span class="tw-world-symbol">✧</span></span><span class="tw-world-card-copy"><strong>THE OBSERVATORY</strong><small>Insights · Forecasts</small></span><span class="tw-world-card-arrow" aria-hidden="true">↗</span></a>
-    <a class="tw-world-card" data-art-world="capital" href="#precheck"><span class="tw-world-mini" aria-hidden="true"><span class="tw-world-symbol">⌁</span></span><span class="tw-world-card-copy"><strong>THE CAPITAL</strong><small>Cash flow · Choices</small></span><span class="tw-world-card-arrow" aria-hidden="true">↗</span></a>
-    <a class="tw-world-card" data-art-world="ledger" href="#savings"><span class="tw-world-mini" aria-hidden="true"><span class="tw-world-symbol">❖</span></span><span class="tw-world-card-copy"><strong>THE LEDGER</strong><small>Savings · Growth</small></span><span class="tw-world-card-arrow" aria-hidden="true">↗</span></a>
+    <a class="tw-world-card" data-art-world="vault" href="#bills"><span class="tw-world-mini" aria-hidden="true"><span class="tw-world-symbol">◉</span></span><span class="tw-world-card-copy"><strong>THE VAULT</strong><small>Bills · Protection</small><em class="tw-world-live ${attentionBills?'is-attention':'is-good'}">${attentionBills?attentionBills+' bill'+(attentionBills===1?'':'s')+' to review':'Bills on track'}</em></span><span class="tw-world-card-arrow" aria-hidden="true">↗</span></a>
+    <a class="tw-world-card" data-art-world="observatory" href="#insights"><span class="tw-world-mini" aria-hidden="true"><span class="tw-world-symbol">✧</span></span><span class="tw-world-card-copy"><strong>THE OBSERVATORY</strong><small>Insights · Forecasts</small><em class="tw-world-live">${escapeHtml(signals.healthLabel)} · weekly plan</em></span><span class="tw-world-card-arrow" aria-hidden="true">↗</span></a>
+    <a class="tw-world-card" data-art-world="capital" href="#precheck"><span class="tw-world-mini" aria-hidden="true"><span class="tw-world-symbol">⌁</span></span><span class="tw-world-card-copy"><strong>THE CAPITAL</strong><small>Cash flow · Choices</small><em class="tw-world-live">${formatCents(p.available)} planned available</em></span><span class="tw-world-card-arrow" aria-hidden="true">↗</span></a>
+    <a class="tw-world-card" data-art-world="ledger" href="#savings"><span class="tw-world-mini" aria-hidden="true"><span class="tw-world-symbol">❖</span></span><span class="tw-world-card-copy"><strong>THE LEDGER</strong><small>Savings · Growth</small><em class="tw-world-live">${formatCents(p.savingsThisWeek||0)} this week</em></span><span class="tw-world-card-arrow" aria-hidden="true">↗</span></a>
   </div>
   <p class="tw-world-gallery-footnote">Your existing planning data follows you between these spaces. The worlds are views and tools, not separate bank accounts.</p>
 </section>
@@ -9549,7 +9604,7 @@ function renderPreferences(){
       <div class="pref-profile-grid">
         <button class="pref-profile ${isProfile('focused')?'active':''}" data-profile="focused"><small>Recommended default</small><strong>Focused</strong><span>Compact information, system-aware motion and contrast, comfortable touch targets.</span><b>Best for everyday use</b></button>
         <button class="pref-profile ${isProfile('accessible')?'active':''}" data-profile="accessible"><small>Accessibility-forward</small><strong>Comfortable</strong><span>Large text, high contrast, reduced motion, generous touch targets.</span><b>Maximum readability</b></button>
-        <button class="pref-profile ${isProfile('rich')?'active':''}" data-profile="rich"><small>Visual depth</small><strong>Rich</strong><span>More supporting information with cinematic motion while keeping the same calculations.</span><b>Most expressive</b></button>
+        <button class="pref-profile ${isProfile('rich')?'active':''}" data-profile="rich"><small>Immersive mode</small><strong>Cinematic</strong><span>Full-size financial worlds, refined animation and deeper visual detail. Your calculations stay exactly the same.</span><b>Most expressive</b></button>
       </div>
     </section>
 
