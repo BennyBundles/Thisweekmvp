@@ -6397,6 +6397,18 @@ body[data-motion="dynamic"] .tw-stage-arriving .tw-scene[style]{animation:none}
   .tw-stage-slogan{font-size:1.35rem}
   .tw-stage-enter{min-width:0}
 }
+/* Protect task entry on small screens: immersive art must not bury the first input. */
+@media(max-width:430px){
+  body[data-density="balanced"][data-view="setup"] .tw-cinematic-stage,
+  body[data-density="balanced"][data-view="log"] .tw-cinematic-stage,
+  body[data-density="balanced"][data-view="precheck"] .tw-cinematic-stage{height:176px}
+  body[data-density="rich"][data-view="setup"] .tw-cinematic-stage,
+  body[data-density="rich"][data-view="log"] .tw-cinematic-stage,
+  body[data-density="rich"][data-view="precheck"] .tw-cinematic-stage{height:218px}
+  body[data-view="setup"] .tw-stage-feature,
+  body[data-view="log"] .tw-stage-feature,
+  body[data-view="precheck"] .tw-stage-feature{font-size:1.23rem}
+}
 @media(prefers-reduced-motion:reduce){
  .tw-stage-arriving .tw-stage-feature{animation:none!important}
 }
