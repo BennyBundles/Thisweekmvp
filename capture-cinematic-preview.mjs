@@ -216,6 +216,8 @@ try{
   await assign('twWizardFun','20');
   const review=await evaluate("({budget:document.querySelector('#twWizardLaneTotal')?.textContent,underlying:[...['netPay','rent','phone','savings','groceries','gas','eating','fun']].map(id=>document.getElementById(id)?.value),stateBeforeSave:!!readState(),summary:document.querySelector('#twWizardSummary')?.textContent||''})");
   if(review.budget!=='$230.00 / week'||review.stateBeforeSave||!review.summary.includes('$230.00'))report.errors.push('Wizard integration: spending totals or initial state were not transparent');
+  const finalReviewShot=await cdp('Page.captureScreenshot',{format:'png',captureBeyondViewport:false,fromSurface:true});
+  await writeFile(path.join(out,'14-first-run-review.png'),Buffer.from(finalReviewShot.data,'base64'));
   await evaluate("document.getElementById('twWizardSave').click()");
   try{
     await waitRoute('home');
@@ -230,13 +232,25 @@ try{
     // Purchase Pre-Check rather than opening an unrelated generic screen.
     await evaluate("location.hash='#capital'");
     await waitRoute('capital');
+    const budgetShot=await cdp('Page.captureScreenshot',{format:'png',captureBeyondViewport:false,fromSurface:true});
+    await writeFile(path.join(out,'15-actual-capital-after-setup.png'),Buffer.from(budgetShot.data,'base64'));
     const lane=await evaluate("(()=>{const b=document.querySelector('.tw-capital-precheck');if(!b)return null;const id=b.dataset.categoryId;b.click();return id})()");
     if(!lane)report.errors.push('Capital integration: per-lane purchase control missing');
     else{
       await waitRoute('precheck');
       const prefilled=await evaluate("document.getElementById('preCat')?.value||null");
       report.newUserFlow.precheck={requested:lane,selected:prefilled};
+      const checkShot=await cdp('Page.captureScreenshot',{format:'png',captureBeyondViewport:false,fromSurface:true});
+      await writeFile(path.join(out,'16-category-purchase-check.png'),Buffer.from(checkShot.data,'base64'));
       if(prefilled!==lane)report.errors.push('Capital integration: selected category was not transferred into precheck');
+      // Full-page reload without reset=1 must retain this exact saved plan.
+      const page=await cdp('Page.navigate',{url:base+'/public-preview/?mode=empty#home'});
+      if(page.errorText)report.errors.push('Persistence: navigation after save '+page.errorText);
+      await waitRoute('home');
+      const persisted=await evaluate("(()=>{const c=readState()?.config;return c?{pay:c.payProfile.netPayAmount,savings:c.savingsRule.weeklyAmount}:null})()");
+      report.newUserFlow.afterReload=persisted;
+      if(persisted?.pay!==240000||persisted?.savings!==14000)
+        report.errors.push('Persistence: saved guided plan did not survive full page navigation');
     }
   }catch(error){report.errors.push('New-user wizard/Capital integration: '+error.message);}
 
