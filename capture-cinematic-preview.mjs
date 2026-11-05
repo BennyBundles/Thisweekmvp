@@ -195,6 +195,51 @@ try{
   await writeFile(path.join(out,'13-first-run-setup.png'),Buffer.from(setupShot.data,'base64'));
   report.firstRun={...firstRun,setup:firstSetup};
 
+  // Integration acceptance: exercise the real three-step form, including
+  // explicit starter budgets, then confirm that the original save path persists
+  // the exact amounts instead of silently retaining example limits.
+  const assign=async(id,value)=>evaluate("(()=>{const el=document.getElementById("+JSON.stringify(id)+");if(!el)throw Error('Missing field');el.value="+JSON.stringify(value)+";el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}));return el.value})()");
+  await assign('twWizardIncome','2400');
+  await assign('twWizardFrequency','weekly');
+  await evaluate("document.getElementById('twWizardNext').click()");
+  const firstStep=await evaluate("Number(document.querySelector('.tw-onboard-step:not([hidden])')?.dataset?.twStep)");
+  if(firstStep!==1)report.errors.push('Wizard integration: pay step did not advance to bills');
+  await assign('twWizardRent','750');
+  await assign('twWizardPhone','65');
+  await evaluate("document.getElementById('twWizardNext').click()");
+  const finalStep=await evaluate("Number(document.querySelector('.tw-onboard-step:not([hidden])')?.dataset?.twStep)");
+  if(finalStep!==2)report.errors.push('Wizard integration: bills step did not advance to savings');
+  await assign('twWizardSavings','140');
+  await assign('twWizardGroceries','95');
+  await assign('twWizardGas','45');
+  await assign('twWizardEating','70');
+  await assign('twWizardFun','20');
+  const review=await evaluate("({budget:document.querySelector('#twWizardLaneTotal')?.textContent,underlying:[...['netPay','rent','phone','savings','groceries','gas','eating','fun']].map(id=>document.getElementById(id)?.value),stateBeforeSave:!!readState(),summary:document.querySelector('#twWizardSummary')?.textContent||''})");
+  if(review.budget!=='$230.00 / week'||review.stateBeforeSave||!review.summary.includes('$230.00'))report.errors.push('Wizard integration: spending totals or initial state were not transparent');
+  await evaluate("document.getElementById('twWizardSave').click()");
+  try{
+    await waitRoute('home');
+    await sleep(450);
+    const saved=await evaluate("(()=>{const s=readState();if(!s?.config)return null;const c=s.config;const val=(xs,word)=>xs.find(x=>x.name.toLowerCase().includes(word))?.weeklyLimit??null;return {pay:c.payProfile.netPayAmount,frequency:c.payProfile.payFrequency,savings:c.savingsRule.weeklyAmount,rent:c.bills.find(x=>/housing/i.test(x.name))?.amount,phone:c.bills.find(x=>/phone/i.test(x.name))?.amount,groceries:val(c.livingNeeds,'groc'),gas:val(c.livingNeeds,'gas'),eating:val(c.discretionary,'eating'),fun:val(c.discretionary,'fun')}})()");
+    report.newUserFlow={review,saved};
+    const expected={pay:240000,frequency:'weekly',savings:14000,rent:75000,phone:6500,groceries:9500,gas:4500,eating:7000,fun:2000};
+    for(const [key,value] of Object.entries(expected))
+      if(saved?.[key]!==value)report.errors.push('Wizard integration: persisted '+key+' does not match entered amount');
+
+    // The Capital must connect an individual real category to the existing
+    // Purchase Pre-Check rather than opening an unrelated generic screen.
+    await evaluate("location.hash='#capital'");
+    await waitRoute('capital');
+    const lane=await evaluate("(()=>{const b=document.querySelector('.tw-capital-precheck');if(!b)return null;const id=b.dataset.categoryId;b.click();return id})()");
+    if(!lane)report.errors.push('Capital integration: per-lane purchase control missing');
+    else{
+      await waitRoute('precheck');
+      const prefilled=await evaluate("document.getElementById('preCat')?.value||null");
+      report.newUserFlow.precheck={requested:lane,selected:prefilled};
+      if(prefilled!==lane)report.errors.push('Capital integration: selected category was not transferred into precheck');
+    }
+  }catch(error){report.errors.push('New-user wizard/Capital integration: '+error.message);}
+
   await writeFile(path.join(out,'report.json'),JSON.stringify(report,null,2)+'\n');
   if(report.errors.length)throw new Error('Browser QA failures:\n'+report.errors.join('\n'));
   console.log('BROWSER_PREVIEW_QA_PASS: '+report.pages.length+' mobile pages, desktop home, zero page-wide overflow');
