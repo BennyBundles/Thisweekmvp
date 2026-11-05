@@ -10864,6 +10864,8 @@ function initCinematicSetupWizard(existing){
     by('twWizardBack').hidden=n===0;by('twWizardNext').hidden=n===2;by('twWizardSave').hidden=n!==2;by('twWizardError').hidden=true;
     if(n===2){laneTotal();by('twWizardSummary').textContent='Your review: take-home pay '+formatCents(Math.round(Number(by('twWizardIncome').value||0)*100))+'; housing and phone '+formatCents(Math.round((Number(by('twWizardRent').value||0)+Number(by('twWizardPhone').value||0))*100))+' monthly; weekly savings '+formatCents(Math.round(Number(by('twWizardSavings').value||0)*100))+'; weekly spending limits '+formatCents(laneTotal())+'. These amounts are used for planning, not bank transactions.';}
   };
+  // Keep the final review in sync with the values being edited, never stale.
+  for(const id of ['twWizardSavings',...laneFields])by(id).addEventListener('input',()=>{if(step===2)show(2);});
   const validate=()=>{
     const ids=step===0?['twWizardIncome']:step===1?['twWizardRent','twWizardPhone']:['twWizardSavings',...laneFields];
     for(const id of ids){
