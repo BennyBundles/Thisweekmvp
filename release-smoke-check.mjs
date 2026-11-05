@@ -13,6 +13,9 @@ const phase0=requireFile('phase0-static-check.mjs');
 const policy=requireFile('RELEASE_POLICY.md');
 const checklist=requireFile('RELEASE_CHECKLIST.md');
 const prep=requireFile('prepare-site.mjs');
+const preflightCsp=requireFile('verify-production-csp.mjs');
+const previewBuilder=requireFile('stage-preview.mjs');
+const deployedVerifier=requireFile('verify-deployed-release.mjs');
 const phase19Doc=requireFile('PHASE_19_IMPLEMENTATION.md');
 const phase19Schema=requireFile('supabase/phase19/provider_schema.sql');
 const phase19Gateway=requireFile('supabase/functions/thisweek-provider-gateway/index.ts');
@@ -424,16 +427,43 @@ if(phase19Gateway)requireText('Provider gateway rejects revoked session',phase19
 
 if(workflow){
   requireText('Pages workflow must deploy only main',workflow,'branches: ["main"]');
+  requireText('CI must unit-test the CSP staging gate',workflow,'node --test verify-production-csp.test.mjs');
+  requireText('CI must verify CSP before validation can succeed',workflow,'node verify-production-csp.mjs index.html');
+  requireText('Pages deploy must verify staged CSP before artifact upload',workflow,'node verify-production-csp.mjs _site/index.html');
   requireText('Pages workflow must run phase0 static check',workflow,'node phase0-static-check.mjs');
   requireText('Pages workflow must run release smoke check',workflow,'node release-smoke-check.mjs');
+  requireText('Pages release must stamp offline cache against exact staged assets',workflow,'node stamp-preview-service-worker.mjs _site/public-preview/index.html');
+  requireText('Pages release must verify stamped worker before publish',workflow,'node stamp-preview-service-worker.mjs --verify _site/public-preview/index.html');
+  requireText('Pages PR CI must test cache fingerprint source',workflow,'node --test stamp-preview-service-worker.test.mjs');
   requireText('Pages workflow must create release manifest',workflow,'release.json');
   requireText('Pages workflow must post-deploy verify',workflow,'Verify deployed release');
   requireText('Pages workflow must deploy _site artifact',workflow,'path: "_site"');
   requireText('Pages workflow must use deterministic production staging',workflow,'node prepare-site.mjs index.html _site/index.html');
   requireText('Pages workflow validation must stage production HTML first',workflow,'node prepare-site.mjs index.html index.production.html');
-  requireText('Pages workflow must cancel stale in-progress production runs',workflow,'cancel-in-progress: true');
+  requireText('Pages PR checks must have their own concurrency group',workflow,"format('pages-pr-{0}', github.event.pull_request.number)");
+  requireText('Each non-PR workflow validation must not displace a pending production release',workflow,"format('pages-run-{0}', github.run_id)");
+  requireText('Production publishing must have a dedicated deployment concurrency group',workflow,'group: thisweek-pages-production-deploy');
+  requireText('Production publish queue must preserve pending releases',workflow,'queue: max');
+  requireText('Production publishes must never cancel an active release',workflow,'cancel-in-progress: false');
+  requireText('Production publishing must reject a stale SHA',workflow,'Reject stale main SHA before production publish');
+  requireText('Stale release guard must compare current main commit',workflow,'git ls-remote --exit-code origin refs/heads/main');
+  requireText('Only superseded PR checks may be cancelled',workflow,"cancel-in-progress: ${{ github.event_name == 'pull_request' }}");
+  requireText('Manual Pages release must run from main',workflow,"if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')");
+  forbidText('Production Pages runs must not be cancelled unconditionally',workflow,'cancel-in-progress: true');
 }
 
+if(deployedVerifier){
+  requireText('Published offline worker must match independently staged release bytes',
+    deployedVerifier,'Published offline worker does not match trusted staged worker SHA-256');
+  requireText('Release audit must read staged worker from protected Pages job',
+    deployedVerifier,"new URL('./_site/public-preview/sw.js',import.meta.url)");
+  requireText('Worker release audit requires SHA-256 from stage',
+    deployedVerifier,"createHash('sha256').update(stagedWorker).digest('hex')");
+  requireText('Release verification must reject missing trusted worker checksum',
+    deployedVerifier,'Trusted staged offline worker SHA-256 is required before fetching');
+}
+if(preflightCsp)requireText('Staged CSP preflight must import actual release verifier',preflightCsp,'verifyIndexCsp');
+if(previewBuilder)requireText('Vercel staging must verify the exact HTML CSP',previewBuilder,"call('verify-production-csp.mjs','_site/index.html')");
 if(config){
   for(const k of ['release','channel','rollbackCommit','rollbackBranch','stableBranch','releaseRecord','stateSchema','portableSchema','migrationNotes']){
     if(config[k]===undefined||config[k]===null||config[k]==='')failures.push('release config missing '+k);

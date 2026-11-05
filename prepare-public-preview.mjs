@@ -25,6 +25,18 @@ for(const key of storageKeys){
   html=html.replaceAll(key,key.replace('thisweek.','thisweek.publicPreview.'));
 }
 
+// The standalone PWA is hosted under /public-preview/ on Vercel and Pages.
+// Sibling routes must go one level up; original production HTML is unaffected.
+for (const [from,to] of [
+  ['href="./money-lab/"','href="../money-lab/"'],
+  ["externalTool('./account/'","externalTool('../account/'"],
+  ["externalTool('./support/'","externalTool('../support/'"]
+]) {
+  const n=html.split(from).length-1;
+  if(n!==1)throw new Error('Preview route signature missing or ambiguous: '+from);
+  html=html.replace(from,to);
+}
+
 html=html.replace(/<title>[^<]*<\/title>/,'<title>This Week — Public Release Preview</title>');
 html=html.replace('worker-src \'none\'',"worker-src 'self'");
 
@@ -104,9 +116,97 @@ const PUBLIC_PREVIEW_QUERY=new URLSearchParams(location.search);
 if(PUBLIC_PREVIEW_QUERY.get('reset')==='1')clearPublicPreviewStorage();
 const PUBLIC_PREVIEW_MODE=PUBLIC_PREVIEW_QUERY.get('mode')||'demo';
 if(PUBLIC_PREVIEW_MODE==='demo')seedPublicReleaseDemo();
-if('serviceWorker' in navigator&&location.protocol==='https:'){
-  navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
+// Safari cannot use offline navigation until a worker controls this page
+// and the current release's exact offline cache has been verified.
+const offlinePanel=document.createElement('section');
+offlinePanel.id='thisweek-offline-readiness';
+offlinePanel.className='tw-offline-panel';
+offlinePanel.setAttribute('role','status');
+offlinePanel.setAttribute('aria-live','polite');
+// Presentation is controlled by existing theme CSS, not hard-coded colors.
+const offlineLabel=document.createElement('span');
+offlineLabel.textContent='Offline: checking setup…';
+const offlineRetry=document.createElement('button');
+offlineRetry.type='button';
+offlineRetry.textContent='Check again';
+offlineRetry.className='tw-offline-retry';
+offlinePanel.append(offlineLabel,offlineRetry);
+document.querySelector('.topbar')?.insertAdjacentElement('afterend',offlinePanel);
+function offlineSetStatus(kind,detail){
+  offlinePanel.dataset.state=kind;
+  // data-state determines color; the accessibility status message is retained.
+  offlineLabel.textContent=detail;
 }
+function offlineDeadline(promise,ms){
+  return new Promise((resolve,reject)=>{
+    const timer=setTimeout(()=>reject(new Error('TIMEOUT')),ms);
+    Promise.resolve(promise).then(value=>{clearTimeout(timer);resolve(value);},
+      error=>{clearTimeout(timer);reject(error)});
+  });
+}
+function inspectOfflineWorker(){
+  return new Promise((resolve,reject)=>{
+    const worker=navigator.serviceWorker.controller;
+    if(!worker){reject(new Error('NOT_CONTROLLING'));return;}
+    const channel=new MessageChannel();
+    const timer=setTimeout(()=>{
+      channel.port1.close();reject(new Error('WORKER_NO_REPLY'));
+    },7000);
+    channel.port1.onmessage=event=>{
+      clearTimeout(timer);channel.port1.close();
+      const answer=event.data;
+      if(!answer||answer.type!=='THISWEEK_OFFLINE_STATUS'){
+        reject(new Error('UNEXPECTED_WORKER_REPLY'));return;
+      }
+      resolve(answer);
+    };
+    try{worker.postMessage({type:'THISWEEK_OFFLINE_CHECK'},[channel.port2]);}
+    catch(error){clearTimeout(timer);channel.port1.close();reject(error);}
+  });
+}
+let offlineProbeSerial=0;
+async function checkPublicOfflineReadiness(){
+  const seq=++offlineProbeSerial;
+  offlineSetStatus('checking','Offline: checking setup…');
+  // Trusted local loopback origins support service workers; use browser security verdict.
+  if(!('serviceWorker' in navigator)||!globalThis.isSecureContext){
+    offlineSetStatus('error','Offline not ready: secure HTTPS or localhost is required');
+    return;
+  }
+  if(!navigator.onLine&&!navigator.serviceWorker.controller){
+    offlineSetStatus('error','Offline not ready: reconnect, then tap Check again');
+    return;
+  }
+  try{
+    const registration=await offlineDeadline(
+      navigator.serviceWorker.register('./sw.js',{scope:'./'}),12000);
+    const expectedScope=new URL('./',location.href).href;
+    if(registration.scope!==expectedScope)throw new Error('WRONG_SCOPE');
+    await offlineDeadline(navigator.serviceWorker.ready,12000);
+    if(seq!==offlineProbeSerial)return;
+    if(!navigator.serviceWorker.controller){
+      offlineSetStatus('error','Offline installed but not controlling this tab. Refresh once while online.');
+      return;
+    }
+    const answer=await inspectOfflineWorker();
+    if(seq!==offlineProbeSerial)return;
+    if(!answer.ready||answer.scope!==expectedScope)
+      throw new Error(answer.code||'INVALID_OFFLINE_CACHE');
+    offlineSetStatus('ready','Offline ready · Verified cache');
+  }catch(error){
+    if(seq!==offlineProbeSerial)return;
+    const code=String(error?.name==='SecurityError'?'SECURITY_ERROR':
+      error?.message||'UNKNOWN_ERROR').replace(/[^A-Z0-9_]/gi,'_').slice(0,44);
+    offlineSetStatus('error','Offline not ready: '+code+'. Stay online; retry later.');
+  }
+}
+offlineRetry.addEventListener('click',checkPublicOfflineReadiness);
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{
+    if(navigator.onLine)checkPublicOfflineReadiness();
+  });
+}
+checkPublicOfflineReadiness();
 `;
 
 const marker='render();\n</script></body></html>';

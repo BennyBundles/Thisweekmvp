@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src https://xjtvawmppzwzrooairyx.supabase.co; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' https://cdn.getpinwheel.com; object-src 'none'; frame-src https://*.getpinwheel.com https://*.pinwheel.com; child-src https://*.getpinwheel.com https://*.pinwheel.com; worker-src 'none'; base-uri 'none'; form-action 'none';">
-<meta name="theme-color" content="#06111a">
+<meta name="theme-color" content="#071115">
 <title>This Week — Money Sandbox Lab</title>
 <style>
 :root{--bg:#040a12;--panel:#081521;--panel2:#0b1c29;--text:#edf7fb;--muted:#8da8b5;--line:rgba(180,215,230,.14);--mint:#6ee7b7;--aqua:#67e8f9;--gold:#f6d784;--danger:#fda4af}
@@ -16,6 +16,86 @@ header{display:flex;justify-content:space-between;gap:16px;align-items:flex-star
 
 .cert-card{margin-bottom:14px}.cert-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.cert-head h2{margin:4px 0}.cert-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.cert-actions a{display:inline-flex;align-items:center;text-decoration:none;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text);padding:9px 11px;border-radius:12px;font-size:.72rem;font-weight:800}.cert-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}.cert-item{border:1px solid var(--line);border-radius:14px;padding:10px;background:rgba(255,255,255,.025)}.cert-item.ready{border-color:rgba(110,231,183,.28);background:rgba(110,231,183,.045)}.cert-item.recorded{border-color:rgba(103,232,249,.3);background:rgba(103,232,249,.045)}.cert-item small{display:block;color:var(--muted);font-size:.58rem;text-transform:uppercase;letter-spacing:.07em}.cert-item strong{display:block;margin-top:4px;font-size:.73rem}.cert-item span{display:block;margin-top:4px;color:var(--muted);font-size:.64rem;line-height:1.35;overflow-wrap:anywhere}
 @media(max-width:720px){.grid{grid-template-columns:1fr}.card.wide{grid-column:auto}.status{grid-template-columns:repeat(2,1fr)}.provider-checks{grid-template-columns:repeat(2,1fr)}.cert-grid{grid-template-columns:1fr}.cert-head{display:block}.cert-actions{justify-content:flex-start;margin-top:10px}header{display:block}.pill{display:inline-block;margin-top:10px}.money-row{grid-template-columns:1fr}}
+
+
+/* GOOD JAWN FINANCIAL — AUXILIARY APPLICATION SHELL
+   Visual-only: existing authentication, money sandbox, ops gates and scripts retained. */
+:root{
+  --bg:#071115;--panel:#12272a;--panel2:#10252a;
+  --text:#f1f0e9;--muted:#afc0bb;--line:rgba(201,205,193,.18);
+  --mint:#68d4a8;--aqua:#9fc4c7;--gold:#d4b781;
+}
+html{color-scheme:dark}
+html,body{
+  background:radial-gradient(ellipse 82% 30% at 50% -13%,rgba(93,165,149,.13),transparent 80%),
+    radial-gradient(ellipse 44% 60% at 104% 85%,rgba(212,183,129,.045),transparent 75%),
+    linear-gradient(155deg,#070d12,#0b1920 55%,#081715);
+  color:#f1f0e9
+}
+:where(.shell,main){min-width:0}
+:where(header,.top){position:relative;min-width:0}
+:where(header,.top)::before{
+  content:"";position:absolute;pointer-events:none;
+  width:82px;height:2px;left:0;top:-9px;
+  background:linear-gradient(90deg,#d4b781,#6ccba9,transparent)
+}
+:where(.brand h1,.top h1,header h1){
+  color:#f3f0e7;letter-spacing:-.035em;line-height:1.08
+}
+:where(.brand small,.top small,.kicker,.eyebrow){color:#d4b781}
+:where(.brand p,.top p,.muted){color:#afc0bb}
+:where(.card,.state,.stat,.notice,.cert-item,.provider-check,.request,.item,.row){
+  border-color:rgba(201,205,193,.18);
+  box-shadow:inset 0 1px 0 rgba(236,215,170,.05)
+}
+:where(.card){
+  border-radius:20px;
+  background:linear-gradient(140deg,rgba(18,37,43,.97),rgba(9,22,29,.97));
+  box-shadow:0 14px 38px rgba(0,0,0,.19),inset 0 1px 0 rgba(241,220,179,.035)
+}
+:where(.state,.stat,.cert-item,.provider-check,.request,.item,.row){
+  background-color:rgba(222,231,211,.035)
+}
+:where(.notice){background:rgba(198,209,192,.045);color:#bdccc6}
+:where(.notice strong){color:#f3eee3}
+:where(.back,a.button){
+  display:inline-flex;align-items:center;justify-content:center;
+  min-height:42px;padding:9px 13px;border-radius:12px;
+  color:#e9ddbe;border-color:rgba(212,183,129,.35);
+  background:rgba(209,183,128,.045)
+}
+:where(.actions button,button){min-height:42px}
+:where(button.primary){
+  color:#102222;
+  border-color:rgba(237,211,162,.58);
+  background:linear-gradient(110deg,#b99360,#ead4a0 54%,#c9a36c);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.25)
+}
+:where(button:not(.primary)):not(:disabled){background-color:rgba(237,236,220,.045)}
+:where(.field input,.field select,.field textarea,input,select,textarea){
+  max-width:100%;min-width:0;min-height:43px;
+  background:#0a1a21;color:#f1f0e9;border-color:rgba(206,213,196,.25);
+  font-size:max(16px,1rem)
+}
+:where(a,button,input,select,textarea,summary):focus-visible{
+  outline:2px solid #efd5a1;outline-offset:3px
+}
+:where(.pill,.badge){border-color:rgba(213,183,125,.38)}
+:where(.good,.result.good){color:#91dfb5}
+:where(.warn,.result.warn){color:#f1cf8a}
+:where(.bad,.result.bad){color:#f2aba4}
+:where(.grid,.fields,.actions,.status,.statebar,.stats,.cert-grid){min-width:0}
+@media(max-width:600px){
+  :where(.shell,main){overflow-wrap:break-word}
+  :where(header,.top){gap:10px}
+  :where(.card){border-radius:17px;padding:14px}
+  :where(.actions button,button){min-height:44px}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  :where(.card,button,a){transition:none!important;animation:none!important}
+}
+
 </style>
 </head>
 <body>

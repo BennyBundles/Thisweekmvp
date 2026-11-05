@@ -3,16 +3,18 @@ name: Deploy This Week to GitHub Pages
 on:
   push:
     branches: ["main"]
+  pull_request:
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
+# Keep PR validation debounce independent from production release scheduling.
+# Non-PR runs do not share workflow-level concurrency (including feature dispatch).
 concurrency:
-  group: "pages-production"
-  cancel-in-progress: true
+  group: ${{ github.event_name == 'pull_request' && format('pages-pr-{0}', github.event.pull_request.number) || format('pages-run-{0}', github.run_id) }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   validate:
@@ -22,15 +24,87 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: "22"
+          package-manager-cache: false
 
       - name: Prepare exact production HTML
         run: |
           set -euo pipefail
           node prepare-site.mjs index.html index.production.html
           mv index.production.html index.html
+          node verify-production-csp.mjs index.html
+
+      - name: Unit-test exact release evidence verifier
+        run: node --test verify-deployed-release.test.mjs
+
+      - name: Verify fail-closed production CSP staging on synthetic fixtures
+        run: node --test verify-production-csp.test.mjs
+
+      - name: Unit-test browser-local Plan durability under storage failures
+        run: node --test phase36-data-durability.test.mjs
+
+      - name: Guard multi-tab financial Plan writes and lost-update conflicts
+        run: node --test phase44-multitab-durability.test.mjs
+
+      - name: Verify emergency recovery of volatile unsaved Plan changes
+        run: node --test phase45-volatile-plan-rescue.test.mjs
+
+      - name: Unit-test safe financial backup without authentication secrets
+        run: node --test phase36-backup-security.test.mjs
+
+      - name: Unit-test explicit raw Plan recovery and rollback
+        run: node --test phase37-verified-restore.test.mjs
+
+      - name: Unit-test fail-closed secure backup export and salvage labeling
+        run: node --test phase38-secure-export.test.mjs
+
+      - name: Unit-test static Vercel preview builder
+        run: node --test test-stage-preview.mjs
+
+      - name: Verify content-addressed offline preview worker
+        run: node --test stamp-preview-service-worker.test.mjs
+
+      - name: Simulate deployed offline asset digests and CDN drift
+        run: node --test phase48-runtime-asset-digests.test.mjs
+
+      - name: Verify integrated release safety contract
+        run: node --test phase43-integration.test.mjs
+
+      - name: Unit-test FIFO production queue and stale main release guard
+        run: node --test phase41-pages-queue.test.mjs
+
+      - name: Regression-test offline PWA CacheStorage integrity
+        run: node --test public-preview-sw.test.mjs
+
+      - name: Regression-test Safari offline readiness reporting
+        run: node --test phase58-offline-readiness.test.mjs
+
+      - name: Stage and audit preview assets without publishing
+        run: |
+          set -euo pipefail
+          VERCEL_ENV=preview node stage-preview.mjs
+          test -s _site/preview-build.json
+          test ! -e _site/release.json
+
+      - name: Compare exact Vercel preview and GitHub Pages staged artifacts
+        run: node --test phase54-artifact-parity.test.mjs
+
+      - name: Test executive visual shell and advanced navigation contracts
+        run: node --test executive-design.test.mjs
+
+      - name: Browser-render actual mobile and desktop design previews
+        run: node capture-cinematic-preview.mjs
+
+      - name: Attach real rendered screenshots and QA report to the pull request run
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: thisweek-cinematic-browser-preview
+          path: browser-preview/
+          if-no-files-found: warn
+          retention-days: 7
 
       - name: Phase 0 static regression check
         run: node phase0-static-check.mjs
@@ -68,7 +142,19 @@ jobs:
         run: node legal-check.mjs legal/sandbox/index.html
 
   deploy:
+    # A manual dispatch on a review branch must never publish to production.
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     needs: validate
+    # The default single pending slot drops older pending deployments; max keeps
+    # up to 100 queued releases. A stale-main SHA guard below prevents rollback.
+    concurrency:
+      group: thisweek-pages-production-deploy
+      cancel-in-progress: false
+      queue: max
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -78,9 +164,10 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: "22"
+          package-manager-cache: false
 
       - name: Stage production site
         env:
@@ -92,6 +179,7 @@ jobs:
           mkdir -p _site
 
           node prepare-site.mjs index.html _site/index.html
+          node verify-production-csp.mjs _site/index.html
           touch _site/.nojekyll
 
           mkdir -p _site/public-preview
@@ -101,6 +189,8 @@ jobs:
           cp public-preview-manifest.webmanifest _site/public-preview/manifest.webmanifest
           cp public-preview-sw.js _site/public-preview/sw.js
           cp public-preview-icon.svg _site/public-preview/icon.svg
+          node stamp-preview-service-worker.mjs _site/public-preview/index.html _site/public-preview/manifest.webmanifest _site/public-preview/icon.svg public-preview-sw.js _site/public-preview/sw.js
+          node stamp-preview-service-worker.mjs --verify _site/public-preview/index.html _site/public-preview/manifest.webmanifest _site/public-preview/icon.svg public-preview-sw.js _site/public-preview/sw.js
           cp preview.html _site/preview.html
           node public-preview-check.mjs _site/public-preview/index.html
 
@@ -168,9 +258,26 @@ jobs:
         with:
           path: "_site"
 
+      - name: Reject stale main SHA before production publish
+        env:
+          EXPECTED_RELEASE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          current_main_sha="$(git ls-remote --exit-code origin refs/heads/main | cut -f1)"
+          if [ -z "$current_main_sha" ] || [ "$current_main_sha" != "$EXPECTED_RELEASE_SHA" ]; then
+            echo "::error::Current main is ${current_main_sha:-unavailable}; refusing stale release $EXPECTED_RELEASE_SHA"
+            exit 1
+          fi
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Fail-closed deployed release and route integrity audit
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+          RELEASE_SHA: ${{ github.sha }}
+        run: node verify-deployed-release.mjs "${PAGE_URL%/}/" "${RELEASE_SHA}"
 
       - name: Verify deployed release
         env:

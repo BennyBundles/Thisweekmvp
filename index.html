@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-8u6u2tvmg7aVimJUYOucCuGH2C5ts/lWMV0wA/4nNvw=' 'sha256-f7BIXgDCc5z0BfDzZf+AuOqqu/3QrcJ5bWSFAZUWGx8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'none'; media-src 'self' data: blob:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; child-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests"><meta name="theme-color" content="#081221"><title>This Week</title><style>:root {
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-8u6u2tvmg7aVimJUYOucCuGH2C5ts/lWMV0wA/4nNvw=' 'sha256-f7BIXgDCc5z0BfDzZf+AuOqqu/3QrcJ5bWSFAZUWGx8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'none'; media-src 'self' data: blob:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; child-src 'none'; worker-src 'none'; manifest-src 'self'; upgrade-insecure-requests"><meta name="theme-color" content="#071115"><title>This Week</title><style>:root {
   --bg: #07111f;
   --bg-alt: #0b1730;
   --panel: rgba(11, 25, 48, 0.82);
@@ -5276,7 +5276,1253 @@ body[data-motion="reduced"] .state-spinner{
   .provider-flow-step{text-align:left}
 }
 
-</style></head><body><a class="skip-link" href="#app">Skip to main content</a><div class="sr-only" id="routeAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div><div class="privacy-curtain" id="privacyCurtain" aria-hidden="true"><div><div class="privacy-curtain-mark">TW</div><strong>Financial view hidden</strong><span>This Week masks the page while it is inactive. This is a best-effort browser privacy layer, not a guarantee about operating-system snapshots.</span></div></div><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle class="logo-ring" cx="12" cy="12" r="9.15" stroke="currentColor" stroke-width=".9" stroke-dasharray="1.25 2.2" opacity=".48"/><path d="M6.3 8.15h4.15v2.05H9.34v6.05H7.42V10.2H6.3V8.15Z" fill="currentColor"/><path d="M11.25 8.15h1.92l1.37 4.67 1.48-4.67h1.58l1.48 4.67 1.37-4.67h1.92l-2.45 8.1h-1.66l-1.45-4.42-1.45 4.42H13.7l-2.45-8.1Z" fill="currentColor" opacity=".95"/><path d="M5.8 18.55h12.4" stroke="#D5B06A" stroke-width=".9" stroke-linecap="round" opacity=".78"/></svg></div><div><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><main id="app" tabindex="-1">
+
+
+/* GOOD JAWN FINANCIAL — EXECUTIVE SHELL (presentation only)
+   Source of truth for amounts, route handling, privacy, and persistence remains
+   the original application runtime. No banking claims are made by this theme. */
+:root{
+  --tw-exec-obsidian:#071115;
+  --tw-exec-navy:#0d2029;
+  --tw-exec-gold:#d4b781;
+  --tw-exec-emerald:#65caa4;
+  --tw-exec-ivory:#f1f0e9;
+  --tw-exec-border:rgba(198,202,193,.16);
+  --bg:#071115;
+  --bg-alt:#0d2029;
+  --panel:rgba(14,31,37,.91);
+  --panel-strong:rgba(14,32,39,.97);
+  --panel-soft:rgba(235,239,229,.045);
+  --line:rgba(188,203,194,.16);
+  --line-strong:rgba(204,202,186,.28);
+  --text:#f1f0e9;
+  --text-soft:#b1c2c0;
+  --text-faint:#869b9b;
+  --green:#68d4a8;
+  --green-2:#65caa4;
+  --teal:#70d3bb;
+  --cyan:#93bacc;
+  --violet:#a7a2c5;
+  --amber:#d4b781;
+  --chip:rgba(230,235,219,.06);
+  --grad-main:linear-gradient(140deg,#112a30,#12282e 42%,#183d3e);
+  --grad-accent:linear-gradient(105deg,#c19d65,#ecdbaf 52%,#c6aa76);
+  --shadow-xl:0 28px 64px rgba(0,0,0,.38);
+  --shadow-lg:0 14px 38px rgba(0,0,0,.28);
+}
+html{scroll-behavior:smooth;color-scheme:dark}
+body{
+  --tw-world-halo:rgba(101,202,164,.09);
+  background:
+    radial-gradient(ellipse 83% 32% at 52% -16%,var(--tw-world-halo),transparent 75%),
+    radial-gradient(ellipse 50% 60% at 109% 85%,rgba(212,183,129,.045),transparent 80%),
+    linear-gradient(155deg,#070d12 0%,#0b1720 42%,#091715 100%);
+  color:var(--tw-exec-ivory)
+}
+body[data-view="bills"],body[data-view="bill-pay"],body[data-view="cards"]{--tw-world-halo:rgba(212,183,129,.12)}
+body[data-view="insights"],body[data-view="scenario"],body[data-view="future"],body[data-view="performance"]{--tw-world-halo:rgba(113,151,218,.11)}
+body[data-view="log"],body[data-view="details"],body[data-view="money"],body[data-view="connections"],body[data-view="history"]{--tw-world-halo:rgba(190,151,113,.09)}
+body[data-view="savings"],body[data-view="essentials"],body[data-view="setup"],body[data-view="reset"]{--tw-world-halo:rgba(103,207,150,.12)}
+body::before,body::after{opacity:.2;filter:blur(50px);animation-duration:25s}
+::selection{background:#b5a070;color:#071115}
+.screen{isolation:isolate}
+.topbar{padding:calc(12px + env(safe-area-inset-top,0px)) 14px 10px;backdrop-filter:blur(12px)}
+.topbar-inner{
+  border:1px solid rgba(212,183,129,.20);
+  border-radius:22px;
+  padding:12px 14px;
+  background:linear-gradient(117deg,rgba(20,38,44,.96),rgba(9,21,27,.97));
+  box-shadow:0 2px 0 rgba(228,199,146,.09) inset,0 16px 36px rgba(0,0,0,.22)
+}
+.topbar-inner::before{background:rgba(199,173,112,.08);opacity:.6}
+.brand-block{min-width:0}
+.brand-block>div:last-child{min-width:0}
+.brand-mark{
+  flex:0 0 auto;width:42px;height:42px;border-radius:14px;
+  border:1px solid rgba(228,203,154,.40);
+  color:#ecd7ad;
+  background:linear-gradient(144deg,#1e3c3b,#112524 64%,#0c171c);
+  box-shadow:inset 0 1px 0 rgba(250,239,213,.17),0 8px 22px rgba(0,0,0,.2)
+}
+.brand-mark svg{width:30px;height:30px}
+.tw-endorsement{
+  display:block;color:var(--tw-exec-gold);
+  letter-spacing:.15em;font-size:.53rem;font-weight:800;
+  text-transform:uppercase;line-height:1.25;margin-bottom:3px
+}
+.brand-kicker{color:#a5cabc;font-size:.56rem;letter-spacing:.09em;margin-bottom:2px;font-weight:700}
+.topbar h1{font-size:clamp(.98rem,3.8vw,1.24rem);letter-spacing:-.025em;line-height:1.18}
+.brand-subtitle{font-size:.69rem;color:#a9b6b4;line-height:1.3}
+#app{width:100%;min-width:0;padding-bottom:max(110px,calc(88px + env(safe-area-inset-bottom,0px)))}
+#app:focus{outline:none}
+:where(.hero-card,.home-command,.studio-hero,.section,.form-card,.summary-card-full,.warning-card,.empty-card,.system-map-hero,.system-tool,.precheck-stage,.scenario-stage,.connection-stage,.provider-readiness,.trust-card,.savings-board,.runway-board,.flex-board,.observatory,.zen-scene){
+  border-color:var(--tw-exec-border);
+  box-shadow:0 14px 38px rgba(0,0,0,.17),inset 0 1px 0 rgba(244,227,198,.035)
+}
+:where(.section,.form-card,.summary-card-full,.warning-card,.empty-card,.system-tool,.trust-card){
+  background-color:rgba(14,30,36,.48)
+}
+:where(.studio-hero,.system-map-hero,.hero-card,.home-command){
+  position:relative;overflow:hidden
+}
+:where(.studio-hero,.system-map-hero,.hero-card,.home-command)::after{
+  content:"";position:absolute;inset:0 0 auto 0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(212,183,129,.35),transparent);
+  pointer-events:none
+}
+:where(.studio-hero,.system-map-hero) h2{letter-spacing:-.035em}
+:where(.btn,.btn-primary,.btn-secondary,.text-action,.system-tool,.nav-link,button,input,select,textarea){
+  -webkit-tap-highlight-color:transparent
+}
+:where(.btn,.btn-primary,.btn-secondary,.text-action,.system-tool,button){
+  touch-action:manipulation
+}
+:where(.btn,.btn-primary,.btn-secondary,button):not(.zen-zone):not(.zen-attention-child){
+  min-height:42px
+}
+:where(input,select,textarea){max-width:100%;font-size:max(16px,1rem)}
+:where(a,button,input,select,textarea,summary):focus-visible{
+  outline:2px solid #e5c994;outline-offset:3px
+}
+:where(.btn-primary,button.btn-primary,.btn.btn-primary){
+  color:#102222;
+  background:linear-gradient(115deg,#b99461,#f1dca8 55%,#d0a86e);
+  border-color:rgba(242,217,164,.55);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 6px 18px rgba(0,0,0,.2)
+}
+:where(.btn-secondary,.btn.btn-secondary){
+  background:rgba(221,226,211,.06);border-color:rgba(203,207,192,.22);color:#ecf0e9
+}
+.bottom-nav{
+  bottom:calc(10px + env(safe-area-inset-bottom,0px));
+  width:min(480px,calc(100% - 20px));
+  padding:7px;gap:4px;
+  border-radius:22px;
+  border:1px solid rgba(212,183,129,.22);
+  background:linear-gradient(125deg,rgba(14,32,37,.98),rgba(7,18,23,.98));
+  box-shadow:0 22px 60px rgba(0,0,0,.45),inset 0 1px 0 rgba(252,235,204,.06);
+  backdrop-filter:blur(22px)
+}
+.nav-link{
+  min-height:58px;min-width:0;justify-content:center;
+  border-radius:16px;font-weight:750;letter-spacing:.015em;
+  text-transform:none;font-size:.67rem;gap:3px;padding:6px 2px;
+  transition:background-color .2s ease,color .2s ease,transform .2s ease
+}
+.nav-link .nav-icon{
+  width:30px;height:26px;border:none;background:transparent;
+  font-size:1.05rem;color:#bdc7c0
+}
+.nav-link.active{
+  background:linear-gradient(145deg,rgba(211,187,142,.15),rgba(78,145,126,.08));
+  color:#f1e5cb;
+  box-shadow:inset 0 0 0 1px rgba(220,194,143,.2)
+}
+.nav-link.active .nav-icon{
+  border:none;background:transparent;color:#e1c58e
+}
+.nav-link:hover{transform:translateY(-1px)}
+#app>*,.studio-stack,.system-map-shell{min-width:0}
+:where(.studio-stat,.system-map-stat,.trust-card,.summary-card-full) strong{
+  font-variant-numeric:tabular-nums
+}
+:where(.studio-summary,.trust-grid,.system-map-overview,.data-model-summary){
+  min-width:0
+}
+.tw-advanced-zone{display:none;margin:0 14px 120px;align-self:stretch}
+body[data-route="details"] .tw-advanced-zone{display:block}
+.tw-advanced-zone details{
+  border:1px solid rgba(212,183,129,.18);
+  border-radius:18px;background:rgba(12,26,32,.90);overflow:hidden
+}
+.tw-advanced-zone summary{
+  cursor:pointer;list-style:none;padding:15px 17px;color:#ddc59b;
+  font-size:.81rem;font-weight:750;display:flex;align-items:center;
+  justify-content:space-between;min-height:48px
+}
+.tw-advanced-zone summary::-webkit-details-marker{display:none}
+.tw-advanced-zone summary::after{content:"+";font-size:1.15rem}
+.tw-advanced-zone details[open] summary::after{content:"−"}
+.tw-advanced-body{padding:0 15px 16px;border-top:1px solid rgba(212,183,129,.12)}
+.tw-advanced-body p{margin:12px 0;color:#bdccc7;font-size:.75rem;line-height:1.55}
+.tw-advanced-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.tw-advanced-links a{
+  display:flex;align-items:center;justify-content:space-between;
+  color:#eaece3;text-decoration:none;border:1px solid rgba(203,207,192,.16);
+  background:rgba(230,234,219,.04);border-radius:12px;min-height:48px;
+  padding:10px 12px;font-size:.75rem
+}
+.tw-advanced-links a:hover,.tw-advanced-links a:focus-visible{border-color:rgba(212,183,129,.55)}
+.tw-advanced-note{font-size:.64rem;color:#b3c2bd;line-height:1.5;margin-top:12px}
+body[data-motion="cinematic"] #app>.studio-stack,
+body[data-motion="cinematic"] #app>.system-map-shell,
+body[data-motion="cinematic"] #app>.zen-home,
+body[data-motion="dynamic"] #app>.studio-stack,
+body[data-motion="dynamic"] #app>.system-map-shell{
+  animation:twExecReveal .32s cubic-bezier(.2,.7,.2,1) both
+}
+@keyframes twExecReveal{
+  from{opacity:.65;transform:translateY(7px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@media(min-width:800px){
+  .screen{max-width:1050px}
+  #app{max-width:100%;margin:auto}
+  .zen-home{max-width:570px;margin-inline:auto}
+  .topbar{padding-inline:22px}
+  .topbar-inner{max-width:1030px;margin:auto;padding:18px 22px}
+  .tw-advanced-zone{max-width:1010px;margin-inline:22px}
+  .bottom-nav{width:min(540px,calc(100% - 36px));bottom:16px}
+}
+@media(max-width:430px){
+  .screen{width:100%;max-width:100%}
+  .topbar{padding:calc(8px + env(safe-area-inset-top,0px)) 10px 8px}
+  .topbar-inner{padding:10px 11px;gap:6px;border-radius:18px}
+  .brand-block{gap:8px}
+  .brand-mark{width:36px;height:36px;border-radius:12px}
+  .brand-mark svg{width:26px;height:26px}
+  .tw-endorsement{font-size:.46rem;letter-spacing:.10em}
+  .brand-kicker{font-size:.5rem}
+  .brand-subtitle{font-size:.62rem}
+  .topbar h1{font-size:.96rem}
+  .tw-advanced-zone{margin-inline:10px}
+}
+@media(max-width:360px){.tw-advanced-links{grid-template-columns:1fr}.nav-link{font-size:.62rem}}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  body::before,body::after{animation:none!important}
+  #app>.studio-stack,#app>.system-map-shell,#app>.zen-home{animation:none!important;transform:none!important}
+  .nav-link{transition:none}
+}
+body[data-motion="reduced"] #app>.studio-stack,
+body[data-motion="reduced"] #app>.system-map-shell,
+body[data-motion="reduced"] #app>.zen-home{animation:none!important;transform:none!important}
+
+
+/* EXECUTIVE UX PASS 2: connected routes and task-first discovery. */
+.tw-route-shortcuts{display:flex;align-items:center;gap:7px;min-width:0;max-width:100%;padding:4px 13px 11px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tw-route-shortcuts::-webkit-scrollbar{display:none}
+.tw-route-shortcuts[hidden]{display:none}
+.tw-route-shortcuts a{flex:0 0 auto;min-height:42px;display:inline-flex;align-items:center;justify-content:center;scroll-snap-align:start;white-space:nowrap;padding:9px 13px;border:1px solid rgba(204,201,185,.18);border-radius:12px;background:rgba(224,228,212,.038);color:#c8d4cd;font-size:.72rem;font-weight:700;text-decoration:none;transition:background-color .18s ease,border-color .18s ease,color .18s ease}
+.tw-route-shortcuts a.active{color:#f5e7c7;background:rgba(212,183,129,.13);border-color:rgba(212,183,129,.42)}
+.tw-route-shortcuts a:hover{border-color:rgba(212,183,129,.38)}
+.tw-quick-tasks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0;min-width:0}
+.tw-quick-tasks a{min-width:0;min-height:74px;display:flex;gap:10px;align-items:center;padding:12px;border:1px solid rgba(208,208,195,.17);border-radius:17px;background:linear-gradient(135deg,rgba(30,49,50,.85),rgba(11,26,31,.94));box-shadow:inset 0 1px 0 rgba(243,230,202,.07);color:#f1f0e9;text-decoration:none;touch-action:manipulation}
+.tw-quick-symbol{width:32px;height:32px;flex:0 0 32px;border-radius:11px;display:grid;place-items:center;font-size:1rem;font-weight:850;color:#e8d0a2;border:1px solid rgba(212,183,129,.23);background:rgba(212,183,129,.07)}
+.tw-quick-tasks a span:last-child{min-width:0}
+.tw-quick-tasks strong{display:block;font-size:.75rem;line-height:1.2;letter-spacing:-.015em}
+.tw-quick-tasks small{display:block;margin-top:4px;color:#b0c2bc;font-size:.65rem;line-height:1.3}
+.tw-quick-tasks a:hover{border-color:rgba(212,183,129,.42)}
+.tw-source-trust{color:#b7c9bf;font-size:.64rem;line-height:1.45;padding:2px 12px 0;margin:0 0 3px}
+.tw-source-trust a{color:#ead5a7;text-underline-offset:3px}
+body[data-view="bills"] .studio-hero,body[data-view="bill-pay"] .studio-hero,body[data-view="cards"] .studio-hero{border-color:rgba(212,183,129,.24);background-image:radial-gradient(ellipse at 82% 0,rgba(212,183,129,.12),transparent 52%),linear-gradient(147deg,rgba(21,40,43,.96),rgba(10,22,29,.98))}
+body[data-view="insights"] .studio-hero,body[data-view="scenario"] .studio-hero,body[data-view="performance"] .studio-hero{border-color:rgba(125,164,197,.25);background-image:radial-gradient(ellipse at 75% -15%,rgba(73,126,196,.15),transparent 60%),linear-gradient(147deg,rgba(13,29,47,.96),rgba(9,22,31,.98))}
+body[data-view="essentials"] .studio-hero,body[data-view="savings"] .studio-hero,body[data-view="setup"] .studio-hero{border-color:rgba(113,193,156,.22);background-image:radial-gradient(ellipse at 84% -12%,rgba(88,176,128,.14),transparent 58%),linear-gradient(147deg,rgba(13,39,34,.96),rgba(9,23,29,.98))}
+body[data-view="lifestyle"] .studio-hero,body[data-view="history"] .studio-hero,body[data-view="connections"] .studio-hero{border-color:rgba(180,155,126,.21);background-image:radial-gradient(ellipse at 84% -12%,rgba(180,144,101,.12),transparent 58%),linear-gradient(147deg,rgba(34,34,33,.96),rgba(14,24,29,.98))}
+@media(min-width:800px){.tw-route-shortcuts{justify-content:center;padding:5px 20px 16px}.tw-quick-tasks{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:390px){.tw-quick-tasks a{padding:10px;gap:8px;min-height:72px}.tw-quick-symbol{width:28px;height:28px;flex-basis:28px}.tw-quick-tasks strong{font-size:.72rem}.tw-quick-tasks small{font-size:.61rem}}
+@media(prefers-reduced-motion:reduce){.tw-route-shortcuts a{transition:none}}
+body[data-motion="reduced"] .tw-route-shortcuts a{transition:none}
+
+
+
+/* CINEMATIC BRAND WORLD PASS 3 — actual vector environments, no network assets.
+   All financial models, route names, and planning values remain unchanged. */
+.tw-cinematic-stage{
+  --tw-stage-base:#a98a52;position:relative;isolation:isolate;
+  height:clamp(136px,21vw,220px);flex:0 0 auto;
+  overflow:hidden;margin:1px 12px 10px;border-radius:21px;
+  background:linear-gradient(125deg,#0d1822,#211b17 66%,#111c20);
+  border:1px solid rgba(211,183,123,.44);
+  box-shadow:0 18px 46px rgba(0,0,0,.29),inset 0 1px 0 rgba(252,229,174,.1);
+}
+.tw-stage-visuals,.tw-scene,.tw-scene-image,.tw-stage-shade{
+  position:absolute;inset:0;width:100%;height:100%;pointer-events:none
+}
+.tw-scene{opacity:0;transition:opacity .58s ease,transform 1s ease;transform:scale(1.028)}
+.tw-scene-image{object-fit:cover;display:block}
+.tw-stage-shade{
+  background:linear-gradient(90deg,rgba(4,13,19,.92) 0%,rgba(5,15,20,.66) 30%,rgba(4,12,20,.07) 66%),
+    linear-gradient(0deg,rgba(3,8,12,.7),transparent 22%,transparent 80%,rgba(2,8,12,.21));
+}
+.tw-stage-layout{position:relative;z-index:2;width:100%;height:100%;display:flex;align-items:center;justify-content:space-between;padding:15px 22px;color:#f6e7c8;pointer-events:none}
+.tw-stage-identity{display:grid;gap:3px;max-width:min(65%,410px)}
+.tw-stage-parent{font-size:clamp(.5rem,.8vw,.72rem);font-weight:780;letter-spacing:.18em;color:#e1c38e;text-transform:uppercase}
+.tw-stage-slogan{
+  font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:600;
+  font-size:clamp(1.36rem,3.45vw,2.7rem);line-height:.95;letter-spacing:-.035em;
+  color:#f7e6bd;text-shadow:0 1px 0 #4f351b,0 5px 26px rgba(233,176,99,.32);
+}
+.tw-stage-strap{font-size:clamp(.43rem,.8vw,.66rem);letter-spacing:.15em;color:#d5d9cc;font-weight:680;margin-top:5px}
+.tw-stage-gj{
+  display:grid;place-items:center;width:48px;height:48px;border-radius:13px;
+  align-self:flex-start;font-family:Georgia,serif;font-size:1.2rem;font-weight:700;
+  border:1px solid rgba(229,192,122,.5);color:#e9d19e;
+  background:linear-gradient(145deg,rgba(5,33,31,.86),rgba(10,15,19,.85));
+  box-shadow:inset 0 1px 0 rgba(249,228,187,.17),0 7px 22px rgba(0,0,0,.25);
+}
+.tw-stage-gj span{color:#76cfa9}
+.tw-stage-world{
+  position:absolute;right:22px;bottom:13px;font-size:.63rem;
+  font-weight:800;text-transform:uppercase;letter-spacing:.19em;color:#f5dcac;
+  text-shadow:0 2px 14px rgba(0,0,0,.9)
+}
+.tw-stage-laser{position:absolute;z-index:3;height:2px;bottom:0;left:6%;width:88%;opacity:.8;pointer-events:none;
+  background:linear-gradient(90deg,transparent,#8fbca9 20%,#f4d299 64%,transparent);
+  box-shadow:0 0 14px rgba(218,171,91,.7)
+}
+.tw-cinematic-stage::after{content:"";position:absolute;z-index:2;top:-1px;right:10%;width:50%;height:1px;opacity:.8;background:linear-gradient(90deg,transparent,#ffe7ae,transparent)}
+body[data-view="home"] .tw-scene--capital,
+body[data-view="capital"] .tw-scene--capital,
+body[data-view="details"] .tw-scene--capital,
+body[data-view="log"] .tw-scene--capital,
+body[data-view="precheck"] .tw-scene--capital,
+body[data-view="history"] .tw-scene--capital,
+body[data-view="connections"] .tw-scene--capital,
+body[data-view="lifestyle"] .tw-scene--capital{opacity:1;transform:scale(1)}
+body[data-view="bills"] .tw-scene--vault,
+body[data-view="money"] .tw-scene--vault,
+body[data-view="cards"] .tw-scene--vault,
+body[data-view="bill-pay"] .tw-scene--vault,
+body[data-view="privacy"] .tw-scene--vault{opacity:1;transform:scale(1)}
+body[data-view="insights"] .tw-scene--observatory,
+body[data-view="scenario"] .tw-scene--observatory,
+body[data-view="performance"] .tw-scene--observatory,
+body[data-view="analytics"] .tw-scene--observatory,
+body[data-view="future"] .tw-scene--observatory,
+body[data-view="qa"] .tw-scene--observatory{opacity:1;transform:scale(1)}
+body[data-view="savings"] .tw-scene--ledger,
+body[data-view="essentials"] .tw-scene--ledger,
+body[data-view="setup"] .tw-scene--ledger,
+body[data-view="reset"] .tw-scene--ledger,
+body[data-view="preferences"] .tw-scene--ledger{opacity:1;transform:scale(1)}
+body[data-view="home"] .tw-stage-world::before{content:"FINANCIAL COMMAND CENTER"}
+body[data-view="details"] .tw-stage-world::before{content:"EXPLORE YOUR WORLDS"}
+body[data-view="log"] .tw-stage-world::before{content:"SPENDING"}
+body[data-view="capital"] .tw-stage-world::before{content:"THE CAPITAL · MONEY"}
+body[data-view="precheck"] .tw-stage-world::before{content:"PRE-CHECK"}
+body[data-view="history"] .tw-stage-world::before{content:"YOUR HISTORY"}
+body[data-view="connections"] .tw-stage-world::before{content:"CONNECTED DATA"}
+body[data-view="lifestyle"] .tw-stage-world::before{content:"LIFESTYLE"}
+body[data-view="bills"] .tw-stage-world::before{content:"THE VAULT · BILLS"}
+body[data-view="money"] .tw-stage-world::before{content:"THE VAULT · SANDBOX"}
+body[data-view="cards"] .tw-stage-world::before{content:"THE VAULT · CARDS"}
+body[data-view="bill-pay"] .tw-stage-world::before{content:"THE VAULT · BILL PAY"}
+body[data-view="privacy"] .tw-stage-world::before{content:"PRIVATE BY DESIGN"}
+body[data-view="insights"] .tw-stage-world::before{content:"THE OBSERVATORY"}
+body[data-view="scenario"] .tw-stage-world::before{content:"POSSIBILITIES"}
+body[data-view="performance"] .tw-stage-world::before{content:"PERFORMANCE"}
+body[data-view="analytics"] .tw-stage-world::before{content:"INSIGHTS"}
+body[data-view="future"] .tw-stage-world::before{content:"ARCHITECTURE"}
+body[data-view="qa"] .tw-stage-world::before{content:"QUALITY"}
+body[data-view="savings"] .tw-stage-world::before{content:"THE LEDGER · GROW"}
+body[data-view="essentials"] .tw-stage-world::before{content:"THE LEDGER · NEEDS"}
+body[data-view="setup"] .tw-stage-world::before{content:"THE LEDGER · PLAN"}
+body[data-view="reset"] .tw-stage-world::before{content:"NEW WEEK"}
+body[data-view="preferences"] .tw-stage-world::before{content:"PREFERENCES"}
+body[data-view="home"] .zen-home{background:radial-gradient(circle at 50% 45%,rgba(16,131,112,.12),transparent 45%),linear-gradient(145deg,rgba(7,21,27,.98),rgba(5,16,22,.98));border-color:rgba(216,183,123,.23)}
+body[data-view="home"] .zen-scene{border-color:rgba(212,183,129,.24);background:radial-gradient(circle at 50% 45%,rgba(105,202,170,.13),transparent 32%),linear-gradient(140deg,#0b2225,#07151c 68%,#1d1c18)}
+body[data-view="home"] .zen-scene::before{border-color:rgba(212,183,129,.19);box-shadow:0 0 0 34px rgba(216,183,129,.025),0 0 0 70px rgba(216,183,129,.015)}
+body[data-view="home"] .zen-core{border:2px solid rgba(223,190,122,.55);box-shadow:0 0 0 9px rgba(222,176,98,.06),0 0 0 18px rgba(255,214,160,.02),0 22px 44px rgba(0,0,0,.36),inset 0 1px 0 rgba(255,245,211,.16)}
+body[data-view="home"] .zen-core::before{background:conic-gradient(#dbba76 0 var(--week),rgba(255,255,255,.035) var(--week) 100%)}
+.bottom-nav{border-color:rgba(221,186,120,.44);box-shadow:0 20px 60px rgba(0,0,0,.54),inset 0 1px 0 rgba(245,214,157,.09)}
+.bottom-nav .nav-link.active{background:linear-gradient(145deg,rgba(229,188,117,.18),rgba(20,89,77,.08));color:#f8e6c2}
+.bottom-nav .nav-link.active::after{content:"";position:absolute;bottom:2px;left:30%;width:40%;height:2px;border-radius:10px;background:linear-gradient(90deg,transparent,#f8d99c,transparent);box-shadow:0 0 11px rgba(225,176,100,.55)}
+.bottom-nav .nav-link{position:relative}
+@media(max-width:430px){
+  .tw-cinematic-stage{height:142px;margin:0 10px 7px;border-radius:17px}
+  .tw-stage-layout{padding:12px 14px}
+  .tw-stage-parent{font-size:.51rem;letter-spacing:.105em}
+  .tw-stage-slogan{font-size:1.42rem}
+  .tw-stage-strap{font-size:.47rem;letter-spacing:.07em}
+  .tw-stage-world{right:12px;bottom:8px;font-size:.45rem;letter-spacing:.1em}
+  .tw-stage-gj{width:35px;height:35px;border-radius:10px;font-size:.98rem}
+  .tw-stage-shade{background:linear-gradient(90deg,rgba(4,13,19,.9),rgba(5,15,20,.66) 52%,rgba(4,12,20,.16)),linear-gradient(0deg,rgba(3,8,12,.6),transparent 50%)}
+}
+@media(min-width:800px){.tw-cinematic-stage{margin:1px 22px 12px;height:230px}.tw-stage-layout{padding:23px 38px}.tw-stage-world{font-size:.75rem;right:34px;bottom:19px}}
+@media(prefers-reduced-motion:reduce){.tw-scene{transition:none!important;transform:none!important}.tw-cinematic-stage *{animation:none!important}}
+body[data-motion="reduced"] .tw-scene,body[data-motion="calm"] .tw-scene{transition:none!important;transform:none!important}
+
+
+/* FOUR WORLD SELECTOR — real hash navigation to existing financial routes */
+.tw-world-gallery{margin:13px 0 18px;padding:13px;border-radius:22px;overflow:hidden;border:1px solid rgba(226,194,133,.27);background:linear-gradient(142deg,rgba(18,35,38,.94),rgba(7,17,23,.98));box-shadow:0 22px 48px rgba(0,0,0,.24),inset 0 1px 0 rgba(248,229,183,.08)}
+.tw-world-gallery-heading{display:flex;gap:12px;align-items:flex-end;justify-content:space-between;padding:2px 3px 12px}
+.tw-world-gallery-heading span{font-size:.56rem;letter-spacing:.15em;color:#d7b779;font-weight:850}
+.tw-world-gallery-heading h3{margin:4px 0 0;font-family:Georgia,'Times New Roman',serif;font-size:clamp(1.22rem,3vw,1.8rem);font-weight:500;letter-spacing:-.035em;color:#f3ebd8}
+.tw-world-gallery-heading small{max-width:180px;color:#9aada9;font-size:.52rem;line-height:1.35;letter-spacing:.12em;text-align:right}
+.tw-world-gallery-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.tw-world-card{
+  position:relative;isolation:isolate;overflow:hidden;min-width:0;
+  min-height:152px;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-end;
+  color:#f7eedc;text-decoration:none;border:1px solid rgba(218,182,117,.23);
+  background:#0b1b21;border-radius:16px;
+  transition:transform .24s cubic-bezier(.2,.8,.2,1),box-shadow .24s ease,border-color .24s ease
+}
+.tw-world-card:hover{transform:translateY(-3px);border-color:rgba(241,205,142,.57);box-shadow:0 17px 25px rgba(0,0,0,.28)}
+.tw-world-card:active{transform:translateY(-1px)}
+.tw-world-mini{position:absolute;inset:0;overflow:hidden;z-index:-1}
+.tw-world-mini::before,.tw-world-mini::after{content:"";position:absolute;pointer-events:none}
+.tw-world-card[data-art-world="vault"] .tw-world-mini{
+  background:radial-gradient(ellipse at 55% 15%,rgba(255,213,127,.35),transparent 49%),linear-gradient(145deg,#21160e,#30251b 55%,#090f14)
+}
+.tw-world-card[data-art-world="vault"] .tw-world-mini::before{
+  width:135px;height:135px;right:-5px;top:-43px;border-radius:50%;
+  background:repeating-radial-gradient(circle,transparent 0 12px,rgba(251,211,142,.34) 13px 14px,transparent 15px 23px),conic-gradient(from 30deg,#211c1c,#c7a15e,#2c241f,#e3bf82,#211c1c);
+  box-shadow:0 0 0 8px rgba(185,134,65,.1),0 10px 40px rgba(0,0,0,.5)
+}
+.tw-world-card[data-art-world="observatory"] .tw-world-mini{
+  background:radial-gradient(circle at 76% 12%,rgba(126,72,248,.7),transparent 35%),radial-gradient(ellipse at 54% 55%,rgba(45,96,195,.65),transparent 56%),#0a1330
+}
+.tw-world-card[data-art-world="observatory"] .tw-world-mini::before{
+  width:180px;height:75px;right:-18px;top:3px;border:3px solid rgba(156,189,255,.65);
+  box-shadow:0 0 17px rgba(123,101,247,.7),inset 0 0 20px rgba(123,101,247,.45);
+  transform:rotate(-23deg);border-radius:50%
+}
+.tw-world-card[data-art-world="capital"] .tw-world-mini{
+  background:repeating-linear-gradient(95deg,transparent 0 31px,rgba(109,238,234,.12) 32px 33px,transparent 34px 49px),linear-gradient(130deg,#06131e,#153947 58%,#08272c)
+}
+.tw-world-card[data-art-world="capital"] .tw-world-mini::before{
+  inset:21px -26px -15px 28%;transform:skewX(-20deg);
+  background:repeating-linear-gradient(0deg,transparent 0 24px,rgba(91,213,238,.23) 25px 26px),
+             repeating-linear-gradient(90deg,rgba(7,19,28,.55) 0 26px,rgba(51,121,143,.6) 27px 29px);
+  border-left:2px solid rgba(96,246,241,.55)
+}
+.tw-world-card[data-art-world="ledger"] .tw-world-mini{
+  background:radial-gradient(ellipse at 73% 0%,rgba(215,225,146,.55),transparent 45%),
+  radial-gradient(ellipse at 26% 49%,rgba(48,154,93,.8),transparent 65%),linear-gradient(135deg,#061f19,#24583b 58%,#0a2b2a)
+}
+.tw-world-card[data-art-world="ledger"] .tw-world-mini::before{
+  width:140px;height:185px;top:-78px;right:-5px;border:4px solid rgba(227,224,165,.55);border-radius:50% 50% 4% 4%;
+  box-shadow:-36px 0 0 -31px rgba(233,221,164,.5),-70px 20px 0 -65px rgba(233,221,164,.5)
+}
+.tw-world-symbol{position:absolute;right:12px;top:9px;font-family:Georgia,serif;color:#f8d8a0;font-size:1.5rem;opacity:.8;text-shadow:0 0 14px rgba(255,211,131,.4)}
+.tw-world-card-copy{padding:18px 12px 13px;background:linear-gradient(0deg,rgba(3,12,17,.92),rgba(3,12,17,.7) 76%,transparent)}
+.tw-world-card-copy strong{display:block;font-family:Georgia,'Times New Roman',serif;letter-spacing:.055em;font-size:clamp(.8rem,1.2vw,1.06rem);font-weight:600;text-shadow:0 2px 13px rgba(0,0,0,.8)}
+.tw-world-card-copy small{display:block;margin-top:3px;color:#e3d9c4;font-size:.64rem;letter-spacing:.02em}
+.tw-world-card-arrow{position:absolute;right:9px;bottom:15px;font-size:.95rem;color:#ffe0a2}
+.tw-world-gallery-footnote{margin:10px 4px 0;color:#9db2a8;font-size:.62rem;line-height:1.5}
+.nav-link .nav-icon svg{display:block;width:22px;height:22px}
+@media(min-width:800px){.tw-world-gallery-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.tw-world-card{min-height:184px}.tw-world-gallery{padding:17px}.tw-world-gallery-heading{padding-bottom:15px}}
+@media(max-width:430px){.tw-world-gallery{margin:10px 0 14px;padding:10px;border-radius:18px}.tw-world-card{min-height:136px}.tw-world-card-copy{padding:15px 10px 12px}.tw-world-card-copy strong{font-size:.79rem}.tw-world-gallery-heading small{display:none}}
+@media(prefers-reduced-motion:reduce){.tw-world-card{transition:none!important}.tw-world-card:hover{transform:none}}
+body[data-motion="reduced"] .tw-world-card{transition:none!important}
+
+
+/* CINEMATIC POLISH PASS 4 — premium materials with readable real controls. */
+:root{
+  --tw-gold-trim:rgba(228,189,119,.33);
+  --tw-gold-strong:#eccb94;
+  --tw-ivory-text:#f5f1e8;
+  --tw-emerald-deep:#0b382f;
+}
+body{
+  background:
+    radial-gradient(ellipse 80% 47% at 50% -22%,rgba(28,106,89,.17),transparent 73%),
+    radial-gradient(ellipse 45% 45% at 108% 78%,rgba(164,114,60,.08),transparent 72%),
+    linear-gradient(150deg,#060b11,#091922 48%,#071717 100%)
+}
+:where(.studio-hero,.system-map-hero,.hero-card,.blueprint-stage,.observatory,.connection-stage,.precheck-stage){
+  border-color:rgba(218,189,133,.24);
+  box-shadow:0 24px 60px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,242,207,.09);
+}
+:where(.studio-hero,.system-map-hero,.blueprint-stage,.observatory,.connection-stage,.precheck-stage)::after{
+  content:"";position:absolute;top:0;left:8%;right:8%;height:1px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(250,218,157,.45),transparent)
+}
+.studio-hero{
+  border-radius:23px;padding:22px 20px 20px;
+}
+.studio-kicker,.system-map-kicker{
+  color:#e3c38a;font-size:.68rem;font-weight:780;letter-spacing:.13em
+}
+.studio-hero h2{
+  color:#f5f0e5;font-family:Georgia,'Times New Roman',serif;
+  font-size:clamp(1.45rem,4.8vw,2.35rem);font-weight:500;
+  letter-spacing:-.035em;line-height:1.14
+}
+.studio-copy,.system-map-hero p{
+  font-size:.84rem;line-height:1.55;color:#bdcdc4
+}
+.studio-stat{
+  border-radius:15px;padding:13px;
+  border-color:rgba(222,197,150,.17);
+  background:linear-gradient(148deg,rgba(230,231,214,.065),rgba(105,160,140,.02));
+}
+.studio-stat small{
+  color:#c1cabd;font-size:.69rem;letter-spacing:.04em;font-weight:650
+}
+.studio-stat strong{
+  color:#faf5e9;font-size:clamp(.94rem,3vw,1.15rem);
+  font-variant-numeric:tabular-nums;overflow-wrap:anywhere
+}
+.studio-stat span{font-size:.75rem;line-height:1.38;color:#aabdb7}
+.world-decision{
+  border-color:rgba(222,194,134,.24);
+  background:linear-gradient(125deg,rgba(29,50,49,.92),rgba(11,28,34,.96));
+  border-radius:19px;box-shadow:inset 0 1px 0 rgba(242,223,183,.08)
+}
+.world-decision small{font-size:.66rem;color:#dfc595}
+.world-decision strong{font-size:.96rem;color:#f2f0e6}
+.world-decision span{font-size:.77rem;color:#bfd0c5}
+.system-map-hero{
+  background:
+    radial-gradient(ellipse at 80% -25%,rgba(198,155,85,.18),transparent 50%),
+    linear-gradient(143deg,rgba(15,39,37,.98),rgba(8,20,28,.98))
+}
+.system-map-hero h2{
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:clamp(1.5rem,4.7vw,2.05rem);color:#f5eddf
+}
+.system-map-stat{
+  border-color:rgba(222,195,146,.2);
+  background:linear-gradient(148deg,rgba(255,255,255,.065),rgba(120,176,159,.025))
+}
+.system-map-stat small{color:#bacabf;font-size:.63rem}
+.system-map-stat strong{color:#f4e9d1;font-size:.91rem}
+.system-group{
+  border-color:rgba(220,197,159,.18);
+  background:linear-gradient(150deg,rgba(18,39,42,.94),rgba(7,19,25,.96));
+  border-radius:19px
+}
+.system-group[open]{
+  border-color:rgba(221,189,132,.34);
+  box-shadow:0 15px 32px rgba(0,0,0,.14),inset 0 1px 0 rgba(245,224,182,.07)
+}
+.system-group>summary{min-height:62px;padding:15px}
+.system-group-summary small{font-size:.66rem;color:#d3b783}
+.system-group-summary strong{font-size:.96rem;color:#f5f0e7;letter-spacing:-.015em}
+.system-group-summary span{font-size:.75rem;line-height:1.5;color:#aec2bb}
+.system-group-toggle{width:32px;height:32px;border-color:rgba(222,195,146,.23);color:#f0d099}
+.system-tool{
+  border-color:rgba(211,209,191,.15);
+  background:linear-gradient(140deg,rgba(36,59,56,.57),rgba(11,28,33,.74));
+  border-radius:14px;min-height:88px;padding:12px;
+  box-shadow:inset 0 1px 0 rgba(246,227,185,.04)
+}
+.system-tool:hover{border-color:rgba(232,194,128,.44);background:rgba(39,64,59,.66)}
+.system-tool-copy small{font-size:.65rem;color:#d0b582}
+.system-tool-copy strong{font-size:.88rem;color:#f4efe6}
+.system-tool-copy span{font-size:.72rem;line-height:1.35;color:#aebeb7}
+.system-tool-icon{border-color:rgba(211,179,116,.28);color:#e3cc9c}
+.tw-quick-tasks a{min-height:82px;border-color:rgba(215,186,128,.25)}
+.tw-quick-tasks strong{font-size:.88rem}
+.tw-quick-tasks small{font-size:.71rem}
+:where(.pref-card-v22,.trust-card,.detail-stat,.detail-intro,.insight-card){
+  border-color:rgba(215,192,150,.19);
+  background:linear-gradient(150deg,rgba(29,50,50,.72),rgba(9,26,32,.72))
+}
+.pref-card-v22{padding:14px;border-radius:16px}
+.pref-card-v22 h3{font-size:.95rem;color:#f2ebdc}
+.pref-card-v22 p{font-size:.78rem;line-height:1.5;color:#b3c5bb}
+.pref-card-v22 .choice{font-size:.78rem;min-height:42px;padding:10px 13px;border-radius:11px}
+:where(.btn,.btn-primary,.btn-secondary,.text-action){
+  min-height:44px;font-size:.83rem;letter-spacing:.01em
+}
+.zen-zone{
+  border-color:rgba(211,187,145,.24);
+  box-shadow:0 16px 35px rgba(0,0,0,.3),inset 0 1px 0 rgba(246,224,187,.07)
+}
+.zen-zone.bills{
+  background:linear-gradient(145deg,rgba(65,48,31,.97),rgba(15,26,28,.97));
+  border-color:rgba(218,177,103,.35)
+}
+.zen-zone.essentials{
+  background:linear-gradient(145deg,rgba(17,72,51,.96),rgba(8,28,29,.97));
+  border-color:rgba(123,203,150,.26)
+}
+.zen-zone.lifestyle{
+  background:linear-gradient(145deg,rgba(43,44,65,.96),rgba(14,26,35,.97));
+  border-color:rgba(162,175,218,.22)
+}
+.zen-zone.savings{
+  background:linear-gradient(145deg,rgba(44,72,41,.97),rgba(11,31,27,.97));
+  border-color:rgba(175,205,134,.29)
+}
+.zen-command{
+  border-color:rgba(217,180,114,.36);
+  background:linear-gradient(118deg,rgba(38,49,39,.89),rgba(12,29,32,.98));
+  box-shadow:inset 0 1px 0 rgba(255,227,174,.08);
+}
+.bill-vault{
+  border-color:rgba(222,185,112,.3);
+  background:radial-gradient(circle at 50% 50%,rgba(205,145,65,.15),transparent 40%),linear-gradient(145deg,rgba(33,28,25,.97),rgba(12,18,22,.98))
+}
+.vault-core{
+  border-color:rgba(229,188,112,.5);
+  background:radial-gradient(circle at 34% 22%,rgba(248,215,154,.27),transparent 25%),linear-gradient(140deg,#583d24,#131d1f 63%,#0a171d);
+  box-shadow:0 0 0 11px rgba(205,157,93,.035),0 21px 47px rgba(0,0,0,.32)
+}
+.observatory{
+  border-color:rgba(156,139,214,.3);
+  background:
+    radial-gradient(circle at 53% 47%,rgba(145,93,231,.16),transparent 29%),
+    radial-gradient(circle at 18% 12%,rgba(59,132,235,.13),transparent 28%),
+    linear-gradient(140deg,#0b1434,#0e1833 60%,#0c1124)
+}
+.blueprint-stage{
+  border-color:rgba(199,202,146,.28);
+  background:
+    linear-gradient(rgba(208,222,168,.023) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(208,222,168,.023) 1px,transparent 1px),
+    radial-gradient(circle at 50% 50%,rgba(93,179,120,.13),transparent 34%),
+    linear-gradient(150deg,#0d2825,#102e29 63%,#08191f);
+  background-size:24px 24px,24px 24px,auto,auto
+}
+.privacy-curtain{
+  background:radial-gradient(circle at 50% 35%,rgba(209,179,115,.12),transparent 34%),linear-gradient(170deg,#061317,#071a1b)
+}
+.privacy-curtain-mark{
+  color:#e8d1a2;border-color:rgba(230,197,132,.48);
+  background:linear-gradient(145deg,#143e32,#0c1e22)
+}
+@media(max-width:430px){
+  .studio-hero{padding:17px 15px}
+  .studio-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .system-map-overview{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .system-map-stat strong{font-size:1rem;overflow:visible;white-space:normal}
+  .system-tool-grid{grid-template-columns:1fr}
+  .system-tool{min-height:77px;grid-template-columns:38px minmax(0,1fr) auto}
+  .system-group-summary span{font-size:.75rem}
+  .tw-quick-tasks strong{font-size:.82rem}
+  .zen-zone{width:41%;min-height:73px;grid-template-columns:26px minmax(0,1fr);gap:6px;padding:8px}
+  .zen-zone .zen-emblem{width:28px;height:28px}
+  .zen-zone-copy small{font-size:.61rem}
+  .zen-zone-copy strong{font-size:.86rem;overflow-wrap:anywhere}
+  .zen-zone-copy span{font-size:.58rem}
+}
+body[data-contrast="high"] :where(.studio-hero,.studio-stat,.system-tool,.system-group,.tw-world-card,.tw-cinematic-stage){
+  border-color:#e3c58d
+}
+body[data-contrast="high"] :where(.studio-copy,.system-tool-copy span,.system-group-summary span,.pref-card-v22 p){
+  color:#e5e9df
+}
+body[data-motion="cinematic"] .tw-stage-laser::after,
+body[data-motion="dynamic"] .tw-stage-laser::after{
+  content:"";position:absolute;left:-14%;top:-1px;width:14%;height:3px;
+  background:linear-gradient(90deg,transparent,#ffedc8,transparent);
+  box-shadow:0 0 13px rgba(254,223,158,.8);
+  animation:twSweepLine 6s ease-in-out infinite
+}
+@keyframes twSweepLine{0%,12%{transform:translateX(0);opacity:0}23%{opacity:.94}72%{transform:translateX(710%);opacity:.95}79%,100%{transform:translateX(710%);opacity:0}}
+body[data-motion="cinematic"] .tw-electric-flow path,
+body[data-motion="dynamic"] .tw-electric-flow path{
+  stroke-dasharray:150 32;animation:twElectricTravel 18s linear infinite
+}
+@keyframes twElectricTravel{to{stroke-dashoffset:-540}}
+@media(prefers-reduced-motion:reduce){
+  .tw-stage-laser::after,.tw-electric-flow path{animation:none!important}
+}
+body[data-motion="reduced"] .tw-stage-laser::after,
+body[data-motion="reduced"] .tw-electric-flow path{animation:none!important}
+
+
+
+/* PASS 5 — interactive branded navigation, data-aware portals and user-controlled immersion */
+.tw-stage-enter{
+  position:absolute;z-index:5;right:20px;bottom:31px;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:43px;padding:8px 14px;border:1px solid rgba(242,202,133,.57);
+  border-radius:11px;text-decoration:none;font-size:.72rem;font-weight:800;letter-spacing:.05em;
+  color:#101d1d;background:linear-gradient(115deg,#c59e63,#f5dba4 53%,#c9a36e);
+  box-shadow:inset 0 1px 0 rgba(255,247,224,.65),0 9px 20px rgba(0,0,0,.25);
+  transition:transform .22s ease,box-shadow .22s ease
+}
+.tw-stage-enter span{font-size:1.1rem;line-height:1}
+.tw-stage-enter:hover,.tw-stage-enter:focus-visible{transform:translateY(-2px);box-shadow:0 13px 27px rgba(0,0,0,.35)}
+.tw-stage-enter:focus-visible{outline:3px solid #faf0d2;outline-offset:3px}
+.tw-stage-world{right:20px;bottom:82px;color:#ead8b5}
+.tw-world-card-copy{display:grid;gap:3px}
+.tw-world-live{
+  display:block;min-height:15px;max-width:100%;
+  margin-top:4px;font-style:normal;font-size:.66rem;line-height:1.3;
+  color:#c4e9d9;font-weight:700;letter-spacing:0;
+  text-wrap:balance;overflow-wrap:anywhere
+}
+.tw-world-live.is-attention{color:#f7d68b}
+.tw-world-live.is-good{color:#a5e0b8}
+.tw-world-card{min-height:167px}
+body[data-density="compact"] .tw-cinematic-stage{height:clamp(130px,19vw,202px)}
+body[data-density="balanced"] .tw-cinematic-stage{height:clamp(154px,22vw,239px)}
+body[data-density="rich"] .tw-cinematic-stage{height:clamp(198px,27vw,310px)}
+body[data-density="rich"] .tw-stage-slogan{font-size:clamp(1.5rem,4vw,3.15rem)}
+body[data-density="rich"] .tw-world-card{min-height:189px}
+body[data-density="rich"] .tw-world-gallery{padding:16px}
+body[data-density="rich"] .tw-world-gallery-heading h3{font-size:clamp(1.4rem,3.3vw,2rem)}
+@media(max-width:430px){
+  body[data-density="compact"] .tw-cinematic-stage{height:148px}
+  body[data-density="balanced"] .tw-cinematic-stage{height:166px}
+  body[data-density="rich"] .tw-cinematic-stage{height:205px}
+  .tw-stage-enter{right:12px;bottom:15px;min-height:44px;padding:7px 10px;font-size:.64rem}
+  .tw-stage-world{right:12px;bottom:66px;font-size:.5rem;letter-spacing:.07em}
+  .tw-world-card{min-height:149px}
+  .tw-world-live{font-size:.65rem;line-height:1.2}
+  body[data-density="rich"] .tw-world-card{min-height:175px}
+}
+@media(max-width:360px){
+  .tw-stage-enter{right:9px;min-height:42px;padding:7px 9px}
+  .tw-world-card-copy strong{font-size:.75rem}
+  .tw-world-card-copy small,.tw-world-live{font-size:.62rem}
+}
+@media(min-width:800px){
+  .tw-stage-enter{right:32px;bottom:29px;font-size:.77rem}
+  .tw-stage-world{right:34px;bottom:85px}
+}
+@media(prefers-reduced-motion:reduce){.tw-stage-enter{transition:none!important}.tw-stage-enter:hover{transform:none}}
+body[data-motion="reduced"] .tw-stage-enter{transition:none}
+
+
+/* PASS 6 — genuine mobile screenshot corrections
+   The extra trust disclosure is a separate grid row, never an implicit row
+   after the 1fr track; otherwise the scene starts hundreds of pixels too low. */
+.zen-home.tw-home-ready{
+  grid-template-rows:auto auto minmax(420px,1fr) auto;
+  align-content:stretch;
+}
+.tw-home-ready .tw-source-trust{
+  margin:0;
+  padding:0 10px 1px;
+  line-height:1.35;
+  font-size:.68rem;
+  color:#bbcbbf;
+}
+.tw-home-ready .zen-scene{margin:0;min-height:420px}
+.tw-offline-panel{
+  display:flex;align-items:center;justify-content:space-between;gap:9px;
+  min-height:44px;margin:6px 13px 7px;
+  padding:7px 11px;border:1px solid rgba(225,181,102,.4);border-radius:13px;
+  background:linear-gradient(115deg,rgba(24,43,44,.94),rgba(9,26,32,.96));
+  color:#e6e6da;font:600 12px/1.35 system-ui,-apple-system,sans-serif
+}
+.tw-offline-panel span{min-width:0;overflow-wrap:anywhere}
+.tw-offline-panel[data-state="ready"]{border-color:rgba(105,207,161,.4)}
+.tw-offline-panel[data-state="error"]{border-color:rgba(228,184,118,.45)}
+.tw-offline-panel[data-state="checking"]{border-color:rgba(153,185,178,.32)}
+.tw-offline-retry{
+  flex:0 0 auto;min-width:78px;min-height:42px;
+  padding:7px 9px;border-radius:10px;
+  background:rgba(222,184,122,.12);
+  border:1px solid rgba(229,195,141,.46);
+  color:#f3e3c2;font:750 12px system-ui,-apple-system,sans-serif
+}
+@media(max-width:430px){
+  .zen-home.tw-home-ready{grid-template-rows:auto auto minmax(420px,1fr) auto}
+  .tw-home-ready .tw-source-trust{font-size:.66rem;padding-inline:4px}
+  .tw-offline-panel{margin:5px 10px 6px;padding:6px 8px;font-size:11px;gap:6px}
+  .tw-offline-retry{min-width:68px;font-size:11px;padding-inline:7px}
+}
+@media(prefers-reduced-motion:reduce){
+  .tw-offline-panel,.tw-offline-retry{transition:none!important}
+}
+
+
+/* THIS WEEK · IMMERSIVE WORKING UI V1
+   Gold/obsidian material system + simple onboarding + plan-bound financial views.
+   Decorative effects are independent of the actual financial calculations. */
+:root{
+  --tw-luxe-gold:#e8c587;
+  --tw-luxe-bright:#fff0cc;
+  --tw-luxe-green:#5ee4b6;
+  --tw-luxe-violet:#ba91ff;
+  --tw-luxe-blue:#58d9ee;
+  --tw-luxe-night:#041018;
+}
+.tw-gold-button{
+  min-height:52px;display:inline-flex;align-items:center;justify-content:center;
+  gap:16px;padding:13px 22px;border-radius:16px;
+  border:1px solid #ffe5b0;background:
+  linear-gradient(165deg,rgba(255,253,226,.57),transparent 40%),
+  linear-gradient(105deg,#bf8d4a 0%,#f7df9d 35%,#e8b971 68%,#b88b49 100%);
+  color:#101612!important;font-weight:850;font-size:.95rem;letter-spacing:.018em;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.75),
+    inset 0 -2px 0 rgba(77,47,22,.24),
+    0 0 19px rgba(247,193,106,.28),0 13px 25px rgba(0,0,0,.27);
+  text-decoration:none;cursor:pointer;touch-action:manipulation;
+  transition:transform .22s ease,box-shadow .22s ease;
+}
+.tw-gold-button:hover{transform:translateY(-2px);box-shadow:0 0 29px rgba(249,196,115,.4),0 17px 30px rgba(0,0,0,.3)}
+.tw-gold-button:focus-visible{outline:3px solid #fff3d0;outline-offset:3px}
+.tw-entry{
+  position:relative;isolation:isolate;overflow:hidden;min-height:485px;
+  margin:5px 12px 48px;padding:32px 24px 30px;
+  border:1px solid rgba(230,192,120,.46);border-radius:28px;
+  background:radial-gradient(ellipse 88% 40% at 74% 6%,rgba(100,190,164,.26),transparent 70%),
+    radial-gradient(ellipse 66% 31% at 1% 96%,rgba(183,100,242,.12),transparent),
+    linear-gradient(145deg,#102832,#071622 48%,#041117);
+  box-shadow:0 30px 75px rgba(0,0,0,.33),inset 0 2px 0 rgba(255,226,172,.18);
+  text-align:center;color:#f6eddf
+}
+.tw-entry::before,.tw-entry::after{content:"";position:absolute;inset:8px;border:1px solid rgba(223,196,148,.12);border-radius:23px;pointer-events:none}
+.tw-entry::after{
+  inset:auto -50px -120px;width:calc(100% + 100px);height:300px;
+  border-radius:50%;border-color:rgba(218,190,119,.25);transform:rotate(-9deg);
+  box-shadow:0 0 0 30px rgba(219,191,124,.03),0 0 0 60px rgba(116,204,193,.023)
+}
+.tw-entry-crest{
+  width:92px;height:92px;margin:0 auto 17px;
+  display:grid;place-items:center;position:relative;
+  background:radial-gradient(ellipse at 30% 20%,#415b45,#0b292b 55%,#051118);
+  color:#f8dca1;border:2px solid rgba(245,213,148,.75);border-radius:27px;
+  font:700 2.3rem Georgia,serif;text-shadow:0 4px 15px rgba(0,0,0,.36);
+  box-shadow:inset 0 1px 0 rgba(255,238,194,.35),0 15px 32px rgba(0,0,0,.36),0 0 28px rgba(226,184,101,.2)
+}
+.tw-entry-crest span{color:#88e1c0}
+.tw-entry-kicker,.tw-onboard-overline,.tw-guide-eyebrow,.tw-section-label{
+  display:block;color:#e7c78c;font-size:.66rem;letter-spacing:.19em;
+  font-weight:800;text-transform:uppercase
+}
+.tw-entry h2,.tw-onboard h2,.tw-guide h2,.tw-capital h2{
+  font-family:Georgia,'Times New Roman',serif;font-weight:500;letter-spacing:-.035em;
+  line-height:1.02;color:#f5eddc
+}
+.tw-entry h2{font-size:clamp(2.5rem,7vw,4.4rem);margin:19px 0}
+.tw-entry h2 em{font-style:italic;color:#f0c784}
+.tw-entry>p{margin:12px auto 0;max-width:385px;color:#c7d4c9;line-height:1.55;font-size:.9rem}
+.tw-entry-roadmap{display:flex;justify-content:center;flex-wrap:wrap;gap:7px;margin:23px 0}
+.tw-entry-roadmap span{
+  padding:9px 11px;border-radius:100px;border:1px solid rgba(218,186,133,.36);
+  background:rgba(255,241,207,.04);color:#efdbb1;font-size:.6rem;
+  font-weight:750;letter-spacing:.08em
+}
+.tw-entry .tw-gold-button{width:100%;max-width:360px}
+.tw-entry .tw-entry-privacy{font-size:.7rem;color:#9ab9ad}
+.tw-onboard{position:relative;isolation:isolate;overflow:hidden;padding:18px;
+  border:1px solid rgba(231,198,140,.48);border-radius:26px;
+  background:
+    radial-gradient(ellipse 90% 35% at 74% 2%,rgba(34,158,141,.22),transparent 75%),
+    linear-gradient(145deg,#102a31,#07161f 58%,#0a1720);
+  box-shadow:inset 0 1px 0 rgba(255,230,175,.16),0 25px 50px rgba(0,0,0,.24)
+}
+.tw-onboard::after{
+  content:"";position:absolute;pointer-events:none;top:0;left:5%;width:90%;height:2px;
+  background:linear-gradient(90deg,transparent,#f6d79a,transparent);
+  box-shadow:0 0 17px rgba(247,197,114,.65)
+}
+.tw-onboard-hero{text-align:center;padding:16px 5px 18px}
+.tw-onboard-hero h2{font-size:clamp(2rem,6vw,3.1rem);margin:11px auto 5px}
+.tw-onboard-hero p{font-size:.9rem;color:#b9cec4}
+.tw-onboard-meter{display:flex;max-width:280px;gap:7px;margin:22px auto 2px}
+.tw-onboard-meter b{display:block;height:5px;border-radius:12px;flex:1;background:rgba(229,225,197,.13)}
+.tw-onboard-meter b.active{background:linear-gradient(90deg,#d4a869,#fff0c7);box-shadow:0 0 13px rgba(239,201,128,.43)}
+.tw-onboard-step{padding:13px 7px 2px}
+.tw-onboard-step[hidden],.tw-onboard-error[hidden]{display:none!important}
+.tw-onboard-step>span{color:#e7c487;font-size:.69rem;font-weight:800;letter-spacing:.14em}
+.tw-onboard-step h3{margin:8px 0 21px;font:italic 1.75rem Georgia,'Times New Roman',serif;color:#faf2e2}
+.tw-onboard-step label{display:block;color:#e8eae2;font-size:.84rem;margin:14px 0 9px;font-weight:700}
+.tw-wizard-amount{display:flex;align-items:center;gap:8px;padding:0 13px;min-height:64px;
+  border:1px solid rgba(225,194,136,.43);border-radius:16px;
+  background:linear-gradient(110deg,rgba(6,18,23,.98),rgba(10,35,39,.96));
+  box-shadow:inset 0 1px 0 rgba(234,225,195,.1),0 8px 21px rgba(0,0,0,.16)}
+.tw-wizard-amount span{color:#e8c58d;font:italic 1.7rem Georgia,serif}
+.tw-wizard-amount input{flex:1;min-width:0;width:100%;height:59px;background:none;border:none;
+  color:#fbf2dd;font-size:clamp(1.5rem,5vw,2rem);font-weight:750;outline:none;
+  font-variant-numeric:tabular-nums}
+.tw-wizard-amount input:focus-visible{outline:none}
+.tw-wizard-amount:focus-within{border-color:#f9d891;box-shadow:0 0 0 2px rgba(248,210,142,.18)}
+.tw-onboard-step select{width:100%;min-height:52px;padding:12px;
+  border-radius:13px;border:1px solid rgba(209,191,148,.3);color:#f5eee1;background:#0e2227;font-size:1rem}
+.tw-onboard-hint,.tw-onboard-disclosure{color:#acbeb3;font-size:.72rem;line-height:1.5}
+.tw-wizard-summary{color:#e8dbbf;font-size:.79rem;line-height:1.5;border-top:1px solid rgba(214,181,121,.18);padding-top:15px}
+.tw-onboard-actions{display:flex;gap:10px;align-items:center;margin-top:25px}
+.tw-onboard-actions .tw-gold-button{flex:1}
+.tw-onboard-actions button[hidden]{display:none}
+.tw-onboard-actions>button:not(.tw-gold-button){min-height:52px;border:1px solid rgba(223,203,174,.35);background:rgba(229,226,216,.05);border-radius:13px;color:#f4ead5;padding:0 18px}
+.tw-onboard-error{padding:9px 12px;margin-top:12px;border:1px solid rgba(239,140,131,.5);border-radius:12px;background:rgba(183,54,44,.12);color:#ffc9c5;font-size:.76rem}
+.tw-onboard-disclosure{text-align:center;margin:15px 6px 0}
+.tw-onboard-advanced{margin-top:14px;border:1px solid rgba(212,186,131,.23);border-radius:17px;background:rgba(7,22,28,.65)}
+.tw-onboard-advanced>summary{cursor:pointer;list-style:none;min-height:56px;padding:16px;display:flex;justify-content:space-between;align-items:center;gap:6px;color:#edddbe;font-size:.8rem;font-weight:750}
+.tw-onboard-advanced>summary::-webkit-details-marker{display:none}
+.tw-onboard-advanced-content{display:grid;gap:14px;padding:7px 10px 14px}
+.tw-onboard-advanced-content>.blueprint-stage{min-width:0}
+.tw-onboard-advanced-content>.form-card{margin:0}
+.tw-onboard-advanced:not([open]) .tw-onboard-advanced-content{display:none}
+.tw-guide,.tw-capital{width:100%;min-width:0;max-width:1020px;margin:0 auto 125px;display:grid;gap:13px;padding:0 12px}
+.tw-guide-hero,.tw-capital-lede{
+  position:relative;isolation:isolate;overflow:hidden;
+  border:1px solid rgba(219,183,122,.4);border-radius:24px;padding:26px 18px;text-align:center;
+  background:radial-gradient(ellipse 70% 48% at 50% 17%,rgba(109,84,193,.25),transparent 75%),
+    radial-gradient(ellipse 80% 32% at 60% 94%,rgba(48,167,171,.14),transparent 80%),
+    linear-gradient(155deg,#0b2031,#101631 65%,#0b1c29);
+  box-shadow:inset 0 1px 0 rgba(255,232,196,.12),0 20px 45px rgba(0,0,0,.25)
+}
+.tw-guide-hero h2,.tw-capital-lede h2{font-size:clamp(1.8rem,5vw,3rem);margin:16px 0 8px}
+.tw-guide-hero p{max-width:470px;margin:0 auto;font-size:.87rem;line-height:1.6;color:#bdcdd2}
+.tw-guide-orb{display:grid;place-items:center;position:relative;
+  height:145px;width:145px;border-radius:50%;margin:26px auto 12px;
+  background:radial-gradient(circle at 35% 30%,#7771f6,#2a2869 31%,#071d33 65%,#080c1f);
+  border:2px solid rgba(201,173,254,.69);
+  box-shadow:inset 0 0 18px rgba(228,193,255,.45),0 0 28px rgba(136,92,232,.44),0 0 57px rgba(75,173,221,.21)}
+.tw-guide-orb:before,.tw-guide-orb:after{
+  content:"";position:absolute;inset:-15px;border:2px solid rgba(98,218,239,.33);
+  border-radius:50%;transform:rotate(-30deg) scaleX(1.35);pointer-events:none}
+.tw-guide-orb:after{inset:-10px;transform:rotate(35deg) scaleX(1.5);border-color:rgba(213,173,251,.33)}
+.tw-guide-orb span{font:italic 2.15rem Georgia,serif;color:#f6d8a6;text-shadow:0 0 19px rgba(244,198,121,.6)}
+.tw-guide-questions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.tw-guide-questions button{min-width:0;min-height:65px;padding:12px 6px;border:1px solid rgba(212,183,129,.37);border-radius:16px;color:#f6e8d0;background:linear-gradient(130deg,#132b35,#091a25);font-weight:700;font-size:.75rem}
+.tw-guide-questions button:hover{border-color:#eed09e}
+.tw-guide-ask,.tw-guide-answer,.tw-capital-card{border:1px solid rgba(216,185,138,.27);border-radius:21px;padding:16px;background:linear-gradient(145deg,rgba(14,34,41,.98),rgba(6,19,27,.96));box-shadow:inset 0 1px 0 rgba(252,235,191,.06)}
+.tw-guide-ask label{display:block;font-size:.79rem;color:#e8d9b8;font-weight:750;margin-bottom:10px}
+.tw-guide-ask>div{display:flex;gap:9px}
+.tw-guide-ask input{flex:1;min-width:0;min-height:51px;padding:11px;border:1px solid rgba(190,208,196,.28);border-radius:13px;background:#091b24;color:#f5f3ea;font-size:1rem}
+.tw-guide-ask .tw-gold-button{min-height:51px;padding:12px 17px;font-size:.85rem}
+.tw-guide-answer{line-height:1.6;color:#e4efe5;font-size:.87rem;border-color:rgba(104,221,185,.37)}
+.tw-guide-actions,.tw-capital-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.tw-guide-actions a,.tw-capital-actions>a:not(.tw-gold-button){
+  display:flex;align-items:center;justify-content:center;min-height:49px;text-align:center;
+  padding:12px;border:1px solid rgba(218,191,143,.29);border-radius:13px;
+  background:linear-gradient(135deg,rgba(50,60,54,.5),rgba(8,32,39,.72));
+  color:#f0e8d7;text-decoration:none;font-size:.8rem;font-weight:700
+}
+.tw-guide-boundary{margin:3px 5px;font-size:.67rem;color:#a7b9b3;line-height:1.55}
+.tw-capital-lede{background:radial-gradient(ellipse at 68% 4%,rgba(32,191,188,.24),transparent 58%),linear-gradient(145deg,#09272e,#091725 74%,#071922)}
+.tw-capital-balance{margin:18px auto 0;display:grid;gap:3px}
+.tw-capital-balance small{color:#d3ded4;font-size:.72rem;letter-spacing:.07em}
+.tw-capital-balance strong{color:#f1d9a6;font-size:clamp(2.3rem,8vw,4.7rem);font-weight:700;line-height:1.2;font-variant-numeric:tabular-nums;text-shadow:0 0 26px rgba(244,198,119,.21)}
+.tw-capital-balance span{color:#9bc0b8;font-size:.7rem}
+.tw-capital-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tw-capital-kpis>div{display:grid;gap:5px;padding:15px;border:1px solid rgba(211,178,122,.25);border-radius:17px;background:rgba(21,41,44,.88)}
+.tw-capital-kpis small{color:#b8c8c1;font-size:.7rem}
+.tw-capital-kpis strong{color:#f7efde;font-size:1.17rem;font-variant-numeric:tabular-nums}
+.tw-card-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.tw-card-heading span{color:#e9c88c;letter-spacing:.14em;font-size:.59rem}
+.tw-card-heading h3{margin:4px 0;font:italic 1.38rem Georgia,serif;color:#f5ebd8}
+.tw-card-heading>a{font-size:.72rem;color:#f1d6a6;text-decoration:none}
+.tw-capital-row{display:grid;grid-template-columns:minmax(0,1fr) 70px 16px;gap:12px;align-items:center;min-height:63px;padding:11px 0;border-top:1px solid rgba(197,211,194,.12);text-decoration:none}
+.tw-capital-category{min-width:0}
+.tw-capital-category strong{display:block;color:#f2f0e8;font-size:.84rem}
+.tw-capital-category small{display:block;margin-top:3px;color:#afc9be;font-size:.66rem}
+.tw-capital-bar{height:7px;border-radius:30px;background:rgba(231,235,228,.12);overflow:hidden}
+.tw-capital-bar>i{display:block;height:100%;width:var(--pct);background:linear-gradient(90deg,#11b995,#8cffe3);border-radius:inherit;box-shadow:0 0 13px rgba(76,240,185,.45)}
+.tw-capital-arrow{color:#ecd19b}
+.tw-capital-transaction{display:flex;gap:12px;justify-content:space-between;align-items:center;min-height:62px;padding:9px 0;border-top:1px solid rgba(201,216,208,.14)}
+.tw-capital-transaction>span strong{display:block;color:#f0ecdf;font-size:.81rem}
+.tw-capital-transaction>span small{display:block;color:#a8bcb8;font-size:.7rem;margin-top:3px}
+.tw-capital-transaction>strong{color:#f2d5ab;font-variant-numeric:tabular-nums;font-size:.83rem}
+.tw-capital-empty{color:#aebdb5;line-height:1.5;font-size:.82rem}
+.tw-capital-actions .tw-gold-button{grid-column:1/-1}
+.bottom-nav{max-width:550px;gap:3px}
+.nav-link{flex:1;min-width:0}
+.nav-link .nav-icon{margin:auto}
+body[data-view="assist"] .tw-scene--observatory{opacity:1;transform:scale(1)}
+body[data-view="capital"] .tw-scene--capital{opacity:1;transform:scale(1)}
+body[data-view="assist"] .tw-stage-world::before{content:"GOOD JAWN GUIDE"}
+body[data-view="capital"] .tw-stage-world::before{content:"YOUR WEEKLY CAPITAL"}
+body[data-motion="cinematic"] .tw-guide-orb:before{animation:tw-orbit-twist 20s linear infinite}
+body[data-motion="cinematic"] .tw-guide-orb:after{animation:tw-orbit-twist 25s linear infinite reverse}
+@keyframes tw-orbit-twist{from{transform:rotate(-35deg) scaleX(1.35)}to{transform:rotate(325deg) scaleX(1.35)}}
+@media(min-width:760px){.tw-guide,.tw-capital{padding:0 22px}.tw-onboard{padding:30px;max-width:720px;margin:auto}.tw-onboard-advanced{max-width:720px;margin:14px auto}.tw-capital-row{grid-template-columns:minmax(0,1fr) 200px 16px}}
+@media(max-width:430px){
+ .tw-entry{margin-inline:10px;min-height:455px;padding:27px 17px}
+ .tw-entry h2{font-size:2.5rem}
+ .tw-onboard{margin:0 5px;padding:14px;border-radius:22px}
+ .tw-onboard-step{padding:12px 2px}
+ .tw-guide-questions button{min-height:65px;padding:9px 3px;font-size:.69rem}
+ .tw-capital,.tw-guide{padding:0 10px}
+ .tw-capital-balance strong{font-size:2.8rem}
+ .bottom-nav{width:calc(100% - 14px);padding:5px;gap:1px}
+ .nav-link{font-size:.57rem;padding:5px 1px;min-height:56px}
+ .nav-link .nav-icon{width:27px;height:25px}
+ .nav-link .nav-icon svg{width:21px;height:21px}
+}
+@media(prefers-reduced-motion:reduce){
+ .tw-gold-button{transition:none!important}
+ .tw-gold-button:hover{transform:none}
+ .tw-guide-orb:before,.tw-guide-orb:after{animation:none!important}
+}
+body[data-motion="reduced"] .tw-guide-orb:before,
+body[data-motion="reduced"] .tw-guide-orb:after{animation:none!important}
+
+
+/* REAL CINEMATIC WORLD ATLAS V1
+   Cropped from the ten selected original Good Jawn financial screen concepts.
+   Embedded for service-worker offline parity; panels and values remain live HTML. */
+:root{--tw-world-atlas:url("data:image/webp;base64,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")}
+.tw-scene{isolation:isolate}
+.tw-scene::before{
+  content:"";display:block;position:absolute;inset:0;
+  z-index:0;pointer-events:none;
+  background-image:var(--tw-world-atlas);
+  background-size:100% 400%;
+  background-repeat:no-repeat;
+  filter:saturate(1.13) contrast(1.05);
+}
+.tw-scene--vault::before{background-position:center 0%}
+.tw-scene--capital::before{background-position:center 33.333%}
+.tw-scene--ledger::before{background-position:center 66.667%}
+.tw-scene--observatory::before{background-position:center 100%}
+.tw-scene .tw-scene-image{opacity:.09;mix-blend-mode:screen}
+.tw-world-card .tw-world-mini::after{
+  content:"";position:absolute;inset:0;z-index:0;
+  background-image:var(--tw-world-atlas);background-size:100% 400%;
+  background-repeat:no-repeat;opacity:.93;
+  filter:saturate(1.13) contrast(1.06)
+}
+.tw-world-card[data-art-world="vault"] .tw-world-mini::after{background-position:center 0%}
+.tw-world-card[data-art-world="capital"] .tw-world-mini::after{background-position:center 33.333%}
+.tw-world-card[data-art-world="ledger"] .tw-world-mini::after{background-position:center 66.667%}
+.tw-world-card[data-art-world="observatory"] .tw-world-mini::after{background-position:center 100%}
+.tw-world-card .tw-world-mini::before{z-index:1;opacity:.22}
+.tw-world-card-copy{position:relative;z-index:2;background:linear-gradient(0deg,rgba(2,12,17,.95),rgba(2,12,17,.72) 76%,rgba(3,12,18,.08))}
+.tw-cinematic-stage{background:#08171c}
+.tw-stage-visuals .tw-scene{background:#08171c}
+@media(prefers-reduced-motion:reduce){.tw-scene::before,.tw-world-mini::after{animation:none!important;transition:none!important}}
+
+
+/* CINEMATIC QA FIX: five primary destinations must fit a single iPhone row. */
+.bottom-nav{
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  grid-template-rows:1fr!important;
+  align-items:stretch!important;
+  gap:2px!important;
+  min-height:65px;
+  max-height:82px;
+}
+.bottom-nav::after{
+  width:calc((100% - 14px)/5);
+  transform:translateX(calc(var(--nav-index) * 100%))
+}
+.bottom-nav .nav-link{
+  width:100%;min-width:0!important;max-width:100%;
+  min-height:58px;justify-self:stretch;align-self:stretch;
+  padding:5px 0!important;
+  letter-spacing:0!important;
+  white-space:nowrap;
+}
+.bottom-nav .nav-link span:last-child{
+  display:block;max-width:100%;overflow:hidden;
+  white-space:nowrap;text-overflow:clip;
+  font-size:clamp(.56rem,1.85vw,.67rem)
+}
+.bottom-nav .nav-link .nav-icon{flex:0 0 auto}
+.tw-offline-panel[data-state="ready"]{
+  min-height:32px;padding:5px 11px;
+  margin:3px 12px 5px;border-radius:10px;
+  font-size:.68rem;line-height:1.2;
+  background:linear-gradient(115deg,rgba(25,54,48,.85),rgba(10,31,34,.88))
+}
+.tw-offline-panel[data-state="ready"] .tw-offline-retry{display:none}
+@media(max-width:430px){
+  .bottom-nav{min-height:62px;max-height:75px;padding:6px 4px!important}
+  .bottom-nav .nav-link{min-height:57px;padding:4px 0!important}
+  .bottom-nav .nav-link .nav-icon{width:24px;height:22px}
+  .bottom-nav .nav-link .nav-icon svg{width:19px;height:19px}
+  .bottom-nav .nav-link span:last-child{font-size:.55rem}
+  .tw-offline-panel[data-state="ready"]{margin:3px 10px 5px;padding:6px 8px}
+}
+
+
+/* Informed, editable first-run spending-lane limits: no concealed example assumptions. */
+.tw-wizard-lanes{margin-top:19px;border:1px solid rgba(232,189,115,.34);border-radius:15px;background:rgba(8,27,33,.77)}
+.tw-wizard-lanes>summary{min-height:56px;display:flex;align-items:center;justify-content:space-between;gap:11px;cursor:pointer;padding:12px 14px;color:#f4e6c9;list-style:none}
+.tw-wizard-lanes>summary::-webkit-details-marker{display:none}
+.tw-wizard-lanes>summary span{display:grid;gap:3px;font-size:.81rem;font-weight:750}
+.tw-wizard-lanes>summary small{font-weight:500;font-size:.66rem;color:#b6c9bd}
+.tw-wizard-lanes>summary strong{white-space:nowrap;font-size:.81rem;color:#e6c487;font-variant-numeric:tabular-nums}
+.tw-wizard-lanes>p{padding:3px 14px 0;margin:0;color:#b6c9c1;font-size:.72rem;line-height:1.5}
+.tw-wizard-lane-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:13px}
+.tw-wizard-lane-fields label{display:grid;gap:6px;color:#dcded3;font-size:.75rem;font-weight:650}
+.tw-wizard-lane-fields input{box-sizing:border-box;width:100%;height:48px;padding:10px;border-radius:11px;border:1px solid rgba(217,188,142,.34);background:#0a242a;color:#faf2df;font-size:1rem;font-variant-numeric:tabular-nums}
+.tw-wizard-lane-fields input:focus-visible{outline:2px solid #e4c38a;outline-offset:2px}
+.tw-wizard-lanes:not([open])>p,.tw-wizard-lanes:not([open])>.tw-wizard-lane-fields{display:none}
+@media(max-width:375px){.tw-wizard-lane-fields{grid-template-columns:1fr}}
+
+
+/* The Capital: each real spending lane can open its own dedicated check. */
+.tw-capital-row{grid-template-columns:minmax(0,1fr) minmax(38px,86px) auto}
+.tw-capital-row>.tw-capital-category{display:flex;flex-direction:column;justify-content:center;min-height:46px;min-width:0;color:inherit;text-decoration:none}
+.tw-capital-row>.tw-capital-category:focus-visible{outline:2px solid #ebd09b;outline-offset:3px}
+.tw-capital-precheck{flex:none;display:inline-grid;place-items:center;min-height:44px;min-width:66px;border:1px solid rgba(226,192,132,.48);border-radius:12px;background:rgba(215,174,102,.12);color:#f5dfb6;font-weight:750;font-size:.73rem;cursor:pointer}
+.tw-capital-precheck:focus-visible{outline:2px solid #ffecbd;outline-offset:2px}
+.tw-capital-precheck:hover{background:rgba(218,179,107,.2)}
+@media(max-width:400px){.tw-capital-row{gap:7px;grid-template-columns:minmax(0,1fr) minmax(24px,58px) auto}.tw-capital-precheck{min-width:58px;padding-inline:5px}}
+
+
+/* CINEMATIC EXPERIENCE PASS 7 — a real destination for each page,
+   with restrained gold trim over the original offline architectural artwork. */
+.tw-stage-feature{
+  display:block;max-width:360px;margin-top:9px;
+  color:#fff4db;font:italic 500 clamp(1.15rem,2.8vw,2.1rem)/1.1 Georgia,'Times New Roman',serif;
+  letter-spacing:-.022em;text-shadow:0 3px 13px rgba(0,0,0,.78),0 0 16px rgba(218,175,108,.2);
+}
+.tw-stage-parent{color:#f4d49e}
+.tw-stage-strap{color:#d3e8df;letter-spacing:.09em;font-weight:780}
+.tw-stage-enter[hidden]{display:none!important}
+.tw-cinematic-stage{
+  border-color:rgba(244,203,136,.58);
+  box-shadow:0 18px 55px rgba(0,0,0,.4),inset 0 0 0 1px rgba(255,231,183,.09);
+}
+.tw-cinematic-stage::before{
+  content:"";position:absolute;pointer-events:none;z-index:2;
+  inset:5px;border-radius:inherit;border:1px solid rgba(241,208,155,.15);
+}
+.tw-stage-shade{
+  background:linear-gradient(90deg,rgba(3,11,17,.94) 0%,rgba(3,13,19,.81) 34%,rgba(3,12,20,.2) 70%),
+    linear-gradient(0deg,rgba(3,8,12,.83),transparent 29%,transparent 76%,rgba(2,9,15,.25));
+}
+body[data-density="compact"] .tw-cinematic-stage{height:clamp(142px,20vw,220px)}
+body[data-density="balanced"] .tw-cinematic-stage{height:clamp(218px,26vw,285px)}
+body[data-density="rich"] .tw-cinematic-stage{height:clamp(265px,33vw,365px)}
+body[data-density="rich"] .tw-stage-feature{font-size:clamp(1.35rem,3.3vw,2.45rem)}
+body[data-motion="cinematic"] .tw-stage-arriving .tw-stage-feature,
+body[data-motion="dynamic"] .tw-stage-arriving .tw-stage-feature{
+  animation:tw-feature-arrive .66s cubic-bezier(.15,.78,.2,1) both
+}
+body[data-motion="cinematic"] .tw-stage-arriving .tw-scene[style],
+body[data-motion="dynamic"] .tw-stage-arriving .tw-scene[style]{animation:none}
+@keyframes tw-feature-arrive{
+  from{transform:translateY(13px);opacity:0;filter:blur(4px)}
+  to{transform:translateY(0);opacity:1;filter:blur(0)}
+}
+@media(max-width:430px){
+  body[data-density="compact"] .tw-cinematic-stage{height:176px}
+  body[data-density="balanced"] .tw-cinematic-stage{height:237px}
+  body[data-density="rich"] .tw-cinematic-stage{height:291px}
+  .tw-stage-identity{max-width:76%;align-self:center}
+  .tw-stage-layout{align-items:flex-start;padding:16px 16px}
+  .tw-stage-slogan{font-size:1.55rem;line-height:.97}
+  .tw-stage-strap{margin-top:7px;font-size:.55rem;max-width:245px;line-height:1.4}
+  .tw-stage-feature{margin-top:11px;font-size:1.42rem;line-height:1.03;max-width:230px}
+  .tw-stage-parent{font-size:.54rem;line-height:1.4}
+  .tw-stage-world{right:14px;bottom:74px;max-width:135px;text-align:right;line-height:1.3}
+  .tw-stage-enter{right:14px;bottom:17px;min-width:135px}
+  .tw-stage-shade{
+    background:linear-gradient(90deg,rgba(3,11,17,.9) 0%,rgba(3,12,19,.65) 47%,rgba(3,11,18,.08) 83%),
+      linear-gradient(0deg,rgba(1,8,13,.72),transparent 34%,transparent 78%,rgba(2,9,16,.21));
+  }
+}
+@media(max-width:340px){
+  body[data-density="balanced"] .tw-cinematic-stage{height:215px}
+  body[data-density="rich"] .tw-cinematic-stage{height:270px}
+  .tw-stage-feature{font-size:1.19rem}
+  .tw-stage-slogan{font-size:1.35rem}
+  .tw-stage-enter{min-width:0}
+}
+/* Protect task entry on small screens: immersive art must not bury the first input. */
+@media(max-width:430px){
+  body[data-density="balanced"][data-view="setup"] .tw-cinematic-stage,
+  body[data-density="balanced"][data-view="log"] .tw-cinematic-stage,
+  body[data-density="balanced"][data-view="precheck"] .tw-cinematic-stage{height:176px}
+  body[data-density="rich"][data-view="setup"] .tw-cinematic-stage,
+  body[data-density="rich"][data-view="log"] .tw-cinematic-stage,
+  body[data-density="rich"][data-view="precheck"] .tw-cinematic-stage{height:218px}
+  body[data-view="setup"] .tw-stage-feature,
+  body[data-view="log"] .tw-stage-feature,
+  body[data-view="precheck"] .tw-stage-feature{font-size:1.23rem}
+}
+@media(prefers-reduced-motion:reduce){
+ .tw-stage-arriving .tw-stage-feature{animation:none!important}
+}
+body[data-motion="reduced"] .tw-stage-arriving .tw-stage-feature{animation:none!important}
+body[data-performance="lite"] .tw-stage-arriving .tw-stage-feature{animation:none!important}
+
+
+/* PASS 8: the immersive four financial worlds are the Explore entrance;
+   technical search and quick tools stay reachable through native disclosure. */
+.tw-explore-numbers{
+  margin-top:14px;border:1px solid rgba(225,194,138,.26);border-radius:14px;
+  background:rgba(9,25,30,.63);color:#ede7db
+}
+.tw-explore-numbers>summary{
+  min-height:51px;padding:10px 14px;cursor:pointer;display:flex;align-items:center;
+  justify-content:space-between;gap:12px;list-style:none;
+  font-size:.76rem;font-weight:780
+}
+.tw-explore-numbers>summary::-webkit-details-marker{display:none}
+.tw-explore-numbers>summary small{font-size:.64rem;color:#b7c8bc;font-weight:500;text-align:right}
+.tw-explore-numbers[open]>.system-map-overview{padding:7px 11px}
+.tw-explore-numbers[open]>.system-map-search{margin:6px 11px 12px}
+.tw-explore-numbers:not([open])>.system-map-overview,
+.tw-explore-numbers:not([open])>.system-map-search{display:none}
+.tw-quick-action-disclosure{
+  padding:0 12px 9px;margin:10px 0 19px;
+  border:1px solid rgba(209,183,138,.26);border-radius:17px;
+  background:rgba(9,25,29,.77)
+}
+.tw-quick-action-disclosure>summary{
+  min-height:55px;display:flex;justify-content:space-between;align-items:center;
+  gap:10px;list-style:none;cursor:pointer;padding:10px 4px;
+  color:#f1dfbe;font-size:.79rem;font-weight:800
+}
+.tw-quick-action-disclosure>summary::-webkit-details-marker{display:none}
+.tw-quick-action-disclosure>summary span{color:#a8beb3;font-size:.67rem;font-weight:500;line-height:1.5;text-align:right}
+.tw-quick-action-disclosure:not([open])>.tw-quick-tasks{display:none}
+.tw-world-gallery{margin-top:13px}
+.tw-world-card{position:relative;isolation:isolate;border-color:rgba(246,204,139,.38)}
+.tw-world-card .tw-world-mini{z-index:0}
+.tw-world-card::before{
+  content:"";position:absolute;pointer-events:none;inset:0;z-index:1;
+  background:linear-gradient(0deg,rgba(4,10,17,.96) 0%,rgba(4,12,20,.56) 29%,transparent 74%)
+}
+.tw-world-card-copy{position:relative;z-index:2}
+.tw-world-card-arrow{z-index:3}
+.tw-world-card .tw-world-mini::after{opacity:1;filter:saturate(1.22) contrast(1.09)}
+.tw-world-gallery-heading h3{font-family:Georgia,'Times New Roman',serif;font-size:clamp(1.35rem,3.4vw,2rem)}
+.tw-world-card-copy strong{font-size:clamp(1rem,2vw,1.35rem);letter-spacing:.07em}
+.tw-world-card-copy small,.tw-world-live{font-size:.76rem;line-height:1.4}
+.tw-world-card-copy{gap:5px;padding:18px 18px 19px;background:transparent}
+.tw-world-gallery-footnote{font-size:.71rem;line-height:1.55}
+@media(max-width:700px){
+  .tw-world-gallery-grid{grid-template-columns:1fr;gap:12px}
+  .tw-world-card{min-height:199px}
+  .tw-world-card-copy{padding:17px 16px 17px}
+  .tw-world-card-copy strong{font-size:1.29rem}
+  .tw-world-live{font-size:.77rem}
+  .tw-world-symbol{font-size:1.75rem;right:19px}
+  .tw-world-gallery{padding:13px}
+}
+@media(max-width:430px){
+  .system-map-hero{padding:18px 16px}
+  .system-map-hero h2{font-size:1.6rem}
+  .system-map-hero p{line-height:1.5;font-size:.8rem}
+  .tw-explore-numbers>summary small{max-width:115px}
+  .tw-world-card{min-height:189px}
+  .tw-world-gallery-heading h3{font-size:1.34rem}
+}
+@media(prefers-reduced-motion:reduce){
+  .tw-world-card,.tw-explore-numbers,.tw-quick-action-disclosure{transition:none!important}
+}
+
+</style></head><body><a class="skip-link" href="#app">Skip to main content</a><div class="sr-only" id="routeAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div><div class="privacy-curtain" id="privacyCurtain" aria-hidden="true"><div><div class="privacy-curtain-mark">TW</div><strong>Financial view hidden</strong><span>This Week masks the page while it is inactive. This is a best-effort browser privacy layer, not a guarantee about operating-system snapshots.</span></div></div><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M11 22L24 59L40 34L56 59L69 22" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="square"/><path d="M12 13H68" stroke="currentColor" stroke-width="1.5" opacity=".65"/><circle cx="12" cy="13" r="2" fill="currentColor"/><circle cx="21" cy="13" r="2" fill="currentColor"/><circle cx="30" cy="13" r="2" fill="currentColor"/><circle cx="40" cy="13" r="2" fill="#77d2ad"/><circle cx="50" cy="13" r="2" fill="currentColor"/><circle cx="59" cy="13" r="2" fill="currentColor"/><circle cx="68" cy="13" r="2" fill="currentColor"/></svg></div><div><span class="tw-endorsement">Good Jawn Financial</span><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><section class="tw-cinematic-stage" aria-label="Good Jawn Financial experience">
+  <div class="tw-stage-visuals" aria-hidden="true"><div class="tw-scene tw-scene--vault"><svg class="tw-scene-image" viewBox="0 0 1440 380" preserveAspectRatio="xMidYMid slice" role="presentation" focusable="false" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="tv-dark" x2=".8" y2="1"><stop stop-color="#0d1016"/><stop offset=".55" stop-color="#2a1b14"/><stop offset="1" stop-color="#050b10"/></linearGradient><radialGradient id="tv-gold"><stop stop-color="#f9df9c"/><stop offset=".27" stop-color="#a77432"/><stop offset=".65" stop-color="#2d2219"/><stop offset=".83" stop-color="#c59850"/><stop offset="1" stop-color="#111319"/></radialGradient><linearGradient id="tv-edge"><stop stop-color="#684920"/><stop offset=".35" stop-color="#fce3a3"/><stop offset=".58" stop-color="#8a5728"/><stop offset="1" stop-color="#d6af69"/></linearGradient><pattern id="tv-boxes" width="90" height="42" patternUnits="userSpaceOnUse"><rect x="2" y="2" width="86" height="38" rx="2" fill="#211b1b" stroke="#b68a4d" stroke-opacity=".6" stroke-width="1.6"/><path d="M6 9H83" stroke="#f3d69e" stroke-opacity=".32"/><circle cx="45" cy="22" r="5" fill="#513b23" stroke="#d7a86b" stroke-width="1.2"/><path d="M42 22H48" stroke="#f9d99d"/></pattern><clipPath id="tv-left"><path d="M0 0H500L570 380H0Z"/></clipPath><clipPath id="tv-right"><path d="M1440 0H1120L1040 380H1440Z"/></clipPath></defs>
+<rect width="1440" height="380" fill="url(#tv-dark)"/><path d="M0 0H610L680 380H0Z" fill="#201c1a"/><path d="M1440 0H1110L1030 380H1440Z" fill="#181a1a"/><g clip-path="url(#tv-left)" opacity=".85"><rect width="620" height="380" fill="url(#tv-boxes)" transform="skewY(-4)"/></g><g clip-path="url(#tv-right)" opacity=".7"><rect x="1000" width="440" height="380" fill="url(#tv-boxes)" transform="skewY(3)"/></g>
+<path d="M495 0L570 380M1110 0L1028 380" stroke="url(#tv-edge)" stroke-width="8" opacity=".7"/><path d="M0 365L620 230M1440 365L1010 228M0 0L655 140M1440 0L1010 146" stroke="#dbb66f" opacity=".3" stroke-width="3"/>
+<g transform="translate(850 190)"><circle r="166" fill="#0b0d13" stroke="#af8143" stroke-width="12"/><circle r="151" fill="none" stroke="#f2d59c" stroke-opacity=".6" stroke-width="3" stroke-dasharray="3 16"/><circle r="136" fill="url(#tv-gold)" stroke="#5f4327" stroke-width="8"/><circle r="115" fill="#0b1416" stroke="#c6a36b" stroke-width="6"/><circle r="104" fill="none" stroke="#d8b57e" stroke-opacity=".65" stroke-width="3" stroke-dasharray="18 12"/><circle r="81" fill="#291f1c" stroke="#f0cc8a" stroke-width="7"/>
+<g stroke="url(#tv-edge)" stroke-width="13" stroke-linecap="round"><path d="M0 -80V80M-80 0H80M-57 -57L57 57M57 -57L-57 57"/></g><circle r="37" fill="url(#tv-gold)" stroke="#eed09a" stroke-width="4"/><circle r="12" fill="#11171a" stroke="#f5dfad" stroke-width="5"/></g>
+<path d="M0 360H1440" stroke="#ffd89a" opacity=".65" stroke-width="3"/><path d="M580 0L480 380" stroke="#f6bd67" stroke-opacity=".28" stroke-width="8"/><path d="M1020 0L1170 380" stroke="#f6bd67" stroke-opacity=".2" stroke-width="8"/>
+</svg></div><div class="tw-scene tw-scene--observatory"><svg class="tw-scene-image" viewBox="0 0 1440 380" preserveAspectRatio="xMidYMid slice" role="presentation" focusable="false" xmlns="http://www.w3.org/2000/svg"><defs>
+<linearGradient id="to-sky" x2=".75" y2="1"><stop stop-color="#070d2b"/><stop offset=".45" stop-color="#1a1e55"/><stop offset="1" stop-color="#070d20"/></linearGradient><radialGradient id="to-nebula"><stop stop-color="#744ade" stop-opacity=".85"/><stop offset=".55" stop-color="#3856b2" stop-opacity=".33"/><stop offset="1" stop-color="#1e1b54" stop-opacity="0"/></radialGradient><linearGradient id="to-streak"><stop stop-color="#67e7fe" stop-opacity="0"/><stop offset=".35" stop-color="#c59cff"/><stop offset=".7" stop-color="#7affdf"/><stop offset="1" stop-color="#67e7fe" stop-opacity="0"/></linearGradient><pattern id="to-stars" width="106" height="86" patternUnits="userSpaceOnUse"><circle cx="11" cy="26" r="1.6" fill="#b6faff" opacity=".75"/><circle cx="80" cy="68" r="1" fill="#eacaff" opacity=".7"/><circle cx="63" cy="12" r="1.2" fill="#fff7df" opacity=".6"/></pattern></defs>
+<rect width="1440" height="380" fill="url(#to-sky)"/><rect width="1440" height="380" fill="url(#to-stars)"/><ellipse cx="855" cy="181" rx="430" ry="250" fill="url(#to-nebula)"/>
+<g fill="none" stroke="url(#to-streak)"><ellipse cx="858" cy="199" rx="382" ry="104" stroke-width="7" transform="rotate(-14 858 199)" opacity=".73"/><ellipse cx="856" cy="202" rx="450" ry="85" stroke-width="2.5" transform="rotate(12 856 202)" opacity=".67"/><ellipse cx="856" cy="202" rx="225" ry="166" stroke-width="3" transform="rotate(-34 856 202)" opacity=".62"/></g>
+<g opacity=".5" stroke="#7ad5fd" fill="none"><path d="M270 292H1280M430 239H1310M595 184H1340" stroke-width="1"/><path d="M490 320V72M650 320V70M810 320V60M970 320V50M1130 320V65" stroke-dasharray="4 8"/></g>
+<g stroke-linecap="round" fill="none"><path d="M480 290Q550 286 588 246T700 241T824 157T948 172T1050 112T1220 89" stroke="#795af8" stroke-width="10" opacity=".28"/><path d="M480 290Q550 286 588 246T700 241T824 157T948 172T1050 112T1220 89" stroke="url(#to-streak)" stroke-width="3"/><path d="M480 311L588 305L700 265L824 245L948 213L1050 238L1220 142" stroke="#6ad5fa" stroke-opacity=".6" stroke-width="3"/></g>
+<g fill="#e7d8ff" stroke="#9edaff" stroke-width="3"><circle cx="700" cy="241" r="5"/><circle cx="824" cy="157" r="6"/><circle cx="1050" cy="112" r="6"/></g><circle cx="850" cy="195" r="24" fill="#ae8bff" opacity=".3"/><circle cx="850" cy="195" r="8" fill="#d8f0ff"/>
+</svg></div><div class="tw-scene tw-scene--capital"><svg class="tw-scene-image" viewBox="0 0 1440 380" preserveAspectRatio="xMidYMid slice" role="presentation" focusable="false" xmlns="http://www.w3.org/2000/svg"><defs>
+<linearGradient id="tc-back" x2="0" y2="1"><stop stop-color="#030e19"/><stop offset=".65" stop-color="#123144"/><stop offset="1" stop-color="#04131c"/></linearGradient><linearGradient id="tc-tower" x2="1" y2=".15"><stop stop-color="#0b1824"/><stop offset=".5" stop-color="#193c50"/><stop offset="1" stop-color="#081821"/></linearGradient><linearGradient id="tc-flow" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#0ca29a" stop-opacity="0"/><stop offset=".28" stop-color="#42dbff"/><stop offset=".62" stop-color="#68fff3"/><stop offset="1" stop-color="#48b6ee" stop-opacity="0"/></linearGradient><pattern id="tc-window" width="28" height="24" patternUnits="userSpaceOnUse"><path d="M5 4H21V15H5Z" stroke="#76cfee" stroke-opacity=".22" fill="#113244" fill-opacity=".3"/></pattern></defs>
+<rect width="1440" height="380" fill="url(#tc-back)"/><path d="M610 0H1440L980 380H0Z" fill="#0d2331" opacity=".55"/>
+<path d="M0 0H435L565 380H0Z" fill="url(#tc-tower)" stroke="#38667b" stroke-width="6"/><path d="M1050 0H1440V380H980Z" fill="url(#tc-tower)" stroke="#38667b" stroke-width="6"/>
+<path d="M80 0H312L460 380H0Z" fill="url(#tc-window)" opacity=".9"/><path d="M1148 0H1374L1440 380H1020Z" fill="url(#tc-window)" opacity=".92"/>
+<path d="M0 375L782 150M1440 375L782 150M0 300L782 150M1440 300L782 150M0 180L782 150M1440 180L782 150" stroke="#79b9c1" stroke-opacity=".3" stroke-width="2"/>
+<g stroke="#74b7c7" stroke-opacity=".22" stroke-width="2"><path d="M564 0V380M1060 0V380M680 0V380M920 0V380"/><path d="M440 110H1140M540 215H1040"/></g>
+<g class="tw-electric-flow" fill="none" stroke-linecap="round"><path d="M240 380C370 310 550 322 650 255C750 183 860 290 970 190C1050 135 1140 90 1320 40" stroke="#34adca" opacity=".18" stroke-width="30"/><path d="M240 380C370 310 550 322 650 255C750 183 860 290 970 190C1050 135 1140 90 1320 40" stroke="url(#tc-flow)" stroke-width="7"/><path d="M310 380C435 350 620 330 738 280C824 244 870 200 1008 180C1110 150 1180 110 1340 70" stroke="#77fff1" stroke-opacity=".73" stroke-width="3"/></g>
+<circle cx="782" cy="150" r="49" fill="#51fcdb" opacity=".12"/><circle cx="782" cy="150" r="11" fill="#bafdeb"/><path d="M0 371H1440" stroke="#64e1c7" stroke-opacity=".4" stroke-width="3"/>
+</svg></div><div class="tw-scene tw-scene--ledger"><svg class="tw-scene-image" viewBox="0 0 1440 380" preserveAspectRatio="xMidYMid slice" role="presentation" focusable="false" xmlns="http://www.w3.org/2000/svg"><defs>
+<linearGradient id="tl-sky" x2="0" y2="1"><stop stop-color="#1e302c"/><stop offset=".48" stop-color="#456d58"/><stop offset="1" stop-color="#0b241c"/></linearGradient><radialGradient id="tl-sun"><stop stop-color="#f3e7af" stop-opacity=".9"/><stop offset=".35" stop-color="#dcdaa1" stop-opacity=".42"/><stop offset="1" stop-color="#a2e2ac" stop-opacity="0"/></radialGradient><linearGradient id="tl-arch" x2="1" y2="1"><stop stop-color="#d1bb81"/><stop offset=".48" stop-color="#365a4c"/><stop offset="1" stop-color="#b9b987"/></linearGradient><linearGradient id="tl-stream" x2=".7" y2="1"><stop stop-color="#eefcda"/><stop offset="1" stop-color="#1f7773"/></linearGradient></defs>
+<rect width="1440" height="380" fill="url(#tl-sky)"/><ellipse cx="975" cy="35" rx="435" ry="310" fill="url(#tl-sun)"/>
+<g opacity=".65" fill="none" stroke="url(#tl-arch)" stroke-width="7"><path d="M220 380V130Q690 -150 1290 135V380"/><path d="M420 380V110Q750 -70 1130 105V380"/><path d="M625 380V65Q820 -5 950 75V380"/><path d="M200 172H1360M200 263H1360"/><path d="M315 0L360 380M1310 0L1200 380"/></g>
+<g fill="#112b1e" opacity=".75"><path d="M190 380Q120 215 220 134Q155 245 290 380Z"/><path d="M360 380Q335 200 465 110Q400 274 535 380Z"/><path d="M1250 380Q1330 204 1190 118Q1240 267 1130 380Z"/></g>
+<g fill="#77b982" stroke="#c8d4a6" stroke-opacity=".35" stroke-width="2"><path d="M510 380Q440 300 470 230Q530 270 510 380Z"/><path d="M555 380Q540 265 610 207Q630 302 555 380Z"/><path d="M1120 380Q1040 294 1060 210Q1120 267 1120 380Z"/><path d="M1160 380Q1165 252 1245 195Q1255 299 1160 380Z"/><path d="M1370 380Q1310 267 1360 195Q1430 294 1370 380Z"/></g>
+<path d="M620 380Q750 340 800 294Q830 259 920 235Q960 226 1040 197" fill="none" stroke="#cde5c8" stroke-opacity=".32" stroke-width="56"/><path d="M620 380Q750 340 800 294Q830 259 920 235Q960 226 1040 197" fill="none" stroke="url(#tl-stream)" stroke-width="10" opacity=".78"/>
+<g fill="#e4e8b4" opacity=".8"><circle cx="885" cy="88" r="3"/><circle cx="966" cy="136" r="2"/><circle cx="1068" cy="77" r="2"/><circle cx="752" cy="158" r="2"/></g>
+</svg></div></div>
+  <div class="tw-stage-shade" aria-hidden="true"></div>
+  <div class="tw-stage-layout">
+    <div class="tw-stage-identity"><span class="tw-stage-parent">TAGJ / GOOD JAWN FINANCIAL</span><strong class="tw-stage-slogan">Good Jawn,<br>Good Money.</strong><span class="tw-stage-strap" id="twStageStrap">THIS WEEK · PLAN / MANAGE / GROW</span><span class="tw-stage-feature" id="twStageFeature">Own your week.</span></div>
+    <span class="tw-stage-gj" aria-hidden="true">GJ<span>.</span></span>
+    <span class="tw-stage-world" aria-hidden="true"></span><a class="tw-stage-enter" id="twStageEnter" href="#details" aria-label="Explore This Week financial worlds"><span id="twStageEnterLabel">Explore worlds</span> <span aria-hidden="true">↗</span></a>
+  </div>
+  <div class="tw-stage-laser" aria-hidden="true"></div>
+</section><nav class="tw-route-shortcuts" id="twRouteShortcuts" aria-label="Related tools" hidden></nav><main id="app" tabindex="-1">
   <div class="fade-stack" id="staticHomeFallback">
     <section class="zen-home">
       <div class="zen-topline"><span class="zen-week">Current budgeting week</span></div>
@@ -5292,7 +6538,7 @@ body[data-motion="reduced"] .state-spinner{
     </section>
   </div>
   <noscript><div class="inline-note" style="margin:16px"><span>ⓘ</span><span>JavaScript is disabled in this viewer, so this page is showing the full static Home preview.</span></div></noscript>
-</main><nav class="bottom-nav" aria-label="Primary"><a class="nav-link active" data-route="home" href="#home"><span class="nav-icon">⌂</span><span>Home</span></a><a class="nav-link" data-route="log" href="#log"><span class="nav-icon">＋</span><span>Add Spend</span></a><a class="nav-link" data-route="details" href="#details"><span class="nav-icon">≣</span><span>Details</span></a><a class="nav-link" data-route="plan" href="#setup"><span class="nav-icon">⚙</span><span>Plan</span></a></nav><div class="finance-dock" id="financeDock"><div class="dock-state"><span class="dock-led"></span><div class="dock-copy"><strong id="dockTitle">Weekly plan active</strong><span id="dockSub">Local financial workspace</span></div></div><span class="dock-secure">Private</span></div></div><script>// This Week - browser-persistent preview runtime.
+</main><aside class="tw-advanced-zone" aria-label="Optional advanced functionality"><details><summary>Advanced tools and integrations</summary><div class="tw-advanced-body"><p>Optional workspace for technical tools. Your everyday budgeting plan remains separate from any money-provider sandbox.</p><nav class="tw-advanced-links" aria-label="Advanced tools"><a href="#qa">Device diagnostics <span aria-hidden="true">›</span></a><a href="#performance">Performance <span aria-hidden="true">›</span></a><a href="#data-model">Data model <span aria-hidden="true">›</span></a><a href="#privacy">Privacy & backup <span aria-hidden="true">›</span></a><a href="#analytics">Local insights <span aria-hidden="true">›</span></a><a href="#money">Money infrastructure <span aria-hidden="true">›</span></a><a href="#future">Architecture guide <span aria-hidden="true">›</span></a><a href="#preferences">Display preferences <span aria-hidden="true">›</span></a></nav><p class="tw-advanced-note">Advanced tools are opt-in navigation, not an authorization bypass. Money execution remains restricted by the existing server and release controls.</p></div></details></aside><nav class="bottom-nav" aria-label="Primary"><a class="nav-link active" data-route="home" href="#home"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" aria-hidden="true"><path d="m3.2 11 8.8-7.5 8.8 7.5v8.5a1 1 0 0 1-1 1H4.2a1 1 0 0 1-1-1Z"/><path d="M9 20.5v-7h6v7"/></svg></span><span>Home</span></a><a class="nav-link" data-route="log" href="#log"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M7 12h10"/></svg></span><span>Add Spend</span></a><a class="nav-link" data-route="details" href="#details"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.4 8.8 3.2 6.2 4.5-7.5-1.7 8.9Z"/></svg></span><span>Explore</span></a><a class="nav-link" data-route="plan" href="#setup"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="15" rx="2"/><path d="M7.5 3.3V8M16.5 3.3V8M3.5 10.2h17M8 15l2.4 2.4 5.5-5.5"/></svg></span><span>Plan</span></a><a class="nav-link" data-route="assist" href="#assist"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 2l2.1 7.9L22 12l-7.9 2.1L12 22l-2.1-7.9L2 12l7.9-2.1Z"/><circle cx="12" cy="12" r="2"/></svg></span><span>Assist</span></a></nav><div class="finance-dock" id="financeDock"><div class="dock-state"><span class="dock-led"></span><div class="dock-copy"><strong id="dockTitle">Weekly plan active</strong><span id="dockSub">Local financial workspace</span></div></div><span class="dock-secure">Private</span></div></div><script>// This Week - browser-persistent preview runtime.
 // Data is stored in localStorage so the Vercel preview stays usable without a server database.
 
 const USER_ID_KEY = "thisweek.userId";
@@ -5315,24 +6561,115 @@ function clone(v){
 function nowIso() { return new Date().toISOString(); }
 
 const runtimePerf={revision:0,route:{},cacheHits:0,cacheMisses:0,longTasks:0,storageWrites:0,storageWriteSkips:0};
-const runtimeStorageHealth={available:true,lastError:null,lastFailureAt:null};
+const runtimeStorageHealth={available:true,readable:true,writable:true,lastError:null,lastFailureAt:null};
 let volatileUserId=null;
 let volatileState=null;
 let volatileStateSerialized=null;
 let lastPersistedStateSerialized=null;
+let persistedStateQuarantine=null;
+let blockedPlanDraftSerialized=null;
+
+function quarantinePlanStorage(reason,kind='read'){
+  persistedStateQuarantine=persistedStateQuarantine||reason;
+  runtimeStorageHealth.available=false;
+  runtimeStorageHealth.lastError=persistedStateQuarantine;
+  runtimeStorageHealth.lastFailureAt=nowIso();
+  showStoragePersistenceWarning(kind);
+}
+function handleExternalPlanStorageChange(event){
+  if((event.key!==STATE_KEY&&event.key!==null)||
+     (event.storageArea&&event.storageArea!==localStorage))return;
+  let latest;
+  try{latest=localStorage.getItem(STATE_KEY);}
+  catch(e){quarantinePlanStorage(e?.message||'Stored Plan became unreadable');return;}
+  if(latest!==lastPersistedStateSerialized)
+    quarantinePlanStorage('Another tab changed your financial Plan. This tab cannot safely save until reviewed.','conflict');
+}
+if(typeof window!=='undefined'&&typeof window.addEventListener==='function')
+  window.addEventListener('storage',handleExternalPlanStorageChange);
 
 function noteCache(hit){if(hit)runtimePerf.cacheHits++;else runtimePerf.cacheMisses++;}
 function safeLocalStorageGet(key){
-  try{const v=localStorage.getItem(key);runtimeStorageHealth.available=true;return v;}
-  catch(e){runtimeStorageHealth.available=false;runtimeStorageHealth.lastError=e?.message||'Storage unavailable';runtimeStorageHealth.lastFailureAt=nowIso();return null;}
+  try{
+    const v=localStorage.getItem(key);
+    runtimeStorageHealth.readable=true;
+    runtimeStorageHealth.available=runtimeStorageHealth.writable&&!persistedStateQuarantine;
+    return v;
+  }catch(e){
+    runtimeStorageHealth.readable=false;
+    runtimeStorageHealth.available=false;
+    runtimeStorageHealth.lastError=e?.message||'Storage unavailable';
+    runtimeStorageHealth.lastFailureAt=nowIso();
+    if(key===STATE_KEY)quarantinePlanStorage('Saved financial Plan is unreadable: '+(e?.message||'storage access failed'));
+    return null;
+  }
 }
 function safeLocalStorageSet(key,value){
-  try{localStorage.setItem(key,value);runtimeStorageHealth.available=true;runtimePerf.storageWrites++;return true;}
-  catch(e){runtimeStorageHealth.available=false;runtimeStorageHealth.lastError=e?.message||'Storage write failed';runtimeStorageHealth.lastFailureAt=nowIso();return false;}
+  try{
+    localStorage.setItem(key,value);
+    runtimeStorageHealth.writable=true;
+    runtimeStorageHealth.available=runtimeStorageHealth.readable&&!persistedStateQuarantine;
+    runtimePerf.storageWrites++;
+    return true;
+  }catch(e){
+    runtimeStorageHealth.writable=false;
+    runtimeStorageHealth.available=false;
+    runtimeStorageHealth.lastError=e?.message||'Storage write failed';
+    runtimeStorageHealth.lastFailureAt=nowIso();
+    return false;
+  }
 }
 function safeLocalStorageRemove(key){
-  try{localStorage.removeItem(key);runtimeStorageHealth.available=true;return true;}
+  try{localStorage.removeItem(key);
+    runtimeStorageHealth.available=runtimeStorageHealth.readable&&runtimeStorageHealth.writable&&!persistedStateQuarantine;
+    return true;}
   catch(e){runtimeStorageHealth.available=false;runtimeStorageHealth.lastError=e?.message||'Storage remove failed';runtimeStorageHealth.lastFailureAt=nowIso();return false;}
+}
+function appendPlanRescueControl(panel,message){
+  if(!(volatileStateSerialized||blockedPlanDraftSerialized)||
+     Array.from(panel.children||[]).some(child=>child.id==='thisweek-volatile-rescue'))return;
+  const rescue=document.createElement('button');
+  rescue.id='thisweek-volatile-rescue';
+  rescue.type='button';
+  rescue.textContent='Save in-memory Plan for manual recovery';
+  rescue.style.cssText='display:block;min-height:44px;width:100%;margin-top:7px;padding:8px 12px;background:#ffffff;color:#3b1720;border:1px solid #ffffff;border-radius:9px;font:700 14px/1.3 system-ui,sans-serif;cursor:pointer';
+  rescue.addEventListener?.('click',()=>{
+    try{downloadVolatilePlanRescue();}
+    catch(e){message.textContent='Recovery file could not be created: '+(e?.message||'Unknown error')+'. Keep this tab open and record your edits manually.';}
+  });
+  panel.append(rescue);
+}
+function showStoragePersistenceWarning(kind='write'){
+  // Display only after an actual failed write. A successful read does not establish durability.
+  if(typeof document==='undefined'||!document.body)return;
+  const warning=kind==='conflict'
+    ? 'Another This Week tab changed your Plan. This tab cannot safely save over it. A raw backup contains only previously saved data, not unsaved edits. Note your unsaved edits separately before reloading.'
+    : kind==='read'
+    ? 'Stored Plan data cannot be read safely (or requires a newer version), and saves are blocked to avoid overwriting it. Any backup may be incomplete; inspect readable data before a reset.'
+    : 'Your latest Plan change could not be saved to this browser and may disappear after a reload. A raw backup contains only previously saved data; note this unsaved change separately.';
+  const existing=document.getElementById('thisweek-storage-failure');
+  if(existing){
+    if(existing.children&&existing.children[0])existing.children[0].textContent=warning;
+    appendPlanRescueControl(existing,existing.children?.[0]);
+    return;
+  }
+  const panel=document.createElement('aside');
+  panel.id='thisweek-storage-failure';
+  panel.setAttribute('role','alert');
+  panel.setAttribute('aria-label','This Week storage failure');
+  panel.style.cssText='position:fixed;top:calc(12px + env(safe-area-inset-top));left:12px;right:12px;max-width:560px;margin:0 auto;z-index:9999;background:#3b1720;color:#fff2f4;border:2px solid #fda4af;border-radius:14px;padding:13px 15px;font:600 14px/1.45 system-ui,sans-serif;box-shadow:0 10px 35px rgba(0,0,0,.45)';
+  const message=document.createElement('div');
+  message.textContent=warning;
+  const link=document.createElement('a');
+  link.href='#privacy';
+  link.textContent='Open Privacy & Local Data to export';
+  link.style.cssText='display:inline-block;margin-top:8px;color:#ffffff;text-decoration:underline;min-height:40px;line-height:40px';
+  panel.append(message,link);
+  appendPlanRescueControl(panel,message);
+  document.body.appendChild(panel);
+}
+function clearStoragePersistenceWarning(){
+  if(typeof document!=='undefined')document.getElementById('thisweek-storage-failure')?.remove();
 }
 function inferCoreSchemaVersion(state){
   const explicit=Number(state?.schemaVersion||0);
@@ -5407,28 +6744,76 @@ function readState(){
   const raw=safeLocalStorageGet(STATE_KEY);
   if(!raw)return volatileState?clone(volatileState):null;
   try{
-    const parsed=normalizeRuntimeState(JSON.parse(raw));
+    const source=JSON.parse(raw);
+    if(!source||typeof source!=='object'||Array.isArray(source))throw new Error('Stored Plan is not a valid object');
+    if(inferCoreSchemaVersion(source)>CORE_SCHEMA_VERSION)throw new Error('Stored Plan requires a newer schema');
+    const parsed=normalizeRuntimeState(source);
+    if(!parsed||!parsed.config||typeof parsed.config!=='object')throw new Error('Stored Plan configuration is missing');
     volatileState=clone(parsed);volatileStateSerialized=JSON.stringify(parsed);lastPersistedStateSerialized=raw;
     return parsed;
-  }catch{return volatileState?clone(volatileState):null;}
+  }catch(e){
+    quarantinePlanStorage(e?.message||'Stored Plan is unreadable');
+    return volatileState?clone(volatileState):null;
+  }
 }
 function writeState(state){
+  if(persistedStateQuarantine){
+    // A blocked edit may be newer than the last volatile copy. Preserve it only
+    // as separately labeled review evidence, never as the authoritative Plan.
+    blockedPlanDraftSerialized=null;
+    try{
+      const candidate=JSON.stringify(state);
+      if(typeof candidate==='string'&&candidate.length<=4*1024*1024)
+        blockedPlanDraftSerialized=candidate;
+    }catch{}
+    runtimeStorageHealth.available=false;
+    showStoragePersistenceWarning(persistedStateQuarantine.startsWith('Another tab')?'conflict':'read');
+    return state;
+  }
   const normalized=normalizeRuntimeState(state);
   let serialized;
-  try{serialized=JSON.stringify(normalized);}catch{return state;}
+  try{serialized=JSON.stringify(normalized);}catch(e){
+    runtimeStorageHealth.available=false;
+    runtimeStorageHealth.lastError=e?.message||'State serialization failed';
+    runtimeStorageHealth.lastFailureAt=nowIso();
+    showStoragePersistenceWarning();
+    return state;
+  }
   const changed=serialized!==volatileStateSerialized;
   volatileStateSerialized=serialized;
   try{volatileState=JSON.parse(serialized);}catch{volatileState=clone(normalized);}
   if(changed)runtimePerf.revision++;
   if(serialized!==lastPersistedStateSerialized){
-    if(safeLocalStorageSet(STATE_KEY,serialized))lastPersistedStateSerialized=serialized;
+    // Optimistic conflict check; localStorage does not provide atomic compare-and-swap.
+    let live;
+    try{
+      live=localStorage.getItem(STATE_KEY);
+      runtimeStorageHealth.readable=true;
+    }catch(e){
+      quarantinePlanStorage('Cannot verify the current stored Plan: '+(e?.message||'storage access failed'));
+      return state;
+    }
+    if(live!==lastPersistedStateSerialized){
+      quarantinePlanStorage('Another tab changed your financial Plan. This tab cannot safely save until reviewed.','conflict');
+      return state;
+    }
+    if(safeLocalStorageSet(STATE_KEY,serialized)){
+      lastPersistedStateSerialized=serialized;
+      clearStoragePersistenceWarning();
+    }else showStoragePersistenceWarning();
   }else runtimePerf.storageWriteSkips++;
   return state;
 }
 function clearState(){
-  volatileState=null;volatileStateSerialized=null;lastPersistedStateSerialized=null;volatileUserId=null;
-  runtimePerf.revision++;
-  safeLocalStorageRemove(STATE_KEY);safeLocalStorageRemove(USER_ID_KEY);
+  const stateRemoved=safeLocalStorageRemove(STATE_KEY),userRemoved=safeLocalStorageRemove(USER_ID_KEY);
+  if(stateRemoved&&userRemoved){
+    volatileState=null;volatileStateSerialized=null;blockedPlanDraftSerialized=null;
+    lastPersistedStateSerialized=null;volatileUserId=null;
+    runtimePerf.revision++;
+    persistedStateQuarantine=null;
+    runtimeStorageHealth.available=runtimeStorageHealth.readable&&runtimeStorageHealth.writable;
+    clearStoragePersistenceWarning();
+  }else quarantinePlanStorage('Local Plan reset was incomplete. Financial data remains unverified.');
 }
 
 function formatCents(cents) {
@@ -5900,7 +7285,7 @@ function nav(routeName){
   const detailRoutes=['insights','reset','bills','essentials','lifestyle','savings','history','scenario','connections','money','direct-deposit','bill-pay','cards','future','qa','performance','data-model','privacy','analytics'];
   const activeRoute=detailRoutes.includes(routeName)?'details':routeName==='setup'||routeName==='preferences'?'plan':routeName==='precheck'?'log':routeName;
   document.body.dataset.route=activeRoute;
-  const index={home:0,log:1,details:2,plan:3}[activeRoute]??0;
+  const index={home:0,log:1,details:2,plan:3,assist:4}[activeRoute]??0;
   const bottomNav=document.querySelector('.bottom-nav');
   if(bottomNav) bottomNav.style.setProperty('--nav-index',String(index));
   navLinks.forEach(a=>{const active=a.dataset.route===activeRoute;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
@@ -5932,7 +7317,7 @@ function emptyState(title,message='',actionHtml=''){return systemState('empty',t
 function loadingState(title='Loading…',message='Preparing this view.'){return '<div class="state-page-wrap">'+systemState('loading',title,message,'','page')+'</div>';}
 function pageState(kind,title,message='',actionHtml=''){return '<div class="state-page-wrap">'+systemState(kind,title,message,actionHtml,'page')+'</div>';}
 function routeDisplayName(r){
-  return ({home:'Home',log:'Add Spending',details:'Details',insights:'Advanced Insights',bills:'Bills Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex',savings:'Savings Goal Studio',precheck:'Can I Spend This?',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data',money:'Money Center','direct-deposit':'Direct Deposit','bill-pay':'Bill Pay',cards:'Category Cards',preferences:'Presentation',qa:'Device QA',performance:'Performance','data-model':'Data Model',privacy:'Privacy',analytics:'Usage Insights',future:'System Architecture',reset:'New Week',setup:'Plan'})[r]||'This Week';
+  return ({home:'Home',log:'Add Spending',details:'Details',assist:'Good Jawn Guide',capital:'The Capital',insights:'Advanced Insights',bills:'Bills Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex',savings:'Savings Goal Studio',precheck:'Can I Spend This?',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data',money:'Money Center','direct-deposit':'Direct Deposit','bill-pay':'Bill Pay',cards:'Category Cards',preferences:'Presentation',qa:'Device QA',performance:'Performance','data-model':'Data Model',privacy:'Privacy',analytics:'Usage Insights',future:'System Architecture',reset:'New Week',setup:'Plan'})[r]||'This Week';
 }
 function errBox(msg){ return msg?inlineState('error','Needs attention',msg):''; }
 
@@ -6809,34 +8194,318 @@ function runPhase14TrustAudit(){
 function confirmSensitiveExport(label){
   return confirmHighImpactMutation(label+' can contain sensitive financial information and will be saved outside This Week. Continue?');
 }
+const RAW_BACKUP_EXPORT_KEYS=Object.freeze([
+  'thisweek.userId','thisweek.state.v2','thisweek.uiPrefs.v1',
+  'thisweek.powerPrefs.v1','thisweek.savingsGoals.v1','thisweek.connectedData.v1',
+  'thisweek.recommendations.v1','thisweek.scenarioDraft.v1',
+  'thisweek.analytics.v1','thisweek.flexCaps.v1','thisweek.precheckHint.v1',
+  'thisweek.finEvent.v1'
+]);
+function isRawBackupSafeLocalKey(key){
+  // Exact allowlist prevents an unrelated or future credential-bearing This Week key from being exported.
+  return RAW_BACKUP_EXPORT_KEYS.includes(key);
+}
+function inspectRawBackupExportEntry(key,value){
+  if(typeof value!=='string')throw new Error('Cannot safely export unreadable local data: '+key+'.');
+  if(key==='thisweek.userId'||key==='thisweek.precheckHint.v1'||key==='thisweek.finEvent.v1')return value;
+  try{
+    const parsed=JSON.parse(value);
+    if(parsed&&typeof parsed==='object'&&scanObjectForSensitiveFieldNames(parsed).length)
+      throw new Error('Potential credential field found in '+key+'. Remove credentials from local state before exporting.');
+  }catch(e){
+    if(e instanceof SyntaxError && key==='thisweek.state.v2'){
+      // Preserve a damaged core Plan for manual recovery, but never label it as a valid restorable Plan.
+      return value;
+    }
+    throw e;
+  }
+  return value;
+}
 function downloadRawLocalDataExport(){
-  const inventory=localDataInventory(),payload={
+  const inventory=localDataInventory();
+  if(inventory.localAvailable===false)throw new Error('Browser storage cannot be inspected. No backup file was created.');
+  const safeLocal=inventory.local.filter(x=>isRawBackupSafeLocalKey(x.key));
+  const localValues={};
+  for(const item of safeLocal){
+    const value=safeLocalStorageGet(item.key);
+    localValues[item.key]=inspectRawBackupExportEntry(item.key,value);
+  }
+  const rawPlan=localValues['thisweek.state.v2'];
+  let validCorePlan=false;
+  if(rawPlan){
+    try{const p=JSON.parse(rawPlan);validCorePlan=!!p?.config&&typeof p?.userId==='string';}catch{}
+  }
+  const payload={
     schema:'thisweek.local-data-export',
     schemaVersion:1,
     exportedAt:nowIso(),
     warning:'Sensitive financial data. This export is not uploaded by This Week.',
-    localStorage:Object.fromEntries(inventory.local.map(x=>[x.key,safeLocalStorageGet(x.key)])),
-    sessionStorage:Object.fromEntries(inventory.session.map(x=>{let v=null;try{v=sessionStorage.getItem(x.key);}catch{}return [x.key,v];}))
+    localStorage:localValues,
+    // Session storage may contain bearer tokens, so never read its values into this backup.
+    sessionStorage:{},
+    dataHealth:validCorePlan?'core_plan_parsed':'core_plan_missing_or_unreadable',
+    excluded:{sessionStorageKeys:inventory.session.length,sensitiveLocalKeys:inventory.local.length-safeLocal.length}
   };
   const json=JSON.stringify(payload,null,2),blob=new Blob([json],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
   a.href=url;a.download='this-week-local-data-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();
   setTimeout(()=>URL.revokeObjectURL(url),1500);return json.length;
+}
+// Phase 45: voluntary in-memory Plan evidence for writes browser storage could not persist.
+// Not a restorable raw backup, auto-sync mechanism, or payment receipt.
+const VOLATILE_PLAN_RESCUE_MAX_BYTES=4*1024*1024;
+function buildVolatilePlanRescue(){
+  const source=blockedPlanDraftSerialized||volatileStateSerialized;
+  if(!source)throw new Error('No in-memory Plan is available.');
+  if(source.length>VOLATILE_PLAN_RESCUE_MAX_BYTES)
+    throw new Error('In-memory Plan is larger than the 4 MB emergency recovery limit.');
+  let state;
+  try{state=JSON.parse(source);}
+  catch{throw new Error('In-memory Plan cannot be safely parsed.');}
+  if(!state||typeof state!=='object'||Array.isArray(state)||
+     typeof state.userId!=='string'||!state.userId||
+     !state.config||typeof state.config!=='object'||Array.isArray(state.config))
+    throw new Error('In-memory Plan has no valid user or Plan configuration.');
+  if(scanObjectForSensitiveFieldNames(state).length)
+    throw new Error('Possible credentials detected inside in-memory Plan. Cannot export automatically.');
+  const envelope={
+    schema:'thisweek.volatile-plan-review.v1',
+    schemaVersion:1,
+    capturedAt:nowIso(),
+    status:'unverified_in_memory_only',
+    origin:blockedPlanDraftSerialized?'blocked_conflict_draft':'volatile_unsaved_change',
+    warning:'Manual review only. This is NOT a restorable raw backup, NOT proof of a saved transaction, and is NOT uploaded. It may conflict with newer edits in another tab.',
+    state
+  };
+  const json=JSON.stringify(envelope,null,2);
+  const bytes=typeof TextEncoder==='function'
+    ? new TextEncoder().encode(json).length
+    : json.length*2;
+  if(bytes>VOLATILE_PLAN_RESCUE_MAX_BYTES)
+    throw new Error('Emergency Plan JSON exceeds the 4 MB recovery limit.');
+  return {json,bytes,schema:envelope.schema};
+}
+function downloadVolatilePlanRescue(){
+  const recovery=buildVolatilePlanRescue();
+  if(!confirmSensitiveExport('In-memory Plan recovery file (manual review only)'))return false;
+  const blob=new Blob([recovery.json],{type:'application/json;charset=utf-8'});
+  const objectUrl=URL.createObjectURL(blob),anchor=document.createElement('a');
+  try{
+    anchor.href=objectUrl;
+    anchor.download='this-week-UNSAVED-manual-review-'+nowIso().slice(0,10)+'.json';
+    document.body.appendChild(anchor);
+    anchor.click();
+  }finally{
+    anchor.remove();
+    setTimeout(()=>URL.revokeObjectURL(objectUrl),60_000);
+  }
+  return recovery.bytes;
+}
+// Phase 37: exact-key raw Plan backup restore. This is NOT portable-schema import or cloud sync.
+const RAW_RESTORE_MAX_BYTES=4*1024*1024;
+const RAW_RESTORE_KEYS=RAW_BACKUP_EXPORT_KEYS;
+// Count exact UTF-8 bytes while avoiding a multi-megabyte temporary Uint8Array
+// on modern Safari. The scratch buffer is reused across allowlisted entries.
+function rawBackupUtf8Bytes(text,encoder,remaining,scratch){
+  if(text.length>remaining)return remaining+1; // UTF-8 is never shorter than UTF-16 code-unit count.
+  if(scratch){
+    let offset=0,total=0;
+    // Bound each substring too: passing the entire remaining multi-megabyte
+    // suffix to encodeInto() leaves substring allocation/copying behavior to
+    // the browser engine, which is especially risky on memory-limited Safari.
+    // At most three UTF-8 bytes per UTF-16 code unit guarantees a complete
+    // chunk fits the reusable 16 KiB buffer without allocating a new buffer.
+    const maxUnits=Math.min(4096,Math.floor(scratch.length/3));
+    if(maxUnits<2)throw new Error('Browser cannot safely verify raw backup byte length.');
+    while(offset<text.length){
+      let end=Math.min(offset+maxUnits,text.length);
+      // Preserve UTF-16 surrogate pairs at the chunk boundary so emojis
+      // count as four UTF-8 bytes, not two replacement characters.
+      if(end<text.length){
+        const last=text.charCodeAt(end-1);
+        if(last>=0xD800&&last<=0xDBFF)end--;
+      }
+      const chunk=text.slice(offset,end);
+      const part=encoder.encodeInto(chunk,scratch);
+      if(!part||!Number.isInteger(part.read)||part.read!==chunk.length||
+         !Number.isInteger(part.written)||part.written<=0||part.written>scratch.length)
+        throw new Error('Browser cannot safely verify raw backup byte length.');
+      offset+=part.read;total+=part.written;
+      if(total>remaining)return remaining+1;
+    }
+    return total;
+  }
+  // Compatibility fallback when encodeInto is unavailable; never fall back to
+  // UTF-16 string length, which undercounts emoji/CJK backup contents.
+  if(typeof encoder.encode!=='function')
+    throw new Error('Browser cannot safely verify raw backup byte length.');
+  return encoder.encode(text).byteLength;
+}
+let rawRestoreInProgress=false;
+function validatedRawLocalBackup(source){
+  if(!source||typeof source!=='object'||Array.isArray(source))throw new Error('Backup must be a JSON object.');
+  if(source.schema!=='thisweek.local-data-export'||source.schemaVersion!==1)
+    throw new Error('This is not a supported raw This Week backup. Portable snapshots cannot be directly restored.');
+  if(!source.localStorage||typeof source.localStorage!=='object'||Array.isArray(source.localStorage))
+    throw new Error('Backup has no localStorage data.');
+  if(source.sessionStorage&&(typeof source.sessionStorage!=='object'||Array.isArray(source.sessionStorage)||Object.keys(source.sessionStorage).length!==0))
+    throw new Error('Backup contains session data and cannot be restored.');
+  const entries=Object.entries(source.localStorage);
+  if(!entries.length||entries.length>RAW_RESTORE_KEYS.length)
+    throw new Error('Backup contains an invalid number of keys.');
+  const allowed=new Set(RAW_RESTORE_KEYS);
+  // JavaScript string length counts UTF-16 code units, not browser storage
+  // bytes. A backup of emoji/CJK text can be much larger than its length.
+  // Fail closed rather than silently bypass the 4 MB restoration safety cap.
+  if(typeof TextEncoder!=='function')
+    throw new Error('Browser cannot safely verify raw backup byte length.');
+  const byteEncoder=new TextEncoder();
+  const byteScratch=typeof byteEncoder.encodeInto==='function'?new Uint8Array(16*1024):null;
+  let totalBytes=0;
+  for(const [key,value] of entries){
+    if(!allowed.has(key)||!isRawBackupSafeLocalKey(key))
+      throw new Error('Backup contains an unknown or sensitive storage key.');
+    if(typeof value!=='string')throw new Error('Backup contains a non-string storage value.');
+    totalBytes+=rawBackupUtf8Bytes(key,byteEncoder,RAW_RESTORE_MAX_BYTES-totalBytes,byteScratch);
+    if(totalBytes>RAW_RESTORE_MAX_BYTES)
+      throw new Error('Backup contents exceed the 4 MB restoration limit.');
+    totalBytes+=rawBackupUtf8Bytes(value,byteEncoder,RAW_RESTORE_MAX_BYTES-totalBytes,byteScratch);
+    if(totalBytes>RAW_RESTORE_MAX_BYTES)
+      throw new Error('Backup contents exceed the 4 MB restoration limit.');
+  }
+  const rawState=source.localStorage[STATE_KEY];
+  if(typeof rawState!=='string')throw new Error('Backup is missing the core financial Plan.');
+  let state;
+  try{state=JSON.parse(rawState)}catch{throw new Error('Backup Plan JSON is damaged.')}
+  if(!state||typeof state!=='object'||Array.isArray(state)||!state.config||typeof state.config!=='object'||Array.isArray(state.config))
+    throw new Error('Backup Plan configuration is invalid.');
+  const version=inferCoreSchemaVersion(state);
+  if(!Number.isInteger(version)||version<1||version>CORE_SCHEMA_VERSION)
+    throw new Error('Backup Plan uses an unsupported schema version.');
+  if(!state.userId||typeof state.userId!=='string'||state.userId.length>200||!state.config.payProfile||!Number.isSafeInteger(state.config.payProfile.netPayAmount)||state.config.payProfile.netPayAmount<0)
+    throw new Error('Backup Plan user or income data is invalid.');
+  if(source.localStorage[USER_ID_KEY]!==state.userId)
+    throw new Error('Backup user identifier does not match the Plan.');
+  for(const name of ['weeks','transactions','adjustments','importedExternalIds']){
+    if(state[name]!=null&&!Array.isArray(state[name]))throw new Error('Invalid Plan collection: '+name);
+  }
+  for(const name of ['bills','livingNeeds','discretionary']){
+    if(state.config[name]!=null&&!Array.isArray(state.config[name]))throw new Error('Invalid Plan category collection: '+name);
+  }
+  for(const row of state.transactions||[]){
+    if(!row||typeof row!=='object'||typeof row.weekId!=='string'||!Number.isSafeInteger(row.amount)||row.amount<0)
+      throw new Error('Backup has an invalid transaction amount or week.');
+  }
+  for(const week of state.weeks||[]){
+    if(!week||typeof week!=='object'||typeof week.id!=='string'||!Number.isFinite(Date.parse(week.start))||!Number.isFinite(Date.parse(week.end)))
+      throw new Error('Backup has invalid weekly history dates or identifiers.');
+    for(const balance of week.balances||[]){
+      if(!balance||!['allocated','spent','remaining'].every(k=>Number.isSafeInteger(balance[k])))
+        throw new Error('Backup has invalid category ledger amounts.');
+    }
+    for(const bill of week.billAllocations||[]){
+      if(!bill||!['weeklyRequired','contributed','requiredByToday'].every(k=>Number.isSafeInteger(bill[k])))
+        throw new Error('Backup has invalid bill-protection amounts.');
+    }
+  }
+  for(const category of [...(state.config.bills||[]),...(state.config.livingNeeds||[]),...(state.config.discretionary||[])]){
+    if(!category||typeof category!=='object')throw new Error('Backup has invalid category data.');
+    for(const k of ['amount','weeklyLimit','ebtOffset']){
+      if(category[k]!=null&&!Number.isSafeInteger(category[k]))throw new Error('Backup has invalid category money amounts.');
+    }
+  }
+  const unsafeFields=['__proto__','prototype','constructor'];
+  const inspect=(value,depth=0)=>{
+    if(depth>24)throw new Error('Backup is too deeply nested.');
+    if(Array.isArray(value)){for(const v of value)inspect(v,depth+1);return;}
+    if(!value||typeof value!=='object')return;
+    for(const [k,v] of Object.entries(value)){
+      if(unsafeFields.includes(k))throw new Error('Backup contains an unsafe object property.');
+      inspect(v,depth+1);
+    }
+  };
+  inspect(state);
+  for(const [key,value] of entries){
+    if(key===STATE_KEY||key===USER_ID_KEY)continue;
+    if(key===PRECHECK_HINT_KEY||key===FIN_EVENT_KEY)continue; // These short-lived UI hints may be plain text.
+    let parsed;
+    try{parsed=JSON.parse(value)}catch{throw new Error('Malformed JSON for optional backup data: '+key)}
+    inspect(parsed);
+    if(scanObjectForSensitiveFieldNames(parsed).length)throw new Error('Optional backup data contains possible credentials.');
+  }
+  if(scanObjectForSensitiveFieldNames(state).length)
+    throw new Error('Backup contains possible credentials and requires manual review.');
+  return {entries,summary:{schemaVersion:version,weekCount:(state.weeks||[]).length,transactionCount:(state.transactions||[]).length,keyCount:entries.length}};
+}
+function inspectRawBackupRestoreTarget(){
+  const local=inspectAppStorageNamespace(localStorage),session=inspectAppStorageNamespace(sessionStorage);
+  if(!local.available||!session.available)throw new Error('Browser storage cannot be inspected safely.');
+  if(local.keys.length||session.keys.length||persistedStateQuarantine)
+    throw new Error('Restore is allowed only into an empty This Week browser workspace. Export existing data first; do not merge Plans.');
+}
+function restoreVerifiedRawLocalBackup(source){
+  if(rawRestoreInProgress)throw new Error('A restore is already running.');
+  const validated=validatedRawLocalBackup(source);
+  inspectRawBackupRestoreTarget();
+  rawRestoreInProgress=true;
+  const added=[];
+  try{
+    // Restore the core Plan last, so a partial interrupted write does not activate it.
+    const entries=validated.entries.filter(([key])=>key!==STATE_KEY);
+    entries.push([STATE_KEY,source.localStorage[STATE_KEY]]);
+    for(const [key,value] of entries){
+      if(localStorage.getItem(key)!==null)throw new Error('A competing browser tab changed storage. Restore aborted.');
+      // Remember the exact written bytes, including a write followed by an exception.
+      // A later rollback must never erase a different value from another open tab.
+      added.push([key,value]);
+      localStorage.setItem(key,value);
+      if(localStorage.getItem(key)!==value)throw new Error('Browser failed to verify the restored key.');
+    }
+    return validated.summary;
+  }catch(e){
+    const rollbackErrors=[];
+    for(const [key,expectedRestoreValue] of added.reverse()){
+      try{
+        const current=localStorage.getItem(key);
+        if(current===null)continue; // Already removed by browser or another tab.
+        if(current!==expectedRestoreValue){
+          // A different, newer value now occupies this key. Do not delete it.
+          rollbackErrors.push(key);
+          continue;
+        }
+        // Best effort: localStorage does not support compare-and-delete atomically.
+        localStorage.removeItem(key);
+        if(localStorage.getItem(key)!==null)rollbackErrors.push(key);
+      }catch{rollbackErrors.push(key)}
+    }
+    if(rollbackErrors.length){
+      persistedStateQuarantine='Partial restore requires inspection';
+      showStoragePersistenceWarning('read');
+      throw new Error('Restore failed and rollback could not be verified. No further Plan writes are permitted.');
+    }
+    throw new Error('Restore safely aborted and rolled back: '+(e?.message||'storage failure'));
+  }finally{rawRestoreInProgress=false}
 }
 function clearAllThisWeekLocalData(){
   const beforeLocal=inspectAppStorageNamespace(localStorage),beforeSession=inspectAppStorageNamespace(sessionStorage);
   for(const key of beforeLocal.keys)safeLocalStorageRemove(key);
   for(const key of beforeSession.keys){try{sessionStorage.removeItem(key);}catch{}}
   const afterLocal=inspectAppStorageNamespace(localStorage),afterSession=inspectAppStorageNamespace(sessionStorage);
-  volatileUserId=null;volatileState=null;volatileStateSerialized=null;lastPersistedStateSerialized=null;
-  uiPrefsCache=null;connectedDataCache=null;savingsGoalsCache=null;savingsGoalsCacheRevision=-1;
-  historySummaryCache={revision:-1,data:null};connectionImportPreview=null;runtimePerf.revision++;
-  return {
+  const result={
     success:beforeLocal.available&&beforeSession.available&&afterLocal.available&&afterSession.available&&afterLocal.keys.length===0&&afterSession.keys.length===0,
     storageAccessible:beforeLocal.available&&beforeSession.available&&afterLocal.available&&afterSession.available,
     removed:beforeLocal.keys.length+beforeSession.keys.length-afterLocal.keys.length-afterSession.keys.length,
     remaining:[...afterLocal.keys,...afterSession.keys],
     errors:[beforeLocal.error,beforeSession.error,afterLocal.error,afterSession.error].filter(Boolean)
   };
+  if(result.success){
+    volatileUserId=null;volatileState=null;volatileStateSerialized=null;blockedPlanDraftSerialized=null;lastPersistedStateSerialized=null;
+    uiPrefsCache=null;connectedDataCache=null;savingsGoalsCache=null;savingsGoalsCacheRevision=-1;
+    historySummaryCache={revision:-1,data:null};connectionImportPreview=null;runtimePerf.revision++;
+    persistedStateQuarantine=null;
+    runtimeStorageHealth.available=runtimeStorageHealth.readable&&runtimeStorageHealth.writable;
+    clearStoragePersistenceWarning();
+  }else quarantinePlanStorage('Verified deletion failed. Keep this tab open and preserve any unsaved changes.');
+  return result;
 }
 function normalizeConnectedRecord(r={}){
   const reconciled=!!r.reconciled;
@@ -7953,7 +9622,7 @@ async function renderHome(){
   nav('home');
   const userId=getStoredUserId();
   if(!userId){
-    root.innerHTML=`<div class="zen-home"><div class="zen-topline"><span class="zen-week">Weekly planning</span></div><div class="zen-fallback"><div><strong>Build your weekly plan.</strong><span>Set pay, bills, savings, and spending lanes once. Home will reduce it to one simple weekly decision surface.</span><a class="btn btn-primary" href="#setup">Build Plan</a></div></div><a class="zen-command" href="#setup"><span class="zen-command-main"><span class="zen-command-icon">→</span><span class="zen-command-copy"><small>Start here</small><strong>Create your plan</strong></span></span><span class="zen-command-arrow">›</span></a></div>`;
+    root.innerHTML='<section class="tw-entry"><div class="tw-entry-crest" aria-hidden="true">GJ<span>.</span></div><span class="tw-entry-kicker">GOOD JAWN FINANCIAL · THIS WEEK</span><h2>Your money.<br>Your week.<br><em>Your move.</em></h2><p>Start with your income, your bills and a savings target. All the powerful features can come later.</p><div class="tw-entry-roadmap"><span>01 INCOME</span><span>02 BILLS</span><span>03 GROWTH</span></div><a class="tw-gold-button" href="#setup">Build My Week →</a><p class="tw-entry-privacy">Private weekly planning. No bank connection required.</p></section>';
     return;
   }
   try{
@@ -7970,7 +9639,7 @@ async function renderHome(){
     const sourceLabel=connected.total?`${connected.unreconciled} imported item${connected.unreconciled===1?'':'s'} to review`:'Data & imports';
     const worlds=phase2HomeWorlds(p,d,state),attentionOverride=phase2AttentionOverride(worlds,d,command);
     document.body.dataset.financialState=(command.severity==='critical'||command.severity==='important')?'attention':'stable';
-    root.innerHTML=`<div class="zen-home">
+    root.innerHTML=`<div class="zen-home tw-home-ready">
       <div class="zen-topline">
         <span class="zen-week">${weekWindow(p.week.start,p.week.end)}</span>
         <a class="zen-source" href="#connections" aria-label="${escapeHtml(sourceLabel)}" title="${escapeHtml(sourceLabel)}">
@@ -7979,6 +9648,7 @@ async function renderHome(){
         </a>
       </div>
 
+      <div class="tw-source-trust" role="note">Weekly planning figures, not a bank account balance. <a href="#privacy">Data &amp; privacy</a></div>
       <div class="zen-scene" id="zenScene" aria-label="Weekly financial overview. Tap a category once to peek, then again to enter its studio.">
         <svg class="zen-flow" viewBox="0 0 360 420" aria-hidden="true">
           <path class="bed" d="M180 210 C140 165 103 120 62 72"/><path class="bed" d="M180 210 C220 165 257 120 298 72"/><path class="bed" d="M180 210 C140 255 103 300 62 348"/><path class="bed" d="M180 210 C220 255 257 300 298 348"/>
@@ -8024,6 +9694,78 @@ async function renderHome(){
   }
 }
 
+
+/* GOOD JAWN GUIDE: locally derived explanations, no money execution or external AI. */
+async function renderAssist(){
+  shellMeta('Assist','Good Jawn Guide','Understand your week without complicated controls','<a class="text-action" href="#home">Home</a>');
+  nav('assist');
+  const id=getStoredUserId();
+  if(!id){root.innerHTML='<section class="tw-guide"><h2>Start with your week.</h2><p>Create a plan to receive relevant guidance.</p><a class="tw-gold-button" href="#setup">Build My Week →</a></section>';return;}
+  try{
+    const p=await apiRequest('/week/current?userId='+encodeURIComponent(id));
+    const lanes=[...(p.essentials||[]),...(p.forYou||[])],overspent=lanes.filter(x=>(x.remaining||0)<0).length;
+    const spent=lanes.reduce((n,x)=>n+Math.max(0,(x.allocated||0)-(x.remaining||0)),0);
+    const due=(p.bills||[]).filter(x=>(x.requiredByToday||0)>(x.contributed||0));
+    const next=readSavingsGoals().find(x=>x.active!==false&&(x.current||0)<(x.target||0));
+    const answer=q=>{
+      const t=String(q||'').trim().toLowerCase();
+      if(!t)return 'Ask about spending, savings, bills, pay or what to do next.';
+      if(/bill|due|rent|protect/.test(t))return due.length?due.length+' bill'+(due.length===1?' needs':'s need')+' attention in the weekly plan. Open the Vault for the details.':'Your bill protection is on track in the current plan. Review due dates in the Vault.';
+      if(/sav|goal|emergency|grow/.test(t))return 'You are tracking '+formatCents(p.savingsThisWeek||0)+' toward savings this week. '+(next?'Your next active goal is '+next.name+'. ':'')+'The Ledger tracks goals; it does not move funds.';
+      if(/spend|purchase|budget|afford|money/.test(t))return 'Your plan shows '+formatCents(p.available||0)+' available and '+formatCents(spent)+' recorded in spending lanes. '+(overspent?overspent+' lane limits are exceeded. ':'')+'Use Purchase Pre-Check before buying.';
+      if(/next|focus|priorit|today|now/.test(t))return due.length?'First review your '+due.length+' bill'+(due.length===1?'':'s')+' that need protection.':overspent?'First review the '+overspent+' overspent spending lane'+(overspent===1?'':'s')+'.':'No urgent bill shortfalls or overspent lanes are flagged. Check spending pace and savings.';
+      if(/income|pay|earn/.test(t))return 'Manage your take-home pay and pay frequency in Plan. This guide cannot view payroll deposits.';
+      if(/connect|bank|import|data/.test(t))return 'Review imported records under Connected Data. Planned amounts are not verified bank balances.';
+      return 'I can explain your plan, spending, savings, bills or next priority. Choose a suggestion or open Explore.';
+    };
+    root.innerHTML='<section class="tw-guide"><header class="tw-guide-hero"><span class="tw-guide-eyebrow">GOOD JAWN FINANCIAL · ASSIST</span><div class="tw-guide-orb" aria-hidden="true"><span>GJ.</span></div><h2>Your week, made clearer.</h2><p>Answers grounded in your current weekly plan.</p></header>'+
+      '<div class="tw-guide-questions"><button type="button" data-guide="How did I do with spending?">How did I do?</button><button type="button" data-guide="Where can I save money?">Where can I save?</button><button type="button" data-guide="What should I do next?">What is next?</button></div>'+
+      '<form id="twGuideForm" class="tw-guide-ask"><label for="twGuideInput">Ask about this week</label><div><input id="twGuideInput" maxlength="200" autocomplete="off" placeholder="Bills, spending, goals…"><button class="tw-gold-button" type="submit">Ask →</button></div></form>'+
+      '<div class="tw-guide-answer" id="twGuideAnswer" role="status" aria-live="polite">Choose a question to get started.</div>'+
+      '<nav class="tw-guide-actions" aria-label="Related money tools"><a href="#precheck">Purchase Check ↗</a><a href="#savings">Savings ↗</a><a href="#bills">Bills ↗</a><a href="#insights">Insights ↗</a></nav>'+
+      '<p class="tw-guide-boundary">Locally computed guidance, not an AI chat service or live bank connection. No transfers are executed.</p></section>';
+    const output=document.getElementById('twGuideAnswer');
+    root.querySelectorAll('[data-guide]').forEach(b=>b.addEventListener('click',()=>{output.textContent=answer(b.dataset.guide);}));
+    document.getElementById('twGuideForm').addEventListener('submit',event=>{event.preventDefault();output.textContent=answer(document.getElementById('twGuideInput').value);});
+  }catch(e){root.innerHTML=pageState('error','Guide unavailable',e?.message||'Could not load your plan.');}
+}
+
+
+/* Capital: clear weekly spending experience over existing Plan and transaction data. */
+async function renderCapital(){
+  shellMeta('Money','The Capital','Your real weekly planning figures in one place','<a class="text-action" href="#log">Add Spend</a>');
+  nav('capital');
+  const id=getStoredUserId();
+  if(!id){root.innerHTML=pageState('empty','Your money plan starts here.','Create a week before viewing cash flow.','<a class="tw-gold-button" href="#setup">Build My Week →</a>');return;}
+  try{
+    const p=await apiRequest('/week/current?userId='+encodeURIComponent(id));
+    const lanes=[...(p.essentials||[]).map(x=>({...x,type:'LIVING'})),...(p.forYou||[]).map(x=>({...x,type:'DISCRETIONARY'}))];
+    const allocated=lanes.reduce((sum,c)=>sum+Math.max(0,c.allocated||0),0);
+    const spent=lanes.reduce((sum,c)=>sum+Math.max(0,(c.allocated||0)-(c.remaining||0)),0);
+    const catById=new Map(lanes.map(c=>[c.id,c.name]));
+    const entries=(readState()?.transactions||[]).filter(t=>t.weekId===p.week?.id).slice().sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||''))).slice(0,5);
+    const categories=lanes.map(c=>{
+      const amount=Math.max(0,(c.allocated||0)-(c.remaining||0));
+      const pct=(c.allocated||0)>0?Math.min(100,Math.max(0,Math.round(amount/Math.max(1,c.allocated)*100))):0;
+      return '<div class="tw-capital-row"><a class="tw-capital-category" href="#'+(c.type==='LIVING'?'essentials':'lifestyle')+'" aria-label="View '+escapeHtml(c.name)+' details"><strong>'+escapeHtml(c.name)+'</strong><small>'+formatCents(amount)+' spent · '+pct+'% of this lane</small></a><span class="tw-capital-bar" aria-hidden="true" style="--pct:'+pct+'%"><i></i></span><button type="button" class="tw-capital-precheck" data-category-id="'+escapeHtml(c.id)+'" aria-label="Test a purchase in '+escapeHtml(c.name)+'">Test ↗</button></div>';
+    }).join('');
+    root.innerHTML=[
+      '<div class="tw-capital"><header class="tw-capital-lede"><span class="tw-section-label">THE CAPITAL · YOUR WEEK</span><h2>Money, without the maze.</h2>',
+      '<div class="tw-capital-balance"><small>Available in your weekly plan</small><strong>'+formatCents(p.available||0)+'</strong><span>Plan amount, not a verified bank balance</span></div></header>',
+      '<div class="tw-capital-kpis"><div><small>Allocated lanes</small><strong>'+formatCents(allocated)+'</strong></div><div><small>Recorded spending</small><strong>'+formatCents(spent)+'</strong></div></div>',
+      '<section class="tw-capital-card"><div class="tw-card-heading"><div><span>YOUR WEEKLY MONEY</span><h3>Spending lanes</h3></div><a href="#setup">Edit Plan ↗</a></div>',
+      (categories||'<p class="tw-capital-empty">No categories configured yet.</p>'),'</section>',
+      '<section class="tw-capital-card"><div class="tw-card-heading"><div><span>RECENT ACTIVITY</span><h3>Recorded expenses</h3></div><a href="#history">History ↗</a></div>',
+      (entries.length?entries.map(t=>'<div class="tw-capital-transaction"><span><strong>'+escapeHtml(t.note||catById.get(t.categoryId)||'Expense')+'</strong><small>'+escapeHtml(catById.get(t.categoryId)||'Spending')+'</small></span><strong>−'+formatCents(t.amount||0)+'</strong></div>').join(''):'<p class="tw-capital-empty">Your first recorded purchase will appear here.</p>'),
+      '</section><nav class="tw-capital-actions" aria-label="Money actions"><a class="tw-gold-button" href="#log">+ Add spending</a><a href="#precheck">Check a purchase ↗</a><a href="#connections">Review imports ↗</a></nav></div>'
+    ].join('');
+    root.querySelectorAll('.tw-capital-precheck').forEach(btn=>btn.addEventListener('click',()=>{
+      setPrecheckHint(btn.dataset.categoryId);
+      location.hash='precheck';
+    }));
+  }catch(e){root.innerHTML=pageState('error','Money overview unavailable',e?.message||'Could not read this week.');}
+}
+
 async function renderDetails(){
   shellMeta('Details','System Map','Choose the layer you want without loading every tool onto Home','<a class="text-action" href="#home">Home</a>');
   nav('details');
@@ -8051,12 +9793,12 @@ async function renderDetails(){
         ].join('')
       },
       {
-        id:'money',eyebrow:'Money layer',title:'Move and control real money',copy:'Bank accounts, payroll, bill payment, rewards, and category cards live here without crowding Home.',
+        id:'money',eyebrow:'Future money services',title:'Money infrastructure · Sandbox',copy:'Explore account, payroll, payment, and card concepts. No live financial execution is enabled.',
         html:[
           tool('money','Money','Money Center','See the server ledger, account layer, provider readiness, and safety boundaries.','Foundation','#67e8f9',semanticIcon('link')),
-          tool('direct-deposit','Payroll','Direct Deposit','Switch all or part of a paycheck into a future This Week deposit account.','Payroll','#6ee7b7',semanticIcon('goal')),
-          tool('bill-pay','Payments','Bill Pay','Authorize and route liability payments without treating a planned bill as already paid.','Payments','#60a5fa',semanticIcon('purchase')),
-          tool('cards','Cards','Category Cards','Issue category- or bill-scoped virtual cards after the banking program is approved.','Cards','#f6d784',semanticIcon('shopping'))
+          tool('direct-deposit','Payroll','Direct Deposit','Explore the future payroll-switching workflow; no live switching is enabled.','Payroll','#6ee7b7',semanticIcon('goal')),
+          tool('bill-pay','Payments','Bill Pay','Explore guarded payment capabilities; planned bills are not payments.','Payments','#60a5fa',semanticIcon('purchase')),
+          tool('cards','Cards','Category Cards','Explore proposed category cards; card issuing is not active.','Cards','#f6d784',semanticIcon('shopping'))
         ].join('')
       },
       {
@@ -8076,18 +9818,15 @@ async function renderDetails(){
         ].join('')
       },
       {
-        id:'settings',eyebrow:'System & settings',title:'Control how the app works',copy:'Change the plan, presentation, or inspect the architecture without altering Home.',
+        id:'settings',eyebrow:'Settings & support',title:'Control your workspace',copy:'Manage your plan, presentation, privacy, support, and account. Technical tools are optional below.',
         html:[
           tool('setup','Plan','Edit weekly structure','Change pay, bills, categories, savings, and week rhythm.','Plan','#72d6aa',semanticIcon('plan')),
           tool('preferences','Presentation','Motion, density & contrast','Control how much information and movement the interface shows.','Display','#f0a7d3',semanticIcon('settings')),
-          tool('future','Architecture','System Architecture','See how adaptive constellations, choreography, and connected data fit together.','Guide','#9fc8d1',semanticIcon('architecture')),
-          tool('qa','Quality','Device QA','Run mobile viewport, overflow, touch, storage, parser, and static-runtime checks on this device.','QA','#67e8f9',semanticIcon('settings')),
-          tool('performance','Runtime','Performance & Resilience','Inspect render timing, storage growth, adaptive tier, and derived-cache behavior.','Health','#72d6aa',semanticIcon('analysis')),
-          tool('data-model','Data model','Data Model & Export','Inspect normalized entities, provider contracts, provenance, and portable JSON serialization.','Schema','#9fc8d1',semanticIcon('architecture')),
+
           tool('privacy','Trust','Privacy & Local Data','See where financial data lives, what is imported, export it, or delete This Week data from this browser.','Local','#67e8f9',semanticIcon('settings')),
           externalTool('./account/','Identity','Account & Security','Sign in, recover access, manage MFA, sessions, and cloud-account deletion.','Security','#6ee7b7',semanticIcon('settings')),
           externalTool('./support/','Help','Support & Disputes','Report a money issue, account-access problem, transfer, bill-pay, card, or direct-deposit concern.','Support','#67e8f9',semanticIcon('settings')),
-          tool('analytics','Local insights','Usage Insights','Optional aggregate counters that stay in this browser and help evaluate workflow friction without tracking time or financial amounts.','Optional','#c4b5fd',semanticIcon('analysis'))
+
         ].join('')
       }
     ];
@@ -8105,10 +9844,12 @@ async function renderDetails(){
 
     root.innerHTML=`<div class="system-map-shell">
       <section class="system-map-hero">
-        <span class="system-map-kicker">Details = map, not dashboard</span>
-        <h2>Everything advanced has a predictable place.</h2>
-        <p>Home stays compact. Details organizes the deeper system. Studios handle focused work.</p>
-        <div class="system-map-overview">
+        <span class="system-map-kicker">YOUR FINANCIAL WORKSPACE</span>
+        <h2>Choose your next move.</h2>
+        <p>Handle everyday money tasks first. Explore deeper tools only when you need them. Values shown here come from your weekly plan—not a bank balance.</p>
+        <details class="tw-explore-numbers">
+          <summary><span>My numbers &amp; search</span><small>Optional details and full tool directory</small></summary>
+          <div class="system-map-overview">
           <div class="system-map-stat"><small>Available</small><strong>${formatCents(p.available)}</strong></div>
           <div class="system-map-stat"><small>Spent</small><strong>${formatCents(st.spent)}</strong></div>
           <div class="system-map-stat"><small>Protected</small><strong>${formatCents(p.protected)}</strong></div>
@@ -8119,7 +9860,27 @@ async function renderDetails(){
           <input id="systemToolSearch" type="search" placeholder="Find a tool or task" autocomplete="off" aria-label="Find a tool or task">
           <span id="systemSearchCount">All tools</span>
         </label>
+        </details>
       </section>
+      <section class="tw-world-gallery" aria-labelledby="twWorldsTitle">
+  <div class="tw-world-gallery-heading"><div><span>FOUR CONNECTED EXPERIENCES</span><h3 id="twWorldsTitle">Step into your financial world.</h3></div><small>SELECT A WORLD · EXPLORE WITHOUT LOSING YOUR PLAN</small></div>
+  <div class="tw-world-gallery-grid">
+    <a class="tw-world-card" data-art-world="vault" href="#bills"><span class="tw-world-mini" aria-hidden="true"><span class="tw-world-symbol">◉</span></span><span class="tw-world-card-copy"><strong>THE VAULT</strong><small>Bills · Protection</small><em class="tw-world-live ${attentionBills?'is-attention':'is-good'}">${attentionBills?attentionBills+' bill'+(attentionBills===1?'':'s')+' to review':'Bills on track'}</em></span><span class="tw-world-card-arrow" aria-hidden="true">↗</span></a>
+    <a class="tw-world-card" data-art-world="observatory" href="#insights"><span class="tw-world-mini" aria-hidden="true"><span class="tw-world-symbol">✧</span></span><span class="tw-world-card-copy"><strong>THE OBSERVATORY</strong><small>Insights · Forecasts</small><em class="tw-world-live">${escapeHtml(signals.healthLabel)} · weekly plan</em></span><span class="tw-world-card-arrow" aria-hidden="true">↗</span></a>
+    <a class="tw-world-card" data-art-world="capital" href="#capital"><span class="tw-world-mini" aria-hidden="true"><span class="tw-world-symbol">⌁</span></span><span class="tw-world-card-copy"><strong>THE CAPITAL</strong><small>Cash flow · Choices</small><em class="tw-world-live">${formatCents(p.available)} planned available</em></span><span class="tw-world-card-arrow" aria-hidden="true">↗</span></a>
+    <a class="tw-world-card" data-art-world="ledger" href="#savings"><span class="tw-world-mini" aria-hidden="true"><span class="tw-world-symbol">❖</span></span><span class="tw-world-card-copy"><strong>THE LEDGER</strong><small>Savings · Growth</small><em class="tw-world-live">${formatCents(p.savingsThisWeek||0)} this week</em></span><span class="tw-world-card-arrow" aria-hidden="true">↗</span></a>
+  </div>
+  <p class="tw-world-gallery-footnote">Your existing planning data follows you between these spaces. The worlds are views and tools, not separate bank accounts.</p>
+</section>
+      <details class="tw-quick-action-disclosure">
+        <summary>Quick actions <span>Spending · Purchase Check · Bills · Savings</span></summary>
+        <section class="tw-quick-tasks" aria-label="Popular money tasks">
+        <a href="#log"><span class="tw-quick-symbol" aria-hidden="true">+</span><span><strong>Add spending</strong><small>Record a transaction</small></span></a>
+        <a href="#precheck"><span class="tw-quick-symbol" aria-hidden="true">✓</span><span><strong>Check a purchase</strong><small>Plan before you spend</small></span></a>
+        <a href="#bills"><span class="tw-quick-symbol" aria-hidden="true">▤</span><span><strong>Review bills</strong><small>Know what is due</small></span></a>
+        <a href="#savings"><span class="tw-quick-symbol" aria-hidden="true">↗</span><span><strong>Savings goals</strong><small>See your progress</small></span></a>
+      </section>
+      </details>
       ${powerDock}
 
       <div class="system-map-groups">
@@ -8435,7 +10196,7 @@ function renderPreferences(){
       <div class="pref-profile-grid">
         <button class="pref-profile ${isProfile('focused')?'active':''}" data-profile="focused"><small>Recommended default</small><strong>Focused</strong><span>Compact information, system-aware motion and contrast, comfortable touch targets.</span><b>Best for everyday use</b></button>
         <button class="pref-profile ${isProfile('accessible')?'active':''}" data-profile="accessible"><small>Accessibility-forward</small><strong>Comfortable</strong><span>Large text, high contrast, reduced motion, generous touch targets.</span><b>Maximum readability</b></button>
-        <button class="pref-profile ${isProfile('rich')?'active':''}" data-profile="rich"><small>Visual depth</small><strong>Rich</strong><span>More supporting information with cinematic motion while keeping the same calculations.</span><b>Most expressive</b></button>
+        <button class="pref-profile ${isProfile('rich')?'active':''}" data-profile="rich"><small>Immersive mode</small><strong>Cinematic</strong><span>Full-size financial worlds, refined animation and deeper visual detail. Your calculations stay exactly the same.</span><b>Most expressive</b></button>
       </div>
     </section>
 
@@ -8756,6 +10517,7 @@ function renderLocalAnalytics(){
 function renderPrivacy(){
   shellMeta('Trust','Privacy & Local Data','Understand, export, and control the data stored by This Week in this browser','<a class="text-action" href="#details">Back</a>');nav('privacy');
   const draw=()=>{
+    let pendingRawRestore=null;
     const inventory=localDataInventory(),audit=clientSecretAudit();
     const all=[...inventory.local.map(x=>({...x,scope:'Persistent'})),...inventory.session.map(x=>({...x,scope:'Session'}))];
     const totalBytes=all.reduce((n,x)=>n+x.bytes,0),hasPlan=!!readState(),storageInspectable=inventory.localAvailable&&inventory.sessionAvailable;
@@ -8777,7 +10539,7 @@ function renderPrivacy(){
           <div class="trust-card"><small>Provider credentials</small><strong>${audit.pass?'No sensitive credential fields detected':'Review local storage'}</strong><span>${audit.pass?'The client-side data audit found no token/password/secret-shaped fields in This Week local JSON.':escapeHtml(audit.findings.join(' · '))}</span></div>
           <div class="trust-card"><small>Phase 19 provider plane</small><strong>Backend provisioned · provider inactive</strong><span>Provider consent, connections, sync cursors, external accounts/transactions, and encrypted provider-token references are isolated under This Week resources inside BennyBundles’s Project. The weekly Plan remains browser-local.</span></div>
           <div class="trust-card"><small>Imports</small><strong>Text-only local parsing</strong><span>Files are capped at 5 MB and 10,000 data rows. Imported strings are normalized, control characters are removed, lengths are capped, and UI output is escaped.</span></div>
-          <div class="trust-card"><small>Retention</small><strong>Local until you clear or delete it</strong><span>Core plan/history remains in browser storage until changed or deleted. Connected Data limits audit history to the most recent 120 actions and import batches to the most recent 40.</span></div>
+          <div class="trust-card"><small>Retention</small><strong>Browser-managed, not permanent</strong><span>Core plan/history is stored in this browser, but browser policies, low disk space, or device cleanup can remove it without notice. Export backups regularly. No automatic cloud backup is enabled. Connected Data limits audit history to the most recent 120 actions and import batches to the most recent 40.</span></div>
           <div class="trust-card"><small>At-rest protection</small><strong>No app-level storage encryption</strong><span>This Week does not encrypt localStorage itself. Anyone with access to this browser profile or an unlocked device may be able to access the stored app data.</span></div>
           <div class="trust-card"><small>Inactive view</small><strong>Financial screen masks when hidden</strong><span>A best-effort privacy curtain covers the app when the browser marks the page inactive. It cannot guarantee how every operating system captures app-switcher previews.</span></div>
           <div class="trust-card"><small>Execution</small><strong>Imported text is not code</strong><span>Merchant names, file names, notes, and audit descriptions are treated as text. Import processing does not evaluate scripts or HTML from transaction files.</span></div>
@@ -8790,7 +10552,16 @@ function renderPrivacy(){
 
       <section class="section"><div class="section-head"><div><span class="section-kicker">Export</span><h2>Take a copy before changing devices or deleting data</h2><div class="section-caption">Downloaded files can contain sensitive financial information and are no longer controlled by This Week after download. Store or delete them accordingly.</div></div></div>
         <div class="action-row">${hasPlan?'<button class="btn btn-primary" id="privacyPortableExport">Export normalized financial data</button>':''}<button class="btn btn-secondary" id="privacyRawExport">Export all local This Week keys</button><a class="btn btn-secondary" href="#data-model">Open Data Model</a></div>
-        <div class="world-note">Exports are created locally when requested. The app does not automatically upload the resulting file.</div>
+        <div class="world-note">Exports are created locally when requested. The app does not automatically upload the resulting file. Raw backups include only explicitly supported local Plan keys. All sessionStorage values and credential-named keys are excluded. Damaged backup exports are for manual recovery only and may not be restorable.</div>
+      </section>
+
+      <section class="section"><div class="section-head"><div><span class="section-kicker">Restore</span><h2>Recover a local Plan from a raw backup</h2><div class="section-caption">Only This Week raw local-data-export v1 JSON files can be restored. A portable normalized export is not an importable backup. Restore never merges or overwrites an existing workspace.</div></div></div>
+        <label class="field-label" for="rawRestoreFile">Choose raw This Week backup (.json, max 4 MB)</label>
+        <input id="rawRestoreFile" class="text-field" type="file" accept=".json,application/json" aria-describedby="rawRestoreResult">
+        <div class="world-note" id="rawRestoreResult" role="status" aria-live="polite">No file selected. Your financial data stays on this device while previewing.</div>
+        <div class="field-group" style="margin-top:10px"><label class="field-label" for="rawRestorePhrase">Type RESTORE after reviewing the backup summary</label><input id="rawRestorePhrase" class="text-field" autocomplete="off" autocapitalize="characters" placeholder="RESTORE"></div>
+        <button class="btn btn-primary" id="rawRestoreApply" disabled>Restore into empty browser workspace</button>
+        <div class="world-note">Existing This Week local or session state blocks restore. To preserve data, export what is already here before any deliberate deletion. A completed restore reloads the app.</div>
       </section>
 
       <section class="section"><div class="section-head"><div><span class="section-kicker">Trust checks</span><h2>Verify the local security boundaries</h2><div class="section-caption">Read-only checks for import handling, local credential fields, Phase 19 activation gating, export boundaries, and destructive-action confirmation.</div></div><button class="btn btn-secondary" id="runTrustAudit">Run trust checks</button></div>
@@ -8805,6 +10576,42 @@ function renderPrivacy(){
 
     document.getElementById('privacyPortableExport')?.addEventListener('click',()=>{if(!confirmSensitiveExport('Normalized financial-data export'))return;const bytes=downloadPortableDataExport();toast('Normalized data exported · '+(bytes/1024).toFixed(1)+' KB');});
     document.getElementById('privacyRawExport')?.addEventListener('click',()=>{if(!confirmSensitiveExport('Raw local-data export'))return;const bytes=downloadRawLocalDataExport();toast('Local data export created · '+(bytes/1024).toFixed(1)+' KB');});
+    const restoreFile=document.getElementById('rawRestoreFile'),restorePhrase=document.getElementById('rawRestorePhrase'),restoreButton=document.getElementById('rawRestoreApply'),restoreResult=document.getElementById('rawRestoreResult');
+    const refreshRestoreButton=()=>{if(restoreButton)restoreButton.disabled=!pendingRawRestore||restorePhrase?.value.trim()!=='RESTORE';};
+    restorePhrase?.addEventListener('input',refreshRestoreButton);
+    restoreFile?.addEventListener('change',async()=>{
+      pendingRawRestore=null;
+      if(restorePhrase)restorePhrase.value='';
+      refreshRestoreButton();
+      const file=restoreFile.files?.[0];
+      if(!file){if(restoreResult)restoreResult.textContent='No backup file selected.';return;}
+      if(!file.name.toLowerCase().endsWith('.json')||file.size<=0||file.size>RAW_RESTORE_MAX_BYTES){
+        if(restoreResult)restoreResult.textContent='Invalid backup file. Choose a nonempty JSON file no larger than 4 MB.';
+        return;
+      }
+      try{
+        const source=JSON.parse(await file.text()),validated=validatedRawLocalBackup(source);
+        let targetStatus='This browser is empty and can accept the backup.';
+        try{inspectRawBackupRestoreTarget()}catch(e){targetStatus=e.message;}
+        pendingRawRestore=source;
+        if(restoreResult)restoreResult.textContent='Verified raw backup: '+validated.summary.weekCount+' weeks, '+validated.summary.transactionCount+' transactions, '+validated.summary.keyCount+' local data keys, core v'+validated.summary.schemaVersion+'. '+targetStatus;
+        refreshRestoreButton();
+      }catch(e){if(restoreResult)restoreResult.textContent='Backup rejected: '+(e?.message||'invalid file');}
+    });
+    restoreButton?.addEventListener('click',()=>{
+      if(!pendingRawRestore||restorePhrase?.value.trim()!=='RESTORE')return;
+      try{
+        inspectRawBackupRestoreTarget();
+        if(!confirmHighImpactMutation('Restore this verified raw Plan backup into this empty browser workspace? This does not merge Plans and will reload the app.'))return;
+        restoreVerifiedRawLocalBackup(pendingRawRestore);
+        pendingRawRestore=null;
+        location.hash='home';
+        location.reload();
+      }catch(e){
+        if(restoreResult)restoreResult.textContent='Restore not completed: '+(e?.message||'unexpected storage failure');
+        refreshRestoreButton();
+      }
+    });
     document.getElementById('runTrustAudit')?.addEventListener('click',()=>{
       const box=document.getElementById('trustAuditResults'),audit=runPhase14TrustAudit();
       if(box)box.innerHTML=audit.tests.map(t=>`<div class="schema-row"><div><strong>${escapeHtml(t.name)}</strong><span>${escapeHtml(t.detail)}</span></div><span class="schema-badge">${t.pass?'pass':'review'}</span></div>`).join('');
@@ -9140,7 +10947,105 @@ function renderSetup(){
   const bpMap={netPay:'bpIncome',rent:'bpBills',phone:'bpBills',groceries:'bpSpending',gas:'bpSpending',eating:'bpSpending',fun:'bpSpending',savings:'bpSavings'};
   Object.keys(bpMap).forEach(id=>q(id)?.addEventListener('input',()=>{updateBlueprint();const el=q(bpMap[id]);if(el){el.classList.remove('flash');requestAnimationFrame(()=>el.classList.add('flash'));}}));
   updateBlueprint();
+  initCinematicSetupWizard(current);
   q('savePlan').onclick=async()=>{ const fields=['netPay','savings','rent','phone','groceries','gas','eating','fun'], box=q('setupErr'); if(fields.some(x=>!valid(x))||cents('netPay')<=0){box.innerHTML=errBox('Enter valid dollar amounts. Net pay must be greater than $0.');return;} const rd=Number(q('rentDay').value),pd=Number(q('phoneDay').value); if(rd<1||rd>28||pd<1||pd>28){box.innerHTML=errBox('Use a due day from 1 to 28 for this preview.');return;} if(current&&!confirmHighImpactMutation('Save these Plan changes? Future weekly calculations will use the updated income, bills, categories, savings target, and week rhythm.'))return; const due=day=>{const n=new Date(),d=new Date(n.getFullYear(),n.getMonth(),day,17);if(d<n)d.setMonth(d.getMonth()+1);return d.toISOString();}; const preset={userId:current?.userId||getStoredUserId()||undefined,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||'America/New_York',weekAnchorDow:Number(q('weekDay').value),weekAnchorMinutes:Number(q('weekHour').value)*60,payProfile:{netPayAmount:cents('netPay'),payFrequency:q('payFrequency').value,payAnchorAt:new Date().toISOString()},bills:[{name:'Housing',amount:cents('rent'),frequency:'monthly',dueDate:due(rd)},{name:'Phone',amount:cents('phone'),frequency:'monthly',dueDate:due(pd)}],livingNeeds:[{name:'Groceries',weeklyLimit:cents('groceries'),ebtOffset:0},{name:'Gas / Transit',weeklyLimit:cents('gas'),ebtOffset:0}],discretionary:[{name:'Eating Out',weeklyLimit:cents('eating')},{name:'Fun',weeklyLimit:cents('fun')}],savingsRule:{weeklyAmount:cents('savings'),active:cents('savings')>0}}; const btn=q('savePlan');btn.disabled=true;btn.textContent='Building your week...';try{const r=await apiRequest('/setup',{method:'POST',body:JSON.stringify(preset)});setStoredUserId(r.userId);await apiRequest('/week/current',{method:'POST',body:JSON.stringify({userId:r.userId})});location.hash='home';}catch(e){btn.disabled=false;btn.textContent='Save & Open Dashboard';box.innerHTML=errBox(e.message);} };
+}
+
+
+/* Simplified guided setup mirrors the canonical, validated plan inputs.
+   The existing savePlan handler remains the sole writer of money state. */
+function initCinematicSetupWizard(existing){
+  const stack=root.querySelector('.fade-stack');if(!stack)return;
+  const wizard=document.createElement('section');wizard.className='tw-onboard';
+  wizard.setAttribute('aria-label','Create your week in three steps');
+  wizard.innerHTML=[
+    '<header class="tw-onboard-hero"><span class="tw-onboard-overline">THIS WEEK · GOOD JAWN FINANCIAL</span><h2>Build a better week.</h2><p>Three questions. One clear plan.</p>',
+    '<div class="tw-onboard-meter" aria-label="Setup progress"><b class="active"></b><b></b><b></b></div></header>',
+    '<div class="tw-onboard-step" data-tw-step="0"><span>01 / 03 · INCOME</span><h3>What comes in?</h3>',
+    '<label for="twWizardIncome">Take-home pay</label><div class="tw-wizard-amount"><span>$</span><input type="number" id="twWizardIncome" min="0" step=".01" inputmode="decimal" placeholder="0.00" required></div>',
+    '<label for="twWizardFrequency">Paid how often?</label><select id="twWizardFrequency"><option value="weekly">Weekly</option><option value="biweekly">Every two weeks</option><option value="monthly">Monthly</option></select></div>',
+    '<div class="tw-onboard-step" data-tw-step="1" hidden><span>02 / 03 · BILLS</span><h3>What must be paid?</h3>',
+    '<label for="twWizardRent">Housing each month</label><div class="tw-wizard-amount"><span>$</span><input type="number" id="twWizardRent" min="0" step=".01" inputmode="decimal" placeholder="0.00"></div>',
+    '<label for="twWizardPhone">Phone each month</label><div class="tw-wizard-amount"><span>$</span><input type="number" id="twWizardPhone" min="0" step=".01" inputmode="decimal" placeholder="0.00"></div></div>',
+    '<div class="tw-onboard-step" data-tw-step="2" hidden><span>03 / 03 · GROWTH</span><h3>What can you set aside?</h3>',
+    '<label for="twWizardSavings">Weekly savings target</label><div class="tw-wizard-amount"><span>$</span><input type="number" id="twWizardSavings" min="0" step=".01" inputmode="decimal" placeholder="0.00"></div>',
+    '<p class="tw-onboard-hint">Optional. Saving is a goal in your plan, not a bank transfer.</p>',
+    '<details class="tw-wizard-lanes" id="twWizardLanes"><summary><span>Everyday spending limits <small>Review starter amounts</small></span><strong id="twWizardLaneTotal">—</strong></summary>',
+    '<p>These are example weekly limits, not actual spending. Customize them to match your needs before saving.</p>',
+    '<div class="tw-wizard-lane-fields">',
+    '<label for="twWizardGroceries">Groceries <input type="number" id="twWizardGroceries" min="0" step=".01" inputmode="decimal"></label>',
+    '<label for="twWizardGas">Gas / transit <input type="number" id="twWizardGas" min="0" step=".01" inputmode="decimal"></label>',
+    '<label for="twWizardEating">Eating out <input type="number" id="twWizardEating" min="0" step=".01" inputmode="decimal"></label>',
+    '<label for="twWizardFun">Fun <input type="number" id="twWizardFun" min="0" step=".01" inputmode="decimal"></label></div></details>',
+    '<p id="twWizardSummary" class="tw-wizard-summary" aria-live="polite"></p></div>',
+    '<p class="tw-onboard-error" id="twWizardError" role="alert" hidden></p>',
+    '<div class="tw-onboard-actions"><button id="twWizardBack" type="button" hidden>Back</button><button class="tw-gold-button" type="button" id="twWizardNext">Continue →</button><button class="tw-gold-button" type="button" id="twWizardSave" hidden>Open My Week →</button></div>',
+    '<p class="tw-onboard-disclosure">You can change the full plan at any time. No bank connection is required.</p>'
+  ].join('');
+  const full=document.createElement('details');full.className='tw-onboard-advanced';
+  full.innerHTML='<summary>More settings and the original plan editor <span aria-hidden="true">+</span></summary><div class="tw-onboard-advanced-content"></div>';
+  const fullBody=full.querySelector('.tw-onboard-advanced-content');
+  [...stack.children].forEach(el=>fullBody.append(el));
+  stack.prepend(wizard);
+  stack.append(full);
+  const by=id=>document.getElementById(id);
+  const fields=[['twWizardIncome','netPay'],['twWizardFrequency','payFrequency'],['twWizardRent','rent'],['twWizardPhone','phone'],['twWizardSavings','savings'],['twWizardGroceries','groceries'],['twWizardGas','gas'],['twWizardEating','eating'],['twWizardFun','fun']];
+  const current=!!existing?.config;
+  for(const [simple,original] of fields){
+    const src=by(original),dst=by(simple);
+    if(!src||!dst)throw Error('Setup field missing: '+original);
+    dst.value=current?src.value:(simple==='twWizardFrequency'?src.value:'');
+    dst.addEventListener('input',()=>{src.value=dst.value;src.dispatchEvent(new Event('input',{bubbles:true}));by('twWizardError').hidden=true;});
+    dst.addEventListener('change',()=>{src.value=dst.value;src.dispatchEvent(new Event('change',{bubbles:true}));});
+  }
+
+  const laneFields=['twWizardGroceries','twWizardGas','twWizardEating','twWizardFun'];
+  const laneTotal=()=>{
+    const total=laneFields.reduce((sum,id)=>sum+Math.round(Math.max(0,Number(by(id).value||0))*100),0);
+    const el=by('twWizardLaneTotal');
+    if(el)el.textContent=formatCents(total)+' / week';
+    return total;
+  };
+  laneFields.forEach(id=>by(id).addEventListener('input',laneTotal));
+  laneTotal();
+  let step=0;
+  const show=n=>{
+    step=n;
+    stack.querySelectorAll('.tw-onboard-step').forEach((el,i)=>{el.hidden=i!==n;});
+    stack.querySelectorAll('.tw-onboard-meter b').forEach((el,i)=>el.classList.toggle('active',i<=n));
+    by('twWizardBack').hidden=n===0;by('twWizardNext').hidden=n===2;by('twWizardSave').hidden=n!==2;by('twWizardError').hidden=true;
+    if(n===2){laneTotal();by('twWizardSummary').textContent='Your review: take-home pay '+formatCents(Math.round(Number(by('twWizardIncome').value||0)*100))+'; housing and phone '+formatCents(Math.round((Number(by('twWizardRent').value||0)+Number(by('twWizardPhone').value||0))*100))+' monthly; weekly savings '+formatCents(Math.round(Number(by('twWizardSavings').value||0)*100))+'; weekly spending limits '+formatCents(laneTotal())+'. These amounts are used for planning, not bank transactions.';}
+  };
+  // Keep the final review in sync with the values being edited, never stale.
+  for(const id of ['twWizardSavings',...laneFields])by(id).addEventListener('input',()=>{if(step===2)show(2);});
+  const validate=()=>{
+    const ids=step===0?['twWizardIncome']:step===1?['twWizardRent','twWizardPhone']:['twWizardSavings',...laneFields];
+    for(const id of ids){
+      const input=by(id),number=Number(input.value);
+      if(!input.value.trim()||!Number.isFinite(number)||number<0||(step===0&&number<=0)){
+        by('twWizardError').textContent='Please enter a valid amount. Take-home pay must be greater than zero.';
+        by('twWizardError').hidden=false;
+        if(laneFields.includes(id))by('twWizardLanes').open=true;
+        input.focus();return false;
+      }
+    }
+    return true;
+  };
+  by('twWizardBack').addEventListener('click',()=>show(Math.max(0,step-1)));
+  by('twWizardNext').addEventListener('click',()=>{if(validate())show(Math.min(2,step+1));});
+  by('twWizardSave').addEventListener('click',()=>{
+    if(!validate())return;
+    if(!Number.isFinite(Number(by('twWizardIncome').value))||Number(by('twWizardIncome').value)<=0){show(0);validate();return;}
+    by('savePlan').click();
+  });
+  full.addEventListener('toggle',()=>{
+    if(!full.open){
+      for(const [simple,original] of fields)by(simple).value=by(original).value;
+      laneTotal();
+      if(step===2)show(2);
+    }
+  });
+  show(0);
 }
 
 const PERF_STORAGE_SOFT_BYTES=2*1024*1024;
@@ -9256,8 +11161,82 @@ const routeScrollPositions=new Map();
 let historyTraversalPending=false;
 try{history.scrollRestoration='manual';}catch{}
 
+
+/* Contextual navigation uses existing routes and never writes financial state. */
+
+/* Route-aware cinematic stage: decorative media changes with the financial
+   workspace, but every action points to an existing, tested route. */
+function renderCinematicStage(routeName){
+  const stage=document.querySelector('.tw-cinematic-stage');
+  if(!stage)return;
+  const worlds={
+    home:['Your week, in control.','THE FINANCIAL COMMAND CENTER','Explore your worlds','details'],
+    details:['Choose your next move.','FOUR WORLDS · ONE FINANCIAL PLAN','Enter The Capital','capital'],
+    log:['Every move counts.','RECORD YOUR SPENDING','Check before buying','precheck'],
+    precheck:['Spend with confidence.','PURCHASE SIMULATION · NO MONEY MOVED','Back to my money','capital'],
+    capital:['Your money, in motion.','THE CAPITAL · WEEKLY CASH FLOW','Add spending','log'],
+    bills:['Protect what matters.','THE VAULT · BILLS & OBLIGATIONS','Review my money','capital'],
+    essentials:['Stay covered.','THE LEDGER · DAILY ESSENTIALS','Check a purchase','precheck'],
+    lifestyle:['Freedom, with a plan.','THE CAPITAL · LIFESTYLE','Check a purchase','precheck'],
+    savings:['Build your future.','THE LEDGER · GROWTH & SAVINGS','Edit my plan','setup'],
+    setup:['Make a better week.','THE LEDGER · PLAN IT YOUR WAY','',null],
+    insights:['See the possibilities.','THE OBSERVATORY · FINANCIAL INSIGHTS','Run a scenario','scenario'],
+    scenario:['Explore what could be.','THE OBSERVATORY · WHAT-IF LAB','View insights','insights'],
+    assist:['Questions into clarity.','GOOD JAWN GUIDE · EXPLAINABLE ASSIST','Explore worlds','details'],
+    history:['Every choice, visible.','THE CAPITAL · TRANSACTION HISTORY','View my money','capital'],
+    connections:['Know where data comes from.','THE CAPITAL · CONNECTED DATA','Return to Capital','capital'],
+    preferences:['Your experience. Your rules.','PRESENTATION · CONTROL','Return Home','home'],
+    privacy:['Built for your control.','PRIVACY · TRUST','Return Home','home']
+  };
+  const firstRun=routeName==='home'&&!getStoredUserId();
+  const item=firstRun?['Your money. Your move.','THREE STEPS · ONE CLEAR PLAN','Build My Week','setup']:
+    worlds[routeName]||['Your next step starts here.','THIS WEEK · GOOD JAWN FINANCIAL','Explore worlds','details'];
+  const [headline,kicker,action,destination]=item;
+  const title=stage.querySelector('#twStageFeature');
+  const strap=stage.querySelector('#twStageStrap');
+  const button=stage.querySelector('#twStageEnter');
+  if(title)title.textContent=headline;
+  if(strap)strap.textContent=kicker;
+  if(button){
+    button.hidden=!destination;
+    if(destination){
+      button.href='#'+destination;
+      button.setAttribute('aria-label',action+' — '+headline);
+      const label=button.querySelector('#twStageEnterLabel');
+      if(label)label.textContent=action;
+    }
+  }
+  stage.setAttribute('aria-label','This Week · '+headline);
+  stage.dataset.sceneRoute=routeName;
+  // Restart the scene-introduction animation on route changes. The animation
+  // is disabled by system reduced motion and reduced Presentation preferences.
+  stage.classList.remove('tw-stage-arriving');
+  void stage.offsetWidth;
+  stage.classList.add('tw-stage-arriving');
+}
+
+function renderContextNavigation(routeName){
+  const bar=document.getElementById('twRouteShortcuts');if(!bar)return;
+  const groupByRoute={
+    log:'spending',precheck:'spending',capital:'spending',bills:'weekly',essentials:'weekly',lifestyle:'weekly',savings:'weekly',
+    setup:'planning',scenario:'planning',reset:'planning',insights:'review',history:'review',connections:'review',
+    money:'money','direct-deposit':'money','bill-pay':'money',cards:'money',preferences:'system',
+    privacy:'system',future:'system',qa:'system',performance:'system','data-model':'system',analytics:'system'};
+  const byGroup={
+    spending:[['Add spending','log'],['Check purchase','precheck'],['History','history'],['Explore','details']],
+    weekly:[['Bills','bills'],['Essentials','essentials'],['Lifestyle','lifestyle'],['Savings','savings']],
+    planning:[['Weekly plan','setup'],['Scenarios','scenario'],['Savings','savings'],['Explore','details']],
+    review:[['Insights','insights'],['History','history'],['Imports','connections'],['Explore','details']],
+    money:[['Money center','money'],['Imports','connections'],['Privacy','privacy'],['Explore','details']],
+    system:[['Presentation','preferences'],['Privacy','privacy'],['Explore','details']]};
+  const items=byGroup[groupByRoute[routeName]];
+  bar.hidden=!items;if(!items){bar.replaceChildren();return;}
+  bar.innerHTML=items.map(([label,target])=>'<a href="#'+target+'"'+
+    (target===routeName?' class="active" aria-current="page"':'')+'>'+label+'</a>').join('');
+}
+
 function routeAccessibleName(routeName){
-  return ({home:'Home',log:'Add Spending',details:'Details',insights:'Advanced Insights',bills:'Bill Protection Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex Studio',savings:'Savings Goal Studio',precheck:'Purchase Pre-check',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data Center',money:'Money Center','direct-deposit':'Direct Deposit','bill-pay':'Bill Pay',cards:'Category Cards',preferences:'Presentation and Accessibility',future:'System Architecture',qa:'Device QA',performance:'Performance and Resilience','data-model':'Data Model and Export',privacy:'Privacy and Local Data',analytics:'Local Usage Insights',reset:'New Week',setup:'Plan'})[routeName]||'Home';
+  return ({home:'Home',log:'Add Spending',details:'Details',assist:'Good Jawn Guide',capital:'The Capital',insights:'Advanced Insights',bills:'Bill Protection Studio',essentials:'Essentials Runway',lifestyle:'Lifestyle Flex Studio',savings:'Savings Goal Studio',precheck:'Purchase Pre-check',history:'Weekly Memory',scenario:'Scenario Sandbox',connections:'Connected Data Center',money:'Money Center','direct-deposit':'Direct Deposit','bill-pay':'Bill Pay',cards:'Category Cards',preferences:'Presentation and Accessibility',future:'System Architecture',qa:'Device QA',performance:'Performance and Resilience','data-model':'Data Model and Export',privacy:'Privacy and Local Data',analytics:'Local Usage Insights',reset:'New Week',setup:'Plan'})[routeName]||'Home';
 }
 function announceRoute(routeName,focusMain=true){
   const announcer=document.getElementById('routeAnnouncer'),main=document.getElementById('app');
@@ -9272,6 +11251,8 @@ async function render(){
   applyUiPrefs();applyRuntimePerformanceTier();bindSystemPreferenceListeners();bindMobileViewportController();bindLongTaskObserver();bindPrivacyCurtain();bindPowerKeyboard();
   const r=route(),routeChanged=lastRenderedRoute!==null&&lastRenderedRoute!==r;
   document.body.dataset.view=r;
+  renderCinematicStage(r);
+  renderContextNavigation(r);
   root.setAttribute('aria-busy','true');
   const phase17LoadingTimer=setTimeout(()=>{
     if(lastRenderedRoute!==r)root.innerHTML=loadingState('Loading '+routeDisplayName(r),'Preparing the requested workspace.');
@@ -9281,6 +11262,8 @@ async function render(){
   if(r==='log')await renderLog();
   else if(r==='details')await renderDetails();
   else if(r==='insights')await renderInsights();
+  else if(r==='assist')await renderAssist();
+  else if(r==='capital')await renderCapital();
   else if(r==='bills')await renderBillsStudio();
   else if(r==='essentials')await renderEssentialsStudio();
   else if(r==='lifestyle')await renderLifestyleStudio();
