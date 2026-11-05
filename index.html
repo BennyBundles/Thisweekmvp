@@ -6336,6 +6336,73 @@ body[data-motion="reduced"] .tw-guide-orb:after{animation:none!important}
 .tw-capital-precheck:hover{background:rgba(218,179,107,.2)}
 @media(max-width:400px){.tw-capital-row{gap:7px;grid-template-columns:minmax(0,1fr) minmax(24px,58px) auto}.tw-capital-precheck{min-width:58px;padding-inline:5px}}
 
+
+/* CINEMATIC EXPERIENCE PASS 7 — a real destination for each page,
+   with restrained gold trim over the original offline architectural artwork. */
+.tw-stage-feature{
+  display:block;max-width:360px;margin-top:9px;
+  color:#fff4db;font:italic 500 clamp(1.15rem,2.8vw,2.1rem)/1.1 Georgia,'Times New Roman',serif;
+  letter-spacing:-.022em;text-shadow:0 3px 13px rgba(0,0,0,.78),0 0 16px rgba(218,175,108,.2);
+}
+.tw-stage-parent{color:#f4d49e}
+.tw-stage-strap{color:#d3e8df;letter-spacing:.09em;font-weight:780}
+.tw-stage-enter[hidden]{display:none!important}
+.tw-cinematic-stage{
+  border-color:rgba(244,203,136,.58);
+  box-shadow:0 18px 55px rgba(0,0,0,.4),inset 0 0 0 1px rgba(255,231,183,.09);
+}
+.tw-cinematic-stage::before{
+  content:"";position:absolute;pointer-events:none;z-index:2;
+  inset:5px;border-radius:inherit;border:1px solid rgba(241,208,155,.15);
+}
+.tw-stage-shade{
+  background:linear-gradient(90deg,rgba(3,11,17,.94) 0%,rgba(3,13,19,.81) 34%,rgba(3,12,20,.2) 70%),
+    linear-gradient(0deg,rgba(3,8,12,.83),transparent 29%,transparent 76%,rgba(2,9,15,.25));
+}
+body[data-density="compact"] .tw-cinematic-stage{height:clamp(142px,20vw,220px)}
+body[data-density="balanced"] .tw-cinematic-stage{height:clamp(218px,26vw,285px)}
+body[data-density="rich"] .tw-cinematic-stage{height:clamp(265px,33vw,365px)}
+body[data-density="rich"] .tw-stage-feature{font-size:clamp(1.35rem,3.3vw,2.45rem)}
+body[data-motion="cinematic"] .tw-stage-arriving .tw-stage-feature,
+body[data-motion="dynamic"] .tw-stage-arriving .tw-stage-feature{
+  animation:tw-feature-arrive .66s cubic-bezier(.15,.78,.2,1) both
+}
+body[data-motion="cinematic"] .tw-stage-arriving .tw-scene[style],
+body[data-motion="dynamic"] .tw-stage-arriving .tw-scene[style]{animation:none}
+@keyframes tw-feature-arrive{
+  from{transform:translateY(13px);opacity:0;filter:blur(4px)}
+  to{transform:translateY(0);opacity:1;filter:blur(0)}
+}
+@media(max-width:430px){
+  body[data-density="compact"] .tw-cinematic-stage{height:176px}
+  body[data-density="balanced"] .tw-cinematic-stage{height:237px}
+  body[data-density="rich"] .tw-cinematic-stage{height:291px}
+  .tw-stage-identity{max-width:76%;align-self:center}
+  .tw-stage-layout{align-items:flex-start;padding:16px 16px}
+  .tw-stage-slogan{font-size:1.55rem;line-height:.97}
+  .tw-stage-strap{margin-top:7px;font-size:.55rem;max-width:245px;line-height:1.4}
+  .tw-stage-feature{margin-top:11px;font-size:1.42rem;line-height:1.03;max-width:230px}
+  .tw-stage-parent{font-size:.54rem;line-height:1.4}
+  .tw-stage-world{right:14px;bottom:74px;max-width:135px;text-align:right;line-height:1.3}
+  .tw-stage-enter{right:14px;bottom:17px;min-width:135px}
+  .tw-stage-shade{
+    background:linear-gradient(90deg,rgba(3,11,17,.9) 0%,rgba(3,12,19,.65) 47%,rgba(3,11,18,.08) 83%),
+      linear-gradient(0deg,rgba(1,8,13,.72),transparent 34%,transparent 78%,rgba(2,9,16,.21));
+  }
+}
+@media(max-width:340px){
+  body[data-density="balanced"] .tw-cinematic-stage{height:215px}
+  body[data-density="rich"] .tw-cinematic-stage{height:270px}
+  .tw-stage-feature{font-size:1.19rem}
+  .tw-stage-slogan{font-size:1.35rem}
+  .tw-stage-enter{min-width:0}
+}
+@media(prefers-reduced-motion:reduce){
+ .tw-stage-arriving .tw-stage-feature{animation:none!important}
+}
+body[data-motion="reduced"] .tw-stage-arriving .tw-stage-feature{animation:none!important}
+body[data-performance="lite"] .tw-stage-arriving .tw-stage-feature{animation:none!important}
+
 </style></head><body><a class="skip-link" href="#app">Skip to main content</a><div class="sr-only" id="routeAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div><div class="privacy-curtain" id="privacyCurtain" aria-hidden="true"><div><div class="privacy-curtain-mark">TW</div><strong>Financial view hidden</strong><span>This Week masks the page while it is inactive. This is a best-effort browser privacy layer, not a guarantee about operating-system snapshots.</span></div></div><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M11 22L24 59L40 34L56 59L69 22" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="square"/><path d="M12 13H68" stroke="currentColor" stroke-width="1.5" opacity=".65"/><circle cx="12" cy="13" r="2" fill="currentColor"/><circle cx="21" cy="13" r="2" fill="currentColor"/><circle cx="30" cy="13" r="2" fill="currentColor"/><circle cx="40" cy="13" r="2" fill="#77d2ad"/><circle cx="50" cy="13" r="2" fill="currentColor"/><circle cx="59" cy="13" r="2" fill="currentColor"/><circle cx="68" cy="13" r="2" fill="currentColor"/></svg></div><div><span class="tw-endorsement">Good Jawn Financial</span><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><section class="tw-cinematic-stage" aria-label="Good Jawn Financial experience">
   <div class="tw-stage-visuals" aria-hidden="true"><div class="tw-scene tw-scene--vault"><svg class="tw-scene-image" viewBox="0 0 1440 380" preserveAspectRatio="xMidYMid slice" role="presentation" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs><linearGradient id="tv-dark" x2=".8" y2="1"><stop stop-color="#0d1016"/><stop offset=".55" stop-color="#2a1b14"/><stop offset="1" stop-color="#050b10"/></linearGradient><radialGradient id="tv-gold"><stop stop-color="#f9df9c"/><stop offset=".27" stop-color="#a77432"/><stop offset=".65" stop-color="#2d2219"/><stop offset=".83" stop-color="#c59850"/><stop offset="1" stop-color="#111319"/></radialGradient><linearGradient id="tv-edge"><stop stop-color="#684920"/><stop offset=".35" stop-color="#fce3a3"/><stop offset=".58" stop-color="#8a5728"/><stop offset="1" stop-color="#d6af69"/></linearGradient><pattern id="tv-boxes" width="90" height="42" patternUnits="userSpaceOnUse"><rect x="2" y="2" width="86" height="38" rx="2" fill="#211b1b" stroke="#b68a4d" stroke-opacity=".6" stroke-width="1.6"/><path d="M6 9H83" stroke="#f3d69e" stroke-opacity=".32"/><circle cx="45" cy="22" r="5" fill="#513b23" stroke="#d7a86b" stroke-width="1.2"/><path d="M42 22H48" stroke="#f9d99d"/></pattern><clipPath id="tv-left"><path d="M0 0H500L570 380H0Z"/></clipPath><clipPath id="tv-right"><path d="M1440 0H1120L1040 380H1440Z"/></clipPath></defs>
@@ -6371,9 +6438,9 @@ body[data-motion="reduced"] .tw-guide-orb:after{animation:none!important}
 </svg></div></div>
   <div class="tw-stage-shade" aria-hidden="true"></div>
   <div class="tw-stage-layout">
-    <div class="tw-stage-identity"><span class="tw-stage-parent">TAGJ / GOOD JAWN FINANCIAL</span><strong class="tw-stage-slogan">Good Jawn,<br>Good Money.</strong><span class="tw-stage-strap">THIS WEEK · PLAN / MANAGE / GROW</span></div>
+    <div class="tw-stage-identity"><span class="tw-stage-parent">TAGJ / GOOD JAWN FINANCIAL</span><strong class="tw-stage-slogan">Good Jawn,<br>Good Money.</strong><span class="tw-stage-strap" id="twStageStrap">THIS WEEK · PLAN / MANAGE / GROW</span><span class="tw-stage-feature" id="twStageFeature">Own your week.</span></div>
     <span class="tw-stage-gj" aria-hidden="true">GJ<span>.</span></span>
-    <span class="tw-stage-world" aria-hidden="true"></span><a class="tw-stage-enter" href="#details" aria-label="Explore This Week financial worlds">Explore worlds <span aria-hidden="true">↗</span></a>
+    <span class="tw-stage-world" aria-hidden="true"></span><a class="tw-stage-enter" id="twStageEnter" href="#details" aria-label="Explore This Week financial worlds"><span id="twStageEnterLabel">Explore worlds</span> <span aria-hidden="true">↗</span></a>
   </div>
   <div class="tw-stage-laser" aria-hidden="true"></div>
 </section><nav class="tw-route-shortcuts" id="twRouteShortcuts" aria-label="Related tools" hidden></nav><main id="app" tabindex="-1">
@@ -11011,6 +11078,58 @@ try{history.scrollRestoration='manual';}catch{}
 
 
 /* Contextual navigation uses existing routes and never writes financial state. */
+
+/* Route-aware cinematic stage: decorative media changes with the financial
+   workspace, but every action points to an existing, tested route. */
+function renderCinematicStage(routeName){
+  const stage=document.querySelector('.tw-cinematic-stage');
+  if(!stage)return;
+  const worlds={
+    home:['Your week, in control.','THE FINANCIAL COMMAND CENTER','Explore your worlds','details'],
+    details:['Choose your next move.','FOUR WORLDS · ONE FINANCIAL PLAN','Enter The Capital','capital'],
+    log:['Every move counts.','RECORD YOUR SPENDING','Check before buying','precheck'],
+    precheck:['Spend with confidence.','PURCHASE SIMULATION · NO MONEY MOVED','Back to my money','capital'],
+    capital:['Your money, in motion.','THE CAPITAL · WEEKLY CASH FLOW','Add spending','log'],
+    bills:['Protect what matters.','THE VAULT · BILLS & OBLIGATIONS','Review my money','capital'],
+    essentials:['Stay covered.','THE LEDGER · DAILY ESSENTIALS','Check a purchase','precheck'],
+    lifestyle:['Freedom, with a plan.','THE CAPITAL · LIFESTYLE','Check a purchase','precheck'],
+    savings:['Build your future.','THE LEDGER · GROWTH & SAVINGS','Edit my plan','setup'],
+    setup:['Make a better week.','THE LEDGER · PLAN IT YOUR WAY','',null],
+    insights:['See the possibilities.','THE OBSERVATORY · FINANCIAL INSIGHTS','Run a scenario','scenario'],
+    scenario:['Explore what could be.','THE OBSERVATORY · WHAT-IF LAB','View insights','insights'],
+    assist:['Questions into clarity.','GOOD JAWN GUIDE · EXPLAINABLE ASSIST','Explore worlds','details'],
+    history:['Every choice, visible.','THE CAPITAL · TRANSACTION HISTORY','View my money','capital'],
+    connections:['Know where data comes from.','THE CAPITAL · CONNECTED DATA','Return to Capital','capital'],
+    preferences:['Your experience. Your rules.','PRESENTATION · CONTROL','Return Home','home'],
+    privacy:['Built for your control.','PRIVACY · TRUST','Return Home','home']
+  };
+  const firstRun=routeName==='home'&&!getStoredUserId();
+  const item=firstRun?['Your money. Your move.','THREE STEPS · ONE CLEAR PLAN','Build My Week','setup']:
+    worlds[routeName]||['Your next step starts here.','THIS WEEK · GOOD JAWN FINANCIAL','Explore worlds','details'];
+  const [headline,kicker,action,destination]=item;
+  const title=stage.querySelector('#twStageFeature');
+  const strap=stage.querySelector('#twStageStrap');
+  const button=stage.querySelector('#twStageEnter');
+  if(title)title.textContent=headline;
+  if(strap)strap.textContent=kicker;
+  if(button){
+    button.hidden=!destination;
+    if(destination){
+      button.href='#'+destination;
+      button.setAttribute('aria-label',action+' — '+headline);
+      const label=button.querySelector('#twStageEnterLabel');
+      if(label)label.textContent=action;
+    }
+  }
+  stage.setAttribute('aria-label','This Week · '+headline);
+  stage.dataset.sceneRoute=routeName;
+  // Restart the scene-introduction animation on route changes. The animation
+  // is disabled by system reduced motion and reduced Presentation preferences.
+  stage.classList.remove('tw-stage-arriving');
+  void stage.offsetWidth;
+  stage.classList.add('tw-stage-arriving');
+}
+
 function renderContextNavigation(routeName){
   const bar=document.getElementById('twRouteShortcuts');if(!bar)return;
   const groupByRoute={
@@ -11047,6 +11166,7 @@ async function render(){
   applyUiPrefs();applyRuntimePerformanceTier();bindSystemPreferenceListeners();bindMobileViewportController();bindLongTaskObserver();bindPrivacyCurtain();bindPowerKeyboard();
   const r=route(),routeChanged=lastRenderedRoute!==null&&lastRenderedRoute!==r;
   document.body.dataset.view=r;
+  renderCinematicStage(r);
   renderContextNavigation(r);
   root.setAttribute('aria-busy','true');
   const phase17LoadingTimer=setTimeout(()=>{
