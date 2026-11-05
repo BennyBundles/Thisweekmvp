@@ -100,7 +100,14 @@ try{
     }
     throw new Error('Timed out rendering '+route);
   };
-  const inspect=()=>evaluate("(()=>({title:document.title,route:document.body?.dataset?.view,width:window.innerWidth,scrollWidth:document.documentElement.scrollWidth,appText:document.querySelector('#app')?.innerText?.slice(0,180)||'',stage:!!document.querySelector('.tw-cinematic-stage'),worlds:[...document.querySelectorAll('.tw-scene')].filter(el=>Number(getComputedStyle(el).opacity)>.8).map(el=>el.className),visibleGallery:[...document.querySelectorAll('.tw-world-gallery a')].filter(el=>getComputedStyle(el).display!=='none').length,advancedCollapsed:!document.querySelector('.tw-advanced-zone details')?.open,homeTrustGap:(()=>{const trust=document.querySelector('.tw-home-ready .tw-source-trust');const scene=document.querySelector('.tw-home-ready .zen-scene');return trust&&scene?Math.round(scene.getBoundingClientRect().top-trust.getBoundingClientRect().bottom):null})(),offlineMessage:document.querySelector('#thisweek-offline-readiness')?.innerText?.slice(0,140)||'',trustedContext:globalThis.isSecureContext,serviceWorkerSupported:'serviceWorker' in navigator}))()");
+  const inspect=()=>evaluate("(()=>({title:document.title,route:document.body?.dataset?.view,width:window.innerWidth,scrollWidth:document.documentElement.scrollWidth,appText:document.querySelector('#app')?.innerText?.slice(0,180)||'',stage:!!document.querySelector('.tw-cinematic-stage'),stageTitle:document.querySelector('#twStageFeature')?.textContent||'',stageAction:document.querySelector('#twStageEnterLabel')?.textContent||'',stageActionHidden:!!document.querySelector('#twStageEnter')?.hidden,stageHeight:Math.round(document.querySelector('.tw-cinematic-stage')?.getBoundingClientRect().height||0),worlds:[...document.querySelectorAll('.tw-scene')].filter(el=>Number(getComputedStyle(el).opacity)>.8).map(el=>el.className),visibleGallery:[...document.querySelectorAll('.tw-world-gallery a')].filter(el=>getComputedStyle(el).display!=='none').length,advancedCollapsed:!document.querySelector('.tw-advanced-zone details')?.open,homeTrustGap:(()=>{const trust=document.querySelector('.tw-home-ready .tw-source-trust');const scene=document.querySelector('.tw-home-ready .zen-scene');return trust&&scene?Math.round(scene.getBoundingClientRect().top-trust.getBoundingClientRect().bottom):null})(),offlineMessage:document.querySelector('#thisweek-offline-readiness')?.innerText?.slice(0,140)||'',trustedContext:globalThis.isSecureContext,serviceWorkerSupported:'serviceWorker' in navigator}))()");
+  const expectedTitles={
+    home:'Your week, in control.',details:'Choose your next move.',
+    log:'Every move counts.',setup:'Make a better week.',
+    bills:'Protect what matters.',insights:'See the possibilities.',
+    savings:'Build your future.',precheck:'Spend with confidence.',
+    capital:'Your money, in motion.',assist:'Questions into clarity.'
+  };
   const report={origin:'review branch, staged isolated public preview',demo:true,mobile,pages:[],errors:[]};
   for(const target of targets){
     if(target.route!=='home')await evaluate('location.hash='+JSON.stringify('#'+target.route));
@@ -108,6 +115,13 @@ try{
     await sleep(850);
     const state=await inspect();
     if(!state.stage||!state.worlds.some(x=>x.includes('tw-scene--'+target.world)))report.errors.push(target.route+': incorrect visual scene');
+    if(state.stageTitle!==expectedTitles[target.route])
+      report.errors.push(target.route+': unexpected cinematic headline '+state.stageTitle);
+    if(state.stageHeight<130)report.errors.push(target.route+': cinematic environment is unexpectedly small');
+    if(target.route==='setup'&&!state.stageActionHidden)
+      report.errors.push('Setup: entry banner must not distract from first financial form');
+    if(target.route==='details'&&state.stageAction!=='Enter The Capital')
+      report.errors.push('Explore: immersive destination button must lead to Capital');
     if(state.scrollWidth>state.width+4)report.errors.push(target.route+': document horizontal overflow '+state.scrollWidth+' > '+state.width);
     const navigation=await evaluate("(()=>{const links=[...document.querySelectorAll('.bottom-nav .nav-link')];return {count:links.length,rows:[...new Set(links.map(x=>Math.round(x.getBoundingClientRect().top)))].length}})()");
     if(navigation.count!==5||navigation.rows!==1)report.errors.push(target.route+': bottom navigation wraps into '+navigation.rows+' rows, tabs='+navigation.count);
@@ -181,9 +195,11 @@ try{
   await cdp('Page.navigate',{url:base+'/public-preview/?reset=1&mode=empty#home'});
   await sleep(900);
   await waitRoute('home');
-  const firstRun=await evaluate("({hasWelcome:!!document.querySelector('.tw-entry'),startAction:!!document.querySelector('.tw-entry a[href=\\\"#setup\\\"]'),hasBankClaim:!!document.querySelector('.tw-entry a[href=\\\"#money\\\"]')})");
+  const firstRun=await evaluate("({hasWelcome:!!document.querySelector('.tw-entry'),startAction:!!document.querySelector('.tw-entry a[href=\\\"#setup\\\"]'),hasBankClaim:!!document.querySelector('.tw-entry a[href=\\\"#money\\\"]'),stageTitle:document.querySelector('#twStageFeature')?.textContent,stageHref:document.querySelector('#twStageEnter')?.getAttribute('href')})");
   if(!firstRun.hasWelcome||!firstRun.startAction||firstRun.hasBankClaim)
     report.errors.push('First run: expected minimal three-step welcome and no live banking claim');
+  if(firstRun.stageTitle!=='Your money. Your move.'||firstRun.stageHref!=='#setup')
+    report.errors.push('First run: immersive banner must offer Build My Week, not advanced tools');
   const welcomeShot=await cdp('Page.captureScreenshot',{format:'png',captureBeyondViewport:false,fromSurface:true});
   await writeFile(path.join(out,'12-first-run-home.png'),Buffer.from(welcomeShot.data,'base64'));
   await evaluate('location.hash="#setup"');
