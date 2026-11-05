@@ -6326,6 +6326,16 @@ body[data-motion="reduced"] .tw-guide-orb:after{animation:none!important}
 .tw-wizard-lanes:not([open])>p,.tw-wizard-lanes:not([open])>.tw-wizard-lane-fields{display:none}
 @media(max-width:375px){.tw-wizard-lane-fields{grid-template-columns:1fr}}
 
+
+/* The Capital: each real spending lane can open its own dedicated check. */
+.tw-capital-row{grid-template-columns:minmax(0,1fr) minmax(38px,86px) auto}
+.tw-capital-row>.tw-capital-category{display:flex;flex-direction:column;justify-content:center;min-height:46px;min-width:0;color:inherit;text-decoration:none}
+.tw-capital-row>.tw-capital-category:focus-visible{outline:2px solid #ebd09b;outline-offset:3px}
+.tw-capital-precheck{flex:none;display:inline-grid;place-items:center;min-height:44px;min-width:66px;border:1px solid rgba(226,192,132,.48);border-radius:12px;background:rgba(215,174,102,.12);color:#f5dfb6;font-weight:750;font-size:.73rem;cursor:pointer}
+.tw-capital-precheck:focus-visible{outline:2px solid #ffecbd;outline-offset:2px}
+.tw-capital-precheck:hover{background:rgba(218,179,107,.2)}
+@media(max-width:400px){.tw-capital-row{gap:7px;grid-template-columns:minmax(0,1fr) minmax(24px,58px) auto}.tw-capital-precheck{min-width:58px;padding-inline:5px}}
+
 </style></head><body><a class="skip-link" href="#app">Skip to main content</a><div class="sr-only" id="routeAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div><div class="privacy-curtain" id="privacyCurtain" aria-hidden="true"><div><div class="privacy-curtain-mark">TW</div><strong>Financial view hidden</strong><span>This Week masks the page while it is inactive. This is a best-effort browser privacy layer, not a guarantee about operating-system snapshots.</span></div></div><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M11 22L24 59L40 34L56 59L69 22" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="square"/><path d="M12 13H68" stroke="currentColor" stroke-width="1.5" opacity=".65"/><circle cx="12" cy="13" r="2" fill="currentColor"/><circle cx="21" cy="13" r="2" fill="currentColor"/><circle cx="30" cy="13" r="2" fill="currentColor"/><circle cx="40" cy="13" r="2" fill="#77d2ad"/><circle cx="50" cy="13" r="2" fill="currentColor"/><circle cx="59" cy="13" r="2" fill="currentColor"/><circle cx="68" cy="13" r="2" fill="currentColor"/></svg></div><div><span class="tw-endorsement">Good Jawn Financial</span><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><section class="tw-cinematic-stage" aria-label="Good Jawn Financial experience">
   <div class="tw-stage-visuals" aria-hidden="true"><div class="tw-scene tw-scene--vault"><svg class="tw-scene-image" viewBox="0 0 1440 380" preserveAspectRatio="xMidYMid slice" role="presentation" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs><linearGradient id="tv-dark" x2=".8" y2="1"><stop stop-color="#0d1016"/><stop offset=".55" stop-color="#2a1b14"/><stop offset="1" stop-color="#050b10"/></linearGradient><radialGradient id="tv-gold"><stop stop-color="#f9df9c"/><stop offset=".27" stop-color="#a77432"/><stop offset=".65" stop-color="#2d2219"/><stop offset=".83" stop-color="#c59850"/><stop offset="1" stop-color="#111319"/></radialGradient><linearGradient id="tv-edge"><stop stop-color="#684920"/><stop offset=".35" stop-color="#fce3a3"/><stop offset=".58" stop-color="#8a5728"/><stop offset="1" stop-color="#d6af69"/></linearGradient><pattern id="tv-boxes" width="90" height="42" patternUnits="userSpaceOnUse"><rect x="2" y="2" width="86" height="38" rx="2" fill="#211b1b" stroke="#b68a4d" stroke-opacity=".6" stroke-width="1.6"/><path d="M6 9H83" stroke="#f3d69e" stroke-opacity=".32"/><circle cx="45" cy="22" r="5" fill="#513b23" stroke="#d7a86b" stroke-width="1.2"/><path d="M42 22H48" stroke="#f9d99d"/></pattern><clipPath id="tv-left"><path d="M0 0H500L570 380H0Z"/></clipPath><clipPath id="tv-right"><path d="M1440 0H1120L1040 380H1440Z"/></clipPath></defs>
@@ -9591,7 +9601,7 @@ async function renderCapital(){
     const categories=lanes.map(c=>{
       const amount=Math.max(0,(c.allocated||0)-(c.remaining||0));
       const pct=(c.allocated||0)>0?Math.min(100,Math.max(0,Math.round(amount/Math.max(1,c.allocated)*100))):0;
-      return '<a class="tw-capital-row" href="#'+(c.type==='LIVING'?'essentials':'lifestyle')+'"><span class="tw-capital-category"><strong>'+escapeHtml(c.name)+'</strong><small>'+formatCents(amount)+' spent · '+pct+'% of this lane</small></span><span class="tw-capital-bar" aria-hidden="true" style="--pct:'+pct+'%"><i></i></span><span class="tw-capital-arrow" aria-hidden="true">↗</span></a>';
+      return '<div class="tw-capital-row"><a class="tw-capital-category" href="#'+(c.type==='LIVING'?'essentials':'lifestyle')+'" aria-label="View '+escapeHtml(c.name)+' details"><strong>'+escapeHtml(c.name)+'</strong><small>'+formatCents(amount)+' spent · '+pct+'% of this lane</small></a><span class="tw-capital-bar" aria-hidden="true" style="--pct:'+pct+'%"><i></i></span><button type="button" class="tw-capital-precheck" data-category-id="'+escapeHtml(c.id)+'" aria-label="Test a purchase in '+escapeHtml(c.name)+'">Test ↗</button></div>';
     }).join('');
     root.innerHTML=[
       '<div class="tw-capital"><header class="tw-capital-lede"><span class="tw-section-label">THE CAPITAL · YOUR WEEK</span><h2>Money, without the maze.</h2>',
@@ -9603,6 +9613,10 @@ async function renderCapital(){
       (entries.length?entries.map(t=>'<div class="tw-capital-transaction"><span><strong>'+escapeHtml(t.note||catById.get(t.categoryId)||'Expense')+'</strong><small>'+escapeHtml(catById.get(t.categoryId)||'Spending')+'</small></span><strong>−'+formatCents(t.amount||0)+'</strong></div>').join(''):'<p class="tw-capital-empty">Your first recorded purchase will appear here.</p>'),
       '</section><nav class="tw-capital-actions" aria-label="Money actions"><a class="tw-gold-button" href="#log">+ Add spending</a><a href="#precheck">Check a purchase ↗</a><a href="#connections">Review imports ↗</a></nav></div>'
     ].join('');
+    root.querySelectorAll('.tw-capital-precheck').forEach(btn=>btn.addEventListener('click',()=>{
+      setPrecheckHint(btn.dataset.categoryId);
+      location.hash='precheck';
+    }));
   }catch(e){root.innerHTML=pageState('error','Money overview unavailable',e?.message||'Could not read this week.');}
 }
 
