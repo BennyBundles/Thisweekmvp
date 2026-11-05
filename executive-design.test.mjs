@@ -197,3 +197,38 @@ test('five primary destinations share one mobile navigation row',()=>{
   assert.ok(builder.includes('Offline ready · Verified cache'));
   assert.ok(html.includes('.tw-offline-panel[data-state="ready"] .tw-offline-retry{display:none}'));
 });
+
+
+test('cinematic stage now changes its message and action with the selected financial route',()=>{
+  const html=read('./index.html');
+  assert.ok(html.includes('function renderCinematicStage(routeName)'));
+  assert.ok(html.includes('renderCinematicStage(r)'));
+  assert.ok(html.includes('id="twStageFeature"'));
+  assert.ok(html.includes('id="twStageStrap"'));
+  assert.ok(html.includes('id="twStageEnter"'));
+  assert.ok(html.includes('id="twStageEnterLabel"'));
+  for(const title of ['Your week, in control.','Choose your next move.','Protect what matters.','Build your future.','Questions into clarity.'])
+    assert.ok(html.includes(title),title);
+  assert.ok(html.includes("routeName==='home'&&!getStoredUserId()"));
+  assert.ok(html.includes("'Build My Week','setup'"));
+  assert.ok(html.includes('button.hidden=!destination'));
+  assert.ok(html.includes("button.href='#'+destination"));
+});
+
+test('financial form screens preserve a shorter stage and system reduced motion',()=>{
+  const html=read('./index.html');
+  assert.ok(html.includes('body[data-density="balanced"][data-view="setup"] .tw-cinematic-stage'));
+  assert.ok(html.includes('body[data-density="balanced"][data-view="precheck"] .tw-cinematic-stage'));
+  assert.ok(html.includes('body[data-density="rich"][data-view="log"] .tw-cinematic-stage'));
+  assert.ok(html.includes('body[data-motion="reduced"] .tw-stage-arriving .tw-stage-feature'));
+  assert.ok(html.includes('@media(prefers-reduced-motion:reduce)'));
+  assert.ok(html.includes('body[data-performance="lite"] .tw-stage-arriving .tw-stage-feature'));
+});
+
+test('the three-step setup displays and validates the actual starter spending limits',()=>{
+  const html=read('./index.html');
+  for(const marker of ['twWizardLanes','twWizardGroceries','twWizardGas','twWizardEating','twWizardFun','twWizardLaneTotal','laneTotal()'])
+    assert.ok(html.includes(marker),marker);
+  assert.ok(html.includes('if(laneFields.includes(id))by('));
+  assert.ok(html.includes("full.addEventListener('toggle'"));
+});
