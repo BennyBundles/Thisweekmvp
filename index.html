@@ -6310,6 +6310,22 @@ body[data-motion="reduced"] .tw-guide-orb:after{animation:none!important}
   .tw-offline-panel[data-state="ready"]{margin:3px 10px 5px;padding:6px 8px}
 }
 
+
+/* Informed, editable first-run spending-lane limits: no concealed example assumptions. */
+.tw-wizard-lanes{margin-top:19px;border:1px solid rgba(232,189,115,.34);border-radius:15px;background:rgba(8,27,33,.77)}
+.tw-wizard-lanes>summary{min-height:56px;display:flex;align-items:center;justify-content:space-between;gap:11px;cursor:pointer;padding:12px 14px;color:#f4e6c9;list-style:none}
+.tw-wizard-lanes>summary::-webkit-details-marker{display:none}
+.tw-wizard-lanes>summary span{display:grid;gap:3px;font-size:.81rem;font-weight:750}
+.tw-wizard-lanes>summary small{font-weight:500;font-size:.66rem;color:#b6c9bd}
+.tw-wizard-lanes>summary strong{white-space:nowrap;font-size:.81rem;color:#e6c487;font-variant-numeric:tabular-nums}
+.tw-wizard-lanes>p{padding:3px 14px 0;margin:0;color:#b6c9c1;font-size:.72rem;line-height:1.5}
+.tw-wizard-lane-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:13px}
+.tw-wizard-lane-fields label{display:grid;gap:6px;color:#dcded3;font-size:.75rem;font-weight:650}
+.tw-wizard-lane-fields input{box-sizing:border-box;width:100%;height:48px;padding:10px;border-radius:11px;border:1px solid rgba(217,188,142,.34);background:#0a242a;color:#faf2df;font-size:1rem;font-variant-numeric:tabular-nums}
+.tw-wizard-lane-fields input:focus-visible{outline:2px solid #e4c38a;outline-offset:2px}
+.tw-wizard-lanes:not([open])>p,.tw-wizard-lanes:not([open])>.tw-wizard-lane-fields{display:none}
+@media(max-width:375px){.tw-wizard-lane-fields{grid-template-columns:1fr}}
+
 </style></head><body><a class="skip-link" href="#app">Skip to main content</a><div class="sr-only" id="routeAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div><div class="privacy-curtain" id="privacyCurtain" aria-hidden="true"><div><div class="privacy-curtain-mark">TW</div><strong>Financial view hidden</strong><span>This Week masks the page while it is inactive. This is a best-effort browser privacy layer, not a guarantee about operating-system snapshots.</span></div></div><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M11 22L24 59L40 34L56 59L69 22" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="square"/><path d="M12 13H68" stroke="currentColor" stroke-width="1.5" opacity=".65"/><circle cx="12" cy="13" r="2" fill="currentColor"/><circle cx="21" cy="13" r="2" fill="currentColor"/><circle cx="30" cy="13" r="2" fill="currentColor"/><circle cx="40" cy="13" r="2" fill="#77d2ad"/><circle cx="50" cy="13" r="2" fill="currentColor"/><circle cx="59" cy="13" r="2" fill="currentColor"/><circle cx="68" cy="13" r="2" fill="currentColor"/></svg></div><div><span class="tw-endorsement">Good Jawn Financial</span><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><section class="tw-cinematic-stage" aria-label="Good Jawn Financial experience">
   <div class="tw-stage-visuals" aria-hidden="true"><div class="tw-scene tw-scene--vault"><svg class="tw-scene-image" viewBox="0 0 1440 380" preserveAspectRatio="xMidYMid slice" role="presentation" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs><linearGradient id="tv-dark" x2=".8" y2="1"><stop stop-color="#0d1016"/><stop offset=".55" stop-color="#2a1b14"/><stop offset="1" stop-color="#050b10"/></linearGradient><radialGradient id="tv-gold"><stop stop-color="#f9df9c"/><stop offset=".27" stop-color="#a77432"/><stop offset=".65" stop-color="#2d2219"/><stop offset=".83" stop-color="#c59850"/><stop offset="1" stop-color="#111319"/></radialGradient><linearGradient id="tv-edge"><stop stop-color="#684920"/><stop offset=".35" stop-color="#fce3a3"/><stop offset=".58" stop-color="#8a5728"/><stop offset="1" stop-color="#d6af69"/></linearGradient><pattern id="tv-boxes" width="90" height="42" patternUnits="userSpaceOnUse"><rect x="2" y="2" width="86" height="38" rx="2" fill="#211b1b" stroke="#b68a4d" stroke-opacity=".6" stroke-width="1.6"/><path d="M6 9H83" stroke="#f3d69e" stroke-opacity=".32"/><circle cx="45" cy="22" r="5" fill="#513b23" stroke="#d7a86b" stroke-width="1.2"/><path d="M42 22H48" stroke="#f9d99d"/></pattern><clipPath id="tv-left"><path d="M0 0H500L570 380H0Z"/></clipPath><clipPath id="tv-right"><path d="M1440 0H1120L1040 380H1440Z"/></clipPath></defs>
@@ -10787,7 +10803,15 @@ function initCinematicSetupWizard(existing){
     '<label for="twWizardPhone">Phone each month</label><div class="tw-wizard-amount"><span>$</span><input type="number" id="twWizardPhone" min="0" step=".01" inputmode="decimal" placeholder="0.00"></div></div>',
     '<div class="tw-onboard-step" data-tw-step="2" hidden><span>03 / 03 · GROWTH</span><h3>What can you set aside?</h3>',
     '<label for="twWizardSavings">Weekly savings target</label><div class="tw-wizard-amount"><span>$</span><input type="number" id="twWizardSavings" min="0" step=".01" inputmode="decimal" placeholder="0.00"></div>',
-    '<p class="tw-onboard-hint">Optional. Saving is a goal in your plan, not a bank transfer.</p><p id="twWizardSummary" class="tw-wizard-summary"></p></div>',
+    '<p class="tw-onboard-hint">Optional. Saving is a goal in your plan, not a bank transfer.</p>',
+    '<details class="tw-wizard-lanes" id="twWizardLanes"><summary><span>Everyday spending limits <small>Review starter amounts</small></span><strong id="twWizardLaneTotal">—</strong></summary>',
+    '<p>These are example weekly limits, not actual spending. Customize them to match your needs before saving.</p>',
+    '<div class="tw-wizard-lane-fields">',
+    '<label for="twWizardGroceries">Groceries <input type="number" id="twWizardGroceries" min="0" step=".01" inputmode="decimal"></label>',
+    '<label for="twWizardGas">Gas / transit <input type="number" id="twWizardGas" min="0" step=".01" inputmode="decimal"></label>',
+    '<label for="twWizardEating">Eating out <input type="number" id="twWizardEating" min="0" step=".01" inputmode="decimal"></label>',
+    '<label for="twWizardFun">Fun <input type="number" id="twWizardFun" min="0" step=".01" inputmode="decimal"></label></div></details>',
+    '<p id="twWizardSummary" class="tw-wizard-summary" aria-live="polite"></p></div>',
     '<p class="tw-onboard-error" id="twWizardError" role="alert" hidden></p>',
     '<div class="tw-onboard-actions"><button id="twWizardBack" type="button" hidden>Back</button><button class="tw-gold-button" type="button" id="twWizardNext">Continue →</button><button class="tw-gold-button" type="button" id="twWizardSave" hidden>Open My Week →</button></div>',
     '<p class="tw-onboard-disclosure">You can change the full plan at any time. No bank connection is required.</p>'
@@ -10799,7 +10823,7 @@ function initCinematicSetupWizard(existing){
   stack.prepend(wizard);
   stack.append(full);
   const by=id=>document.getElementById(id);
-  const fields=[['twWizardIncome','netPay'],['twWizardFrequency','payFrequency'],['twWizardRent','rent'],['twWizardPhone','phone'],['twWizardSavings','savings']];
+  const fields=[['twWizardIncome','netPay'],['twWizardFrequency','payFrequency'],['twWizardRent','rent'],['twWizardPhone','phone'],['twWizardSavings','savings'],['twWizardGroceries','groceries'],['twWizardGas','gas'],['twWizardEating','eating'],['twWizardFun','fun']];
   const current=!!existing?.config;
   for(const [simple,original] of fields){
     const src=by(original),dst=by(simple);
@@ -10808,21 +10832,33 @@ function initCinematicSetupWizard(existing){
     dst.addEventListener('input',()=>{src.value=dst.value;src.dispatchEvent(new Event('input',{bubbles:true}));by('twWizardError').hidden=true;});
     dst.addEventListener('change',()=>{src.value=dst.value;src.dispatchEvent(new Event('change',{bubbles:true}));});
   }
+
+  const laneFields=['twWizardGroceries','twWizardGas','twWizardEating','twWizardFun'];
+  const laneTotal=()=>{
+    const total=laneFields.reduce((sum,id)=>sum+Math.round(Math.max(0,Number(by(id).value||0))*100),0);
+    const el=by('twWizardLaneTotal');
+    if(el)el.textContent=formatCents(total)+' / week';
+    return total;
+  };
+  laneFields.forEach(id=>by(id).addEventListener('input',laneTotal));
+  laneTotal();
   let step=0;
   const show=n=>{
     step=n;
     stack.querySelectorAll('.tw-onboard-step').forEach((el,i)=>{el.hidden=i!==n;});
     stack.querySelectorAll('.tw-onboard-meter b').forEach((el,i)=>el.classList.toggle('active',i<=n));
     by('twWizardBack').hidden=n===0;by('twWizardNext').hidden=n===2;by('twWizardSave').hidden=n!==2;by('twWizardError').hidden=true;
-    if(n===2)by('twWizardSummary').textContent='Take-home pay '+formatCents(Math.round(Number(by('twWizardIncome').value||0)*100))+'; bills '+formatCents(Math.round((Number(by('twWizardRent').value||0)+Number(by('twWizardPhone').value||0))*100))+' monthly; savings '+formatCents(Math.round(Number(by('twWizardSavings').value||0)*100))+' weekly.';
+    if(n===2){laneTotal();by('twWizardSummary').textContent='Your review: take-home pay '+formatCents(Math.round(Number(by('twWizardIncome').value||0)*100))+'; housing and phone '+formatCents(Math.round((Number(by('twWizardRent').value||0)+Number(by('twWizardPhone').value||0))*100))+' monthly; weekly savings '+formatCents(Math.round(Number(by('twWizardSavings').value||0)*100))+'; weekly spending limits '+formatCents(laneTotal())+'. These amounts are used for planning, not bank transactions.';}
   };
   const validate=()=>{
-    const ids=step===0?['twWizardIncome']:step===1?['twWizardRent','twWizardPhone']:['twWizardSavings'];
+    const ids=step===0?['twWizardIncome']:step===1?['twWizardRent','twWizardPhone']:['twWizardSavings',...laneFields];
     for(const id of ids){
       const input=by(id),number=Number(input.value);
       if(!input.value.trim()||!Number.isFinite(number)||number<0||(step===0&&number<=0)){
         by('twWizardError').textContent='Please enter a valid amount. Take-home pay must be greater than zero.';
-        by('twWizardError').hidden=false;input.focus();return false;
+        by('twWizardError').hidden=false;
+        if(laneFields.includes(id))by('twWizardLanes').open=true;
+        input.focus();return false;
       }
     }
     return true;
@@ -10837,6 +10873,7 @@ function initCinematicSetupWizard(existing){
   full.addEventListener('toggle',()=>{
     if(!full.open){
       for(const [simple,original] of fields)by(simple).value=by(original).value;
+      laneTotal();
       if(step===2)show(2);
     }
   });
