@@ -6415,6 +6415,73 @@ body[data-motion="dynamic"] .tw-stage-arriving .tw-scene[style]{animation:none}
 body[data-motion="reduced"] .tw-stage-arriving .tw-stage-feature{animation:none!important}
 body[data-performance="lite"] .tw-stage-arriving .tw-stage-feature{animation:none!important}
 
+
+/* PASS 8: the immersive four financial worlds are the Explore entrance;
+   technical search and quick tools stay reachable through native disclosure. */
+.tw-explore-numbers{
+  margin-top:14px;border:1px solid rgba(225,194,138,.26);border-radius:14px;
+  background:rgba(9,25,30,.63);color:#ede7db
+}
+.tw-explore-numbers>summary{
+  min-height:51px;padding:10px 14px;cursor:pointer;display:flex;align-items:center;
+  justify-content:space-between;gap:12px;list-style:none;
+  font-size:.76rem;font-weight:780
+}
+.tw-explore-numbers>summary::-webkit-details-marker{display:none}
+.tw-explore-numbers>summary small{font-size:.64rem;color:#b7c8bc;font-weight:500;text-align:right}
+.tw-explore-numbers[open]>.system-map-overview{padding:7px 11px}
+.tw-explore-numbers[open]>.system-map-search{margin:6px 11px 12px}
+.tw-explore-numbers:not([open])>.system-map-overview,
+.tw-explore-numbers:not([open])>.system-map-search{display:none}
+.tw-quick-action-disclosure{
+  padding:0 12px 9px;margin:10px 0 19px;
+  border:1px solid rgba(209,183,138,.26);border-radius:17px;
+  background:rgba(9,25,29,.77)
+}
+.tw-quick-action-disclosure>summary{
+  min-height:55px;display:flex;justify-content:space-between;align-items:center;
+  gap:10px;list-style:none;cursor:pointer;padding:10px 4px;
+  color:#f1dfbe;font-size:.79rem;font-weight:800
+}
+.tw-quick-action-disclosure>summary::-webkit-details-marker{display:none}
+.tw-quick-action-disclosure>summary span{color:#a8beb3;font-size:.67rem;font-weight:500;line-height:1.5;text-align:right}
+.tw-quick-action-disclosure:not([open])>.tw-quick-tasks{display:none}
+.tw-world-gallery{margin-top:13px}
+.tw-world-card{position:relative;isolation:isolate;border-color:rgba(246,204,139,.38)}
+.tw-world-card .tw-world-mini{z-index:0}
+.tw-world-card::before{
+  content:"";position:absolute;pointer-events:none;inset:0;z-index:1;
+  background:linear-gradient(0deg,rgba(4,10,17,.96) 0%,rgba(4,12,20,.56) 29%,transparent 74%)
+}
+.tw-world-card-copy{position:relative;z-index:2}
+.tw-world-card-arrow{z-index:3}
+.tw-world-card .tw-world-mini::after{opacity:1;filter:saturate(1.22) contrast(1.09)}
+.tw-world-gallery-heading h3{font-family:Georgia,'Times New Roman',serif;font-size:clamp(1.35rem,3.4vw,2rem)}
+.tw-world-card-copy strong{font-size:clamp(1rem,2vw,1.35rem);letter-spacing:.07em}
+.tw-world-card-copy small,.tw-world-live{font-size:.76rem;line-height:1.4}
+.tw-world-card-copy{gap:5px;padding:18px 18px 19px;background:transparent}
+.tw-world-gallery-footnote{font-size:.71rem;line-height:1.55}
+@media(max-width:700px){
+  .tw-world-gallery-grid{grid-template-columns:1fr;gap:12px}
+  .tw-world-card{min-height:199px}
+  .tw-world-card-copy{padding:17px 16px 17px}
+  .tw-world-card-copy strong{font-size:1.29rem}
+  .tw-world-live{font-size:.77rem}
+  .tw-world-symbol{font-size:1.75rem;right:19px}
+  .tw-world-gallery{padding:13px}
+}
+@media(max-width:430px){
+  .system-map-hero{padding:18px 16px}
+  .system-map-hero h2{font-size:1.6rem}
+  .system-map-hero p{line-height:1.5;font-size:.8rem}
+  .tw-explore-numbers>summary small{max-width:115px}
+  .tw-world-card{min-height:189px}
+  .tw-world-gallery-heading h3{font-size:1.34rem}
+}
+@media(prefers-reduced-motion:reduce){
+  .tw-world-card,.tw-explore-numbers,.tw-quick-action-disclosure{transition:none!important}
+}
+
 </style></head><body><a class="skip-link" href="#app">Skip to main content</a><div class="sr-only" id="routeAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div><div class="privacy-curtain" id="privacyCurtain" aria-hidden="true"><div><div class="privacy-curtain-mark">TW</div><strong>Financial view hidden</strong><span>This Week masks the page while it is inactive. This is a best-effort browser privacy layer, not a guarantee about operating-system snapshots.</span></div></div><div class="screen"><header class="topbar"><div class="topbar-inner"><div class="brand-block"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M11 22L24 59L40 34L56 59L69 22" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="square"/><path d="M12 13H68" stroke="currentColor" stroke-width="1.5" opacity=".65"/><circle cx="12" cy="13" r="2" fill="currentColor"/><circle cx="21" cy="13" r="2" fill="currentColor"/><circle cx="30" cy="13" r="2" fill="currentColor"/><circle cx="40" cy="13" r="2" fill="#77d2ad"/><circle cx="50" cy="13" r="2" fill="currentColor"/><circle cx="59" cy="13" r="2" fill="currentColor"/><circle cx="68" cy="13" r="2" fill="currentColor"/></svg></div><div><span class="tw-endorsement">Good Jawn Financial</span><span class="brand-kicker" id="headerKicker">This Week</span><h1 id="headerTitle">Cashflow Dashboard</h1><div class="brand-subtitle" id="headerSub">Personal financial control</div></div></div><div class="header-side" id="headerAction"></div></div></header><section class="tw-cinematic-stage" aria-label="Good Jawn Financial experience">
   <div class="tw-stage-visuals" aria-hidden="true"><div class="tw-scene tw-scene--vault"><svg class="tw-scene-image" viewBox="0 0 1440 380" preserveAspectRatio="xMidYMid slice" role="presentation" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs><linearGradient id="tv-dark" x2=".8" y2="1"><stop stop-color="#0d1016"/><stop offset=".55" stop-color="#2a1b14"/><stop offset="1" stop-color="#050b10"/></linearGradient><radialGradient id="tv-gold"><stop stop-color="#f9df9c"/><stop offset=".27" stop-color="#a77432"/><stop offset=".65" stop-color="#2d2219"/><stop offset=".83" stop-color="#c59850"/><stop offset="1" stop-color="#111319"/></radialGradient><linearGradient id="tv-edge"><stop stop-color="#684920"/><stop offset=".35" stop-color="#fce3a3"/><stop offset=".58" stop-color="#8a5728"/><stop offset="1" stop-color="#d6af69"/></linearGradient><pattern id="tv-boxes" width="90" height="42" patternUnits="userSpaceOnUse"><rect x="2" y="2" width="86" height="38" rx="2" fill="#211b1b" stroke="#b68a4d" stroke-opacity=".6" stroke-width="1.6"/><path d="M6 9H83" stroke="#f3d69e" stroke-opacity=".32"/><circle cx="45" cy="22" r="5" fill="#513b23" stroke="#d7a86b" stroke-width="1.2"/><path d="M42 22H48" stroke="#f9d99d"/></pattern><clipPath id="tv-left"><path d="M0 0H500L570 380H0Z"/></clipPath><clipPath id="tv-right"><path d="M1440 0H1120L1040 380H1440Z"/></clipPath></defs>
@@ -9780,7 +9847,9 @@ async function renderDetails(){
         <span class="system-map-kicker">YOUR FINANCIAL WORKSPACE</span>
         <h2>Choose your next move.</h2>
         <p>Handle everyday money tasks first. Explore deeper tools only when you need them. Values shown here come from your weekly plan—not a bank balance.</p>
-        <div class="system-map-overview">
+        <details class="tw-explore-numbers">
+          <summary><span>My numbers &amp; search</span><small>Optional details and full tool directory</small></summary>
+          <div class="system-map-overview">
           <div class="system-map-stat"><small>Available</small><strong>${formatCents(p.available)}</strong></div>
           <div class="system-map-stat"><small>Spent</small><strong>${formatCents(st.spent)}</strong></div>
           <div class="system-map-stat"><small>Protected</small><strong>${formatCents(p.protected)}</strong></div>
@@ -9791,12 +9860,7 @@ async function renderDetails(){
           <input id="systemToolSearch" type="search" placeholder="Find a tool or task" autocomplete="off" aria-label="Find a tool or task">
           <span id="systemSearchCount">All tools</span>
         </label>
-      </section>
-      <section class="tw-quick-tasks" aria-label="Popular money tasks">
-        <a href="#log"><span class="tw-quick-symbol" aria-hidden="true">+</span><span><strong>Add spending</strong><small>Record a transaction</small></span></a>
-        <a href="#precheck"><span class="tw-quick-symbol" aria-hidden="true">✓</span><span><strong>Check a purchase</strong><small>Plan before you spend</small></span></a>
-        <a href="#bills"><span class="tw-quick-symbol" aria-hidden="true">▤</span><span><strong>Review bills</strong><small>Know what is due</small></span></a>
-        <a href="#savings"><span class="tw-quick-symbol" aria-hidden="true">↗</span><span><strong>Savings goals</strong><small>See your progress</small></span></a>
+        </details>
       </section>
       <section class="tw-world-gallery" aria-labelledby="twWorldsTitle">
   <div class="tw-world-gallery-heading"><div><span>FOUR CONNECTED EXPERIENCES</span><h3 id="twWorldsTitle">Step into your financial world.</h3></div><small>SELECT A WORLD · EXPLORE WITHOUT LOSING YOUR PLAN</small></div>
@@ -9808,6 +9872,15 @@ async function renderDetails(){
   </div>
   <p class="tw-world-gallery-footnote">Your existing planning data follows you between these spaces. The worlds are views and tools, not separate bank accounts.</p>
 </section>
+      <details class="tw-quick-action-disclosure">
+        <summary>Quick actions <span>Spending · Purchase Check · Bills · Savings</span></summary>
+        <section class="tw-quick-tasks" aria-label="Popular money tasks">
+        <a href="#log"><span class="tw-quick-symbol" aria-hidden="true">+</span><span><strong>Add spending</strong><small>Record a transaction</small></span></a>
+        <a href="#precheck"><span class="tw-quick-symbol" aria-hidden="true">✓</span><span><strong>Check a purchase</strong><small>Plan before you spend</small></span></a>
+        <a href="#bills"><span class="tw-quick-symbol" aria-hidden="true">▤</span><span><strong>Review bills</strong><small>Know what is due</small></span></a>
+        <a href="#savings"><span class="tw-quick-symbol" aria-hidden="true">↗</span><span><strong>Savings goals</strong><small>See your progress</small></span></a>
+      </section>
+      </details>
       ${powerDock}
 
       <div class="system-map-groups">
