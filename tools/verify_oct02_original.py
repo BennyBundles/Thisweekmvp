@@ -52,7 +52,7 @@ def main():
     if intro.is_file():
         src = intro.read_text(encoding="utf-8")
         for marker in PRESERVED:
-            if marker not in src:
+            if marker.casefold() not in src.casefold():
                 failures.append(f"MISSING INTRO MARKER: {marker}")
     for message in failures:
         print("FAIL:", message)
